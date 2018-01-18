@@ -181,11 +181,6 @@ namespace Allors.Domain
                     localisedText.Delete();
                 }
 
-                foreach (LocalisedText localisedText in this.LocalisedComments)
-                {
-                    localisedText.Delete();
-                }
-
                 foreach (LocalisedText localisedText in this.LocalisedDescriptions)
                 {
                     localisedText.Delete();

@@ -59,7 +59,7 @@ namespace Allors.Domain
 
             builder.WithGood(new GoodBuilder(this.Session)
                 .WithSku("10101")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .Build());
 
             builder.Build();

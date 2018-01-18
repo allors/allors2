@@ -37,7 +37,7 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             var unitOfMeasure = new UnitOfMeasureBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("Mt")
                 .Build();
 
             builder.WithUnitOfMeasure(unitOfMeasure);
@@ -56,7 +56,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
+            builder.WithName("Mt");
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -71,7 +71,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
+            builder.WithName("Mt");
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -86,7 +86,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
+            builder.WithName("Mt");
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -101,7 +101,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
+            builder.WithName("Mt");
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -116,7 +116,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mt").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
+            builder.WithName("Mt");
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }

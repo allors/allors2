@@ -93,16 +93,16 @@ namespace Allors.Domain
             this.part = new FinishedGoodBuilder(this.Session).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
 
             this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ancestor").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("ancestor")
                 .Build();
 
             this.parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("parent").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("parent")
                 .WithParent(this.ancestorProductCategory)
                 .Build();
 
             this.productCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .Build();
 
             this.productCategory.AddParent(this.parentProductCategory);
@@ -110,7 +110,7 @@ namespace Allors.Domain
             this.good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -119,7 +119,7 @@ namespace Allors.Domain
             this.variantGood = new GoodBuilder(this.Session)
                 .WithSku("v10101")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("variant good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -127,14 +127,14 @@ namespace Allors.Domain
             this.variantGood2 = new GoodBuilder(this.Session)
                 .WithSku("v10102")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("variant good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("virtual good")
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -170,18 +170,12 @@ namespace Allors.Domain
 
             this.feature1 = new ColourBuilder(this.Session)
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("white")
-                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                            .Build())
+                .WithName("white")
                 .Build();
 
             this.feature2 = new ColourBuilder(this.Session)
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("black")
-                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                            .Build())
+                .WithName("black")
                 .Build();
 
             this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.Session)

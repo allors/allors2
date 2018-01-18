@@ -64,67 +64,67 @@ namespace Allors.Domain
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm EXW (Ex Works)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm EXW (Ex Works)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm EXW (Af fabriek)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(ExwId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FCA (Free Carrier)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm FCA (Free Carrier)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FCA (Vrachtvrij tot vervoerder)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(FcaId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CPT (Carriage Paid To)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm CPT (Carriage Paid To)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CPT (Vrachtvrij tot)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CptId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIP (Carriage and Insurance Paid To)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm CIP (Carriage and Insurance Paid To)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIP (Vrachtvrij inclusief verzekering tot)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CipId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAT (Delivered At Terminal)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm DAT (Delivered At Terminal)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAT (Franco terminal)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DatId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAP (Delivered At Place)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm DAP (Delivered At Place)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAP (Franco ter plaatse)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DapId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DDP (Delivered Duty Paid)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm DDP (Delivered Duty Paid)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DDP (Franco inclusief rechten)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DdpId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FAS (Free Alongside Ship)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm FAS (Free Alongside Ship)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FAS (Vrij langszij schip)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FOB (Free On Board)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm FOB (Free On Board)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FOB (Vrij aan boord)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CFR (Cost and Freight)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm CFR (Cost and Freight)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CFR (Kostprijs en vracht)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIF (Cost, Insurance and Freight)").WithLocale(englishLocale).Build())
+                .WithName("Incoterm CIF (Cost, Insurance and Freight)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIF (Kostprijs, verzekering en vracht)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
                 .Build();

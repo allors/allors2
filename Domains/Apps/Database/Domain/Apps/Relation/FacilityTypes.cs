@@ -31,11 +31,10 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new FacilityTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Warehouse").WithLocale(englishLocale).Build())
+                .WithName("Warehouse")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Magazijn").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WarehouseId)
                 .Build();

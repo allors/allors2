@@ -40,29 +40,28 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PersonRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Employee").WithLocale(englishLocale).Build())
+                .WithName("Employee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werknemer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployeeId)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Sales Rep").WithLocale(englishLocale).Build())
+                .WithName("Sales Rep")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoper").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployeeId)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(englishLocale).Build())
+                .WithName("Contact")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ContactId)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer").WithLocale(englishLocale).Build())
+                .WithName("Customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerId)
                 .Build();

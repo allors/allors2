@@ -33,8 +33,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenPositiveVariance_ThenQuantityOnHandIsRaised()
         {
             var good = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good")
-                    .WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)

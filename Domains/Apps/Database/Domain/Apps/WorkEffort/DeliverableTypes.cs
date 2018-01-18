@@ -40,29 +40,28 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new DeliverableTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Plan").WithLocale(englishLocale).Build())
+                .WithName("Project Plan")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Projectplan").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectPlanId)
                 .Build();
             
             new DeliverableTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Presentation").WithLocale(englishLocale).Build())
+                .WithName("Presentation")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Presentatie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PresentationId)
                 .Build();
             
             new DeliverableTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Report").WithLocale(englishLocale).Build())
+                .WithName("Report")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Rapport").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ReportId)
                 .Build();
             
             new DeliverableTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Market Analysis").WithLocale(englishLocale).Build())
+                .WithName("Market Analysis")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Markt analyse").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MarketAnalysisId)
                 .Build();

@@ -40,29 +40,28 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             
             new SkillLevelBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Beginner").WithLocale(englishLocale).Build())
+                .WithName("Beginner")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Starter").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BeginnerId)
                 .Build();
 
             new SkillLevelBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intermediate").WithLocale(englishLocale).Build())
+                .WithName("Intermediate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intermediate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(IntermediateId)
                 .Build();
             
             new SkillLevelBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Advanced").WithLocale(englishLocale).Build())
+                .WithName("Advanced")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ervaren").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AdvancedId)
                 .Build();
             
             new SkillLevelBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(englishLocale).Build())
+                .WithName("Expert")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExpertId)
                 .Build();

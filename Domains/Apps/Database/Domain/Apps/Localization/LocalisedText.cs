@@ -38,7 +38,7 @@ namespace Allors.Domain
                 derivation.AddDependency(this, productCategory);
             }
 
-            if (this.ExistProductWhereLocalisedDescription || this.ExistProductWhereLocalisedName || this.ExistProductWhereLocalisedComment)
+            if (this.ExistProductWhereLocalisedDescription || this.ExistProductWhereLocalisedName)
             {
                 var product = (Product)this.ProductWhereLocalisedName;
                 derivation.AddDependency(this, product);

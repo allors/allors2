@@ -32,7 +32,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("Gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -41,10 +41,7 @@ namespace Allors.Domain
 
             var colorFeature = new ColourBuilder(this.Session)
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("black")
-                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                            .Build())
+                .WithName("black")
                 .Build();
 
             this.Session.Derive();
@@ -96,14 +93,14 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualGood = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("virtual gizmo")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
             var physicalGood = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("real gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -134,7 +131,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var physicalGood = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("real gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -156,7 +153,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -165,10 +162,7 @@ namespace Allors.Domain
 
             var colorFeature = new ColourBuilder(this.Session)
              .WithVatRate(vatRate21)
-             .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                         .WithText("black")
-                                         .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                         .Build())
+             .WithName("black")
              .Build();
 
             this.Session.Derive();
@@ -223,12 +217,12 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("virtual service")
                 .WithVatRate(vatRate21)
                 .Build();
 
             var physicalService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
 
@@ -255,7 +249,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var physicalService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
 
@@ -274,7 +268,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -283,10 +277,7 @@ namespace Allors.Domain
 
             var colorFeature = new ColourBuilder(this.Session)
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("black")
-                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                            .Build())
+                .WithName("black")
                 .Build();
 
             this.Session.Derive();
@@ -339,12 +330,12 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("virtual service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("virtual service")
                 .WithVatRate(vatRate21)
                 .Build();
 
             var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
 
@@ -371,7 +362,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("real service").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
 

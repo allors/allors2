@@ -32,7 +32,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var softwareFeature = new SoftwareFeatureBuilder(this.Session)
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tutorial").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("Tutorial")
                 .Build();
 
             this.Session.Derive();

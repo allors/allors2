@@ -37,7 +37,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
+            builder.WithName("category");
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -49,7 +49,7 @@ namespace Allors.Domain
             var package = new PackageBuilder(this.Session).WithName("package").Build();
 
             new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("category")
                 .WithPackage(package)
                 .Build();
 
@@ -64,11 +64,11 @@ namespace Allors.Domain
             var package = new PackageBuilder(this.Session).WithName("package").Build();
 
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("parent").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithDescription("parent")
                 .Build();
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("child").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithDescription("child")
                 .WithParent(parentProductCategory).
                 Build();
 
@@ -79,31 +79,31 @@ namespace Allors.Domain
         public void GivenProductCategory_WhenDeriving_ThenSuperJacentAreSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1")
                 .Build();
             var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("2")
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1.1")
                 .WithParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.1")
                 .WithParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.2")
                 .WithParent(productCategory12)
                 .Build();
 
@@ -140,31 +140,31 @@ namespace Allors.Domain
         public void GivenProductCategory_WhenNewParentsAreInserted_ThenSuperJacentAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1")
                 .Build();
             var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("2")
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1.1")
                 .WithParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.1")
                 .WithParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.2")
                 .WithParent(productCategory12)
                 .Build();
 
@@ -197,7 +197,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory2, productCategory122.SuperJacent);
 
             var productCategory3 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("3").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("3")
                 .Build();
             productCategory11.AddParent(productCategory3);
 
@@ -233,7 +233,7 @@ namespace Allors.Domain
             Assert.Contains(productCategory2, productCategory122.SuperJacent);
 
             var productCategory13 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.3").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.3")
                 .WithParent(productCategory1)
                 .Build();
             productCategory122.AddParent(productCategory13);
@@ -278,31 +278,31 @@ namespace Allors.Domain
         public void GivenProductCategory_WhenNewParentsAreRemoved_ThenSuperJacentAreRecalculated()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1")
                 .Build();
             var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("2")
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1.1")
                 .WithParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.1")
                 .WithParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.2")
                 .WithParent(productCategory12)
                 .Build();
 
@@ -367,30 +367,30 @@ namespace Allors.Domain
         public void GivenProductCategory_WhenDeriving_ThenChildrenAreSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1")
                 .Build();
             var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("2")
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1")
                 .WithParent(productCategory1)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1.1")
                 .WithParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.1")
                 .WithParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.2")
                 .WithParent(productCategory12)
                 .Build();
 
@@ -424,30 +424,30 @@ namespace Allors.Domain
         public void GivenProductCategoryHierarchy_WhenDeriving_ThenAllProductAreSet()
         {
             var productCategory1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1")
                 .Build();
             var productCategory2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("2")
                 .Build();
             var productCategory11 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1")
                 .WithParent(productCategory1)
                 .Build();
             var productCategory12 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2")
                 .WithParent(productCategory1)
                 .WithParent(productCategory2)
                 .Build();
             var productCategory111 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.1.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.1.1")
                 .WithParent(productCategory11)
                 .Build();
             var productCategory121 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.1")
                 .WithParent(productCategory12)
                 .Build();
             var productCategory122 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("1.2.2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("1.2.2")
                 .WithParent(productCategory12)
                 .Build();
 
@@ -456,49 +456,49 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good1")
                 .WithSku("good1")
                 .WithPrimaryProductCategory(productCategory1)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
             var good2 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good2")
                 .WithSku("good2")
                 .WithPrimaryProductCategory(productCategory2)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
             var good11 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good11").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good11")
                 .WithSku("good11")
                 .WithPrimaryProductCategory(productCategory11)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
             var good12 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good12").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good12")
                 .WithSku("good12")
                 .WithPrimaryProductCategory(productCategory12)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
             var good111 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good111").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good111")
                 .WithSku("good111")
                 .WithPrimaryProductCategory(productCategory111)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
             var good121 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good121").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good121")
                 .WithSku("good121")
                 .WithPrimaryProductCategory(productCategory121)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithVatRate(vatRate21)
                 .Build();
             var good122 = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good122").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good122")
                 .WithSku("good122")
                 .WithPrimaryProductCategory(productCategory122)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)

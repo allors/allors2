@@ -38,12 +38,12 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new DebitCreditConstantBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Use top level큦 cost center GL-account").WithLocale(englishLocale).Build())
+                .WithName("Use top level큦 cost center GL-account")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van hoogste niveau").WithLocale(dutchLocale).Build())
                 .WithUniqueId(Topid).Build();
             
             new DebitCreditConstantBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Use bottom level큦 cost center GL-account").WithLocale(englishLocale).Build())
+                .WithName("Use bottom level큦 cost center GL-account")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van laagste niveau").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BottomId)
                 .Build();

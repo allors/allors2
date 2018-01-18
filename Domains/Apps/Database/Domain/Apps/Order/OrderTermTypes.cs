@@ -43,35 +43,34 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 
             new OrderTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage Cancellation Charge").WithLocale(englishLocale).Build())
+                .WithName("Percentage Cancellation Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Procent annulerings toeslag").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentageCancellationChargeId)
                 .Build();
 
             new OrderTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Days Cancellation Without Penalty").WithLocale(englishLocale).Build())
+                .WithName("Days Cancellation Without Penalty")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen annulatie zonder kost").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysCancellationWithoutPenaltyId)
                 .Build();
             
             new OrderTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage Penalty Non Performance").WithLocale(englishLocale).Build())
+                .WithName("Percentage Penalty Non Performance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage toeslag slechte (non performance)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentagePenaltyNonPerformanceId)
                 .Build();
             
             new OrderTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Days Within Which Deliverary Must Occur").WithLocale(englishLocale).Build())
+                .WithName("Days Within Which Deliverary Must Occur")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen waarbinnen levering moet gebeuren").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysWithinWhichDeliveraryMustOccurId)
                 .Build();
             
             new OrderTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Non returnable sales item").WithLocale(englishLocale).Build())
+                .WithName("Non returnable sales item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet retourneerbaat item").WithLocale(belgianLocale).Build())
                 .WithUniqueId(NonReturnableSalesItemId)
                 .Build();

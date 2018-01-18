@@ -46,41 +46,40 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PartSpecificationTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Constraint Specification").WithLocale(englishLocale).Build())
+                .WithName("Constraint Specification")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Constraint Specification").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ConstraintSpecificationId)
                 .Build();
             
             new PartSpecificationTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operating Condition").WithLocale(englishLocale).Build())
+                .WithName("Operating Condition")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operating Condition").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OperatingConditionId)
                 .Build();
             
             new PartSpecificationTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Specification").WithLocale(englishLocale).Build())
+                .WithName("Part Specification")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Specification").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PartSpecificationId)
                 .Build();
             
             new PartSpecificationTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Performance Specification").WithLocale(englishLocale).Build())
+                .WithName("Performance Specification")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Performance Specification").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PerformanceSpecificationId)
                 .Build();
 
             new PartSpecificationTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Testing Requirement").WithLocale(englishLocale).Build())
+                .WithName("Testing Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Testing Requirement").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TestingRequirementId)
                 .Build();
 
             new PartSpecificationTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tolerance").WithLocale(englishLocale).Build())
+                .WithName("Tolerance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tolerance").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ToleranceId)
                 .Build();

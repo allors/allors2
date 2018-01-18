@@ -34,16 +34,15 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new VatCalculationMethodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Cash management scheme").WithLocale(englishLocale).Build())
+                .WithName("Cash management scheme")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kasstelsel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CashId).Build();
 
             new VatCalculationMethodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoice management scheme").WithLocale(englishLocale).Build())
+                .WithName("Incoice management scheme")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Factuurstelsel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InvoiceId).Build();
         }

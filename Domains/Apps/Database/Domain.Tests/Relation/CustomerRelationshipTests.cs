@@ -165,7 +165,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -232,7 +232,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();

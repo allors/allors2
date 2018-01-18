@@ -36,23 +36,22 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 
             new InvoiceTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Payment-net days").WithLocale(englishLocale).Build())
+                .WithName("Payment-net days")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betaaltermijn").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PaymentNetDaysId)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Penalty for late fee").WithLocale(englishLocale).Build())
+                .WithName("Penalty for late fee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete late betaling").WithLocale(belgianLocale).Build())
                 .WithUniqueId(LateFeeId)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Penalty for collection agency").WithLocale(englishLocale).Build())
+                .WithName("Penalty for collection agency")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete incassobureau").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CollectionAgencyPenaltyId)
                 .Build();

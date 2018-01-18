@@ -49,47 +49,46 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Very High").WithLocale(englishLocale).Build())
+                .WithName("Very High")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
                 .WithUniqueId(VeryHighId)
                 .Build();
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("High").WithLocale(englishLocale).Build())
+                .WithName("High")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
                 .WithUniqueId(HighId)
                 .Build();
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Medium").WithLocale(englishLocale).Build())
+                .WithName("Medium")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddeld").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MediumId)
                 .Build();
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Low").WithLocale(englishLocale).Build())
+                .WithName("Low")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LowId)
                 .Build();
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("First").WithLocale(englishLocale).Build())
+                .WithName("First")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eerste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FirstId)
                 .Build();
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Third").WithLocale(englishLocale).Build())
+                .WithName("Third")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tweede").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SecondId)
                 .Build();
 
             new PriorityBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Third").WithLocale(englishLocale).Build())
+                .WithName("Third")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ThirdId)
                 .Build();

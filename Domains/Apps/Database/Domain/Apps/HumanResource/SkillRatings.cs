@@ -40,29 +40,28 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new SkillRatingBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Poor").WithLocale(englishLocale).Build())
+                .WithName("Poor")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Slecht").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PoorId)
                 .Build();
 
             new SkillRatingBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fair").WithLocale(englishLocale).Build())
+                .WithName("Fair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Matig").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FairId)
                 .Build();
             
             new SkillRatingBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Good").WithLocale(englishLocale).Build())
+                .WithName("Good")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goed").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GoodId)
                 .Build();
             
             new SkillRatingBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Excellent").WithLocale(englishLocale).Build())
+                .WithName("Excellent")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitstekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExcellentId)
                 .Build();

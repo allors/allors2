@@ -37,23 +37,22 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new OrganisationRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer").WithLocale(englishLocale).Build())
+                .WithName("Customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerId)
                 .Build();
 
             new OrganisationRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Supplier").WithLocale(englishLocale).Build())
+                .WithName("Supplier")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Leverancier").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SupplierId)
                 .Build();
 
             new OrganisationRoleBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Manufacturer").WithLocale(englishLocale).Build())
+                .WithName("Manufacturer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fabrikant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ManufacturerId)
                 .Build();

@@ -37,23 +37,22 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new ContactMechanismTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Phone").WithLocale(englishLocale).Build())
+                .WithName("Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefoon").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhoneId)
                 .Build();
 
             new ContactMechanismTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobile Phone").WithLocale(englishLocale).Build())
+                .WithName("Mobile Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MobilePhoneId)
                 .Build();
 
             new ContactMechanismTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fax").WithLocale(englishLocale).Build())
+                .WithName("Fax")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fax").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FaxId)
                 .Build();

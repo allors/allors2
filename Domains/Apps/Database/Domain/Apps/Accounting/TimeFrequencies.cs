@@ -56,49 +56,49 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hour").WithLocale(englishLocale).Build())
+                .WithName("Hour")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uur").WithLocale(dutchLocale).Build())
                 .WithUniqueId(HourId)
                 .Build();
 
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Day").WithLocale(englishLocale).Build())
+                .WithName("Day")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DayId)
                 .Build();
             
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Week").WithLocale(englishLocale).Build())
+                .WithName("Week")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Week").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WeekId)
                 .Build();
 
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fortnight").WithLocale(englishLocale).Build())
+                .WithName("Fortnight")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("2 Weken").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FortnightId)
                 .Build();
             
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Month").WithLocale(englishLocale).Build())
+                .WithName("Month")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Maand").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MonthId)
                 .Build();
             
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Semester").WithLocale(englishLocale).Build())
+                .WithName("Semester")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Half jaar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SemesterId)
                 .Build();
 
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Trimester").WithLocale(englishLocale).Build())
+                .WithName("Trimester")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kwartaal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TrimesterId)
                 .Build();
             
             new TimeFrequencyBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Year").WithLocale(englishLocale).Build())
+                .WithName("Year")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Jaar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(YearId)
                 .Build();

@@ -30,23 +30,23 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenProductCategoriesAreDerived()
         {
             var level1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("level1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("level1")
                 .Build();
             var level2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("level2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("level2")
                 .WithParent(level1)
                 .Build();
             var level3 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("level3").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("level3")
                 .WithParent(level2)
                 .Build();
             var category = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("category")
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)

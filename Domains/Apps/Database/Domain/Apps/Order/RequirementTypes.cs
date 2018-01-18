@@ -46,41 +46,40 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new RequirementTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Customer Requirement").WithLocale(englishLocale).Build())
+                .WithName("Customer Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerRequirementId)
                 .Build();
             
             new RequirementTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internal Requirement").WithLocale(englishLocale).Build())
+                .WithName("Internal Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interne vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InternalRequirementId)
                 .Build();
             
             new RequirementTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product Requirement").WithLocale(englishLocale).Build())
+                .WithName("Product Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductRequirementId)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Requirement").WithLocale(englishLocale).Build())
+                .WithName("Project Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectRequirementId)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resource Requirement").WithLocale(englishLocale).Build())
+                .WithName("Resource Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resource vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ResourceRequirementId)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Work Requirement").WithLocale(englishLocale).Build())
+                .WithName("Work Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werk vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WorkRequirementId)
                 .Build();

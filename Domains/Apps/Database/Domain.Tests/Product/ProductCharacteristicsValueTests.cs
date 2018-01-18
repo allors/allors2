@@ -34,7 +34,7 @@ namespace Allors.Domain
             this.Session.GetSingleton().AddLocale(dutchLocale);
 
             var characteristic = new ProductCharacteristicBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(defaultLocale).Build())
+                .WithName("category")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Meter)
                 .Build();
 
@@ -62,7 +62,7 @@ namespace Allors.Domain
             var defaultLocale = this.Session.GetSingleton().DefaultLocale;
 
             var characteristic = new ProductCharacteristicBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(defaultLocale).Build())
+                .WithName("category")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Meter)
                 .Build();
 
@@ -86,7 +86,7 @@ namespace Allors.Domain
             this.Session.GetSingleton().AddLocale(dutchLocale);
 
             var characteristic = new ProductCharacteristicBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(defaultLocale).Build())
+                .WithName("category")
                 .Build();
 
             var englishValue = new ProductCharacteristicValueBuilder(this.Session)
@@ -117,7 +117,7 @@ namespace Allors.Domain
             this.Session.GetSingleton().AddLocale(dutchLocale);
 
             var characteristic = new ProductCharacteristicBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(defaultLocale).Build())
+                .WithName("category")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Meter)
                 .Build();
 

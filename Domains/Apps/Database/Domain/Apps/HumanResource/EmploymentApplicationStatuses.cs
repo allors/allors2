@@ -50,37 +50,37 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new EmploymentApplicationStatusBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Received").WithLocale(englishLocale).Build())
+                .WithName("Received")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontvangen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ReceivedId)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Reviewed").WithLocale(englishLocale).Build())
+                .WithName("Reviewed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gereviewed").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ReviewedId)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Filed").WithLocale(englishLocale).Build())
+                .WithName("Filed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ingediend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FiledId)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Rejected").WithLocale(englishLocale).Build())
+                .WithName("Rejected")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Geweigerd").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RejectedId)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Notified Of Non Interested").WithLocale(englishLocale).Build())
+                .WithName("Notified Of Non Interested")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet geïnteresseerd beantwoord").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NotifiedOfNonInterestedId)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Employed").WithLocale(englishLocale).Build())
+                .WithName("Employed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aangenomen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployedId)
                 .Build();

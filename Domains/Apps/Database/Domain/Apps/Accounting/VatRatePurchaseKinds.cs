@@ -41,17 +41,17 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new VatRatePurchaseKindBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goods").WithLocale(englishLocale).Build())
+                .WithName("Goods")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goederen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GoodsId).Build();
 
             new VatRatePurchaseKindBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Services").WithLocale(englishLocale).Build())
+                .WithName("Services")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diensten").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ServicesId).Build();
 
             new VatRatePurchaseKindBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Investments").WithLocale(englishLocale).Build())
+                .WithName("Investments")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Investeringen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InvestmentsId).Build();
         }

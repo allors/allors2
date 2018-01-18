@@ -40,29 +40,28 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new SalutationBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mr.").WithLocale(englishLocale).Build())
+                .WithName("Mr.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MrId)
                 .Build();
 
             new SalutationBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mrs.").WithLocale(englishLocale).Build())
+                .WithName("Mrs.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mvr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MrsId)
                 .Build();
             
             new SalutationBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dr.").WithLocale(englishLocale).Build())
+                .WithName("Dr.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DrId)
                 .Build();
             
             new SalutationBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ms.").WithLocale(englishLocale).Build())
+                .WithName("Ms.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Juff.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MsId)
                 .Build();

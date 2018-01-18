@@ -38,14 +38,14 @@ namespace Allors.Domain
             var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var catMain = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("main cat").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("main cat")
                 .Build();
             var cat1 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cat for good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("cat for good1")
                 .WithParent(catMain)
                 .Build();
             var cat2 = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("cat for good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("cat for good2")
                 .WithParent(catMain)
                 .Build();
 
@@ -65,7 +65,7 @@ namespace Allors.Domain
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat1)
@@ -74,7 +74,7 @@ namespace Allors.Domain
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good2").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat2)

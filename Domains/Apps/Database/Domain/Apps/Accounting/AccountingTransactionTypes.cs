@@ -59,53 +59,52 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bank statement").WithLocale(englishLocale).Build())
+                .WithName("Bank statement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bankafschrift").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BankStatementId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Payment receipt").WithLocale(englishLocale).Build())
+                .WithName("Payment receipt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Binnenkomende betaling").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PaymentReceiptId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Payment disbursement").WithLocale(englishLocale).Build())
+                .WithName("Payment disbursement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitgaande betaling").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PaymentDisbursementId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Accounts payable").WithLocale(englishLocale).Build())
+                .WithName("Accounts payable")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debiteuren post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AccountsPayableId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Accounts receivable").WithLocale(englishLocale).Build())
+                .WithName("Accounts receivable")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Crediteuren post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AccountsReceivableId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Budget posting").WithLocale(englishLocale).Build())
+                .WithName("Budget posting")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Budget post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BudgettingId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inventory adjustment").WithLocale(englishLocale).Build())
+                .WithName("Inventory adjustment")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Voorraad aanpassing").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InventoryAdjustmentId)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("General").WithLocale(englishLocale).Build())
+                .WithName("General")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GeneralId)
                 .Build();

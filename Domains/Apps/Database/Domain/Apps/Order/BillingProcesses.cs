@@ -44,25 +44,25 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new BillingProcessBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Order Items").WithLocale(englishLocale).Build())
+                .WithName("Billing for Order Items")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Order Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForOrderItemsId)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(englishLocale).Build())
+                .WithName("Billing for Shipment Items")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForShipmentItemsId)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Work Efforts").WithLocale(englishLocale).Build())
+                .WithName("Billing for Work Efforts")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForWorkEffortsId)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Time Entries").WithLocale(englishLocale).Build())
+                .WithName("Billing for Time Entries")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForTimeEntriesId)
                 .Build();

@@ -75,24 +75,18 @@ namespace Allors.Domain
             this.good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
                 .WithVatRate(this.vatRate21)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("white")
-                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                            .Build())
+                .WithName("white")
                 .Build();
 
             this.feature2 = new ColourBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session)
-                                            .WithText("black")
-                                            .WithLocale(this.Session.GetSingleton().DefaultLocale)
-                                            .Build())
+                .WithName("black")
                 .Build();
 
             this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -861,7 +855,7 @@ namespace Allors.Domain
             const decimal amount = 1;
 
             var category = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .Build();
 
             new DiscountComponentBuilder(this.Session)
@@ -906,7 +900,7 @@ namespace Allors.Domain
             const decimal percentage = 5;
 
             var category = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .Build();
 
             new DiscountComponentBuilder(this.Session)
@@ -953,7 +947,7 @@ namespace Allors.Domain
             const decimal amount = 1;
 
             var category = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .Build();
 
             new SurchargeComponentBuilder(this.Session)
@@ -998,7 +992,7 @@ namespace Allors.Domain
             const decimal percentage = 5;
 
             var category = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gizmo").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("gizmo")
                 .Build();
 
             new SurchargeComponentBuilder(this.Session)
@@ -2239,11 +2233,11 @@ namespace Allors.Domain
             var salesrep2  = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("parent").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("parent")
                 .Build();
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("child").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("child")
                 .WithParent(parentProductCategory).
                 Build();
 
@@ -2294,11 +2288,11 @@ namespace Allors.Domain
             var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("parent").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("parent")
                 .Build();
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("child").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("child")
                 .WithParent(parentProductCategory).
                 Build();
 
@@ -2349,11 +2343,11 @@ namespace Allors.Domain
             var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("parent").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("parent")
                 .Build();
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("child").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("child")
                 .WithParent(parentProductCategory).
                 Build();
 

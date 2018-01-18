@@ -65,49 +65,49 @@ namespace Allors.Domain
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Co-Contractor").WithLocale(englishLocale).Build())
+                .WithName("Co-Contractor")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Medecontractant").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
                 .WithUniqueId(CoContractorId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Private Person").WithLocale(englishLocale).Build())
+                .WithName("Private Person")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("particulier").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
                 .WithUniqueId(PrivatePersonId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("VAT Assessable 21%").WithLocale(englishLocale).Build())
+                .WithName("VAT Assessable 21%")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW-plichtig 21%").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate21)
                 .WithUniqueId(AssessableId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Export").WithLocale(englishLocale).Build())
+                .WithName("Export")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Export").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
                 .WithUniqueId(ExportId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intracommunautair").WithLocale(englishLocale).Build())
+                .WithName("Intracommunautair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intracommunautair").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
                 .WithUniqueId(IntraCommunautairId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Not VAT assessable").WithLocale(englishLocale).Build())
+                .WithName("Not VAT assessable")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet BTW-plichtig").WithLocale(dutchLocale).Build())
                 .WithVatRate(vatRate0)
                 .WithUniqueId(NotAssessableId)
                 .Build();
             
             new VatRegimeBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Exempt").WithLocale(englishLocale).Build())
+                .WithName("Exempt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrijgesteld").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExemptId)
                 .WithVatRate(vatRate0)

@@ -100,7 +100,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good1").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();

@@ -72,7 +72,7 @@ namespace Allors.Domain
                 .WithCustomer(organisation)
                 .WithSalesRepresentative(salesRep3)
                 .WithProductCategory(new ProductCategoryBuilder(this.Session)
-                                        .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("category").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                                        .WithName("category")
                                         .Build())
                 .Build();
 
@@ -100,7 +100,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("good").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -153,7 +153,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("goof").WithLocale(this.Session.GetSingleton().DefaultLocale).Build())
+                .WithName("goof")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();

@@ -194,63 +194,63 @@ namespace Allors
                 .Build();
 
             var kg = new UnitOfMeasureBuilder(this.Session)
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kilograms").WithLocale(defaultLocale).Build())
+                .WithName("Kilograms")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kg").WithLocale(dutchLocale).Build())
                 .Build();
 
             new ProductTypeBuilder(this.Session)
                 .WithName("Gizmo")
                 .WithProductCharacteristic(new ProductCharacteristicBuilder(this.Session)
+                                            .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afmeting").WithLocale(dutchLocale).Build())
-                                            .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Size").WithLocale(defaultLocale).Build())
                                             .Build())
                 .WithProductCharacteristic(new ProductCharacteristicBuilder(this.Session)
+                                            .WithName("Weight")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gewicht").WithLocale(dutchLocale).Build())
-                                            .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weight").WithLocale(defaultLocale).Build())
                                             .WithUnitOfMeasure(kg)
                                             .Build())
                 .Build();
 
             var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithName("Best selling gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Meest verkochte gizmo's").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Best selling gizmo's").WithLocale(defaultLocale).Build())
                 .Build();
 
             var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithName("Big Gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Grote Gizmo's").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Big Gizmo's").WithLocale(defaultLocale).Build())
                 .Build();
 
             var productCategory3 = new ProductCategoryBuilder(this.Session)
+                .WithName("Small gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kleine gizmo's").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Small gizmo's").WithLocale(defaultLocale).Build())
                 .Build();
 
             new CatalogueBuilder(this.Session)
+                .WithName("New gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe gizmo's").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("New gizmo's").WithLocale(defaultLocale).Build())
+                .WithDescription("Latest in the world of Gizmo's")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Laatste in de wereld van Gizmo's").WithLocale(dutchLocale).Build())
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Latest in the world of Gizmo's").WithLocale(defaultLocale).Build())
                 .WithProductCategory(productCategory1)
                 .Build();
 
             var model1Brand1 = new ModelBuilder(this.Session)
+                .WithName("model 1")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 1").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 1").WithLocale(defaultLocale).Build())
                 .Build();
 
             var model2Brand1 = new ModelBuilder(this.Session)
+                .WithName("model 1")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 2").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 1").WithLocale(defaultLocale).Build())
                 .Build();
 
             var brand1 = new BrandBuilder(this.Session).WithName("brand 1").WithModel(model1Brand1).WithModel(model2Brand1).Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tiny blue round gizmo").WithLocale(defaultLocale).Build())
+                .WithDescription("Perfect blue with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blue with nice curves").WithLocale(defaultLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -336,7 +336,6 @@ line2")
                 .Build();
 
             this.Session.Derive();
-
 
             var orderContent = order.PrintContent;
             File.WriteAllText(@"c:\temp\order.html", orderContent);
