@@ -10,6 +10,7 @@ namespace Allors.Repository
     public partial class BasePrice : Deletable, PriceComponent 
     {
         #region inherited properties
+
         public GeographicBoundary GeographicBoundary { get; set; }
 
         public decimal Rate { get; set; }

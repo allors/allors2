@@ -60,22 +60,11 @@ namespace Allors.Repository
         public ProductCategory[] Children { get; set; }
 
         #region Allors
-        [Id("743985f3-cfee-45b5-b971-30adf46b5297")]
-        [AssociationId("9bc06415-c87c-44ab-8644-6a3d53595bd1")]
-        [RoleId("22e25946-7262-4fc3-a6ee-d9a25494298a")]
-        #endregion
-        [Size(-1)]
-        [Derived]
-        [Workspace]
-        public string Description { get; set; }
-
-        #region Allors
         [Id("8af8b1b1-a711-4e98-a6a0-2948f2d1f315")]
         [AssociationId("042e65b2-6df9-4e76-91bd-7766e935cbfe")]
         [RoleId("991971a4-4ced-4cad-a7a5-48cde31f5e95")]
         #endregion
         [Size(256)]
-        [Derived]
         [Workspace]
         public string Name { get; set; }
 
@@ -89,6 +78,15 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public LocalisedText[] LocalisedNames { get; set; }
+
+        #region Allors
+        [Id("743985f3-cfee-45b5-b971-30adf46b5297")]
+        [AssociationId("9bc06415-c87c-44ab-8644-6a3d53595bd1")]
+        [RoleId("22e25946-7262-4fc3-a6ee-d9a25494298a")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        public string Description { get; set; }
 
         #region Allors
         [Id("40C3BD4D-C947-49F6-A5FA-A01398DB9E8A")]
@@ -157,6 +155,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
         public void Delete() { }
         #endregion
-
     }
 }

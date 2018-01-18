@@ -719,8 +719,6 @@ namespace Allors.Repository
         public Party[] ActiveSuppliers { get; set; }
 
         #region inherited methods
-
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -730,11 +728,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
-
-
-
         #endregion
     }
 }

@@ -57,6 +57,16 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Name { get; set; }
+        
+        #region Allors
+        [Id("f091b264-e6b1-4a57-bbfb-8225cbe8190c")]
+        [AssociationId("6650af3b-f537-4c2f-afff-6773552315cd")]
+        [RoleId("5e9fcced-727d-42a2-95e6-a0f9d8be4ec7")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public LocalisedText[] LocalisedNames { get; set; }
 
         #region Allors
         [Id("842CC899-3F37-455A-AE91-51D29D615E69")]
@@ -69,17 +79,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string NativeName { get; set; }
-
-        #region Allors
-        [Id("f091b264-e6b1-4a57-bbfb-8225cbe8190c")]
-        [AssociationId("6650af3b-f537-4c2f-afff-6773552315cd")]
-        [RoleId("5e9fcced-727d-42a2-95e6-a0f9d8be4ec7")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        public LocalisedText[] LocalisedNames { get; set; }
-
+        
         #region inherited methods
 
 

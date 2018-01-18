@@ -26,8 +26,7 @@ namespace Allors.Repository
 
     public string Comment { get; set; }
 
-    #endregion
-
+      #endregion
 
     #region inherited methods
 

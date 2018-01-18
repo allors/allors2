@@ -10,6 +10,7 @@ namespace Allors.Repository
     public partial class DiscountComponent : PriceComponent 
     {
         #region inherited properties
+
         public GeographicBoundary GeographicBoundary { get; set; }
 
         public decimal Rate { get; set; }

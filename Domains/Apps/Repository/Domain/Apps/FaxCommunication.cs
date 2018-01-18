@@ -9,6 +9,7 @@ namespace Allors.Repository
     public partial class FaxCommunication : CommunicationEvent, Versioned
     {
         #region inherited properties
+
         public CommunicationEventState PreviousCommunicationEventState { get; set; }
 
         public CommunicationEventState LastCommunicationEventState { get; set; }

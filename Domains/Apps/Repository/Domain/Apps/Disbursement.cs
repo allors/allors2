@@ -7,9 +7,10 @@ namespace Allors.Repository
     #region Allors
     [Id("d152e0a4-c76f-4945-8c0f-ad1e5f70ad07")]
     #endregion
-    public partial class Disbursement : Payment 
+    public partial class Disbursement : Payment
     {
         #region inherited properties
+
         public decimal Amount { get; set; }
 
         public PaymentMethod PaymentMethod { get; set; }
@@ -33,25 +34,23 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
 
         #endregion
-
-
+        
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
 
 
 
         #endregion
-
     }
 }

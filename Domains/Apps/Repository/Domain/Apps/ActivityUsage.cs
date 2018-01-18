@@ -10,6 +10,7 @@ namespace Allors.Repository
     public partial class ActivityUsage : DeploymentUsage 
     {
         #region inherited properties
+
         public TimeFrequency TimeFrequency { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
@@ -43,7 +44,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public UnitOfMeasure UnitOfMeasure { get; set; }
-        
+
         #region inherited methods
 
 
