@@ -91,16 +91,6 @@ namespace Allors.Repository
         Good Good { get; set; }
 
         #region Allors
-        [Id("74A4FE86-2624-4196-9EEB-3D29416F894B")]
-        [AssociationId("3A71617F-712E-45ED-ADBF-20D7EB67AC4F")]
-        [RoleId("E5904DC9-39D6-48A7-B8A2-8E14039444D5")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        ProductType ProductType { get; set; }
-
-        #region Allors
         [Id("876D12FC-D379-4FAD-B6A6-2E7BE0EB22ED")]
         [AssociationId("15E77069-EA7D-41F1-9AC3-98EE12A3C13B")]
         [RoleId("0338AAA2-9F29-4797-8D7F-BB8BB0323F8C")]

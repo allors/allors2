@@ -42,6 +42,7 @@ namespace Allors.Domain
                 {
                     localisedText = new LocalisedTextBuilder(this.strategy.Session)
                         .WithLocale(locale)
+                        .WithText(string.Empty)
                         .Build();
 
                     this.AddLocalisedValue(localisedText);
