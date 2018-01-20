@@ -91,7 +91,12 @@ namespace Allors.Development.Repository.Generation
             var validation = metaPopulation.Validate();
             if (validation.ContainsErrors)
             {
-                log.Error(this, "Meta population " + metaPopulation + " has validation errors.");
+                log.Error(this, "Meta population has validation errors.");
+                foreach (var error in validation.Errors)
+                {
+                    log.Error(this, error.Message);
+                }
+
                 return;
             }
 

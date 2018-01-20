@@ -8,16 +8,6 @@ namespace Allors.Repository
     public partial interface InventoryItemVersion : Version, Deletable
     {
         #region Allors
-        [Id("25040B1D-C5D6-446F-BDDA-8BF54A1BFC6E")]
-        [AssociationId("E182058E-D928-4121-A3AA-7FADC4807F47")]
-        [RoleId("053473FE-E5C3-48BF-94B3-A69CDD73CF7B")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
-
-        #region Allors
         [Id("2C73BA77-C8EA-455D-A541-7425D01FABB4")]
         [AssociationId("D5BC1071-2E4D-4481-9144-7304529888E0")]
         [RoleId("CE7D79D7-534B-4AEF-ADB9-0EB3BFD544F3")]

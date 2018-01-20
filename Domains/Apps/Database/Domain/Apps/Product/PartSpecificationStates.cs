@@ -44,10 +44,7 @@ namespace Allors.Domain
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
-
-            var englishtLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
+            
             new PartSpecificationStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

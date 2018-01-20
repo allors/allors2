@@ -10,6 +10,7 @@ namespace Allors.Repository
     public partial class Good : Product
     {
         #region inherited properties
+        public ProductType ProductType { get; set; }
 
         public string InternalComment { get; set; }
         public ProductCategory PrimaryProductCategory { get; set; }

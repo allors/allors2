@@ -32,9 +32,6 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
             new DropShipmentStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

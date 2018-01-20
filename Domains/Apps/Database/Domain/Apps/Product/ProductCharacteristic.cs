@@ -36,26 +36,25 @@ namespace Allors.Domain
 
         private void Sync()
         {
-            var supportedLocales = this.strategy.Session.GetSingleton().Locales.ToArray();
+            var additionalLocales = this.strategy.Session.GetSingleton().AdditionalLocales.ToArray();
             var existingCharacteristicValues = this.ProductCharacteristicValuesWhereProductCharacteristic.ToDictionary(d => d.Locale);
 
-            foreach (Locale supportedLocale in supportedLocales)
+            foreach (var additionalLocale in additionalLocales)
             {
-                ProductCharacteristicValue productCharacteristicValue;
-                if (existingCharacteristicValues.TryGetValue(supportedLocale, out productCharacteristicValue))
+                if (existingCharacteristicValues.ContainsKey(additionalLocale))
                 {
-                    existingCharacteristicValues.Remove(supportedLocale);
+                    existingCharacteristicValues.Remove(additionalLocale);
                 }
                 else
                 {
                     new ProductCharacteristicValueBuilder(this.strategy.Session)
                         .WithProductCharacteristic(this)
-                        .WithLocale(supportedLocale)
+                        .WithLocale(additionalLocale)
                         .Build();
                 }
             }
 
-            foreach (ProductCharacteristicValue productCharacteristicValue in existingCharacteristicValues.Values)
+            foreach (var productCharacteristicValue in existingCharacteristicValues.Values)
             {
                 productCharacteristicValue.Delete();
             }

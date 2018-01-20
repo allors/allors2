@@ -34,7 +34,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.HasChangedRole(this, this.Meta.Locales))
+            if (derivation.HasChangedRole(this, this.Meta.AdditionalLocales))
             {
                 foreach (Good product in new Goods(this.strategy.Session).Extent())
                 {

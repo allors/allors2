@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InventoryitemExtensions.v.cs" company="Allors bvba">
+// <copyright file="InventoryItemExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -14,11 +14,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static partial class InventoryItemExtensions
     {
         public static void AppsOnDeriveProductCategories(this InventoryItem @this, IDerivation derivation)
@@ -59,7 +59,7 @@ namespace Allors.Domain
             else
             {
                 var productCharacteristics = new HashSet<ProductCharacteristic>(@this.ProductType.ProductCharacteristics);
-                var locales = new HashSet<Locale>(@this.Strategy.Session.GetSingleton().Locales);
+                var additionalLocales = new HashSet<Locale>(@this.Strategy.Session.GetSingleton().AdditionalLocales);
 
                 var currentProductCharacteristicValueByLocaleByProductCharacteristic = @this.ProductCharacteristicValues
                     .GroupBy(v => v.ProductCharacteristic)
@@ -69,7 +69,7 @@ namespace Allors.Domain
                 {
                     // Delete obsolete ProductCharacteristic
                     if (!productCharacteristics.Contains(productCharacteristicValue.ProductCharacteristic) ||
-                        !locales.Contains(productCharacteristicValue.Locale))
+                        !additionalLocales.Contains(productCharacteristicValue.Locale))
                     {
                         productCharacteristicValue.Delete();
                     }
@@ -77,11 +77,10 @@ namespace Allors.Domain
 
                 foreach (var productCharacteristic in productCharacteristics)
                 {
-                    foreach (var locale in locales)
+                    foreach (var locale in additionalLocales)
                     {
                         ProductCharacteristicValue productCharacteristicValue = null;
-                        Dictionary<Locale, ProductCharacteristicValue> currentProductCharacteristicValueByLocale;
-                        if (currentProductCharacteristicValueByLocaleByProductCharacteristic.TryGetValue(productCharacteristic, out currentProductCharacteristicValueByLocale))
+                        if (currentProductCharacteristicValueByLocaleByProductCharacteristic.TryGetValue(productCharacteristic, out var currentProductCharacteristicValueByLocale))
                         {
                             currentProductCharacteristicValueByLocale.TryGetValue(locale, out productCharacteristicValue);
                         }

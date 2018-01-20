@@ -26,7 +26,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public ProductCharacteristic[] ProductCharacteristics { get; set; }
+        public SerialisedInventoryItemCharacteristicType[] SerialisedInventoryItemCharacteristicTypes { get; set; }
 
         #region Allors
         [Id("B1DFD523-A9A4-4B7B-BEC4-4EAF107E196C")]
@@ -66,6 +66,5 @@ namespace Allors.Repository
         }
 
         #endregion
-
     }
 }

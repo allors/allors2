@@ -61,7 +61,6 @@ namespace Allors.Domain
             var vatRate0 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 0);
             var vatRate21 = new VatRates(this.Session).FindBy(M.VatRate.Rate, 21);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
 
             new VatRegimeBuilder(this.Session)

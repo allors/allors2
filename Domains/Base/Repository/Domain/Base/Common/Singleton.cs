@@ -32,7 +32,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
         [Workspace]
-        public Locale[] Locales { get; set; }
+        public Locale[] AdditionalLocales { get; set; }
 
         #region Allors
         [Id("f16652b0-b712-43d7-8d4e-34a22487514d")]

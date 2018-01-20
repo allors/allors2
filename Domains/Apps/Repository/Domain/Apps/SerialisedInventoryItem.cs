@@ -18,18 +18,27 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
+        
         public SecurityToken[] SecurityTokens { get; set; }
+        
         public Guid UniqueId { get; set; }
-        public ProductCharacteristicValue[] ProductCharacteristicValues { get; set; }
+
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
+        
         public Part Part { get; set; }
+        
         public string Name { get; set; }
+        
         public Lot Lot { get; set; }
+        
         public string Sku { get; set; }
+        
         public UnitOfMeasure UnitOfMeasure { get; set; }
+        
         public ProductCategory[] DerivedProductCategories { get; set; }
+        
         public Good Good { get; set; }
-        public ProductType ProductType { get; set; }
+        
         public Facility Facility { get; set; }
 
         #endregion
@@ -99,6 +108,16 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string SerialNumber { get; set; }
+
+        #region Allors
+        [Id("91D1A28D-AE04-4445-B4AC-2053559DCFB7")]
+        [AssociationId("2FBE6AA9-9E34-4A9A-9972-88E729AAEFBC")]
+        [RoleId("6FE84CF4-959C-48AE-9923-C91D77E1C439")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public SerialisedInventoryItemCharacteristic[] SerialisedInventoryItemCharacteristics { get; set; }
 
         #region Allors
         [Id("D9D4FF13-6D54-4F35-9A81-902E0BB86545")]

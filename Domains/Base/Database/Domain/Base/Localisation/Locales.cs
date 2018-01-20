@@ -31,14 +31,7 @@ namespace Allors.Domain
 
         private Sticky<string, Locale> localeByIdentifier;
 
-        public Sticky<string, Locale> LocaleByIdentifier
-        {
-            get
-            {
-                return this.localeByIdentifier
-                       ?? (this.localeByIdentifier = new Sticky<string, Locale>(this.Session, Meta.Name));
-            }
-        }
+        public Sticky<string, Locale> LocaleByIdentifier => this.localeByIdentifier ?? (this.localeByIdentifier = new Sticky<string, Locale>(this.Session, this.Meta.Name));
 
         public Locale EnglishGreatBritain => this.FindBy(this.Meta.Name, EnglishGreatBritainName);
 

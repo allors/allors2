@@ -60,7 +60,6 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var belgianLocale = new Locales(this.Session).DutchNetherlands;
 
             new IncoTermTypeBuilder(this.Session)

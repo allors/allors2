@@ -34,9 +34,6 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var engllishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
             new PurchaseReturnStateBuilder(this.Session)
                 .WithUniqueId(CreatedId)
                 .WithName("Created")

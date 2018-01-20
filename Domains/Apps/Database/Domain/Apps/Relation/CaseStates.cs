@@ -41,9 +41,6 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup setup)
         {
-            var englishLocale = new Locales(this.Session).EnglishGreatBritain;
-            var dutchLocale = new Locales(this.Session).DutchNetherlands;
-
             new CaseStateBuilder(this.Session)
                 .WithUniqueId(ClosedId)
                 .WithName("Closed")
