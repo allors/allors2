@@ -27,6 +27,8 @@ namespace Allors.Domain
         private static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
         private static readonly Guid WidthCmId = new Guid("73C329FE-32EC-401f-A0F0-17EDE011B518");
         private static readonly Guid HeightCmId = new Guid("87519F22-9EA3-4a3f-9DC4-66A417AC08AD");
+        private static readonly Guid HourId = new Guid("D64A0F59-1BB6-45DC-9F2A-BAAAD69F49B0");
+        private static readonly Guid DayId = new Guid("371E6576-65BC-4C45-A1BC-50AC98CCEF7D");
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> cache;
 
@@ -45,6 +47,10 @@ namespace Allors.Domain
         public UnitOfMeasure Centimeter => this.Cache[CentimeterId];
 
         public UnitOfMeasure Meter => this.Cache[MeterId];
+
+        public UnitOfMeasure Hour => this.Cache[HourId];
+
+        public UnitOfMeasure Day => this.Cache[DayId];
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<UnitOfMeasure>(this.Session));
 
@@ -100,6 +106,18 @@ namespace Allors.Domain
                 .WithName("meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MeterId)
+                .Build();
+
+            new UnitOfMeasureBuilder(this.Session)
+                .WithName("hour")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("uur").WithLocale(dutchLocale).Build())
+                .WithUniqueId(HourId)
+                .Build();
+
+            new UnitOfMeasureBuilder(this.Session)
+                .WithName("day")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("dag").WithLocale(dutchLocale).Build())
+                .WithUniqueId(DayId)
                 .Build();
         }
     }
