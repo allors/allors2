@@ -191,6 +191,8 @@
     <Compile Include="Apps\OrderTerm.cs" />
     <Compile Include="Apps\IncoTerm.cs" />
     <Compile Include="Apps\IncoTermType.cs" />
+    <Compile Include="Apps\SerialisedInventoryItemCharacteristic.cs" />
+    <Compile Include="Apps\SerialisedInventoryItemCharacteristicType.cs" />
     <Compile Include="Apps\User.cs" />
     <Compile Include="Apps\AccountAdjustment.cs" />
     <Compile Include="Apps\AccountingPeriod.cs" />
@@ -532,8 +534,6 @@
     <Compile Include="Apps\ProductAssociation.cs" />
     <Compile Include="Apps\ProductCategory.cs" />
     <Compile Include="Apps\ProductCategoryRevenue.cs" />
-    <Compile Include="Apps\ProductCharacteristic.cs" />
-    <Compile Include="Apps\ProductCharacteristicValue.cs" />
     <Compile Include="Apps\ProductConfiguration.cs" />
     <Compile Include="Apps\ProductDeliverySkillRequirement.cs" />
     <Compile Include="Apps\ProductDrawing.cs" />

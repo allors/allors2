@@ -21,11 +21,14 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.HasChangedRole(this, this.Meta.ProductCharacteristics))
+            if (derivation.HasChangedRole(this, this.Meta.SerialisedInventoryItemCharacteristicTypes))
             {
-                foreach (InventoryItem item in this.InventoryItemsWhereProductType)
+                foreach (Good good in this.ProductsWhereProductType)
                 {
-                    derivation.AddDependency(item, this);
+                    foreach (SerialisedInventoryItem serialisedInventoryItem in good.InventoryItemsWhereGood)
+                    {
+                        derivation.AddDependency(serialisedInventoryItem, this);
+                    }
                 }
             }
         }

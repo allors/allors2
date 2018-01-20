@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ProductCharacteristic.cs" company="Allors bvba">
+// <copyright file="SerialisedInventoryItemCharacteristicType.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     using Meta;
 
-    public partial class ProductCharacteristic
+    public partial class SerialisedInventoryItemCharacteristicType
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
@@ -36,27 +36,11 @@ namespace Allors.Domain
 
         private void Sync()
         {
-            var additionalLocales = this.strategy.Session.GetSingleton().AdditionalLocales.ToArray();
-            var existingCharacteristicValues = this.ProductCharacteristicValuesWhereProductCharacteristic.ToDictionary(d => d.Locale);
-
-            foreach (var additionalLocale in additionalLocales)
+            if (!this.ExistSerialisedInventoryItemCharacteristicsWhereSerialisedInventoryItemCharacteristicType)
             {
-                if (existingCharacteristicValues.ContainsKey(additionalLocale))
-                {
-                    existingCharacteristicValues.Remove(additionalLocale);
-                }
-                else
-                {
-                    new ProductCharacteristicValueBuilder(this.strategy.Session)
-                        .WithProductCharacteristic(this)
-                        .WithLocale(additionalLocale)
-                        .Build();
-                }
-            }
-
-            foreach (var productCharacteristicValue in existingCharacteristicValues.Values)
-            {
-                productCharacteristicValue.Delete();
+                new SerialisedInventoryItemCharacteristicBuilder(this.strategy.Session)
+                    .WithSerialisedInventoryItemCharacteristicType(this)
+                    .Build();
             }
         }
     }

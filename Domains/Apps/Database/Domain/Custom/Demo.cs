@@ -25,7 +25,7 @@ namespace Allors
             var singleton = this.Session.GetSingleton();
             var defaultLocale = singleton.DefaultLocale;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
-            singleton.AddLocale(dutchLocale);
+            singleton.AddAdditionalLocale(dutchLocale);
 
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
@@ -200,11 +200,11 @@ namespace Allors
 
             new ProductTypeBuilder(this.Session)
                 .WithName("Gizmo")
-                .WithProductCharacteristic(new ProductCharacteristicBuilder(this.Session)
+                .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afmeting").WithLocale(dutchLocale).Build())
                                             .Build())
-                .WithProductCharacteristic(new ProductCharacteristicBuilder(this.Session)
+                .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Weight")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gewicht").WithLocale(dutchLocale).Build())
                                             .WithUnitOfMeasure(kg)
