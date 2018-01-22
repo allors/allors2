@@ -42,7 +42,6 @@ namespace Allors.Repository
         [AssociationId("accd061b-20b9-4a24-bb2c-c2f7276f43ab")]
         [RoleId("8d3f68e1-fa6e-414f-aa4d-25fcc2c975d6")]
         #endregion
-        [Required]
         [Size(-1)]
         [Workspace]
         public string Text { get; set; }

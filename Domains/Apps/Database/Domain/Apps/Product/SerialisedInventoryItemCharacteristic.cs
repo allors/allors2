@@ -25,7 +25,10 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            this.Sync();
+            if (this.SerialisedInventoryItemCharacteristicType.ExistUnitOfMeasure)
+            {
+                this.Sync();
+            }
         }
 
         private void Sync()
@@ -42,7 +45,6 @@ namespace Allors.Domain
                 {
                     localisedText = new LocalisedTextBuilder(this.strategy.Session)
                         .WithLocale(locale)
-                        .WithText(string.Empty)
                         .Build();
 
                     this.AddLocalisedValue(localisedText);
