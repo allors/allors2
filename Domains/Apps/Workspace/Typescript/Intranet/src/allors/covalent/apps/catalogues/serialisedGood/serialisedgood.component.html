@@ -1,9 +1,11 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" class="pad" *ngIf="good" (submit)="save()">
-    <mat-tab-group dynamicHeight="true">
+  <form #form="ngForm" *ngIf="good" (submit)="save()">
+    <mat-tab-group dynamicHeight="true" class="pad-md">
 
       <mat-tab label="General">
         <div class="grid-2_xs-1 pad-top">
+          <a-mat-input class="col" [object]="good" [roleType]="m.Good.Name"></a-mat-input>
+          <a-mat-input class="col" [object]="good" [roleType]="m.Good.Description"></a-mat-input>
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates"
             display="Name" label="Status"></a-mat-select>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
@@ -24,8 +26,7 @@
               <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
             </mat-select>
           </mat-form-field>
-          <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ProductType" [options]="productTypes"
-            display="Name"></a-mat-select>
+          <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
             display="Name"></a-mat-select>
@@ -35,16 +36,15 @@
             display="Name"></a-mat-autocomplete>
         </div>
 
-        <div class="grid-2_md-1 pad-top">
-          <mat-tab-group class="col" dynamicHeight="true">
-            <mat-tab *ngFor="let locale of locales" [label]="locale.Name">
-              <div class="grid-2_md-1 pad-top">
-                <a-mat-localised-text class="col" [object]="good" [roleType]="m.Good.LocalisedNames" [locale]="locale" label="Name"></a-mat-localised-text>
-                <a-mat-localised-text class="col" [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locale]="locale" label="Description"></a-mat-localised-text>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-        </div>
+        <td-expansion-panel *ngIf="locales" label="Translations">
+          <div *ngFor="let locale of locales; let i = index">
+            <mat-divider *ngIf="i > 0"></mat-divider>
+            <div class="grid-2_md-1 pad">
+              <a-mat-localised-text class="col" [object]="good" [roleType]="m.Good.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+              <a-mat-localised-text class="col" [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
+            </div>
+          </div>
+        </td-expansion-panel>
       </mat-tab>
 
       <mat-tab label="Characteristics">
@@ -60,20 +60,23 @@
           </mat-input-container>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
         </div>
-        <div class="grid">
-          <mat-tab-group class="col" dynamicHeight="true">
-            <mat-tab *ngFor="let locale of locales" [label]="locale.Name">
-              <div class="grid-2_md-1">
-                <div *ngFor="let productCharacteristicValue of localisedProductCharacteristicValues(locale)" class="col">
-                  <a-mat-static *ngIf="productCharacteristicValue.DerivedValue != null" [object]="productCharacteristicValue" 
-                  [roleType]="m.ProductCharacteristicValue.DerivedValue" [label]="localisedName(productCharacteristicValue.ProductCharacteristic, locale)"></a-mat-static>
-                  <a-mat-textarea *ngIf="productCharacteristicValue.DerivedValue == null" [object]="productCharacteristicValue"
-                    [roleType]="m.ProductCharacteristicValue.AssignedValue" [label]="localisedName(productCharacteristicValue.ProductCharacteristic, locale)"></a-mat-textarea>
-                </div>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+        <div class="grid-2_md-1">
+          <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" class="col">
+            <a-mat-textarea [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-textarea>
+          </div>
         </div>
+
+        <td-expansion-panel *ngIf="locales" label="Translations">
+          <div *ngFor="let locale of locales; let i = index">
+            <mat-divider *ngIf="i > 0"></mat-divider>
+            <div class="grid-2_md-1 pad">
+              <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" class="col">
+                <a-mat-localised-text class="col" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-localised-text>
+              </div>
+            </div>
+          </div>
+        </td-expansion-panel>
+
       </mat-tab>
 
       <mat-tab label="Financial">
@@ -105,14 +108,10 @@
         <div class="grid">
           <a-mat-textarea class="col" [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
         </div>
-        <mat-tab-group class="col" dynamicHeight="true">
-            <mat-tab *ngFor="let locale of locales" [label]="locale.Name">
-              <div class="grid pad-top">
-                <a-mat-localised-text class="col" [object]="good" [roleType]="m.Good.LocalisedComments" [locale]="locale" label="Comment"></a-mat-localised-text>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-        </mat-tab>
+        <div class="grid">
+          <a-mat-textarea class="col" [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
+        </div>
+      </mat-tab>
 
       <mat-tab label="Images">
         <div class="grid pad-top">

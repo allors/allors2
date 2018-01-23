@@ -80,7 +80,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           new Query(
             {
               include: [
-                new TreeNode({ roleType: m.Singleton.Locales }),
+                new TreeNode({ roleType: m.Singleton.AdditionalLocales,
+                   nodes: [
+                      new TreeNode({ roleType: m.Locale.Language}),
+                   ],
+              }),
               ],
               name: "singletons",
               objectType: this.m.Singleton,
@@ -112,7 +116,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.categories = loaded.collections.categories as ProductCategory[];
         this.catScopes = loaded.collections.catScopes as CatScope[];
-        this.locales = this.singleton.Locales;
+        this.locales = this.singleton.AdditionalLocales;
       },
       (error: Error) => {
         this.errorService.message(error);

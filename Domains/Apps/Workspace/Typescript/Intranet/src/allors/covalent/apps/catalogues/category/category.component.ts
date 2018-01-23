@@ -40,6 +40,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -77,7 +78,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
           new Query(
             {
               include: [
-                new TreeNode({ roleType: m.Singleton.Locales }),
+                new TreeNode({ roleType: m.Singleton.AdditionalLocales,
+                   nodes: [
+                      new TreeNode({ roleType: m.Locale.Language}),
+                   ],
+              }),
               ],
               name: "singletons",
               objectType: this.m.Singleton,
@@ -104,10 +109,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
           this.category = this.scope.session.create("ProductCategory") as ProductCategory;
         }
 
+        this.title = "Category";
+        this.subTitle = this.category.Name;
+
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.categories = loaded.collections.categories as ProductCategory[];
         this.catScopes = loaded.collections.catScopes as CatScope[];
-        this.locales = this.singleton.Locales;
+        this.locales = this.singleton.AdditionalLocales;
       },
       (error: any) => {
         this.errorService.message(error);

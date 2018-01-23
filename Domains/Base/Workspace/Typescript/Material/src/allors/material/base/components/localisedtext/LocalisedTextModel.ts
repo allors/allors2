@@ -33,6 +33,6 @@ export class LocalisedTextModel {
   }
 
   get label(): string {
-    return this.component.label + " (" + this.locale.Name + ")";
+    return this.component.label + " (" + this.locale.Language.Name + ")";
   }
 }

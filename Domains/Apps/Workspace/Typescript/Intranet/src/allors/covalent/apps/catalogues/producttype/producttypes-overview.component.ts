@@ -91,7 +91,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
             predicate,
             page: new Page({ skip: 0, take: take }),
             include: [
-              new TreeNode({ roleType: m.ProductType.ProductCharacteristics }),
+              new TreeNode({ roleType: m.ProductType.SerialisedInventoryItemCharacteristicTypes }),
             ],
           })];
 

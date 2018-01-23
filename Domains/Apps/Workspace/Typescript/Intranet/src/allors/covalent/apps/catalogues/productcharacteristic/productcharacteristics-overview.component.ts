@@ -13,7 +13,7 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
-import { ProductCharacteristic } from "../../../../domain";
+import { SerialisedInventoryItemCharacteristicType } from "../../../../domain";
 import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -29,8 +29,8 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
   public title: string = "Product Characteristics";
   public total: number;
   public searchForm: FormGroup;
-  public data: ProductCharacteristic[];
-  public filtered: ProductCharacteristic[];
+  public data: SerialisedInventoryItemCharacteristicType[];
+  public filtered: SerialisedInventoryItemCharacteristicType[];
 
   private refresh$: BehaviorSubject<Date>;
   private page$: BehaviorSubject<number>;
@@ -48,7 +48,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -81,16 +81,16 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
 
         if (data.name) {
           const like: string = data.name.replace("*", "%") + "%";
-          predicates.push(new Like({ roleType: m.ProductCharacteristic.Name, value: like }));
+          predicates.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
         }
 
         const query: Query[] = [new Query(
           {
             include: [
-              new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
+              new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.LocalisedNames }),
             ],
             name: "productCharacteristics",
-            objectType: m.ProductCharacteristic,
+            objectType: m.SerialisedInventoryItemCharacteristicType,
             page: new Page({ skip: 0, take }),
             predicate,
           })];
@@ -99,7 +99,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
 
       })
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.productCharacteristics as ProductCharacteristic[];
+        this.data = loaded.collections.productCharacteristics as SerialisedInventoryItemCharacteristicType[];
         this.total = loaded.values.productCharacteristics_total;
       },
       (error: any) => {
@@ -122,7 +122,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
     }
   }
 
-  public delete(productCharacteristic: ProductCharacteristic): void {
+  public delete(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this characteristic?" })
       .afterClosed().subscribe((confirm: boolean) => {
@@ -132,7 +132,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
       });
   }
 
-  public onView(productCharacteristic: ProductCharacteristic): void {
+  public onView(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {
     this.router.navigate(["/productCharacteristic/" + productCharacteristic.id]);
   }
 }

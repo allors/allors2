@@ -4,7 +4,7 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { ProductCharacteristic, ProductType } from "../../../../domain";
+import { ProductType, SerialisedInventoryItemCharacteristicType } from "../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -20,7 +20,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
   public productType: ProductType;
 
-  public characteristics: ProductCharacteristic[];
+  public characteristics: SerialisedInventoryItemCharacteristicType[];
 
   private subscription: Subscription;
   private scope: Scope;
@@ -31,7 +31,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
@@ -47,7 +47,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
             name: "productType",
             id,
             include: [
-              new TreeNode({ roleType: m.ProductType.ProductCharacteristics }),
+              new TreeNode({ roleType: m.ProductType.SerialisedInventoryItemCharacteristicTypes }),
             ],
           }),
         ];
@@ -56,7 +56,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           new Query(
             {
               name: "characteristics",
-              objectType: this.m.ProductCharacteristic,
+              objectType: this.m.SerialisedInventoryItemCharacteristicType,
             }),
         ];
 
@@ -70,7 +70,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           this.productType = this.scope.session.create("ProductType") as ProductType;
         }
 
-        this.characteristics = loaded.collections.characteristics as ProductCharacteristic[];
+        this.characteristics = loaded.collections.characteristics as SerialisedInventoryItemCharacteristicType[];
       },
       (error: any) => {
         this.errorService.message(error);

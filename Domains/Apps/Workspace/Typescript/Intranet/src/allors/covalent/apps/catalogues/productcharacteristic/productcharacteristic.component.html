@@ -1,14 +1,25 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
   <form #form="ngForm" class="pad" *ngIf="productCharacteristic" (submit)="save()">
 
-    <div class="grid">
-      <a-mat-localised-text class="col" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.LocalisedNames" [locales]="locales" label="Name"></a-mat-localised-text>
-    </div>
-    <div class="grid-2">
-      <a-mat-select class="col" [object]="productCharacteristic" [roleType]="m.ProductCharacteristic.UnitOfMeasure" [options]="uoms" display="Name"></a-mat-select>
+    <div class="pad">
+      <div class="grid">
+        <a-mat-input class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name"></a-mat-input>
+        <a-mat-select class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure"
+          [options]="uoms" display="Name"></a-mat-select>
+      </div>
+
+      <td-expansion-panel *ngIf="locales" label="Translations">
+          <div *ngFor="let locale of locales; let i = index">
+            <mat-divider *ngIf="i > 0"></mat-divider>
+            <div class="pad">
+                <a-mat-localised-text class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+              </div>
+          </div>
+        </td-expansion-panel>
     </div>
 
     <mat-divider></mat-divider>
+
     <mat-card-actions>
       <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
       <button mat-button (click)="goBack()" type="button">CANCEL</button>

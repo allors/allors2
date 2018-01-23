@@ -10,7 +10,7 @@ const ANGULAR_MODULES: any[] = [
 ];
 
 import {
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatExpansionModule,
   MatIconModule, MatInputModule, MatListModule, MatMenuModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule, MatSlideToggleModule,
@@ -18,7 +18,7 @@ import {
 } from "@angular/material";
 
 const MATERIAL_MODULES: any[] = [
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
+  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatExpansionModule,
   MatIconModule, MatInputModule, MatListModule, MatMenuModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule, MatSlideToggleModule,
@@ -27,7 +27,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule,
-  CovalentDialogsModule, CovalentFileModule, CovalentLayoutModule,
+  CovalentDialogsModule, CovalentExpansionPanelModule, CovalentFileModule, CovalentLayoutModule,
   CovalentLoadingModule, CovalentMediaModule, CovalentMenuModule,
   CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
   CovalentStepsModule,
@@ -35,7 +35,7 @@ import {
 
 const COVALENT_MODULES: any[] = [
   CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule,
-  CovalentDialogsModule, CovalentFileModule, CovalentLayoutModule,
+  CovalentDialogsModule, CovalentExpansionPanelModule, CovalentFileModule, CovalentLayoutModule,
   CovalentLoadingModule, CovalentMediaModule, CovalentMenuModule,
   CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
   CovalentStepsModule,

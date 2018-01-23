@@ -5,7 +5,7 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Locale, ProductCharacteristic, Singleton, UnitOfMeasure } from "../../../../domain";
+import { Locale, SerialisedInventoryItemCharacteristicType, Singleton, UnitOfMeasure } from "../../../../domain";
 import { Fetch, PullRequest, Query, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -19,7 +19,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public productCharacteristic: ProductCharacteristic;
+  public productCharacteristic: SerialisedInventoryItemCharacteristicType;
 
   public singleton: Singleton;
   public locales: Locale[];
@@ -34,7 +34,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
@@ -50,7 +50,10 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
             name: "productCharacteristic",
             id,
             include: [
-              new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames }),
+              new TreeNode({  roleType: m.SerialisedInventoryItemCharacteristicType.LocalisedNames,
+                              nodes: [
+                                        new TreeNode({ roleType: m.LocalisedText.Locale}),
+                                      ] }),
             ],
           }),
         ];
@@ -61,7 +64,11 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
               name: "singletons",
               objectType: this.m.Singleton,
               include: [
-                new TreeNode({ roleType: m.Singleton.Locales }),
+                new TreeNode({ roleType: m.Singleton.AdditionalLocales,
+                   nodes: [
+                      new TreeNode({ roleType: m.Locale.Language}),
+                   ],
+              }),
               ],
             }),
             new Query(
@@ -76,14 +83,14 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded: Loaded) => {
 
-        this.productCharacteristic = loaded.objects.productCharacteristic as ProductCharacteristic;
+        this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedInventoryItemCharacteristicType;
         if (!this.productCharacteristic) {
-          this.productCharacteristic = this.scope.session.create("ProductCharacteristic") as ProductCharacteristic;
+          this.productCharacteristic = this.scope.session.create("SerialisedInventoryItemCharacteristicType") as SerialisedInventoryItemCharacteristicType;
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
         this.uoms = loaded.collections.uoms as UnitOfMeasure[];
-        this.locales = this.singleton.Locales;
+        this.locales = this.singleton.AdditionalLocales;
       },
       (error: any) => {
         this.errorService.message(error);

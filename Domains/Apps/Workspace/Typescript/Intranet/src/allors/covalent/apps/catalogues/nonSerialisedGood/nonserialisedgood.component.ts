@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../angular";
-import { Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductCharacteristic, ProductCharacteristicValue, ProductFeature, ProductType, Singleton, VarianceReason, VatRate } from "../../../../domain";
+import { Brand, Facility, Good, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductFeature, ProductType, Singleton, VarianceReason, VatRate } from "../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
 
@@ -29,7 +29,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public locales: Locale[] = [];
   public categories: ProductCategory[];
   public productTypes: ProductType[];
-  public productCharacteristicValues: ProductCharacteristicValue[];
   public manufacturers: Organisation[];
   public suppliers: Organisation[];
   public brands: Brand[];
@@ -84,9 +83,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Good.Photos }),
-              new TreeNode({ roleType: m.Good.LocalisedNames }),
-              new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
-              new TreeNode({ roleType: m.Good.LocalisedComments }),
+              new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })], }),
+              new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })], }),
               new TreeNode({ roleType: m.Good.ProductCategories }),
               new TreeNode({ roleType: m.Good.InventoryItemKind }),
               new TreeNode({ roleType: m.Good.SuppliedBy }),
@@ -98,21 +96,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           new Fetch({
             id,
             include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [new TreeNode({ roleType: m.ProductCharacteristic.LocalisedNames })],
-                    roleType: m.ProductType.ProductCharacteristics,
-                  }),
-                ],
-                roleType: m.InventoryItem.ProductType,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.ProductCharacteristicValue.ProductCharacteristic }),
-                ],
-                roleType: m.InventoryItem.ProductCharacteristicValues,
-              }),
               new TreeNode({
                 roleType: m.InventoryItem.InventoryItemVariances,
               }),
@@ -131,7 +114,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                     new TreeNode({ roleType: m.Locale.Language }),
                     new TreeNode({ roleType: m.Locale.Country }),
                   ],
-                  roleType: m.Singleton.Locales,
+                  roleType: m.Singleton.AdditionalLocales,
                 }),
                 new TreeNode({
                   nodes: [new TreeNode({ roleType: m.InternalOrganisation.DefaultFacility })],
@@ -198,7 +181,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
             this.singleton = loaded.collections.singletons[0] as Singleton;
             this.facility = this.singleton.InternalOrganisation.DefaultFacility;
-            this.locales = this.singleton.Locales;
+            this.locales = this.singleton.AdditionalLocales;
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Non serialised");
@@ -215,7 +198,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
-              this.productCharacteristicValues = this.inventoryItem.ProductCharacteristicValues;
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
                 if (feature instanceof (Brand)) {
                   this.selectedBrand = feature;
@@ -299,8 +281,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       this.good.AddStandardFeature(this.selectedModel);
     }
 
-    this.inventoryItem.ProductCharacteristicValues = this.productCharacteristicValues;
-
     if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
       const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === "Unknown");
 
@@ -323,19 +303,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public localisedName(productCharacteristic: ProductCharacteristic, locale: Locale): string {
-    const localisedText: LocalisedText = productCharacteristic.LocalisedNames.find((v: LocalisedText) => v.Locale === locale);
-    if (localisedText) {
-      return localisedText.Text;
-    }
-
-    return productCharacteristic.Name;
-  }
-
-  public localisedProductCharacteristicValues(locale: Locale): ProductCharacteristicValue[] {
-    return  this.inventoryItem.ProductCharacteristicValues.filter((v: ProductCharacteristicValue) => v.Locale === locale);
   }
 
   public brandSelected(brand: Brand): void {

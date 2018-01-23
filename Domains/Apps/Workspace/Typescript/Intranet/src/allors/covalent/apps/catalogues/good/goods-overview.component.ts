@@ -199,8 +199,8 @@ export class GoodsOverviewComponent implements OnDestroy {
                 name: "manufacturers",
                 objectType: m.Organisation,
                 predicate: new Contains({
-                  roleType: m.Organisation.OrganisationRoles,
                   object: manufacturerRole,
+                  roleType: m.Organisation.OrganisationRoles,
                 }),
                 sort: [
                   new Sort({ roleType: m.Organisation.Name, direction: "Asc" }),
@@ -210,8 +210,8 @@ export class GoodsOverviewComponent implements OnDestroy {
                 name: "suppliers",
                 objectType: m.Organisation,
                 predicate: new Contains({
-                  roleType: m.Organisation.OrganisationRoles,
                   object: supplierRole,
+                  roleType: m.Organisation.OrganisationRoles,
                 }),
                 sort: [
                   new Sort({ roleType: m.Organisation.Name, direction: "Asc" }),
@@ -294,8 +294,8 @@ export class GoodsOverviewComponent implements OnDestroy {
                 if (data.brand) {
                   goodsPredicates.push(
                     new Contains({
-                      roleType: m.Good.StandardFeatures,
                       object: this.brand,
+                      roleType: m.Good.StandardFeatures,
                     }),
                   );
                 }
@@ -303,8 +303,8 @@ export class GoodsOverviewComponent implements OnDestroy {
                 if (data.model) {
                   goodsPredicates.push(
                     new Contains({
-                      roleType: m.Good.StandardFeatures,
                       object: this.model,
+                      roleType: m.Good.StandardFeatures,
                     }),
                   );
                 }
@@ -312,8 +312,8 @@ export class GoodsOverviewComponent implements OnDestroy {
                 if (data.productCategory) {
                   goodsPredicates.push(
                     new Contains({
-                      roleType: m.Good.ProductCategories,
                       object: this.productCategory,
+                      roleType: m.Good.ProductCategories,
                     }),
                   );
                 }
@@ -386,14 +386,15 @@ export class GoodsOverviewComponent implements OnDestroy {
                   const inventoryPredicates: Predicate[] =
                     inventoryPredicate.predicates;
 
-                  if (data.productType) {
-                    inventoryPredicates.push(
-                      new Equals({
-                        roleType: m.InventoryItem.ProductType,
-                        value: this.productType,
-                      }),
-                    );
-                  }
+                  // TODO:
+                  // if (data.productType) {
+                  //   inventoryPredicates.push(
+                  //     new Equals({
+                  //       roleType: m.InventoryItem.ProductType,
+                  //       value: this.productType,
+                  //     }),
+                  //   );
+                  // }
 
                   const inventoryQuery: Query = new Query({
                     objectType: m.InventoryItem,
