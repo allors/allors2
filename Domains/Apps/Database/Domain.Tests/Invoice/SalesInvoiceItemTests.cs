@@ -52,7 +52,7 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).Build();
 
             this.internalOrganisation = this.Session.GetSingleton();
 
@@ -63,9 +63,9 @@ namespace Allors.Domain
 
             this.billToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithAddress1("Mechelen").WithGeographicBoundary(this.mechelen).Build();
             this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithAddress1("Kiev").WithGeographicBoundary(this.kiev).Build();
-            this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
 
-            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithPreferredCurrency(euro).Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.shipToCustomer).Build();
@@ -2201,7 +2201,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            Assert.Equal(euro, this.invoice.CustomerCurrency);
+            Assert.Equal(euro, this.invoice.Currency);
 
             this.billToCustomer.PreferredCurrency = poundSterling;
 
@@ -2216,7 +2216,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(poundSterling, newInvoice.CustomerCurrency);
+            Assert.Equal(poundSterling, newInvoice.Currency);
 
             Assert.Equal(Math.Round(item1.TotalBasePrice * conversionfactor, 2), item1.TotalBasePriceCustomerCurrency);
             Assert.Equal(0, item1.TotalDiscount);
@@ -2229,9 +2229,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep2  = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
+            var salesrep2  = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();
@@ -2284,9 +2284,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();
@@ -2339,9 +2339,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();

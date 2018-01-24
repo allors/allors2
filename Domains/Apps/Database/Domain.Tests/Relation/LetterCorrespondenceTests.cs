@@ -31,9 +31,9 @@ namespace Allors.Domain
         {
             var communication = new LetterCorrespondenceBuilder(this.Session)
                 .WithSubject("Hello world!")
-                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
-                .WithOriginator(new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
-                .WithReceiver(new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
+                .WithOriginator(new PersonBuilder(this.Session).WithLastName("originator").Build())
+                .WithReceiver(new PersonBuilder(this.Session).WithLastName("receiver").Build())
                 .Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -45,9 +45,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenLetterCorrespondence_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -70,9 +70,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenLetterCorrespondence_WhenOriginatorIsDeleted_ThenCommunicationEventIsDeleted()
         {
-            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").Build();
+            var receiver = new PersonBuilder(this.Session).WithLastName("receiver").Build();
 
             this.Session.Derive();
             this.Session.Commit();

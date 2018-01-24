@@ -61,9 +61,8 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
             this.internalOrganisation = this.Session.GetSingleton();
-            this.internalOrganisation.PreferredCurrency = euro;
 
-            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
             this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
@@ -72,7 +71,7 @@ namespace Allors.Domain
 
             this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithGeographicBoundary(this.kiev).WithAddress1("Dnieper").Build();
-            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").Build();
             this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
                                                             .WithContactMechanism(this.shipToContactMechanismKiev)
                                                             .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -82,7 +81,7 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.Session)
                 .WithName("billToCustomer")
                 .WithPreferredCurrency(euro)
-                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
+                
                 .Build();
 
             this.billToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
@@ -791,7 +790,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -823,7 +822,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -857,7 +856,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyShipped_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -919,7 +918,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -954,7 +953,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -988,7 +987,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -1049,7 +1048,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -1083,7 +1082,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyShipped_ThenProductChangeIsNotAllowed()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -1392,9 +1391,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();
@@ -1446,8 +1445,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();
@@ -1492,9 +1491,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();

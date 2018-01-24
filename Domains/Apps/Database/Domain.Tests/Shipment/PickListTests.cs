@@ -101,9 +101,9 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
+            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -247,9 +247,9 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
+            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -374,10 +374,10 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
-            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
+            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -486,9 +486,9 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
+            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             new SupplierRelationshipBuilder(this.Session)

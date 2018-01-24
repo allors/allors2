@@ -87,7 +87,7 @@ namespace Allors.Domain
                 .WithCreditCard(creditCard)
                 .Build();
 
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;             
+            var internalOrganisation = this.InternalOrganisation;             
             
             internalOrganisation.DoAccounting = false;
 
@@ -153,7 +153,7 @@ namespace Allors.Domain
 
             this.Session.Commit();
 
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.DoAccounting = true;
             internalOrganisation.DefaultPaymentMethod = paymentMethod;
 
@@ -171,7 +171,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")

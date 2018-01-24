@@ -36,13 +36,13 @@ namespace Allors.Domain
 
         public SupplierRelationshipTests()
         {
-            this.contact = new PersonBuilder(this.Session).WithLastName("contact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            this.contact = new PersonBuilder(this.Session).WithLastName("contact").Build();
             this.supplier = new OrganisationBuilder(this.Session)
                 .WithName("supplier")
                 .WithLocale(new Locales(this.Session).EnglishGreatBritain)
-                .WithOrganisationRole(new OrganisationRoles(this.Session).Supplier)
+                
                 .Build();
-            this.internalOrganisation = new InternalOrganisations(this.Session).FindBy(M.InternalOrganisation.Name, "internalOrganisation");
+            this.internalOrganisation = new InternalOrganisations(this.Session).FindBy(M.Organisation.Name, "internalOrganisation");
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
@@ -66,21 +66,21 @@ namespace Allors.Domain
 
             this.Session.Commit();
 
-            var supplier1 = new OrganisationBuilder(this.Session).WithName("supplier1").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier1 = new OrganisationBuilder(this.Session).WithName("supplier1").Build();
             var supplierRelationship1 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier1).Build();
 
             this.Session.Derive();
 
             Assert.Equal(1007, supplier1.SubAccountNumber);
 
-            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").Build();
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier2).Build();
 
             this.Session.Derive();
 
             Assert.Equal(1015, supplier2.SubAccountNumber);
 
-            var supplier3 = new OrganisationBuilder(this.Session).WithName("supplier3").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier3 = new OrganisationBuilder(this.Session).WithName("supplier3").Build();
             var supplierRelationship3 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier3).Build();
 
             this.Session.Derive();
@@ -91,7 +91,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinInternalOrganisation()
         {
-            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
             var belgium = new Countries(this.Session).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
@@ -103,9 +103,9 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var internalOrganisation2 = new InternalOrganisationBuilder(this.Session)
+            var internalOrganisation2 = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("internalOrganisation2")
-                .WithBillingAddress(new WebAddressBuilder(this.Session).WithElectronicAddressString("billfrom").Build())
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
@@ -182,7 +182,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var contact2 = new PersonBuilder(this.Session).WithLastName("contact2").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var contact2 = new PersonBuilder(this.Session).WithLastName("contact2").Build();
             var contactRelationship2 = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
                 .WithContact(contact2)

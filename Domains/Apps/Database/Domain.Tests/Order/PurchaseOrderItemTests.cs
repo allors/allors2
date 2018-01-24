@@ -48,8 +48,8 @@ namespace Allors.Domain
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
                 .Build();
 
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
-            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var internalOrganisation = this.InternalOrganisation;
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
@@ -109,7 +109,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var buyer = new OrganisationBuilder(this.Session).WithName("buyer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var buyer = new OrganisationBuilder(this.Session).WithName("buyer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(shipToContactMechanism).Build();
@@ -311,7 +311,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -353,7 +353,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsConfirmed_ThenItemMayBeCancelledOrRejectedButNotDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -395,7 +395,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -452,7 +452,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCancelled_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -496,7 +496,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsRejected_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -539,7 +539,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsCompleted_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -596,7 +596,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsFinished_ThenItemMayNotBeCancelledOrRejectedOrDeleted()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             
@@ -639,7 +639,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItem_WhenObjectStateIsPartiallyReceived_ThenProductChangeIsNotAllowed()
         {
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
             

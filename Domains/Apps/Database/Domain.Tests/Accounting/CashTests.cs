@@ -48,7 +48,7 @@ namespace Allors.Domain
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
                 .Build();
 
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.DoAccounting = true;
             internalOrganisation.DefaultPaymentMethod = cash;
 
@@ -66,7 +66,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCashPaymentMethodForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")

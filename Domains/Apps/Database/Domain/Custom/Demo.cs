@@ -23,7 +23,6 @@ namespace Allors
             this.SetupUser("admin1@allors.com", "administrator1", "", "x");
 
             var singleton = this.Session.GetSingleton();
-            var defaultLocale = singleton.DefaultLocale;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             singleton.AddAdditionalLocale(dutchLocale);
 
@@ -61,21 +60,35 @@ namespace Allors
 
             var ownBankAccount = new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
 
-            var internalOrganisation = singleton.InternalOrganisation;
-            internalOrganisation.TaxNumber = "BE 0476967014";
-            internalOrganisation.Name = "Allors";
-            internalOrganisation.GeneralCorrespondence = postalAddress;
-            internalOrganisation.BillingAddress = postalAddress;
-            internalOrganisation.GeneralPhoneNumber = phone;
-            internalOrganisation.GeneralEmailAddress = email;
-            internalOrganisation.AddBankAccount(bankaccount);
-            internalOrganisation.DefaultPaymentMethod = ownBankAccount;
-            internalOrganisation.RequestNumberPrefix = "requestno:";
-            internalOrganisation.QuoteNumberPrefix = "quoteno: ";
-            internalOrganisation.InvoiceSequence = new InvoiceSequences(this.Session).EnforcedSequence;
-            internalOrganisation.FiscalYearStartMonth = 01;
-            internalOrganisation.FiscalYearStartDay = 01;
-            internalOrganisation.DoAccounting = false;
+            var internalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
+                .WithTaxNumber("BE 0476967014")
+                .WithName("Allors")
+                .WithBankAccount(bankaccount)
+                .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithDefaultPaymentMethod(new OwnBankAccountBuilder(Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build())
+                .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
+                .WithFiscalYearStartMonth(01)
+                .WithFiscalYearStartDay(01)
+                .WithDoAccounting(false)
+                .WithRequestNumberPrefix("requestno:")
+                .WithQuoteNumberPrefix("quoteno: ")
+                .Build();
+
+            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(phone)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
+                .Build());
+
+            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(email)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralEmail)
+                .Build());
+
+            internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                .WithContactMechanism(postalAddress)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
+                .Build());
 
             var logo = this.DataPath + @"\admin\images\logo.png";
 
@@ -130,7 +143,6 @@ namespace Allors
 
             var acme = new OrganisationBuilder(this.Session)
                 .WithName("Acme")
-                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
                 .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                 .WithPartyContactMechanism(acmeBillingAddress)
                 .WithPartyContactMechanism(acmeInquiries)
@@ -150,7 +162,6 @@ namespace Allors
 
             var contact1 = new PersonBuilder(this.Session)
                 .WithFirstName("contact1")
-                .WithPersonRole(new PersonRoles(this.Session).Contact)
                 .WithGender(new GenderTypes(this.Session).Male)
                 .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                 .WithPartyContactMechanism(contact1Email)
@@ -158,7 +169,6 @@ namespace Allors
 
             var contact2 = new PersonBuilder(this.Session)
                 .WithFirstName("contact2")
-                .WithPersonRole(new PersonRoles(this.Session).Contact)
                 .WithGender(new GenderTypes(this.Session).Male)
                 .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                 .WithPartyContactMechanism(contact2PhoneNumber)
@@ -166,6 +176,7 @@ namespace Allors
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(acme)
+                .WithInternalOrganisation(internalOrganisation)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
@@ -349,7 +360,6 @@ line2")
             var userEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString(email).Build();
 
             var person = new PersonBuilder(this.Session)
-                .WithPersonRole(new PersonRoles(this.Session).Employee)
                 .WithUserName(email)
                 .WithFirstName(firstName)
                 .WithLastName(lastName)

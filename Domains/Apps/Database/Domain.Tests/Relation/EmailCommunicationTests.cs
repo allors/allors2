@@ -51,25 +51,25 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmailCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
 
             var personalEmailAddress = new ContactMechanismPurposes(this.Session).PersonalEmailAddress;
 
             var originatorEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
             var originatorContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).Build();
 
             var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
             var addresseeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).Build();
 
             var carbonCopeeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("carbonCopee@allors.com").Build();
             var carbonCopeeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(carbonCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var carbonCopee = new PersonBuilder(this.Session).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var carbonCopee = new PersonBuilder(this.Session).WithLastName("carbon copee").WithPartyContactMechanism(carbonCopeeContact).Build();
 
             var blindCopeeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("blindCopee@allors.com").Build();
             var blindCopeeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(blindCopeeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var blindCopee = new PersonBuilder(this.Session).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var blindCopee = new PersonBuilder(this.Session).WithLastName("blind copee").WithPartyContactMechanism(blindCopeeContact).Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -101,11 +101,11 @@ namespace Allors.Domain
 
             var originatorEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("originator@allors.com").Build();
             var originatorContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(originatorEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var originator = new PersonBuilder(this.Session).WithLastName("originator").WithPartyContactMechanism(originatorContact).Build();
 
             var addresseeEmail = new EmailAddressBuilder(this.Session).WithElectronicAddressString("addressee@allors.com").Build();
             var addresseeContact = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(addresseeEmail).WithContactPurpose(personalEmailAddress).WithUseAsDefault(true).Build();
-            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var addressee = new PersonBuilder(this.Session).WithLastName("addressee").WithPartyContactMechanism(addresseeContact).Build();
 
             this.Session.Derive();
             this.Session.Commit();

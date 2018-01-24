@@ -62,9 +62,8 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
             this.internalOrganisation = this.Session.GetSingleton();
-            this.internalOrganisation.PreferredCurrency = euro;
 
-            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
             this.vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
@@ -73,7 +72,7 @@ namespace Allors.Domain
 
             this.shipToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             this.shipToContactMechanismKiev = new PostalAddressBuilder(this.Session).WithGeographicBoundary(this.kiev).WithAddress1("Dnieper").Build();
-            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            this.shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").Build();
             this.shipToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
                                                             .WithContactMechanism(this.shipToContactMechanismKiev)
                                                             .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
@@ -84,7 +83,7 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.Session)
                 .WithName("billToCustomer")
                 .WithPreferredCurrency(euro)
-                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
+                
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
@@ -4101,7 +4100,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            Assert.Equal(euro, this.order.CustomerCurrency);
+            Assert.Equal(euro, this.order.Currency);
 
             this.billToCustomer.PreferredCurrency = poundSterling;
 
@@ -4116,7 +4115,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(poundSterling, newOrder.CustomerCurrency);
+            Assert.Equal(poundSterling, newOrder.Currency);
 
             Assert.Equal(Math.Round(item1.TotalBasePrice * conversionfactor, 2), item1.TotalBasePriceCustomerCurrency);
             Assert.Equal(0, item1.TotalDiscount);

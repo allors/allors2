@@ -45,7 +45,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithBilledFromParty(new Organisations(this.Session).FindBy(M.Organisation.Name, "supplier"));
+            builder.WithBilledFrom(new Organisations(this.Session).FindBy(M.Organisation.Name, "supplier"));
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -54,12 +54,12 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseInvoice_WhenDeriving_ThenBilledFromPartyMustBeInSupplierRelationship()
         {
-            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").Build();
 
             var invoice = new PurchaseInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
-                .WithBilledFromParty(supplier2)
+                .WithBilledFrom(supplier2)
                 .Build();
 
             Assert.Equal(ErrorMessages.PartyIsNotASupplier, this.Session.Derive(false).Errors[0].Message);

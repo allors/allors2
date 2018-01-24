@@ -34,7 +34,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -62,7 +62,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenBuild_ThenPreviousObjectStateIsNull()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -89,7 +89,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             ContactMechanism billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
@@ -136,7 +136,7 @@ namespace Allors.Domain
         {
             var customer = new OrganisationBuilder(this.Session)
                 .WithName("customer")
-                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
+                
                 .Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
@@ -164,8 +164,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenShipToCustomerMustBeActiveCustomer()
         {
-            var billtoCcustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billtoCcustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").Build();
+            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -200,7 +200,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
 
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -240,7 +240,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
 
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -285,7 +285,7 @@ namespace Allors.Domain
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .Build();
 
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -310,8 +310,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenDerivedSalesRepMustExist()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var salesrep = new PersonBuilder(this.Session).WithLastName("salesrep").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var salesrep = new PersonBuilder(this.Session).WithLastName("salesrep").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -359,7 +359,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenBilledFromContactMechanismMustExist()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -378,7 +378,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.BillingAddress = homeAddress;
 
             this.Session.Derive();
@@ -400,7 +400,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoiceWithBillToCustomerWithBillingAsdress_WhenDeriving_ThendBillToContactMechanismMustExist()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             ContactMechanism billToContactMechanism = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 
@@ -430,7 +430,7 @@ namespace Allors.Domain
             var customer = new OrganisationBuilder(this.Session)
                 .WithName("customer")
                 .WithPreferredCurrency(euro)
-                .WithOrganisationRole(new OrganisationRoles(this.Session).Customer)
+                
                 .Build();
 
             var billToContactMechanismMechelen = new PostalAddressBuilder(this.Session).WithAddress1("Mechelen").Build();
@@ -442,13 +442,13 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            Assert.Equal(euro, invoice.CustomerCurrency);
+            Assert.Equal(euro, invoice.Currency);
         }
 
         [Fact]
         public void GivenSalesInvoiceWithShipToCustomerWithShippingAddress_WhenDeriving_ThenShipToAddressMustExist()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             ContactMechanism shipToContactMechanism = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 
@@ -480,7 +480,7 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -499,13 +499,13 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            Assert.Equal(euro, invoice.CustomerCurrency);
+            Assert.Equal(euro, invoice.Currency);
         }
 
         [Fact]
         public void GivenSalesInvoice_WhenDeriving_ThenLocaleMustExist()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -538,7 +538,7 @@ namespace Allors.Domain
         public void GivenSalesInvoice_WhenDeriving_ThenTotalAmountMustBeDerived()
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(19).Build();
 
             var good = new GoodBuilder(this.Session)
@@ -565,7 +565,7 @@ namespace Allors.Domain
 
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
 
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -625,7 +625,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsReadyForPosting_ThenCheckTransitions()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -635,7 +635,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithLastName("Administrator").WithPersonRole(new PersonRoles(this.Session).Employee).WithUserName("administrator").Build();
+            var administrator = new PersonBuilder(this.Session).WithLastName("Administrator").WithUserName("administrator").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -665,7 +665,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsSent_ThenCheckTransitions()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -675,7 +675,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -732,7 +732,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsPaid_ThenCheckTransitions()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -742,7 +742,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -787,7 +787,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsPartiallyPaid_ThenCheckTransitions()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -797,7 +797,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -843,7 +843,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsWrittenOff_ThenCheckTransitions()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -853,7 +853,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -885,7 +885,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -895,7 +895,7 @@ namespace Allors.Domain
 
                 .Build();
 
-            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("administrator").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
 
@@ -949,7 +949,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build())
+                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithShippingAndHandlingCharge(adjustment)
@@ -997,7 +997,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build())
+                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithShippingAndHandlingCharge(adjustment)
@@ -1045,7 +1045,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build())
+                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithFee(adjustment)
@@ -1093,7 +1093,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
-                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build())
+                .WithBillToCustomer(new OrganisationBuilder(this.Session).WithName("customer").Build())
                 .WithBillToContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithFee(adjustment)
@@ -1119,7 +1119,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenShipToAndBillToAreSameCustomer_ThenDerivedCustomersIsSingleCustomer()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1146,8 +1146,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenShipToAndBillToAreDifferentCustomers_ThenDerivedCustomersHoldsBothCustomers()
         {
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1176,9 +1176,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenDerivingSalesReps_ThenSalesRepsAreCollectedFromSalesInvoiceItems()
         {
-            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var salesrep1 = new PersonBuilder(this.Session).WithLastName("salesrep for child product category").Build();
+            var salesrep2 = new PersonBuilder(this.Session).WithLastName("salesrep for parent category").Build();
+            var salesrep3 = new PersonBuilder(this.Session).WithLastName("salesrep for everything else").Build();
             var parentProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("parent")
                 .Build();
@@ -1188,7 +1188,7 @@ namespace Allors.Domain
                 .WithParent(parentProductCategory).
                 Build();
 
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1297,7 +1297,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesInvoice_WhenPartialPaymentIsReceived_ThenInvoiceStateIsSetToPartiallyPaid()
         {
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1342,7 +1342,7 @@ namespace Allors.Domain
         [Fact]
         public void GiveninvoiceItem_WhenFullPaymentIsReceived_ThenInvoiceItemStateIsSetToPaid()
         {
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1387,7 +1387,7 @@ namespace Allors.Domain
         [Fact]
         public void GiveninvoiceItem_WhenCancelled_ThenInvoiceItemsAreCancelled()
         {
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1431,7 +1431,7 @@ namespace Allors.Domain
         [Fact]
         public void GiveninvoiceItem_WhenWrittenOff_ThenInvoiceItemsAreWrittenOff()
         {
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var contactMechanism = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Haverwerf 15")
                 .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
@@ -1476,10 +1476,10 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
-            var customer1 = new OrganisationBuilder(this.Session).WithName("customer1").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var customer2 = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            var customer1 = new OrganisationBuilder(this.Session).WithName("customer1").Build();
+            var customer2 = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").Build();
+            var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").Build();
             var catMain = new ProductCategoryBuilder(this.Session)
                 .WithName("main cat")
                 .Build();
@@ -1793,7 +1793,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTimeFactory.CreateDate(2009, 01, 01)).WithCustomer(customer).Build();
 
             var invoice1 = new SalesInvoiceBuilder(this.Session)

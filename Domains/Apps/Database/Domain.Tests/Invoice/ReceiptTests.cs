@@ -36,8 +36,8 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
             this.Singleton = this.Session.GetSingleton();
-            this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
 
@@ -144,7 +144,7 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.Session)
                 .WithLastName("customer")
-                .WithPersonRole(new PersonRoles(this.Session).Customer)
+                
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session)

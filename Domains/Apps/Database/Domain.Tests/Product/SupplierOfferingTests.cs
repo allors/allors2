@@ -31,7 +31,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("organisation").Build();
             var part = new FinishedGoodBuilder(this.Session).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
 
             var good = new GoodBuilder(this.Session)
@@ -93,8 +93,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFacility()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithName("second facility")
@@ -137,8 +137,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithName("second facility")

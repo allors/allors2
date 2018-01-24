@@ -19,6 +19,7 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
 using System.Reflection;
 
 namespace Allors
@@ -43,6 +44,8 @@ namespace Allors
         public ISession Session { get; private set; }
 
         public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
+
+        protected Organisation InternalOrganisation => this.Session.Extent<Organisation>().First(v => v.IsInternalOrganisation);
 
         public TimeSpan? TimeShift
         {

@@ -104,7 +104,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnBankAccountForSingletonThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.DoAccounting = false;
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -143,7 +143,7 @@ namespace Allors.Domain
 
             this.Session.Commit();
 
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.DoAccounting = true;
             internalOrganisation.DefaultPaymentMethod = paymentMethod;
 
@@ -161,7 +161,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnBankAccountForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")

@@ -48,7 +48,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var builder = new InternalOrganisationBuilder(this.Session);
+            var builder = new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -66,10 +66,10 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.Session)
+            var internalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.Session.Derive();
@@ -82,10 +82,10 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.Session)
+            var internalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.Session.Derive();
@@ -98,10 +98,10 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.Session)
+            var internalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.Session.Derive();
@@ -114,10 +114,10 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var internalOrganisation = new InternalOrganisationBuilder(this.Session)
+            var internalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(this.ownBankAccount)
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             this.Session.Derive();
@@ -126,27 +126,13 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisation_WhenPreferredCurrencyIsChanged_ThenValidationErrorIsTrhown()
-        {
-            this.InstantiateObjects(this.Session);
-               
-            this.Session.GetSingleton().PreferredCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.GetSingleton().PreferredCurrency = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
         public void GivenInternalOrganisationWithDefaultFiscalYearStartMonthAndNotExistActualAccountingPeriod_WhenStartingNewFiscalYear_ThenAccountingPeriodsAreCreated()
         {
             this.InstantiateObjects(this.Session);
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             organisation.AppsStartNewFiscalYear();
@@ -190,11 +176,11 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             organisation.AppsStartNewFiscalYear();
@@ -240,11 +226,11 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
-                .WithBillingAddress(this.billingAddress)
                 .Build();
 
             organisation.AppsStartNewFiscalYear();

@@ -40,8 +40,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenValidatingThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var good = new GoodBuilder(this.Session)
@@ -84,8 +84,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptForPartWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
@@ -132,8 +132,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptForGoodWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
@@ -187,8 +187,8 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
+            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
 
@@ -225,7 +225,7 @@ namespace Allors.Domain
             var sessionInventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(inventoryItem);
             var sessionSalesItem = (SalesOrderItem)this.Session.Instantiate(salesItem);
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 
@@ -271,8 +271,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenDerivingThenOrderItemQuantityReceivedIsUpdated()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
 

@@ -28,8 +28,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderRequirementCommitment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var shipToCustomer = new OrganisationBuilder(this.Session).WithName("shipToCustomer").Build();
+            var billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").Build();
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(billToCustomer)

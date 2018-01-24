@@ -32,9 +32,9 @@ namespace Allors.Domain
         public void GivenCommunicationEvent_WhenInProgress_ThenCurrentObjectStateIsInProgress()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
@@ -48,9 +48,9 @@ namespace Allors.Domain
         public void GivenCommunicationEvent_WhenInPast_ThenCurrencObjectStateIsCompleted()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow.AddHours(-2))
                 .WithActualEnd(DateTime.UtcNow.AddHours(-1))
@@ -65,9 +65,9 @@ namespace Allors.Domain
         public void GivenCommunicationEvent_WhenInFuture_ThenCurrencObjectStateIsScheduled()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow.AddHours(+1))
                 .WithActualEnd(DateTime.UtcNow.AddHours(+2))
@@ -82,9 +82,9 @@ namespace Allors.Domain
         public void GivenFaceToFaceCommunication_WhenConfirmed_ThenCurrentCommunicationEventStatusMustBeDerived()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Customer).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithSubject("Hello")
                 .WithActualStart(DateTime.UtcNow)
                 .Build();

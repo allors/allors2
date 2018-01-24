@@ -31,7 +31,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationship_WhenDerivingWithout_ThenAmountDueIsZero()
         {
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
 
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
@@ -45,7 +45,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationship_WhenDerivingWithout_ThenAmountOverDueIsZero()
         {
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -57,8 +57,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationshipToCome_WhenDeriving_ThenInternalOrganisationCustomersDosNotContainCustomer()
         {
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
@@ -74,8 +74,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationshipThatHasEnded_WhenDeriving_ThenInternalOrganisationCustomersDosNotContainCustomer()
         {
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
@@ -92,26 +92,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationshipBuilder_WhenBuild_ThenSubAccountNumerIsValidElevenTestNumber()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.SubAccountCounter.Value = 1000;
 
             this.Session.Commit();
 
-            var customer1 = new PersonBuilder(this.Session).WithLastName("customer1").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer1 = new PersonBuilder(this.Session).WithLastName("customer1").Build();
             var customerRelationship1 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).Build();
 
             this.Session.Derive();
 
             Assert.Equal(1007, customer1.SubAccountNumber);
 
-            var customer2 = new PersonBuilder(this.Session).WithLastName("customer2").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer2 = new PersonBuilder(this.Session).WithLastName("customer2").Build();
             var customerRelationship2 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();
 
             this.Session.Derive();
 
             Assert.Equal(1015, customer2.SubAccountNumber);
 
-            var customer3 = new PersonBuilder(this.Session).WithLastName("customer3").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer3 = new PersonBuilder(this.Session).WithLastName("customer3").Build();
             var customerRelationship3 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer3).Build();
 
             this.Session.Derive();
@@ -122,7 +122,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinSingleton()
         {
-            var customer2 = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer2 = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
             var belgium = new Countries(this.Session).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
@@ -137,9 +137,9 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var address1 = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
-            var internalOrganisation2 = new InternalOrganisationBuilder(this.Session)
+            var internalOrganisation2 = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("internalOrganisation2")
-                .WithBillingAddress(address1)
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
@@ -157,7 +157,7 @@ namespace Allors.Domain
         public void GivenCustomerWithUnpaidInvoices_WhenDeriving_ThenAmountDueIsUpdated()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
@@ -224,7 +224,7 @@ namespace Allors.Domain
         public void GivenCustomerWithUnpaidInvoices_WhenDeriving_ThenAmountOverDueIsUpdated()
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow.AddDays(-31)).WithCustomer(customer).Build();
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();

@@ -34,8 +34,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrderBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
@@ -49,8 +49,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrder_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
@@ -86,8 +86,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenDeriving_ThenTakenViaSupplierMustBeInSupplierRelationship()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
 
             new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
@@ -104,7 +104,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrder_WhenDeriving_ThenLocaleMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
@@ -128,10 +128,10 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithoutFormat_ThenOrderNumberShouldBeReturned()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.RemovePurchaseOrderNumberPrefix();
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
 
             var order1 = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
             Assert.Equal("1", order1.OrderNumber);
@@ -143,8 +143,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithFormat_ThenFormattedOrderNumberShouldBeReturned()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.PurchaseOrderNumberPrefix = "the format is ";
 
             var order1 = new PurchaseOrderBuilder(this.Session)
@@ -165,8 +165,8 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -194,8 +194,8 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -221,8 +221,8 @@ namespace Allors.Domain
         {
             this.SetIdentity("orderProcessor");
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -250,8 +250,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var part = new RawMaterialBuilder(this.Session).WithName("RawMaterial").Build();
@@ -293,8 +293,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var part = new RawMaterialBuilder(this.Session).WithName("RawMaterial").Build();

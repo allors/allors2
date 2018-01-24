@@ -51,7 +51,7 @@ namespace Allors.Domain
         {
             var contactMechanism = new TelecommunicationsNumberBuilder(this.Session).WithAreaCode("0495").WithContactNumber("493499").WithDescription("cellphone").Build();
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(contactMechanism).Build();
-            var party = new PersonBuilder(this.Session).WithLastName("party").WithPartyContactMechanism(partyContactMechanism).WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var party = new PersonBuilder(this.Session).WithLastName("party").WithPartyContactMechanism(partyContactMechanism).Build();
 
             this.Session.Derive();
             var countBefore = this.Session.Extent<PartyContactMechanism>().Count;

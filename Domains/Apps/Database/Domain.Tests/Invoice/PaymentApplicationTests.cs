@@ -32,7 +32,7 @@ namespace Allors.Domain
         {
             var billToContactMechanism = new EmailAddressBuilder(this.Session).WithElectronicAddressString("info@allors.com").Build();
 
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 .Build();
@@ -78,7 +78,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
+            var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 

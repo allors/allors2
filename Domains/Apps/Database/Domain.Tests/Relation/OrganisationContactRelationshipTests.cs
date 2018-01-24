@@ -33,7 +33,7 @@ namespace Allors.Domain
         
         public OrganisationContactRelationshipTests()
         {
-            this.contact = new PersonBuilder(this.Session).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            this.contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(this.contact)
@@ -48,7 +48,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenorganisationContactRelationship_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
             this.Session.Derive();
             this.Session.Commit();
 
@@ -68,7 +68,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithOrganisation(new OrganisationBuilder(this.Session).WithName("organisation").WithLocale(this.Session.GetSingleton().DefaultLocale).WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build());
+            builder.WithOrganisation(new OrganisationBuilder(this.Session).WithName("organisation").WithLocale(this.Session.GetSingleton().DefaultLocale).Build());
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -93,7 +93,7 @@ namespace Allors.Domain
             Assert.True(usergroup.Members.Contains(this.organisationContactRelationship.Contact));
 
             var secondRelationship = new OrganisationContactRelationshipBuilder(this.Session)
-                .WithContact(new PersonBuilder(this.Session).WithLastName("contact 2").WithPersonRole(new PersonRoles(this.Session).Contact).Build())
+                .WithContact(new PersonBuilder(this.Session).WithLastName("contact 2").Build())
                 .WithOrganisation(new Organisations(this.Session).FindBy(M.Organisation.Name, "customer"))
                 .WithFromDate(DateTime.UtcNow)
                 .Build();

@@ -49,7 +49,6 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithOrganisationRole(new OrganisationRoles(this.Session).Customer);
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -58,8 +57,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisation_WhenActiveContactRelationship_ThenOrganisationCurrentOrganisationContactRelationshipsContainsOrganisation()
         {
-            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
-            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").Build();
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
@@ -81,8 +80,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrganisation_WhenInActiveContactRelationship_ThenOrganisationnactiveOrganisationContactRelationshipsContainsOrganisation()
         {
-            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
-            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("organisation").Build();
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)

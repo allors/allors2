@@ -92,7 +92,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
@@ -125,7 +126,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
@@ -174,7 +176,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
@@ -236,7 +239,8 @@ namespace Allors.Domain
                 .WithBankAccount(new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("BE23 3300 6167 6391").WithNameOnAccount("Koen").Build())
                 .Build();
 
-            var organisation = new InternalOrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
                 .WithName("Internal")
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();

@@ -28,8 +28,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
 
             this.Session.Derive();
@@ -42,7 +42,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
             this.Session.Commit();
 
@@ -69,7 +69,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.RemoveIncomingShipmentNumberPrefix();
 
             var shipment1 = new PurchaseShipmentBuilder(this.Session).Build();
@@ -96,8 +96,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithOrganisationRole(new OrganisationRoles(this.Session).Supplier).Build();
-            var internalOrganisation = this.Session.GetSingleton().InternalOrganisation;
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var internalOrganisation = this.InternalOrganisation;
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 

@@ -33,10 +33,10 @@ namespace Allors.Domain
         [Fact]
         public void GivenParty_WhenSalesRepRelationshipIsUpdated_ThenCurrentSalesRepsAreUpdated()
         {
-            var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var salesRep3 = new PersonBuilder(this.Session).WithLastName("salesRep3").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var organisation = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").Build();
+            var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").Build();
+            var salesRep3 = new PersonBuilder(this.Session).WithLastName("salesRep3").Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
             var salesRepRelationship1 = new SalesRepRelationshipBuilder(this.Session)
                 .WithCustomer(organisation)
@@ -86,7 +86,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
-            var organisation = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var organisation = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
             new CustomerRelationshipBuilder(this.Session).WithCustomer(organisation).Build();
 
@@ -144,7 +144,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
         {
-            var customer = new OrganisationBuilder(this.Session).WithName("customer").WithOrganisationRole(new OrganisationRoles(this.Session).Customer).Build();
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 

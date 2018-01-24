@@ -34,7 +34,7 @@ namespace Allors.Domain
 
         public EmploymentTests()
         {
-            this.employee = new PersonBuilder(this.Session).WithLastName("slave").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
+            this.employee = new PersonBuilder(this.Session).WithLastName("slave").Build();
 
             this.employment = new EmploymentBuilder(this.Session)
                 .WithEmployee(this.employee)
@@ -48,8 +48,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenActiveEmployment_WhenDeriving_ThenInternalOrganisationEmployeesContainsEmployee()
         {
-            var employee = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var employer = this.Session.GetSingleton().InternalOrganisation;
+            var employee = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var employer = this.InternalOrganisation;
 
             new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
@@ -63,8 +63,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmploymentToCome_WhenDeriving_ThenInternalOrganisationEmployeesDosNotContainEmployee()
         {
-            var employee = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var employer = this.Session.GetSingleton().InternalOrganisation;
+            var employee = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var employer = this.InternalOrganisation;
 
             new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)
@@ -79,8 +79,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenEmploymentThatHasEnded_WhenDeriving_ThenInternalOrganisationEmployeesDosNotContainEmployee()
         {
-            var employee = new PersonBuilder(this.Session).WithLastName("customer").WithPersonRole(new PersonRoles(this.Session).Customer).Build();
-            var employer = this.Session.GetSingleton().InternalOrganisation;
+            var employee = new PersonBuilder(this.Session).WithLastName("customer").Build();
+            var employer = this.InternalOrganisation;
 
             new EmploymentBuilder(this.Session)
                 .WithEmployee(employee)

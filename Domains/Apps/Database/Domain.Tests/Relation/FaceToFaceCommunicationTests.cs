@@ -30,10 +30,10 @@ namespace Allors.Domain
         public void GivenFaceToFaceCommunicationIsBuild_WhenDeriving_ThenStatusIsSet()
         {
             var communication = new FaceToFaceCommunicationBuilder(this.Session)
-                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build())
+                .WithOwner(new PersonBuilder(this.Session).WithLastName("owner").Build())
                 .WithSubject("subject")
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Contact).Build())
-                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Contact).Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant1").Build())
+                .WithParticipant(new PersonBuilder(this.Session).WithLastName("participant2").Build())
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 
@@ -46,9 +46,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenFaceToFaceCommunication_WhenDeriving_ThenInvolvedPartiesAreDerived()
         {
-            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
-            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
+            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
+            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -78,9 +78,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCurrentUserIsUnknown_WhenAccessingFaceToFaceCommunicationWithOwner_ThenOwnerSecurityTokenIsApplied()
         {
-            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
-            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
+            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
+            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -105,9 +105,9 @@ namespace Allors.Domain
         {
             this.SetIdentity("user");
 
-            var owner = new PersonBuilder(this.Session).WithLastName("owner").WithPersonRole(new PersonRoles(this.Session).Employee).Build();
-            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
-            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var owner = new PersonBuilder(this.Session).WithLastName("owner").Build();
+            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
+            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -131,8 +131,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenFaceToFaceCommunication_WhenParticipantIsDeleted_ThenCommunicationEventIsDeleted()
         {
-            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
-            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").WithPersonRole(new PersonRoles(this.Session).Contact).Build();
+            var participant1 = new PersonBuilder(this.Session).WithLastName("participant1").Build();
+            var participant2 = new PersonBuilder(this.Session).WithLastName("participant2").Build();
 
             this.Session.Derive();
             this.Session.Commit();
