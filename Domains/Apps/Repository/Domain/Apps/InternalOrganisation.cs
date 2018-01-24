@@ -6,7 +6,7 @@ namespace Allors.Repository
     #region Allors
     [Id("c81441c8-9ac9-440e-a926-c96230b2701f")]
     #endregion
-    partial interface InternalOrganisation: Party
+    public partial interface InternalOrganisation: Party
     {
         #region inherited properties
 
