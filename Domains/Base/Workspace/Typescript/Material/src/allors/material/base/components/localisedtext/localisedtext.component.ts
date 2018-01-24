@@ -2,33 +2,56 @@ import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } f
 import { NgForm } from "@angular/forms";
 
 import { Field } from "../../../../angular";
-import { Locale } from "../../../../domain";
-
-import { LocalisedTextModel } from "./LocalisedTextModel";
+import { Locale, LocalisedText } from "../../../../domain";
 
 @Component({
   selector: "a-mat-localised-text",
   templateUrl: "./localisedtext.component.html",
 })
-export class LocalisedTextComponent extends Field implements OnChanges {
-  @Input()
-  public locales: Locale[];
+export class LocalisedTextComponent extends Field {
 
   @Input()
   public locale: Locale;
-
-  public models: LocalisedTextModel[] = [];
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    const changedLocales: SimpleChange = changes.locales;
-    if (changedLocales) {
-      this.models = this.locales.map((v: Locale) => new LocalisedTextModel(this, v));
-    } else {
-      this.models[0] = new LocalisedTextModel(this, this.locale);
+  get localisedObject(): LocalisedText {
+    const all: LocalisedText[] = this.model;
+    if (all) {
+      const filtered: LocalisedText[] = all.filter((v: LocalisedText) => (v.Locale === this.locale));
+      return filtered ? filtered[0] : undefined;
     }
+  }
+
+  get localisedText(): string {
+    return this.localisedObject ? this.localisedObject.Text : undefined;
+  }
+
+  set localisedText(value: string) {
+    if (!this.localisedObject) {
+      const localisedText: LocalisedText = this.object.session.create("LocalisedText") as LocalisedText;
+      localisedText.Locale = this.locale;
+      this.object.add(this.roleType.name, localisedText);
+    }
+
+    this.localisedObject.Text = value;
+  }
+
+  get localisedName(): string {
+    return this.name + "_" + this.locale.Name;
+  }
+
+  get localisedLabel(): string {
+    let name = this.roleType.name;
+    const localised = "Localised";
+    if (name.indexOf(localised) === 0) {
+      name = name.slice(localised.length);
+      name = name.slice(0, name.length - 1);
+    }
+
+    const label = this.assignedLabel ? this.assignedLabel : this.humanize(name);
+    return label + " (" + this.locale.Language.Name + ")";
   }
 }

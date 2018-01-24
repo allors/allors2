@@ -7,7 +7,6 @@ import { MatInputModule } from "@angular/material";
 
 import { LocalisedTextComponent } from "./localisedtext.component";
 export { LocalisedTextComponent } from "./localisedtext.component";
-export { LocalisedTextModel } from "./LocalisedTextModel";
 
 @NgModule({
   declarations: [

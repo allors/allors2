@@ -1,5 +1,3 @@
-<div *ngFor="let model of models">
-  <mat-form-field style="width: 100%;" fxLayout="row">
-    <input matInput [(ngModel)]="model.text" [name]="model.name" [placeholder]="model.label">
-  </mat-form-field>
-</div>
+<mat-form-field style="width: 100%;" fxLayout="row">
+  <input matInput [(ngModel)]="localisedText" [name]="localisedName" [placeholder]="localisedLabel">
+</mat-form-field>
