@@ -10,6 +10,17 @@ namespace Allors.Repository
     public partial interface Product : Commentable, UniquelyIdentifiable, AccessControlledObject, Deletable
     {
         #region Allors
+        [Id("77B70A73-2C1C-4DF3-A5A8-A94CB429FC1F")]
+        [AssociationId("03B375E5-F0AD-4B9E-BC03-0C68ED2E3B85")]
+        [RoleId("69C898DF-70B4-4223-A8B4-62D9F6D5BD91")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        Party Organisation { get; set; }
+
+        #region Allors
         [Id("B316EB62-A654-4429-9699-403B23DB5284")]
         [AssociationId("F3A6EA79-9E12-405A-8195-90FC3973BD65")]
         [RoleId("BA8E7FFA-8557-4452-B97B-1A5E2BFA83D0")]

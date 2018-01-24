@@ -11,6 +11,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public Party Organisation { get; set; }
+
         public ProductType ProductType { get; set; }
 
         public string InternalComment { get; set; }

@@ -7,9 +7,11 @@ namespace Allors.Repository
     #region Allors
     [Id("3b9f21f4-2f2c-47a9-9c76-15f5ef4f5e00")]
     #endregion
-    public partial class CustomerRelationship : Period, Deletable, AccessControlledObject
+    public partial class CustomerRelationship : PartyRelationship, Period, Deletable, AccessControlledObject
     {
         #region inherited properties
+
+        public Party[] Parties { get; set; }
 
         public DateTime FromDate { get; set; }
 
@@ -31,6 +33,17 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Party Customer { get; set; }
+
+        #region Allors
+        [Id("8B903867-D741-43A2-AECA-5936E39B4025")]
+        [AssociationId("0B8EFB12-DEB4-4894-B5CC-E7D87FF04D0E")]
+        [RoleId("518DD68B-81A3-4B6A-9B24-57A366CD8EBF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public InternalOrganisation InternalOrganisation { get; set; }
 
         #region inherited methods
 

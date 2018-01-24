@@ -11,6 +11,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public Party PricedBy { get; set; }
+
         public GeographicBoundary GeographicBoundary { get; set; }
 
         public decimal Rate { get; set; }

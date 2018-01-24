@@ -11,6 +11,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
+        public InternalOrganisation InternalOrganisation { get; set; }
+
         public string Name { get; set; }
 
         public PartSpecification[] PartSpecifications { get; set; }

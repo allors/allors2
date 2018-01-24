@@ -18,9 +18,6 @@ using System.Collections.Generic;
 namespace Allors.Domain
 {
     using System;
-    using System.Linq;
-
-    using Meta;
 
     public partial class Organisation
     {
@@ -42,6 +39,11 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this, contactRelationship);
             }
+
+            if (derivation.HasChangedRole(this, this.Meta.DoAccounting))
+            {
+                derivation.AddDependency(this.DefaultPaymentMethod, this);
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -58,6 +60,8 @@ namespace Allors.Domain
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriverContactUserGroup(derivation);
 
+            this.AppsOnDeriveRoles(derivation);
+
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -67,8 +71,92 @@ namespace Allors.Domain
             {
                 this.AddDeniedPermission(deletePermission);
             }
-
         }
+
+        public void AppsOnDeriveRoles(IDerivation derivation)
+        {
+            var customerRole = new OrganisationRoles(this.strategy.Session).Customer;
+            var supplierRole = new OrganisationRoles(this.strategy.Session).Supplier;
+            var manufacturerRole = new OrganisationRoles(this.strategy.Session).Manufacturer;
+
+            if (this.AppsIsActiveSupplier(DateTime.UtcNow))
+            {
+                this.AddOrganisationRole(supplierRole);
+            }
+            else
+            {
+                this.AddOrganisationRole(supplierRole);
+            }
+
+            if (this.AppsIsActiveCustomer(DateTime.UtcNow))
+            {
+                this.AddOrganisationRole(customerRole);
+            }
+            else
+            {
+                this.AddOrganisationRole(customerRole);
+            }
+
+            if (this.IsManufacturer)
+            {
+                this.AddOrganisationRole(customerRole);
+            }
+            else
+            {
+                this.AddOrganisationRole(customerRole);
+            }
+        }
+
+        public void AppsStartNewFiscalYear()
+        {
+            if (this.ExistActualAccountingPeriod && this.ActualAccountingPeriod.Active)
+            {
+                return;
+            }
+
+            int year = DateTime.UtcNow.Year;
+            if (this.ExistActualAccountingPeriod)
+            {
+                year = this.ActualAccountingPeriod.FromDate.Date.Year + 1;
+            }
+
+            var fromDate = DateTimeFactory.CreateDate(year, this.FiscalYearStartMonth, this.FiscalYearStartDay).Date;
+
+            var yearPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Year)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddYears(1).AddSeconds(-1).Date)
+                .Build();
+
+            var semesterPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Semester)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddMonths(6).AddSeconds(-1).Date)
+                .WithParent(yearPeriod)
+                .Build();
+
+            var trimesterPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Trimester)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddMonths(3).AddSeconds(-1).Date)
+                .WithParent(semesterPeriod)
+                .Build();
+
+            var monthPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Month)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddMonths(1).AddSeconds(-1).Date)
+                .WithParent(trimesterPeriod)
+                .Build();
+
+            this.ActualAccountingPeriod = monthPeriod;
+        }
+
+        public List<string> Roles => new List<string>() { "Internal organisation" };
 
         public bool AppsIsActiveProfessionalServicesProvider(DateTime? date)
         {

@@ -43,6 +43,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("AFB30FBE-9E93-4EBD-B8D3-5C5B231D70E1")]
+        [AssociationId("520CF705-3E9C-4845-816C-F8DD17A4534B")]
+        [RoleId("7B78FA1B-EAEA-419D-87E8-F0A746DBEA18")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        InternalOrganisation Issuer { get; set; }
+
+        #region Allors
         [Id("3B913CC6-C627-4F16-ACF5-98EC97CE5FDA")]
         [AssociationId("7CD50B18-3C4A-4A81-B6AA-9CE8BC43C0DA")]
         [RoleId("3A53DEDC-0877-44FA-89E3-1212EAB4FF36")]

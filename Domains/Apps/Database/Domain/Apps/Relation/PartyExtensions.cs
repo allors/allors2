@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Runtime.CompilerServices;
+
 namespace Allors.Domain
 {
     using System;
@@ -43,6 +46,28 @@ namespace Allors.Domain
             return null;
         }
 
+        public static bool AppsIsActiveCustomer(this Party party, InternalOrganisation internalOrganisation, DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            var customerRelationships = party.CustomerRelationshipsWhereCustomer;
+            customerRelationships.Filter.AddEquals(M.CustomerRelationship.InternalOrganisation, internalOrganisation);
+
+            foreach (CustomerRelationship relationship in customerRelationships)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool AppsIsActiveCustomer(this Party party, DateTime? date)
         {
             if (date == DateTime.MinValue)
@@ -51,6 +76,7 @@ namespace Allors.Domain
             }
 
             var customerRelationships = party.CustomerRelationshipsWhereCustomer;
+
             foreach (CustomerRelationship relationship in customerRelationships)
             {
                 if (relationship.FromDate.Date <= date &&
@@ -113,30 +139,6 @@ namespace Allors.Domain
                     (!partyContactMechanism.ExistThroughDate || partyContactMechanism.ThroughDate >= DateTime.UtcNow))
                 {
                     party.AddCurrentPartyContactMechanism(partyContactMechanism);
-                }
-            }
-        }
-
-        public static void AppsOnBuild(this Party party, ObjectOnBuild method)
-        {
-            var session = party.Strategy.Session;
-
-            if (session.GetSingleton().ExistInternalOrganisation)
-            {
-                if (!party.ExistLocale)
-                {
-                    party.Locale = session.GetSingleton().DefaultLocale;
-                }
-
-                if (!party.ExistPreferredCurrency)
-                {
-                    party.PreferredCurrency = session.GetSingleton().PreferredCurrency;
-                }
-
-                if (!party.ExistSubAccountNumber)
-                {
-                    party.SubAccountNumber =
-                        session.GetSingleton().InternalOrganisation.DeriveNextSubAccountNumber();
                 }
             }
         }
@@ -288,14 +290,17 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveActiveCustomer(this Party party, IDerivation derivation)
         {
-            var internalOrganisation = party.Strategy.Session.GetSingleton().InternalOrganisation;
-            if (party.AppsIsActiveCustomer(DateTime.UtcNow))
+            foreach (CustomerRelationship customerRelationship in party.CustomerRelationshipsWhereCustomer)
             {
-                internalOrganisation.AddActiveCustomer(party);
-            }
-            else
-            {
-                internalOrganisation.RemoveActiveCustomer(party);
+                if (party.AppsIsActiveCustomer(customerRelationship.InternalOrganisation, DateTime.UtcNow))
+                {
+                    customerRelationship.InternalOrganisation.AddActiveCustomer(party);
+                }
+                else
+                {
+                    customerRelationship.InternalOrganisation.RemoveActiveCustomer(party);
+                }
+
             }
         }
 

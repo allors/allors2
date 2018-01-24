@@ -47,7 +47,7 @@ namespace Allors.Domain
 
             if (!this.ExistOrderNumber)
             {
-                this.OrderNumber = this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextPurchaseOrderNumber();
+                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber();
             }
 
             if (!this.ExistOrderDate)
@@ -60,14 +60,14 @@ namespace Allors.Domain
                 this.EntryDate = DateTime.UtcNow;
             }
 
-            if (!this.ExistCustomerCurrency)
+            if (!this.ExistCurrency)
             {
-                this.CustomerCurrency = this.Strategy.Session.GetSingleton().PreferredCurrency;
+                this.Currency = this.OrderedBy.PreferredCurrency;
             }
 
             if (!this.ExistFacility)
             {
-                this.Facility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
+                this.Facility = this.OrderedBy.DefaultFacility;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Allors.Domain
             Organisation supplier = this.TakenViaSupplier as Organisation;
             if (supplier != null)
             {
-                if (!this.strategy.Session.GetSingleton().InternalOrganisation.ActiveSuppliers.Contains(supplier))
+                if (!this.OrderedBy.ActiveSuppliers.Contains(supplier))
                 {
                     derivation.Validation.AddError(this, this.Meta.TakenViaSupplier, ErrorMessages.PartyIsNotASupplier);
                 }
@@ -104,14 +104,12 @@ namespace Allors.Domain
 
             if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = this.strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress;
+                this.ShipToAddress = this.OrderedBy.ShippingAddress;
             }
 
             if (!this.ExistBillToContactMechanism)
             {
-                this.BillToContactMechanism = this.strategy.Session.GetSingleton().InternalOrganisation.ExistBillingAddress?
-                                                  this.strategy.Session.GetSingleton().InternalOrganisation.BillingAddress :
-                                                  this.strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
+                this.BillToContactMechanism = this.OrderedBy.ExistBillingAddress? this.OrderedBy.BillingAddress : this.OrderedBy.GeneralCorrespondence;
             }
 
             if (!this.ExistTakenViaContactMechanism && this.ExistTakenViaSupplier)

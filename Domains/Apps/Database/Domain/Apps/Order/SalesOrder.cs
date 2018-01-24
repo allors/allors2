@@ -176,32 +176,30 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistBillingAddress ?
-                    this.Strategy.Session.GetSingleton().InternalOrganisation.BillingAddress : this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
+                this.BillFromContactMechanism = this.TakenBy.ExistBillingAddress ? this.TakenBy.BillingAddress : this.TakenBy.GeneralCorrespondence;
             }
 
             if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistOrderAddress ?
-                    this.Strategy.Session.GetSingleton().InternalOrganisation.OrderAddress : this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
+                this.TakenByContactMechanism = this.TakenBy.ExistOrderAddress ? this.TakenBy.OrderAddress : this.TakenBy.GeneralCorrespondence;
             }
 
-            if (!this.ExistCustomerCurrency)
+            if (!this.ExistCurrency)
             {
                 if (this.ExistBillToCustomer &&
                     (this.BillToCustomer.ExistPreferredCurrency || this.BillToCustomer.ExistLocale))
                 {
-                    this.CustomerCurrency = this.BillToCustomer.ExistPreferredCurrency ? this.BillToCustomer.PreferredCurrency : this.BillToCustomer.Locale.Country.Currency;
+                    this.Currency = this.BillToCustomer.ExistPreferredCurrency ? this.BillToCustomer.PreferredCurrency : this.BillToCustomer.Locale.Country.Currency;
                 }
                 else
                 {
-                    this.CustomerCurrency = this.Strategy.Session.GetSingleton().PreferredCurrency;
+                    this.Currency = this.TakenBy.PreferredCurrency;
                 }
             }
 
             if (this.ExistBillToCustomer)
             {
-                if (!this.BillToCustomer.AppsIsActiveCustomer(this.OrderDate))
+                if (!this.BillToCustomer.AppsIsActiveCustomer(this.TakenBy, this.OrderDate))
                 {
                     derivation.Validation.AddError(this, M.SalesOrder.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
@@ -209,7 +207,7 @@ namespace Allors.Domain
 
             if (this.ExistShipToCustomer)
             {
-                if (!this.ShipToCustomer.AppsIsActiveCustomer(this.OrderDate))
+                if (!this.ShipToCustomer.AppsIsActiveCustomer(this.TakenBy, this.OrderDate))
                 {
                     derivation.Validation.AddError(this, M.SalesOrder.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
                 }
@@ -255,8 +253,7 @@ namespace Allors.Domain
 
             var model = new PrintSalesOrder
             {
-                SalesOrder = this,
-                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+                SalesOrder = this
             };
 
             this.PrintContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
@@ -666,7 +663,7 @@ namespace Allors.Domain
             if (pendingShipment == null)
             {
                 pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
-                    .WithShipFromAddress(this.Strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress)
+                    .WithShipFromAddress(this.TakenBy.ShippingAddress)
                     .WithBillToParty(this.BillToCustomer)
                     .WithBillToContactMechanism(this.BillToContactMechanism)
                     .WithShipToAddress(address.Key)

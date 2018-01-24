@@ -273,7 +273,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveReservedFromInventoryItem(IDerivation derivation)
         {
-            var internalOrganisation = this.Strategy.Session.GetSingleton().InternalOrganisation;
+            var internalOrganisation = this.SalesOrderWhereSalesOrderItem.TakenBy;
 
             if (this.ExistProduct)
             {
@@ -752,8 +752,8 @@ namespace Allors.Domain
                 this.TotalIncVat += featureItem.TotalIncVat;
             }
 
-            var toCurrency = this.SalesOrderWhereSalesOrderItem.CustomerCurrency;
-            var fromCurrency = singleton.PreferredCurrency;
+            var toCurrency = this.SalesOrderWhereSalesOrderItem.Currency;
+            var fromCurrency = this.SalesOrderWhereSalesOrderItem.TakenBy.PreferredCurrency;
 
             if (fromCurrency.Equals(toCurrency))
             {

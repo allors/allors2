@@ -29,7 +29,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.strategy.Session.GetSingleton().InternalOrganisation.DoAccounting)
+            if (this.InternalOrganisationWhereActivePaymentMethod.DoAccounting)
             {
                 derivation.Validation.AssertAtLeastOne(this, this.Meta.GeneralLedgerAccount, this.Meta.Journal);
             }

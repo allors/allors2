@@ -30,18 +30,6 @@ namespace Allors.Domain
             {
                 this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
             }
-
-            this.Sync();
-        }
-
-        private void Sync()
-        {
-            if (!this.ExistSerialisedInventoryItemCharacteristicsWhereSerialisedInventoryItemCharacteristicType)
-            {
-                new SerialisedInventoryItemCharacteristicBuilder(this.strategy.Session)
-                    .WithSerialisedInventoryItemCharacteristicType(this)
-                    .Build();
-            }
         }
     }
 }

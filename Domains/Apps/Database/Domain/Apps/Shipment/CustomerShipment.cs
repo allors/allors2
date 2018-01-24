@@ -112,7 +112,7 @@ namespace Allors.Domain
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = this.ShipFromParty.BillingAddress;
             }
 
             if (!this.ExistStore)
@@ -177,12 +177,12 @@ namespace Allors.Domain
 
             if (!this.ExistShipFromAddress)
             {
-                this.ShipFromAddress = this.strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress;
+                this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.BillingAddress;
+                this.BillFromContactMechanism = this.ShipFromParty.BillingAddress;
             }
 
             this.CreatePickList(derivation);

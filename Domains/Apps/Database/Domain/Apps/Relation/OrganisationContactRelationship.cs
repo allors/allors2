@@ -38,8 +38,6 @@ namespace Allors.Domain
 
         public void AppsOnDeriveContactMembership(IDerivation derivation)
         {
-            var internalOrganisation = this.Strategy.Session.GetSingleton();
-
             if (this.ExistContact && this.ExistOrganisation && this.Organisation.ExistContactsUserGroup)
             {
                 this.Organisation.ContactsUserGroup.RemoveMember(this.Contact);

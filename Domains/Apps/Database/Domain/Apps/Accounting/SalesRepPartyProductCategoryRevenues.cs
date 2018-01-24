@@ -37,7 +37,7 @@ namespace Allors.Domain
                                                                 .WithProductCategory(salesInvoiceItem.Product.PrimaryProductCategory)
                                                                 .WithYear(salesInvoice.InvoiceDate.Year)
                                                                 .WithMonth(salesInvoice.InvoiceDate.Month)
-                                                                .WithCurrency(session.GetSingleton().PreferredCurrency)
+                                                                .WithCurrency(salesInvoice.Currency)
                                                                 .Build();
 
             SalesRepProductCategoryRevenues.AppsFindOrCreateAsDependable(session, salesRepPartyProductCategoryRevenue);
@@ -231,7 +231,7 @@ namespace Allors.Domain
                         .WithProductCategory(productCategory)
                         .WithYear(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Year)
                         .WithMonth(item.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate.Month)
-                        .WithCurrency(session.GetSingleton().PreferredCurrency)
+                        .WithCurrency(item.SalesInvoiceWhereSalesInvoiceItem.Currency)
                         .Build();
         }
     }

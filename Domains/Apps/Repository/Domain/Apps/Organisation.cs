@@ -6,9 +6,105 @@ namespace Allors.Repository
     #region Allors
     [Id("3a5dcec7-308f-48c7-afee-35d38415aa0b")]
     #endregion
-    public partial class Organisation : Party, Deletable, Versioned
+    public partial class Organisation : InternalOrganisation, Deletable, Versioned
     {
         #region inherited properties
+
+        public string PurchaseOrderNumberPrefix { get; set; }
+
+        public string TransactionReferenceNumber { get; set; }
+
+        public JournalEntryNumber[] JournalEntryNumbers { get; set; }
+
+        public Country EuListingState { get; set; }
+
+        public Counter PurchaseInvoiceCounter { get; set; }
+
+        public AccountingPeriod ActualAccountingPeriod { get; set; }
+
+        public InvoiceSequence InvoiceSequence { get; set; }
+
+        public PaymentMethod[] ActivePaymentMethods { get; set; }
+
+        public decimal MaximumAllowedPaymentDifference { get; set; }
+
+        public CostCenterSplitMethod CostCenterSplitMethod { get; set; }
+
+        public Counter PurchaseOrderCounter { get; set; }
+
+        public GeneralLedgerAccount SalesPaymentDifferencesAccount { get; set; }
+
+        public string PurchaseTransactionReferenceNumber { get; set; }
+
+        public int FiscalYearStartMonth { get; set; }
+
+        public CostOfGoodsSoldMethod CostOfGoodsSoldMethod { get; set; }
+
+        public bool VatDeactivated { get; set; }
+
+        public int FiscalYearStartDay { get; set; }
+
+        public GeneralLedgerAccount[] GeneralLedgerAccounts { get; set; }
+
+        public Counter AccountingTransactionCounter { get; set; }
+
+        public Counter IncomingShipmentCounter { get; set; }
+
+        public GeneralLedgerAccount RetainedEarningsAccount { get; set; }
+
+        public string PurchaseInvoiceNumberPrefix { get; set; }
+
+        public GeneralLedgerAccount SalesPaymentDiscountDifferencesAccount { get; set; }
+
+        public Counter SubAccountCounter { get; set; }
+
+        public AccountingTransactionNumber[] AccountingTransactionNumbers { get; set; }
+
+        public string TransactionReferenceNumberPrefix { get; set; }
+
+        public Counter QuoteCounter { get; set; }
+
+        public Counter RequestCounter { get; set; }
+
+        public GeneralLedgerAccount PurchasePaymentDifferencesAccount { get; set; }
+
+        public GeneralLedgerAccount SuspenceAccount { get; set; }
+
+        public GeneralLedgerAccount NetIncomeAccount { get; set; }
+
+        public bool DoAccounting { get; set; }
+
+        public Facility DefaultFacility { get; set; }
+
+        public GeneralLedgerAccount PurchasePaymentDiscountDifferencesAccount { get; set; }
+
+        public string QuoteNumberPrefix { get; set; }
+
+        public string PurchaseTransactionReferenceNumberPrefix { get; set; }
+
+        public GeneralLedgerAccount CalculationDifferencesAccount { get; set; }
+
+        public string IncomingShipmentNumberPrefix { get; set; }
+
+        public string RequestNumberPrefix { get; set; }
+
+        public Party[] CurrentCustomers { get; set; }
+
+        public Organisation[] CurrentSuppliers { get; set; }
+
+        public Person[] SalesReps { get; set; }
+
+        public GeneralLedgerAccount GlAccount { get; set; }
+
+        public Party[] ActiveCustomers { get; set; }
+
+        public Person[] ActiveEmployees { get; set; }
+
+        public Party[] ActiveSuppliers { get; set; }
+
+        public Counter ArticleNumberCounter { get; set; }
+
+        public string ArticleNumberPrefix { get; set; }
 
         public string PartyName { get; set; }
 
@@ -151,11 +247,30 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("25E8BD32-807F-4484-8561-2AA34B425C6F")]
+        [AssociationId("F2F0A84E-0EBA-437F-9F2D-431CB7FA19B1")]
+        [RoleId("4C553A51-9B83-4D05-ACAF-4884796072B3")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsInternalOrganisation { get; set; }
+
+        #region Allors
+        [Id("8FB7635C-6C06-43E8-9B6C-A760C7205804")]
+        [AssociationId("A1D28C43-6C7B-4872-878C-75E91285AB9A")]
+        [RoleId("D338444E-1D92-47A2-9A27-83296C93482E")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsManufacturer { get; set; }
+
+        #region Allors
         [Id("6B9E0BC1-5CE5-48D3-BDDB-E364E8566AAA")]
         [AssociationId("35A4477A-C742-417C-9167-7A1306B01373")]
         [RoleId("CCEDB2E8-4428-4FB6-B67B-0443ED7AC3A4")]
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
+        [Derived]
         [Required]
         [Indexed]
         [Workspace]

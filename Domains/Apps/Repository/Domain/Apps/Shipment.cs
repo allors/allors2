@@ -74,6 +74,15 @@ namespace Allors.Repository
         Party ShipToParty { get; set; }
 
         #region Allors
+        [Id("f1e92d31-db63-419c-8ed7-49f5db66c63d")]
+        [AssociationId("fffbc8b5-a541-402d-8df6-3134cc52b306")]
+        [RoleId("566b9c3a-3fec-455f-a40d-b23338d3508c")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        Party ShipFromParty { get; set; }
+
+        #region Allors
         [Id("6a568bea-6718-414a-b822-d8304502be7b")]
         [AssociationId("499bb422-b2f0-48cf-bf09-0544e768b5de")]
         [RoleId("b8724e90-9888-4f81-b70d-1eceb93af3d3")]
@@ -184,15 +193,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         Store Store { get; set; }
-
-        #region Allors
-        [Id("f1e92d31-db63-419c-8ed7-49f5db66c63d")]
-        [AssociationId("fffbc8b5-a541-402d-8df6-3134cc52b306")]
-        [RoleId("566b9c3a-3fec-455f-a40d-b23338d3508c")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        Party ShipFromParty { get; set; }
 
         #region Allors
         [Id("f403ab39-cc81-4e09-8794-a45db9ef178f")]

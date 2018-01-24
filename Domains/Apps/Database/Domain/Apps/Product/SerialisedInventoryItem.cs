@@ -33,7 +33,11 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                this.Facility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
+                var internalOrganisation = this.Good.Organisation as InternalOrganisation;
+                if (internalOrganisation != null)
+                {
+                    this.Facility = internalOrganisation.DefaultFacility;
+                }
             }
         }
 

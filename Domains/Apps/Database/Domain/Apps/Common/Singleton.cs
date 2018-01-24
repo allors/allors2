@@ -43,23 +43,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.ExistPreviousCurrency)
-            {
-                derivation.Validation.AssertAreEqual(
-                    this,
-                    M.Singleton.PreferredCurrency,
-                    M.Singleton.PreviousCurrency);
-            }
-            else
-            {
-                this.PreviousCurrency = this.PreferredCurrency;
-            }
-        }
-
         public void CalculateRevenues(IDerivation derivation)
         {
             var session = this.Strategy.Session;

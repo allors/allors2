@@ -19,7 +19,7 @@ namespace Allors.Repository
 
     public string InternalComment { get; set; }
     public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
-    public Currency CustomerCurrency { get; set; }
+    public Currency Currency { get; set; }
     public string Description { get; set; }
     public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
     public decimal TotalFeeCustomerCurrency { get; set; }
@@ -136,7 +136,16 @@ namespace Allors.Repository
     [Multiplicity(Multiplicity.ManyToOne)]
     [Indexed]
     [Required]
-    public Party BilledFromParty { get; set; }
+    public Party BilledFrom { get; set; }
+
+    #region Allors
+    [Id("045918FA-CC14-4616-A2B0-519E2ACEBA31")]
+    [AssociationId("5DB9DFF5-4964-4DE6-AEA6-FB6111D35502")]
+    [RoleId("2B69921B-A93D-49F7-A950-D65F9EDB2A94")]
+    [Indexed]
+    #endregion
+    [Multiplicity(Multiplicity.ManyToOne)]
+    public InternalOrganisation BilledTo { get; set; }
 
     #region Allors
     [Id("e444b5e7-0128-49fc-86cb-a6fe39c280ae")]

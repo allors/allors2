@@ -38,7 +38,7 @@ namespace Allors.Repository
         [Workspace]
         [Derived]
         [Indexed]
-        Currency CustomerCurrency { get; set; }
+        Currency Currency { get; set; }
 
         #region Allors
         [Id("2d82521d-30bd-4185-84c7-4dfe08b5ddef")]

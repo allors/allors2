@@ -58,7 +58,7 @@ namespace Allors.Domain
                 if (!this.ExistInventoryItemsWherePart)
                 {
                     new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                        .WithFacility(internalOrganisation.InternalOrganisation.DefaultFacility)
+                        .WithFacility(this.InternalOrganisation.DefaultFacility)
                         .WithPart(this)
                         .Build();
                 }

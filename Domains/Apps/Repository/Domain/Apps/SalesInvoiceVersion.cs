@@ -24,7 +24,7 @@ namespace Allors.Repository
 
         public string InternalComment { get; set; }
         public decimal TotalShippingAndHandlingCustomerCurrency { get; set; }
-        public Currency CustomerCurrency { get; set; }
+        public Currency Currency { get; set; }
         public string Description { get; set; }
         public ShippingAndHandlingCharge ShippingAndHandlingCharge { get; set; }
         public decimal TotalFeeCustomerCurrency { get; set; }

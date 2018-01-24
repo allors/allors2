@@ -18,7 +18,7 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public string InternalComment { get; set; }
-        public Currency CustomerCurrency { get; set; }
+        public Currency Currency { get; set; }
         public decimal TotalBasePriceCustomerCurrency { get; set; }
         public decimal TotalIncVatCustomerCurrency { get; set; }
         public decimal TotalDiscountCustomerCurrency { get; set; }
@@ -57,9 +57,9 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-      public string PrintContent { get; set; }
+        public string PrintContent { get; set; }
 
-      public string Comment { get; set; }
+        public string Comment { get; set; }
         public Locale Locale { get; set; }
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
@@ -189,6 +189,15 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("1982BFC9-9B79-4C1A-984D-8784EE02895F")]
+        [AssociationId("1F148FD6-EF72-4504-8762-34E779F03EE8")]
+        [RoleId("3FEC218D-70FE-4BB5-9E2B-9A751F12671F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public InternalOrganisation OrderedBy { get; set; }
+
+        #region Allors
         [Id("15ea478f-b71d-412f-8ee4-abe554b9a7d8")]
         [AssociationId("e48c8211-2539-41ba-9250-27a08799b31b")]
         [RoleId("6ef2d258-4291-4a9f-b7f0-9f154b789775")]
@@ -252,33 +261,33 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public PostalAddress ShipToAddress { get; set; }        
+        public PostalAddress ShipToAddress { get; set; }
 
         #region inherited methods
 
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
 
-        public void Approve(){}
+        public void Approve() { }
 
-        public void Reject(){}
+        public void Reject() { }
 
-        public void Hold(){}
+        public void Hold() { }
 
-        public void Continue(){}
+        public void Continue() { }
 
-        public void Confirm(){}
+        public void Confirm() { }
 
-        public void Cancel(){}
+        public void Cancel() { }
 
         public void Complete()
         {

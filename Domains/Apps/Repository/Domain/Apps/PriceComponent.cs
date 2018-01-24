@@ -8,6 +8,17 @@ namespace Allors.Repository
     public partial interface PriceComponent : Period, AccessControlledObject, Commentable, Deletable
     {
         #region Allors
+        [Id("B4C737AF-9305-4586-984C-5B69F13CF1E6")]
+        [AssociationId("E6D9BC7D-CAAC-4960-8625-3A6194BBC13E")]
+        [RoleId("1C235D62-E0AD-4481-B393-DEFAA21C6DF7")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        Party PricedBy { get; set; }
+
+        #region Allors
         [Id("18cda5a7-6720-4133-a71b-ce23e9ebc1bb")]
         [AssociationId("bfdd0a69-e69f-49e0-b756-e6b3307a2bd2")]
         [RoleId("5934c3f4-3f64-4f5a-b455-70590ae02328")]

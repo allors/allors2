@@ -41,6 +41,8 @@ namespace Allors.Domain
 
             this.AppsOnDeriveMembership(derivation);
             this.AppsOnDeriveInternalOrganisationSupplier(derivation);
+
+            this.Parties = new Party[] { this.Supplier, this.InternalOrganisation };
         }
 
         public void AppsOnDeriveInternalOrganisationSupplier(IDerivation derivation)
@@ -49,12 +51,12 @@ namespace Allors.Domain
             {
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    this.strategy.Session.GetSingleton().InternalOrganisation.AddActiveSupplier(this.Supplier);
+                    this.InternalOrganisation.AddActiveSupplier(this.Supplier);
                 }
 
                 if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
                 {
-                    this.strategy.Session.GetSingleton().InternalOrganisation.RemoveActiveSupplier(this.Supplier);
+                    this.InternalOrganisation.RemoveActiveSupplier(this.Supplier);
                 }
             }
         }

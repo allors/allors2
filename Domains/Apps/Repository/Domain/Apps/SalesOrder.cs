@@ -18,7 +18,7 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public string InternalComment { get; set; }
-        public Currency CustomerCurrency { get; set; }
+        public Currency Currency { get; set; }
         public decimal TotalBasePriceCustomerCurrency { get; set; }
         public decimal TotalIncVatCustomerCurrency { get; set; }
         public decimal TotalDiscountCustomerCurrency { get; set; }
@@ -186,6 +186,17 @@ namespace Allors.Repository
         [Workspace]
         public SalesOrderVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("9E20E5E5-1838-48F6-A9E6-B56ED4F44BA3")]
+        [AssociationId("C5343757-FD4B-42DF-A474-71085F304278")]
+        [RoleId("F0464A62-211B-4BB8-885B-2A11221C0046")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public InternalOrganisation TakenBy { get; set; }
 
         #region Allors
         [Id("108a1136-feaa-45b8-a899-d455718090d1")]

@@ -62,14 +62,16 @@ namespace Allors.Domain
 
                 if (this.FromDate <= DateTime.UtcNow && (!this.ExistThroughDate || this.ThroughDate >= DateTime.UtcNow))
                 {
-                    this.strategy.Session.GetSingleton().InternalOrganisation.AddActiveCustomer(this.Customer);
+                    this.InternalOrganisation.AddActiveCustomer(this.Customer);
                 }
 
                 if (this.FromDate > DateTime.UtcNow || (this.ExistThroughDate && this.ThroughDate < DateTime.UtcNow))
                 {
-                    this.strategy.Session.GetSingleton().InternalOrganisation.RemoveActiveCustomer(this.Customer);
+                    this.InternalOrganisation.RemoveActiveCustomer(this.Customer);
                 }
             }
+
+            this.Parties = new Party[] { this.Customer, this.InternalOrganisation };
         }
     }
 }

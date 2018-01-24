@@ -23,7 +23,7 @@ namespace Allors.Domain
     {
         private bool IsDeletable => !this.ExistCurrentOrganisationContactRelationships;
 
-        public bool IsActiveEmployee(DateTime? date)
+        public bool AppsIsActiveEmployee(DateTime? date)
         {
             if (date == DateTime.MinValue)
             {
@@ -42,7 +42,7 @@ namespace Allors.Domain
             return false;
         }
 
-        public bool IsActiveContact(DateTime? date)
+        public bool AppsIsActiveContact(DateTime? date)
         {
             if (date == DateTime.MinValue)
             {
@@ -61,11 +61,31 @@ namespace Allors.Domain
             return false;
         }
 
+        public bool AppsIsActiveSalesRep(DateTime? date)
+        {
+            if (date == DateTime.MinValue)
+            {
+                return false;
+            }
+
+            foreach (SalesRepRelationship relationship in this.SalesRepRelationshipsWhereSalesRepresentative)
+            {
+                if (relationship.FromDate.Date <= date &&
+                    (!relationship.ExistThroughDate || relationship.ThroughDate >= date))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
             this.PartyName = this.DerivePartyName();
+
             this.AppsOnDeriveCurrentContacts(derivation);
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
@@ -73,6 +93,8 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
+
+            this.AppsOnDeriveRoles(derivation);
 
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
@@ -82,6 +104,50 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(deletePermission);
+            }
+        }
+
+        public void AppsOnDeriveRoles(IDerivation derivation)
+        {
+            var contactRole = new PersonRoles(this.strategy.Session).Contact;
+            var customerRole = new PersonRoles(this.strategy.Session).Customer;
+            var employeeRole = new PersonRoles(this.strategy.Session).Employee;
+            var salesRepRole = new PersonRoles(this.strategy.Session).SalesRep;
+
+            if (this.AppsIsActiveContact(DateTime.UtcNow))
+            {
+                this.AddPersonRole(contactRole);
+            }
+            else
+            {
+                this.RemovePersonRole(contactRole);
+            }
+
+            if (this.AppsIsActiveEmployee(DateTime.UtcNow))
+            {
+                this.AddPersonRole(employeeRole);
+            }
+            else
+            {
+                this.RemovePersonRole(employeeRole);
+            }
+
+            if (this.AppsIsActiveSalesRep(DateTime.UtcNow))
+            {
+                this.AddPersonRole(salesRepRole);
+            }
+            else
+            {
+                this.RemovePersonRole(salesRepRole);
+            }
+
+            if (this.AppsIsActiveCustomer(DateTime.UtcNow))
+            {
+                this.AddPersonRole(customerRole);
+            }
+            else
+            {
+                this.RemovePersonRole(customerRole);
             }
         }
 

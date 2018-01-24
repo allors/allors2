@@ -18,17 +18,6 @@ namespace Allors.Repository
         string PartyName { get; set; }
 
         #region Allors
-        [Id("008618c4-6252-4643-a0a8-e736f9288946")]
-        [AssociationId("5282ba00-8bbc-4086-994d-7e68ce9224b6")]
-        [RoleId("ca45e298-96eb-4166-9450-c65344fb9979")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        PostalAddress GeneralCorrespondence { get; set; }
-
-        #region Allors
         [Id("01771db8-e79c-4ce4-9d81-db3675e8708a")]
         [AssociationId("c6dbe58e-fa09-408b-9324-21fcec3b1900")]
         [RoleId("aebbe259-2619-45bb-9751-68f61a230159")]
@@ -265,18 +254,6 @@ namespace Allors.Repository
         [Workspace]
         ContactMechanism BillingAddress { get; set; }
 
-
-        #region Allors
-        [Id("78cc2859-b815-453f-9bdc-17fe64a853c4")]
-        [AssociationId("746d59e4-1d66-4d63-a680-29c7b858421a")]
-        [RoleId("cd885abe-ebaa-47ab-8fac-87e928b478c1")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        EmailAddress GeneralEmail { get; set; }
-
         #region Allors
         [Id("79a5c25a-91e9-4a80-8649-c8abe86e47dd")]
         [AssociationId("39d03d8f-8fbc-4131-8e97-7f5fcf73871c")]
@@ -354,17 +331,6 @@ namespace Allors.Repository
         ContactMechanism OrderAddress { get; set; }
 
         #region Allors
-        [Id("ac5a48dc-4115-489a-aa8c-f43268b6bfe3")]
-        [AssociationId("97686b93-4c5f-4544-af6a-acacca008060")]
-        [RoleId("bf8f9ba5-7a88-4ad4-b154-09b5efae9912")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        ElectronicAddress InternetAddress { get; set; }
-
-        #region Allors
         [Id("acf731ab-c856-4553-a2fc-9f88e3ccc258")]
         [AssociationId("c75a6014-98bd-4e2f-b526-1e2cfda9534c")]
         [RoleId("87d94438-3756-42cd-9356-9d169ce42817")]
@@ -419,6 +385,38 @@ namespace Allors.Repository
         decimal OpenOrderAmount { get; set; }
 
         #region Allors
+        [Id("ac5a48dc-4115-489a-aa8c-f43268b6bfe3")]
+        [AssociationId("97686b93-4c5f-4544-af6a-acacca008060")]
+        [RoleId("bf8f9ba5-7a88-4ad4-b154-09b5efae9912")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        ElectronicAddress InternetAddress { get; set; }
+
+        #region Allors
+        [Id("008618c4-6252-4643-a0a8-e736f9288946")]
+        [AssociationId("5282ba00-8bbc-4086-994d-7e68ce9224b6")]
+        [RoleId("ca45e298-96eb-4166-9450-c65344fb9979")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        PostalAddress GeneralCorrespondence { get; set; }
+
+        #region Allors
+        [Id("78cc2859-b815-453f-9bdc-17fe64a853c4")]
+        [AssociationId("746d59e4-1d66-4d63-a680-29c7b858421a")]
+        [RoleId("cd885abe-ebaa-47ab-8fac-87e928b478c1")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        EmailAddress GeneralEmail { get; set; }
+
+        #region Allors
         [Id("d562d1f0-1f8f-40c5-a346-ae32e498f332")]
         [AssociationId("8dab565f-7386-4037-843f-bfc3603b27ab")]
         [RoleId("10c1c77e-4b1b-4fd5-b77f-95e8897a4b38")]
@@ -428,6 +426,17 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         TelecommunicationsNumber GeneralFaxNumber { get; set; }
+
+        #region Allors
+        [Id("e2017090-fa3f-420e-a5c5-6a2f5aaacd2f")]
+        [AssociationId("84c30383-6d26-4abe-92a3-d750e41d2561")]
+        [RoleId("51170ba2-d717-41dc-9d6b-18967c37e751")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        [Workspace]
+        TelecommunicationsNumber GeneralPhoneNumber { get; set; }
 
         #region Allors
         [Id("d97ab83b-85dc-4877-8b49-1e552489bcb0")]
@@ -449,17 +458,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
-
-        #region Allors
-        [Id("e2017090-fa3f-420e-a5c5-6a2f5aaacd2f")]
-        [AssociationId("84c30383-6d26-4abe-92a3-d750e41d2561")]
-        [RoleId("51170ba2-d717-41dc-9d6b-18967c37e751")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        TelecommunicationsNumber GeneralPhoneNumber { get; set; }
 
         #region Allors
         [Id("f0de022f-b94e-4d29-8cdf-99d39ad9add6")]

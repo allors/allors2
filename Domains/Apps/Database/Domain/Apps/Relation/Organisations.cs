@@ -24,7 +24,8 @@ namespace Allors.Domain
         {
             setup.AddDependency(this.Meta.ObjectType, M.Role);
             setup.AddDependency(this.Meta.ObjectType, M.OrganisationRole);
-            setup.AddDependency(this.Meta.ObjectType, M.InternalOrganisation);
+            setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
+            setup.AddDependency(this.Meta.ObjectType, M.Singleton);
         }
 
         public Extent<Organisation> Suppliers
@@ -45,6 +46,13 @@ namespace Allors.Domain
                 customers.Filter.AddContains(M.Organisation.OrganisationRoles, new OrganisationRoles(this.Session).Customer);
                 return customers;
             }
+        }
+
+        protected override void AppsSetup(Setup setup)
+        {
+            base.AppsSetup(setup);
+
+            new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true).WithName("internalOrganisation").Build();
         }
     }
 }

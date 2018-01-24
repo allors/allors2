@@ -39,8 +39,7 @@ namespace Allors.Domain
 
             var model = new PrintProductQuote
             {
-                                ProductQuote = this,
-                                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+                                ProductQuote = this
                             };
 
             this.PrintContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;

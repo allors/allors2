@@ -24,7 +24,7 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
 
         public string InternalComment { get; set; }
-        public Currency CustomerCurrency { get; set; }
+        public Currency Currency { get; set; }
         public decimal TotalBasePriceCustomerCurrency { get; set; }
         public decimal TotalIncVatCustomerCurrency { get; set; }
         public decimal TotalDiscountCustomerCurrency { get; set; }

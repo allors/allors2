@@ -368,8 +368,8 @@ namespace Allors.Domain
             this.TotalExVat = this.CalculatedUnitPrice * this.Quantity;
             this.TotalIncVat = this.TotalExVat + this.TotalVat;
 
-            var toCurrency = this.SalesInvoiceWhereSalesInvoiceItem.CustomerCurrency;
-            var fromCurrency = this.strategy.Session.GetSingleton().PreferredCurrency;
+            var toCurrency = this.SalesInvoiceWhereSalesInvoiceItem.Currency;
+            var fromCurrency = this.SalesInvoiceWhereSalesInvoiceItem.BilledFrom.PreferredCurrency;
 
             if (fromCurrency.Equals(toCurrency))
             {

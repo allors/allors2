@@ -25,11 +25,6 @@ namespace Allors.Domain
                 this.BillToContactMechanism = this.BillToParty.BillingAddress;
             }
 
-            if (!this.ExistTakenViaContactMechanism)
-            {
-                this.TakenViaContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.OrderAddress;
-            }
-
             if (!this.ExistPlacingContactMechanism && this.ExistPlacingParty)
             {
                 this.PlacingContactMechanism = this.PlacingParty.OrderAddress;

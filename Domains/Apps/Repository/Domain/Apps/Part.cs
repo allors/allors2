@@ -7,8 +7,18 @@ namespace Allors.Repository
     #region Allors
     [Id("75916246-b1b5-48ef-9578-d65980fd2623")]
     #endregion
-	public partial interface Part : AccessControlledObject, UniquelyIdentifiable 
+    public partial interface Part : AccessControlledObject, UniquelyIdentifiable
     {
+        #region Allors
+        [Id("17D9A211-83AC-4F77-B0D6-2673C50EE4C2")]
+        [AssociationId("8B4C220A-A33B-468C-B345-2A40126118C1")]
+        [RoleId("28DB278D-0A00-492C-8329-6FE23B541386")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        InternalOrganisation InternalOrganisation { get; set; }
 
         #region Allors
         [Id("5239147e-0829-4250-bdbc-8115e9c19206")]
@@ -17,9 +27,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
-
         string Name { get; set; }
-
 
         #region Allors
         [Id("527c0d02-7723-4715-b975-ec9474d0d22d")]

@@ -10,6 +10,9 @@ namespace Allors.Repository
     public partial class TimeAndMaterialsService : Service 
     {
         #region inherited properties
+
+        public Party Organisation { get; set; }
+
         public ProductType ProductType { get; set; }
 
         public string InternalComment { get; set; }

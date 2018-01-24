@@ -155,17 +155,16 @@ namespace Allors.Domain
                 this.SalesInvoiceType = new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice;
             }
 
-            if (!this.ExistCustomerCurrency)
+            if (!this.ExistCurrency)
             {
-                if (this.ExistBillToCustomer &&
-                    (this.BillToCustomer.ExistPreferredCurrency || this.BillToCustomer.ExistLocale))
+                if (this.ExistBillToCustomer && (this.BillToCustomer.ExistPreferredCurrency || this.BillToCustomer.ExistLocale))
                 {
-                    this.CustomerCurrency = this.BillToCustomer.ExistPreferredCurrency ? this.BillToCustomer.PreferredCurrency : this.BillToCustomer.Locale.Country.Currency;
+                    this.Currency = this.BillToCustomer.ExistPreferredCurrency ? this.BillToCustomer.PreferredCurrency : this.BillToCustomer.Locale.Country.Currency;
                 }
                 else
                 {
-                    this.CustomerCurrency = this.Strategy.Session.GetSingleton().ExistPreferredCurrency ?
-                                                this.Strategy.Session.GetSingleton().PreferredCurrency :
+                    this.Currency = this.BilledFrom.ExistPreferredCurrency ?
+                                                this.BilledFrom.PreferredCurrency :
                                                 this.Strategy.Session.GetSingleton().DefaultLocale.Country.Currency;
                 }
             }
@@ -223,7 +222,7 @@ namespace Allors.Domain
 
             if (!this.ExistBilledFromContactMechanism)
             {
-                this.BilledFromContactMechanism = this.Strategy.Session.GetSingleton().InternalOrganisation.BillingAddress;
+                this.BilledFromContactMechanism = this.BilledFrom.BillingAddress;
             }
 
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
@@ -241,12 +240,12 @@ namespace Allors.Domain
             this.AppsOnDeriveSalesReps(derivation);
             this.AppsOnDeriveAmountPaid(derivation);
 
-            if (this.ExistBillToCustomer && !this.BillToCustomer.AppsIsActiveCustomer(this.InvoiceDate))
+            if (this.ExistBillToCustomer && !this.BillToCustomer.AppsIsActiveCustomer(this.BilledFrom, this.InvoiceDate))
             {
                 derivation.Validation.AddError(this, M.SalesInvoice.BillToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
 
-            if (this.ExistShipToCustomer && !this.ShipToCustomer.AppsIsActiveCustomer(this.InvoiceDate))
+            if (this.ExistShipToCustomer && !this.ShipToCustomer.AppsIsActiveCustomer(this.BilledFrom, this.InvoiceDate))
             {
                 derivation.Validation.AddError(this, M.SalesInvoice.ShipToCustomer, ErrorMessages.PartyIsNotACustomer);
             }
@@ -263,8 +262,7 @@ namespace Allors.Domain
 
             var model = new PrintSalesInvoice
                             {
-                                SalesInvoice = this,
-                                Aviaco = this.strategy.Session.GetSingleton().InternalOrganisation
+                                SalesInvoice = this
                             };
 
           this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;

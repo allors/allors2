@@ -26,7 +26,7 @@ namespace Allors.Domain
         public string DeriveNextInvoiceNumber(int year)
         {
             int salesInvoiceNumber;
-            if (this.Strategy.Session.GetSingleton().InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
+            if (this.InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
             {
                 salesInvoiceNumber = this.SalesInvoiceCounter.NextValue();
             }
@@ -101,7 +101,7 @@ namespace Allors.Domain
 
             if (!this.ExistDefaultFacility)
             {
-                this.DefaultFacility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
+                this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
             }
 
             if (this.ExistDefaultPaymentMethod && !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
@@ -114,9 +114,9 @@ namespace Allors.Domain
                 this.DefaultPaymentMethod = this.PaymentMethods.First;
             }
 
-            if (!this.ExistDefaultPaymentMethod && this.Strategy.Session.GetSingleton().InternalOrganisation.ExistDefaultPaymentMethod)
+            if (!this.ExistDefaultPaymentMethod && this.InternalOrganisation.ExistDefaultPaymentMethod)
             {
-                this.DefaultPaymentMethod = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultPaymentMethod;
+                this.DefaultPaymentMethod = this.InternalOrganisation.DefaultPaymentMethod;
 
                 if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
                 {

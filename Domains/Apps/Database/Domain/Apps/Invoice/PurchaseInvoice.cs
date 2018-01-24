@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber)
             {
-                this.InvoiceNumber = this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextPurchaseInvoiceNumber();
+                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber();
             }
 
             if (!this.ExistInvoiceDate)
@@ -64,9 +64,9 @@ namespace Allors.Domain
                 derivation.AddDependency(this, internalOrganisation);
             }
 
-            if (this.ExistBilledFromParty)
+            if (this.ExistBilledFrom)
             {
-                var supplier = this.BilledFromParty as Organisation;
+                var supplier = this.BilledFrom as Organisation;
                 if (supplier != null)
                 {
                     // TODO: Isn't this too broad?
@@ -82,12 +82,12 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            Organisation supplier = this.BilledFromParty as Organisation;
+            Organisation supplier = this.BilledFrom as Organisation;
             if (supplier != null)
             {
-                if (!this.strategy.Session.GetSingleton().InternalOrganisation.ActiveSuppliers.Contains(supplier))
+                if (!this.BilledTo.ActiveSuppliers.Contains(supplier))
                 {
-                    derivation.Validation.AddError(this, this.Meta.BilledFromParty, ErrorMessages.PartyIsNotASupplier);
+                    derivation.Validation.AddError(this, this.Meta.BilledFrom, ErrorMessages.PartyIsNotASupplier);
                 }
             }
 

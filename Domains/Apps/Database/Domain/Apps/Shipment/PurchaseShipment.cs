@@ -31,19 +31,21 @@ namespace Allors.Domain
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
+            var internalOrganisation = this.ShipToParty as InternalOrganisation;
+
             if (!this.ExistPurchaseShipmentState)
             {
                 this.PurchaseShipmentState = new PurchaseShipmentStates(this.Strategy.Session).Created;
             }
 
-            if (!this.ExistFacility)
+            if (!this.ExistFacility && internalOrganisation != null)
             {
-                this.Facility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
+                this.Facility = internalOrganisation.DefaultFacility;
             }
 
-            if (!this.ExistShipmentNumber)
+            if (!this.ExistShipmentNumber && internalOrganisation != null)
             {
-                this.ShipmentNumber = this.Strategy.Session.GetSingleton().InternalOrganisation.DeriveNextShipmentNumber();
+                this.ShipmentNumber = internalOrganisation.NextShipmentNumber();
             }
 
             if (!this.ExistEstimatedArrivalDate)
@@ -77,9 +79,7 @@ namespace Allors.Domain
 
             if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = this.Strategy.Session.GetSingleton().InternalOrganisation.ExistShippingAddress ?
-                                         this.Strategy.Session.GetSingleton().InternalOrganisation.ShippingAddress :
-                                         this.Strategy.Session.GetSingleton().InternalOrganisation.GeneralCorrespondence;
+                this.ShipToAddress = this.ShipToParty.ExistShippingAddress ? this.ShipToParty.ShippingAddress : this.ShipToParty.GeneralCorrespondence;
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)
@@ -87,7 +87,7 @@ namespace Allors.Domain
                 this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
             }
 
-            if (this.ExistPurchaseShipmentState && 
+            if (this.ExistPurchaseShipmentState &&
                 this.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.strategy.Session).Completed) &&
                 !this.PurchaseShipmentState.Equals(this.LastPurchaseShipmentState))
             {

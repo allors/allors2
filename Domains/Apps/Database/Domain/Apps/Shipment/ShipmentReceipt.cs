@@ -60,8 +60,9 @@ namespace Allors.Domain
         {
             if (this.ExistShipmentItem && this.ShipmentItem.ExistOrderShipmentsWhereShipmentItem)
             {
+                var internalOrganisation = this.ShipmentItem.ShipmentWhereShipmentItem.ShipToParty as InternalOrganisation;
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].PurchaseOrderItem;
-                var defaultFacility = this.Strategy.Session.GetSingleton().InternalOrganisation.DefaultFacility;
+                var defaultFacility = internalOrganisation?.DefaultFacility;
 
                 if (purchaseOrderItem.ExistProduct)
                 {

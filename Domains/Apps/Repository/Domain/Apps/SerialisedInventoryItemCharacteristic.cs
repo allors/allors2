@@ -7,7 +7,6 @@ namespace Allors.Repository
     #region Allors
     [Id("C3A647C2-1073-4D8B-99EB-AE5293AADB6B")]
     #endregion
-    [Synced]
     public partial class SerialisedInventoryItemCharacteristic : AccessControlledObject, Deletable
     {
         #region inherited properties
@@ -26,7 +25,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        [Synced]
         public SerialisedInventoryItemCharacteristicType SerialisedInventoryItemCharacteristicType { get; set; }
 
         #region Allors
