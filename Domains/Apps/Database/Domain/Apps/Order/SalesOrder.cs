@@ -142,6 +142,12 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistTakenBy && internalOrganisations.Count() == 1)
+            {
+                this.TakenBy = internalOrganisations.First();
+            }
 
             if (!this.ExistOrderNumber && this.ExistStore)
             {

@@ -75,6 +75,12 @@ namespace Allors
                     .WithDefaultPaymentMethod(ownBankAccount)
                     .Build();
 
+                internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                    .WithUseAsDefault(true)
+                    .WithContactMechanism(postalAddress)
+                    .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
+                    .Build());
+
                 var facility = new FacilityBuilder(session).WithFacilityType(new FacilityTypes(session).Warehouse).WithName("facility").Build();
                 internalOrganisation.DefaultFacility = facility;                
 
@@ -82,6 +88,7 @@ namespace Allors
 
                 new StoreBuilder(session)
                     .WithName("store")
+                    .WithInternalOrganisation(internalOrganisation)
                     .WithOutgoingShipmentNumberPrefix("shipmentno: ")
                     .WithSalesInvoiceNumberPrefix("invoiceno: ")
                     .WithSalesOrderNumberPrefix("orderno: ")

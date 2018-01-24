@@ -35,13 +35,14 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
             var internalOrganisation = this.InternalOrganisation;
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -80,11 +81,12 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -93,6 +95,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -111,6 +114,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(mechelenAddress)
@@ -164,6 +168,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -177,6 +182,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate0)
                 .WithName("good2")
@@ -201,15 +207,14 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).WithPartyContactMechanism(billToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -364,6 +369,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -385,15 +391,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order1 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(mechelenAddress)
@@ -425,6 +429,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order2 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(mechelenAddress)
@@ -459,6 +464,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -480,15 +486,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -537,6 +541,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -558,15 +563,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order1 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(mechelenAddress)
@@ -588,6 +591,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order2 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(mechelenAddress)
@@ -638,6 +642,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -656,15 +661,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -711,6 +714,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -729,15 +733,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -793,6 +795,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -806,6 +809,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("20202")
                 .WithVatRate(vatRate0)
                 .WithName("good2")
@@ -827,15 +831,13 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -914,6 +916,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -937,6 +940,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithFromDate(DateTime.UtcNow.AddYears(-2))
                 .Build();
 
@@ -956,6 +960,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -1004,6 +1009,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -1029,6 +1035,7 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithFromDate(DateTime.UtcNow.AddYears(-2))
                 .Build();
 
@@ -1048,6 +1055,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -1095,6 +1103,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -1117,11 +1126,13 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -1153,6 +1164,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate0)
                 .WithName("good1")
@@ -1175,13 +1187,14 @@ namespace Allors.Domain
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithVatRegime(assessable)
@@ -1217,22 +1230,27 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -1241,6 +1259,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -1251,6 +1270,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(shipToContactMechanism)
@@ -1292,22 +1312,27 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -1316,6 +1341,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -1326,6 +1352,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(shipToContactMechanism)
@@ -1366,17 +1393,15 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1392,12 +1417,13 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1412,13 +1438,14 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenConfirmed_ThenCurrentOrderStatusMustBeDerived()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1441,21 +1468,26 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
+                .WithOrganisation(this.InternalOrganisation)
                 .WithVatRate(vatRate21)
                 .WithName("good1")
                 .WithFinishedGood(part1)
@@ -1463,6 +1495,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -1473,6 +1506,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1508,11 +1542,11 @@ namespace Allors.Domain
         public void GivenSalesOrderBuilder_WhenBuild_ThenOrderMustBeValid()
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
-            new SalesOrderBuilder(this.Session).WithBillToCustomer(billToCustomer).Build();
+            new SalesOrderBuilder(this.Session).WithBillToCustomer(billToCustomer).WithTakenBy(this.InternalOrganisation).Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -1523,8 +1557,8 @@ namespace Allors.Domain
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1537,6 +1571,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order1 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1548,6 +1583,7 @@ namespace Allors.Domain
             Assert.Equal("1", order1.OrderNumber);
 
             var order2 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1564,13 +1600,9 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1584,6 +1616,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order1 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1595,6 +1628,7 @@ namespace Allors.Domain
             Assert.Equal("the format is 1", order1.OrderNumber);
 
             var order2 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1616,15 +1650,11 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            var internalOrganisation = this.InternalOrganisation;
-
             new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
-                
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
-
-
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithFromDate(DateTime.UtcNow)
@@ -1633,9 +1663,14 @@ namespace Allors.Domain
                 .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -1646,6 +1681,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
@@ -1663,8 +1699,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
             var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var orderContact = new EmailAddressBuilder(this.Session).WithElectronicAddressString("orders@acme.com").Build();
@@ -1674,6 +1709,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order1 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
@@ -1689,9 +1725,7 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
             var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var billingContact = new EmailAddressBuilder(this.Session).WithElectronicAddressString("orders@acme.com").Build();
@@ -1701,6 +1735,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order1 = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
@@ -1718,15 +1753,13 @@ namespace Allors.Domain
             var poundSterling = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "GBP");
 
             var customer = new OrganisationBuilder(this.Session).WithName("customer").WithLocale(englischLocale).WithPreferredCurrency(poundSterling).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
                 .Build();
@@ -1750,12 +1783,15 @@ namespace Allors.Domain
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
-            var order = new SalesOrderBuilder(this.Session).WithBillToCustomer(customer).WithShipToAddress(shipToContactMechanism).Build();
+            var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
+                .WithBillToCustomer(customer)
+                .WithShipToAddress(shipToContactMechanism)
+                .Build();
 
             this.Session.Derive();
 
@@ -1766,11 +1802,8 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsProvisional_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1779,6 +1812,7 @@ namespace Allors.Domain
             this.SetIdentity(Users.AdministratorUserName);
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1801,7 +1835,7 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsInProcess_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1810,6 +1844,7 @@ namespace Allors.Domain
             this.SetIdentity(Users.AdministratorUserName);
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1836,7 +1871,7 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1845,6 +1880,7 @@ namespace Allors.Domain
             this.SetIdentity("customer");
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1870,11 +1906,8 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsRejected_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1883,6 +1916,7 @@ namespace Allors.Domain
             this.SetIdentity("customer");
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1908,11 +1942,8 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsFinished_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1921,6 +1952,7 @@ namespace Allors.Domain
             this.SetIdentity("customer");
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1951,11 +1983,8 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenObjectStateIsOnHold_ThenCheckTransitions()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("customer").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -1964,6 +1993,7 @@ namespace Allors.Domain
             this.SetIdentity(Users.AdministratorUserName);
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -1996,13 +2026,9 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -2011,6 +2037,7 @@ namespace Allors.Domain
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -2035,6 +2062,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var order = new SalesOrderBuilder(this.Session)
+                .WithTakenBy(this.InternalOrganisation)
                 .WithBillToCustomer(billToCustomer)
                 .WithShipToCustomer(shipToCustomer)
                 .WithShipToAddress(new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build())
@@ -2063,13 +2091,9 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -2078,6 +2102,7 @@ namespace Allors.Domain
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -2130,13 +2155,9 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -2145,6 +2166,7 @@ namespace Allors.Domain
             var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -2197,13 +2219,9 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
@@ -2212,6 +2230,7 @@ namespace Allors.Domain
             var adjustment = new FeeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -2264,20 +2283,25 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -2286,6 +2310,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -2327,18 +2352,24 @@ namespace Allors.Domain
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -2347,6 +2378,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -2394,20 +2426,25 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -2416,6 +2453,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -2461,22 +2499,27 @@ namespace Allors.Domain
         {
             var billToCustomer = new PersonBuilder(this.Session).WithLastName("person1").Build();
             var shipToCustomer = new PersonBuilder(this.Session).WithLastName("person2").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var part1 = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
-            var part2 = new FinishedGoodBuilder(this.Session).WithName("part2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part1 = new FinishedGoodBuilder(this.Session)
+                .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+            var part2 = new FinishedGoodBuilder(this.Session)
+                .WithName("part2")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -2485,6 +2528,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -2534,6 +2578,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -2542,6 +2587,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -2568,11 +2614,8 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -2625,12 +2668,13 @@ namespace Allors.Domain
             var person1 = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
             var person2 = new PersonBuilder(this.Session).WithLastName("person2").WithPartyContactMechanism(shipToBaal).Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person1).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person2).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person1).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person2).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var part = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2642,6 +2686,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -2650,6 +2695,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -2711,11 +2757,8 @@ namespace Allors.Domain
         public void GivenSalesOrder_WhenShipToAndBillToAreSameCustomer_ThenDerivedCustomersIsSingleCustomer()
         {
             var customer = new PersonBuilder(this.Session).WithFirstName("Koen").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -2739,13 +2782,9 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var billToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var shipToCustomer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             this.Session.Derive();
 
@@ -2780,11 +2819,8 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
             var customer = new OrganisationBuilder(this.Session).WithName("company").Build();
-            var internalOrganisation = this.InternalOrganisation;
 
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
-
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithSalesRepresentative(salesrep1)
@@ -2804,6 +2840,7 @@ namespace Allors.Domain
                 .Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -2813,6 +2850,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -2822,6 +2860,7 @@ namespace Allors.Domain
                 .Build();
 
             var good3 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())

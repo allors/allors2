@@ -76,16 +76,19 @@ namespace Allors
                 .Build();
 
             internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                .WithUseAsDefault(true)
                 .WithContactMechanism(phone)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
                 .Build());
 
             internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                .WithUseAsDefault(true)
                 .WithContactMechanism(email)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralEmail)
                 .Build());
 
             internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+                .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
                 .Build());
@@ -368,8 +371,10 @@ line2")
                 .Build();
 
             person.AddPartyContactMechanism(
-                new PartyContactMechanismBuilder(this.Session).WithContactMechanism(userEmail)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress).WithUseAsDefault(true)
+                new PartyContactMechanismBuilder(this.Session)
+                    .WithContactMechanism(userEmail)
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
+                    .WithUseAsDefault(true)
                     .Build());
 
             new EmploymentBuilder(this.Session).WithEmployee(person).Build();
