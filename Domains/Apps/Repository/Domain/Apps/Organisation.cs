@@ -102,10 +102,6 @@ namespace Allors.Repository
 
         public Party[] ActiveSuppliers { get; set; }
 
-        public Counter ArticleNumberCounter { get; set; }
-
-        public string ArticleNumberPrefix { get; set; }
-
         public string PartyName { get; set; }
 
         public PostalAddress GeneralCorrespondence { get; set; }
