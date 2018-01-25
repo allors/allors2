@@ -47,12 +47,5 @@ namespace Allors.Domain
                 return customers;
             }
         }
-
-        protected override void AppsSetup(Setup setup)
-        {
-            base.AppsSetup(setup);
-
-            new OrganisationBuilder(this.Session).WithIsInternalOrganisation(true).WithName("internalOrganisation").Build();
-        }
     }
 }

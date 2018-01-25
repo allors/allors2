@@ -14,6 +14,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     public static partial class QuoteExtensions
@@ -34,6 +36,13 @@ namespace Allors.Domain
 
         public static void AppsOnDerive(this Quote @this, ObjectOnDerive method)
         {
+            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!@this.ExistIssuer && internalOrganisations.Count() == 1)
+            {
+                @this.Issuer = internalOrganisations.First();
+            }
+
             @this.Price = 0;
             foreach (QuoteItem item in @this.QuoteItems)
             {

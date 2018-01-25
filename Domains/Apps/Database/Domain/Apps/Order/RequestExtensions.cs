@@ -13,6 +13,8 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
@@ -23,6 +25,13 @@ namespace Allors.Domain
     {
         public static void AppsOnDerive(this Request @this, ObjectOnDerive method)
         {
+            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!@this.ExistRecipient && internalOrganisations.Count() == 1)
+            {
+                @this.Recipient = internalOrganisations.First();
+            }
+
             if (!@this.ExistRequestNumber)
             {
                 @this.RequestNumber = @this.Recipient.NextRequestNumber();

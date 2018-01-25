@@ -30,7 +30,6 @@ namespace Allors.Domain
     {
         private Person contact;
         private Organisation supplier;
-        private InternalOrganisation internalOrganisation;
         private SupplierRelationship supplierRelationship;
         private OrganisationContactRelationship organisationContactRelationship;
 
@@ -42,7 +41,6 @@ namespace Allors.Domain
                 .WithLocale(new Locales(this.Session).EnglishGreatBritain)
                 
                 .Build();
-            this.internalOrganisation = new InternalOrganisations(this.Session).FindBy(M.Organisation.Name, "internalOrganisation");
 
             this.organisationContactRelationship = new OrganisationContactRelationshipBuilder(this.Session)
                 .WithOrganisation(this.supplier)
@@ -62,7 +60,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenSupplierRelationshipBuilder_WhenBuild_ThenSubAccountNumerIsValidElevenTestNumber()
         {
-            this.internalOrganisation.SubAccountCounter.Value = 1000;
+            this.InternalOrganisation.SubAccountCounter.Value = 1000;
 
             this.Session.Commit();
 
@@ -206,7 +204,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenActiveSupplierRelationship_WhenDeriving_ThenInternalOrganisationSuppliersContainsSupplier()
         {
-            Assert.Contains(this.supplier, this.internalOrganisation.ActiveSuppliers);
+            Assert.Contains(this.supplier, this.InternalOrganisation.ActiveSuppliers);
         }
 
         [Fact]
@@ -215,7 +213,7 @@ namespace Allors.Domain
             this.supplierRelationship.FromDate = DateTime.UtcNow.AddDays(1);
             this.Session.Derive();
 
-            Assert.False(internalOrganisation.ActiveSuppliers.Contains(supplier));
+            Assert.False(InternalOrganisation.ActiveSuppliers.Contains(supplier));
         }
 
         [Fact]
@@ -226,14 +224,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.False(internalOrganisation.ActiveSuppliers.Contains(supplier));
+            Assert.False(InternalOrganisation.ActiveSuppliers.Contains(supplier));
         }
 
         private void InstantiateObjects(ISession session)
         {
             this.contact = (Person)session.Instantiate(this.contact);
             this.supplier = (Organisation)session.Instantiate(this.supplier);
-            this.internalOrganisation = (InternalOrganisation)session.Instantiate(this.internalOrganisation);
             this.supplierRelationship = (SupplierRelationship)session.Instantiate(this.supplierRelationship);
             this.organisationContactRelationship = (OrganisationContactRelationship)session.Instantiate(this.organisationContactRelationship);
         }

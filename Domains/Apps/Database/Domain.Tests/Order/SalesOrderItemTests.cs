@@ -25,7 +25,7 @@ namespace Allors.Domain
 
     using Meta;
     using Xunit;
-    
+
     public class SalesOrderItemTests : DomainTest
     {
         private ProductCategory productCategory;
@@ -38,7 +38,6 @@ namespace Allors.Domain
         private FinishedGood part;
         private Colour feature1;
         private Colour feature2;
-        private Singleton internalOrganisation;
         private Organisation shipToCustomer;
         private Organisation billToCustomer;
         private Organisation supplier;
@@ -55,12 +54,10 @@ namespace Allors.Domain
         private SupplierOffering virtualgoodSupplierOffering;
         private SalesOrder order;
         private VatRate vatRate21;
-        
+
         public SalesOrderItemTests()
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-
-            this.internalOrganisation = this.Session.GetSingleton();
 
             this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
@@ -81,7 +78,7 @@ namespace Allors.Domain
             this.billToCustomer = new OrganisationBuilder(this.Session)
                 .WithName("billToCustomer")
                 .WithPreferredCurrency(euro)
-                
+
                 .Build();
 
             this.billToCustomer.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
@@ -90,7 +87,11 @@ namespace Allors.Domain
                                                             .WithUseAsDefault(true)
                                                             .Build());
 
-            this.part = new FinishedGoodBuilder(this.Session).WithName("part").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            this.part = new FinishedGoodBuilder(this.Session)
+                .WithName("part")
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("ancestor")
@@ -108,6 +109,7 @@ namespace Allors.Domain
             this.productCategory.AddParent(this.parentProductCategory);
 
             this.good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
@@ -160,6 +162,7 @@ namespace Allors.Domain
             //    .Build();
 
             this.variantGood = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                .WithSku("v10101")
                .WithVatRate(this.vatRate21)
                 .WithName("variant good")
@@ -168,6 +171,7 @@ namespace Allors.Domain
                .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("v10102")
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
@@ -176,6 +180,7 @@ namespace Allors.Domain
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("v10103")
                 .WithVatRate(this.vatRate21)
                 .WithName("virtual good")
@@ -859,7 +864,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -902,8 +907,8 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             shipment.Ship();
 
             this.Session.Derive();
@@ -921,7 +926,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -956,10 +961,10 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
-            
+
             this.InstantiateObjects(this.Session);
 
             this.SetIdentity("admin");
@@ -971,7 +976,7 @@ namespace Allors.Domain
                 .Build();
 
             this.order.AddSalesOrderItem(item);
-            
+
             this.Session.Derive();
 
             item.Reject();
@@ -990,7 +995,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -1016,7 +1021,7 @@ namespace Allors.Domain
             this.order.Confirm();
 
             this.Session.Derive();
-            
+
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -1033,8 +1038,8 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             shipment.Ship();
 
             this.Session.Derive();
@@ -1051,7 +1056,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -1085,7 +1090,7 @@ namespace Allors.Domain
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
             administrators.AddMember(administrator);
-            
+
             this.Session.Derive();
             this.Session.Commit();
 
@@ -1128,8 +1133,8 @@ namespace Allors.Domain
                 package.AddPackagingContent(new PackagingContentBuilder(this.Session).WithShipmentItem(shipmentItem).WithQuantity(shipmentItem.Quantity).Build());
             }
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             shipment.Ship();
 
             this.Session.Derive();
@@ -1196,9 +1201,9 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.order.Confirm();
-            
+
             this.Session.Derive();
-            
+
             Assert.Equal(120, item1.QuantityOrdered);
             Assert.Equal(0, item1.QuantityPicked);
             Assert.Equal(0, item1.QuantityShipped);
@@ -1326,11 +1331,12 @@ namespace Allors.Domain
         public void GivenConfirmedOrderItemForGood_WhenQuantityOrderedIsDecreased_ThenQuantityMayNotBeLessThanQuantityShippped()
         {
             this.InstantiateObjects(this.Session);
-            
+
             var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
 
             var testPart = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
             var testgood = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good1")
@@ -1554,8 +1560,8 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             this.order.Confirm();
 
             this.Session.Derive();
@@ -1634,6 +1640,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good1")
@@ -1726,8 +1733,8 @@ namespace Allors.Domain
 
             this.order.AddSalesOrderItem(item);
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             this.order.Confirm();
 
             this.Session.Derive();
@@ -1779,7 +1786,7 @@ namespace Allors.Domain
             this.order.AddSalesOrderItem(item2);
 
             this.Session.Derive();
-            
+
             this.order.Confirm();
 
             this.Session.Derive();
@@ -1793,7 +1800,7 @@ namespace Allors.Domain
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             this.Session.Derive();
-            
+
             item1.Cancel();
 
             this.Session.Derive();
@@ -1832,12 +1839,12 @@ namespace Allors.Domain
                 .Build();
 
             order1.AddSalesOrderItem(item1);
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             order1.Confirm();
             this.Session.Derive();
 
-            item1.QuantityShipNow = 5;          
+            item1.QuantityShipNow = 5;
             var derivationLog = this.Session.Derive(false);
 
             Assert.True(derivationLog.HasErrors);
@@ -1877,10 +1884,10 @@ namespace Allors.Domain
 
             order1.AddSalesOrderItem(item);
 
-            this.Session.Derive(); 
-            
+            this.Session.Derive();
+
             order1.Confirm();
-            
+
             this.Session.Derive();
 
             item.QuantityShipNow = 10;
@@ -1915,7 +1922,6 @@ namespace Allors.Domain
             this.good = (Good)session.Instantiate(this.good);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);
-            this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);
             this.shipToCustomer = (Organisation)session.Instantiate(this.shipToCustomer);
             this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
             this.supplier = (Organisation)session.Instantiate(this.supplier);
