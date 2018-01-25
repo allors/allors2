@@ -98,7 +98,10 @@ namespace Allors.Domain
             this.Session.Commit();
 
             var customer1 = new PersonBuilder(this.Session).WithLastName("customer1").Build();
-            var customerRelationship1 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).Build();
+            var customerRelationship1 = new CustomerRelationshipBuilder(this.Session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithCustomer(customer1)
+                .Build();
 
             this.Session.Derive();
 

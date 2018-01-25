@@ -267,7 +267,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
-        [Required]
         [Indexed]
         [Workspace]
         public OrganisationRole[] OrganisationRoles { get; set; }
@@ -372,10 +371,8 @@ namespace Allors.Repository
         [Workspace]
         public OrganisationClassification[] OrganisationClassifications { get; set; }
 
-
         #region inherited methods
-
-
+        
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -385,15 +382,10 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
-
-
-
-
-
+        
         public void Delete(){}
-        #endregion
 
+        public void StartNewFiscalYear() {}
+        #endregion
     }
 }

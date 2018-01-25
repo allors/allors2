@@ -21,6 +21,56 @@ namespace Allors.Domain
 
     public static partial class InternalOrganisationExtensions
     {
+        public static void AppsStartNewFiscalYear(this InternalOrganisation @this, InternalOrganisationStartNewFiscalYear method)
+        {
+            if (@this.ExistActualAccountingPeriod && @this.ActualAccountingPeriod.Active)
+            {
+                return;
+            }
+
+            var year = @this.Strategy.Session.Now().Year;
+            if (@this.ExistActualAccountingPeriod)
+            {
+                year = @this.ActualAccountingPeriod.FromDate.Date.Year + 1;
+            }
+
+            var fromDate = DateTimeFactory.CreateDate(year, @this.FiscalYearStartMonth.Value, @this.FiscalYearStartDay.Value).Date;
+
+            var yearPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Year)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddYears(1).AddSeconds(-1).Date)
+                .Build();
+
+            var semesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Semester)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddMonths(6).AddSeconds(-1).Date)
+                .WithParent(yearPeriod)
+                .Build();
+
+            var trimesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Trimester)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddMonths(3).AddSeconds(-1).Date)
+                .WithParent(semesterPeriod)
+                .Build();
+
+            var monthPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                .WithPeriodNumber(1)
+                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Month)
+                .WithFromDate(fromDate)
+                .WithThroughDate(fromDate.AddMonths(1).AddSeconds(-1).Date)
+                .WithParent(trimesterPeriod)
+                .Build();
+
+            @this.ActualAccountingPeriod = monthPeriod;
+        }
+
+
         public static void AppsOnDerive(this InternalOrganisation @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -99,6 +149,7 @@ namespace Allors.Domain
             var quoteNumber = @this.QuoteCounter.NextValue();
             return string.Concat(@this.QuoteNumberPrefix, quoteNumber);
         }
+
         public static string NextRequestNumber(this InternalOrganisation @this)
         {
             var requestNumber = @this.RequestCounter.NextValue();

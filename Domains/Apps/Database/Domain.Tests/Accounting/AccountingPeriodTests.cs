@@ -98,7 +98,9 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            this.Session.Derive();
+
+            organisation.StartNewFiscalYear();
 
             Assert.Equal(4, this.Session.Extent<AccountingPeriod>().Count);
 
@@ -132,7 +134,9 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            this.Session.Derive();
+
+            organisation.StartNewFiscalYear();
 
             Assert.Equal(4, this.Session.Extent<AccountingPeriod>().Count);
 
@@ -182,7 +186,9 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            this.Session.Derive();
+
+            organisation.StartNewFiscalYear();
 
             Assert.Equal(4, this.Session.Extent<AccountingPeriod>().Count);
 
@@ -245,7 +251,9 @@ namespace Allors.Domain
                 .WithDefaultPaymentMethod(ownBankAccount)
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            this.Session.Derive();
+
+            organisation.StartNewFiscalYear();
 
             organisation.ActualAccountingPeriod.AddNextMonth();
             organisation.ActualAccountingPeriod.AddNextMonth();

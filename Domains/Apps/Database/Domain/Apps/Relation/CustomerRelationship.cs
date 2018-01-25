@@ -14,11 +14,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
 
     public partial class CustomerRelationship
     {
@@ -45,7 +44,6 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
             if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
             {
                 this.InternalOrganisation = internalOrganisations.First();

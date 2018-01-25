@@ -31,6 +31,17 @@ namespace Allors.Repository
         public Product Product { get; set; }
 
         #region Allors
+        [Id("4D01DDD1-32B6-44A2-A42B-1CFEE1E6F42A")]
+        [AssociationId("374005CF-46EE-4E85-AEF8-5A66F1663C38")]
+        [RoleId("E5931F1F-4BD6-4E13-8E87-54AB20E3CFFC")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public InternalOrganisation InternalOrganisation { get; set; }
+
+        #region Allors
         [Id("9337f791-56aa-4086-b661-2043cf02c662")]
         [AssociationId("59fb9b8f-4d0a-4f97-b4d6-b3a5708de269")]
         [RoleId("f264e9da-aa7f-4d81-aa1b-741f020c2bef")]

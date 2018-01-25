@@ -75,10 +75,13 @@ namespace Allors.Domain
                 .Build();
 
             var internalOrganisationGlAccount = new OrganisationGlAccountBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithGeneralLedgerAccount(generalLedgerAccount)
                 .Build();
 
-            var journal = new JournalBuilder(this.Session).WithDescription("journal").Build();
+            var journal = new JournalBuilder(this.Session)
+                .WithDescription("journal")
+                .Build();
 
             this.Session.Commit();
 
@@ -87,6 +90,7 @@ namespace Allors.Domain
                 .Build();
 
             internalOrganisation.DoAccounting = true;
+            internalOrganisation.AddActivePaymentMethod(cash);
 
             Assert.True(this.Session.Derive(false).HasErrors);
 

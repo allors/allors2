@@ -135,7 +135,7 @@ namespace Allors.Domain
                 .WithName("Internal")
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            organisation.StartNewFiscalYear();
 
             var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 01, 01).Date;
             var month = organisation.ActualAccountingPeriod;
@@ -183,7 +183,7 @@ namespace Allors.Domain
                 .WithFiscalYearStartDay(15)
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            organisation.StartNewFiscalYear();
 
             var fromDate = DateTimeFactory.CreateDate(DateTime.UtcNow.Year, 05, 15).Date;
             var month = organisation.ActualAccountingPeriod;
@@ -233,11 +233,11 @@ namespace Allors.Domain
                 .WithFiscalYearStartDay(15)
                 .Build();
 
-            organisation.AppsStartNewFiscalYear();
+            organisation.StartNewFiscalYear();
 
             Assert.Equal(4, this.Session.Extent<AccountingPeriod>().Count);
 
-            organisation.AppsStartNewFiscalYear();
+            organisation.StartNewFiscalYear();
 
             Assert.Equal(4, this.Session.Extent<AccountingPeriod>().Count);
         }

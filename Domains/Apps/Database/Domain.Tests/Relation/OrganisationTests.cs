@@ -45,12 +45,6 @@ namespace Allors.Domain
             builder.WithName("Organisation");
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 

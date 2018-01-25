@@ -49,9 +49,64 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+            var validation = derivation.Validation;
 
+            if (this.IsInternalOrganisation)
+            {
+                if (!this.ExistRequestCounter)
+                {
+                    this.RequestCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistQuoteCounter)
+                {
+                    this.QuoteCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistRequestCounter)
+                {
+                    this.RequestCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistPurchaseInvoiceCounter)
+                {
+                    this.PurchaseInvoiceCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistPurchaseOrderCounter)
+                {
+                    this.PurchaseOrderCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistSubAccountCounter)
+                {
+                    this.SubAccountCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistIncomingShipmentCounter)
+                {
+                    this.IncomingShipmentCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistInvoiceSequence)
+                {
+                    this.InvoiceSequence = new InvoiceSequenceBuilder(this.strategy.Session).Build();
+                }
+
+                if (!this.ExistDoAccounting)
+                {
+                    this.DoAccounting = false;
+                }
+
+                if (this.DoAccounting.Value)
+                {
+                    validation.AssertExists(this, this.Meta.FiscalYearStartMonth);
+                    validation.AssertExists(this, this.Meta.FiscalYearStartDay);
+                }
+            }
+            
             this.PartyName = this.Name;
-
+            
             this.AppsOnDeriveCurrentContacts(derivation);
             this.AppsOnDeriveInactiveContacts(derivation);
             this.AppsOnDeriveCurrentOrganisationContactRelationships(derivation);
@@ -105,55 +160,6 @@ namespace Allors.Domain
             {
                 this.AddOrganisationRole(customerRole);
             }
-        }
-
-        public void AppsStartNewFiscalYear()
-        {
-            if (this.ExistActualAccountingPeriod && this.ActualAccountingPeriod.Active)
-            {
-                return;
-            }
-
-            int year = DateTime.UtcNow.Year;
-            if (this.ExistActualAccountingPeriod)
-            {
-                year = this.ActualAccountingPeriod.FromDate.Date.Year + 1;
-            }
-
-            var fromDate = DateTimeFactory.CreateDate(year, this.FiscalYearStartMonth, this.FiscalYearStartDay).Date;
-
-            var yearPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Year)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddYears(1).AddSeconds(-1).Date)
-                .Build();
-
-            var semesterPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Semester)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddMonths(6).AddSeconds(-1).Date)
-                .WithParent(yearPeriod)
-                .Build();
-
-            var trimesterPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Trimester)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddMonths(3).AddSeconds(-1).Date)
-                .WithParent(semesterPeriod)
-                .Build();
-
-            var monthPeriod = new AccountingPeriodBuilder(this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(this.Strategy.Session).Month)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddMonths(1).AddSeconds(-1).Date)
-                .WithParent(trimesterPeriod)
-                .Build();
-
-            this.ActualAccountingPeriod = monthPeriod;
         }
 
         public List<string> Roles => new List<string>() { "Internal organisation" };

@@ -32,7 +32,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.InternalOrganisationWhereActivePaymentMethod.DoAccounting)
+            if (this.InternalOrganisationWhereActivePaymentMethod.DoAccounting ?? false)
             {
                 derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }
