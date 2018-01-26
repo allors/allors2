@@ -76,9 +76,9 @@ namespace Allors.Domain
             var derivation = method.Derivation;
 
             var count = @this.Strategy.Session.Extent<PaymentMethod>().ToArray();
-            if (!@this.ExistDefaultPaymentMethod && @this.Strategy.Session.Extent<PaymentMethod>().Count == 1)
+            if (!@this.ExistDefaultCollectionMethod && @this.Strategy.Session.Extent<PaymentMethod>().Count == 1)
             {
-                @this.DefaultPaymentMethod = @this.Strategy.Session.Extent<PaymentMethod>().First;
+                @this.DefaultCollectionMethod = @this.Strategy.Session.Extent<PaymentMethod>().First;
             }
 
             if (!@this.ExistPurchaseInvoiceCounter)

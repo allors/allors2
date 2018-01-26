@@ -49,7 +49,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public OrganisationGlAccount Parent { get; set; }
+        public OrganisationGlAccount SubsidiaryOf { get; set; }
 
         #region Allors
         [Id("9af20c76-200c-4aed-8154-99fd88907a15")]

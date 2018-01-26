@@ -186,7 +186,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public PaymentMethod DefaultPaymentMethod { get; set; }
+        public PaymentMethod DefaultCollectionMethod { get; set; }
 
         #region Allors
         [Id("bc11d48f-bcab-4880-afe8-0a52d3c11e44")]

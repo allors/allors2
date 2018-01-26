@@ -10,6 +10,8 @@ namespace Allors.Repository
     public partial class Depreciation : InternalAccountingTransaction 
     {
         #region inherited properties
+        public InternalOrganisation InternalOrganisation { get; set; }
+
         public AccountingTransactionDetail[] AccountingTransactionDetails { get; set; }
 
         public string Description { get; set; }

@@ -21,6 +21,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -33,13 +35,12 @@ namespace Allors.Domain
         {
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
 
-
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             this.Session.Derive();
 
-            Assert.Equal(0, customer.AmountDue);
+            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            Assert.Equal(0, partyFinancial.AmountDue);
         }
 
         [Fact]
@@ -51,7 +52,9 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(0, customer.AmountOverDue);
+            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+
+            Assert.Equal(0, partyFinancial.AmountOverDue);
         }
 
         [Fact]
@@ -105,21 +108,25 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1007, customer1.SubAccountNumber);
+            var partyFinancial1 = customer1.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship1.InternalOrganisation));
+
+            Assert.Equal(1007, partyFinancial1.SubAccountNumber);
 
             var customer2 = new PersonBuilder(this.Session).WithLastName("customer2").Build();
             var customerRelationship2 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();
+            var partyFinancial2 = customer2.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
 
             this.Session.Derive();
 
-            Assert.Equal(1015, customer2.SubAccountNumber);
+            Assert.Equal(1015, partyFinancial2.SubAccountNumber);
 
             var customer3 = new PersonBuilder(this.Session).WithLastName("customer3").Build();
             var customerRelationship3 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer3).Build();
+            var partyFinancial3 = customer3.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship3.InternalOrganisation));
 
             this.Session.Derive();
 
-            Assert.Equal(1023, customer3.SubAccountNumber);
+            Assert.Equal(1023, partyFinancial3.SubAccountNumber);
         }
 
         [Fact]
@@ -143,15 +150,17 @@ namespace Allors.Domain
             var internalOrganisation2 = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("internalOrganisation2")
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             var customerRelationship2 = new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer2)
+                .WithInternalOrganisation(internalOrganisation2)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            customer2.SubAccountNumber = 19;
+            var partyFinancial = customer2.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
+            partyFinancial.SubAccountNumber = 19;
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -162,6 +171,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
@@ -193,7 +203,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(300M, customer.AmountDue);
+            Assert.Equal(300M, partyFinancial.AmountDue);
 
             new ReceiptBuilder(this.Session)
                 .WithAmount(50)
@@ -202,7 +212,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(250, customer.AmountDue);
+            Assert.Equal(250, partyFinancial.AmountDue);
 
             new ReceiptBuilder(this.Session)
                 .WithAmount(200)
@@ -211,7 +221,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(50, customer.AmountDue);
+            Assert.Equal(50, partyFinancial.AmountDue);
 
             new ReceiptBuilder(this.Session)
                 .WithAmount(50)
@@ -220,7 +230,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(0, customer.AmountDue);
+            Assert.Equal(0, partyFinancial.AmountDue);
         }
 
         [Fact]
@@ -228,7 +238,8 @@ namespace Allors.Domain
         {
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
-            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow.AddDays(-31)).WithCustomer(customer).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow.AddDays(-31)).WithCustomer(customer).Build();
+            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
@@ -262,7 +273,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(100M, customer.AmountOverDue);
+            Assert.Equal(100M, partyFinancial.AmountOverDue);
 
             new ReceiptBuilder(this.Session)
                 .WithAmount(20)
@@ -271,13 +282,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(80, customer.AmountOverDue);
+            Assert.Equal(80, partyFinancial.AmountOverDue);
 
             invoice2.InvoiceDate = DateTime.UtcNow.AddDays(-10);
 
             this.Session.Derive();
 
-            Assert.Equal(280, customer.AmountOverDue);
+            Assert.Equal(280, partyFinancial.AmountOverDue);
         }
     }
 }

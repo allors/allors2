@@ -104,23 +104,23 @@ namespace Allors.Domain
                 this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
             }
 
-            if (this.ExistDefaultPaymentMethod && !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
+            if (this.ExistDefaultCollectionMethod && !this.PaymentMethods.Contains(this.DefaultCollectionMethod))
             {
-                this.AddPaymentMethod(this.DefaultPaymentMethod);
+                this.AddPaymentMethod(this.DefaultCollectionMethod);
             }
 
-            if (!this.ExistDefaultPaymentMethod && this.PaymentMethods.Count == 1)
+            if (!this.ExistDefaultCollectionMethod && this.PaymentMethods.Count == 1)
             {
-                this.DefaultPaymentMethod = this.PaymentMethods.First;
+                this.DefaultCollectionMethod = this.PaymentMethods.First;
             }
 
-            if (!this.ExistDefaultPaymentMethod && this.InternalOrganisation.ExistDefaultPaymentMethod)
+            if (!this.ExistDefaultCollectionMethod && this.InternalOrganisation.ExistDefaultCollectionMethod)
             {
-                this.DefaultPaymentMethod = this.InternalOrganisation.DefaultPaymentMethod;
+                this.DefaultCollectionMethod = this.InternalOrganisation.DefaultCollectionMethod;
 
-                if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultPaymentMethod))
+                if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultCollectionMethod))
                 {
-                    this.AddPaymentMethod(this.DefaultPaymentMethod);
+                    this.AddPaymentMethod(this.DefaultCollectionMethod);
                 }
             }
 

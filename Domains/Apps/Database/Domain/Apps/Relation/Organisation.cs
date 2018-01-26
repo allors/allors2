@@ -39,11 +39,6 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this, contactRelationship);
             }
-
-            if (derivation.HasChangedRole(this, this.Meta.DoAccounting))
-            {
-                derivation.AddDependency(this.DefaultPaymentMethod, this);
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

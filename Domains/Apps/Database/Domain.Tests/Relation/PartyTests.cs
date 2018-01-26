@@ -21,6 +21,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -88,7 +90,8 @@ namespace Allors.Domain
         {
             var organisation = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(organisation).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(organisation).Build();
+            var partyFinancial = organisation.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -138,7 +141,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(242M, organisation.OpenOrderAmount);
+            Assert.Equal(242M, partyFinancial.OpenOrderAmount);
         }
 
         [Fact]
@@ -148,7 +151,8 @@ namespace Allors.Domain
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
-            new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
+            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
@@ -193,8 +197,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(10M, customer.LastYearsRevenue);
-            Assert.Equal(200M, customer.YTDRevenue);
+            Assert.Equal(10M, partyFinancial.LastYearsRevenue);
+            Assert.Equal(200M, partyFinancial.YTDRevenue);
         }
     }
 }

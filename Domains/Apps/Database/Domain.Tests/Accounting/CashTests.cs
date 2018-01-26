@@ -50,7 +50,7 @@ namespace Allors.Domain
 
             var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.DoAccounting = true;
-            internalOrganisation.DefaultPaymentMethod = cash;
+            internalOrganisation.DefaultCollectionMethod = cash;
 
             Assert.False(this.Session.Derive(false).HasErrors);
 

@@ -86,7 +86,7 @@ namespace Allors.Domain
             Assert.Equal(0, store.CreditLimit);
             Assert.Equal(0, store.PaymentGracePeriod);
             Assert.Equal(0, store.ShipmentThreshold);
-            Assert.Equal(internalOrganisation.DefaultPaymentMethod, store.DefaultPaymentMethod);
+            Assert.Equal(internalOrganisation.DefaultCollectionMethod, store.DefaultCollectionMethod);
             Assert.Equal(1, store.PaymentMethods.Count);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), store.DefaultFacility);
         }
@@ -110,7 +110,7 @@ namespace Allors.Domain
                 .WithName("Organisation store")
                 .WithDefaultCarrier(new Carriers(this.Session).Fedex)
                 .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -143,7 +143,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(ownBankAccount, store.DefaultPaymentMethod);
+            Assert.Equal(ownBankAccount, store.DefaultCollectionMethod);
         }
     }
 }

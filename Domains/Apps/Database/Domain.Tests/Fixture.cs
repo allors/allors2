@@ -73,7 +73,7 @@ namespace Allors
                     .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")
                     .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
                     .WithPurchaseOrderNumberPrefix("purchase orderno: ")
-                    .WithDefaultPaymentMethod(ownBankAccount)
+                    .WithDefaultCollectionMethod(ownBankAccount)
                     .Build();
 
                 internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
@@ -97,7 +97,7 @@ namespace Allors
                     .WithDefaultCarrier(new Carriers(session).Fedex)
                     .WithCreditLimit(500)
                     .WithPaymentGracePeriod(10)
-                    .WithDefaultPaymentMethod(paymentMethod)
+                    .WithDefaultCollectionMethod(paymentMethod)
                     .Build();
 
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();

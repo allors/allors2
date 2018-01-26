@@ -19,6 +19,8 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -66,24 +68,27 @@ namespace Allors.Domain
 
             var supplier1 = new OrganisationBuilder(this.Session).WithName("supplier1").Build();
             var supplierRelationship1 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier1).Build();
+            var partyFinancial1 = supplier1.PartyFinancials.First(v => Equals(v.InternalOrganisation, supplierRelationship1.InternalOrganisation));
 
             this.Session.Derive();
 
-            Assert.Equal(1007, supplier1.SubAccountNumber);
+            Assert.Equal(1007, partyFinancial1.SubAccountNumber);
 
             var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").Build();
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier2).Build();
+            var partyFinancial2 = supplier2.PartyFinancials.First(v => Equals(v.InternalOrganisation, supplierRelationship2.InternalOrganisation));
 
             this.Session.Derive();
 
-            Assert.Equal(1015, supplier2.SubAccountNumber);
+            Assert.Equal(1015, partyFinancial2.SubAccountNumber);
 
             var supplier3 = new OrganisationBuilder(this.Session).WithName("supplier3").Build();
             var supplierRelationship3 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier3).Build();
+            var partyFinancial3 = supplier3.PartyFinancials.First(v => Equals(v.InternalOrganisation, supplierRelationship3.InternalOrganisation));
 
             this.Session.Derive();
 
-            Assert.Equal(1023, supplier3.SubAccountNumber);
+            Assert.Equal(1023, partyFinancial3.SubAccountNumber);
         }
 
         [Fact]
@@ -104,15 +109,18 @@ namespace Allors.Domain
             var internalOrganisation2 = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("internalOrganisation2")
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier2)
+                .WithInternalOrganisation(internalOrganisation2)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            supplier2.SubAccountNumber = 19;
+            var partyFinancial2 = supplier2.PartyFinancials.First(v => Equals(v.InternalOrganisation, supplierRelationship2.InternalOrganisation));
+
+            partyFinancial2.SubAccountNumber = 19;
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }

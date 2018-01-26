@@ -95,7 +95,7 @@ namespace Allors.Domain
             var organisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -131,7 +131,7 @@ namespace Allors.Domain
             var organisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -183,7 +183,7 @@ namespace Allors.Domain
             var organisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -248,7 +248,7 @@ namespace Allors.Domain
             var organisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(ownBankAccount)
+                .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
             this.Session.Derive();

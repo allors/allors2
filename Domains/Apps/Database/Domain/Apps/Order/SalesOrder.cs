@@ -84,19 +84,6 @@ namespace Allors.Domain
                 this.VatRegime = this.BillToCustomer.VatRegime;
             }
 
-            if (!this.ExistPaymentMethod)
-            {
-                if (this.ShipToCustomer != null)
-                {
-                    this.PaymentMethod = this.ShipToCustomer.DefaultPaymentMethod;
-                }
-
-                if (!this.ExistPaymentMethod && this.ExistStore)
-                {
-                    this.PaymentMethod = this.Store.DefaultPaymentMethod;
-                }
-            }
-
             if (!this.ExistBillToCustomer && this.ExistShipToCustomer)
             {
                 this.BillToCustomer = this.ShipToCustomer;
@@ -224,9 +211,29 @@ namespace Allors.Domain
                 this.VatRegime = this.BillToCustomer.VatRegime;
             }
 
+            if (!this.ExistPaymentMethod)
+            {
+                var partyFinancial = this.ShipToCustomer.PartyFinancials.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+
+                if (!this.ExistShipToCustomer && partyFinancial != null)
+                {
+                    this.PaymentMethod = partyFinancial.DefaultPaymentMethod;
+                }
+
+                if (!this.ExistPaymentMethod && this.ExistStore)
+                {
+                    this.PaymentMethod = this.Store.DefaultCollectionMethod;
+                }
+            }
+
             if (!this.ExistPaymentMethod && this.ExistBillToCustomer)
             {
-                this.PaymentMethod = this.BillToCustomer.DefaultPaymentMethod ?? this.Store.DefaultPaymentMethod;
+                var partyFinancial = this.BillToCustomer.PartyFinancials.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+
+                if (partyFinancial != null)
+                {
+                    this.PaymentMethod = partyFinancial.DefaultPaymentMethod ?? this.Store.DefaultCollectionMethod;
+                }
             }
 
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
@@ -293,10 +300,10 @@ namespace Allors.Domain
         public void AppsConfirm(OrderConfirm method)
         {
             var orderThreshold = this.Store.OrderThreshold;
+            var partyFinancial = this.BillToCustomer.PartyFinancials.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
 
-
-            decimal amountOverDue = this.BillToCustomer.AmountOverDue;
-            decimal creditLimit = this.BillToCustomer.CreditLimit ?? (this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0);
+            decimal amountOverDue = partyFinancial.AmountOverDue;
+            decimal creditLimit = partyFinancial.CreditLimit ?? (this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0);
 
             if (amountOverDue > creditLimit || this.TotalExVat < orderThreshold)
             {

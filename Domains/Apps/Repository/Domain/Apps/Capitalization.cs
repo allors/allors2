@@ -10,6 +10,8 @@ namespace Allors.Repository
     public partial class Capitalization : InternalAccountingTransaction 
     {
         #region inherited properties
+        public InternalOrganisation InternalOrganisation { get; set; }
+
         public AccountingTransactionDetail[] AccountingTransactionDetails { get; set; }
 
         public string Description { get; set; }

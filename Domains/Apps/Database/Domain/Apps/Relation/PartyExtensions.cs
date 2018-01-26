@@ -143,6 +143,11 @@ namespace Allors.Domain
             }
         }
 
+        public static void AppsOnBuild(this Party party, ObjectOnBuild method)
+        {
+            var session = party.Strategy.Session;
+        }
+
         public static void AppsOnDerive(this Party @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -304,40 +309,49 @@ namespace Allors.Domain
             }
         }
 
-        public static void AppsOnDeriveOpenOrderAmount(this Party party)
+        public static void AppsOnDeriveOpenOrderAmount(this Party @this)
         {
-            party.OpenOrderAmount = 0;
-            foreach (SalesOrder salesOrder in party.SalesOrdersWhereBillToCustomer)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
             {
-                if (!salesOrder.SalesOrderState.Equals(new SalesOrderStates(party.Strategy.Session).Finished) &&
-                    !salesOrder.SalesOrderState.Equals(new SalesOrderStates(party.Strategy.Session).Cancelled))
+                partyFinancial.OpenOrderAmount = 0;
+                foreach (SalesOrder salesOrder in @this.SalesOrdersWhereBillToCustomer)
                 {
-                    party.OpenOrderAmount += salesOrder.TotalIncVat;
+                    if (Equals(salesOrder.TakenBy, partyFinancial.InternalOrganisation) &&
+                        !salesOrder.SalesOrderState.Equals(new SalesOrderStates(@this.Strategy.Session).Finished) &&
+                        !salesOrder.SalesOrderState.Equals(new SalesOrderStates(@this.Strategy.Session).Cancelled))
+                    {
+                        partyFinancial.OpenOrderAmount += salesOrder.TotalIncVat;
+                    }
                 }
             }
         }
 
         public static void AppsOnDeriveAmountDue(this Party @this, IDerivation derivation)
         {
-            @this.AmountDue = 0;
-
-            foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
             {
-                if (!salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
+                partyFinancial.AmountDue = 0;
+
+                foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
                 {
-                    if (salesInvoice.AmountPaid > 0)
+                    if (Equals(salesInvoice.BilledFrom, partyFinancial.InternalOrganisation) && 
+                        !salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
                     {
-                        @this.AmountDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
-                    }
-                    else
-                    {
-                        foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
+                        if (salesInvoice.AmountPaid > 0)
                         {
-                            if (!invoiceItem.SalesInvoiceItemState.Equals(new SalesInvoiceItemStates(@this.Strategy.Session).Paid))
+                            partyFinancial.AmountDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
+                        }
+                        else
+                        {
+                            foreach (SalesInvoiceItem invoiceItem in salesInvoice.InvoiceItems)
                             {
-                                if (invoiceItem.ExistTotalIncVat)
+                                if (!invoiceItem.SalesInvoiceItemState.Equals(
+                                    new SalesInvoiceItemStates(@this.Strategy.Session).Paid))
                                 {
-                                    @this.AmountDue += invoiceItem.TotalIncVat - invoiceItem.AmountPaid;
+                                    if (invoiceItem.ExistTotalIncVat)
+                                    {
+                                        partyFinancial.AmountDue += invoiceItem.TotalIncVat - invoiceItem.AmountPaid;
+                                    }
                                 }
                             }
                         }
@@ -348,42 +362,52 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveAmountOverDue(this Party @this, IDerivation derivation)
         {
-            @this.AmountOverDue = 0;
-
-            foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
             {
-                if (!salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
+                partyFinancial.AmountOverDue = 0;
+
+                foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
                 {
-                    var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
-
-                    if (salesInvoice.DueDate.HasValue)
+                    if (Equals(salesInvoice.BilledFrom, partyFinancial.InternalOrganisation) && 
+                        !salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
                     {
-                        var dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod);
+                        var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
 
-                        if (DateTime.UtcNow > dueDate)
+                        if (salesInvoice.DueDate.HasValue)
                         {
-                            @this.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
+                            var dueDate = salesInvoice.DueDate.Value.AddDays(gracePeriod);
+
+                            if (DateTime.UtcNow > dueDate)
+                            {
+                                partyFinancial.AmountOverDue += salesInvoice.TotalIncVat - salesInvoice.AmountPaid;
+                            }
                         }
                     }
                 }
             }
         }
 
-        public static void AppsOnDeriveRevenue(this Party party)
+        public static void AppsOnDeriveRevenue(this Party @this)
         {
-            party.YTDRevenue = 0;
-            party.LastYearsRevenue = 0;
-
-            foreach (PartyRevenue partyRevenue in party.PartyRevenuesWhereParty)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
             {
-                if (partyRevenue.Year == DateTime.UtcNow.Year)
-                {
-                    party.YTDRevenue += partyRevenue.Revenue;
-                }
+                partyFinancial.YTDRevenue = 0;
+                partyFinancial.LastYearsRevenue = 0;
 
-                if (partyRevenue.Year == DateTime.UtcNow.AddYears(-1).Year)
+                foreach (PartyRevenue partyRevenue in @this.PartyRevenuesWhereParty)
                 {
-                    party.LastYearsRevenue += partyRevenue.Revenue;
+                    if (Equals(partyRevenue.InternalOrganisation, partyFinancial.InternalOrganisation))
+                    {
+                        if (partyRevenue.Year == DateTime.UtcNow.Year)
+                        {
+                            partyFinancial.YTDRevenue += partyRevenue.Revenue;
+                        }
+
+                        if (partyRevenue.Year == DateTime.UtcNow.AddYears(-1).Year)
+                        {
+                            partyFinancial.LastYearsRevenue += partyRevenue.Revenue;
+                        }
+                    }
                 }
             }
         }

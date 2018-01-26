@@ -19,6 +19,8 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -58,7 +60,7 @@ namespace Allors.Domain
             Assert.Equal(order.PreviousShipToCustomer, order.ShipToCustomer);
             Assert.Equal(order.VatRegime, order.BillToCustomer.VatRegime);
             Assert.Equal(new Stores(this.Session).FindBy(M.Store.Name, "store"), order.Store);
-            Assert.Equal(order.Store.DefaultPaymentMethod, order.PaymentMethod);
+            Assert.Equal(order.Store.DefaultCollectionMethod, order.PaymentMethod);
             Assert.Equal(order.Store.DefaultShipmentMethod, order.ShipmentMethod);
         }
 
@@ -1031,13 +1033,15 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            customer.CreditLimit = 100M;
 
-            new CustomerRelationshipBuilder(this.Session)
+            var customerRelationship = new CustomerRelationshipBuilder(this.Session)
                 .WithCustomer(customer)
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithFromDate(DateTime.UtcNow.AddYears(-2))
                 .Build();
+
+            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            partyFinancial.CreditLimit = 100M;
 
             this.Session.Derive();
             this.Session.Commit();

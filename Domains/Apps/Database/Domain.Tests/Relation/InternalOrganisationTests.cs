@@ -69,7 +69,7 @@ namespace Allors.Domain
             var internalOrganisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(this.ownBankAccount)
+                .WithDefaultCollectionMethod(this.ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -85,7 +85,7 @@ namespace Allors.Domain
             var internalOrganisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(this.ownBankAccount)
+                .WithDefaultCollectionMethod(this.ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -101,7 +101,7 @@ namespace Allors.Domain
             var internalOrganisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(this.ownBankAccount)
+                .WithDefaultCollectionMethod(this.ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -117,7 +117,7 @@ namespace Allors.Domain
             var internalOrganisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
                 .WithName("Internal")
-                .WithDefaultPaymentMethod(this.ownBankAccount)
+                .WithDefaultCollectionMethod(this.ownBankAccount)
                 .Build();
 
             this.Session.Derive();
@@ -246,11 +246,11 @@ namespace Allors.Domain
         public void GivenInternalOrganisationWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
         {
             var internalOrganisation = this.Session.Extent<InternalOrganisation>().First;
-            internalOrganisation.RemoveDefaultPaymentMethod();
+            internalOrganisation.RemoveDefaultCollectionMethod();
             
             this.Session.Derive();
 
-            Assert.True(internalOrganisation.ExistDefaultPaymentMethod);
+            Assert.True(internalOrganisation.ExistDefaultCollectionMethod);
         }
         
         private void InstantiateObjects(ISession session)
