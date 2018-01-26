@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace Allors
+﻿namespace Allors
 {
+    using System;
+    using System.IO;
+
     using Allors.Development.Repository.Tasks;
 
     class Program
@@ -21,22 +22,44 @@ namespace Allors
 
         private static int Default()
         {
-            var config = new System.Collections.Generic.Dictionary<string, string>()
-                             {
-                                { "Templates/adapters.cs.stg", "Domain/Generated" },
-                             };
+            string[,] config =
+                {
+                    { "Templates/adapters.cs.stg", "Domain/Generated" },
+                };
 
-            foreach (var entry in config)
+            for (var i = 0; i < config.GetLength(0); i++)
             {
-                Console.WriteLine("-> " + entry.Value);
-                var log = Generate.Execute(entry.Key, entry.Value);
+                var template = config[i, 0];
+                var output = config[i, 1];
+
+                Console.WriteLine("-> " + output);
+
+                RemoveDirectory(output);
+
+                var log = Generate.Execute(template, output);
                 if (log.ErrorOccured)
                 {
                     return 1;
                 }
             }
 
+
             return 0;
+        }
+
+        private static void RemoveDirectory(string output)
+        {
+            var directoryInfo = new DirectoryInfo(output);
+            if (directoryInfo.Exists)
+            {
+                try
+                {
+                    directoryInfo.Delete(true);
+                }
+                catch
+                {
+                }
+            }
         }
     }
 }

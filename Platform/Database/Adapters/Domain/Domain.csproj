@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj" />
-    <ProjectReference Include="..\Meta\Meta.csproj" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\..\Framework\Allors.Framework\Allors.Framework.csproj" />
+    <ProjectReference Include="..\Meta\Meta.csproj" />
   </ItemGroup>
 
 </Project>

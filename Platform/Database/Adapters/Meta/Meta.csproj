@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Domains\Core\Database\Meta\Core\**\*.cs" />
+    <Compile Include="..\..\..\..\Domains\Core\Database\Meta\Core\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj" />
+    <ProjectReference Include="..\..\Framework\Allors.Framework\Allors.Framework.csproj" />
   </ItemGroup>
 
 </Project>

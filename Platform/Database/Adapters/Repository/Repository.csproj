@@ -41,31 +41,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\AssemblyInfo.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\AssemblyInfo.cs">
       <Link>Core\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\DerivedAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\DerivedAttribute.cs">
       <Link>Core\Attributes\DerivedAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\IndexedAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\IndexedAttribute.cs">
       <Link>Core\Attributes\IndexedAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\PrecisionAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\PrecisionAttribute.cs">
       <Link>Core\Attributes\PrecisionAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\ScaleAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\ScaleAttribute.cs">
       <Link>Core\Attributes\ScaleAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\SizeAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\SizeAttribute.cs">
       <Link>Core\Attributes\SizeAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\SyncedAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\SyncedAttribute.cs">
       <Link>Core\Attributes\SyncedAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Attributes\WorkspaceAttribute.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Attributes\WorkspaceAttribute.cs">
       <Link>Core\Attributes\WorkspaceAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Domains\Core\Repository\Domain\Core\Common\Object.cs">
+    <Compile Include="..\..\..\..\Domains\Core\Repository\Domain\Core\Common\Object.cs">
       <Link>Core\Common\Object.cs</Link>
     </Compile>
     <Compile Include="Adapters\AssemblyInfo.cs" />
@@ -110,7 +110,7 @@
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Repository\Attributes\Attributes.csproj">
+    <ProjectReference Include="..\..\..\Repository\Attributes\Attributes.csproj">
       <Project>{5db05e81-88cc-4d0d-92f8-18a8ecb50bc2}</Project>
       <Name>Attributes</Name>
     </ProjectReference>

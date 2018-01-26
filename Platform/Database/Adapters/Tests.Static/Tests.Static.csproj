@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\Allors\Allors.csproj" />
+    <ProjectReference Include="..\..\Framework\Allors.Framework\Allors.Framework.csproj" />
     <ProjectReference Include="..\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
     <ProjectReference Include="..\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
