@@ -33,10 +33,6 @@ namespace Allors.Repository
 
         public PostalAddress GeneralCorrespondence { get; set; }
 
-        public decimal YTDRevenue { get; set; }
-
-        public decimal LastYearsRevenue { get; set; }
-
         public TelecommunicationsNumber BillingInquiriesFax { get; set; }
 
         public Qualification[] Qualifications { get; set; }
@@ -68,8 +64,6 @@ namespace Allors.Repository
         public PartySkill[] PartySkills { get; set; }
 
         public PartyClassification[] PartyClassifications { get; set; }
-
-        public bool ExcludeFromDunning { get; set; }
 
         public BankAccount[] BankAccounts { get; set; }
 
@@ -103,11 +97,7 @@ namespace Allors.Repository
 
         public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
 
-        public decimal OpenOrderAmount { get; set; }
-
         public TelecommunicationsNumber GeneralFaxNumber { get; set; }
-
-        public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
 
@@ -116,22 +106,6 @@ namespace Allors.Repository
         public Currency PreferredCurrency { get; set; }
 
         public VatRegime VatRegime { get; set; }
-
-        public decimal SimpleMovingAverage { get; set; }
-
-        public decimal AmountOverDue { get; set; }
-
-        public DunningType DunningType { get; set; }
-
-        public decimal AmountDue { get; set; }
-
-        public DateTime LastReminderDate { get; set; }
-
-        public decimal CreditLimit { get; set; }
-
-        public int SubAccountNumber { get; set; }
-
-        public DateTime BlockedForDunning { get; set; }
 
         public Agreement[] Agreements { get; set; }
 

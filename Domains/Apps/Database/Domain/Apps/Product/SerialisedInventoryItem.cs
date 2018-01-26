@@ -33,7 +33,7 @@ namespace Allors.Domain
 
             if (!this.ExistFacility)
             {
-                var internalOrganisation = this.Good.Organisation as InternalOrganisation;
+                var internalOrganisation = this.Good?.Organisation as InternalOrganisation;
                 if (internalOrganisation != null)
                 {
                     this.Facility = internalOrganisation.DefaultFacility;

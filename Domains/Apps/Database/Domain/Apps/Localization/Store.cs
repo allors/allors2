@@ -99,7 +99,14 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (!this.ExistDefaultFacility)
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
+            {
+                this.InternalOrganisation = internalOrganisations.First();
+            }
+
+            if (!this.ExistDefaultFacility && this.ExistInternalOrganisation)
             {
                 this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
             }

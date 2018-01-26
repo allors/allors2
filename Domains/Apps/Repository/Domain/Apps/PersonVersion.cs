@@ -32,10 +32,6 @@ namespace Allors.Repository
 
         public PostalAddress GeneralCorrespondence { get; set; }
 
-        public decimal YTDRevenue { get; set; }
-
-        public decimal LastYearsRevenue { get; set; }
-
         public TelecommunicationsNumber BillingInquiriesFax { get; set; }
 
         public Qualification[] Qualifications { get; set; }
@@ -67,8 +63,6 @@ namespace Allors.Repository
         public PartySkill[] PartySkills { get; set; }
 
         public PartyClassification[] PartyClassifications { get; set; }
-
-        public bool ExcludeFromDunning { get; set; }
 
         public BankAccount[] BankAccounts { get; set; }
 
@@ -102,11 +96,7 @@ namespace Allors.Repository
 
         public OrganisationContactRelationship[] CurrentOrganisationContactRelationships { get; set; }
 
-        public decimal OpenOrderAmount { get; set; }
-
         public TelecommunicationsNumber GeneralFaxNumber { get; set; }
-
-        public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public PartyContactMechanism[] CurrentPartyContactMechanisms { get; set; }
 
@@ -115,22 +105,6 @@ namespace Allors.Repository
         public Currency PreferredCurrency { get; set; }
 
         public VatRegime VatRegime { get; set; }
-
-        public decimal SimpleMovingAverage { get; set; }
-
-        public decimal AmountOverDue { get; set; }
-
-        public DunningType DunningType { get; set; }
-
-        public decimal AmountDue { get; set; }
-
-        public DateTime LastReminderDate { get; set; }
-
-        public decimal CreditLimit { get; set; }
-
-        public int SubAccountNumber { get; set; }
-
-        public DateTime BlockedForDunning { get; set; }
 
         public Agreement[] Agreements { get; set; }
 
@@ -159,17 +133,6 @@ namespace Allors.Repository
         public Salutation Salutation { get; set; }
 
         #region Allors
-        [Id("32827E26-6631-46B1-836F-4C00B3055B32")]
-        [AssociationId("EE54E2ED-A85C-47C6-AD69-58666247F16D")]
-        [RoleId("843BCBE8-2D30-4D84-934B-522C093C2108")]
-        #endregion
-        [Derived]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal YTDCommission { get; set; }
-
-        #region Allors
         [Id("0C856758-192D-41E8-83CA-9471D41AA832")]
         [AssociationId("DDAD2C2A-DEA1-4527-9AAE-8415CD70827D")]
         [RoleId("4C310BE9-41A1-40C8-9553-D74D96E46BEA")]
@@ -189,17 +152,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
         public Citizenship Citizenship { get; set; }
-
-        #region Allors
-        [Id("47BA980E-AD0E-4E94-AD8B-7D967AA5B9BE")]
-        [AssociationId("E3CD449D-03CC-4A1F-A17D-3CCD602994A7")]
-        [RoleId("CA98E168-8726-413D-8F37-91DF1A7840A0")]
-        #endregion
-        [Derived]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal LastYearsCommission { get; set; }
 
         #region Allors
         [Id("1EB80365-57C9-4C63-B7A3-A1A956C098B1")]
