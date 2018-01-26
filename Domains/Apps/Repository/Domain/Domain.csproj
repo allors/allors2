@@ -186,7 +186,7 @@
       <Link>Core\Common\Object.cs</Link>
     </Compile>
     <Compile Include="Apps\OrderTermType.cs" />
-    <Compile Include="Apps\PartyFinancial.cs" />
+    <Compile Include="Apps\PartyFinancialRelationship.cs" />
     <Compile Include="Apps\SalesTerm.cs" />
     <Compile Include="Apps\InvoiceTermType.cs" />
     <Compile Include="Apps\OrderTerm.cs" />
