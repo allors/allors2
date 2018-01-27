@@ -170,7 +170,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
             else
             {
-                reference.VersionId = version;
+                reference.Version = version;
                 reference.Exists = true;
             }
 

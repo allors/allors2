@@ -109,7 +109,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal long ObjectId { get; }
 
-        internal long VersionId
+        internal long Version
         {
             get
             {

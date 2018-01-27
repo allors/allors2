@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="DatabaseSession.cs" company="Allors bvba">
+// <copyright file="Session.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -607,7 +607,7 @@ namespace Allors.Adapters.Object.SqlClient
                     long version;
                     if (versionByObjectId.TryGetValue(association.ObjectId, out version))
                     {
-                        association.VersionId = version;
+                        association.Version = version;
                         association.Exists = true;
                     }
                     else

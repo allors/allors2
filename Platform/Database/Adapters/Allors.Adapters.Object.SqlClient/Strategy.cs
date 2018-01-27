@@ -63,7 +63,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         public long ObjectId { get; }
 
-        public long ObjectVersion => this.reference.VersionId;
+        public long ObjectVersion => this.reference.Version;
 
         public bool IsDeleted => !this.reference.Exists;
 

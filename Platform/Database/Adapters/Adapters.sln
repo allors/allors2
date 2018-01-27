@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meta", "Meta\Meta.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.Static", "Tests.Static\Tests.Static.csproj", "{87A65550-C6FE-4F22-BD04-95CA3FEF751F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Adapters.Object.Npgsql", "Allors.Adapters.Object.Npgsql\Allors.Adapters.Object.Npgsql.csproj", "{4B7B90FE-5288-4229-80BD-F519B9098FCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{87A65550-C6FE-4F22-BD04-95CA3FEF751F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87A65550-C6FE-4F22-BD04-95CA3FEF751F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87A65550-C6FE-4F22-BD04-95CA3FEF751F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B7B90FE-5288-4229-80BD-F519B9098FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B7B90FE-5288-4229-80BD-F519B9098FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B7B90FE-5288-4229-80BD-F519B9098FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B7B90FE-5288-4229-80BD-F519B9098FCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

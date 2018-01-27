@@ -171,7 +171,7 @@ namespace Allors.Adapters.Object.SqlClient
                         this.Session.State.ModifiedRolesByReference.TryGetValue(associationReference, out modifiedRoles);
                     }
 
-                    var cachedObject = cache.GetOrCreateCachedObject(@class, associatoinId, associationReference.VersionId);
+                    var cachedObject = cache.GetOrCreateCachedObject(@class, associatoinId, associationReference.Version);
 
                     for (var i = 0; i < sortedUnitRoles.Length; i++)
                     {
@@ -263,7 +263,7 @@ namespace Allors.Adapters.Object.SqlClient
                     var associationId = reader.GetInt64(0);
                     var associationReference = this.Session.State.ReferenceByObjectId[associationId];
 
-                    var cachedObject = cache.GetOrCreateCachedObject(associationReference.Class, associationId, associationReference.VersionId);
+                    var cachedObject = cache.GetOrCreateCachedObject(associationReference.Class, associationId, associationReference.Version);
 
                     var roleIdValue = reader[1];
 
@@ -324,7 +324,7 @@ namespace Allors.Adapters.Object.SqlClient
             var cache = this.Database.Cache;
             foreach (var reference in references)
             {
-                var cachedObject = cache.GetOrCreateCachedObject(reference.Class, reference.ObjectId, reference.VersionId);
+                var cachedObject = cache.GetOrCreateCachedObject(reference.Class, reference.ObjectId, reference.Version);
 
                 long roleId;
                 if (roleByAssociation.TryGetValue(reference, out roleId))
@@ -400,7 +400,7 @@ namespace Allors.Adapters.Object.SqlClient
                 var association = dictionaryEntry.Key;
                 var roleIds = dictionaryEntry.Value;
 
-                var cachedObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.VersionId);
+                var cachedObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.Version);
                 cachedObject.SetValue(roleType, roleIds?.ToArray() ?? EmptyObjectIds);
 
                 if (roleIds != null)
@@ -468,7 +468,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                 if (modifiedRoles == null || !modifiedRoles.ModifiedRoleByRoleType.ContainsKey(roleType))
                 {
-                    var cachedObject = cache.GetOrCreateCachedObject(reference.Class, reference.ObjectId, reference.VersionId);
+                    var cachedObject = cache.GetOrCreateCachedObject(reference.Class, reference.ObjectId, reference.Version);
 
                     List<long> roleIds;
                     if (rolesByAssociation.TryGetValue(reference, out roleIds))
@@ -813,7 +813,7 @@ namespace Allors.Adapters.Object.SqlClient
                 {
                     if (!association.IsUnknownVersion)
                     {
-                        var cacheObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.VersionId);
+                        var cacheObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.Version);
                         if (cacheObject.TryGetValue(roleType, out role))
                         {
                             continue;
@@ -853,7 +853,7 @@ namespace Allors.Adapters.Object.SqlClient
                 {
                     if (!association.IsUnknownVersion)
                     {
-                        var cacheObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.VersionId);
+                        var cacheObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.Version);
 
                         object role;
                         if (cacheObject.TryGetValue(roleType, out role))
@@ -896,7 +896,7 @@ namespace Allors.Adapters.Object.SqlClient
                 {
                     if (!association.IsUnknownVersion)
                     {
-                        var cacheObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.VersionId);
+                        var cacheObject = cache.GetOrCreateCachedObject(association.Class, association.ObjectId, association.Version);
 
                         object role;
                         if (cacheObject.TryGetValue(roleType, out role))
