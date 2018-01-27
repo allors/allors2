@@ -21,6 +21,20 @@ namespace Allors.Domain
 
     public static partial class InventoryItemExtensions
     {
+        public static void AppsOnDerive(this InventoryItem @this, ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (!@this.ExistFacility)
+            {
+                var internalOrganisation = @this.Good?.Organisation as InternalOrganisation;
+                if (internalOrganisation != null)
+                {
+                    @this.Facility = internalOrganisation.DefaultFacility;
+                }
+            }
+        }
+
         public static void AppsOnDeriveProductCategories(this InventoryItem @this, IDerivation derivation)
         {
             @this.RemoveDerivedProductCategories();

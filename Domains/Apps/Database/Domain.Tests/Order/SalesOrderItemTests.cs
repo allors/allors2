@@ -624,6 +624,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(this.vatRate21)
                 .WithName("good2")
@@ -1334,7 +1335,12 @@ namespace Allors.Domain
 
             var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
 
-            var testPart = new FinishedGoodBuilder(this.Session).WithName("part1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var testPart = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithName("part1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var testgood = new GoodBuilder(this.Session)
                 .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")

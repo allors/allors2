@@ -1040,7 +1040,10 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.AddYears(-2))
                 .Build();
 
-            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            this.Session.Derive();
+            this.Session.Commit();
+
+            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
             partyFinancial.CreditLimit = 100M;
 
             this.Session.Derive();
@@ -1242,11 +1245,13 @@ namespace Allors.Domain
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -1324,11 +1329,13 @@ namespace Allors.Domain
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -1478,11 +1485,13 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -2293,11 +2302,13 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -2361,11 +2372,13 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -2436,11 +2449,13 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -2511,11 +2526,13 @@ namespace Allors.Domain
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part1 = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
+
             var part2 = new FinishedGoodBuilder(this.Session)
                 .WithName("part2")
                 .WithInternalOrganisation(this.InternalOrganisation)
@@ -2676,6 +2693,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(person2).WithInternalOrganisation(this.InternalOrganisation).Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var part = new FinishedGoodBuilder(this.Session)
                 .WithName("part1")
                 .WithInternalOrganisation(this.InternalOrganisation)

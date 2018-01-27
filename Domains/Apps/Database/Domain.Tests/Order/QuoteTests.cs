@@ -98,6 +98,7 @@ namespace Allors.Domain
         public void GivenProductQuote_WhenDeriving_ThenTotalPriceIsDerivedFromItems()
         {
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good1")

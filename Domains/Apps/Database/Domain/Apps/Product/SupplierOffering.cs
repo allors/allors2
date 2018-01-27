@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using Meta;
@@ -39,6 +42,8 @@ namespace Allors.Domain
 
             if (this.Supplier is Organisation supplier && good != null)
             {
+                var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
                 if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {
                     foreach (Facility facility in new Facilities(this.strategy.Session).Extent())
@@ -49,14 +54,16 @@ namespace Allors.Domain
 
                         if (inventoryItem == null)
                         {
-                            new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithGood(good).Build();
+                            new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
+                                .WithFacility(facility)
+                                .WithGood(good).Build();
                         }
                     }
                 }
                 else
                 {
                     if (good.ExistFinishedGood &&
-                        good.FinishedGood.ExistInventoryItemKind && 
+                        good.FinishedGood.ExistInventoryItemKind &&
                         good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                     {
                         foreach (Facility facility in new Facilities(this.strategy.Session).Extent())
@@ -70,7 +77,7 @@ namespace Allors.Domain
                                 new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithPart(good.FinishedGood).Build();
                             }
                         }
-                    }                   
+                    }
                 }
             }
         }

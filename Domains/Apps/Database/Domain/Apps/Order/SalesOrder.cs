@@ -213,7 +213,7 @@ namespace Allors.Domain
 
             if (!this.ExistPaymentMethod)
             {
-                var partyFinancial = this.ShipToCustomer.PartyFinancials.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+                var partyFinancial = this.ShipToCustomer.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
 
                 if (!this.ExistShipToCustomer && partyFinancial != null)
                 {
@@ -228,7 +228,7 @@ namespace Allors.Domain
 
             if (!this.ExistPaymentMethod && this.ExistBillToCustomer)
             {
-                var partyFinancial = this.BillToCustomer.PartyFinancials.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+                var partyFinancial = this.BillToCustomer.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
 
                 if (partyFinancial != null)
                 {
@@ -300,7 +300,7 @@ namespace Allors.Domain
         public void AppsConfirm(OrderConfirm method)
         {
             var orderThreshold = this.Store.OrderThreshold;
-            var partyFinancial = this.BillToCustomer.PartyFinancials.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+            var partyFinancial = this.BillToCustomer.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
 
             decimal amountOverDue = partyFinancial.AmountOverDue;
             decimal creditLimit = partyFinancial.CreditLimit ?? (this.Store.ExistCreditLimit ? this.Store.CreditLimit : 0);

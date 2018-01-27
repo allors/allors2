@@ -74,12 +74,14 @@ namespace Allors
                     .WithPurchaseInvoiceNumberPrefix("incoming invoiceno: ")
                     .WithPurchaseOrderNumberPrefix("purchase orderno: ")
                     .WithDefaultCollectionMethod(ownBankAccount)
+                    .WithSubAccountCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                     .Build();
 
                 internalOrganisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                     .WithUseAsDefault(true)
                     .WithContactMechanism(postalAddress)
                     .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
+                    .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
                     .Build());
 
                 var facility = new FacilityBuilder(session).WithFacilityType(new FacilityTypes(session).Warehouse).WithName("facility").Build();

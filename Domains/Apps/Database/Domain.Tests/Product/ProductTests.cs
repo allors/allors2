@@ -95,7 +95,11 @@ namespace Allors.Domain
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var finishedGood = new FinishedGoodBuilder(this.Session).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithName("finishedGood")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
             
                 this.Session.Derive();
             this.Session.Commit();
@@ -152,6 +156,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
@@ -174,6 +179,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
@@ -217,6 +223,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
@@ -276,6 +283,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
@@ -355,6 +363,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)

@@ -32,8 +32,12 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new FinishedGoodBuilder(this.Session).WithName("part")
-                            .WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new FinishedGoodBuilder(this.Session)
+                            .WithInternalOrganisation(this.InternalOrganisation)
+                            .WithName("part")
+                            .WithManufacturerId("10101")
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
                 .Build();
 
             this.Session.Derive();
@@ -47,7 +51,11 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                            .WithInternalOrganisation(this.InternalOrganisation)
+                            .WithName("part")
+                            .WithManufacturerId("10101")
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
                 .Build();
 
             this.Session.Derive();
@@ -59,6 +67,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -76,7 +85,12 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithPart(new FinishedGoodBuilder(this.Session).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build());
+            builder.WithPart(new FinishedGoodBuilder(this.Session)
+                    .WithInternalOrganisation(this.InternalOrganisation)
+                    .WithName("part")
+                    .WithManufacturerId("10101")
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                    .Build());
             item = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -96,7 +110,11 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                                .WithInternalOrganisation(this.InternalOrganisation)
+                                .WithName("part")
+                                .WithManufacturerId("10101")
+                                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                                .Build())
                 .Build();
 
             Assert.NotNull(item.AvailableToPromise);
@@ -112,7 +130,11 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                                .WithInternalOrganisation(this.InternalOrganisation)
+                                .WithName("part")
+                                .WithManufacturerId("10101")
+                                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                                .Build())
                 .Build();
 
             Assert.False(item.ExistSku);
@@ -128,6 +150,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -148,7 +171,13 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
-            var part = new FinishedGoodBuilder(this.Session).WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithName("part")
+                .WithManufacturerId("10101")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(part)
                 .Build();
@@ -169,6 +198,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -191,6 +221,7 @@ namespace Allors.Domain
         {
             var uom = new UnitsOfMeasure(this.Session).Centimeter;
             var part = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithName("part")
                 .WithManufacturerId("10101")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -217,6 +248,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -244,6 +276,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -403,6 +436,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")

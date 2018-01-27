@@ -450,15 +450,5 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
         PaymentMethod DefaultCollectionMethod { get; set; }
-
-        #region Allors
-        [Id("8B0ECF7B-B0E6-47D4-9E63-E193872F7171")]
-        [AssociationId("551BD142-0B02-4C81-8AE2-5BD32864A885")]
-        [RoleId("CFBF9C67-5997-4889-9AE9-076D6C71E393")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        PartyFinancialRelationship[] PartyFinancials { get; set; }
     }
 }

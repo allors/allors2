@@ -273,6 +273,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate21;
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -365,6 +366,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -373,6 +375,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -491,6 +494,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -502,6 +506,7 @@ namespace Allors.Domain
             good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10202")
                 .WithName("good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -567,6 +572,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -622,6 +628,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -684,6 +691,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -745,6 +753,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -826,6 +835,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -883,6 +893,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -953,6 +964,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -1031,6 +1043,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -1052,7 +1065,6 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             this.Session.Derive();
 
@@ -1138,6 +1150,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate21;
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -1220,6 +1233,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate21;
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -1301,6 +1315,7 @@ namespace Allors.Domain
             this.Session.Commit();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -1381,6 +1396,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate21;
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -1478,6 +1494,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)

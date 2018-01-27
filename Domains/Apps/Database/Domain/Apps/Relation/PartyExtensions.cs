@@ -14,6 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Allors.Domain
@@ -146,6 +147,16 @@ namespace Allors.Domain
         public static void AppsOnBuild(this Party party, ObjectOnBuild method)
         {
             var session = party.Strategy.Session;
+
+            if (!party.ExistLocale)
+            {
+                party.Locale = session.GetSingleton().DefaultLocale;
+            }
+
+            if (!party.ExistPreferredCurrency)
+            {
+                party.PreferredCurrency = session.GetSingleton().PreferredCurrency;
+            }
         }
 
         public static void AppsOnDerive(this Party @this, ObjectOnDerive method)
@@ -271,12 +282,38 @@ namespace Allors.Domain
                 }
             }
 
+            @this.AppsOnDerivePartyFinancialRelationships(derivation);
             @this.AppsOnDeriveCurrentSalesReps(derivation);
             @this.AppsOnDeriveActiveCustomer(derivation);
             @this.AppsOnDeriveOpenOrderAmount();
             @this.AppsOnDeriveAmountDue(derivation);
             @this.AppsOnDeriveAmountOverDue(derivation);
             @this.AppsOnDeriveRevenue();
+        }
+
+        public static void AppsOnDerivePartyFinancialRelationships(this Party @this, IDerivation derivation)
+        {
+            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            foreach (Organisation internalOrganisation in internalOrganisations)
+            {
+                if (internalOrganisation.DoAccounting.HasValue)
+                {
+                    var partyFinancial = @this.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, internalOrganisation));
+                    if (partyFinancial == null)
+                    {
+                        partyFinancial = new PartyFinancialRelationshipBuilder(@this.Strategy.Session)
+                            .WithParty(@this)
+                            .WithInternalOrganisation(internalOrganisation)
+                            .Build();
+                    }
+
+                    if (partyFinancial.SubAccountNumber == 0)
+                    {
+                        partyFinancial.SubAccountNumber = internalOrganisation.NextSubAccountNumber();
+                    }
+                }
+            }
         }
 
         public static void AppsOnDeriveCurrentSalesReps(this Party party, IDerivation derivation)
@@ -311,7 +348,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveOpenOrderAmount(this Party @this)
         {
-            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
             {
                 partyFinancial.OpenOrderAmount = 0;
                 foreach (SalesOrder salesOrder in @this.SalesOrdersWhereBillToCustomer)
@@ -328,13 +365,13 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveAmountDue(this Party @this, IDerivation derivation)
         {
-            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
             {
                 partyFinancial.AmountDue = 0;
 
                 foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
                 {
-                    if (Equals(salesInvoice.BilledFrom, partyFinancial.InternalOrganisation) && 
+                    if (Equals(salesInvoice.BilledFrom, partyFinancial.InternalOrganisation) &&
                         !salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
                     {
                         if (salesInvoice.AmountPaid > 0)
@@ -362,13 +399,13 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveAmountOverDue(this Party @this, IDerivation derivation)
         {
-            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
             {
                 partyFinancial.AmountOverDue = 0;
 
                 foreach (SalesInvoice salesInvoice in @this.SalesInvoicesWhereBillToCustomer)
                 {
-                    if (Equals(salesInvoice.BilledFrom, partyFinancial.InternalOrganisation) && 
+                    if (Equals(salesInvoice.BilledFrom, partyFinancial.InternalOrganisation) &&
                         !salesInvoice.SalesInvoiceState.Equals(new SalesInvoiceStates(@this.Strategy.Session).Paid))
                     {
                         var gracePeriod = salesInvoice.Store.PaymentGracePeriod;
@@ -389,7 +426,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveRevenue(this Party @this)
         {
-            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancials)
+            foreach (PartyFinancialRelationship partyFinancial in @this.PartyFinancialRelationshipsWhereParty)
             {
                 partyFinancial.YTDRevenue = 0;
                 partyFinancial.LastYearsRevenue = 0;

@@ -45,6 +45,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -138,6 +139,7 @@ namespace Allors.Domain
 
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -193,6 +195,7 @@ namespace Allors.Domain
 
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -277,6 +280,7 @@ namespace Allors.Domain
 
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())

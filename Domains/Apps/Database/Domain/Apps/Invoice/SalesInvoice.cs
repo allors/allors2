@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -174,6 +177,12 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+            if (!this.ExistBilledFrom && internalOrganisations.Count() == 1)
+            {
+                this.BilledFrom = internalOrganisations.First();
+            }
+
             if (this.ExistBillToCustomer)
             {
                 var customerRelationships = this.BillToCustomer.CustomerRelationshipsWhereCustomer;
@@ -256,7 +265,7 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            this.AppsOnDeriveRevenues(derivation);
+            //this.AppsOnDeriveRevenues(derivation);
 
             var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 

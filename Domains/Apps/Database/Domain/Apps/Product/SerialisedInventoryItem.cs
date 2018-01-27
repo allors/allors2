@@ -30,15 +30,6 @@ namespace Allors.Domain
             {
                 this.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Good;
             }
-
-            if (!this.ExistFacility)
-            {
-                var internalOrganisation = this.Good?.Organisation as InternalOrganisation;
-                if (internalOrganisation != null)
-                {
-                    this.Facility = internalOrganisation.DefaultFacility;
-                }
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)

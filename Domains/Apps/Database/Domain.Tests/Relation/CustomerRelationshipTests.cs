@@ -39,7 +39,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
             Assert.Equal(0, partyFinancial.AmountDue);
         }
 
@@ -52,7 +52,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             Assert.Equal(0, partyFinancial.AmountOverDue);
         }
@@ -108,24 +108,24 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var partyFinancial1 = customer1.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship1.InternalOrganisation));
+            var partyFinancial1 = customer1.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship1.InternalOrganisation));
 
             Assert.Equal(1007, partyFinancial1.SubAccountNumber);
 
             var customer2 = new PersonBuilder(this.Session).WithLastName("customer2").Build();
             var customerRelationship2 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();
-            var partyFinancial2 = customer2.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
 
             this.Session.Derive();
 
+            var partyFinancial2 = customer2.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
             Assert.Equal(1015, partyFinancial2.SubAccountNumber);
 
             var customer3 = new PersonBuilder(this.Session).WithLastName("customer3").Build();
             var customerRelationship3 = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer3).Build();
-            var partyFinancial3 = customer3.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship3.InternalOrganisation));
 
             this.Session.Derive();
 
+            var partyFinancial3 = customer3.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship3.InternalOrganisation));
             Assert.Equal(1023, partyFinancial3.SubAccountNumber);
         }
 
@@ -149,8 +149,10 @@ namespace Allors.Domain
 
             var internalOrganisation2 = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
+                .WithDoAccounting(true)
                 .WithName("internalOrganisation2")
                 .WithDefaultCollectionMethod(ownBankAccount)
+                .WithSubAccountCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .Build();
 
             var customerRelationship2 = new CustomerRelationshipBuilder(this.Session)
@@ -159,7 +161,9 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var partyFinancial = customer2.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
+            Session.Derive();
+
+            var partyFinancial = customer2.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship2.InternalOrganisation));
             partyFinancial.SubAccountNumber = 19;
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -171,11 +175,15 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+
+            Session.Derive();
+
+            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -239,11 +247,15 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow.AddDays(-31)).WithCustomer(customer).Build();
-            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+
+            Session.Derive();
+
+            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")

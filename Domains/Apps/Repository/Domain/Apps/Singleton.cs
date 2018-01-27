@@ -15,7 +15,17 @@ namespace Allors.Repository
 
         public DateTime LastModifiedDate { get; set; }
         #endregion
-    
+
+        #region Allors
+        [Id("9dee4a94-26d5-410f-a3e3-3fcde21c5c89")]
+        [AssociationId("0322b71b-0389-4393-8b1f-1b3fb12bb7b1")]
+        [RoleId("68f80e6a-7ff4-4f07-b2c5-728459c376ae")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Currency PreferredCurrency { get; set; }
+
         #region Allors
         [Id("d9ea02e5-9aa1-4cbe-9318-06324529a923")]
         [AssociationId("6247e69d-4789-4ee0-a75b-c2de44a5fcce")]

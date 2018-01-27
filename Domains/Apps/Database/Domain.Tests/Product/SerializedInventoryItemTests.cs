@@ -31,6 +31,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var part = new FinishedGoodBuilder(this.Session).WithName("part")
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithManufacturerId("10101")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithSku("sku")
@@ -58,6 +59,7 @@ namespace Allors.Domain
             Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithGood(new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .Build());
@@ -72,7 +74,11 @@ namespace Allors.Domain
         {
             var item = new SerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithName("part").WithManufacturerId("10101").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                            .WithInternalOrganisation(this.InternalOrganisation)
+                            .WithName("part")
+                            .WithManufacturerId("10101")
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .Build())
                 .Build();
 
             Assert.Equal(new SerialisedInventoryItemStates(this.Session).Good, item.SerialisedInventoryItemState);

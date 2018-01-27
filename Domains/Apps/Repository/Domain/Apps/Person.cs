@@ -92,8 +92,6 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultCollectionMethod { get; set; }
 
-        public PartyFinancialRelationship[] PartyFinancials { get; set; }
-
         public User CreatedBy { get; set; }
 
         public User LastModifiedBy { get; set; }

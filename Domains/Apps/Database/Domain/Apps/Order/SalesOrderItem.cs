@@ -753,25 +753,33 @@ namespace Allors.Domain
             }
 
             var toCurrency = this.SalesOrderWhereSalesOrderItem.Currency;
-            var fromCurrency = this.SalesOrderWhereSalesOrderItem.TakenBy.PreferredCurrency;
+            var fromCurrency = this.SalesOrderWhereSalesOrderItem.TakenBy?.PreferredCurrency;
 
-            if (fromCurrency.Equals(toCurrency))
+            if (fromCurrency != null && toCurrency != null)
             {
-                this.TotalBasePriceCustomerCurrency = this.TotalBasePrice;
-                this.TotalDiscountCustomerCurrency = this.TotalDiscount;
-                this.TotalSurchargeCustomerCurrency = this.TotalSurcharge;
-                this.TotalExVatCustomerCurrency = this.TotalExVat;
-                this.TotalVatCustomerCurrency = this.TotalVat;
-                this.TotalIncVatCustomerCurrency = this.TotalIncVat;
-            }
-            else
-            {
-                this.TotalBasePriceCustomerCurrency = Currencies.ConvertCurrency(this.TotalBasePrice, fromCurrency, toCurrency);
-                this.TotalDiscountCustomerCurrency = Currencies.ConvertCurrency(this.TotalDiscount, fromCurrency, toCurrency);
-                this.TotalSurchargeCustomerCurrency = Currencies.ConvertCurrency(this.TotalSurcharge, fromCurrency, toCurrency);
-                this.TotalExVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalExVat, fromCurrency, toCurrency);
-                this.TotalVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalVat, fromCurrency, toCurrency);
-                this.TotalIncVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalIncVat, fromCurrency, toCurrency);
+                if (fromCurrency != null && toCurrency != null && fromCurrency.Equals(toCurrency))
+                {
+                    this.TotalBasePriceCustomerCurrency = this.TotalBasePrice;
+                    this.TotalDiscountCustomerCurrency = this.TotalDiscount;
+                    this.TotalSurchargeCustomerCurrency = this.TotalSurcharge;
+                    this.TotalExVatCustomerCurrency = this.TotalExVat;
+                    this.TotalVatCustomerCurrency = this.TotalVat;
+                    this.TotalIncVatCustomerCurrency = this.TotalIncVat;
+                }
+                else
+                {
+                    this.TotalBasePriceCustomerCurrency =
+                        Currencies.ConvertCurrency(this.TotalBasePrice, fromCurrency, toCurrency);
+                    this.TotalDiscountCustomerCurrency =
+                        Currencies.ConvertCurrency(this.TotalDiscount, fromCurrency, toCurrency);
+                    this.TotalSurchargeCustomerCurrency =
+                        Currencies.ConvertCurrency(this.TotalSurcharge, fromCurrency, toCurrency);
+                    this.TotalExVatCustomerCurrency =
+                        Currencies.ConvertCurrency(this.TotalExVat, fromCurrency, toCurrency);
+                    this.TotalVatCustomerCurrency = Currencies.ConvertCurrency(this.TotalVat, fromCurrency, toCurrency);
+                    this.TotalIncVatCustomerCurrency =
+                        Currencies.ConvertCurrency(this.TotalIncVat, fromCurrency, toCurrency);
+                }
             }
 
             this.AppsOnDeriveMarkupAndProfitMargin(derivation);
@@ -911,7 +919,7 @@ namespace Allors.Domain
             this.QuantityRequestsShipping += quantity;
             this.QuantityShortFalled -= quantity;
         }
-        
+
         public void AppsShipNow(IDerivation derivation)
         {
             var order = (SalesOrder)this.SalesOrderWhereSalesOrderItem;

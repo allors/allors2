@@ -91,7 +91,7 @@ namespace Allors.Domain
             var organisation = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(organisation).Build();
-            var partyFinancial = organisation.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            var partyFinancial = organisation.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
@@ -101,6 +101,7 @@ namespace Allors.Domain
                   .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good")
@@ -152,9 +153,10 @@ namespace Allors.Domain
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
-            var partyFinancial = customer.PartyFinancials.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
+            var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("goof")

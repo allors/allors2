@@ -186,8 +186,6 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultCollectionMethod { get; set; }
 
-        public PartyFinancialRelationship[] PartyFinancials { get; set; }
-
         public Locale Locale { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

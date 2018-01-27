@@ -51,8 +51,7 @@ namespace Allors.Domain
 
             if (this.ExistCustomer)
             {
-                var customerOrganisation = this.Customer as Organisation;
-                if (customerOrganisation != null && customerOrganisation.ExistContactsUserGroup)
+                if (this.Customer is Organisation customerOrganisation && customerOrganisation.ExistContactsUserGroup)
                 {
                     foreach (Person contact in customerOrganisation.ContactsUserGroup.Members)
                     {

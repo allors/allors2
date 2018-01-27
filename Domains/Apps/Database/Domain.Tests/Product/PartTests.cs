@@ -47,6 +47,7 @@ namespace Allors.Domain
         public void GivenFinishedGood_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithName("FinishedGood")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -58,6 +59,7 @@ namespace Allors.Domain
         public void GivenNewFinishedGood_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithName("FinishedGood")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();

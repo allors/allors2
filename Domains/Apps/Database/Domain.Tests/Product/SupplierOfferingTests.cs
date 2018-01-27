@@ -32,9 +32,14 @@ namespace Allors.Domain
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("organisation").Build();
-            var part = new FinishedGoodBuilder(this.Session).WithName("finishedGood").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build();
+            var part = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithName("finishedGood")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -113,6 +118,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -150,6 +156,7 @@ namespace Allors.Domain
                 .Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
                 .WithName("part")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -162,6 +169,7 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithFinishedGood(finishedGood)

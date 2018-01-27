@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("8F6C4557-AED7-4063-B05F-16573424FC51")]
     #endregion
-    public partial class PartyFinancialRelationship : PartyRelationship, UniquelyIdentifiable, AccessControlledObject
+    public partial class PartyFinancialRelationship : PartyRelationship, UniquelyIdentifiable
     {
         #region inherited properties
 
@@ -24,6 +24,17 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
 
         #endregion
+
+        #region Allors
+        [Id("1A71A148-7F3D-4695-9546-63D282DA77D0")]
+        [AssociationId("EDFF91B9-EFEC-4328-A19A-A6317C36BEAC")]
+        [RoleId("6DB6134C-E5F6-4CBE-A73B-C38EDB3E7DC9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public Party Party { get; set; }
 
         #region Allors
         [Id("AB000DAF-93D2-43EE-8820-924575FEB098")]

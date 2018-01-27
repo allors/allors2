@@ -115,6 +115,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -123,6 +124,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -261,6 +263,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -269,6 +272,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -389,6 +393,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -397,6 +402,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -499,6 +505,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -507,6 +514,7 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")

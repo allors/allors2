@@ -106,14 +106,14 @@ namespace Allors.Domain
                 @this.IncomingShipmentCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            if (!@this.ExistSubAccountCounter)
-            {
-                @this.SubAccountCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
-
             if (!@this.ExistDoAccounting)
             {
                 @this.DoAccounting = false;
+            }
+
+            if (@this.DoAccounting.HasValue && !@this.ExistSubAccountCounter)
+            {
+                @this.SubAccountCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
             if (!@this.ExistInvoiceSequence)
