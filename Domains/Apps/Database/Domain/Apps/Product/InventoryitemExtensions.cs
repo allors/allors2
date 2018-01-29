@@ -33,6 +33,15 @@ namespace Allors.Domain
                     @this.Facility = internalOrganisation.DefaultFacility;
                 }
             }
+
+            if (!@this.ExistFacility)
+            {
+                var internalOrganisation = @this.Part?.InternalOrganisation;
+                if (internalOrganisation != null)
+                {
+                    @this.Facility = internalOrganisation.DefaultFacility;
+                }
+            }
         }
 
         public static void AppsOnDeriveProductCategories(this InventoryItem @this, IDerivation derivation)

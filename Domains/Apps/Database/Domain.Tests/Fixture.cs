@@ -67,7 +67,7 @@ namespace Allors
 
                 var internalOrganisation = new OrganisationBuilder(session)
                     .WithIsInternalOrganisation(true)
-                    .WithDoAccounting(true)
+                    .WithDoAccounting(false)
                     .WithName("internalOrganisation")
                     .WithPreferredCurrency(new Currencies(session).CurrencyByCode["EUR"])
                     .WithIncomingShipmentNumberPrefix("incoming shipmentno: ")

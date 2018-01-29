@@ -41,7 +41,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.ExistInternalOrganisationWhereActivePaymentMethod && (this.InternalOrganisationWhereActivePaymentMethod.DoAccounting ?? false))
+            if (this.ExistInternalOrganisationWhereActiveCollectionMethod&& (this.InternalOrganisationWhereActiveCollectionMethod.DoAccounting ?? false))
             {
                 derivation.Validation.AssertAtLeastOne(this, M.Cash.GeneralLedgerAccount, M.Cash.Journal);
             }

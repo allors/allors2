@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -45,11 +48,6 @@ namespace Allors.Domain
                 this.PreviousTakenViaSupplier = this.TakenViaSupplier;
             }
 
-            if (!this.ExistOrderNumber)
-            {
-                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber();
-            }
-
             if (!this.ExistOrderDate)
             {
                 this.OrderDate = DateTime.UtcNow;
@@ -58,16 +56,6 @@ namespace Allors.Domain
             if (!this.ExistEntryDate)
             {
                 this.EntryDate = DateTime.UtcNow;
-            }
-
-            if (!this.ExistCurrency)
-            {
-                this.Currency = this.OrderedBy.PreferredCurrency;
-            }
-
-            if (!this.ExistFacility)
-            {
-                this.Facility = this.OrderedBy.DefaultFacility;
             }
         }
 
@@ -92,6 +80,27 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistOrderedBy && internalOrganisations.Count() == 1)
+            {
+                this.OrderedBy = internalOrganisations.First();
+            }
+
+            if (!this.ExistOrderNumber)
+            {
+                this.OrderNumber = this.OrderedBy.NextPurchaseOrderNumber();
+            }
+
+            if (!this.ExistCurrency)
+            {
+                this.Currency = this.OrderedBy.PreferredCurrency;
+            }
+
+            if (!this.ExistFacility)
+            {
+                this.Facility = this.OrderedBy.DefaultFacility;
+            }
 
             Organisation supplier = this.TakenViaSupplier as Organisation;
             if (supplier != null)

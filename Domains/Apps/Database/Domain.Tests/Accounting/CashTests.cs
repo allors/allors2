@@ -90,7 +90,7 @@ namespace Allors.Domain
                 .Build();
 
             internalOrganisation.DoAccounting = true;
-            internalOrganisation.AddActivePaymentMethod(cash);
+            internalOrganisation.AddActiveCollectionMethod(cash);
 
             Assert.True(this.Session.Derive(false).HasErrors);
 

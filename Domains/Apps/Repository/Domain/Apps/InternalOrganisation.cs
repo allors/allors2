@@ -162,7 +162,7 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         [Workspace]
-        PaymentMethod[] ActivePaymentMethods { get; set; }
+        PaymentMethod[] ActiveCollectionMethods { get; set; }
 
         #region Allors
         [Id("37b4bf2c-5b09-42b0-84d9-59b57793cf37")]

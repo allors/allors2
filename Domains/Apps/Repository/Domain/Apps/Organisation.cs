@@ -24,7 +24,7 @@ namespace Allors.Repository
 
         public InvoiceSequence InvoiceSequence { get; set; }
 
-        public PaymentMethod[] ActivePaymentMethods { get; set; }
+        public PaymentMethod[] ActiveCollectionMethods { get; set; }
 
         public decimal MaximumAllowedPaymentDifference { get; set; }
 

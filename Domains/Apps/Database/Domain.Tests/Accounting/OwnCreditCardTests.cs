@@ -63,13 +63,15 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
 
-            var paymentMethod = new OwnCreditCardBuilder(this.Session)
+            var collectionMethod = new OwnCreditCardBuilder(this.Session)
                 .WithCreditCard(creditCard)
                 .Build();
 
+            this.InternalOrganisation.AddActiveCollectionMethod(collectionMethod);
+
             this.Session.Derive();
 
-            Assert.True(paymentMethod.IsActive);
+            Assert.True(collectionMethod.IsActive);
         }
 
         [Fact]
@@ -83,11 +85,12 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
 
-            new OwnCreditCardBuilder(this.Session)
+            var collectionMethod = new OwnCreditCardBuilder(this.Session)
                 .WithCreditCard(creditCard)
                 .Build();
 
             var internalOrganisation = this.InternalOrganisation;             
+            internalOrganisation.AddActiveCollectionMethod(collectionMethod);
             
             internalOrganisation.DoAccounting = false;
 
@@ -101,6 +104,10 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenExpiredCardIsBlocked()
         {
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
+
             var creditCard = new CreditCardBuilder(this.Session)
                 .WithCardNumber("4012888888881881")
                 .WithExpirationYear(DateTime.UtcNow.Year + 1)
@@ -109,23 +116,29 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
 
-            var paymentMethod = new OwnCreditCardBuilder(this.Session)
+            var collectionMethod = new OwnCreditCardBuilder(this.Session)
                 .WithCreditCard(creditCard)
                 .Build();
 
+            this.InternalOrganisation.AddActiveCollectionMethod(collectionMethod);
+
             this.Session.Derive();
-            Assert.True(paymentMethod.IsActive);
+            Assert.True(collectionMethod.IsActive);
 
             creditCard.ExpirationYear = DateTime.UtcNow.Year;
             creditCard.ExpirationMonth = DateTime.UtcNow.Month;
 
             this.Session.Derive();
-            Assert.False(paymentMethod.IsActive);
+            Assert.False(collectionMethod.IsActive);
         }
 
         [Fact]
         public void GivenOwnCreditCard_WhenDeriving_ThenGeneralLedgerAccountAndJournalAtMostOne()
         {
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
+
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -146,24 +159,26 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
 
-            var paymentMethod = new OwnCreditCardBuilder(this.Session)
+            var collectionMethod = new OwnCreditCardBuilder(this.Session)
                 .WithCreditCard(creditCard)
                 .WithGeneralLedgerAccount(internalOrganisationGlAccount)
                 .Build();
+
+            this.InternalOrganisation.AddActiveCollectionMethod(collectionMethod);
 
             this.Session.Commit();
 
             var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.DoAccounting = true;
-            internalOrganisation.DefaultCollectionMethod = paymentMethod;
+            internalOrganisation.DefaultCollectionMethod = collectionMethod;
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            paymentMethod.Journal = journal;
+            collectionMethod.Journal = journal;
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
-            paymentMethod.RemoveGeneralLedgerAccount();
+            collectionMethod.RemoveGeneralLedgerAccount();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -171,7 +186,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenOwnCreditCardForSingletonThatDoesAccounting_WhenDeriving_ThenEitherGeneralLedgerAccountOrJournalMustExist()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -193,22 +210,22 @@ namespace Allors.Domain
                 .WithCreditCardCompany(new CreditCardCompanyBuilder(this.Session).WithName("Visa").Build())
                 .Build();
 
-            var paymentMethod = new OwnCreditCardBuilder(this.Session)
+            var collectionMethod = new OwnCreditCardBuilder(this.Session)
                 .WithCreditCard(creditCard)
                 .Build();
 
-            this.Session.Commit();
+            this.InternalOrganisation.AddActiveCollectionMethod(collectionMethod);
 
-            internalOrganisation.DoAccounting = true;
+            this.Session.Commit();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
-            paymentMethod.Journal = journal;
+            collectionMethod.Journal = journal;
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            paymentMethod.RemoveJournal();
-            paymentMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
+            collectionMethod.RemoveJournal();
+            collectionMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
