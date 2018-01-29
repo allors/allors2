@@ -71,7 +71,7 @@
 
         public bool CanExecute(string methodTypeName)
         {
-            return (bool)this.Roles[$"CanExecute{methodTypeName}"];
+            return (bool)this.Methods[$"CanExecute{methodTypeName}"];
         }
     }
 }
