@@ -132,8 +132,11 @@ namespace Allors.Domain
 
             var organisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
+                .WithDoAccounting(true)
                 .WithName("Internal")
                 .Build();
+
+            this.Session.Derive();
 
             organisation.StartNewFiscalYear();
 
@@ -178,6 +181,7 @@ namespace Allors.Domain
 
             var organisation = new OrganisationBuilder(this.Session)
                 .WithIsInternalOrganisation(true)
+                .WithDoAccounting(true)
                 .WithName("Internal")
                 .WithFiscalYearStartMonth(05)
                 .WithFiscalYearStartDay(15)
@@ -243,11 +247,16 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInternalOrganisationWithoutDefaultPaymentMethod_WhenSinglePaymentMethodIsAdded_ThenDefaultPaymentMethodIsSet()
+        public void GivenInternalOrganisationWithoutDefaultCollectionMethod_WhenExistSingleCollectionMethod_ThenDefaultIsSet()
         {
-            var internalOrganisation = this.Session.Extent<InternalOrganisation>().First;
-            internalOrganisation.RemoveDefaultCollectionMethod();
-            
+            var internalOrganisation = new OrganisationBuilder(this.Session)
+                .WithIsInternalOrganisation(true)
+                .WithDoAccounting(true)
+                .WithName("Internal")
+                .WithFiscalYearStartMonth(05)
+                .WithFiscalYearStartDay(15)
+                .Build();
+
             this.Session.Derive();
 
             Assert.True(internalOrganisation.ExistDefaultCollectionMethod);

@@ -56,7 +56,7 @@ namespace Allors.Domain
         {
             var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").Build();
 
-            var invoice = new PurchaseInvoiceBuilder(this.Session)
+            new PurchaseInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                 .WithBilledFrom(supplier2)
@@ -72,15 +72,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseInvoice_WhenGettingInvoiceNumberWithoutFormat_ThenInvoiceNumberShouldBeReturned()
         {
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             var invoice1 = new PurchaseInvoiceBuilder(this.Session)
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
+                .WithBilledFrom(supplier)
                 .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("incoming invoiceno: 1", invoice1.InvoiceNumber);
 
             var invoice2 = new PurchaseInvoiceBuilder(this.Session)
                 .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
+                .WithBilledFrom(supplier)
                 .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("incoming invoiceno: 2", invoice2.InvoiceNumber);
         }

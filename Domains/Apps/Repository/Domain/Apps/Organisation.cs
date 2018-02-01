@@ -18,6 +18,9 @@ namespace Allors.Repository
 
         public Country EuListingState { get; set; }
 
+        public PaymentMethod[] PaymentMethods { get; set; }
+        public PaymentMethod DefaultCollectionMethod { get; set; }
+
         public Counter PurchaseInvoiceCounter { get; set; }
 
         public AccountingPeriod ActualAccountingPeriod { get; set; }
@@ -184,7 +187,7 @@ namespace Allors.Repository
 
         public CommunicationEvent[] CommunicationEvents { get; set; }
 
-        public PaymentMethod DefaultCollectionMethod { get; set; }
+        public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public Locale Locale { get; set; }
 

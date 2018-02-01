@@ -88,7 +88,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        public Party BilledFromParty { get; set; }
+        public Party BilledFrom { get; set; }
 
         #region Allors
         [Id("4A072DD0-0886-4CFF-9DC4-D213854160E7")]

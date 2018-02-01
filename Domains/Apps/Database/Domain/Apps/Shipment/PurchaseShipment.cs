@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -36,16 +39,6 @@ namespace Allors.Domain
             if (!this.ExistPurchaseShipmentState)
             {
                 this.PurchaseShipmentState = new PurchaseShipmentStates(this.Strategy.Session).Created;
-            }
-
-            if (!this.ExistFacility && internalOrganisation != null)
-            {
-                this.Facility = internalOrganisation.DefaultFacility;
-            }
-
-            if (!this.ExistShipmentNumber && internalOrganisation != null)
-            {
-                this.ShipmentNumber = internalOrganisation.NextShipmentNumber();
             }
 
             if (!this.ExistEstimatedArrivalDate)
@@ -77,9 +70,26 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExists(this, this.Meta.ShipFromParty);
 
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistReceiver && internalOrganisations.Count() == 1)
+            {
+                this.Receiver = internalOrganisations.First();
+            }
+
             if (!this.ExistShipToAddress)
             {
-                this.ShipToAddress = this.ShipToParty.ExistShippingAddress ? this.ShipToParty.ShippingAddress : this.ShipToParty.GeneralCorrespondence;
+                this.ShipToAddress = this.Receiver.ExistShippingAddress ? this.Receiver.ShippingAddress : this.Receiver.GeneralCorrespondence;
+            }
+
+            if (!this.ExistFacility && this.ExistReceiver)
+            {
+                this.Facility = this.Receiver.DefaultFacility;
+            }
+
+            if (!this.ExistShipmentNumber && this.ExistReceiver)
+            {
+                this.ShipmentNumber = this.Receiver.NextShipmentNumber();
             }
 
             if (!this.ExistShipFromAddress && this.ExistShipFromParty)

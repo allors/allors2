@@ -42,21 +42,23 @@ namespace Allors.Domain
 
             if (this.Supplier is Organisation supplier && good != null)
             {
-                var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
                 if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {
-                    foreach (Facility facility in new Facilities(this.strategy.Session).Extent())
+                    var internalOrganisation = good.Organisation as InternalOrganisation;
+                    if (internalOrganisation != null)
                     {
-                        var inventoryItems = good.InventoryItemsWhereGood;
-                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                        var inventoryItem = inventoryItems.First;
-
-                        if (inventoryItem == null)
+                        foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
                         {
-                            new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                                .WithFacility(facility)
-                                .WithGood(good).Build();
+                            var inventoryItems = good.InventoryItemsWhereGood;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                            var inventoryItem = inventoryItems.First;
+
+                            if (inventoryItem == null)
+                            {
+                                new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
+                                    .WithFacility(facility)
+                                    .WithGood(good).Build();
+                            }
                         }
                     }
                 }
@@ -66,15 +68,21 @@ namespace Allors.Domain
                         good.FinishedGood.ExistInventoryItemKind &&
                         good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                     {
-                        foreach (Facility facility in new Facilities(this.strategy.Session).Extent())
-                        {
-                            var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                            var inventoryItem = inventoryItems.First;
+                        var internalOrganisation = good.FinishedGood.InternalOrganisation;
 
-                            if (inventoryItem == null)
+                        if (internalOrganisation != null)
+                        {
+                            foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
                             {
-                                new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithPart(good.FinishedGood).Build();
+                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                                var inventoryItem = inventoryItems.First;
+
+                                if (inventoryItem == null)
+                                {
+                                    new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility)
+                                        .WithPart(good.FinishedGood).Build();
+                                }
                             }
                         }
                     }

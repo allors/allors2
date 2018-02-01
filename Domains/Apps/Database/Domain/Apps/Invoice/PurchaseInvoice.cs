@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -35,11 +38,6 @@ namespace Allors.Domain
             if (!this.ExistPurchaseInvoiceState)
             {
                 this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
-            }
-
-            if (!this.ExistInvoiceNumber)
-            {
-                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber();
             }
 
             if (!this.ExistInvoiceDate)
@@ -81,6 +79,18 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistBilledTo && internalOrganisations.Count() == 1)
+            {
+                this.BilledTo = internalOrganisations.First();
+            }
+
+            if (!this.ExistInvoiceNumber)
+            {
+                this.InvoiceNumber = this.BilledTo.NextPurchaseInvoiceNumber();
+            }
 
             Organisation supplier = this.BilledFrom as Organisation;
             if (supplier != null)

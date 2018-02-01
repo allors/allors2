@@ -102,19 +102,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOwnBankAccountForSingletonThatDoesAccounting_WhenDeriving_ThenCreditorIsRequired()
-        {
-            var internalOrganisation = this.InternalOrganisation;
-            internalOrganisation.DoAccounting = false;
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-
-            internalOrganisation.DoAccounting = true;
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
         public void GivenOwnBankAccount_WhenDeriving_ThenGeneralLedgerAccountAndJournalAtMostOne()
         {
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
@@ -181,7 +168,7 @@ namespace Allors.Domain
             var bank = new BankBuilder(this.Session).WithCountry(netherlands).WithName("RABOBANK GROEP").WithBic("RABONL2U").Build();
             var bankAccount = new BankAccountBuilder(this.Session).WithBank(bank).WithCurrency(euro).WithIban("NL50RABO0109546784").WithNameOnAccount("Martien").Build();
 
-            var paymentMethod = new OwnBankAccountBuilder(this.Session)
+            var collectionMethod = new OwnBankAccountBuilder(this.Session)
                 .WithDescription("own account")
                 .WithBankAccount(bankAccount)
                 .Build();
@@ -189,15 +176,16 @@ namespace Allors.Domain
             this.Session.Commit();
 
             internalOrganisation.DoAccounting = true;
+            internalOrganisation.AddActiveCollectionMethod(collectionMethod);
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
-            paymentMethod.Journal = journal;
+            collectionMethod.Journal = journal;
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            paymentMethod.RemoveJournal();
-            paymentMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
+            collectionMethod.RemoveJournal();
+            collectionMethod.GeneralLedgerAccount = internalOrganisationGlAccount;
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }

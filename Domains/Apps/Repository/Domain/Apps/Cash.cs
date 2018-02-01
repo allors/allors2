@@ -10,6 +10,7 @@ namespace Allors.Repository
     public partial class Cash : PaymentMethod 
     {
         #region inherited properties
+
         public decimal BalanceLimit { get; set; }
 
         public decimal CurrentBalance { get; set; }

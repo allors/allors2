@@ -117,6 +117,8 @@ namespace Allors.Domain
                                 .Build())
                 .Build();
 
+            Session.Derive();
+
             Assert.NotNull(item.AvailableToPromise);
             Assert.NotNull(item.QuantityCommittedOut);
             Assert.NotNull(item.QuantityExpectedIn);

@@ -205,7 +205,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public PaymentMethod[] PaymentMethods { get; set; }
+        public PaymentMethod[] CollectionMethods { get; set; }
 
         #region Allors
         [Id("dfc3f6be-0a95-49e0-8742-3901dbab5185")]

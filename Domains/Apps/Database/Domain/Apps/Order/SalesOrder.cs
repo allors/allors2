@@ -73,44 +73,6 @@ namespace Allors.Domain
             {
                 this.PartiallyShip = true;
             }
-
-            if (!this.ExistStore)
-            {
-                this.Store = this.strategy.Session.Extent<Store>().First;
-            }
-
-            if (!this.ExistVatRegime && this.ExistBillToCustomer)
-            {
-                this.VatRegime = this.BillToCustomer.VatRegime;
-            }
-
-            if (!this.ExistBillToCustomer && this.ExistShipToCustomer)
-            {
-                this.BillToCustomer = this.ShipToCustomer;
-            }
-
-            if (!this.ExistShipToCustomer && this.ExistBillToCustomer)
-            {
-                this.ShipToCustomer = this.BillToCustomer;
-            }
-
-            if (!this.ExistShipToAddress && this.ExistShipToCustomer)
-            {
-                this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
-            }
-
-            if (!this.ExistShipmentMethod)
-            {
-                if (this.ShipToCustomer != null)
-                {
-                    this.ShipmentMethod = this.ShipToCustomer.DefaultShipmentMethod;
-                }
-
-                if (this.ShipmentMethod == null && this.ExistStore)
-                {
-                    this.ShipmentMethod = this.Store.DefaultShipmentMethod;
-                }
-            }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -129,11 +91,21 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+
             var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             if (!this.ExistTakenBy && internalOrganisations.Count() == 1)
             {
                 this.TakenBy = internalOrganisations.First();
+            }
+
+            if (!this.ExistStore && this.ExistTakenBy)
+            {
+                var store = new Stores(this.strategy.Session).Extent().FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+                if (store != null)
+                {
+                    this.Store = store;
+                }
             }
 
             if (!this.ExistOrderNumber && this.ExistStore)
@@ -154,6 +126,11 @@ namespace Allors.Domain
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
             {
                 this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
+            }
+
+            if (!this.ExistVatRegime && this.ExistBillToCustomer)
+            {
+                this.VatRegime = this.BillToCustomer.VatRegime;
             }
 
             if (!this.ExistShipmentMethod && this.ExistShipToCustomer)
@@ -217,12 +194,12 @@ namespace Allors.Domain
 
                 if (!this.ExistShipToCustomer && partyFinancial != null)
                 {
-                    this.PaymentMethod = partyFinancial.DefaultPaymentMethod;
+                    this.PaymentMethod= partyFinancial.DefaultPaymentMethod;
                 }
 
                 if (!this.ExistPaymentMethod && this.ExistStore)
                 {
-                    this.PaymentMethod = this.Store.DefaultCollectionMethod;
+                    this.PaymentMethod= this.Store.DefaultCollectionMethod;
                 }
             }
 

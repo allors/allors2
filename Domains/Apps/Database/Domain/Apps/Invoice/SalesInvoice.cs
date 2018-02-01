@@ -143,45 +143,15 @@ namespace Allors.Domain
                 this.PreviousBillToCustomer = this.BillToCustomer;
             }
 
-            if (!this.ExistStore)
-            {
-                this.Store = this.strategy.Session.Extent<Store>().First;
-            }
-
-            if (!this.ExistInvoiceNumber && this.ExistStore)
-            {
-                this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
-            }
-
             if (!this.ExistSalesInvoiceType)
             {
                 this.SalesInvoiceType = new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice;
-            }
-
-            if (!this.ExistCurrency)
-            {
-                if (this.ExistBillToCustomer && (this.BillToCustomer.ExistPreferredCurrency || this.BillToCustomer.ExistLocale))
-                {
-                    this.Currency = this.BillToCustomer.ExistPreferredCurrency ? this.BillToCustomer.PreferredCurrency : this.BillToCustomer.Locale.Country.Currency;
-                }
-                else
-                {
-                    this.Currency = this.BilledFrom.ExistPreferredCurrency ?
-                                                this.BilledFrom.PreferredCurrency :
-                                                this.Strategy.Session.GetSingleton().DefaultLocale.Country.Currency;
-                }
             }
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-
-            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-            if (!this.ExistBilledFrom && internalOrganisations.Count() == 1)
-            {
-                this.BilledFrom = internalOrganisations.First();
-            }
 
             if (this.ExistBillToCustomer)
             {
@@ -224,6 +194,27 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistBilledFrom && internalOrganisations.Count() == 1)
+            {
+                this.BilledFrom = internalOrganisations.First();
+            }
+
+            if (!this.ExistStore && this.ExistBilledFrom)
+            {
+                var store = new Stores(this.strategy.Session).Extent().FirstOrDefault(v => Equals(v.InternalOrganisation, this.BilledFrom));
+                if (store != null)
+                {
+                    this.Store = store;
+                }
+            }
+
+            if (!this.ExistInvoiceNumber && this.ExistStore)
+            {
+                this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
+            }
+
             if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
             {
                 this.BillToContactMechanism = this.BillToCustomer.BillingAddress;
@@ -237,6 +228,20 @@ namespace Allors.Domain
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
             {
                 this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
+            }
+
+            if (!this.ExistCurrency)
+            {
+                if (this.ExistBillToCustomer && (this.BillToCustomer.ExistPreferredCurrency || this.BillToCustomer.ExistLocale))
+                {
+                    this.Currency = this.BillToCustomer.ExistPreferredCurrency ? this.BillToCustomer.PreferredCurrency : this.BillToCustomer.Locale.Country.Currency;
+                }
+                else
+                {
+                    this.Currency = this.BilledFrom.ExistPreferredCurrency ?
+                        this.BilledFrom.PreferredCurrency :
+                        this.Strategy.Session.GetSingleton().DefaultLocale.Country.Currency;
+                }
             }
 
             this.AppsOnDeriveInvoiceItems(derivation);

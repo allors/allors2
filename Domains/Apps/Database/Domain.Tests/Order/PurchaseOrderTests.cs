@@ -131,19 +131,32 @@ namespace Allors.Domain
             var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.RemovePurchaseOrderNumberPrefix();
 
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
 
             var order1 = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             Assert.Equal("1", order1.OrderNumber);
 
             var order2 = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             Assert.Equal("2", order2.OrderNumber);
         }
 
         [Fact]
         public void GivenPurchaseOrder_WhenGettingOrderNumberWithFormat_ThenFormattedOrderNumberShouldBeReturned()
         {
-            var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.PurchaseOrderNumberPrefix = "the format is ";
 
@@ -151,11 +164,15 @@ namespace Allors.Domain
                 .WithTakenViaSupplier(supplier)
                 .Build();
 
+            this.Session.Derive();
+
             Assert.Equal("the format is 1", order1.OrderNumber);
 
             var order2 = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
                 .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("the format is 2", order2.OrderNumber);
         }

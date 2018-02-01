@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     public static partial class PartExtensions
@@ -42,6 +45,13 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!@this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
+            {
+                @this.InternalOrganisation = internalOrganisations.First();
+            }
+
             @this.AppsOnDeriveInventoryItem(derivation);
         }
 
@@ -49,11 +59,15 @@ namespace Allors.Domain
         {
             if (@this.ExistInventoryItemKind && @this.InventoryItemKind.Equals(new InventoryItemKinds(@this.Strategy.Session).NonSerialised))
             {
-                if (!@this.ExistInventoryItemsWherePart)
+                if (!@this.ExistInventoryItemsWherePart )
                 {
-                    new NonSerialisedInventoryItemBuilder(@this.Strategy.Session)
-                        .WithPart(@this)
-                        .Build();
+                    foreach (Facility facility in @this.InternalOrganisation.FacilitiesWhereOwner)
+                    {
+                        new NonSerialisedInventoryItemBuilder(@this.Strategy.Session)
+                            .WithPart(@this)
+                            .WithFacility(facility)
+                            .Build();
+                    }
                 }
             }
         }

@@ -449,6 +449,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        PaymentMethod DefaultCollectionMethod { get; set; }
+        PaymentMethod DefaultPaymentMethod { get; set; }
     }
 }

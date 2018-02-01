@@ -338,9 +338,14 @@ namespace Allors.Domain
                     {
                         foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
                         {
+                            foreach (PackagingContent packagingContent in itemIssuance.ShipmentItem.PackagingContentsWhereShipmentItem)
+                            {
+                                packagingContent.Delete();
+                            }
+
                             itemIssuance.Delete();
                         }
-   
+
                         pendingPickList.RemovePickListItem(pickListItem);
                         pickListItem.Delete();
                     }

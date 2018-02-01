@@ -14,6 +14,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 using System.Collections.Generic;
+using Allors.Meta;
 
 namespace Allors.Domain
 {
@@ -23,112 +24,138 @@ namespace Allors.Domain
     {
         public static void AppsStartNewFiscalYear(this InternalOrganisation @this, InternalOrganisationStartNewFiscalYear method)
         {
-            if (@this.ExistActualAccountingPeriod && @this.ActualAccountingPeriod.Active)
+            var organisation = (Organisation)@this;
+            if (organisation.IsInternalOrganisation)
             {
-                return;
+                if (@this.ExistActualAccountingPeriod && @this.ActualAccountingPeriod.Active)
+                {
+                    return;
+                }
+
+                var year = @this.Strategy.Session.Now().Year;
+                if (@this.ExistActualAccountingPeriod)
+                {
+                    year = @this.ActualAccountingPeriod.FromDate.Date.Year + 1;
+                }
+
+                var fromDate = DateTimeFactory
+                    .CreateDate(year, @this.FiscalYearStartMonth.Value, @this.FiscalYearStartDay.Value).Date;
+
+                var yearPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                    .WithPeriodNumber(1)
+                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Year)
+                    .WithFromDate(fromDate)
+                    .WithThroughDate(fromDate.AddYears(1).AddSeconds(-1).Date)
+                    .Build();
+
+                var semesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                    .WithPeriodNumber(1)
+                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Semester)
+                    .WithFromDate(fromDate)
+                    .WithThroughDate(fromDate.AddMonths(6).AddSeconds(-1).Date)
+                    .WithParent(yearPeriod)
+                    .Build();
+
+                var trimesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                    .WithPeriodNumber(1)
+                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Trimester)
+                    .WithFromDate(fromDate)
+                    .WithThroughDate(fromDate.AddMonths(3).AddSeconds(-1).Date)
+                    .WithParent(semesterPeriod)
+                    .Build();
+
+                var monthPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
+                    .WithPeriodNumber(1)
+                    .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Month)
+                    .WithFromDate(fromDate)
+                    .WithThroughDate(fromDate.AddMonths(1).AddSeconds(-1).Date)
+                    .WithParent(trimesterPeriod)
+                    .Build();
+
+                @this.ActualAccountingPeriod = monthPeriod;
             }
-
-            var year = @this.Strategy.Session.Now().Year;
-            if (@this.ExistActualAccountingPeriod)
-            {
-                year = @this.ActualAccountingPeriod.FromDate.Date.Year + 1;
-            }
-
-            var fromDate = DateTimeFactory.CreateDate(year, @this.FiscalYearStartMonth.Value, @this.FiscalYearStartDay.Value).Date;
-
-            var yearPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Year)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddYears(1).AddSeconds(-1).Date)
-                .Build();
-
-            var semesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Semester)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddMonths(6).AddSeconds(-1).Date)
-                .WithParent(yearPeriod)
-                .Build();
-
-            var trimesterPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Trimester)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddMonths(3).AddSeconds(-1).Date)
-                .WithParent(semesterPeriod)
-                .Build();
-
-            var monthPeriod = new AccountingPeriodBuilder(@this.Strategy.Session)
-                .WithPeriodNumber(1)
-                .WithTimeFrequency(new TimeFrequencies(@this.Strategy.Session).Month)
-                .WithFromDate(fromDate)
-                .WithThroughDate(fromDate.AddMonths(1).AddSeconds(-1).Date)
-                .WithParent(trimesterPeriod)
-                .Build();
-
-            @this.ActualAccountingPeriod = monthPeriod;
         }
 
+        public static void AppsOnPreDerive(this InternalOrganisation @this, ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (derivation.HasChangedRole(@this, M.InternalOrganisation.DoAccounting))
+            {
+                foreach (PaymentMethod collectionMethod in @this.ActiveCollectionMethods)
+                {
+                    derivation.AddDependency(collectionMethod, @this);
+                }
+
+                foreach (PaymentMethod paymentMethod in @this.PaymentMethods)
+                {
+                    derivation.AddDependency(paymentMethod, @this);
+                }
+            }
+        }
 
         public static void AppsOnDerive(this InternalOrganisation @this, ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            var count = @this.Strategy.Session.Extent<PaymentMethod>().ToArray();
-            if (!@this.ExistDefaultCollectionMethod && @this.Strategy.Session.Extent<PaymentMethod>().Count == 1)
+            var organisation = (Organisation)@this;
+            if (organisation.IsInternalOrganisation)
             {
-                @this.DefaultCollectionMethod = @this.Strategy.Session.Extent<PaymentMethod>().First;
-            }
+                if (!@this.ExistDefaultCollectionMethod && @this.Strategy.Session.Extent<PaymentMethod>().Count == 1)
+                {
+                    @this.DefaultCollectionMethod = @this.Strategy.Session.Extent<PaymentMethod>().First;
+                }
 
-            if (!@this.ExistPurchaseInvoiceCounter)
-            {
-                @this.PurchaseInvoiceCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+                if (!@this.ExistPurchaseInvoiceCounter)
+                {
+                    @this.PurchaseInvoiceCounter = new CounterBuilder(@this.Strategy.Session)
+                        .WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                }
 
-            if (!@this.ExistRequestCounter)
-            {
-                @this.RequestCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+                if (!@this.ExistRequestCounter)
+                {
+                    @this.RequestCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid())
+                        .WithValue(0).Build();
+                }
 
-            if (!@this.ExistQuoteCounter)
-            {
-                @this.QuoteCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+                if (!@this.ExistQuoteCounter)
+                {
+                    @this.QuoteCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid())
+                        .WithValue(0).Build();
+                }
 
-            if (!@this.ExistPurchaseOrderCounter)
-            {
-                @this.PurchaseOrderCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+                if (!@this.ExistPurchaseOrderCounter)
+                {
+                    @this.PurchaseOrderCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid())
+                        .WithValue(0).Build();
+                }
 
-            if (!@this.ExistIncomingShipmentCounter)
-            {
-                @this.IncomingShipmentCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+                if (!@this.ExistIncomingShipmentCounter)
+                {
+                    @this.IncomingShipmentCounter = new CounterBuilder(@this.Strategy.Session)
+                        .WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                }
 
-            if (!@this.ExistDoAccounting)
-            {
-                @this.DoAccounting = false;
-            }
+                if (!@this.ExistSubAccountCounter)
+                {
+                    @this.SubAccountCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid())
+                        .WithValue(0).Build();
+                }
 
-            if (@this.DoAccounting.HasValue && !@this.ExistSubAccountCounter)
-            {
-                @this.SubAccountCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+                if (!@this.ExistInvoiceSequence)
+                {
+                    @this.InvoiceSequence = new InvoiceSequences(@this.Strategy.Session).RestartOnFiscalYear;
+                }
 
-            if (!@this.ExistInvoiceSequence)
-            {
-                @this.InvoiceSequence = new InvoiceSequences(@this.Strategy.Session).RestartOnFiscalYear;
-            }
+                if (!@this.ExistFiscalYearStartMonth)
+                {
+                    @this.FiscalYearStartMonth = 1;
+                }
 
-            if (!@this.ExistFiscalYearStartMonth)
-            {
-                @this.FiscalYearStartMonth = 1;
-            }
-
-            if (!@this.ExistFiscalYearStartDay)
-            {
-                @this.FiscalYearStartDay = 1;
+                if (!@this.ExistFiscalYearStartDay)
+                {
+                    @this.FiscalYearStartDay = 1;
+                }
             }
         }
 

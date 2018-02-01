@@ -29,13 +29,16 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
-            var internalOrganisation = this.InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
 
             this.Session.Derive();
 
             Assert.Equal(new PurchaseShipmentStates(this.Session).Created, shipment.PurchaseShipmentState);
-            Assert.Equal(internalOrganisation.GeneralCorrespondence, shipment.ShipToAddress);
+            Assert.Equal(this.InternalOrganisation.GeneralCorrespondence, shipment.ShipToAddress);
             Assert.Equal(shipment.ShipToParty, shipment.ShipToParty);
         }
 
@@ -69,14 +72,29 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithoutFormat_ThenShipmentNumberShouldBeReturned()
         {
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             var internalOrganisation = this.InternalOrganisation;
             internalOrganisation.RemoveIncomingShipmentNumberPrefix();
 
-            var shipment1 = new PurchaseShipmentBuilder(this.Session).Build();
+            var shipment1 = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(supplier)
+                .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("1", shipment1.ShipmentNumber);
 
-            var shipment2 = new PurchaseShipmentBuilder(this.Session).Build();
+            var shipment2 = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(supplier)
+                .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("2", shipment2.ShipmentNumber);
         }
@@ -84,11 +102,26 @@ namespace Allors.Domain
         [Fact]
         public void GivenPurchaseShipment_WhenGettingShipmentNumberWithFormat_ThenFormattedShipmentNumberShouldBeReturned()
         {
-            var shipment1 = new PurchaseShipmentBuilder(this.Session).Build();
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
+            var shipment1 = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(supplier)
+                .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("incoming shipmentno: 1", shipment1.ShipmentNumber);
 
-            var shipment2 = new PurchaseShipmentBuilder(this.Session).Build();
+            var shipment2 = new PurchaseShipmentBuilder(this.Session)
+                .WithShipmentMethod(new ShipmentMethods(this.Session).Ground)
+                .WithShipFromParty(supplier)
+                .Build();
+
+            this.Session.Derive();
 
             Assert.Equal("incoming shipmentno: 2", shipment2.ShipmentNumber);
         }
@@ -97,7 +130,10 @@ namespace Allors.Domain
         public void GivenPurchaseShipmentWithShipToCustomerWithshippingAddress_WhenDeriving_ThenDerivedShipToCustomerAndDerivedShipToAddressMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
-            var internalOrganisation = this.InternalOrganisation;
+            new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
+
+            this.Session.Derive();
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
 
@@ -107,7 +143,7 @@ namespace Allors.Domain
                 .WithUseAsDefault(true)
                 .Build();
 
-            internalOrganisation.ShippingAddress = shipToAddress;
+            this.InternalOrganisation.AddPartyContactMechanism(shippingAddress);
             
             this.Session.Derive();
 

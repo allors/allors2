@@ -73,13 +73,17 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new SerialisedInventoryItemBuilder(this.Session)
+                .WithSerialNumber("1")
                 .WithPart(new FinishedGoodBuilder(this.Session)
                             .WithInternalOrganisation(this.InternalOrganisation)
                             .WithName("part")
                             .WithManufacturerId("10101")
+                            .WithSku("1")
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
                 .Build();
+
+            this.Session.Derive();
 
             Assert.Equal(new SerialisedInventoryItemStates(this.Session).Good, item.SerialisedInventoryItemState);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);

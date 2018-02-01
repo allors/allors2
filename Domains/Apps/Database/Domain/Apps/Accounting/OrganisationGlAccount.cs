@@ -13,6 +13,9 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -92,5 +95,17 @@ namespace Allors.Domain
 
             this.HasBankStatementTransactions = false;
         }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
+            {
+                this.InternalOrganisation = internalOrganisations.First();
+            }
+        }
+
     }
-}
+    }

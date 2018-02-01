@@ -84,10 +84,15 @@ namespace Allors
                     .WithContactPurpose(new ContactMechanismPurposes(session).BillingAddress)
                     .Build());
 
-                var facility = new FacilityBuilder(session).WithFacilityType(new FacilityTypes(session).Warehouse).WithName("facility").Build();
+                var facility = new FacilityBuilder(session)
+                    .WithFacilityType(new FacilityTypes(session).Warehouse)
+                    .WithName("facility")
+                    .WithOwner(internalOrganisation)
+                    .Build();
+
                 internalOrganisation.DefaultFacility = facility;                
 
-                var paymentMethod = new PaymentMethods(session).Extent().First;
+                var collectionMethod = new PaymentMethods(session).Extent().First;
 
                 new StoreBuilder(session)
                     .WithName("store")
@@ -99,7 +104,8 @@ namespace Allors
                     .WithDefaultCarrier(new Carriers(session).Fedex)
                     .WithCreditLimit(500)
                     .WithPaymentGracePeriod(10)
-                    .WithDefaultCollectionMethod(paymentMethod)
+                    .WithDefaultCollectionMethod(collectionMethod)
+                    .WithIsImmediatelyPicked(true)
                     .Build();
 
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();

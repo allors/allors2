@@ -88,18 +88,17 @@ namespace Allors.Domain
                     this.InvoiceSequence = new InvoiceSequenceBuilder(this.strategy.Session).Build();
                 }
 
-                if (!this.ExistDoAccounting)
+                if (this.DoAccounting && !this.ExistFiscalYearStartMonth)
                 {
-                    this.DoAccounting = false;
+                    this.FiscalYearStartMonth = 1;
                 }
 
-                if (this.DoAccounting.Value)
+                if (this.DoAccounting && !this.ExistFiscalYearStartDay)
                 {
-                    validation.AssertExists(this, this.Meta.FiscalYearStartMonth);
-                    validation.AssertExists(this, this.Meta.FiscalYearStartDay);
+                    this.FiscalYearStartDay = 1;
                 }
             }
-            
+
             this.PartyName = this.Name;
             
             this.AppsOnDeriveCurrentContacts(derivation);

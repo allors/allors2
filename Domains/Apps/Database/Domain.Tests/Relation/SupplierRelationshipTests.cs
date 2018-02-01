@@ -68,6 +68,9 @@ namespace Allors.Domain
 
             var supplier1 = new OrganisationBuilder(this.Session).WithName("supplier1").Build();
             var supplierRelationship1 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier1).Build();
+
+            this.Session.Derive();
+
             var partyFinancial1 = supplier1.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, supplierRelationship1.InternalOrganisation));
 
             this.Session.Derive();
@@ -76,6 +79,9 @@ namespace Allors.Domain
 
             var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier2").Build();
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier2).Build();
+
+            this.Session.Derive();
+
             var partyFinancial2 = supplier2.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, supplierRelationship2.InternalOrganisation));
 
             this.Session.Derive();
@@ -84,6 +90,9 @@ namespace Allors.Domain
 
             var supplier3 = new OrganisationBuilder(this.Session).WithName("supplier3").Build();
             var supplierRelationship3 = new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier3).Build();
+
+            this.Session.Derive();
+
             var partyFinancial3 = supplier3.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, supplierRelationship3.InternalOrganisation));
 
             this.Session.Derive();
@@ -95,6 +104,8 @@ namespace Allors.Domain
         public void GivenSupplierRelationship_WhenDeriving_ThenSubAccountNumberMustBeUniqueWithinInternalOrganisation()
         {
             var supplier2 = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+
+            this.Session.Derive();
 
             var belgium = new Countries(this.Session).CountryByIsoCode["BE"];
             var euro = belgium.Currency;
@@ -112,11 +123,15 @@ namespace Allors.Domain
                 .WithDefaultCollectionMethod(ownBankAccount)
                 .Build();
 
+            this.Session.Derive();
+
             var supplierRelationship2 = new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(supplier2)
                 .WithInternalOrganisation(internalOrganisation2)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
+
+            this.Session.Derive();
 
             var partyFinancial2 = supplier2.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, supplierRelationship2.InternalOrganisation));
 

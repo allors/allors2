@@ -282,7 +282,6 @@ namespace Allors.Domain
                 }
             }
 
-            @this.AppsOnDerivePartyFinancialRelationships(derivation);
             @this.AppsOnDeriveCurrentSalesReps(derivation);
             @this.AppsOnDeriveActiveCustomer(derivation);
             @this.AppsOnDeriveOpenOrderAmount();
@@ -291,13 +290,20 @@ namespace Allors.Domain
             @this.AppsOnDeriveRevenue();
         }
 
+        public static void AppsOnPostDerive(this Party @this, ObjectOnPostDerive method)
+        {
+            var derivation = method.Derivation;
+
+            @this.AppsOnDerivePartyFinancialRelationships(derivation);
+        }
+
         public static void AppsOnDerivePartyFinancialRelationships(this Party @this, IDerivation derivation)
         {
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
             foreach (Organisation internalOrganisation in internalOrganisations)
             {
-                if (internalOrganisation.DoAccounting.HasValue)
+                if (!Equals(@this, internalOrganisation))
                 {
                     var partyFinancial = @this.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, internalOrganisation));
                     if (partyFinancial == null)

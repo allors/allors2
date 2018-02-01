@@ -50,6 +50,13 @@ namespace Allors.Domain
             builder.WithName("service");
             builder.Build();
 
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithOrganisation(this.InternalOrganisation);
+            builder.Build();
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -62,6 +69,7 @@ namespace Allors.Domain
                 .Build();
 
             var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("service")
                 .WithPrimaryProductCategory(productCategory)
                 .WithVatRate(vatRate21)
@@ -81,6 +89,7 @@ namespace Allors.Domain
                 .Build();
 
             var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("service")
                 .WithProductCategory(productCategory)
                 .WithVatRate(vatRate21)
@@ -105,40 +114,47 @@ namespace Allors.Domain
             this.Session.Commit();
             
             var builder = new GoodBuilder(this.Session);
-            var good = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
             
             builder.WithName("good");
-            good = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece);
-            good = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithVatRate(vatRate21);
-            good = builder.Build();
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithOrganisation(this.InternalOrganisation);
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithFinishedGood(finishedGood);
-            good = builder.Build();
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised);
-            good = builder.Build();
+            var good = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
@@ -415,6 +431,13 @@ namespace Allors.Domain
             builder.WithVatRate(vatRate21);
             builder.Build();
 
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithOrganisation(this.InternalOrganisation);
+            builder.Build();
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -427,6 +450,7 @@ namespace Allors.Domain
                 .Build();
 
             var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("TimeAndMaterialsService")
                 .WithPrimaryProductCategory(productCategory)
                 .WithVatRate(vatRate21)
@@ -446,6 +470,7 @@ namespace Allors.Domain
                 .Build();
 
             var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("TimeAndMaterialsService")
                 .WithProductCategory(productCategory)
                 .WithVatRate(vatRate21)

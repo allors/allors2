@@ -111,23 +111,23 @@ namespace Allors.Domain
                 this.DefaultFacility = this.InternalOrganisation.DefaultFacility;
             }
 
-            if (this.ExistDefaultCollectionMethod && !this.PaymentMethods.Contains(this.DefaultCollectionMethod))
+            if (this.ExistDefaultCollectionMethod && !this.CollectionMethods.Contains(this.DefaultCollectionMethod))
             {
-                this.AddPaymentMethod(this.DefaultCollectionMethod);
+                this.AddCollectionMethod(this.DefaultCollectionMethod);
             }
 
-            if (!this.ExistDefaultCollectionMethod && this.PaymentMethods.Count == 1)
+            if (!this.ExistDefaultCollectionMethod && this.CollectionMethods.Count == 1)
             {
-                this.DefaultCollectionMethod = this.PaymentMethods.First;
+                this.DefaultCollectionMethod = this.CollectionMethods.First;
             }
 
             if (!this.ExistDefaultCollectionMethod && this.InternalOrganisation.ExistDefaultCollectionMethod)
             {
                 this.DefaultCollectionMethod = this.InternalOrganisation.DefaultCollectionMethod;
 
-                if (!this.ExistPaymentMethods || !this.PaymentMethods.Contains(this.DefaultCollectionMethod))
+                if (!this.ExistCollectionMethods|| !this.CollectionMethods.Contains(this.DefaultCollectionMethod))
                 {
-                    this.AddPaymentMethod(this.DefaultCollectionMethod);
+                    this.AddCollectionMethod(this.DefaultCollectionMethod);
                 }
             }
 

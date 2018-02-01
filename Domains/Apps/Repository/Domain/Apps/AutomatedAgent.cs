@@ -104,7 +104,7 @@ namespace Allors.Repository
 
         public CommunicationEvent[] CommunicationEvents { get; set; }
 
-        public PaymentMethod DefaultCollectionMethod { get; set; }
+        public PaymentMethod DefaultPaymentMethod { get; set; }
 
         #endregion
 

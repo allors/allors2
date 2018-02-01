@@ -90,7 +90,7 @@ namespace Allors.Repository
 
         public CommunicationEvent[] CommunicationEvents { get; set; }
 
-        public PaymentMethod DefaultCollectionMethod { get; set; }
+        public PaymentMethod DefaultPaymentMethod { get; set; }
 
         public User CreatedBy { get; set; }
 

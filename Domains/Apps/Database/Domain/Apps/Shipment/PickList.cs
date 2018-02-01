@@ -83,7 +83,7 @@ namespace Allors.Domain
             {
                 foreach (var customerShipment in this.ShipToParty.AppsGetPendingCustomerShipments())
                 {
-                    if (!customerShipment.Strategy.IsNewInSession)
+                    if (!derivation.IsCreated(customerShipment))
                     {
                         derivation.AddDependency(customerShipment, this);
                     }

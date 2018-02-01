@@ -1575,11 +1575,8 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
-            var store = new StoreBuilder(this.Session).WithName("store")
-                .WithDefaultFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
-                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
-                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
-                .Build();
+            var store = new Stores(this.Session).Extent().First(v => Equals(v.InternalOrganisation, this.InternalOrganisation));
+            store.RemoveSalesOrderNumberPrefix();
 
             this.Session.Derive();
 
@@ -1619,12 +1616,8 @@ namespace Allors.Domain
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
 
-            var store = new StoreBuilder(this.Session).WithName("store")
-                .WithDefaultFacility(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse))
-                .WithSalesOrderNumberPrefix("the format is ")
-                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
-                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
-                .Build();
+            var store = new Stores(this.Session).Extent().First(v => Equals(v.InternalOrganisation, this.InternalOrganisation));
+            store.SalesOrderNumberPrefix = "the format is ";
 
             this.Session.Derive();
 
@@ -1717,7 +1710,13 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var orderContact = new EmailAddressBuilder(this.Session).WithElectronicAddressString("orders@acme.com").Build();
 
-            internalOrganisation.OrderAddress = orderContact;
+            var orderFrom = new PartyContactMechanismBuilder(this.Session)
+                .WithUseAsDefault(true)
+                .WithContactMechanism(orderContact)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderAddress)
+                .Build();
+
+            internalOrganisation.AddPartyContactMechanism(orderFrom);
 
             this.Session.Derive();
 
@@ -1729,7 +1728,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(orderContact, order1.TakenByContactMechanism);
+            Assert.Equal(internalOrganisation.OrderAddress, order1.TakenByContactMechanism);
         }
 
         [Fact]
@@ -1741,9 +1740,18 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithInternalOrganisation(internalOrganisation).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
-            var billingContact = new EmailAddressBuilder(this.Session).WithElectronicAddressString("orders@acme.com").Build();
 
-            internalOrganisation.BillingAddress = billingContact;
+            var billingContact = new EmailAddressBuilder(this.Session)
+                .WithElectronicAddressString("orders@acme.com")
+                .Build();
+
+            var billingFrom = new PartyContactMechanismBuilder(this.Session)
+                .WithUseAsDefault(true)
+                .WithContactMechanism(billingContact)
+                .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
+                .Build();
+
+            internalOrganisation.AddPartyContactMechanism(billingFrom);
 
             this.Session.Derive();
 
@@ -1755,7 +1763,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(billingContact, order1.BillFromContactMechanism);
+            Assert.Equal(internalOrganisation.BillingAddress, order1.BillFromContactMechanism);
         }
 
         [Fact]
@@ -2498,6 +2506,8 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
 
+            this.Session.Derive();
+
             order.Confirm();
 
             this.Session.Derive();
@@ -2574,6 +2584,8 @@ namespace Allors.Domain
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
             order.AddSalesOrderItem(item4);
+
+            this.Session.Derive();
 
             order.Confirm();
 

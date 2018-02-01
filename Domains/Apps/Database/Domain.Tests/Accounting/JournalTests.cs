@@ -30,7 +30,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenDescriptionMustExist()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var glAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -66,7 +68,10 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenSingletonMustExist()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
+
             var glAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -95,7 +100,10 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeMustExist()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
+
             var glAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
                 .WithName("GeneralLedgerAccount")
@@ -130,7 +138,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountMustExist()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var builder = new JournalBuilder(this.Session);
             builder.WithDescription("description");
@@ -164,7 +174,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenBlockUnpaidTransactionsIsFalse()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -190,7 +202,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenCloseWhenInBalanceIsFalse()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -216,7 +230,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenBuildWithout_ThenUseAsDefaultIsFalse()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -242,7 +258,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanBeChangedWhenNotUsedYet()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -292,7 +310,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenContraAccountCanNotBeChangedWhenJournalEntriesArePresent()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -348,7 +368,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanBeChangedWhenJournalIsNotUsedYet()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")
@@ -384,7 +406,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenJournal_WhenDeriving_ThenJournalTypeCanNotBeChangedWhenJournalEntriesArePresent()
         {
-            var internalOrganisation = this.InternalOrganisation;
+            this.InternalOrganisation.DoAccounting = true;
+
+            this.Session.Derive();
 
             var generalLedgerAccount1 = new GeneralLedgerAccountBuilder(this.Session)
                 .WithAccountNumber("0001")

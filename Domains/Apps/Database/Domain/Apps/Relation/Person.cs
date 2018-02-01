@@ -263,6 +263,11 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
+                foreach (PartyFinancialRelationship partyFinancialRelationship in this.PartyFinancialRelationshipsWhereParty)
+                {
+                    partyFinancialRelationship.Delete();
+                }
+
                 foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
                 {
                     partyContactMechanism.ContactMechanism.Delete();

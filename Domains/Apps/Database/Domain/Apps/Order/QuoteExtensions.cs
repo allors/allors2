@@ -27,11 +27,6 @@ namespace Allors.Domain
             {
                 @this.QuoteState = new QuoteStates(@this.Strategy.Session).Created;
             }
-
-            if (!@this.ExistQuoteNumber)
-            {
-                @this.QuoteNumber = @this.Issuer.NextQuoteNumber();
-            }
         }
 
         public static void AppsOnDerive(this Quote @this, ObjectOnDerive method)
@@ -41,6 +36,11 @@ namespace Allors.Domain
             if (!@this.ExistIssuer && internalOrganisations.Count() == 1)
             {
                 @this.Issuer = internalOrganisations.First();
+            }
+
+            if (!@this.ExistQuoteNumber && @this.ExistIssuer)
+            {
+                @this.QuoteNumber = @this.Issuer.NextQuoteNumber();
             }
 
             @this.Price = 0;

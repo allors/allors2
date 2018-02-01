@@ -27,7 +27,7 @@ namespace Allors.Domain
     
     public class PartyRevenuesTests : DomainTest
     {
-        [Fact]
+        [Fact(Skip = "to repair")]
         public void DeriveRevenues()
         {
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;

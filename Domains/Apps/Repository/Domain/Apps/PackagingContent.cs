@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("1c05a785-2de1-48fa-813f-6e740f6f7cec")]
     #endregion
-    public partial class PackagingContent : AccessControlledObject 
+    public partial class PackagingContent : Deletable, AccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -36,7 +36,6 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Quantity { get; set; }
 
-
         #region inherited methods
 
 
@@ -49,8 +48,8 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+        public void Delete() {}
 
         #endregion
-
     }
 }

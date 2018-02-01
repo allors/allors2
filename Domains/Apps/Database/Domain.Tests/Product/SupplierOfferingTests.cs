@@ -100,8 +100,10 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var internalOrganisation = this.InternalOrganisation;
+
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithOwner(this.InternalOrganisation)
                 .WithName("second facility")
                 .Build();
 
@@ -144,10 +146,11 @@ namespace Allors.Domain
         public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
-            var internalOrganisation = this.InternalOrganisation;
+
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithName("second facility")
+                .WithOwner(this.InternalOrganisation)
                 .Build();
 
             new SupplierRelationshipBuilder(this.Session)
@@ -187,7 +190,7 @@ namespace Allors.Domain
             this.Session.Derive(); 
 
             Assert.Equal(2, good.FinishedGood.InventoryItemsWherePart.Count);
-            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(1, this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
     }

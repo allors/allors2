@@ -86,9 +86,7 @@ namespace Allors.Domain
         public void GivenShipmentReceiptForPartWithoutSelectedInventoryItemWhenDerivingThenInventoryItemIsFromDefaultFacility()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
-            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
-
 
             var part = new RawMaterialBuilder(this.Session)
                 .WithName("RawMaterial")

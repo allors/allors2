@@ -912,9 +912,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             this.Session.Derive();
 
@@ -929,6 +927,12 @@ namespace Allors.Domain
             this.Session.Derive();
 
             order.Confirm();
+
+            //var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
+            //derivation.Derive();
+
+            //var list = ((DerivationLog)derivation.DerivationLog).List;
+            ////list.RemoveAll(v => !v.StartsWith("Dependency"));
 
             this.Session.Derive();
 
@@ -1561,4 +1565,32 @@ namespace Allors.Domain
             Assert.Equal(15M, invoice.ShippingAndHandlingCharge.Amount);
         }
     }
+
+
+    public class DerivationLog : Allors.Domain.Logging.ListDerivationLog
+    {
+        public override void AddedDerivable(Allors.Domain.Object derivable)
+        {
+            if (derivable is Permission)
+            {
+
+            }
+
+            base.AddedDerivable(derivable);
+        }
+
+        /// <summary>
+        /// The dependee is derived before the dependent object;
+        /// </summary>
+        public override void AddedDependency(Allors.Domain.Object dependent, Allors.Domain.Object dependee)
+        {
+            if (dependent is Permission || dependee is Permission)
+            {
+
+            }
+
+            base.AddedDependency(dependent, dependee);
+        }
+    }
+
 }

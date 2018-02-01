@@ -222,11 +222,13 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("virtual service")
                 .WithVatRate(vatRate21)
                 .Build();
 
             var physicalService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
@@ -254,6 +256,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var physicalService = new DeliverableBasedServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
@@ -336,11 +339,13 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("virtual service")
                 .WithVatRate(vatRate21)
                 .Build();
 
             var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();
@@ -368,6 +373,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
+                .WithOrganisation(this.InternalOrganisation)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
                 .Build();

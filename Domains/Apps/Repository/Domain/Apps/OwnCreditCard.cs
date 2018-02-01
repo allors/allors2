@@ -10,6 +10,7 @@ namespace Allors.Repository
     public partial class OwnCreditCard : PaymentMethod, FinancialAccount 
     {
         #region inherited properties
+
         public decimal BalanceLimit { get; set; }
 
         public decimal CurrentBalance { get; set; }

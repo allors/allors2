@@ -12,6 +12,26 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("E6BBEC1C-5855-4D22-97D2-BF62B853DC7E")]
+        [AssociationId("FE5822F4-4E05-4059-B4EB-56AAB4356384")]
+        [RoleId("AF8BE64A-A610-4917-9B21-D277419756F9")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToMany)]
+        PaymentMethod[] PaymentMethods { get; set; }
+
+        #region Allors
+        [Id("356044B9-47FA-4EEB-955E-B75C2A21EA2E")]
+        [AssociationId("DCAC5A59-8918-482C-B453-6340A7EFAC7A")]
+        [RoleId("77F0A7ED-F548-4F62-AD53-3CE616B2476C")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.OneToOne)]
+        PaymentMethod DefaultCollectionMethod { get; set; }
+
+        #region Allors
         [Id("1a986cbf-b7db-4850-af06-d96e1339beb7")]
         [AssociationId("fc69f819-2ca0-4ac4-b36e-cfff791679a1")]
         [RoleId("d6e816ae-50c5-41c7-8877-9f4c30208d47")]
@@ -102,6 +122,7 @@ namespace Allors.Repository
         [AssociationId("4d145acb-007a-46b9-98a8-a86888221e28")]
         [RoleId("c2fe67e4-a100-4d96-b4ff-df1ec73db5fe")]
         #endregion
+        [Required]
         [Workspace]
         bool DoAccounting { get; set; }
 

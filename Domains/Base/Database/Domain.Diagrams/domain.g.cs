@@ -56,18 +56,18 @@ namespace Allors.Domain
 						global::System.Guid UniqueId {set;}
 
 		}
-		public interface User  : SecurityTokenOwner, AccessControlledObject, Localised 
-		{
-						global::System.Boolean? UserEmailConfirmed {set;}
+    public interface User : SecurityTokenOwner, Localised
+    {
+        global::System.Boolean? UserEmailConfirmed { set; }
 
-						global::System.String UserName {set;}
+        global::System.String UserName { set; }
 
-						global::System.String UserEmail {set;}
+        global::System.String UserEmail { set; }
 
-						global::System.String UserPasswordHash {set;}
+        global::System.String UserPasswordHash { set; }
 
-		}
-		public interface SyncDepth2  : Object 
+    }
+    public interface SyncDepth2  : Object 
 		{
 		}
 		public interface SyncDepth1  : Object 
@@ -275,20 +275,20 @@ namespace Allors.Domain
 		public interface Shared  : Object 
 		{
 		}
-		public interface AccessControl  : Deletable, AccessControlledObject 
-		{
-						UserGroup SubjectGroups {set;}
+    public interface AccessControl : Deletable
+    {
+        UserGroup SubjectGroups { set; }
 
-						User Subjects {set;}
+        User Subjects { set; }
 
-						Role Role {set;}
+        Role Role { set; }
 
-						Permission EffectivePermissions {set;}
+        Permission EffectivePermissions { set; }
 
-						User EffectiveUsers {set;}
+        User EffectiveUsers { set; }
 
-		}
-		public interface AsyncDerivation  : Deletable 
+    }
+    public interface AsyncDerivation  : Deletable 
 		{
 						AsyncDerivable AsyncDerivable {set;}
 
@@ -370,16 +370,16 @@ namespace Allors.Domain
 						global::System.Byte[] Data {set;}
 
 		}
-		public interface Permission  : Deletable, AccessControlledObject 
-		{
-						global::System.Guid OperandTypePointer {set;}
+    public interface Permission : Deletable
+    {
+        global::System.Guid OperandTypePointer { set; }
 
-						global::System.Guid ConcreteClassPointer {set;}
+        global::System.Guid ConcreteClassPointer { set; }
 
-						global::System.Int32 OperationEnum {set;}
+        global::System.Int32 OperationEnum { set; }
 
-		}
-		public interface Person  : User, UniquelyIdentifiable, Deletable 
+    }
+    public interface Person  : User, UniquelyIdentifiable, Deletable 
 		{
 						global::System.String FirstName {set;}
 
@@ -420,51 +420,51 @@ namespace Allors.Domain
 						Organisation CycleMany {set;}
 
 		}
-		public interface Role  : AccessControlledObject, UniquelyIdentifiable 
-		{
-						Permission Permissions {set;}
+    public interface Role : UniquelyIdentifiable
+    {
+        Permission Permissions { set; }
 
-						global::System.String Name {set;}
+        global::System.String Name { set; }
 
-		}
-		public interface SecurityToken  : Deletable 
+    }
+    public interface SecurityToken  : Deletable 
 		{
 						AccessControl AccessControls {set;}
 
 		}
-		public interface Singleton  : AccessControlledObject 
-		{
-						Locale DefaultLocale {set;}
+    public interface Singleton
+    {
+        Locale DefaultLocale { set; }
 
-						Locale Locales {set;}
+        Locale Locales { set; }
 
-						User Guest {set;}
+        User Guest { set; }
 
-						SecurityToken InitialSecurityToken {set;}
+        SecurityToken InitialSecurityToken { set; }
 
-						SecurityToken DefaultSecurityToken {set;}
+        SecurityToken DefaultSecurityToken { set; }
 
-						AccessControl CreatorsAccessControl {set;}
+        AccessControl CreatorsAccessControl { set; }
 
-						AccessControl GuestAccessControl {set;}
+        AccessControl GuestAccessControl { set; }
 
-						AccessControl AdministratorsAccessControl {set;}
+        AccessControl AdministratorsAccessControl { set; }
 
-						AccessControl SalesAccessControl {set;}
+        AccessControl SalesAccessControl { set; }
 
-						AccessControl OperationsAccessControl {set;}
+        AccessControl OperationsAccessControl { set; }
 
-						AccessControl ProcurementAccessControl {set;}
+        AccessControl ProcurementAccessControl { set; }
 
-		}
-		public interface UserGroup  : UniquelyIdentifiable, AccessControlledObject 
-		{
-						User Members {set;}
+    }
+    public interface UserGroup : UniquelyIdentifiable
+    {
+        User Members { set; }
 
-						global::System.String Name {set;}
+        global::System.String Name { set; }
 
-		}
-		public interface BadUI  : Object 
+    }
+    public interface BadUI  : Object 
 		{
 						Person PersonsMany {set;}
 

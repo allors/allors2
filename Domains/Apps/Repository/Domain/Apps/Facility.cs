@@ -78,6 +78,16 @@ namespace Allors.Repository
         [Size(256)]
         public string Name { get; set; }
 
+        #region Allors
+        [Id("c73693db-9eae-4d81-a801-2ef4d619544b")]
+        [AssociationId("e72fd5d0-f80f-4ecc-a6f7-a0f697c91e0b")]
+        [RoleId("61dedec6-5aa1-4717-9b7b-34b77a1b31b9")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Indexed]
+        public InternalOrganisation Owner { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }
