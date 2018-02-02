@@ -179,6 +179,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenShipmentReceiptWhenDerivingThenInventoryItemQuantityOnHandIsUpdated()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -188,9 +191,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             var good = new GoodBuilder(this.Session)
                 .WithOrganisation(this.InternalOrganisation)

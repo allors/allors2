@@ -46,7 +46,14 @@ namespace Allors.Domain
 
             builder.WithFacilityType(new FacilityTypes(this.Session).Warehouse);
             facility = builder.Build();
-            
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithOwner(this.InternalOrganisation);
+            facility = builder.Build();
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
     }

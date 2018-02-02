@@ -271,6 +271,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsRaised_ThenSalesOrderItemsWithQuantityShortFalledAreUpdated()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var category = new ProductCategoryBuilder(this.Session)
@@ -301,10 +304,6 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-
-            var internalOrganisation = this.InternalOrganisation;
-
-
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             this.Session.Derive();
@@ -346,26 +345,26 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            //Assert.Equal(0, item1.QuantityRequestsShipping);
-            //Assert.Equal(5, item1.QuantityPendingShipment);
-            //Assert.Equal(10, item1.QuantityReserved);
-            //Assert.Equal(5, item1.QuantityShortFalled);
+            Assert.Equal(0, item1.QuantityRequestsShipping);
+            Assert.Equal(5, item1.QuantityPendingShipment);
+            Assert.Equal(10, item1.QuantityReserved);
+            Assert.Equal(5, item1.QuantityShortFalled);
 
-            //Assert.Equal(0, item2.QuantityRequestsShipping);
-            //Assert.Equal(0, item2.QuantityPendingShipment);
-            //Assert.Equal(20, item2.QuantityReserved);
-            //Assert.Equal(20, item2.QuantityShortFalled);
+            Assert.Equal(0, item2.QuantityRequestsShipping);
+            Assert.Equal(0, item2.QuantityPendingShipment);
+            Assert.Equal(20, item2.QuantityReserved);
+            Assert.Equal(20, item2.QuantityShortFalled);
 
-            //Assert.Equal(0, item3.QuantityRequestsShipping);                
-            //Assert.Equal(0, item3.QuantityPendingShipment);
-            //Assert.Equal(10, item3.QuantityReserved);
-            //Assert.Equal(10, item3.QuantityShortFalled);
-                
-            //Assert.Equal(0, item4.QuantityRequestsShipping);
-            //Assert.Equal(0, item4.QuantityPendingShipment);
-            //Assert.Equal(20, item4.QuantityReserved);
-            //Assert.Equal(20, item4.QuantityShortFalled);
-                
+            Assert.Equal(0, item3.QuantityRequestsShipping);
+            Assert.Equal(0, item3.QuantityPendingShipment);
+            Assert.Equal(10, item3.QuantityReserved);
+            Assert.Equal(10, item3.QuantityShortFalled);
+
+            Assert.Equal(0, item4.QuantityRequestsShipping);
+            Assert.Equal(0, item4.QuantityPendingShipment);
+            Assert.Equal(20, item4.QuantityReserved);
+            Assert.Equal(20, item4.QuantityShortFalled);
+
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
             Assert.Equal(5, item1.ReservedFromInventoryItem.QuantityOnHand);
 
@@ -374,27 +373,27 @@ namespace Allors.Domain
             this.Session.Derive();
             this.Session.Commit();
 
-            //// Orderitems are sorted as follows: item1, item2, item3, item4
-            //Assert.Equal(0, item1.QuantityRequestsShipping);
-            //Assert.Equal(10, item1.QuantityPendingShipment);
-            //Assert.Equal(10, item1.QuantityReserved);
-            //Assert.Equal(0, item1.QuantityShortFalled);
-                
-            //Assert.Equal(0, item2.QuantityRequestsShipping);
-            //Assert.Equal(10, item2.QuantityPendingShipment);
-            //Assert.Equal(20, item2.QuantityReserved);
-            //Assert.Equal(10, item2.QuantityShortFalled);
-                
-            //Assert.Equal(0, item3.QuantityRequestsShipping);
-            //Assert.Equal(0, item3.QuantityPendingShipment);
-            //Assert.Equal(10, item3.QuantityReserved);
-            //Assert.Equal(10, item3.QuantityShortFalled);
-                
-            //Assert.Equal(0, item4.QuantityRequestsShipping);
-            //Assert.Equal(0, item4.QuantityPendingShipment);
-            //Assert.Equal(20, item4.QuantityReserved);
-            //Assert.Equal(20, item4.QuantityShortFalled);
-                
+            // Orderitems are sorted as follows: item1, item2, item3, item4
+            Assert.Equal(0, item1.QuantityRequestsShipping);
+            Assert.Equal(10, item1.QuantityPendingShipment);
+            Assert.Equal(10, item1.QuantityReserved);
+            Assert.Equal(0, item1.QuantityShortFalled);
+
+            Assert.Equal(0, item2.QuantityRequestsShipping);
+            Assert.Equal(10, item2.QuantityPendingShipment);
+            Assert.Equal(20, item2.QuantityReserved);
+            Assert.Equal(10, item2.QuantityShortFalled);
+
+            Assert.Equal(0, item3.QuantityRequestsShipping);
+            Assert.Equal(0, item3.QuantityPendingShipment);
+            Assert.Equal(10, item3.QuantityReserved);
+            Assert.Equal(10, item3.QuantityShortFalled);
+
+            Assert.Equal(0, item4.QuantityRequestsShipping);
+            Assert.Equal(0, item4.QuantityPendingShipment);
+            Assert.Equal(20, item4.QuantityReserved);
+            Assert.Equal(20, item4.QuantityShortFalled);
+
             Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
             Assert.Equal(20, item1.ReservedFromInventoryItem.QuantityOnHand);
 

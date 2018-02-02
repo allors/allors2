@@ -249,17 +249,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenInternalOrganisationWithoutDefaultCollectionMethod_WhenExistSingleCollectionMethod_ThenDefaultIsSet()
         {
-            var internalOrganisation = new OrganisationBuilder(this.Session)
-                .WithIsInternalOrganisation(true)
-                .WithDoAccounting(true)
-                .WithName("Internal")
-                .WithFiscalYearStartMonth(05)
-                .WithFiscalYearStartDay(15)
-                .Build();
+            this.InternalOrganisation.RemoveDefaultCollectionMethod();
 
             this.Session.Derive();
 
-            Assert.True(internalOrganisation.ExistDefaultCollectionMethod);
+            Assert.True(this.InternalOrganisation.ExistDefaultCollectionMethod);
         }
         
         private void InstantiateObjects(ISession session)

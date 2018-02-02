@@ -678,6 +678,7 @@ namespace Allors.Domain
             var secondWarehouse = new FacilityBuilder(this.Session)
                 .WithName("affiliate warehouse")
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithOwner(this.InternalOrganisation)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.Session)
@@ -1150,6 +1151,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
@@ -1185,6 +1189,9 @@ namespace Allors.Domain
         public void GivenOrderItemForGoodWithNotEnoughStockAvailable_WhenConfirming_ThenQuantitiesReservedAndRequestsShippingAreEqualToInventoryAvailableToPromise()
         {
             this.InstantiateObjects(this.Session);
+
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
 
             var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
@@ -1255,6 +1262,9 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
@@ -1291,6 +1301,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenConfirmedOrderItemForGood_WhenQuantityOrderedIsDecreased_ThenQuantitiesReservedAndRequestsShippingAndInventoryAvailableToPromiseDecreaseEqually()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             this.InstantiateObjects(this.Session);
 
             var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);

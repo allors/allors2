@@ -858,6 +858,12 @@ namespace Allors.Domain
             var quantityOrderedByProduct = new Dictionary<Product, decimal>();
             var totalBasePriceByProduct = new Dictionary<Product, decimal>();
 
+            foreach (SalesOrderItem salesOrderItem in this.OrderItems)
+            {
+                salesOrderItem.AppsOnDeriveShipTo(derivation);
+                salesOrderItem.AppsOnDeriveIsValidOrderItem(derivation);
+            }
+
             foreach (SalesOrderItem salesOrderItem in this.ValidOrderItems)
             {
                 foreach (SalesOrderItem featureItem in salesOrderItem.OrderedWithFeatures)
@@ -866,7 +872,6 @@ namespace Allors.Domain
                 }
 
                 salesOrderItem.AppsOnDeriveDeliveryDate(derivation);
-                salesOrderItem.AppsOnDeriveShipTo(derivation);
                 salesOrderItem.AppsOnDeriveSalesRep(derivation);
                 salesOrderItem.AppsCalculatePurchasePrice(derivation);
                 salesOrderItem.AppsCalculateUnitPrice(derivation);

@@ -338,11 +338,6 @@ namespace Allors.Domain
                     {
                         foreach (ItemIssuance itemIssuance in pickListItem.ItemIssuancesWherePickListItem)
                         {
-                            foreach (PackagingContent packagingContent in itemIssuance.ShipmentItem.PackagingContentsWhereShipmentItem)
-                            {
-                                packagingContent.Delete();
-                            }
-
                             itemIssuance.Delete();
                         }
 
@@ -363,7 +358,7 @@ namespace Allors.Domain
                     {
                         var orderItem = shipmentItem.OrderShipmentsWhereShipmentItem[0].SalesOrderItem;
 
-                        if (pendingPickList == null)
+                        if (this.PendingPickList == null)
                         {
                             pendingPickList = new PickListBuilder(this.Strategy.Session).WithShipToParty(this.ShipToParty).Build();
                         }

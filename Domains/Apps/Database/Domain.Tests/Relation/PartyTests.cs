@@ -88,6 +88,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPartyWithOpenOrders_WhenDeriving_ThenOpenOrderAmountIsUpdated()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var organisation = new OrganisationBuilder(this.Session).WithName("customer").Build();
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(organisation).Build();
 

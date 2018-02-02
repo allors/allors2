@@ -140,6 +140,13 @@ namespace Allors.Domain
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
+
+            //var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
+            //derivation.Derive();
+
+            //var list = ((DerivationLog)derivation.DerivationLog).List;
+            ////list.RemoveAll(v => !v.StartsWith("Dependency"));
+
             pickList.SetPicked();
             this.Session.Derive();
 
@@ -538,6 +545,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderWithPickList_WhenOrderIsCancelled_ThenPickListIsCancelledAndSingleOrderShipmentIsCancelled()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var assessable = new VatRegimes(this.Session).Assessable;
             var vatRate0 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate0;
@@ -910,6 +920,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderForStoreExceedingCreditLimit_WhenOrderIsConfirmed_ThenOrderRequestsApproval()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
@@ -1003,6 +1016,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrderForCustomerExceedingCreditLimit_WhenOrderIsConfirmed_ThenOrderRequestsApproval()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 

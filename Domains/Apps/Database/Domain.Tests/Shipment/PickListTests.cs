@@ -34,6 +34,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickListBuilder_WhenBuild_ThenPostBuildRelationsMustExist()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var pickList = new PickListBuilder(this.Session).Build();
 
             this.Session.Derive();
@@ -44,6 +47,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenObjectStateIsCreated_ThenCheckTransitions()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             this.SetIdentity("orderProcessor");
 
             var pickList = new PickListBuilder(this.Session).Build();
@@ -57,6 +63,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenObjectStateIsCancelled_ThenCheckTransitions()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             this.SetIdentity("orderProcessor");
 
             var pickList = new PickListBuilder(this.Session).Build();
@@ -75,6 +84,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenObjectStateIsPicked_ThenCheckTransitions()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             this.SetIdentity("orderProcessor");
 
             var pickList = new PickListBuilder(this.Session).Build();
@@ -93,6 +105,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenPicked_ThenInventoryIsAdjustedAndOrderItemsQuantityPickedIsSet()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -241,6 +256,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenPickList_WhenActualQuantityPickedIsLess_ThenShipmentItemQuantityIsAdjusted()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -370,6 +388,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenSalesOrder_WhenShipmentIsCreated_ThenOrdertemsAreAddedToPickList()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -484,6 +505,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenMultipleOrders_WhenCombinedPickListIsPicked_ThenSingleShipmentIsPickedState()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)

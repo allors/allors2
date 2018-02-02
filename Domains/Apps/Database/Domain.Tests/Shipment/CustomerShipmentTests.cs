@@ -350,6 +350,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipment_WhenAllItemsArePutIntoShipmentPackages_ThenCustomerShipmentStateIsPacked()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithAddress1("Haverwerf 15").WithGeographicBoundary(mechelen).Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -359,9 +362,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
@@ -569,6 +570,7 @@ namespace Allors.Domain
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
+            store.IsImmediatelyPicked = false;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
@@ -592,9 +594,7 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
-
 
             this.Session.Derive();
 
@@ -625,6 +625,7 @@ namespace Allors.Domain
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
+            store.IsImmediatelyPicked = false;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
@@ -648,7 +649,6 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
 
@@ -688,6 +688,7 @@ namespace Allors.Domain
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
+            store.IsImmediatelyPicked = false;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
@@ -832,6 +833,7 @@ namespace Allors.Domain
         {
             var store = this.Session.Extent<Store>().First;
             store.ShipmentThreshold = 100;
+            store.IsImmediatelyPicked = false;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
@@ -1232,6 +1234,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenCustomerShipmentWithPendingPickList_WhenTrySetStateToShipped_ThenActionIsNotAllowed()
         {
+            var store = this.Session.Extent<Store>().First;
+            store.IsImmediatelyPicked = false;
+
             var assessable = new VatRegimes(this.Session).Assessable;
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(0).Build();
             assessable.VatRate = vatRate21;

@@ -105,10 +105,13 @@ namespace Allors.Domain
                     {
                         var shipment = itemIssuance.ShipmentItem.ShipmentWhereShipmentItem as CustomerShipment;
 
-                        shipment?.ShipmentPackages[0].AddPackagingContent(
-                            new PackagingContentBuilder(this.strategy.Session)
-                                .WithShipmentItem(itemIssuance.ShipmentItem).WithQuantity(itemIssuance.Quantity)
-                                .Build());
+                        if (shipment?.ShipmentPackages.Count == 0)
+                        {
+                            shipment?.ShipmentPackages[0].AddPackagingContent(
+                                new PackagingContentBuilder(this.strategy.Session)
+                                    .WithShipmentItem(itemIssuance.ShipmentItem).WithQuantity(itemIssuance.Quantity)
+                                    .Build());
+                        }
                     }
                 }
             }
