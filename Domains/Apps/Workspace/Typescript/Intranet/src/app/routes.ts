@@ -1,10 +1,10 @@
 import { Routes } from "@angular/router";
 
-import * as ar from "../allors/covalent/apps/ar";
-import * as catalogues from "../allors/covalent/apps/catalogues";
-import * as orders from "../allors/covalent/apps/orders";
-import * as relations from "../allors/covalent/apps/relations";
-import * as workefforts from "../allors/covalent/apps/workefforts";
+import * as ar from "../allors/covalent/apps/components/ar";
+import * as catalogues from "../allors/covalent/apps/components/catalogues";
+import * as orders from "../allors/covalent/apps/components/orders";
+import * as relations from "../allors/covalent/apps/components/relations";
+import * as workefforts from "../allors/covalent/apps/components/workefforts";
 
 import { AuthorizationService } from "./common/auth/authorization.service";
 

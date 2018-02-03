@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { AuthenticationService } from "../../../allors/angular";
+import { ConfigService } from "../../app.config.service";
 
 @Component({
   templateUrl: "./login.component.html",
@@ -17,6 +19,7 @@ export class LoginComponent implements OnDestroy {
   private subscription: Subscription;
 
   constructor(
+    private configService: ConfigService,
     private authService: AuthenticationService,
     private router: Router,
     public formBuilder: FormBuilder,
@@ -30,10 +33,15 @@ export class LoginComponent implements OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = this.authService.login$(userName, password).subscribe(
+    this.subscription = this.authService
+    .login$(userName, password)
+    .subscribe(
       (result) => {
         if (result.authenticated) {
-          this.router.navigate(["/"]);
+          this.configService.setup()
+            .subscribe(() => {
+              this.router.navigate(["/"]);
+            });
         } else {
           alert("Could not log in");
         }
