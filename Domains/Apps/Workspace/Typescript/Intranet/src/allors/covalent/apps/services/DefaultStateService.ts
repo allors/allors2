@@ -5,16 +5,24 @@ import { StateService } from "./StateService";
 
 @Injectable()
 export class DefaultStateService extends StateService {
+    private static readonly internalOrganisationKey = "StateServiceInternalOrganisation";
 
     private internalOrganisationSubject;
 
     constructor() {
         super();
-        this.internalOrganisationSubject = new BehaviorSubject(null);
+
+        const key = DefaultStateService.internalOrganisationKey;
+        const id = sessionStorage.getItem(key);
+        this.internalOrganisationSubject = new BehaviorSubject(id);
         this.internalOrganisation$ = this.internalOrganisationSubject;
     }
 
     public selectInternalOrginsation(internalOrganisation: Organisation) {
-        this.internalOrganisationSubject.next(internalOrganisation.id);
+
+        const key = DefaultStateService.internalOrganisationKey;
+        const id = internalOrganisation.id;
+        sessionStorage.setItem(key, id);
+        this.internalOrganisationSubject.next(id);
     }
 }
