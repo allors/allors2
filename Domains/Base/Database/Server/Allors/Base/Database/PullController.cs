@@ -29,15 +29,19 @@ namespace Allors.Server.Controllers
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
 
     public class PullController : Controller
     {
-        public PullController(ISessionService sessionService)
+        public PullController(ISessionService sessionService, ILogger<PullController> logger)
         {
             this.Session = sessionService.Session;
+            this.Logger = logger;
         }
 
         private ISession Session { get; }
+
+        private ILogger<PullController> Logger { get; set; }
 
         [HttpPost]
         [Authorize]
@@ -98,6 +102,7 @@ namespace Allors.Server.Controllers
             }
             catch (Exception e)
             {
+                this.Logger.LogError(e, "Bad Request");
                 return this.BadRequest(e.Message);
             }
         }
