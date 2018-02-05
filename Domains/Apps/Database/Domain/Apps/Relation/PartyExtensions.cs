@@ -301,11 +301,13 @@ namespace Allors.Domain
         {
             var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            foreach (Organisation internalOrganisation in internalOrganisations)
+            if (!internalOrganisations.Contains(@this))
             {
-                if (!Equals(@this, internalOrganisation))
+                foreach (Organisation internalOrganisation in internalOrganisations)
                 {
-                    var partyFinancial = @this.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v => Equals(v.InternalOrganisation, internalOrganisation));
+                    var partyFinancial = @this.PartyFinancialRelationshipsWhereParty.FirstOrDefault(v =>
+                            Equals(v.InternalOrganisation, internalOrganisation));
+
                     if (partyFinancial == null)
                     {
                         partyFinancial = new PartyFinancialRelationshipBuilder(@this.Strategy.Session)
