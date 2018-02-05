@@ -134,8 +134,7 @@ namespace Allors.Server
             var value = this.GetUnitRole(roleType, this.V);
 
             long? objectIdNullable = null;
-            long objectId = 0;
-            if(long.TryParse(this.O, out objectId))
+            if (long.TryParse(this.O, out var objectId))
             {
                 objectIdNullable = objectId;
             }
