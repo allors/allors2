@@ -102,8 +102,8 @@ namespace Allors.Server.Controllers
             }
             catch (Exception e)
             {
-                this.Logger.LogError(e, "Bad Request");
-                return this.BadRequest(e.Message);
+                this.Logger.LogError(e, "Exception");
+                return this.StatusCode(500, e.Message);
             }
         }
     }

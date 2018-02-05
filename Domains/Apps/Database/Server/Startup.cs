@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-namespace Allors.Server
+﻿namespace Allors.Server
 {
     using System.Text;
 
@@ -13,6 +11,9 @@ namespace Allors.Server
     using Identity.Models;
     using Identity.Services;
 
+    using JSNLog;
+
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
     using Microsoft.AspNetCore.Hosting;
@@ -22,6 +23,7 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
 
     using Newtonsoft.Json;
@@ -93,7 +95,7 @@ namespace Allors.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Allors
             var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
@@ -116,6 +118,15 @@ namespace Allors.Server
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var jsnlogConfiguration = new JsnlogConfiguration 
+                                          {
+                                              corsAllowedOriginsRegex = ".*",
+                                              defaultAjaxUrl = "logging",
+                                              serverSideMessageFormat = env.IsDevelopment() ? "%requestId | %url | %message" :
+                                                                            "%requestId | %url | %userHostAddress | %userAgent | %message",
+                                          };          
+            app.UseJSNLog(new LoggingAdapter(loggerFactory), jsnlogConfiguration);
 
             app.UseStaticFiles();
 

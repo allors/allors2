@@ -35,7 +35,9 @@
   
 
 <ItemGroup>
-  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+  <PackageReference Include="JSNLog.AspNetCore" Version="2.26.1" />
+  <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+  <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-rc2" />
 </ItemGroup>
   
 
@@ -48,6 +50,13 @@
     <ProjectReference Include="..\Resources\Resources.csproj" />
     <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
+  
+
+<ItemGroup>
+  <Content Update="NLog.config">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </Content>
+</ItemGroup>
 
 
 

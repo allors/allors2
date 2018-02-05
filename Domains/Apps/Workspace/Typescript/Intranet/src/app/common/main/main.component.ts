@@ -1,21 +1,79 @@
-import { AfterViewInit, ChangeDetectorRef, Component } from "@angular/core";
-import { TdMediaService } from "@covalent/core";
+import { Component } from "@angular/core";
+import { Subscription } from "rxjs";
+import { Observable } from "rxjs/Observable";
 
-import { MenuItem, MenuService } from "../../../allors/angular";
+import { Loaded, MenuItem, MenuService, Scope, WorkspaceService } from "../../../allors/angular";
+import { StateService } from "../../../allors/covalent/apps/services/StateService";
+import { Organisation } from "../../../allors/domain";
+import { Equals, Fetch, PullRequest, Query } from "../../../allors/framework";
+import { MetaDomain } from "../../../allors/meta";
 
 @Component({
   templateUrl: "./main.component.html",
 })
 export class MainComponent {
-
-  public modules: MenuItem[] = [];
+  public selectedInternalOrganisation: Organisation;
+  public internalOriganisations: Organisation[];
 
   public usermenu: any[] = [
     { icon: "tune", route: ".", title: "Account settings" },
     { icon: "exit_to_app", route: ".", title: "Sign out" },
   ];
 
-  constructor(public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef, public menu: MenuService) {
-    this.modules = this.menu.modules;
+  public modules: MenuItem[] = [];
+  public m: MetaDomain;
+
+  private scope: Scope;
+  private subscription: Subscription;
+
+  constructor(
+    public menu: MenuService,
+    private stateService: StateService,
+    private workspaceService: WorkspaceService) {
+
+      this.modules = this.menu.modules;
+      this.scope = this.workspaceService.createScope();
+      this.m = this.workspaceService.metaPopulation.metaDomain;
   }
+
+  public ngOnInit(): void {
+    this.subscription = this.stateService.internalOrganisation$
+     .switchMap((internalOrganisationId) => {
+
+      const fetch: Fetch[] = [
+        new Fetch({
+          id: internalOrganisationId,
+          name: "internalOrganisation",
+        }),
+      ];
+
+      const query: Query[] = [
+        new Query(
+          {
+            name: "internalOrganisations",
+            objectType: this.m.Organisation,
+            predicate: new Equals({ roleType: this.m.Organisation.IsInternalOrganisation, value: true }),
+          }),
+      ];
+
+      return this.scope
+        .load("Pull", new PullRequest({ fetch, query }));
+    })
+    .subscribe((loaded: Loaded) => {
+      this.scope.session.reset();
+      this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
+      this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
+    });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  public selectInternalOrganisation(internalOrganisation: Organisation) {
+    this.stateService.selectInternalOrginsation(internalOrganisation);
+  }
+
 }

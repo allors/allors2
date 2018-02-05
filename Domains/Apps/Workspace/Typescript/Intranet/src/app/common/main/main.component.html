@@ -1,5 +1,5 @@
 <td-layout>
-  <td-navigation-drawer flex sidenavTitle="Apps" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
+  <td-navigation-drawer flex sidenavTitle="Covalent" logo="assets:covalent" name="Firstname Lastname" email="firstname.lastname@company.com">
     <mat-nav-list>
       <a *ngFor="let item of modules" mat-list-item [routerLink]="item.link" routerLinkActive="active-link" [tdLayoutToggle]>
         <mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
@@ -20,9 +20,15 @@
       <mat-icon [routerLink]="['/']" class="mat-icon-logo cursor-pointer" svgIcon="assets:teradata"></mat-icon>
       <span [routerLink]="['/']" class="cursor-pointer">Apps</span>
       <span flex></span>
-      <a mat-icon-button mdTooltip="Worktasks" [routerLink]="['/workefforts/worktasks']">
-        <mat-icon>chrome_reader_mode</mat-icon>
-      </a>
+      
+      <button mat-button [matMenuTriggerFor]="internalOrganisationMenu">{{selectedInternalOrganisation?.Name}}</button>
+      <mat-menu #internalOrganisationMenu="matMenu">
+        <button mat-menu-item *ngFor="let internalOrganisation of internalOriganisations" (click)="selectInternalOrganisation(internalOrganisation)">
+          <mat-icon *ngIf="internalOrganisation === selectedInternalOrganisation">domain</mat-icon>
+          <span>{{internalOrganisation.Name}}</span>
+        </button>
+      </mat-menu>
+
     </div>
 
     <router-outlet></router-outlet>

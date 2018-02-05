@@ -27,15 +27,19 @@ namespace Allors.Server
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
 
     public class DatabaseController : Controller
     {
-        public DatabaseController(ISessionService sessionService)
+        public DatabaseController(ISessionService sessionService, ILogger<DatabaseController> logger)
         {
             this.Session = sessionService.Session;
+            this.Logger = logger;
         }
 
         private ISession Session { get; }
+
+        private ILogger<DatabaseController> Logger { get; set; }
 
         [HttpPost]
         [Authorize]
@@ -50,6 +54,7 @@ namespace Allors.Server
             }
             catch (Exception e)
             {
+                this.Logger.LogError(e, "Exception");
                 return this.StatusCode(500, e.Message);
             }
         }
@@ -67,6 +72,7 @@ namespace Allors.Server
             }
             catch (Exception e)
             {
+                this.Logger.LogError(e, "Exception");
                 return this.StatusCode(500, e.Message);
             }
         }
@@ -84,6 +90,7 @@ namespace Allors.Server
             }
             catch (Exception e)
             {
+                this.Logger.LogError(e, "Exception");
                 return this.StatusCode(500, e.Message);
             }
         }

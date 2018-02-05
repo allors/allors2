@@ -1,10 +1,10 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import { ErrorHandler, NgModule } from "@angular/core";
 import { BrowserModule, Title } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule, Routes } from "@angular/router";
 
-import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, DatabaseService, WorkspaceService } from "../allors/angular";
+import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, DatabaseService, WorkspaceService, LoggingService } from "../allors/angular";
 import { ErrorService, MediaService, MenuService } from "../allors/angular";
 import { DefaultErrorService } from "../allors/covalent";
 
@@ -22,9 +22,11 @@ import { AppComponent } from "./app.component";
 import { AuthorizationService } from "./common/auth/authorization.service";
 import { routes } from "./routes";
 
-import * as common from "./common";
-
 import { ConfigService } from "./app.config.service";
+import { DefaultErrorHandler } from "./app.error.handler";
+import { DefaultLoggingService } from "./app.logging.service";
+
+import * as common from "./common";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -48,8 +50,10 @@ import { ConfigService } from "./app.config.service";
     { provide: DatabaseConfig, useValue: { url: environment.url } },
     { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl} },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-    { provide: ErrorService, useClass: DefaultErrorService },
     { provide: StateService, useClass: DefaultStateService },
+    { provide: LoggingService, useClass: DefaultLoggingService },
+    { provide: ErrorHandler, useClass: DefaultErrorHandler },
+    { provide: ErrorService, useClass: DefaultErrorService },
     ConfigService,
     DatabaseService,
     WorkspaceService,
