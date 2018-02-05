@@ -32,7 +32,7 @@ export class PartyContactMechanismEmailAddressAddComponent implements OnInit, On
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
@@ -70,7 +70,7 @@ export class PartyContactMechanismEmailAddressAddComponent implements OnInit, On
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.party = loaded.objects.party as Party;
 

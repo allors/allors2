@@ -32,7 +32,7 @@ export class PartyContactMechanismPostalAddressEditComponent implements OnInit, 
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
@@ -80,7 +80,7 @@ export class PartyContactMechanismPostalAddressEditComponent implements OnInit, 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
         this.contactMechanism = this.partyContactMechanism.ContactMechanism as PostalAddress;

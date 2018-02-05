@@ -110,7 +110,7 @@ export class PeopleOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.scope.session.reset();
 

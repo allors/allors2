@@ -61,7 +61,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+      .switchMap(([urlSegments, date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -121,7 +121,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;

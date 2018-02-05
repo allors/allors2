@@ -54,7 +54,7 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.quote = loaded.objects.quote as ProductQuote;
         const printContent = this.quote.PrintContent;
 

@@ -71,7 +71,7 @@ export class OrganisationContactrelationshipEditComponent implements OnInit, OnD
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.organisationContactRelationship = loaded.objects.organisationContactRelationship as OrganisationContactRelationship;
 

@@ -31,11 +31,11 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnD
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
@@ -63,7 +63,7 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnD
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
         this.contactMechanism = this.partyContactMechanism.ContactMechanism as WebAddress;

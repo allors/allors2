@@ -65,8 +65,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
     .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
       return [
         data,
@@ -103,7 +102,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.categories as ProductCategory[];
         this.total = loaded.values.categories_total;
       },

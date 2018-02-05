@@ -66,11 +66,8 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+      .switchMap(([urlSegments, date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const roleId: string = this.route.snapshot.paramMap.get("roleId");
@@ -90,7 +87,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ fetch }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
             this.communicationEventPrefetch = loaded.objects.communicationEventPrefetch as CommunicationEvent;
             this.party = loaded.objects.party as Party;
 
@@ -207,7 +204,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             }
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.scope.session.reset();
         this.communicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
 

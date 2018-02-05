@@ -32,7 +32,7 @@ export class SalesOrderPrintComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
@@ -54,7 +54,7 @@ export class SalesOrderPrintComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.order = loaded.objects.order as SalesOrder;
         const printContent = this.order.PrintContent;
 

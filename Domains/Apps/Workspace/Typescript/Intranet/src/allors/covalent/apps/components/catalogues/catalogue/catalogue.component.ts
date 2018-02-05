@@ -101,7 +101,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
         if (!this.catalogue) {

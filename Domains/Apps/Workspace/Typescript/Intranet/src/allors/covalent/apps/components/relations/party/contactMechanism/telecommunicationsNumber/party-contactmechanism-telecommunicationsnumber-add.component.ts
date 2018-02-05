@@ -79,7 +79,7 @@ export class PartyContactMechanismTelecommunicationsNumberAddComponent implement
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
         const phone: ContactMechanismType = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === "Phone");

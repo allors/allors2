@@ -40,7 +40,7 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
     ];
 
     this.scope.load("Pull", new PullRequest({ query })).subscribe(
-      (loaded: Loaded) => {
+      (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.partyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;
         this.webAddress = this.scope.session.create("WebAddress") as WebAddress;

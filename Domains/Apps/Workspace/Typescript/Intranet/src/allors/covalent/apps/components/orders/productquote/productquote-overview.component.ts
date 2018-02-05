@@ -39,7 +39,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -62,11 +62,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+      .switchMap(([urlSegments, date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -124,7 +121,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
@@ -186,7 +183,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
     })];
 
     this.scope.load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         const order = loaded.objects.order as SalesOrder;
         this.router.navigate(["/orders/salesOrder/" + order.id]);
       },

@@ -122,7 +122,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ query: organisationRolesQuery }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
             this.roles = loaded.collections.organisationRoles as OrganisationRole[];
             this.role = this.roles.find((v: OrganisationRole) => v.Name === data.role);
 
@@ -217,7 +217,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
                 name: "organisations",
                 objectType: m.Organisation,
                 predicate,
-                page: new Page({ skip: 0, take: take }),
+                page: new Page({ skip: 0, take }),
                 include: [
                   new TreeNode({ roleType: m.Organisation.LogoImage }),
                   new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
@@ -241,7 +241,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
               .load("Pull", new PullRequest({ query }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.scope.session.reset();
 
         this.data = loaded.collections.organisations as Organisation[];

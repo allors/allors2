@@ -119,7 +119,7 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ query: objectStatesQuery }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
             this.communicationEventStates = loaded.collections.communicationEventStates as CommunicationEventState[];
             this.communicationEventState = this.communicationEventStates.find((v: CommunicationEventState) => v.Name === data.state);
 
@@ -169,7 +169,7 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
               .load("Pull", new PullRequest({ query: communicationsQuery }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.scope.session.reset();
 

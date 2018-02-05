@@ -49,7 +49,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
     this.scope
       .load("Pull", new PullRequest({ query }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.countries = loaded.collections.countries as Country[];
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 

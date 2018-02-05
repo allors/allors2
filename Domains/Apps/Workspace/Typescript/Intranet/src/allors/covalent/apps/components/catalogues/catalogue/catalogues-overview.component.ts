@@ -66,8 +66,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
     .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
       return [
         data,
@@ -103,7 +102,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.catalogues as Catalogue[];
         this.total = loaded.values.catalogues_total;
       },

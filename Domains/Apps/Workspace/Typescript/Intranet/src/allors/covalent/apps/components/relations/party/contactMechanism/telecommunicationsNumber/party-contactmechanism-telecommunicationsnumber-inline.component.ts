@@ -21,7 +21,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
   public contactMechanismPurposes: Enumeration[];
   public contactMechanismTypes: ContactMechanismType[];
-  
+
   public partyContactMechanism: PartyContactMechanism;
   public telecommunicationsNumber: TelecommunicationsNumber;
 
@@ -48,7 +48,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
     this.scope
       .load("Pull", new PullRequest({ query }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
 

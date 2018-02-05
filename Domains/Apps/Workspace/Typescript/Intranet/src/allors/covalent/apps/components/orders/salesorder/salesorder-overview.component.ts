@@ -65,11 +65,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+      .switchMap(([urlSegments, date]) => {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
@@ -151,7 +148,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
@@ -248,7 +245,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       })];
 
       this.scope.load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
+        .subscribe((loaded) => {
           const invoices = loaded.collections.invoices as SalesInvoice[];
           if (invoices.length === 1) {
             this.router.navigate(["/ar/invoice/" + invoices[0].id]);

@@ -133,7 +133,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ query: objectStatesQuery }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
             this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
             this.workEffortState = this.workEffortStates.find((v: WorkEffortState) => v.Name === data.state);
 
@@ -204,7 +204,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
               .load("Pull", new PullRequest({ query: assignmentsQuery }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.scope.session.reset();
 

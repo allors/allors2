@@ -94,7 +94,7 @@ export class PersonComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.subTitle = "edit person";
         this.person = loaded.objects.person as Person;

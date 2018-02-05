@@ -58,13 +58,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   public ngOnInit(): void {
-    type record = [UrlSegment[], Date, string];
-
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<record> = Observable.combineLatest(route$, this.refresh$, this.stateService.internalOrganisation$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date, internalOrganisationId]: record) => {
+ 
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const roleId: string = this.route.snapshot.paramMap.get("roleId");
@@ -116,7 +112,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.scope.session.reset();
 

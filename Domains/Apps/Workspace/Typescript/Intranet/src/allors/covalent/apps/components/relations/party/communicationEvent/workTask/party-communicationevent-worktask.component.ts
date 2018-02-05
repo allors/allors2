@@ -54,10 +54,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
 
   public ngOnInit(): void {
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$ = Observable.combineLatest(route$, this.refresh$, this.stateService.internalOrganisation$);
-
-    this.subscription = combined$
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
@@ -111,7 +108,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.subTitle = "edit work task";
         this.workTask = loaded.objects.worktask as WorkTask;
         const communicationEvent: CommunicationEvent = loaded.objects.communicationEvent as CommunicationEvent;

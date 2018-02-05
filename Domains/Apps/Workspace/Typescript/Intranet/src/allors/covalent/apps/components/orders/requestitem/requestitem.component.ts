@@ -53,12 +53,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const route$: Observable<UrlSegment[]> = this.route.url;
 
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+      .switchMap(([urlSegments, date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const itemId: string = this.route.snapshot.paramMap.get("itemId");
@@ -93,7 +90,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.scope.session.reset();
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         this.requestItem = loaded.objects.requestItem as RequestItem;
@@ -266,7 +263,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
     this.scope
         .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
+        .subscribe((loaded) => {
           this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
           if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
             this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;

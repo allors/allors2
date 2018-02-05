@@ -131,7 +131,10 @@ export class GoodsOverviewComponent implements OnDestroy {
 
     const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
       .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
-        return [data, data !== previousData ? 50 : take, date];
+        return [
+          data,
+          data !== previousData ? 50 : take,
+          date];
       }, [] as [SearchData, number, Date],
     );
 
@@ -208,7 +211,7 @@ export class GoodsOverviewComponent implements OnDestroy {
 
             return this.scope
               .load("Pull", new PullRequest({ query: searchQuery }))
-              .switchMap((loaded: Loaded) => {
+              .switchMap((loaded) => {
                 this.brands = loaded.collections.brands as Brand[];
                 this.brand = this.brands.find(
                   (v: Brand) => v.Name === data.brand,
@@ -418,7 +421,7 @@ export class GoodsOverviewComponent implements OnDestroy {
           });
       })
       .subscribe(
-        (loaded: Loaded) => {
+        (loaded) => {
           this.data = loaded.collections.goods as Good[];
           this.total = loaded.values.goods_total;
         },

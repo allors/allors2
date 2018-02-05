@@ -78,7 +78,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.salesTerm = loaded.objects.salesTerm as SalesTerm;

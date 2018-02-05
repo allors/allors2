@@ -49,10 +49,7 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, OnDe
 
   public ngOnInit(): void {
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
-
-    this.subscription = combined$
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
       .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -80,7 +77,7 @@ export class OrganisationContactrelationshipAddComponent implements OnInit, OnDe
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.organisationContactKinds = loaded.collections.organisationContactKinds as Enumeration[];
         this.roles = loaded.collections.roles as PersonRole[];

@@ -50,7 +50,7 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -120,7 +120,7 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.orders as SalesOrder[];
         this.total = loaded.values.orders_total;
       },

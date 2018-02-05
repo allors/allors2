@@ -69,13 +69,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    type record = [UrlSegment[], Date, string];
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<record> = Observable.combineLatest(route$, this.refresh$, this.stateService.internalOrganisation$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date, internalOrganisationId]: record) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -172,7 +168,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
             this.categories = loaded.collections.categories as ProductCategory[];
@@ -239,7 +235,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             return this.scope.load("Pull", new PullRequest({ query: Query2 }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
         this.suppliers = loaded.collections.suppliers as Organisation[];
       },
@@ -314,7 +310,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
     this.scope
       .load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         const selectedbrand = loaded.objects.selectedbrand as Brand;
         this.models = selectedbrand.Models;

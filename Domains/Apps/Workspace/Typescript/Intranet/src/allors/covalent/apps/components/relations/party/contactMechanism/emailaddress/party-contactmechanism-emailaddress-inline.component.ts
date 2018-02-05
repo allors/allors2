@@ -41,7 +41,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
     ];
 
     this.scope.load("Pull", new PullRequest({ query })).subscribe(
-      (loaded: Loaded) => {
+      (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 
         this.partyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;

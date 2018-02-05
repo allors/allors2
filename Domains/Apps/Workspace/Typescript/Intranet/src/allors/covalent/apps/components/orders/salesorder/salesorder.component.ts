@@ -82,12 +82,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const route$: Observable<UrlSegment[]> = this.route.url;
 
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
-
-    this.subscription = combined$
-      .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+      .switchMap(([urlSegments, date]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -130,7 +127,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
             this.scope.session.reset();
             this.currencies = loaded.collections.currencies as Currency[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
@@ -179,7 +176,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             return this.scope.load("Pull", new PullRequest({ fetch, query }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.order = loaded.objects.salesOrder as SalesOrder;
 
         if (!this.order) {
@@ -566,7 +563,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
       this.scope
         .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
+        .subscribe((loaded) => {
 
           if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
             this.order.ShipToAddress = null;
@@ -615,7 +612,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
       this.scope
         .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded: Loaded) => {
+        .subscribe((loaded) => {
 
           if (this.order.BillToCustomer !== this.previousBillToCustomer) {
             this.order.BillToContactMechanism = null;

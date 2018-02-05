@@ -66,18 +66,17 @@ export class RequestsOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    const combined$: Observable<any> = Observable.combineLatest(search$, this.page$, this.refresh$)
+        .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+          return [
+            data,
+            data !== previousData ? 50 : take,
+            date,
+          ];
+        }, [] as [SearchData, number, Date]);
 
     this.subscription = combined$
-      .switchMap(([data, take]: [SearchData, number]) => {
+      .switchMap(([data, take]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -120,7 +119,7 @@ export class RequestsOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.requests as Request[];
         this.total = loaded.values.requests_total;
       },

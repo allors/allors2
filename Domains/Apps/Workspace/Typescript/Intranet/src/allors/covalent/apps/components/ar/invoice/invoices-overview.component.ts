@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded,Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
 import { SalesInvoice } from "../../../../../domain";
 import { And, ContainedIn, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -121,7 +121,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.invoices as SalesInvoice[];
         this.total = loaded.values.invoices_total;
       },

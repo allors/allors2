@@ -170,7 +170,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
             this.categories = loaded.collections.categories as ProductCategory[];
@@ -237,7 +237,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             return this.scope.load("Pull", new PullRequest({ query: Query2 }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
         this.suppliers = loaded.collections.suppliers as Organisation[];
       },
@@ -320,7 +320,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
     this.scope
       .load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         const selectedbrand = loaded.objects.selectedbrand as Brand;
         this.models = selectedbrand.Models;

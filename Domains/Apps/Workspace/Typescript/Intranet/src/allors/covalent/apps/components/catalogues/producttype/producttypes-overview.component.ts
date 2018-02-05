@@ -62,15 +62,14 @@ export class ProductTypesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    const combined$: Observable<any> = Observable.combineLatest(search$, this.page$, this.refresh$)
+        .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+          return [
+            data,
+            data !== previousData ? 50 : take,
+            date,
+          ];
+        }, [] as [SearchData, number, Date]);
 
     this.subscription = combined$
       .switchMap(([data, take]) => {
@@ -89,7 +88,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
             name: "productTypes",
             objectType: m.ProductType,
             predicate,
-            page: new Page({ skip: 0, take: take }),
+            page: new Page({ skip: 0, take }),
             include: [
               new TreeNode({ roleType: m.ProductType.SerialisedInventoryItemCharacteristicTypes }),
             ],
@@ -98,7 +97,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.productTypes as ProductType[];
         this.total = loaded.values.productTypes_total;
       },

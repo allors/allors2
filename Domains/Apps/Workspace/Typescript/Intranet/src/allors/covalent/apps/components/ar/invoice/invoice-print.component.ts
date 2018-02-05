@@ -54,7 +54,7 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.invoice = loaded.objects.invoice as SalesInvoice;
         const printContent = this.invoice.PrintContent;
 

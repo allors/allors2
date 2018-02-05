@@ -63,7 +63,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.productType = loaded.objects.productType as ProductType;
         if (!this.productType) {

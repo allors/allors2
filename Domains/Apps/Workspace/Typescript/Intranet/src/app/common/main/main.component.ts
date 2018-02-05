@@ -59,7 +59,7 @@ export class MainComponent {
       return this.scope
         .load("Pull", new PullRequest({ fetch, query }));
     })
-    .subscribe((loaded: Loaded) => {
+    .subscribe((loaded) => {
       this.scope.session.reset();
       this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
       this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;

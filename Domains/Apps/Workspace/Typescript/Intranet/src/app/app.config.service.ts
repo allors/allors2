@@ -30,7 +30,7 @@ export class ConfigService {
 
     return scope
         .load("Pull", new PullRequest({ query }))
-        .do((loaded: Loaded) => {
+        .do((loaded) => {
             const organisations = loaded.collections.internalOrganisations as Organisation[];
             const organisation = organisations[0];
             if (organisation) {

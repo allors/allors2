@@ -108,7 +108,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
             this.scope.session.reset();
             this.currencies = loaded.collections.currencies as Currency[];
             this.vatRates = loaded.collections.vatRates as VatRate[];
@@ -156,7 +156,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             return this.scope.load("Pull", new PullRequest({ fetch, query }));
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.order = loaded.objects.order as SalesOrder;
 
@@ -373,7 +373,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     this.scope
       .load("Pull", new PullRequest({ fetch }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
           this.invoice.ShipToAddress = null;

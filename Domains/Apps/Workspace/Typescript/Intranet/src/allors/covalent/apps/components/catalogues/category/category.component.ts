@@ -99,7 +99,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.category = loaded.objects.category as ProductCategory;
         if (!this.category) {

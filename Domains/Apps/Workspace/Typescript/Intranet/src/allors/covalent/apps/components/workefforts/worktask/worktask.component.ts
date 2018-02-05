@@ -46,10 +46,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$ = Observable.combineLatest(route$, this.stateService.internalOrganisation$);
-
-    this.subscription = combined$
+    this.subscription = Observable.combineLatest(this.route.url, this.stateService.internalOrganisation$)
       .switchMap(([, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
@@ -90,7 +87,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
-          .switchMap((loaded: Loaded) => {
+          .switchMap((loaded) => {
 
             this.subTitle = "edit work task";
             this.workTask = loaded.objects.worktask as WorkTask;
@@ -124,7 +121,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             }
           });
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
 
         if (this.workEffortAssignments) {

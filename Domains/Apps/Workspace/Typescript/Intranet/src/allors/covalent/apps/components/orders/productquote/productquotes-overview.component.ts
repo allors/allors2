@@ -50,7 +50,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -66,15 +66,14 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
+        .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+          return [
+            data,
+            data !== previousData ? 50 : take,
+            date,
+          ];
+        }, [] as [SearchData, number, Date]);
 
     this.subscription = combined$
       .switchMap(([data, take]) => {
@@ -120,7 +119,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.data = loaded.collections.quotes as ProductQuote[];
         this.total = loaded.values.quotes_total;
       },

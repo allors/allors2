@@ -58,7 +58,7 @@ export class Fixture {
         objectType,
       }));
 
-      const loaded: Loaded = await this.scope.load("Pull", new PullRequest({ query }));
+      const loaded = await this.scope.load("Pull", new PullRequest({ query }));
 
       const objectsByObjectType: Map<ObjectType, any[]> = new Map();
 

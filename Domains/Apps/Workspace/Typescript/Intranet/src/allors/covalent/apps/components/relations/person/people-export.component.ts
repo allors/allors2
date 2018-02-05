@@ -58,7 +58,7 @@ export class PeopleExportComponent implements OnDestroy {
     private changeDetectorRef: ChangeDetectorRef) {
 
     titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -116,7 +116,7 @@ export class PeopleExportComponent implements OnDestroy {
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
 
         this.scope.session.reset();
 

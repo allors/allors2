@@ -105,13 +105,13 @@ export class InvoiceItemEditComponent
           new Query({
             name: "vatRegimes",
             objectType: m.VatRegime,
-          })
+          }),
         ];
 
         return this.scope.load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe(
-        (loaded: Loaded) => {
+        (loaded) => {
           this.invoice = loaded.objects.salesInvoice as SalesInvoice;
           this.invoiceItem = loaded.objects.invoiceItem as SalesInvoiceItem;
           this.orderItem = loaded.objects.orderItem as SalesOrderItem;
@@ -159,12 +159,12 @@ export class InvoiceItemEditComponent
       new Fetch({
         id: product.id,
         name: "inventoryItem",
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood })
+        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
       }),
     ];
 
     this.scope.load("Pull", new PullRequest({ fetch })).subscribe(
-      (loaded: Loaded) => {
+      (loaded) => {
         this.inventoryItems = loaded.collections
           .inventoryItem as InventoryItem[];
         if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {

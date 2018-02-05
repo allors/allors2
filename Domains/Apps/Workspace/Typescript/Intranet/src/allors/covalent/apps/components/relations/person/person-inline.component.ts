@@ -60,7 +60,7 @@ export class PersonInlineComponent implements OnInit {
 
     this.scope
       .load("Pull", new PullRequest({ query }))
-      .subscribe((loaded: Loaded) => {
+      .subscribe((loaded) => {
         this.locales = loaded.collections.locales as Locale[];
         this.genders = loaded.collections.genders as Enumeration[];
         this.salutations = loaded.collections.salutations as Enumeration[];
