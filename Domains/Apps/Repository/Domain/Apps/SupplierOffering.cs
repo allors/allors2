@@ -29,15 +29,15 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public RatingType Rating { get; set; }
+        
         #region Allors
         [Id("74895df9-e416-41cb-ab36-24694dc63334")]
         [AssociationId("b81877b2-f7cd-4951-b02e-e60722ca0d72")]
         [RoleId("80326eaa-5546-490e-b433-9ff57f42f85e")]
         #endregion
-
         public int StandardLeadTime { get; set; }
+        
         #region Allors
         [Id("806da6e8-b58d-46cf-b703-7e67aa7dfcf9")]
         [AssociationId("05a12a65-920d-4d6e-9490-1a5d8ae651c3")]
@@ -45,9 +45,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        [Required]
-
         public ProductPurchasePrice[] ProductPurchasePrices { get; set; }
+        
         #region Allors
         [Id("9c3458aa-7062-4c4c-9160-2f978b088082")]
         [AssociationId("2efde592-4a60-4c79-bc20-f389c5df5966")]
@@ -55,8 +54,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Ordinal Preference { get; set; }
+        
         #region Allors
         [Id("b4cdcc85-583a-49e7-ba35-8985936c7f64")]
         [AssociationId("2133d78d-9f26-46bf-b706-e01e032402df")]
@@ -65,6 +64,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal MinimalOrderQuantity { get; set; }
+        
         #region Allors
         [Id("cd1ce1c1-222f-461b-8d9c-7d58f997d129")]
         [AssociationId("f719728f-7def-44d7-8c68-0996f3834887")]
@@ -72,8 +72,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Product Product { get; set; }
+        
         #region Allors
         [Id("d2de1e9e-196f-43d7-903e-566a4858bc02")]
         [AssociationId("a78c953d-0feb-463a-a7c6-e00640db9e44")]
@@ -82,16 +82,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public Party Supplier { get; set; }
+        
         #region Allors
         [Id("d741765d-d17e-4e6a-88fd-9eee70c82bcf")]
         [AssociationId("3e237d3b-6d44-4afd-a248-f9d15e7822d7")]
         [RoleId("79affcb8-28b2-4629-a918-c863089f1dbc")]
         #endregion
         [Size(256)]
-
         public string ReferenceNumber { get; set; }
+        
         #region Allors
         [Id("ea5e3f12-417c-40c4-97e0-d8c7dd41300c")]
         [AssociationId("ba708825-f930-445c-8eaf-29221a405edf")]
@@ -99,10 +99,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public Part Part { get; set; }
-
-
+        
         #region inherited methods
 
 
@@ -119,6 +117,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }
