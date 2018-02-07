@@ -55,6 +55,11 @@ namespace Allors.Domain
                     derivation.AddDependency(inventoryItem, this);
                 }
             }
+
+            if (derivation.HasChangedAssociation(this, this.Meta.SupplierOfferingsWhereProduct))
+            {
+                derivation.AddDerivable(this);
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -83,6 +88,8 @@ namespace Allors.Domain
             {
                 this.AddProductCategory(this.PrimaryProductCategory);
             }
+
+            this.SuppliedBy = this.SupplierOfferingsWhereProduct.Select(v => v.Supplier).ToArray();
 
             this.DeriveVirtualProductPriceComponent();
             this.DeriveProductCategoriesExpanded(derivation);

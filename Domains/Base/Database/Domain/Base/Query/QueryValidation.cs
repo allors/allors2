@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Not.cs" company="Allors bvba">
+// <copyright file="Query.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,19 +20,37 @@
 
 namespace Allors.Domain.Query
 {
-    public class Not : Predicate
-    {
-        public Predicate Predicate { get; set; }
+    using System.Collections.Generic;
+    using System.Text;
 
-        public override void Build(ISession session, ICompositePredicate compositePredicate)
+    public class QueryValidation
+    {
+        private readonly Query query;
+        private readonly List<string> errors;
+
+        internal QueryValidation(Query query)
         {
-            var not = compositePredicate.AddNot();
-            this.Predicate.Build(session, not);
+            this.query = query;
+            this.errors = new List<string>();
         }
 
-        public override void Validate(QueryValidation validation)
+        public bool HasErrors => this.errors.Count > 0;
+
+        public override string ToString()
         {
-            this.Predicate?.Validate(validation);
+            var toString = new StringBuilder($"Query {this.query.Name} has {this.errors.Count} errors.");
+
+            foreach (var error in this.errors)
+            {
+                toString.Append($"\n{error}");
+            }
+
+            return toString.ToString();
+        }
+
+        public void AddError(string error)
+        {
+            this.errors.Add(error);
         }
     }
 }

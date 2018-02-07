@@ -50,5 +50,16 @@ namespace Allors.Domain.Query
                 }
             }
         }
+
+        public override void Validate(QueryValidation validation)
+        {
+            this.AssertAtLeastOne(validation, "AssociationType or RoleType is required", v => v.AssociationType, v => v.RoleType);
+            this.AssertAtLeastOne(validation, "Value or ObjectId is required", v => v.Value, v => v.ObjectId);
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} {this.AssociationType}{this.RoleType}";
+        }
     }
 }

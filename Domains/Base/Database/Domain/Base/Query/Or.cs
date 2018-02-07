@@ -34,5 +34,13 @@ namespace Allors.Domain.Query
                 predicate.Build(session, or);
             }
         }
+
+        public override void Validate(QueryValidation validation)
+        {
+            foreach (var predicate in this.Predicates)
+            {
+                predicate.Validate(validation);
+            }
+        }
     }
 }

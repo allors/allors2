@@ -211,7 +211,7 @@ namespace Allors.Adapters.Memory
                 this.RollbackUnitRoleByRoleType[roleType] = this.GetInternalizedUnitRole(roleType);
             }
 
-            this.ChangeSet.OnChangingUnitRole(this, roleType);
+            this.ChangeSet.OnChangingUnitRole(this.ObjectId, roleType);
 
             if (role == null)
             {
@@ -524,7 +524,7 @@ namespace Allors.Adapters.Memory
 
             this.isDeleted = true;
 
-            this.ChangeSet.OnDeleted(this);
+            this.ChangeSet.OnDeleted(this.ObjectId);
         }
 
         public IObject GetObject()
@@ -698,7 +698,7 @@ namespace Allors.Adapters.Memory
 
             var previousRole = this.GetCompositeRole(roleType.RelationType);
 
-            this.ChangeSet.OnChangingCompositeRole(this, roleType, previousRole, newRole);
+            this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole?.Id, newRole?.Id);
 
             if (!newRole.Equals(previousRole))
             {
@@ -720,7 +720,7 @@ namespace Allors.Adapters.Memory
                     var newRolePreviousAssociationStrategy = this.session.GetStrategy(newRolePreviousAssociation);
                     if (!this.Equals(newRolePreviousAssociationStrategy))
                     {
-                        this.ChangeSet.OnChangingCompositeRole(newRolePreviousAssociationStrategy, roleType, previousRole, null);
+                        this.ChangeSet.OnChangingCompositeRole(newRolePreviousAssociationStrategy.ObjectId, roleType, previousRole?.Id, null);
 
                         newRolePreviousAssociationStrategy.Backup(roleType);
                         newRolePreviousAssociationStrategy.compositeRoleByRoleType.Remove(roleType);
@@ -745,7 +745,7 @@ namespace Allors.Adapters.Memory
 
             var previousRole = this.GetCompositeRole(roleType.RelationType);
 
-            this.ChangeSet.OnChangingCompositeRole(this, roleType, previousRole, newRole);
+            this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole?.Id, newRole?.Id);
 
             if (!newRole.Equals(previousRole))
             {
@@ -1003,7 +1003,7 @@ namespace Allors.Adapters.Memory
 
             if (previousRole != null)
             {
-                this.ChangeSet.OnChangingCompositeRole(this, roleType, previousRole, null);
+                this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole.Id, null);
                 
                 var previousRoleStrategy = this.session.GetStrategy(previousRole);
                 var associationType = roleType.AssociationType;
@@ -1025,13 +1025,12 @@ namespace Allors.Adapters.Memory
 
             if (previousRole != null)
             {
-                this.ChangeSet.OnChangingCompositeRole(this, roleType, previousRole, null);
+                this.ChangeSet.OnChangingCompositeRole(this.ObjectId, roleType, previousRole.Id, null);
 
                 var previousRoleStrategy = this.session.GetStrategy(previousRole);
                 var associationType = roleType.AssociationType;
 
-                HashSet<Strategy> previousRoleStrategyAssociations;
-                previousRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out previousRoleStrategyAssociations);
+                previousRoleStrategy.compositesAssociationByAssociationType.TryGetValue(associationType, out var previousRoleStrategyAssociations);
 
                 previousRoleStrategy.Backup(associationType);
                 previousRoleStrategyAssociations.Remove(this);
@@ -1049,19 +1048,17 @@ namespace Allors.Adapters.Memory
 
         private void AddCompositeRoleMany2Many(IRoleType roleType, Strategy newRoleStrategy)
         {
-            HashSet<Strategy> previousRoleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out previousRoleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var previousRoleStrategies);
             if (previousRoleStrategies != null && previousRoleStrategies.Contains(newRoleStrategy))
             {
                 return;
             }
 
-            this.ChangeSet.OnChangingCompositesRole(this, roleType, newRoleStrategy);
+            this.ChangeSet.OnChangingCompositesRole(this.ObjectId, roleType, newRoleStrategy);
 
             // Add the new role
             this.Backup(roleType);
-            HashSet<Strategy> roleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out roleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var roleStrategies);
             if (roleStrategies == null)
             {
                 roleStrategies = new HashSet<Strategy>();
@@ -1072,8 +1069,7 @@ namespace Allors.Adapters.Memory
 
             // Add the new association
             newRoleStrategy.Backup(roleType.AssociationType);
-            HashSet<Strategy> newRoleStrategiesAssociationStrategies;
-            newRoleStrategy.compositesAssociationByAssociationType.TryGetValue(roleType.AssociationType, out newRoleStrategiesAssociationStrategies);
+            newRoleStrategy.compositesAssociationByAssociationType.TryGetValue(roleType.AssociationType, out var newRoleStrategiesAssociationStrategies);
             if (newRoleStrategiesAssociationStrategies == null)
             {
                 newRoleStrategiesAssociationStrategies = new HashSet<Strategy>();
@@ -1085,26 +1081,23 @@ namespace Allors.Adapters.Memory
 
         private void AddCompositeRoleOne2Many(IRoleType roleType, Strategy newRoleStrategy)
         {
-            HashSet<Strategy> previousRoleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out previousRoleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var previousRoleStrategies);
             if (previousRoleStrategies != null && previousRoleStrategies.Contains(newRoleStrategy))
             {
                 return;
             }
 
-            this.ChangeSet.OnChangingCompositesRole(this, roleType, newRoleStrategy);
+            this.ChangeSet.OnChangingCompositesRole(this.ObjectId, roleType, newRoleStrategy);
 
             // 1-...
-            Strategy newRolePreviousAssociationStrategy;
-            newRoleStrategy.compositeAssociationByAssociationType.TryGetValue(roleType.AssociationType, out newRolePreviousAssociationStrategy);
+            newRoleStrategy.compositeAssociationByAssociationType.TryGetValue(roleType.AssociationType, out var newRolePreviousAssociationStrategy);
             if (newRolePreviousAssociationStrategy != null)
             {
-                this.ChangeSet.OnChangingCompositesRole(newRolePreviousAssociationStrategy, roleType, (Strategy)null);
+                this.ChangeSet.OnChangingCompositesRole(newRolePreviousAssociationStrategy.ObjectId, roleType, null);
 
                 // Remove obsolete role
                 newRolePreviousAssociationStrategy.Backup(roleType);
-                HashSet<Strategy> newRolePreviousAssociationStrategyRoleStrategies;
-                newRolePreviousAssociationStrategy.compositesRoleByRoleType.TryGetValue(roleType, out newRolePreviousAssociationStrategyRoleStrategies);
+                newRolePreviousAssociationStrategy.compositesRoleByRoleType.TryGetValue(roleType, out var newRolePreviousAssociationStrategyRoleStrategies);
                 if (newRolePreviousAssociationStrategyRoleStrategies == null)
                 {
                     newRolePreviousAssociationStrategyRoleStrategies = new HashSet<Strategy>();
@@ -1120,8 +1113,7 @@ namespace Allors.Adapters.Memory
 
             // Add the new role
             this.Backup(roleType);
-            HashSet<Strategy> roleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out roleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var roleStrategies);
             if (roleStrategies == null)
             {
                 roleStrategies = new HashSet<Strategy>();
@@ -1137,14 +1129,13 @@ namespace Allors.Adapters.Memory
 
         private void RemoveCompositeRoleMany2Many(IRoleType roleType, Strategy roleStrategy)
         {
-            HashSet<Strategy> roleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out roleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var roleStrategies);
             if (roleStrategies == null || !roleStrategies.Contains(roleStrategy))
             {
                 return;
             }
 
-            this.ChangeSet.OnChangingCompositesRole(this, roleType, roleStrategy);
+            this.ChangeSet.OnChangingCompositesRole(this.ObjectId, roleType, roleStrategy);
 
             // Remove role
             this.Backup(roleType);
@@ -1156,8 +1147,7 @@ namespace Allors.Adapters.Memory
 
             // Remove association
             roleStrategy.Backup(roleType.AssociationType);
-            HashSet<Strategy> roleStrategiesAssociationStrategies;
-            roleStrategy.compositesAssociationByAssociationType.TryGetValue(roleType.AssociationType, out roleStrategiesAssociationStrategies);
+            roleStrategy.compositesAssociationByAssociationType.TryGetValue(roleType.AssociationType, out var roleStrategiesAssociationStrategies);
             roleStrategiesAssociationStrategies.Remove(this);
 
             if (roleStrategiesAssociationStrategies.Count == 0)
@@ -1168,14 +1158,13 @@ namespace Allors.Adapters.Memory
 
         private void RemoveCompositeRoleOne2Many(IRoleType roleType, Strategy roleStrategy)
         {
-            HashSet<Strategy> roleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out roleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var roleStrategies);
             if (roleStrategies == null || !roleStrategies.Contains(roleStrategy))
             {
                 return;
             }
 
-            this.ChangeSet.OnChangingCompositesRole(this, roleType, roleStrategy);
+            this.ChangeSet.OnChangingCompositesRole(this.ObjectId, roleType, roleStrategy);
 
             this.Backup(roleType);
 
@@ -1193,11 +1182,13 @@ namespace Allors.Adapters.Memory
 
         private void RemoveCompositeRolesMany2Many(IRoleType roleType)
         {
-            HashSet<Strategy> previousRoleStrategies;
-            this.compositesRoleByRoleType.TryGetValue(roleType, out previousRoleStrategies);
+            this.compositesRoleByRoleType.TryGetValue(roleType, out var previousRoleStrategies);
             if (previousRoleStrategies != null)
             {
-                this.ChangeSet.OnChangingCompositesRole(this, roleType, previousRoleStrategies);
+                foreach (var previousRoleStrategy in previousRoleStrategies)
+                {
+                    this.ChangeSet.OnChangingCompositesRole(this.ObjectId, roleType, previousRoleStrategy);
+                }
 
                 foreach (var strategy in new List<Strategy>(previousRoleStrategies))
                 {

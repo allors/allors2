@@ -202,6 +202,27 @@ namespace Allors.Domain
             return false;
         }
 
+        public bool HasChangedAssociation(Object derivable, AssociationType associationType)
+        {
+            this.ChangeSet.AssociationTypesByRole.TryGetValue(derivable.Id, out var changedAssociationTypes);
+            return changedAssociationTypes?.Contains(associationType) ?? false;
+        }
+
+        public bool HasChangedAssociations(Object derivable, params AssociationType[] associationTypes)
+        {
+            this.ChangeSet.AssociationTypesByRole.TryGetValue(derivable.Id, out var changedAssociationTypes);
+            if (changedAssociationTypes != null)
+            {
+                if (associationTypes.Length == 0 || associationTypes.Any(associationType => changedAssociationTypes.Contains(associationType)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
         public bool IsMarkedAsModified(Object derivable)
         {
             return this.markedAsModified.Contains(derivable.Id);

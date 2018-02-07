@@ -57,7 +57,15 @@ namespace Allors.Server.Controllers
                     var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
                     foreach (var query in queries)
                     {
-                        Extent extent = this.Session.Query(query);
+                        var validation = query.Validate();
+                        if(validation.HasErrors)
+                        {
+                            var message = validation.ToString();
+                            this.Logger.LogError(message);
+                            return this.StatusCode(400, message);
+                        }
+
+                        var extent = this.Session.Query(query);
                         if (query.Page != null)
                         {
                             var page = query.Page;

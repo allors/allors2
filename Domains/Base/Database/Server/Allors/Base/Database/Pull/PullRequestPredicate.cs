@@ -122,7 +122,7 @@ namespace Allors.Server
                                 {
                                     AssociationType = this.AT != null ? (AssociationType)metaPopulation.Find(new Guid(this.AT)) : null,
                                     RoleType = this.RT != null ? (RoleType)metaPopulation.Find(new Guid(this.RT)) : null,
-                                    ObjectId = long.Parse(this.O)
+                                    ObjectId = this.O != null ? long.Parse(this.O) : (long?)null
                                 };
 
             return predicate;

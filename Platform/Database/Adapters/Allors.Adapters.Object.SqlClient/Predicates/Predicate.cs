@@ -22,10 +22,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     internal abstract class Predicate
     {
-        internal virtual bool Include
-        {
-            get { return true; }
-        }
+        internal virtual bool Include => true;
 
         internal abstract bool BuildWhere(ExtentStatement statement, string alias);
 

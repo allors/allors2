@@ -34,5 +34,17 @@ namespace Allors.Domain.Query
         {
             compositePredicate.AddBetween(this.RoleType, this.First, this.Second);
         }
+
+        public override void Validate(QueryValidation validation)
+        {
+            this.AssertExists(validation, "RoleType is required", v => v.RoleType);
+            this.AssertExists(validation, "First is required", v => v.First);
+            this.AssertExists(validation, "Second is required", v => v.Second);
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} {this.RoleType}";
+        }
     }
 }

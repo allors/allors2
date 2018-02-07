@@ -80,6 +80,10 @@ namespace Allors.Domain
 
         bool HasChangedRoles(Object derivable, params RoleType[] roleTypes);
 
+        bool HasChangedAssociation(Object derivable, AssociationType associationType);
+
+        bool HasChangedAssociations(Object derivable, params AssociationType[] associationTypes);
+
         bool HasChangedRoles(Object derivable, RelationKind relationKind);
 
         void MarkAsModified(Object derivable);

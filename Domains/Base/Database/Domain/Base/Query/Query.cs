@@ -42,6 +42,25 @@ namespace Allors.Domain.Query
 
         public Page Page { get; set; }
 
+        public QueryValidation Validate()
+        {
+            var validation = new QueryValidation(this);
+
+            if (this.Name == null)
+            {
+                validation.AddError("Missing Name");
+            }
+
+            if (this.ObjectType == null)
+            {
+                validation.AddError("Missing ObjectType");
+            }
+
+            this.Predicate?.Validate(validation);
+
+            return validation;
+        }
+
         internal Extent Build(ISession session)
         {
             var extent = session.Extent(this.ObjectType);

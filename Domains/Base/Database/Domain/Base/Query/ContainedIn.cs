@@ -43,5 +43,16 @@ namespace Allors.Domain.Query
                 compositePredicate.AddContainedIn(this.RoleType, this.Query.Build(session));
             }
         }
+
+        public override void Validate(QueryValidation validation)
+        {
+            this.AssertAtLeastOne(validation, "AssociationType or RoleType is required", v => v.AssociationType, v => v.RoleType);
+            this.AssertAtLeastOne(validation, "Query or ObjectIds is required", v => v.Query, v => v.ObjectIds);
+        }
+
+        public override string ToString()
+        {
+            return $"{base.ToString()} {this.AssociationType}{this.RoleType}";
+        }
     }
 }

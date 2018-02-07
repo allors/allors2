@@ -22,6 +22,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Adapters.Object.SqlClient.Caching;
 
@@ -248,8 +249,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             roleIds = null;
 
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 roleIds = compositesRole.ObjectIds;
             }
@@ -259,8 +259,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal IEnumerable<long> GetCompositesRole(IRoleType roleType)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 return compositesRole.ObjectIds;
             }
@@ -270,8 +269,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void AddCompositeRole(IRoleType roleType, Strategy role)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType == null || !this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType == null || !this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 compositesRole = new CompositesRole(this.GetCompositesRole(roleType));
                 this.ModifiedRolesByRoleType[roleType] = compositesRole;
@@ -309,8 +307,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void RemoveCompositeRole(IRoleType roleType, Strategy role)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType == null || !this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType == null || !this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 compositesRole = new CompositesRole(this.GetCompositesRole(roleType));
                 this.ModifiedRolesByRoleType[roleType] = compositesRole;
@@ -396,8 +393,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal int ExtentCount(IRoleType roleType)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 return compositesRole.Count;
             }
@@ -407,8 +403,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal IObject ExtentFirst(Session session, IRoleType roleType)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 var objectId = compositesRole.First;
                 return objectId == null ? null : session.State.GetOrCreateReferenceForExistingObject(objectId.Value, session).Strategy.GetObject();
@@ -425,8 +420,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void ExtentCopyTo(Session session, IRoleType roleType, Array array, int index)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 var i = 0;
                 foreach (var objectId in compositesRole.ObjectIds)
@@ -448,8 +442,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal bool ExtentContains(IRoleType roleType, long objectId)
         {
-            CompositesRole compositesRole;
-            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositesRole))
+            if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out var compositesRole))
             {
                 return compositesRole.Contains(objectId);
             }
@@ -471,8 +464,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             if (!this.Reference.IsNew)
             {
-                object roleOut;
-                if (this.CachedObject != null && this.CachedObject.TryGetValue(roleType, out roleOut))
+                if (this.CachedObject != null && this.CachedObject.TryGetValue(roleType, out var roleOut))
                 {
                     return (long[])roleOut;
                 }
@@ -549,12 +541,12 @@ namespace Allors.Adapters.Object.SqlClient
                     {
                         if (this.baseline.Count > 0)
                         {
-                            return this.GetFirst(this.baseline);
+                            return this.baseline.First();
                         }
 
                         if (this.added != null && this.added.Count > 0)
                         {
-                            return this.GetFirst(this.added);
+                            return this.added.First();
                         }
 
                         return null;
@@ -563,7 +555,7 @@ namespace Allors.Adapters.Object.SqlClient
                     var roles = this.ObjectIds;
                     if (roles.Count > 0)
                     {
-                        return this.GetFirst(roles);
+                        return roles.First();
                     }
 
                     return null;
@@ -659,13 +651,6 @@ namespace Allors.Adapters.Object.SqlClient
 
                 this.added = null;
                 this.removed = null;
-            }
-
-            private long GetFirst(HashSet<long> hashSet)
-            {
-                var enumerator = hashSet.GetEnumerator();
-                enumerator.MoveNext();
-                return enumerator.Current;
             }
         }
     }

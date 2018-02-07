@@ -59,6 +59,11 @@ namespace Allors
         IDictionary<long, ISet<IRoleType>> RoleTypesByAssociation { get; }
 
         /// <summary>
+        /// Gets the changed association types by role.
+        /// </summary>
+        IDictionary<long, ISet<IAssociationType>> AssociationTypesByRole { get; }
+
+        /// <summary>
         /// Get the changed role types for the association.
         /// </summary>
         /// <param name="association">
@@ -68,5 +73,16 @@ namespace Allors
         /// The role types.
         /// </returns>
         ISet<IRoleType> GetRoleTypes(long association);
+
+        /// <summary>
+        /// Get the changed association types for the role.
+        /// </summary>
+        /// <param name="role">
+        /// The role.
+        /// </param>
+        /// <returns>
+        /// The association types.
+        /// </returns>
+        ISet<IAssociationType> GetAssociationTypes(long role);
     }
 }

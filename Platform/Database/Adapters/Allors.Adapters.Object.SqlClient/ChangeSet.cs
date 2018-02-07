@@ -17,18 +17,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors;
-
 namespace Allors.Adapters.Object.SqlClient
 {
     using System.Collections.Generic;
 
-    using Allors.Meta;
     using Adapters;
+
+    using Allors.Meta;
 
     internal sealed class ChangeSet : IChangeSet
     {
-        private readonly EmptySet<IRoleType> emptySet;
+        private static readonly EmptySet<IRoleType> EmptyRoleTypeSet = new EmptySet<IRoleType>();
+        private static readonly EmptySet<IAssociationType> EmptyAssociationTypeSet = new EmptySet<IAssociationType>();
         
         private readonly HashSet<long> created;
         private readonly HashSet<long> deleted; 
@@ -38,14 +38,16 @@ namespace Allors.Adapters.Object.SqlClient
 
         private readonly Dictionary<long, ISet<IRoleType>> roleTypesByAssociation;
 
+        private readonly Dictionary<long, ISet<IAssociationType>> associationTypesByRole;
+
         internal ChangeSet()
         {
-            this.emptySet = new EmptySet<IRoleType>();
             this.created = new HashSet<long>();
             this.deleted = new HashSet<long>();
             this.associations = new HashSet<long>();
             this.roles = new HashSet<long>();
             this.roleTypesByAssociation = new Dictionary<long, ISet<IRoleType>>();
+            this.associationTypesByRole = new Dictionary<long, ISet<IAssociationType>>();
         }
 
         public ISet<long> Created => this.created;
@@ -58,15 +60,16 @@ namespace Allors.Adapters.Object.SqlClient
 
         public IDictionary<long, ISet<IRoleType>> RoleTypesByAssociation => this.roleTypesByAssociation;
 
+        public IDictionary<long, ISet<IAssociationType>> AssociationTypesByRole => this.associationTypesByRole;
+
         public ISet<IRoleType> GetRoleTypes(long association)
         {
-            ISet<IRoleType> roleTypes;
-            if (this.RoleTypesByAssociation.TryGetValue(association, out roleTypes))
-            {
-                return roleTypes;
-            }
+            return this.RoleTypesByAssociation.TryGetValue(association, out var roleTypes) ? roleTypes : EmptyRoleTypeSet;
+        }
 
-            return this.emptySet;
+        public ISet<IAssociationType> GetAssociationTypes(long role)
+        {
+            return this.AssociationTypesByRole.TryGetValue(role, out var associationTypes) ? associationTypes : EmptyAssociationTypeSet;
         }
 
         internal void OnCreated(long objectId)
@@ -93,11 +96,13 @@ namespace Allors.Adapters.Object.SqlClient
             if (previousRole != null)
             {
                 this.roles.Add(previousRole.Value);
+                this.AssociationTypes(previousRole.Value).Add(roleType.AssociationType);
             }
 
             if (newRole != null)
             {
                 this.roles.Add(newRole.Value);
+                this.AssociationTypes(newRole.Value).Add(roleType.AssociationType);
             }
 
             this.RoleTypes(association).Add(roleType);
@@ -110,6 +115,7 @@ namespace Allors.Adapters.Object.SqlClient
             if (changedRole != null)
             {
                 this.roles.Add(changedRole.ObjectId);
+                this.AssociationTypes(changedRole.ObjectId).Add(roleType.AssociationType);
             }
 
             this.RoleTypes(association).Add(roleType);
@@ -117,14 +123,24 @@ namespace Allors.Adapters.Object.SqlClient
 
         private ISet<IRoleType> RoleTypes(long associationId)
         {
-            ISet<IRoleType> roleTypes;
-            if (!this.RoleTypesByAssociation.TryGetValue(associationId, out roleTypes))
+            if (!this.RoleTypesByAssociation.TryGetValue(associationId, out var roleTypes))
             {
                 roleTypes = new HashSet<IRoleType>();
                 this.RoleTypesByAssociation[associationId] = roleTypes;
             }
 
             return roleTypes;
+        }
+
+        private ISet<IAssociationType> AssociationTypes(long roleId)
+        {
+            if (!this.AssociationTypesByRole.TryGetValue(roleId, out var associationTypes))
+            {
+                associationTypes = new HashSet<IAssociationType>();
+                this.AssociationTypesByRole[roleId] = associationTypes;
+            }
+
+            return associationTypes;
         }
     }
 }

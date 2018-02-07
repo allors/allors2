@@ -23,5 +23,12 @@ namespace Allors.Domain.Query
     public abstract class Predicate
     {
         public abstract void Build(ISession session, ICompositePredicate compositePredicate);
+
+        public abstract void Validate(QueryValidation validation);
+
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
     }
 }
