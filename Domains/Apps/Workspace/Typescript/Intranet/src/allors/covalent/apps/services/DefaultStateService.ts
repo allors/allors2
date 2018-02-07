@@ -18,7 +18,7 @@ export class DefaultStateService extends StateService {
         this.internalOrganisation$ = this.internalOrganisationSubject;
     }
 
-    public selectInternalOrginsation(internalOrganisation: Organisation) {
+    public selectInternalOrganisation(internalOrganisation: Organisation) {
 
         const key = DefaultStateService.internalOrganisationKey;
         const id = internalOrganisation.id;

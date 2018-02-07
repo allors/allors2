@@ -32,9 +32,10 @@ export class ConfigService {
         .load("Pull", new PullRequest({ query }))
         .do((loaded) => {
             const organisations = loaded.collections.internalOrganisations as Organisation[];
+            // TODO: Select a default
             const organisation = organisations[0];
             if (organisation) {
-                this.stateService.selectInternalOrginsation(organisation);
+                this.stateService.selectInternalOrganisation(organisation);
             }
         });
   }

@@ -145,7 +145,7 @@ export class GoodsOverviewComponent implements OnDestroy {
         const rolesQuery: Query[] = [
           new Query({
             name: "organisationRoles",
-            objectType: m.Organisation,
+            objectType: m.OrganisationRole,
           }),
         ];
 
@@ -245,8 +245,7 @@ export class GoodsOverviewComponent implements OnDestroy {
                   (v: Ownership) => v.Name === data.ownership,
                 );
 
-                this.manufacturers = loaded.collections
-                  .manufacturers as Organisation[];
+                this.manufacturers = loaded.collections.manufacturers as Organisation[];
                 this.manufacturer = this.manufacturers.find(
                   (v: Organisation) => v.Name === data.manufacturer,
                 );
