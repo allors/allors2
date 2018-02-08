@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Server.Controllers
 {
     using System;
@@ -96,7 +98,13 @@ namespace Allors.Server.Controllers
                             }
                             else
                             {
-                                response.AddCollection(fetch.Name, ((Extent)result)?.ToArray(), include);
+
+                                IEnumerable<IObject> objects;
+                                if (result is HashSet<object>)
+                                    objects = ((HashSet<object>) result).Cast<IObject>();
+                                else
+                                    objects = ((Extent) result).ToArray();
+                                response.AddCollection(fetch.Name, objects, include);
                             }
                         }
                         else

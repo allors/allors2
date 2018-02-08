@@ -69,7 +69,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
             id: this.stateService.singleton,
             path: new Path({
                   step: this.m.Singleton.AdditionalLocales,
-                  next: new Path({step: this.m.Locale.Language }),
+                  next: new Path({ step: this.m.Locale.Language }),
                 }),
             name: "locales",
           }),
@@ -90,44 +90,31 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        return this.scope
-          .load("Pull", new PullRequest({ fetch }))
-          .switchMap((loaded) => {
+        const query: Query[] = [
+          new Query(
+            {
+              name: "catScopes",
+              objectType: this.m.CatScope,
+            }),
+        ];
 
-            this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-
-            const query: Query[] = [
-              new Query(
-                {
-                  name: "categories",
-                  predicate: new Equals({ roleType: m.ProductCategory.InternalOrganisation, value: this.internalOrganisation }),
-                  objectType: this.m.ProductCategory,
-                }),
-              new Query(
-                {
-                  name: "catScopes",
-                  objectType: this.m.CatScope,
-                }),
-            ];
-
-            return this.scope.load("Pull", new PullRequest({ query }));
-          });
+        return this.scope.load("Pull", new PullRequest({ fetch, query }));
         })
       .subscribe((loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
+        // this.singleton = loaded.objects.singleton as Singleton;
+        // this.locales = this.singleton.AdditionalLocales;
+        this.locales = loaded.collections.locales as Locale[];
+        this.categories = loaded.collections.categories as ProductCategory[];
+        this.catScopes = loaded.collections.catScopes as CatScope[];
+
         if (!this.catalogue) {
           this.catalogue = this.scope.session.create("Catalogue") as Catalogue;
           this.catalogue.InternalOrganisation = this.internalOrganisation;
         }
 
         this.title = this.catalogue.Name;
-
-        this.categories = loaded.collections.categories as ProductCategory[];
-        this.catScopes = loaded.collections.catScopes as CatScope[];
-
-        this.singleton = loaded.objects.singleton as Singleton;
-        this.locales = this.singleton.AdditionalLocales;
       },
       (error: Error) => {
         this.errorService.message(error);
