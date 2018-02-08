@@ -68,7 +68,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisation$)
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
     .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
       return [
         data,

@@ -59,7 +59,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");

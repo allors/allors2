@@ -35,7 +35,7 @@ export class ConfigService {
             // TODO: Select a default
             const organisation = organisations[0];
             if (organisation) {
-                this.stateService.selectInternalOrganisation(organisation);
+                this.stateService.internalOrganisationId = organisation.id;
             }
         });
   }

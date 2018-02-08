@@ -15,6 +15,7 @@ import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Sin
 import { Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./catalogue.component.html",
@@ -37,6 +38,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
 
+  private fetcher: Fetcher;
+
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
@@ -49,30 +52,21 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
-          new Fetch({
-            id: internalOrganisationId,
-            name: "categories",
-            path: new Path({ step: this.m.InternalOrganisation.ProductCategoriesWhereInternalOrganisation }),
-          }),
-          new Fetch({
-            id: this.stateService.singleton,
-            include: [
-              new TreeNode({ roleType: m.Locale.Language}),
-            ],
-            path: new Path({ step: this.m.Singleton.AdditionalLocales }),
-            name: "locales",
-          }),
+          this.fetcher.categories,
+          this.fetcher.locales,
           new Fetch({
             id,
             include: [
@@ -90,24 +84,16 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
-          new Query(
-            {
-              name: "catScopes",
-              objectType: this.m.CatScope,
-            }),
-        ];
+        const query: Query[] = [ new Query(this.m.CatScope) ];
 
         return this.scope.load("Pull", new PullRequest({ fetch, query }));
         })
       .subscribe((loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
-        // this.singleton = loaded.objects.singleton as Singleton;
-        // this.locales = this.singleton.AdditionalLocales;
         this.locales = loaded.collections.locales as Locale[];
         this.categories = loaded.collections.categories as ProductCategory[];
-        this.catScopes = loaded.collections.catScopes as CatScope[];
+        this.catScopes = loaded.collections.CatScopeQuery as CatScope[];
 
         if (!this.catalogue) {
           this.catalogue = this.scope.session.create("Catalogue") as Catalogue;

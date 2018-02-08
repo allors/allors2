@@ -93,7 +93,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
     type record = [SearchData, number, Date, string];
 
     const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisation$)
+    .combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
     .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId]: record, [data, take, date, internalOrganisationId]: record): record => {
       return [
         data,

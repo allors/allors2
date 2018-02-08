@@ -43,7 +43,7 @@ namespace Allors.Domain
 
         public string Translate(T source)
         {
-            if (this.defaultLocale == null || this.defaultLocale.Equals(this.locale))
+            if (this.defaultLocale == null || this.locale == null || this.defaultLocale.Equals(this.locale))
             {
                 return this.value(source);
             }

@@ -46,7 +46,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.stateService.internalOrganisation$)
+    this.subscription = Observable.combineLatest(this.route.url, this.stateService.internalOrganisationId$)
       .switchMap(([, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");

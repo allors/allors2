@@ -23,8 +23,17 @@ export class Query {
 
   public page: Page;
 
-  constructor(fields?: Partial<Query>) {
-    Object.assign(this, fields);
+  constructor(fields?: Partial<Query> | ObjectTyped | ObjectType) {
+    if ((fields as ObjectType).id || (fields as ObjectTyped).ObjectType) {
+      this.objectType = fields as any;
+    } else {
+      Object.assign(this, fields);
+    }
+
+    if (!this.name) {
+      const objectTypeName = (this.objectType as ObjectTyped).ObjectType ? (this.objectType as ObjectTyped).ObjectType.name : (this.objectType as ObjectType).name;
+      this.name = objectTypeName + "Query";
+    }
   }
 
   public toJSON(): any {

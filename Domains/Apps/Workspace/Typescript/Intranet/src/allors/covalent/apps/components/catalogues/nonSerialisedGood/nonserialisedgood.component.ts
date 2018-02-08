@@ -68,7 +68,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .switchMap(([, , internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
