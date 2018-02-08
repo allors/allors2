@@ -67,10 +67,10 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           }),
           new Fetch({
             id: this.stateService.singleton,
-            path: new Path({
-                  step: this.m.Singleton.AdditionalLocales,
-                  next: new Path({ step: this.m.Locale.Language }),
-                }),
+            include: [
+              new TreeNode({ roleType: m.Locale.Language}),
+            ],
+            path: new Path({ step: this.m.Singleton.AdditionalLocales }),
             name: "locales",
           }),
           new Fetch({
