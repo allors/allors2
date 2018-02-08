@@ -1,11 +1,11 @@
 ﻿import { AssociationType, RoleType } from "../../meta";
-
+import { ISessionObject } from "../../workspace/SessionObject";
 import { Predicate } from "./Predicate";
 
 export class Equals implements Predicate {
   public associationType: AssociationType;
   public roleType: RoleType;
-  public value: any;
+  public value: ISessionObject | string | Date | boolean | number;
 
   constructor(fields?: Partial<Equals>) {
     Object.assign(this, fields);
@@ -24,7 +24,7 @@ export class Equals implements Predicate {
         _T: "Equals",
         at: this.associationType ? this.associationType.id : undefined,
         rt: this.roleType ? this.roleType.id : undefined,
-        o: this.value ? this.value.id ? this.value.id : this.value : undefined,
+        o: this.value ? (this.value as ISessionObject).id ? (this.value as ISessionObject).id : this.value : undefined,
       };
     }
   }
