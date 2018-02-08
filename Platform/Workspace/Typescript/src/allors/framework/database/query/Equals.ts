@@ -12,7 +12,6 @@ export class Equals implements Predicate {
   }
 
   public toJSON(): any {
-    let value: any;
     if (this.roleType.objectType.isUnit) {
       return {
         _T: "Equals",
@@ -25,7 +24,7 @@ export class Equals implements Predicate {
         _T: "Equals",
         at: this.associationType ? this.associationType.id : undefined,
         rt: this.roleType ? this.roleType.id : undefined,
-        o: this.value ? this.value.id : undefined,
+        o: this.value ? this.value.id ? this.value.id : this.value : undefined,
       };
     }
   }

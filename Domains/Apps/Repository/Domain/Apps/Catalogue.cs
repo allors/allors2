@@ -25,6 +25,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         public InternalOrganisation InternalOrganisation { get; set; }
 
         #region Allors

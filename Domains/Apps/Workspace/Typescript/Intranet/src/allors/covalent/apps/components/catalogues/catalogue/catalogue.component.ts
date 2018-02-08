@@ -9,10 +9,12 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
+import { interval } from "rxjs/observable/interval";
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Catalogue, CatScope, Locale, ProductCategory, Singleton } from "../../../../../domain";
-import { Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from "../../../../../domain";
+import { Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 @Component({
   templateUrl: "./catalogue.component.html",
@@ -29,6 +31,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   public locales: Locale[];
   public categories: ProductCategory[];
   public catScopes: CatScope[];
+  public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -40,7 +43,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public media: TdMediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
@@ -49,13 +53,26 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisation$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
+          new Fetch({
+            id: internalOrganisationId,
+            name: "categories",
+            path: new Path({ step: this.m.InternalOrganisation.ProductCategoriesWhereInternalOrganisation }),
+          }),
+          new Fetch({
+            id: this.stateService.singleton,
+            path: new Path({
+                  step: this.m.Singleton.AdditionalLocales,
+                  next: new Path({step: this.m.Locale.Language }),
+                }),
+            name: "locales",
+          }),
           new Fetch({
             id,
             include: [
@@ -73,46 +90,43 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
-          new Query(
-            {
-              include: [
-                new TreeNode({ roleType: m.Singleton.AdditionalLocales,
-                   nodes: [
-                      new TreeNode({ roleType: m.Locale.Language}),
-                   ],
-              }),
-              ],
-              name: "singletons",
-              objectType: this.m.Singleton,
-            }),
-          new Query(
-            {
-              name: "categories",
-              objectType: this.m.ProductCategory,
-            }),
-          new Query(
-            {
-              name: "catScopes",
-              objectType: this.m.CatScope,
-            }),
-        ];
-
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
-      })
+          .load("Pull", new PullRequest({ fetch }))
+          .switchMap((loaded) => {
+
+            this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+
+            const query: Query[] = [
+              new Query(
+                {
+                  name: "categories",
+                  predicate: new Equals({ roleType: m.ProductCategory.InternalOrganisation, value: this.internalOrganisation }),
+                  objectType: this.m.ProductCategory,
+                }),
+              new Query(
+                {
+                  name: "catScopes",
+                  objectType: this.m.CatScope,
+                }),
+            ];
+
+            return this.scope.load("Pull", new PullRequest({ query }));
+          });
+        })
       .subscribe((loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
         if (!this.catalogue) {
           this.catalogue = this.scope.session.create("Catalogue") as Catalogue;
+          this.catalogue.InternalOrganisation = this.internalOrganisation;
         }
 
         this.title = this.catalogue.Name;
 
-        this.singleton = loaded.collections.singletons[0] as Singleton;
         this.categories = loaded.collections.categories as ProductCategory[];
         this.catScopes = loaded.collections.catScopes as CatScope[];
+
+        this.singleton = loaded.objects.singleton as Singleton;
         this.locales = this.singleton.AdditionalLocales;
       },
       (error: Error) => {

@@ -13,9 +13,10 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
-import { Catalogue } from "../../../../../domain";
-import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Catalogue, InternalOrganisation } from "../../../../../domain";
+import { And, Equals, Fetch, Like, Page, Path, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 interface SearchData {
   name: string;
@@ -48,7 +49,8 @@ export class CataloguesOverviewComponent implements OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService,
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.titleService.setTitle(this.title);
 
@@ -66,17 +68,18 @@ export class CataloguesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisation$)
+    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
       return [
         data,
         data !== previousData ? 50 : take,
         date,
+        internalOrganisationId,
       ];
-    }, [] as [SearchData, number, Date]);
+    }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take]) => {
+      .switchMap(([data, take, , internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -92,7 +95,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
             name: "catalogues",
             objectType: m.Catalogue,
             page: new Page({ skip: 0, take }),
-            predicate,
+            predicate: new Equals({ roleType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }),
             include: [
               new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
               new TreeNode({ roleType: m.Catalogue.ProductCategories }),
@@ -100,8 +103,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));
-
-      })
+    })
       .subscribe((loaded) => {
         this.data = loaded.collections.catalogues as Catalogue[];
         this.total = loaded.values.catalogues_total;
