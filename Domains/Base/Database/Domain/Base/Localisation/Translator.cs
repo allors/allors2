@@ -26,16 +26,16 @@ namespace Allors.Domain
     public partial class Translator<T>
         where T : IObject
     {
-        private readonly Locale defaultLocale;
         private readonly Locale locale;
+        private readonly Locale defaultLocale;
 
         private readonly Func<T, string> value;
         private readonly Func<T, LocalisedText[]> localisedValues;
 
-        public Translator(Locale defaultLocale, Locale locale, Func<T, string> value, Func<T, LocalisedText[]> localisedValues)
+        public Translator(Locale locale, Func<T, string> value, Func<T, LocalisedText[]> localisedValues)
         {
-            this.defaultLocale = defaultLocale;
             this.locale = locale;
+            this.defaultLocale = locale?.Strategy.Session.GetSingleton().DefaultLocale;
 
             this.value = value;
             this.localisedValues = localisedValues;
@@ -43,6 +43,11 @@ namespace Allors.Domain
 
         public string Translate(T source)
         {
+            if (source == null)
+            {
+                return null;
+            }
+
             if (this.defaultLocale == null || this.locale == null || this.defaultLocale.Equals(this.locale))
             {
                 return this.value(source);
