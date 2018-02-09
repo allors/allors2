@@ -10,9 +10,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CatScope, Locale, ProductCategory, Singleton } from "../../../../../domain";
-import { Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from "../../../../../domain";
+import { Equals, Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./category.component.html",
@@ -25,36 +27,43 @@ export class CategoryComponent implements OnInit, OnDestroy {
   public title: string;
   public subTitle: string;
 
-  public singleton: Singleton;
   public locales: Locale[];
   public categories: ProductCategory[];
   public catScopes: CatScope[];
+  public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
   private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
+
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
+          this.fetcher.locales,
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
@@ -71,48 +80,26 @@ export class CategoryComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
-          new Query(
-            {
-              include: [
-                new TreeNode({ roleType: m.Singleton.AdditionalLocales,
-                   nodes: [
-                      new TreeNode({ roleType: m.Locale.Language}),
-                   ],
-              }),
-              ],
-              name: "singletons",
-              objectType: this.m.Singleton,
-            }),
-          new Query(
-            {
-              name: "categories",
-              objectType: this.m.ProductCategory,
-            }),
-          new Query(
-            {
-              name: "catScopes",
-              objectType: this.m.CatScope,
-            }),
-        ];
+        const query: Query[] = [ new Query(this.m.CatScope), new Query(this.m.ProductCategory) ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded) => {
 
+        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.category = loaded.objects.category as ProductCategory;
-        if (!this.category) {
-          this.category = this.scope.session.create("ProductCategory") as ProductCategory;
-        }
+        this.categories = loaded.collections.CategoryQuery as ProductCategory[];
+        this.catScopes = loaded.collections.CatScopeQuery as CatScope[];
+        this.locales = loaded.collections.locales as Locale[];
 
         this.title = "Category";
         this.subTitle = this.category.Name;
 
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.categories = loaded.collections.categories as ProductCategory[];
-        this.catScopes = loaded.collections.catScopes as CatScope[];
-        this.locales = this.singleton.AdditionalLocales;
+        if (!this.category) {
+          this.category = this.scope.session.create("ProductCategory") as ProductCategory;
+          this.category.InternalOrganisation = this.internalOrganisation;
+        }
       },
       (error: any) => {
         this.errorService.message(error);

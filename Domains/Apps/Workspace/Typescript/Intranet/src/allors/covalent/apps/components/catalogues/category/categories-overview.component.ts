@@ -12,10 +12,11 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
-import { ProductCategory } from "../../../../../domain";
-import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
+import { InternalOrganisation, ProductCategory } from "../../../../../domain";
+import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 interface SearchData {
   name: string;
@@ -47,7 +48,8 @@ export class CategoriesOverviewComponent implements OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService,
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.titleService.setTitle("Categories");
 
@@ -65,17 +67,18 @@ export class CategoriesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
       return [
         data,
         data !== previousData ? 50 : take,
         date,
+        internalOrganisationId,
       ];
-    }, [] as [SearchData, number, Date]);
+    }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take]) => {
+      .switchMap(([data, take, ,  internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -96,7 +99,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
             name: "categories",
             objectType: m.ProductCategory,
             page: new Page({ skip: 0, take }),
-            predicate,
+            predicate: new Equals({ roleType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }),
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));
@@ -126,12 +129,23 @@ export class CategoriesOverviewComponent implements OnDestroy {
     }
   }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
   public delete(category: ProductCategory): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this category?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
-          // TODO: Logical, physical or workflow delete
+          this.scope.invoke(category.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
         }
       });
   }

@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
 import { Catalogue, InternalOrganisation } from "../../../../../domain";
 import { And, Equals, Fetch, Like, Page, Path, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -128,12 +128,23 @@ export class CataloguesOverviewComponent implements OnDestroy {
     }
   }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
   public delete(catalogue: Catalogue): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this catalogue?" })
       .afterClosed().subscribe((confirm: boolean) => {
         if (confirm) {
-          // TODO: Logical, physical or workflow delete
+          this.scope.invoke(catalogue.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
         }
       });
   }

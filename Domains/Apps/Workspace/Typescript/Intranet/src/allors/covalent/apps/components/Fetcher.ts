@@ -7,6 +7,13 @@ export class Fetcher {
   constructor(private stateService: StateService, private m: MetaDomain) {
   }
 
+  public get internalOrganisation(): Fetch {
+    return new Fetch({
+      id: this.stateService.internalOrganisationId,
+      name: "internalOrganisation",
+    });
+  }
+
   public get categories(): Fetch {
     return new Fetch({
       id: this.stateService.internalOrganisationId,

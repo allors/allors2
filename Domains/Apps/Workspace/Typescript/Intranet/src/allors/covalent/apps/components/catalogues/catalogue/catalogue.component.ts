@@ -67,6 +67,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         const fetch: Fetch[] = [
           this.fetcher.categories,
           this.fetcher.locales,
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
@@ -94,6 +95,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.locales as Locale[];
         this.categories = loaded.collections.categories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopeQuery as CatScope[];
+        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.catalogue) {
           this.catalogue = this.scope.session.create("Catalogue") as Catalogue;
