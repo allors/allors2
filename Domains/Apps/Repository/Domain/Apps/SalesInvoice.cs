@@ -127,7 +127,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
         [Workspace]
         public InternalOrganisation BilledFrom { get; set; }
 

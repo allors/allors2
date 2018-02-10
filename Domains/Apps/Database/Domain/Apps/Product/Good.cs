@@ -183,6 +183,11 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
+                foreach (VendorProduct vendorProduct in this.VendorProductsWhereProduct)
+                {
+                    vendorProduct.Delete();
+                }
+
                 foreach (LocalisedText localisedText in this.LocalisedNames)
                 {
                     localisedText.Delete();
