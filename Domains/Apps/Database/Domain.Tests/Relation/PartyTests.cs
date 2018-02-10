@@ -106,7 +106,6 @@ namespace Allors.Domain
                   .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good")
@@ -163,7 +162,6 @@ namespace Allors.Domain
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("goof")

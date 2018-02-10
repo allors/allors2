@@ -183,7 +183,6 @@ namespace Allors.Domain
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -255,7 +254,6 @@ namespace Allors.Domain
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")

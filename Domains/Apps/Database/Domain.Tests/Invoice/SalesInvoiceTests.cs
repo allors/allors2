@@ -327,7 +327,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -560,7 +559,6 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(19).Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -766,7 +764,6 @@ namespace Allors.Domain
             administrators.AddMember(administrator);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -822,7 +819,6 @@ namespace Allors.Domain
             administrators.AddMember(administrator);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -961,7 +957,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -1010,7 +1005,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -1059,7 +1053,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -1108,7 +1101,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")
@@ -1241,7 +1233,6 @@ namespace Allors.Domain
                 .Build();
 
             var good1 = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
@@ -1251,7 +1242,6 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
@@ -1261,7 +1251,6 @@ namespace Allors.Domain
                 .Build();
 
             var good3 = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
@@ -1336,7 +1325,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -1382,7 +1370,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -1428,7 +1415,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -1473,7 +1459,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
@@ -1538,7 +1523,6 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -1548,7 +1532,6 @@ namespace Allors.Domain
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
@@ -1820,7 +1803,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good")

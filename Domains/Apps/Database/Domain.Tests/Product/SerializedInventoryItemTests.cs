@@ -59,7 +59,6 @@ namespace Allors.Domain
             Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithGood(new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .Build());

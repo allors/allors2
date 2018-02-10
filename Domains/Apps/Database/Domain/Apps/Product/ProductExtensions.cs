@@ -13,10 +13,26 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     public static partial class ProductExtensions
     {
+        public static void AppsOnDerive(this Product @this, ObjectOnDerive method)
+        {
+            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!@this.ExistVendorProductsWhereProduct && internalOrganisations.Count() == 1)
+            {
+                new VendorProductBuilder(@this.Strategy.Session)
+                    .WithProduct(@this)
+                    .WithInternalOrganisation(internalOrganisations.First())
+                    .Build();
+            }
+        }
+
         public static void AddToBasePrice(this Product @this, BasePrice basePrice)
         {
             @this.AddBasePrice(basePrice);

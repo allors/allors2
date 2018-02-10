@@ -73,7 +73,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good")

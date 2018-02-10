@@ -67,7 +67,6 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -152,7 +151,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -200,7 +198,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -250,7 +247,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -281,7 +277,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")
@@ -437,7 +432,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
              .WithSku("10101")
              .WithVatRate(vatRate21)
                 .WithName("good1")

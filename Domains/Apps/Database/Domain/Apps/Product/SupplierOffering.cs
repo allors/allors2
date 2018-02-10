@@ -44,9 +44,9 @@ namespace Allors.Domain
             {
                 if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {
-                    foreach (InternalOrganisation internalOrganisation in good.VendorProductsWhereProduct)
+                    foreach (VendorProduct vendorProduct in good.VendorProductsWhereProduct)
                     {
-                        foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
+                        foreach (Facility facility in vendorProduct.InternalOrganisation.FacilitiesWhereOwner)
                         {
                             var inventoryItems = good.InventoryItemsWhereGood;
                             inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);

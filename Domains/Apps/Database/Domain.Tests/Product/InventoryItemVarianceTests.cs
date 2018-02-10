@@ -33,7 +33,6 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenPositiveVariance_ThenQuantityOnHandIsRaised()
         {
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())

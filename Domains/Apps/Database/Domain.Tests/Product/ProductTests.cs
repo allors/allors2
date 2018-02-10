@@ -50,13 +50,6 @@ namespace Allors.Domain
             builder.WithName("service");
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithOrganisation(this.InternalOrganisation);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -69,7 +62,6 @@ namespace Allors.Domain
                 .Build();
 
             var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("service")
                 .WithPrimaryProductCategory(productCategory)
                 .WithVatRate(vatRate21)
@@ -89,7 +81,6 @@ namespace Allors.Domain
                 .Build();
 
             var deliverableBasedService = new DeliverableBasedServiceBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("service")
                 .WithProductCategory(productCategory)
                 .WithVatRate(vatRate21)
@@ -137,13 +128,6 @@ namespace Allors.Domain
             builder.WithVatRate(vatRate21);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithOrganisation(this.InternalOrganisation);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
@@ -172,7 +156,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
@@ -195,7 +178,6 @@ namespace Allors.Domain
                 .Build();
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
@@ -239,7 +221,6 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
@@ -299,7 +280,6 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
@@ -379,7 +359,6 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
@@ -431,13 +410,6 @@ namespace Allors.Domain
             builder.WithVatRate(vatRate21);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithOrganisation(this.InternalOrganisation);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -450,7 +422,6 @@ namespace Allors.Domain
                 .Build();
 
             var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("TimeAndMaterialsService")
                 .WithPrimaryProductCategory(productCategory)
                 .WithVatRate(vatRate21)
@@ -470,7 +441,6 @@ namespace Allors.Domain
                 .Build();
 
             var timeAndMaterialsService = new TimeAndMaterialsServiceBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithName("TimeAndMaterialsService")
                 .WithProductCategory(productCategory)
                 .WithVatRate(vatRate21)

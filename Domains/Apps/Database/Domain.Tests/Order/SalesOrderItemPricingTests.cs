@@ -111,7 +111,6 @@ namespace Allors.Domain
             this.productCategory.AddParent(this.parentProductCategory);
 
             this.good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
@@ -121,7 +120,6 @@ namespace Allors.Domain
                 .Build();
 
             this.variantGood = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("v10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
@@ -130,7 +128,6 @@ namespace Allors.Domain
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("v10102")
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
@@ -139,7 +136,6 @@ namespace Allors.Domain
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithVatRate(this.vatRate21)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)

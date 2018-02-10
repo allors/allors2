@@ -663,6 +663,7 @@
     <Compile Include="Apps\SurchargeComponent.cs" />
     <Compile Include="Apps\RequirementType.cs" />
     <Compile Include="Apps\TransferVersion.cs" />
+    <Compile Include="Apps\VendorProduct.cs" />
     <Compile Include="Apps\WebSiteCommunicationVersion.cs" />
     <Compile Include="Apps\WorkEffortVersion.cs" />
     <Compile Include="Apps\WorkTask.cs" />

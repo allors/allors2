@@ -133,7 +133,6 @@ namespace Allors.Domain
             Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProduct(new GoodBuilder(this.Session)
-                                        .WithOrganisation(this.InternalOrganisation)
                                         .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                         .Build());
             var orderItem = builder.Build();
@@ -152,7 +151,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -216,7 +214,6 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
@@ -327,7 +324,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -370,7 +366,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -413,7 +408,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -471,7 +465,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -516,7 +509,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -560,7 +552,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -618,7 +609,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -662,7 +652,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -711,7 +700,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
@@ -738,7 +726,6 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)

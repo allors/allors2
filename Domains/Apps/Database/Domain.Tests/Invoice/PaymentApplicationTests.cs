@@ -43,7 +43,6 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session)
                                         .WithProduct(new GoodBuilder(this.Session)
-                                                            .WithOrganisation(this.InternalOrganisation)
                                                             .WithName("good")
                                                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                                             .Build())  
@@ -72,7 +71,6 @@ namespace Allors.Domain
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
             var good = new GoodBuilder(this.Session)
-                .WithOrganisation(this.InternalOrganisation)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
