@@ -10,10 +10,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductFeature, ProductType, Singleton, VarianceReason, VatRate } from "../../../../../domain";
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductFeature, ProductType, Singleton, VarianceReason, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./nonserialisedgood.component.html",
@@ -42,6 +43,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public inventoryItem: NonSerialisedInventoryItem;
   public inventoryItemObjectStates: NonSerialisedInventoryItemState[];
   public vatRates: VatRate[];
+  public vendorProduct: VendorProduct;
   public actualQuantityOnHand: number;
 
   public manufacturersFilter: Filter;
@@ -51,19 +53,24 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
 
+  private fetcher: Fetcher;
+
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
-    private stateService: StateService) {
+    private stateService: StateService,
+  ) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
@@ -75,6 +82,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
+          this.fetcher.locales,
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
@@ -100,71 +109,22 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             name: "inventoryItems",
             path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
           }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                roleType: m.InternalOrganisation.DefaultFacility }),
-            ],
-            name: "internalOrganisation",
-          }),
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              include: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: m.Locale.Language }),
-                    new TreeNode({ roleType: m.Locale.Country }),
-                  ],
-                  roleType: m.Singleton.AdditionalLocales,
-                }),
-              ],
-              name: "singletons",
-              objectType: this.m.Singleton,
-            }),
-          new Query(
-            {
-              name: "organisationRoles",
-              objectType: this.m.OrganisationRole,
-            }),
-          new Query(
-            {
-              name: "categories",
-              objectType: this.m.ProductCategory,
-            }),
-          new Query(
-            {
-              name: "productTypes",
-              objectType: this.m.ProductType,
-            }),
-          new Query(
-            {
-              name: "varianceReasons",
-              objectType: this.m.VarianceReason,
-            }),
-          new Query(
-            {
-              name: "vatRates",
-              objectType: this.m.VatRate,
-            }),
+          new Query(this.m.OrganisationRole),
+          new Query(this.m.ProductCategory),
+          new Query(this.m.ProductType),
+          new Query(this.m.VarianceReason),
+          new Query(this.m.VatRate),
+          new Query(this.m.Ownership),
+          new Query(this.m.InventoryItemKind),
+          new Query(this.m.NonSerialisedInventoryItemState),
           new Query(
             {
               name: "brands",
               objectType: this.m.Brand,
               sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
-            }),
-          new Query(
-            {
-              name: "inventoryItemKinds",
-              objectType: this.m.InventoryItemKind,
-            }),
-          new Query(
-            {
-              name: "nonSerialisedInventoryItemStates",
-              objectType: this.m.NonSerialisedInventoryItemState,
             }),
         ];
 
@@ -173,17 +133,16 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
-            this.categories = loaded.collections.categories as ProductCategory[];
-            this.productTypes = loaded.collections.productTypes as ProductType[];
-            this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
-            this.vatRates = loaded.collections.vatRates as VatRate[];
+            this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
+            this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
+            this.varianceReasons = loaded.collections.VarianceReasonQuery as VarianceReason[];
+            this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
-            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
-            this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
-            this.singleton = loaded.collections.singletons[0] as Singleton;
-            const internalOrganisation = loaded.objects.internalOrganisationId as InternalOrganisation;
+            this.inventoryItemKinds = loaded.collections.InventoryItemKindQuery as InventoryItemKind[];
+            this.inventoryItemObjectStates = loaded.collections.NonSerialisedInventoryItemStateQuery as NonSerialisedInventoryItemState[];
+            this.locales = loaded.collections.locales as Locale[];
+            const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
-            this.locales = this.singleton.AdditionalLocales;
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Non serialised");
@@ -197,6 +156,10 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
               this.good.InventoryItemKind = inventoryItemKindNonSerialised;
               this.inventoryItem.Good = this.good;
               this.inventoryItem.Facility = this.facility;
+
+              this.vendorProduct = this.scope.session.create("VendorProduct") as VendorProduct;
+              this.vendorProduct.Product = this.good;
+              this.vendorProduct.InternalOrganisation = internalOrganisation;
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
@@ -215,7 +178,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             this.subTitle = "Non Serialised";
             this.actualQuantityOnHand = this.good.QuantityOnHand;
 
-            const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
             const supplierRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Supplier");
 

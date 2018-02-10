@@ -93,13 +93,13 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.catScopes = loaded.collections.CatScopeQuery as CatScope[];
         this.locales = loaded.collections.locales as Locale[];
 
-        this.title = "Category";
-        this.subTitle = this.category.Name;
-
         if (!this.category) {
           this.category = this.scope.session.create("ProductCategory") as ProductCategory;
           this.category.InternalOrganisation = this.internalOrganisation;
         }
+
+        this.title = "Category";
+        this.subTitle = this.category.Name;
       },
       (error: any) => {
         this.errorService.message(error);

@@ -99,7 +99,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
             name: "categories",
             objectType: m.ProductCategory,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }),
+            predicate: new Equals({ roleType: m.ProductCategory.InternalOrganisation, value: internalOrganisationId }),
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));

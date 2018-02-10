@@ -12,10 +12,11 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
-import { Brand, Good, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "../../../../../domain";
+import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
+import { Brand, Good, InternalOrganisation, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "../../../../../domain";
 import { And, ContainedIn, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 import { NewGoodDialogComponent } from "../../catalogues/good/newgood-dialog.module";
 
@@ -100,7 +101,8 @@ export class GoodsOverviewComponent implements OnDestroy {
     public media: TdMediaService,
     public mediaService: MediaService,
     private changeDetectorRef: ChangeDetectorRef,
-  ) {
+    private stateService: StateService) {
+
     this.titleService.setTitle("Products");
 
     this.scope = this.workspaceService.createScope();
@@ -129,62 +131,39 @@ export class GoodsOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
-      .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
         return [
           data,
           data !== previousData ? 50 : take,
-          date];
-      }, [] as [SearchData, number, Date],
+          date,
+          internalOrganisationId,
+        ];
+      }, [] as [SearchData, number, Date, InternalOrganisation],
     );
 
     const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
     this.subscription = combined$
-      .switchMap(([data, take]) => {
-        const rolesQuery: Query[] = [
-          new Query({
-            name: "organisationRoles",
-            objectType: m.OrganisationRole,
-          }),
-        ];
+      .switchMap(([data, take, , internalOrganisationId]) => {
+
+        const rolesQuery: Query[] = [ new Query(m.OrganisationRole) ];
 
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((rolesLoaded: Loaded) => {
-            const organisationRoles = rolesLoaded.collections.organisationRoles as OrganisationRole[];
+            const organisationRoles = rolesLoaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const manufacturerRole = organisationRoles.find((v) => v.Name === "Manufacturer");
             const supplierRole = organisationRoles.find((v) => v.Name === "Supplier");
 
             const searchQuery: Query[] = [
-              new Query({
-                name: "brands",
-                objectType: m.Brand,
-              }),
-              new Query({
-                name: "models",
-                objectType: m.Model,
-              }),
-              new Query({
-                name: "inventoryItemKinds",
-                objectType: m.InventoryItemKind,
-              }),
-              new Query({
-                name: "categories",
-                objectType: m.ProductCategory,
-              }),
-              new Query({
-                name: "productTypes",
-                objectType: m.ProductType,
-              }),
-              new Query({
-                name: "organisations",
-                objectType: m.ProductType,
-              }),
-              new Query({
-                name: "ownerships",
-                objectType: m.Ownership,
-              }),
+              new Query(m.Brand),
+              new Query(m.Model),
+              new Query(m.InventoryItemKind),
+              new Query(m.ProductCategory),
+              new Query(m.ProductType),
+              new Query(m.Organisation),
+              new Query(m.Ownership),
               new Query({
                 name: "manufacturers",
                 objectType: m.Organisation,
@@ -212,35 +191,32 @@ export class GoodsOverviewComponent implements OnDestroy {
             return this.scope
               .load("Pull", new PullRequest({ query: searchQuery }))
               .switchMap((loaded) => {
-                this.brands = loaded.collections.brands as Brand[];
+                this.brands = loaded.collections.BrandQuery as Brand[];
                 this.brand = this.brands.find(
                   (v: Brand) => v.Name === data.brand,
                 );
 
-                this.models = loaded.collections.models as Model[];
+                this.models = loaded.collections.ModelQuery as Model[];
                 this.model = this.models.find(
                   (v: Model) => v.Name === data.model,
                 );
 
-                this.inventoryItemKinds = loaded.collections
-                  .inventoryItemKinds as InventoryItemKind[];
+                this.inventoryItemKinds = loaded.collections.InventoryItemKindQuery as InventoryItemKind[];
                 this.inventoryItemKind = this.inventoryItemKinds.find(
                   (v: InventoryItemKind) => v.Name === data.inventoryItemKind,
                 );
 
-                this.productCategories = loaded.collections
-                  .categories as ProductCategory[];
+                this.productCategories = loaded.collections.ProductCategoryQuery as ProductCategory[];
                 this.productCategory = this.productCategories.find(
                   (v: ProductCategory) => v.Name === data.productCategory,
                 );
 
-                this.productTypes = loaded.collections
-                  .productTypes as ProductType[];
+                this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
                 this.productType = this.productTypes.find(
                   (v: ProductType) => v.Name === data.productType,
                 );
 
-                this.ownerships = loaded.collections.ownerships as Ownership[];
+                this.ownerships = loaded.collections.OwnershipQuery as Ownership[];
                 this.ownership = this.ownerships.find(
                   (v: Ownership) => v.Name === data.ownership,
                 );
@@ -397,6 +373,28 @@ export class GoodsOverviewComponent implements OnDestroy {
                   goodsPredicates.push(containedIn);
                 }
 
+                const internalorganisationPredicate: And = new And();
+                const internalorganisationPredicates: Predicate[] = internalorganisationPredicate.predicates;
+
+                internalorganisationPredicates.push(
+                  new Equals({
+                    roleType: m.VendorProduct.InternalOrganisation,
+                    value: internalOrganisationId,
+                  }),
+                );
+
+                const vendorProductQuery: Query = new Query({
+                  objectType: m.VendorProduct,
+                  predicate: internalorganisationPredicate,
+                });
+
+                const VendorProductscontainedIn: ContainedIn = new ContainedIn({
+                  associationType: m.Good.VendorProductsWhereProduct,
+                  query: vendorProductQuery,
+                });
+
+                goodsPredicates.push(VendorProductscontainedIn);
+
                 const goodsQuery: Query[] = [
                   new Query({
                     include: [
@@ -435,13 +433,24 @@ export class GoodsOverviewComponent implements OnDestroy {
     this.page$.next(this.data.length + 50);
   }
 
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
   public delete(good: Good): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this product?" })
       .afterClosed()
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          // TODO: Logical, physical or workflow delete
+          this.scope.invoke(good.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
         }
       });
   }

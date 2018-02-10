@@ -26,6 +26,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   public catalogue: Catalogue;
   public title: string;
+
   public subTitle: string;
 
   public singleton: Singleton;

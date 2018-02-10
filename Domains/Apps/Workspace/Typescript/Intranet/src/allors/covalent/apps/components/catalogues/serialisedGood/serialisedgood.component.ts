@@ -11,10 +11,11 @@ import "rxjs/add/observable/combineLatest";
 import { isType } from "@angular/core/src/type";
 import { forEach } from "@angular/router/src/utils/collection";
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, VatRate } from "../../../../../domain";
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./serialisedgood.component.html",
@@ -26,7 +27,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public title: string;
   public subTitle: string;
-  public singleton: Singleton;
   public facility: Facility;
   public locales: Locale[];
   public categories: ProductCategory[];
@@ -41,6 +41,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public inventoryItemKinds: InventoryItemKind[];
   public inventoryItems: SerialisedInventoryItem[];
   public inventoryItem: SerialisedInventoryItem;
+  public vendorProduct: VendorProduct;
   public serialisedInventoryItemStates: SerialisedInventoryItemState[];
   public vatRates: VatRate[];
   public ownerships: Ownership[];
@@ -51,6 +52,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
+
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -66,6 +69,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
@@ -77,6 +82,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
+          this.fetcher.locales,
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
@@ -109,60 +116,18 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              include: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: m.Locale.Language }),
-                    new TreeNode({ roleType: m.Locale.Country }),
-                  ],
-                  roleType: m.Singleton.AdditionalLocales,
-                }),
-              ],
-              name: "singletons",
-              objectType: this.m.Singleton,
-            }),
-          new Query(
-            {
-              name: "organisationRoles",
-              objectType: this.m.OrganisationRole,
-            }),
-          new Query(
-            {
-              name: "categories",
-              objectType: this.m.ProductCategory,
-            }),
-          new Query(
-            {
-              name: "productTypes",
-              objectType: this.m.ProductType,
-            }),
-          new Query(
-            {
-              name: "vatRates",
-              objectType: this.m.VatRate,
-            }),
+          new Query(this.m.OrganisationRole),
+          new Query(this.m.ProductCategory),
+          new Query(this.m.ProductType),
+          new Query(this.m.VatRate),
+          new Query(this.m.Ownership),
+          new Query(this.m.InventoryItemKind),
+          new Query(this.m.SerialisedInventoryItemState),
           new Query(
             {
               name: "brands",
               objectType: this.m.Brand,
               sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
-            }),
-          new Query(
-            {
-              name: "ownerships",
-              objectType: this.m.Ownership,
-            }),
-          new Query(
-            {
-              name: "inventoryItemKinds",
-              objectType: this.m.InventoryItemKind,
-            }),
-          new Query(
-            {
-              name: "serialisedInventoryItemStates",
-              objectType: this.m.SerialisedInventoryItemState,
             }),
         ];
 
@@ -171,17 +136,16 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
-            this.categories = loaded.collections.categories as ProductCategory[];
-            this.productTypes = loaded.collections.productTypes as ProductType[];
-            this.vatRates = loaded.collections.vatRates as VatRate[];
+            this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
+            this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
+            this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
-            this.ownerships = loaded.collections.ownerships as Ownership[];
-            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
-            this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
-            this.singleton = loaded.collections.singletons[0] as Singleton;
+            this.ownerships = loaded.collections.OwnershipQuery as Ownership[];
+            this.inventoryItemKinds = loaded.collections.InventoryItemKindQuery as InventoryItemKind[];
+            this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
+            this.locales = loaded.collections.locales as Locale[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
-            this.locales = this.singleton.AdditionalLocales;
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Serialised");
@@ -195,6 +159,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
               this.good.InventoryItemKind = inventoryItemKindSerialised;
               this.inventoryItem.Good = this.good;
               this.inventoryItem.Facility = this.facility;
+
+              this.vendorProduct = this.scope.session.create("VendorProduct") as VendorProduct;
+              this.vendorProduct.Product = this.good;
+              this.vendorProduct.InternalOrganisation = internalOrganisation;
+
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
@@ -213,7 +182,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.title = this.good.Name;
             this.subTitle = "Serialised";
 
-            const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
             const supplierRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Supplier");
 

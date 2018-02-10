@@ -27,9 +27,9 @@ namespace Allors.Domain
 
             if (!@this.ExistFacility)
             {
-                var internalOrganisation = @this.Good?.Organisation as InternalOrganisation;
-                if (internalOrganisation != null)
+                if (@this.Good?.VendorProductsWhereProduct.Count == 1)
                 {
+                    var internalOrganisation = @this.Good?.VendorProductsWhereProduct[0].InternalOrganisation;
                     @this.Facility = internalOrganisation.DefaultFacility;
                 }
             }

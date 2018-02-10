@@ -4,9 +4,9 @@ import { PushRequestNewObject } from "./../database/push/PushRequestNewObject";
 import { PushRequestObject } from "./../database/push/PushRequestObject";
 import { PushRequestRole } from "./../database/push/PushRequestRole";
 
+import { Method } from "./Method";
 import { ISession } from "./Session";
 import { IWorkspaceObject } from "./WorkspaceObject";
-import { Method } from "./Method";
 
 export interface ISessionObject {
     id: string;

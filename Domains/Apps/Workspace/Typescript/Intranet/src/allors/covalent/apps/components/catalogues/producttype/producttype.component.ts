@@ -52,13 +52,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
-          new Query(
-            {
-              name: "characteristics",
-              objectType: this.m.SerialisedInventoryItemCharacteristicType,
-            }),
-        ];
+        const query: Query[] = [ new Query(this.m.SerialisedInventoryItemCharacteristicType) ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -70,7 +64,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           this.productType = this.scope.session.create("ProductType") as ProductType;
         }
 
-        this.characteristics = loaded.collections.characteristics as SerialisedInventoryItemCharacteristicType[];
+        this.characteristics = loaded.collections.SerialisedInventoryItemCharacteristicTypeQuery as SerialisedInventoryItemCharacteristicType[];
       },
       (error: any) => {
         this.errorService.message(error);

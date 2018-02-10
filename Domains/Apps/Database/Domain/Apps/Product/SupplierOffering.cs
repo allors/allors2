@@ -40,12 +40,11 @@ namespace Allors.Domain
                 good = this.Product as Good;
             }
 
-            if (this.Supplier is Organisation supplier && good != null)
+            if (this.Supplier is Organisation && good != null)
             {
                 if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                 {
-                    var internalOrganisation = good.Organisation as InternalOrganisation;
-                    if (internalOrganisation != null)
+                    foreach (InternalOrganisation internalOrganisation in good.VendorProductsWhereProduct)
                     {
                         foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
                         {
@@ -64,8 +63,7 @@ namespace Allors.Domain
                 }
                 else
                 {
-                    if (good.ExistFinishedGood &&
-                        good.FinishedGood.ExistInventoryItemKind &&
+                    if (good.ExistFinishedGood && good.FinishedGood.ExistInventoryItemKind &&
                         good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
                     {
                         var internalOrganisation = good.FinishedGood.InternalOrganisation;
