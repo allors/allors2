@@ -61,8 +61,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
-    private stateService: StateService,
-  ) {
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

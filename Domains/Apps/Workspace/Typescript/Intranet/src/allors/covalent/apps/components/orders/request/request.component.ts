@@ -10,9 +10,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { ContactMechanism, Currency, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, RequestForQuote } from "../../../../../domain";
-import { Contains, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, RequestForQuote } from "../../../../../domain";
+import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./request.component.html",
@@ -38,9 +40,11 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private previousOriginator: Party;
+
+  private refresh$: BehaviorSubject<Date>;
+  private fetcher: Fetcher;
 
   get showOrganisations(): boolean {
     return !this.request.Originator || this.request.Originator instanceof (Organisation);
@@ -56,56 +60,49 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
     this.organisationsFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.currenciesFilter = new Filter({scope: this.scope, objectType: this.m.Currency, roleTypes: [this.m.Currency.Name]});
+
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const rolesQuery: Query[] = [
-          new Query(
-            {
-              name: "organisationRoles",
-              objectType: m.OrganisationRole,
-            }),
-          new Query(
-            {
-              name: "personRoles",
-              objectType: m.PersonRole,
-            }),
-          new Query(
-            {
-              name: "currencies",
-              objectType: this.m.Currency,
-            }),
+          new Query(m.OrganisationRole),
+          new Query(m.PersonRole),
+          new Query(m.Currency),
         ];
 
         return this.scope
           .load("Pull", new PullRequest({ query: rolesQuery }))
           .switchMap((loaded) => {
             this.scope.session.reset();
-            this.currencies = loaded.collections.currencies as Currency[];
+            this.currencies = loaded.collections.CurrencyQuery as Currency[];
 
-            const organisationRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
 
-            const personRoles: OrganisationRole[] = loaded.collections.organisationRoles as OrganisationRole[];
+            const personRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
 
             const fetch: Fetch[] = [
+              this.fetcher.internalOrganisation,
               new Fetch({
                 id,
                 include: [
@@ -149,8 +146,11 @@ export class RequestEditComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.request = loaded.objects.requestForQuote as RequestForQuote;
+        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+
         if (!this.request) {
           this.request = this.scope.session.create("RequestForQuote") as RequestForQuote;
+          this.request.Recipient = internalOrganisation;
           this.request.RequestDate = new Date();
           this.title = "Add Request";
         } else {

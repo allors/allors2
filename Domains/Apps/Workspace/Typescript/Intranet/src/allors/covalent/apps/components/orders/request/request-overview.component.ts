@@ -12,8 +12,10 @@ import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../../angular";
 import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from "../../../../../domain";
-import { Fetch, Path, PullRequest, TreeNode } from "../../../../../framework";
+import { Equals, Fetch, Path, PullRequest, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./request-overview.component.html",
@@ -31,6 +33,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -39,11 +42,14 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
     private router: Router,
     public dialogService: TdDialogService,
     private snackBar: MatSnackBar,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public refresh(): void {
@@ -52,8 +58,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;

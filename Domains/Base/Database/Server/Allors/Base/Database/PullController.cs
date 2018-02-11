@@ -92,13 +92,13 @@ namespace Allors.Server.Controllers
                         {
                             var acls = new AccessControlListCache(this.Session.GetUser());
                             var result = path.Get(@object, acls);
+                            if (result == null) continue;
                             if (result is IObject)
                             {
-                                response.AddObject(fetch.Name, (IObject)result, include);
+                                response.AddObject(fetch.Name, (IObject) result, include);
                             }
                             else
                             {
-
                                 IEnumerable<IObject> objects;
                                 if (result is HashSet<object>)
                                     objects = ((HashSet<object>) result).Cast<IObject>();

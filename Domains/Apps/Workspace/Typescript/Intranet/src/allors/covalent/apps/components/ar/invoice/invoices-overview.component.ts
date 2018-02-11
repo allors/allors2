@@ -12,9 +12,10 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
-import { SalesInvoice } from "../../../../../domain";
-import { And, ContainedIn, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
+import { InternalOrganisation, SalesInvoice } from "../../../../../domain";
+import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 interface SearchData {
   company: string;
@@ -48,7 +49,8 @@ export class InvoicesOverviewComponent implements OnDestroy {
     private router: Router,
     public dialogService: TdDialogService,
     public media: TdMediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.titleService.setTitle("Sales Invoices");
 
@@ -68,17 +70,18 @@ export class InvoicesOverviewComponent implements OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate], [data, take, date]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+        return [
+          data,
+          data !== previousData ? 50 : take,
+          date,
+          internalOrganisationId,
+        ];
+      }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take]) => {
+      .switchMap(([data, take, , internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -114,7 +117,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
             name: "invoices",
             objectType: m.SalesInvoice,
             page: new Page({ skip: 0, take }),
-            predicate,
+            predicate: new Equals({ roleType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }),
             sort: [new Sort({ roleType: m.SalesInvoice.InvoiceNumber, direction: "Desc" })],
           })];
 
