@@ -248,7 +248,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         .subscribe((loaded) => {
           const invoices = loaded.collections.invoices as SalesInvoice[];
           if (invoices.length === 1) {
-            this.router.navigate(["/ar/invoice/" + invoices[0].id]);
+            this.router.navigate(["/accountsreceivable/invoice/" + invoices[0].id]);
           }
         },
         (error: any) => {

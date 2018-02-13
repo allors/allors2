@@ -293,6 +293,16 @@ namespace Allors.Repository
         public Party BillToCustomer { get; set; }
 
         #region Allors
+        [Id("B51570D0-05F5-45D1-B820-6FA693A60EB9")]
+        [AssociationId("CFF27770-62ED-44FD-B3BD-B0ECAC5200CF")]
+        [RoleId("316B4B5C-AAEB-4794-8823-9D1F69647AE8")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InternalOrganisation BillToInternalOrganisation { get; set; }
+
+        #region Allors
         [Id("89557826-c9d1-4aa1-8789-79fb425cdb87")]
         [AssociationId("7d157e5a-efbb-453e-bd95-27a9b0ab305f")]
         [RoleId("751ada5f-ff41-43ae-8609-0c1457642375")]

@@ -10,22 +10,22 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { InvoiceTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
+import { OrderTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  templateUrl: "./invoiceterm.component.html",
+  templateUrl: "./orderterm.component.html",
 })
-export class InvoiceTermEditComponent implements OnInit, OnDestroy {
+export class OrderTermEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title: string = "Edit Sales Order Invoice Term";
+  public title: string = "Edit Sales Invoice Incoterm";
   public subTitle: string;
   public invoice: SalesInvoice;
   public salesTerm: SalesTerm;
-  public invoiceTermTypes: InvoiceTermType[];
+  public orderTermTypes: OrderTermType[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -46,6 +46,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
       .switchMap(([urlSegments, date]) => {
 
@@ -69,8 +70,8 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
         const query: Query[] = [
           new Query({
-            name: "invoiceTermTypes",
-            objectType: m.InvoiceTermType,
+            name: "orderTermTypes",
+            objectType: m.OrderTermType,
           }),
         ];
 
@@ -81,11 +82,11 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.invoiceTermTypes = loaded.collections.invoiceTermTypes as InvoiceTermType[];
+        this.orderTermTypes = loaded.collections.orderTermTypes as OrderTermType[];
 
         if (!this.salesTerm) {
-          this.title = "Add Sales Invoice Term";
-          this.salesTerm = this.scope.session.create("InvoiceTerm") as SalesTerm;
+          this.title = "Add Sales Invoice Order Term";
+          this.salesTerm = this.scope.session.create("OrderTerm") as SalesTerm;
           this.invoice.AddSalesTerm(this.salesTerm);
         }
       },
@@ -106,7 +107,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/ar/invoice/" + this.invoice.id]);
+        this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

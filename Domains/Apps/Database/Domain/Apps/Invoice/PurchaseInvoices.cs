@@ -38,7 +38,7 @@ namespace Allors.Domain
 
             var ready = this.Meta.Ready;
             var approve = this.Meta.Approve;
-            var cancel = this.Meta.Cancel;
+            var cancel = this.Meta.CancelInvoice;
 
             config.Deny(this.ObjectType, approved, approve);
             config.Deny(this.ObjectType, received, ready, approve, cancel);

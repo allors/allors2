@@ -15,6 +15,7 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
+        public Product Product { get; set; }
         public string InternalComment { get; set; }
         public SalesTerm[] SalesTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
@@ -141,6 +142,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("3DC3728F-748D-454F-8D5C-0F1BD5AE3855")]
+        [AssociationId("E853ECED-1EF7-40A4-BEA5-FC6A8C6CFFB3")]
+        [RoleId("640663C5-0053-4339-834E-B67F1D3CE110")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Workspace]
+        public PurchaseOrderItem PurchaseOrderItem { get; set; }
+
+        #region Allors
         [Id("56e47122-faaa-4211-806c-1c19695fe434")]
         [AssociationId("826db2b1-3048-4237-8e83-0c472a166d49")]
         [RoleId("893de8bc-93eb-4864-89ba-efdb66b32fd5")]
@@ -148,6 +160,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
 
         #region Allors

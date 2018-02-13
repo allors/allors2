@@ -100,6 +100,14 @@ namespace Allors.Repository
         [Required]
         public PurchaseInvoiceType PurchaseInvoiceType { get; set; }
         
+        #region Allors
+        [Id("B3EEBEFD-F12E-4A70-A0DD-A58C89491C03")]
+        [AssociationId("592E9F43-C799-48CA-BE4F-B7272D11037B")]
+        [RoleId("4A1AD446-2330-4681-89F8-2651B2BF9D61")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public PurchaseOrder PurchaseOrder { get; set; }
         #region inherited methods
 
         public void OnBuild() { }

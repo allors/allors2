@@ -36,7 +36,7 @@ namespace Allors.Domain
             && !this.ExistProductConfigurationsWhereProduct
             && !this.ExistPurchaseOrderItemsWhereProduct 
             && !this.ExistRequestItemsWhereProduct
-            && !this.ExistSalesInvoiceItemsWhereProduct
+            && !this.ExistInvoiceItemsWhereProduct
             && !this.ExistSalesOrderItemsWhereProduct
             && !this.ExistSupplierOfferingsWhereProduct
             && !this.ExistWorkEffortTypesWhereProductToProduce

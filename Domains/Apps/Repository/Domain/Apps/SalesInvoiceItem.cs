@@ -17,6 +17,7 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
+        public Product Product { get; set; }
         public string InternalComment { get; set; }
         public SalesTerm[] SalesTerms { get; set; }
         public decimal TotalInvoiceAdjustment { get; set; }
@@ -158,16 +159,6 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal MaintainedMarkupPercentage { get; set; }
-
-        #region Allors
-        [Id("4daa5c18-85c6-49c0-8f23-8e419e44471c")]
-        [AssociationId("061348dc-59a2-41d1-92bb-ccf16a1f31aa")]
-        [RoleId("a037ec30-f0f4-4dda-8eb5-80a042b26399")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Product Product { get; set; }
 
         #region Allors
         [Id("4f9e110d-fca8-4956-9d2f-178843eb9b9f")]

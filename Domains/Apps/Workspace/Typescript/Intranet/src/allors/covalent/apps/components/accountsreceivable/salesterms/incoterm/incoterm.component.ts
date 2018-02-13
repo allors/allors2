@@ -10,14 +10,14 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { OrderTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
+import { IncoTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  templateUrl: "./orderterm.component.html",
+  templateUrl: "./incoterm.component.html",
 })
-export class OrderTermEditComponent implements OnInit, OnDestroy {
+export class IncoTermEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -25,7 +25,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
   public subTitle: string;
   public invoice: SalesInvoice;
   public salesTerm: SalesTerm;
-  public orderTermTypes: OrderTermType[];
+  public incoTermTypes: IncoTermType[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -70,8 +70,8 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
 
         const query: Query[] = [
           new Query({
-            name: "orderTermTypes",
-            objectType: m.OrderTermType,
+            name: "incoTermTypes",
+            objectType: m.IncoTermType,
           }),
         ];
 
@@ -82,11 +82,11 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
 
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.orderTermTypes = loaded.collections.orderTermTypes as OrderTermType[];
+        this.incoTermTypes = loaded.collections.incoTermTypes as IncoTermType[];
 
         if (!this.salesTerm) {
-          this.title = "Add Sales Invoice Order Term";
-          this.salesTerm = this.scope.session.create("OrderTerm") as SalesTerm;
+          this.title = "Add Invoice Incoterm";
+          this.salesTerm = this.scope.session.create("IncoTerm") as SalesTerm;
           this.invoice.AddSalesTerm(this.salesTerm);
         }
       },
@@ -107,7 +107,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/ar/invoice/" + this.invoice.id]);
+        this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

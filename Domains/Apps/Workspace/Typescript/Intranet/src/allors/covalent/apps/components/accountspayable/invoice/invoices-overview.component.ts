@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
-import { InternalOrganisation, SalesInvoice } from "../../../../../domain";
+import { InternalOrganisation, PurchaseInvoice } from "../../../../../domain";
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -30,9 +30,9 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
   public searchForm: FormGroup;
 
-  public title: string = "Sales Invoices";
-  public data: SalesInvoice[];
-  public filtered: SalesInvoice[];
+  public title: string = "Purchase Invoices";
+  public data: PurchaseInvoice[];
+  public filtered: PurchaseInvoice[];
   public total: number;
 
   private refresh$: BehaviorSubject<Date>;
@@ -52,7 +52,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private stateService: StateService) {
 
-    this.titleService.setTitle("Sales Invoices");
+    this.titleService.setTitle("Purchase Invoices");
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -89,7 +89,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
         if (data.invoiceNumber) {
           const like: string = "%" + data.invoiceNumber + "%";
-          predicates.push(new Like({ roleType: m.SalesInvoice.InvoiceNumber, value: like }));
+          predicates.push(new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, value: like }));
         }
 
         if (data.company) {
@@ -99,33 +99,33 @@ export class InvoicesOverviewComponent implements OnDestroy {
             }),
           });
 
-          const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesInvoice.BillToCustomer, query: partyQuery });
+          const containedIn: ContainedIn = new ContainedIn({ roleType: m.PurchaseInvoice.BillToCustomer, query: partyQuery });
           predicates.push(containedIn);
         }
 
         if (data.reference) {
           const like: string = data.reference.replace("*", "%") + "%";
-          predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
+          predicates.push(new Like({ roleType: m.PurchaseInvoice.CustomerReference, value: like }));
         }
 
         const query: Query[] = [new Query(
           {
             include: [
-              new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
+              new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomer }),
+              new TreeNode({ roleType: m.PurchaseInvoice.PurchaseInvoiceState }),
             ],
             name: "invoices",
-            objectType: m.SalesInvoice,
+            objectType: m.PurchaseInvoice,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }),
-            sort: [new Sort({ roleType: m.SalesInvoice.InvoiceNumber, direction: "Desc" })],
+            predicate: new Equals({ roleType: m.PurchaseInvoice.BilledFrom, value: internalOrganisationId }),
+            sort: [new Sort({ roleType: m.PurchaseInvoice.InvoiceNumber, direction: "Desc" })],
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));
 
       })
       .subscribe((loaded) => {
-        this.data = loaded.collections.invoices as SalesInvoice[];
+        this.data = loaded.collections.invoices as PurchaseInvoice[];
         this.total = loaded.values.invoices_total;
       },
       (error: any) => {
@@ -144,8 +144,8 @@ export class InvoicesOverviewComponent implements OnDestroy {
     }
   }
 
-  public onView(invoice: SalesInvoice): void {
-    this.router.navigate(["/ar/invoices/" + invoice.id]);
+  public onView(invoice: PurchaseInvoice): void {
+    this.router.navigate(["/accountspayable/invoices/" + invoice.id]);
   }
 
   private more(): void {

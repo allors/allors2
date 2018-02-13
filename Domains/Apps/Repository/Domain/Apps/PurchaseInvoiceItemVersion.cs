@@ -102,6 +102,16 @@ namespace Allors.Repository
         public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
 
         #region Allors
+        [Id("D88804CF-E48A-4C7F-8916-0FC182BF43CA")]
+        [AssociationId("F1CC5B6E-5382-4FAB-83B9-D623DFC415AF")]
+        [RoleId("593BA640-C917-469C-AC57-9A64218AE04F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public PurchaseOrderItem PurchaseOrderItem { get; set; }
+
+        #region Allors
         [Id("BBE7B96D-9B68-46E6-9158-743797C6AA43")]
         [AssociationId("0C49AEAE-A22A-4F26-A7E7-294C8ABE2F40")]
         [RoleId("861B5605-BD49-434F-9136-D16523FFEE43")]

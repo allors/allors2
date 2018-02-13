@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseInvoiceItemType, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -22,8 +22,8 @@ export class InvoiceItemEditComponent
 
   public title: string = "Edit Sales Invoice Item";
   public subTitle: string;
-  public invoice: SalesInvoice;
-  public invoiceItem: SalesInvoiceItem;
+  public invoice: PurchaseInvoice;
+  public invoiceItem: PurchaseInvoiceItem;
   public orderItem: SalesOrderItem;
   public inventoryItems: InventoryItem[];
   public vatRates: VatRate[];
@@ -31,8 +31,8 @@ export class InvoiceItemEditComponent
   public serialisedInventoryItem: SerialisedInventoryItem;
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public goods: Good[];
-  public salesInvoiceItemTypes: SalesInvoiceItemType[];
-  public productItemType: SalesInvoiceItemType;
+  public PurchaseInvoiceItemTypes: PurchaseInvoiceItemType[];
+  public productItemType: PurchaseInvoiceItemType;
 
   public goodsFilter: Filter;
 
@@ -71,18 +71,18 @@ export class InvoiceItemEditComponent
         const fetch: Fetch[] = [
           new Fetch({
             id,
-            name: "salesInvoice",
+            name: "PurchaseInvoice",
           }),
           new Fetch({
             id: itemId,
             include: [
               new TreeNode({
-                roleType: m.SalesInvoiceItem.SalesInvoiceItemState,
+                roleType: m.PurchaseInvoiceItem.PurchaseInvoiceItemState,
               }),
-              new TreeNode({ roleType: m.SalesInvoiceItem.SalesOrderItem }),
+              new TreeNode({ roleType: m.PurchaseInvoiceItem.PurchaseOrderItem }),
               new TreeNode({
                 nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
-                roleType: m.SalesInvoiceItem.VatRegime,
+                roleType: m.PurchaseInvoiceItem.VatRegime,
               }),
             ],
             name: "invoiceItem",
@@ -95,8 +95,8 @@ export class InvoiceItemEditComponent
             objectType: m.Good,
           }),
           new Query({
-            name: "salesInvoiceItemTypes",
-            objectType: m.SalesInvoiceItemType,
+            name: "PurchaseInvoiceItemTypes",
+            objectType: m.PurchaseInvoiceItemType,
           }),
           new Query({
             name: "vatRates",
@@ -112,15 +112,15 @@ export class InvoiceItemEditComponent
       })
       .subscribe(
         (loaded) => {
-          this.invoice = loaded.objects.salesInvoice as SalesInvoice;
-          this.invoiceItem = loaded.objects.invoiceItem as SalesInvoiceItem;
+          this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
+          this.invoiceItem = loaded.objects.invoiceItem as PurchaseInvoiceItem;
           this.orderItem = loaded.objects.orderItem as SalesOrderItem;
           this.goods = loaded.collections.goods as Good[];
           this.vatRates = loaded.collections.vatRates as VatRate[];
           this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
-          this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
-          this.productItemType = this.salesInvoiceItemTypes.find(
-            (v: SalesInvoiceItemType) =>
+          this.PurchaseInvoiceItemTypes = loaded.collections.PurchaseInvoiceItemTypes as PurchaseInvoiceItemType[];
+          this.productItemType = this.PurchaseInvoiceItemTypes.find(
+            (v: PurchaseInvoiceItemType) =>
               v.UniqueId.toUpperCase() ===
               "0D07F778-2735-44CB-8354-FB887ADA42AD",
           );
@@ -128,12 +128,12 @@ export class InvoiceItemEditComponent
           if (!this.invoiceItem) {
             this.title = "Add invoice Item";
             this.invoiceItem = this.scope.session.create(
-              "SalesInvoiceItem",
-            ) as SalesInvoiceItem;
-            this.invoice.AddSalesInvoiceItem(this.invoiceItem);
+              "PurchaseInvoiceItem",
+            ) as PurchaseInvoiceItem;
+            this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
           } else {
             if (
-              this.invoiceItem.SalesInvoiceItemType === this.productItemType
+              this.invoiceItem.PurchaseInvoiceItemType === this.productItemType
             ) {
               this.goodSelected(this.invoiceItem.Product);
             }
@@ -153,7 +153,7 @@ export class InvoiceItemEditComponent
   }
 
   public goodSelected(product: Product): void {
-    this.invoiceItem.SalesInvoiceItemType = this.productItemType;
+    this.invoiceItem.PurchaseInvoiceItemType = this.productItemType;
 
     const fetch: Fetch[] = [
       new Fetch({
@@ -186,7 +186,7 @@ export class InvoiceItemEditComponent
   public save(): void {
     this.scope.save().subscribe(
       (saved: Saved) => {
-        this.router.navigate(["/ar/invoice/" + this.invoice.id]);
+        this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

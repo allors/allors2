@@ -10,22 +10,22 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
-import { IncoTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
+import { InvoiceTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";
 
 @Component({
-  templateUrl: "./incoterm.component.html",
+  templateUrl: "./invoiceterm.component.html",
 })
-export class IncoTermEditComponent implements OnInit, OnDestroy {
+export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title: string = "Edit Sales Invoice Incoterm";
+  public title: string = "Edit Sales Order Invoice Term";
   public subTitle: string;
   public invoice: SalesInvoice;
   public salesTerm: SalesTerm;
-  public incoTermTypes: IncoTermType[];
+  public invoiceTermTypes: InvoiceTermType[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -46,7 +46,6 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
       .switchMap(([urlSegments, date]) => {
 
@@ -70,8 +69,8 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
 
         const query: Query[] = [
           new Query({
-            name: "incoTermTypes",
-            objectType: m.IncoTermType,
+            name: "invoiceTermTypes",
+            objectType: m.InvoiceTermType,
           }),
         ];
 
@@ -82,11 +81,11 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
 
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.salesTerm = loaded.objects.salesTerm as SalesTerm;
-        this.incoTermTypes = loaded.collections.incoTermTypes as IncoTermType[];
+        this.invoiceTermTypes = loaded.collections.invoiceTermTypes as InvoiceTermType[];
 
         if (!this.salesTerm) {
-          this.title = "Add Invoice Incoterm";
-          this.salesTerm = this.scope.session.create("IncoTerm") as SalesTerm;
+          this.title = "Add Sales Invoice Term";
+          this.salesTerm = this.scope.session.create("InvoiceTerm") as SalesTerm;
           this.invoice.AddSalesTerm(this.salesTerm);
         }
       },
@@ -107,7 +106,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/ar/invoice/" + this.invoice.id]);
+        this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

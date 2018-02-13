@@ -313,7 +313,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(["/ar/invoice/" + this.invoice.id]);
+        this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);
