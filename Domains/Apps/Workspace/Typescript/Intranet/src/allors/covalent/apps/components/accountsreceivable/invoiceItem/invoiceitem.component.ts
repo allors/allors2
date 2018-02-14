@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesInvoiceItemType, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -31,8 +31,8 @@ export class InvoiceItemEditComponent
   public serialisedInventoryItem: SerialisedInventoryItem;
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public goods: Good[];
-  public salesInvoiceItemTypes: SalesInvoiceItemType[];
-  public productItemType: SalesInvoiceItemType;
+  public invoiceItemTypes: InvoiceItemType[];
+  public productItemType: InvoiceItemType;
 
   public goodsFilter: Filter;
 
@@ -95,8 +95,8 @@ export class InvoiceItemEditComponent
             objectType: m.Good,
           }),
           new Query({
-            name: "salesInvoiceItemTypes",
-            objectType: m.SalesInvoiceItemType,
+            name: "invoiceItemTypes",
+            objectType: m.InvoiceItemType,
           }),
           new Query({
             name: "vatRates",
@@ -118,9 +118,9 @@ export class InvoiceItemEditComponent
           this.goods = loaded.collections.goods as Good[];
           this.vatRates = loaded.collections.vatRates as VatRate[];
           this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
-          this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
-          this.productItemType = this.salesInvoiceItemTypes.find(
-            (v: SalesInvoiceItemType) =>
+          this.invoiceItemTypes = loaded.collections.salesInvoiceItemTypes as InvoiceItemType[];
+          this.productItemType = this.invoiceItemTypes.find(
+            (v: InvoiceItemType) =>
               v.UniqueId.toUpperCase() ===
               "0D07F778-2735-44CB-8354-FB887ADA42AD",
           );
@@ -133,7 +133,7 @@ export class InvoiceItemEditComponent
             this.invoice.AddSalesInvoiceItem(this.invoiceItem);
           } else {
             if (
-              this.invoiceItem.SalesInvoiceItemType === this.productItemType
+              this.invoiceItem.InvoiceItemType === this.productItemType
             ) {
               this.goodSelected(this.invoiceItem.Product);
             }
@@ -153,7 +153,7 @@ export class InvoiceItemEditComponent
   }
 
   public goodSelected(product: Product): void {
-    this.invoiceItem.SalesInvoiceItemType = this.productItemType;
+    this.invoiceItem.InvoiceItemType = this.productItemType;
 
     const fetch: Fetch[] = [
       new Fetch({
