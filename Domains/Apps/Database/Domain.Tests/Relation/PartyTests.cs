@@ -153,7 +153,7 @@ namespace Allors.Domain
         public void GivenPartyWithRevenue_WhenDeriving_ThenTotalRevenuesAreUpdated()
         {
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
-            var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
+            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
             var customerRelationship = new CustomerRelationshipBuilder(this.Session).WithCustomer(customer).WithFromDate(DateTime.Now.AddYears(-2)).Build();
 
@@ -178,7 +178,7 @@ namespace Allors.Domain
             new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(10M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(10M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date1)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice1")
@@ -187,7 +187,7 @@ namespace Allors.Domain
             new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date2)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice2")
@@ -196,7 +196,7 @@ namespace Allors.Domain
             new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithSalesInvoiceItemType(productItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date3)
                 .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice3")

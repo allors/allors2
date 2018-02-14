@@ -46,7 +46,7 @@ namespace Allors.Domain
                                                             .WithName("good")
                                                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                                             .Build())  
-                                        .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                                         .WithQuantity(1)
                                         .WithActualUnitPrice(100M)
                                         .Build())
@@ -87,7 +87,7 @@ namespace Allors.Domain
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(contactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(1000M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(1000M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             this.Session.Derive();

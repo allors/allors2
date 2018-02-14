@@ -199,8 +199,8 @@ namespace Allors.Domain
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorWhite).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorWhite).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
             item1.AddOrderedWithFeature(item2);
             item1.AddOrderedWithFeature(item3);
             var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();

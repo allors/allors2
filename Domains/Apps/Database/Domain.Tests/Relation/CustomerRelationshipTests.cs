@@ -196,7 +196,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             this.Session.Derive();
@@ -205,7 +205,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(200M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(200M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             this.Session.Derive();
@@ -268,7 +268,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
                 .WithInvoiceDate(DateTime.UtcNow.AddDays(-30))
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             this.Session.Derive();
@@ -278,7 +278,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
                 .WithInvoiceDate(DateTime.UtcNow.AddDays(-5))
-                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(200M).WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build())
+                .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(200M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
             this.Session.Derive();

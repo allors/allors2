@@ -29,7 +29,7 @@ namespace Allors.Domain
         [Fact(Skip = "to repair")]
         public void DeriveRevenues()
         {
-            var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
+            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
             var customer1 = new OrganisationBuilder(this.Session).WithName("customer1").Build();
@@ -92,13 +92,13 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good1).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(productItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good1).WithQuantity(3).WithActualUnitPrice(15).WithInvoiceItemType(productItem).Build();
             invoice1.AddSalesInvoiceItem(item1);
 
-            var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good1).WithQuantity(3).WithActualUnitPrice(15).WithSalesInvoiceItemType(productItem).Build();
+            var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good1).WithQuantity(3).WithActualUnitPrice(15).WithInvoiceItemType(productItem).Build();
             invoice1.AddSalesInvoiceItem(item2);
 
-            var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good2).WithQuantity(5).WithActualUnitPrice(10).WithSalesInvoiceItemType(productItem).Build();
+            var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good2).WithQuantity(5).WithActualUnitPrice(10).WithInvoiceItemType(productItem).Build();
             invoice1.AddSalesInvoiceItem(item3);
 
             this.Session.Derive();
@@ -116,12 +116,12 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
 
-            var item4 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good1).WithQuantity(1).WithActualUnitPrice(15).WithSalesInvoiceItemType(productItem).Build();
+            var item4 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good1).WithQuantity(1).WithActualUnitPrice(15).WithInvoiceItemType(productItem).Build();
             invoice2.AddSalesInvoiceItem(item4);
 
             this.Session.Derive();
 
-            var item5 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good2).WithQuantity(1).WithActualUnitPrice(10).WithSalesInvoiceItemType(productItem).Build();
+            var item5 = new SalesInvoiceItemBuilder(this.Session).WithProduct(good2).WithQuantity(1).WithActualUnitPrice(10).WithInvoiceItemType(productItem).Build();
             invoice2.AddSalesInvoiceItem(item5);
 
             this.Session.Derive();

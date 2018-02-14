@@ -912,7 +912,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
+            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
             var assessable = new VatRegimes(this.Session).Assessable;
@@ -957,7 +957,7 @@ namespace Allors.Domain
                 .WithInvoiceDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
-            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithActualUnitPrice(100).WithSalesInvoiceItemType(productItem).Build();
+            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithActualUnitPrice(100).WithInvoiceItemType(productItem).Build();
             invoice.AddSalesInvoiceItem(invoiceItem);
 
             this.Session.Derive();
@@ -1007,7 +1007,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
+            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
             var assessable = new VatRegimes(this.Session).Assessable;
@@ -1059,7 +1059,7 @@ namespace Allors.Domain
                 .WithInvoiceDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
 
-            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithActualUnitPrice(11).WithSalesInvoiceItemType(productItem).Build();
+            var invoiceItem = new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(10).WithActualUnitPrice(11).WithInvoiceItemType(productItem).Build();
             invoice.AddSalesInvoiceItem(invoiceItem);
 
             this.Session.Derive();
@@ -2731,8 +2731,8 @@ namespace Allors.Domain
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorBlack).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
-            var item3 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(colorBlack).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
+            var item3 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(extraLarge).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
             item1.AddOrderedWithFeature(item2);
             item1.AddOrderedWithFeature(item3);
             var item4 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();

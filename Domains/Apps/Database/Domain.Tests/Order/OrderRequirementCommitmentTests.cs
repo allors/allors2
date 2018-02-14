@@ -59,7 +59,7 @@ namespace Allors.Domain
                 .Build();
 
             var goodOrderItem = new SalesOrderItemBuilder(this.Session)
-                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithProduct(good)
                 .WithQuantityOrdered(1)
                 .Build();

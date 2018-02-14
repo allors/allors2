@@ -353,7 +353,7 @@ namespace Allors.Domain
             //this.productCategoryRevenueHistory.Revenue = 20M;
 
             var item1 = new SalesOrderItemBuilder(this.Session)
-                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .WithProduct(this.good)
                 .WithQuantityOrdered(quantityOrdered1)
                 .Build();
@@ -416,7 +416,7 @@ namespace Allors.Domain
 
             //this.partyRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -509,7 +509,7 @@ namespace Allors.Domain
             //this.productCategoryRevenueHistory.Revenue = 20M;
             //this.productCategoryRevenueHistory.Quantity = 1;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -606,7 +606,7 @@ namespace Allors.Domain
             //this.productCategoryRevenueHistory.Revenue = 20M;
             //this.productCategoryRevenueHistory.Quantity = 1;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -703,7 +703,7 @@ namespace Allors.Domain
             //this.productCategoryRevenueHistory.Revenue = 20M;
             //this.productCategoryRevenueHistory.Quantity = 1;
             
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -777,7 +777,7 @@ namespace Allors.Domain
             //this.ancestorProductCategoryRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -849,7 +849,7 @@ namespace Allors.Domain
             //this.parentProductCategoryRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -921,7 +921,7 @@ namespace Allors.Domain
             //this.productCategoryRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -993,7 +993,7 @@ namespace Allors.Domain
             //this.partyRevenueHistory.Revenue = 20M;
             
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1068,7 +1068,7 @@ namespace Allors.Domain
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1143,7 +1143,7 @@ namespace Allors.Domain
 
             //this.partyRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1214,7 +1214,7 @@ namespace Allors.Domain
 
             //this.productCategoryRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1287,7 +1287,7 @@ namespace Allors.Domain
 
             //this.partyRevenueHistory.Revenue = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1362,7 +1362,7 @@ namespace Allors.Domain
 
             //this.ancestorProductCategoryRevenueHistory.Quantity = 2;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1433,7 +1433,7 @@ namespace Allors.Domain
 
             //this.parentProductCategoryRevenueHistory.Quantity = 2;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1504,7 +1504,7 @@ namespace Allors.Domain
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1575,7 +1575,7 @@ namespace Allors.Domain
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1650,7 +1650,7 @@ namespace Allors.Domain
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1721,7 +1721,7 @@ namespace Allors.Domain
 
             //this.productCategoryRevenueHistory.Quantity = 20M;
             
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -1823,7 +1823,7 @@ namespace Allors.Domain
             //package2RevenueHistory.Revenue = 0;
             //package3RevenueHistory.Revenue = 0;
             
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(3).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(3).Build();
             this.order.AddSalesOrderItem(item1);
             this.Session.Derive();
 
@@ -1908,7 +1908,7 @@ namespace Allors.Domain
             //package3RevenueHistory.Revenue = 0;
             
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -2005,7 +2005,7 @@ namespace Allors.Domain
             //package2RevenueHistory.Revenue = 0;
             //package3RevenueHistory.Revenue = 0;
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(quantityOrdered1).Build();
             this.order.AddSalesOrderItem(item1);
 
             this.Session.Derive();
@@ -2052,7 +2052,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var item = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).Build();
+            var item = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build();
 
             Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
         }
@@ -2062,7 +2062,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredMarkupPercentage(45).Build();
+            var item1 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithProduct(this.good).WithQuantityOrdered(3).WithRequiredMarkupPercentage(45).Build();
             this.order.AddSalesOrderItem(item1);
             item1.Confirm();
 
@@ -2217,7 +2217,7 @@ namespace Allors.Domain
 
             const decimal quantityOrdered = 3;
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(this.feature1).WithQuantityOrdered(quantityOrdered).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(this.feature1).WithQuantityOrdered(quantityOrdered).Build();
             item1.AddOrderedWithFeature(item2);
             this.order.AddSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item2);
@@ -2263,7 +2263,7 @@ namespace Allors.Domain
 
             const decimal quantityOrdered = 3;
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(this.good).WithQuantityOrdered(quantityOrdered).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(this.feature2).WithQuantityOrdered(quantityOrdered).Build();
+            var item2 = new SalesOrderItemBuilder(this.Session).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem).WithProductFeature(this.feature2).WithQuantityOrdered(quantityOrdered).Build();
             item1.AddOrderedWithFeature(item2);
             this.order.AddSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item2);

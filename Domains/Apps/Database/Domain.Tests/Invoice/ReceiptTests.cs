@@ -90,7 +90,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var productItem = new SalesInvoiceItemTypes(this.Session).ProductItem;
+            var productItem = new InvoiceItemTypes(this.Session).ProductItem;
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
 
             var invoice = new SalesInvoiceBuilder(this.Session)
@@ -98,9 +98,9 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
-            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(100M).WithSalesInvoiceItemType(productItem).Build();
-            var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(200M).WithSalesInvoiceItemType(productItem).Build();
-            var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(300M).WithSalesInvoiceItemType(productItem).Build();
+            var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(productItem).Build();
+            var item2 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(200M).WithInvoiceItemType(productItem).Build();
+            var item3 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(300M).WithInvoiceItemType(productItem).Build();
 
             invoice.AddSalesInvoiceItem(item1);
             invoice.AddSalesInvoiceItem(item2);
@@ -156,7 +156,7 @@ namespace Allors.Domain
                 .WithBillToContactMechanism(billToContactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session)
-                                        .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                                        .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                                         .WithProduct(this.good)
                                         .WithQuantity(1)
                                         .WithActualUnitPrice(100M)

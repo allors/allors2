@@ -283,21 +283,21 @@ namespace Allors
                 .WithQuantityOrdered(1)
                 .WithMessage(@"line1
 line2")
-                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
             var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
                 .WithDescription("second item")
                 .WithActualUnitPrice(2000)
                 .WithQuantityOrdered(2)
-                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
             var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
                 .WithDescription("Fee")
                 .WithActualUnitPrice(100)
                 .WithQuantityOrdered(1)
-                .WithItemType(new SalesInvoiceItemTypes(this.Session).Fee)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                 .Build();
 
             var order = new SalesOrderBuilder(this.Session)
@@ -319,21 +319,21 @@ line2")
                 .WithQuantity(1)
                 .WithMessage(@"line1
 line2")
-                .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
             var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
                 .WithDescription("second item")
                 .WithActualUnitPrice(2000)
                 .WithQuantity(2)
-                .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).ProductItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                 .Build();
 
             var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
                 .WithDescription("Fee")
                 .WithActualUnitPrice(100)
                 .WithQuantity(1)
-                .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Session).Fee)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session)

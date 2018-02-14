@@ -62,7 +62,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithPurchaseInvoiceItemType(new PurchaseInvoiceItemTypes(this.Session).PartItem);
+            builder.WithInvoiceItemType(new InvoiceItemTypes(this.Session).PartItem);
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

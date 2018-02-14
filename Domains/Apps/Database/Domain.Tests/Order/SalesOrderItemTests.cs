@@ -537,7 +537,7 @@ namespace Allors.Domain
                 .Build();
 
             var productFeatureOrderItem = new SalesOrderItemBuilder(this.Session)
-                .WithItemType(new SalesInvoiceItemTypes(this.Session).ProductFeatureItem)
+                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductFeatureItem)
                 .WithProductFeature(this.feature1)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
