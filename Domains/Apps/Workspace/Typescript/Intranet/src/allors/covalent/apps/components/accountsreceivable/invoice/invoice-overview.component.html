@@ -61,7 +61,7 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id]">Edit</button>
+        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id]">Edit</button>
         <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
       </mat-card-actions>
     </mat-card>
@@ -78,10 +78,10 @@
 
             <ng-template let-invoiceItem let-last="last" ngFor [ngForOf]="invoice.SalesInvoiceItems">
               <mat-list-item>
-                <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
+                <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
                 <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
 
-                <h3 *ngIf="!invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.SalesInvoiceItemType.Name}}</h3>
+                <h3 *ngIf="!invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.SalesInvoiceItemType.Name}}</h3>
                 <h3 *ngIf="!invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.SalesInvoiceItemType.Name}}</h3>
 
                 <h4 mat-line>Total ex VAT: {{invoiceItem.TotalExVat}}</h4>
@@ -91,7 +91,7 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="deleteInvoiceItem(invoiceItem)" [disabled]="!invoiceItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
@@ -103,7 +103,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id +'/item']">+ Add</button>
+        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/item']">+ Add</button>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -121,21 +121,21 @@
 
             <ng-template let-salesTerm let-last="last" ngFor [ngForOf]="invoice.SalesTerms">
               <mat-list-item>
-                <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
-                <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
-                <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
-                <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
-                <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
-                <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/invoice/' + invoice.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+                <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/invoice/' + invoice.id + '/incoterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/invoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/invoice/' + invoice.id + '/orderterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!invoice.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
@@ -147,7 +147,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/invoice/' + invoice.id +'/term']">+ Add</button>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/term']">+ Add</button>
       </mat-card-actions>
     </mat-card>
   </div>

@@ -245,7 +245,7 @@ namespace Allors.Domain
                     }
 
                     var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                        .WithSalesInvoiceItemType(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem)
+                        .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
                         .WithProduct(orderShipment.SalesOrderItem.Product)
                         .WithQuantity(orderShipment.Quantity)
                         .Build();

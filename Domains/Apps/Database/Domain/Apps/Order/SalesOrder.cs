@@ -772,6 +772,7 @@ namespace Allors.Domain
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                 .WithSalesOrder(this)
+                .WithBillToInternalOrganisation(this.BillToInternalOrganisation)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -803,7 +804,7 @@ namespace Allors.Domain
                 if (invoiceAmount != amountAlreadyInvoiced)
                 { 
                     var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                        .WithSalesInvoiceItemType(orderItem.ItemType)
+                        .WithInvoiceItemType(orderItem.InvoiceItemType)
                         .WithActualUnitPrice(orderItem.ActualUnitPrice)
                         .WithProduct(orderItem.Product)
                         .WithQuantity(orderItem.QuantityOrdered)

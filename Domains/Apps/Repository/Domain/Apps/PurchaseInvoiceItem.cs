@@ -161,7 +161,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
+        public InvoiceItemType InvoiceItemType { get; set; }
 
         #region Allors
         [Id("65eebcc4-d5ef-4933-8640-973b67c65127")]

@@ -23,7 +23,7 @@
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
             <a-mat-static class="col link" *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"
               [routerLink]="['/orders/productQuote/' + order.Quote.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/ar/invoice/' + salesInvoice.id ]"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id ]"></a-mat-static>
           </div>
 
           <div class="grid-2_xs-1">

@@ -74,9 +74,9 @@ namespace Allors.Domain
                 this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).ReadyForPosting;
             }
 
-            if (this.ExistProduct && !this.ExistSalesInvoiceItemType)
+            if (this.ExistProduct && !this.ExistInvoiceItemType)
             {
-                this.SalesInvoiceItemType = new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem;
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
             }
         }
 
@@ -116,7 +116,7 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
 
-            if (this.ExistSalesInvoiceItemType && this.SalesInvoiceItemType.Equals(new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem) && this.Quantity <= 0)
+            if (this.ExistInvoiceItemType && this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem) && this.Quantity <= 0)
             {
                 derivation.Validation.AssertExists(this, this.Meta.Quantity);
             }

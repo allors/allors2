@@ -179,7 +179,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public SalesInvoiceItemType SalesInvoiceItemType { get; set; }
+        public InvoiceItemType InvoiceItemType { get; set; }
 
         #region Allors
         [Id("5CCCCC43-D7E1-47B7-8E6B-826EFFB6E578")]

@@ -99,7 +99,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        public PurchaseInvoiceItemType PurchaseInvoiceItemType { get; set; }
+        public InvoiceItemType InvoiceItemType { get; set; }
 
         #region Allors
         [Id("D88804CF-E48A-4C7F-8916-0FC182BF43CA")]

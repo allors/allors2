@@ -125,7 +125,7 @@ namespace Allors.Domain
         {
             if (!this.ExistSalesInvoiceState)
             {
-                this.SalesInvoiceState= new SalesInvoiceStates(this.Strategy.Session).ReadyForPosting;
+                this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).ReadyForPosting;
             }
 
             if (!this.ExistEntryDate)
@@ -275,11 +275,11 @@ namespace Allors.Domain
             var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
             var model = new PrintSalesInvoice
-                            {
-                                SalesInvoice = this
-                            };
+            {
+                SalesInvoice = this
+            };
 
-          this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
+            this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)
@@ -343,6 +343,43 @@ namespace Allors.Domain
         public void AppsSend(SalesInvoiceSend method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Sent;
+            if (this.ExistBillToInternalOrganisation)
+            {
+                var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
+                    .WithBilledFrom(this.BilledFrom)
+                    .WithBilledTo(this.BillToInternalOrganisation)
+                    .WithBillToCustomer(this.BillToCustomer)
+                    .WithBillToCustomerContactMechanism(this.BillToContactMechanism)
+                    .WithBillToCustomerPaymentMethod(this.PaymentMethod)
+                    .WithContactPerson(this.ContactPerson)
+                    .WithDescription(this.Description)
+                    .WithInvoiceDate(DateTime.UtcNow)
+                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Strategy.Session).PurchaseInvoice)
+                    .WithVatRegime(this.VatRegime)
+                    .WithContactPerson(this.ContactPerson)
+                    .WithDiscountAdjustment(this.DiscountAdjustment)
+                    .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                    .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                    .WithFee(this.Fee)
+                    .WithCustomerReference(this.CustomerReference)
+                    .WithComment(this.Comment)
+                    .WithInternalComment(this.InternalComment)
+                    .Build();
+
+                foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+                {
+                    var invoiceItem = new PurchaseInvoiceItemBuilder(this.Strategy.Session)
+                        .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
+                        .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice)
+                        .WithProduct(salesInvoiceItem.Product)
+                        .WithQuantity(salesInvoiceItem.Quantity)
+                        .WithComment(salesInvoiceItem.Comment)
+                        .WithInternalComment(salesInvoiceItem.InternalComment)
+                        .Build();
+
+                    purchaseInvoice.AddPurchaseInvoiceItem(invoiceItem);
+                }
+            }
         }
 
         public void AppsWriteOff(SalesInvoiceWriteOff method)

@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("26f60d84-0659-4874-9c00-d6f3db11f073")]
     #endregion
-    public partial class SalesInvoiceItemType : Enumeration 
+    public partial class InvoiceItemType : Enumeration 
     {
         #region inherited properties
         public LocalisedText[] LocalisedNames { get; set; }

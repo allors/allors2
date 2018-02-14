@@ -29,12 +29,14 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
+  public scope: Scope;
   public title: string;
   public subTitle: string;
   public order: SalesOrder;
   public quote: ProductQuote;
   public people: Person[];
   public organisations: Organisation[];
+  public internalOrganisations: InternalOrganisation[];
   public currencies: Currency[];
   public billToContactMechanisms: ContactMechanism[];
   public ShipToAddresses: ContactMechanism[];
@@ -54,7 +56,6 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
   private previousShipToCustomer: Party;
   private previousBillToCustomer: Party;
   private fetcher: Fetcher;
@@ -110,7 +111,13 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             name: "stores",
               objectType: m.Store,
             }),
-        ];
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: this.m.Organisation,
+              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            }),
+          ];
 
         return this.scope
           .load("Pull", new PullRequest({ query }))
@@ -120,6 +127,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
             this.stores = loaded.collections.stores as Store[];
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
+            this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");

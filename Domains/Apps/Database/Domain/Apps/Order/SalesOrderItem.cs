@@ -91,9 +91,9 @@ namespace Allors.Domain
                 this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Created;
             }
 
-            if (this.ExistProduct && !this.ExistItemType)
+            if (this.ExistProduct && !this.ExistInvoiceItemType)
             {
-                this.ItemType = new SalesInvoiceItemTypes(this.Strategy.Session).ProductItem;
+                this.InvoiceItemType = new InvoiceItemTypes(this.Strategy.Session).ProductItem;
             }
         }
 

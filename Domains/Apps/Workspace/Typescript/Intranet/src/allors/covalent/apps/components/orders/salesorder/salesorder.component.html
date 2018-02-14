@@ -31,6 +31,8 @@
       </div>
 
       <div class="grid-2_xs-1">
+        <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToInternalOrganisation" [options]="internalOrganisations"
+        display="displayName"></a-mat-select>
         <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="organisations"
           [filter]="organisationsFilter.create()" display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
         <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="people"
@@ -49,8 +51,8 @@
           <mat-tab-group dynamicHeight="true" *ngIf="order.ShipToCustomer && addShipToAddress">
             <mat-tab label="Postal">
               <div class="pad tabInlineComponent">
-                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="postalAddressCancelled($event); addShipToAddress = false"
-                  (saved)="postalAddressAdded($event); addShipToAddress = false">
+                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="shipToAddressCancelled($event); addShipToAddress = false"
+                  (saved)="shipToAddressAdded($event); addShipToAddress = false">
                 </party-contactmechanism-postaladdress>
               </div>
             </mat-tab>

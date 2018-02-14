@@ -478,7 +478,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public SalesInvoiceItemType ItemType { get; set; }
+        public InvoiceItemType InvoiceItemType { get; set; }
 
         #region inherited methods
 

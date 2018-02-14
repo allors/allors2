@@ -23,12 +23,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
+  public scope: Scope;
   public title: string;
   public subTitle: string;
   public invoice: SalesInvoice;
   public order: SalesOrder;
   public people: Person[];
   public organisations: Organisation[];
+  public internalOrganisations: InternalOrganisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
   public vatRates: VatRate[];
@@ -44,7 +46,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
   private previousBillToCustomer: Party;
   private fetcher: Fetcher;
 
@@ -91,6 +92,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           new Query(m.Currency),
           new Query(m.VatRate),
           new Query(m.VatRegime),
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: this.m.Organisation,
+              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            }),
         ];
 
         return this.scope
@@ -100,6 +107,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
+            this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
             const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
             const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");

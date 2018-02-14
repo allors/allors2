@@ -28,7 +28,7 @@ namespace Allors.Domain
         private static readonly Guid ShippingAndHandlingId = new Guid("8235C63F-42DE-4eaa-ACE5-2AF0FB3AB973");
         private static readonly Guid SurchargeId = new Guid("674742D1-A9A4-46e6-93CE-D8AEA9089C8B");
         private static readonly Guid WarrantyId = new Guid("CC0B0A30-5E01-4146-B80D-6BB5F91574BE");
-        private static readonly Guid PartItemId = new Guid("314FA35E-C015-4084-A54F-644EB8738E31");
+        private static readonly Guid ProductItemId = new Guid("FCE5C5CC-DEA8-40A0-A777-34663E737FFE");
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceItemType> cache;
 
@@ -51,6 +51,8 @@ namespace Allors.Domain
         public PurchaseInvoiceItemType Warranty => this.Cache[WarrantyId];
 
         public PurchaseInvoiceItemType PartItem => this.Cache[PartItemId];
+
+        public PurchaseInvoiceItemType ProductItem => this.Cache[ProductItemId];
 
         private UniquelyIdentifiableSticky<PurchaseInvoiceItemType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<PurchaseInvoiceItemType>(this.Session));
 
@@ -118,6 +120,12 @@ namespace Allors.Domain
                 .WithName("Part Item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderdeel item").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PartItemId)
+                .Build();
+
+            new PurchaseInvoiceItemTypeBuilder(this.Session)
+                .WithName("Product Item")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("product item").WithLocale(dutchLocale).Build())
+                .WithUniqueId(ProductItemId)
                 .Build();
         }
     }

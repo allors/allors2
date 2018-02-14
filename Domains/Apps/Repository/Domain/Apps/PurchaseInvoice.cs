@@ -161,6 +161,27 @@ namespace Allors.Repository
         public Party BillToCustomer { get; set; }
 
         #region Allors
+        [Id("B9ED27E2-9429-40AF-8B1E-4C4210023F5F")]
+        [AssociationId("5C01982A-11AC-4983-8B27-229BF86A3A45")]
+        [RoleId("39C7038E-2687-4F9B-9282-9D10E3929603")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public ContactMechanism BillToCustomerContactMechanism { get; set; }
+
+        #region Allors
+        [Id("F3CF7DEC-452C-4A68-9653-E7BB8987F8A1")]
+        [AssociationId("DDBB0961-232F-427D-9957-CAD860377ACE")]
+        [RoleId("31AB05CD-6611-4E0A-B655-F98F47DEEF16")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public PaymentMethod BillToCustomerPaymentMethod { get; set; }
+
+        #region Allors
         [Id("e444b5e7-0128-49fc-86cb-a6fe39c280ae")]
         [AssociationId("d6240de5-9b99-4525-b7d0-ef28a3381821")]
         [RoleId("6c911870-2737-4997-87a6-65ca55c17c55")]

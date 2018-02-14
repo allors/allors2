@@ -192,7 +192,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        public SalesInvoiceItemType SalesInvoiceItemType { get; set; }
+        public InvoiceItemType InvoiceItemType { get; set; }
 
         #region Allors
         [Id("90866201-03a1-44b2-9318-5048639b58c8")]
