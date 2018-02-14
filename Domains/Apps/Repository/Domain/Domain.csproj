@@ -185,6 +185,7 @@
     <Compile Include="..\..\..\Core\Repository\Domain\Core\Common\Object.cs">
       <Link>Core\Common\Object.cs</Link>
     </Compile>
+    <Compile Include="Apps\InvoiceItemType.cs" />
     <Compile Include="Apps\OrderTermType.cs" />
     <Compile Include="Apps\PartyFinancialRelationship.cs" />
     <Compile Include="Apps\SalesTerm.cs" />
@@ -556,7 +557,6 @@
     <Compile Include="Apps\PurchaseInvoice.cs" />
     <Compile Include="Apps\PurchaseInvoiceItem.cs" />
     <Compile Include="Apps\PurchaseInvoiceItemState.cs" />
-    <Compile Include="Apps\PurchaseInvoiceItemType.cs" />
     <Compile Include="Apps\PurchaseInvoiceState.cs" />
     <Compile Include="Apps\PurchaseInvoiceType.cs" />
     <Compile Include="Apps\PurchaseOrder.cs" />
@@ -602,7 +602,6 @@
     <Compile Include="Apps\SalesInvoice.cs" />
     <Compile Include="Apps\SalesInvoiceItem.cs" />
     <Compile Include="Apps\SalesInvoiceItemState.cs" />
-    <Compile Include="Apps\SalesInvoiceItemType.cs" />
     <Compile Include="Apps\SalesInvoiceState.cs" />
     <Compile Include="Apps\SalesInvoiceType.cs" />
     <Compile Include="Apps\SalesOrder.cs" />
