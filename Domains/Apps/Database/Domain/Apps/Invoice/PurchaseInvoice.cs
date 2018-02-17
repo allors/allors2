@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Linq;
+using Allors.Domain.NonLogging;
 
 namespace Allors.Domain
 {
@@ -103,6 +104,59 @@ namespace Allors.Domain
 
             this.AppsOnDeriveInvoiceItems(derivation);
             this.AppsOnDeriveInvoiceTotals();
+        }
+
+        public void AppsInvoice(PurchaseInvoiceCreateSalesInvoice method)
+        {
+            var derivation = new Derivation(this.Strategy.Session);
+
+            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithPurchaseInvoice(this)
+                .WithBilledFrom(this.BilledTo)
+                .WithDescription(this.Description)
+                .WithInvoiceDate(DateTime.UtcNow)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                .WithVatRegime(this.VatRegime)
+                .WithContactPerson(this.ContactPerson)
+                .WithBillToContactMechanism(this.BillToCustomerContactMechanism)
+                .WithBillToCustomer(this.BillToCustomer)
+                .WithDiscountAdjustment(this.DiscountAdjustment)
+                .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                .WithFee(this.Fee)
+                .WithCustomerReference(this.CustomerReference)
+                .WithPaymentMethod(this.BillToCustomerPaymentMethod)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
+                .Build();
+
+            foreach (SalesOrderItem orderItem in this.PurchaseInvoiceItems)
+            {
+                var amountAlreadyInvoiced = orderItem.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
+
+                var invoiceAmount = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+
+                if (invoiceAmount != amountAlreadyInvoiced)
+                {
+                    var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                        .WithInvoiceItemType(orderItem.InvoiceItemType)
+                        .WithActualUnitPrice(orderItem.ActualUnitPrice)
+                        .WithProduct(orderItem.Product)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithComment(orderItem.Comment)
+                        .WithInternalComment(orderItem.InternalComment)
+                        .Build();
+
+                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                    new OrderItemBillingBuilder(this.strategy.Session)
+                        .WithQuantity(orderItem.QuantityOrdered)
+                        .WithAmount(invoiceAmount)
+                        .WithOrderItem(orderItem)
+                        .WithSalesInvoiceItem(invoiceItem)
+                        .Build();
+                }
+            }
         }
 
         public void AppsOnDeriveInvoiceTotals()

@@ -215,6 +215,16 @@ namespace Allors.Repository
         public SalesOrder SalesOrder { get; set; }
 
         #region Allors
+        [Id("C6F95A7F-C812-42A3-B215-7A110D9D6862")]
+        [AssociationId("516841A8-3BC4-43F0-90AE-D72C71671F8A")]
+        [RoleId("3FA3D203-E308-4B79-922B-39E9C4D560C5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public PurchaseInvoice PurchaseInvoice { get; set; }
+
+        #region Allors
         [Id("5c3903fa-105b-4c57-8281-1486b0411a3a")]
         [AssociationId("2d1495cc-54f2-4ff7-bbfc-6e3aafb2e319")]
         [RoleId("dc40bbae-ac9b-468b-add4-35dfb53a469b")]

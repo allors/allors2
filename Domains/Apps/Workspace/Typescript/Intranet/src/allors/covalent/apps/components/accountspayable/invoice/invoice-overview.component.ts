@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
@@ -8,7 +8,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder } from "../../../../../domain";
+import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -34,6 +34,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     public dialogService: TdDialogService,
     private snackBar: MatSnackBar,
     public media: TdMediaService,
+    private router: Router,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -145,4 +146,35 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  public createInvoice(): void {
+    this.scope.invoke(this.invoice.CreateSalesInvoice)
+      .subscribe((invoked: Invoked) => {
+        this.goBack();
+        this.snackBar.open("Invoice successfully created.", "close", { duration: 5000 });
+        this.gotoInvoice();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public gotoInvoice(): void {
+
+      const fetch: Fetch[] = [new Fetch({
+        id: this.invoice.id,
+        name: "invoice",
+        path: new Path({ step: this.m.PurchaseInvoice.SalesInvoiceWherePurchaseInvoice }),
+      })];
+
+      this.scope.load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded) => {
+          const invoice = loaded.objects.invoice as SalesInvoice;
+          this.router.navigate(["/accountsreceivable/invoice/" + invoice.id]);
+        },
+        (error: any) => {
+          this.errorService.message(error);
+          this.goBack();
+        });
+    }
 }

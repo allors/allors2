@@ -233,5 +233,12 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void CancelInvoice() { }
+
+        #region Allors
+        [Id("422DD593-DECC-40FD-9216-D5A25458B59F")]
+        #endregion
+        [Workspace]
+        public void CreateSalesInvoice() { }
+
     }
 }
