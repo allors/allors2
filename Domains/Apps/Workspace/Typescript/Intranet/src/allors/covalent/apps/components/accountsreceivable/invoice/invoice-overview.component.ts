@@ -73,7 +73,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.SalesInvoiceItem.Product }),
-                  new TreeNode({ roleType: m.SalesInvoiceItem.SalesInvoiceItemType }),
+                  new TreeNode({ roleType: m.SalesInvoiceItem.InvoiceItemType }),
                 ],
                 roleType: m.SalesInvoice.SalesInvoiceItems,
               }),

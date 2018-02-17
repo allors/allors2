@@ -14,17 +14,15 @@
 <div body *ngIf="invoice" layout-gt-md="row">
   <div flex-gt-xs="50">
     <mat-card tdMediaToggle="gt-xs" [mediaClasses]="['push']">
-      <mat-card-title>Sales Invoice</mat-card-title>
+      <mat-card-title>Purchase Invoice</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
         <div class="pad">
           <div class="grid-4_lg-2_sm-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="invoice.PurchaseOrder" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseOrder" display="OrderNumber"
-              [routerLink]="['/orders/salesOrder/' + invoice.PurchaseOrder.id ]"></a-mat-static>
-            <a-mat-static class="col link" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" display="displayName" label="Customer"
-              [routerLink]="['/relations/organisation/' + invoice.BillToCustomer.id ]"></a-mat-static>
+              <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
+              <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
+              <a-mat-static class="col link" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" display="PartyName" label="From"
+                [routerLink]="['/relations/organisation/' + invoice.BilledFrom.id ]"></a-mat-static>
           </div>
 
           <div class="grid-2_xs-1">
@@ -32,6 +30,9 @@
               display="displayName" [routerLink]="['/relations/person/' + invoice.ContactPerson.id ]"></a-mat-static>
           </div>
 
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
+          </div>
           <div class="grid-1">
             <a-mat-static class="col" *ngIf="invoice.Description" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-static>
           </div>
@@ -59,8 +60,8 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id]">Edit</button>
-        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
+        <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id]">Edit</button>
+        <!-- <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button> -->
       </mat-card-actions>
     </mat-card>
 
@@ -76,11 +77,11 @@
 
             <ng-template let-invoiceItem let-last="last" ngFor [ngForOf]="invoice.PurchaseInvoiceItems">
               <mat-list-item>
-                <h3 *ngIf="invoiceItem.Product && invoice.CanWritePurchaseInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
+                <h3 *ngIf="invoiceItem.Product && invoice.CanWritePurchaseInvoiceItems" mat-line [routerLink]="['/purchaseinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
                 <h3 *ngIf="invoiceItem.Product && !invoice.CanWritePurchaseInvoiceItems" mat-line>{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
 
-                <h3 *ngIf="!invoiceItem.Product && invoice.CanWritePurchaseInvoiceItems" mat-line [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.PurchaseInvoiceItemType.Name}}</h3>
-                <h3 *ngIf="!invoiceItem.Product && !invoice.CanWritePurchaseInvoiceItems" mat-line>{{invoiceItem.PurchaseInvoiceItemType.Name}}</h3>
+                <h3 *ngIf="!invoiceItem.Product && invoice.CanWritePurchaseInvoiceItems" mat-line [routerLink]="['/purchaseinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.InvoiceItemType.Name}}</h3>
+                <h3 *ngIf="!invoiceItem.Product && !invoice.CanWritePurchaseInvoiceItems" mat-line>{{invoiceItem.InvoiceItemType.Name}}</h3>
 
                 <h4 mat-line>Total ex VAT: {{invoiceItem.TotalExVat}}</h4>
 
@@ -89,7 +90,7 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="invoice.CanWritePurchaseInvoiceItems" [routerLink]="['/invoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="invoice.CanWritePurchaseInvoiceItems" [routerLink]="['/purchaseinvoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="deleteInvoiceItem(invoiceItem)" [disabled]="!invoiceItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
@@ -101,7 +102,7 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/invoice/' + invoice.id +'/item']">+ Add</button>
+        <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id +'/item']">+ Add</button>
       </mat-card-actions>
     </mat-card>
   </div>

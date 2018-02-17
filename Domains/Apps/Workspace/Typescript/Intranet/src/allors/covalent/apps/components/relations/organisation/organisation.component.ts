@@ -43,7 +43,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
-    this.scope = this.workspaceService.createScope()
+    this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }

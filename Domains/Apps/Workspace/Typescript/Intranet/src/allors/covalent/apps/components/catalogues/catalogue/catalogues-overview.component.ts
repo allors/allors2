@@ -85,6 +85,8 @@ export class CataloguesOverviewComponent implements OnDestroy {
         const predicate: And = new And();
         const predicates: Predicate[] = predicate.predicates;
 
+        predicates.push(new Equals({ roleType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }));
+
         if (data.name) {
           const like: string = data.name.replace("*", "%") + "%";
           predicates.push(new Like({ roleType: m.Catalogue.Name, value: like }));
@@ -95,7 +97,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
             name: "catalogues",
             objectType: m.Catalogue,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }),
+            predicate,
             include: [
               new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
               new TreeNode({ roleType: m.Catalogue.ProductCategories }),

@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, QuoteItem, SalesInvoiceItemType, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -34,8 +34,8 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public inventoryItems: InventoryItem[];
   public serialisedInventoryItem: SerialisedInventoryItem;
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public salesInvoiceItemTypes: SalesInvoiceItemType[];
-  public productItemType: SalesInvoiceItemType;
+  public invoiceItemTypes: InvoiceItemType[];
+  public productItemType: InvoiceItemType;
 
   public goodsFilter: Filter;
 
@@ -107,8 +107,8 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             }),
           new Query(
             {
-              name: "salesInvoiceItemTypes",
-              objectType: m.SalesInvoiceItemType,
+              name: "invoiceItemTypes",
+              objectType: m.InvoiceItemType,
             }),
           ];
 
@@ -123,15 +123,15 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.goods = loaded.collections.goods as Good[];
         this.vatRates = loaded.collections.vatRates as VatRate[];
         this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
-        this.salesInvoiceItemTypes = loaded.collections.salesInvoiceItemTypes as SalesInvoiceItemType[];
-        this.productItemType = this.salesInvoiceItemTypes.find((v: SalesInvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
+        this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
+        this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
 
         if (!this.orderItem) {
           this.title = "Add Order Item";
           this.orderItem = this.scope.session.create("SalesOrderItem") as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
-          if (this.orderItem.ItemType === this.productItemType) {
+          if (this.orderItem.InvoiceItemType === this.productItemType) {
             this.update(this.orderItem.Product);
           }
           if (this.orderItem.DiscountAdjustment) {
@@ -195,7 +195,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   private update(product: Product): void {
 
-    this.orderItem.ItemType = this.productItemType;
+    this.orderItem.InvoiceItemType = this.productItemType;
 
     const fetch: Fetch[] = [
       new Fetch({

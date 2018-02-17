@@ -18,7 +18,7 @@ import { MetaDomain } from "../../../../../meta";
 export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
-  public title: string = "Sales Invoice Overview";
+  public title: string = "Purchase Invoice Overview";
   public order: PurchaseOrder;
   public invoice: PurchaseInvoice;
   public goods: Good[] = [];
@@ -73,17 +73,12 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.PurchaseInvoiceItem.Product }),
-                  new TreeNode({ roleType: m.PurchaseInvoiceItem.PurchaseInvoiceItemType }),
+                  new TreeNode({ roleType: m.PurchaseInvoiceItem.InvoiceItemType }),
                 ],
                 roleType: m.PurchaseInvoice.PurchaseInvoiceItems,
               }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesTerm.TermType }),
-                ],
-                roleType: m.PurchaseInvoice.SalesTerms,
-              }),
               new TreeNode({ roleType: m.PurchaseInvoice.ContactPerson }),
+              new TreeNode({ roleType: m.PurchaseInvoice.BilledFrom }),
               new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomer }),
               new TreeNode({ roleType: m.PurchaseInvoice.PurchaseInvoiceState }),
               new TreeNode({ roleType: m.PurchaseInvoice.CreatedBy }),

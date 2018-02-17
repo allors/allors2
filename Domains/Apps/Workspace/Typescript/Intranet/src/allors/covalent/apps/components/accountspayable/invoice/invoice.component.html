@@ -52,6 +52,9 @@
         <a-mat-input class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-input>
       </div>
       <div class="grid-1">
+        <a-mat-input class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
+      </div>
+      <div class="grid-1">
         <a-mat-static class="col" *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment"></a-mat-static>
       </div>
       <div class="grid-1">

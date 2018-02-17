@@ -84,6 +84,8 @@ export class CategoriesOverviewComponent implements OnDestroy {
         const predicate: And = new And();
         const predicates: Predicate[] = predicate.predicates;
 
+        predicates.push(new Equals({ roleType: m.ProductCategory.InternalOrganisation, value: internalOrganisationId }));
+
         if (data.name) {
           const like: string = data.name.replace("*", "%") + "%";
           predicates.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
@@ -99,7 +101,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
             name: "categories",
             objectType: m.ProductCategory,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.ProductCategory.InternalOrganisation, value: internalOrganisationId }),
+            predicate,
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));

@@ -86,6 +86,8 @@ export class RequestsOverviewComponent implements OnDestroy {
         const predicate: And = new And();
         const predicates: Predicate[] = predicate.predicates;
 
+        predicates.push(new Equals({ roleType: m.Request.Recipient, value: internalOrganisationId }));
+
         if (data.requestNumber) {
           const like: string = "%" + data.requestNumber + "%";
           predicates.push(new Like({ roleType: m.Request.RequestNumber, value: like }));
@@ -116,7 +118,7 @@ export class RequestsOverviewComponent implements OnDestroy {
             name: "requests",
             objectType: m.Request,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.Request.Recipient, value: internalOrganisationId }),
+            predicate,
             sort: [new Sort({ roleType: m.Request.RequestNumber, direction: "Desc" })],
           })];
 

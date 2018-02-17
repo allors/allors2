@@ -85,6 +85,8 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
         const predicate: And = new And();
         const predicates: Predicate[] = predicate.predicates;
 
+        predicates.push(new Equals({ roleType: m.ProductQuote.Issuer, value: internalOrganisationId }));
+
         if (data.quoteNumber) {
           const like: string = "%" + data.quoteNumber + "%";
           predicates.push(new Like({ roleType: m.ProductQuote.QuoteNumber, value: like }));
@@ -115,7 +117,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
             name: "quotes",
             objectType: m.ProductQuote,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.ProductQuote.Issuer, value: internalOrganisationId }),
+            predicate,
             sort: [new Sort({ roleType: m.ProductQuote.QuoteNumber, direction: "Desc" })],
           })];
 

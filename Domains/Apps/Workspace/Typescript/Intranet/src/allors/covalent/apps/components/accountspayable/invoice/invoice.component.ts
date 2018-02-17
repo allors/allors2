@@ -160,7 +160,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.previousBillToCustomer = this.invoice.BillToCustomer;
         this.organisations = loaded.collections.organisations as Organisation[];
         this.people = loaded.collections.parties as Person[];
-        this.title = "Sales Invoice for: " + this.invoice.BillToCustomer.PartyName;
+        this.title = "Purchase Invoice from " + this.invoice.BilledFrom.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);

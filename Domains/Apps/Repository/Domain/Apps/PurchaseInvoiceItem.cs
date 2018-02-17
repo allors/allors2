@@ -170,7 +170,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         public Part Part { get; set; }
 
         #region inherited methods

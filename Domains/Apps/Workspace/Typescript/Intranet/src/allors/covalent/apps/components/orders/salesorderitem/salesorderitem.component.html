@@ -12,18 +12,18 @@
         </div>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="orderItem.ItemType && orderItem.ItemType !== productItemType">
-        <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ItemType" [options]="salesInvoiceItemTypes" display="Name"></a-mat-select>
+      <div class="grid-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
+        <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
         <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Amount"></a-mat-input>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="!orderItem.ItemType || orderItem.ItemType === productItemType">
+      <div class="grid-2_xs-1" *ngIf="!orderItem.ItemType || orderItem.InvoiceItemType === productItemType">
         <a-mat-autocomplete class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"
           (onChange)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
-        <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ItemType" [options]="salesInvoiceItemTypes" display="Name"></a-mat-select>
+        <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="orderItem.ItemType && orderItem.ItemType === productItemType">
+      <div class="grid-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
         <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
         <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
       </div>
@@ -38,7 +38,7 @@
 
       <div class="grid-2_xs-1">
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
-        <a-mat-static class="col_xs-12" *ngIf="orderItem.ItemType === productItemType" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+        <a-mat-static class="col_xs-12" *ngIf="orderItem.InvoiceItemType === productItemType" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       </div>
 
       <!-- <mat-input-container>

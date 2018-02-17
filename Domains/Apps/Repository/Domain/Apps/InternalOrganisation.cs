@@ -413,7 +413,7 @@ namespace Allors.Repository
         [RoleId("8DC69D34-FB39-4979-8EEA-CBF09C0996F0")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         Party[] CurrentCustomers { get; set; }
 
@@ -423,7 +423,7 @@ namespace Allors.Repository
         [RoleId("86D03D25-89C9-48D6-90B9-962B566741C3")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         Organisation[] CurrentSuppliers { get; set; }
 
@@ -433,7 +433,7 @@ namespace Allors.Repository
         [RoleId("18E2BEB9-343B-4C82-9D39-DB013749DB1F")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         Person[] SalesReps { get; set; }
 
@@ -451,7 +451,7 @@ namespace Allors.Repository
         [AssociationId("fcc6e653-3787-44a0-8a3a-35e80e232a02")]
         [RoleId("31549cf9-6418-4d19-96b0-5813cc964491")]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Derived]
         [Indexed]
         [Workspace]
@@ -462,7 +462,7 @@ namespace Allors.Repository
         [AssociationId("5dd54980-fa14-434c-80fc-64dec203fd8b")]
         [RoleId("ca87441c-6ce7-4041-bdd4-ca83f3b19289")]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         [Derived]
         [Indexed]
@@ -473,7 +473,7 @@ namespace Allors.Repository
         [AssociationId("0d828c12-82bd-4b37-96c8-68997a7c2f48")]
         [RoleId("3d362cd1-d49c-422f-9722-7276a6ee07c4")]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
+        [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
         [Derived]
         [Indexed]

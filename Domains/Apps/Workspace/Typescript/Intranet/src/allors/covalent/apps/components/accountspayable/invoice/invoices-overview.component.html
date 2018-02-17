@@ -14,16 +14,25 @@
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input matInput placeholder="Organisation" formControlName="company">
+      <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+        <input matInput placeholder="Supplier" formControlName="supplier">
       </mat-input-container>
-      <mat-input-container>
+      <mat-input-container class="col">
+        <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation"
+          placeholder="From Internal Organisation">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
+        </mat-select>
+      </mat-input-container>
+      <mat-input-container class="col">
         <input matInput placeholder="Number" formControlName="invoiceNumber">
       </mat-input-container>
-      <mat-input-container>
+      <mat-input-container class="col">
         <input matInput placeholder="Customer Reference" formControlName="reference">
         <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
+      </div>
     </form>
   </div>
 
@@ -38,7 +47,8 @@
         <mat-list-item>
 
           <h3 [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line> {{invoice.BillToCustomer.displayName}}</h3>
-          <h4 mat-line> {{invoice.InvoiceNumber }}: {{invoice.CustomerReference}} ({{invoice.SalesInvoiceState.Name}})</h4>
+          <h4 mat-line>number: {{invoice.InvoiceNumber }} reference: {{invoice.CustomerReference}} ({{invoice.PurchaseInvoiceState.Name}})</h4>
+          <h4 mat-line>{{invoice.Description}}</h4>
           <p mat-line hide-gt-md class="mat-caption"> last modified: {{ invoice.LastModifiedDate | timeAgo }} </p>
 
           <span flex></span>

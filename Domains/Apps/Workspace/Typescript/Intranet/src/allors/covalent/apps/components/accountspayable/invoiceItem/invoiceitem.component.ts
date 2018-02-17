@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -20,11 +20,11 @@ export class InvoiceItemEditComponent
   implements OnInit, OnDestroy {
   public m: MetaDomain;
 
-  public title: string = "Edit Sales Invoice Item";
+  public title: string = "Edit Purchase Invoice Item";
   public subTitle: string;
   public invoice: PurchaseInvoice;
   public invoiceItem: PurchaseInvoiceItem;
-  public orderItem: SalesOrderItem;
+  public orderItem: PurchaseOrderItem;
   public inventoryItems: InventoryItem[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
@@ -114,20 +114,18 @@ export class InvoiceItemEditComponent
         (loaded) => {
           this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
           this.invoiceItem = loaded.objects.invoiceItem as PurchaseInvoiceItem;
-          this.orderItem = loaded.objects.orderItem as SalesOrderItem;
+          this.orderItem = loaded.objects.orderItem as PurchaseOrderItem;
           this.goods = loaded.collections.goods as Good[];
           this.vatRates = loaded.collections.vatRates as VatRate[];
           this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
-          this.invoiceItemTypes = loaded.collections.PurchaseInvoiceItemTypes as InvoiceItemType[];
+          this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
           this.productItemType = this.invoiceItemTypes.find(
             (v: InvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD",
           );
 
           if (!this.invoiceItem) {
             this.title = "Add invoice Item";
-            this.invoiceItem = this.scope.session.create(
-              "PurchaseInvoiceItem",
-            ) as PurchaseInvoiceItem;
+            this.invoiceItem = this.scope.session.create("PurchaseInvoiceItem") as PurchaseInvoiceItem;
             this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
           } else {
             if (
@@ -184,7 +182,7 @@ export class InvoiceItemEditComponent
   public save(): void {
     this.scope.save().subscribe(
       (saved: Saved) => {
-        this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
+        this.router.navigate(["/accountspayable/invoice/" + this.invoice.id]);
       },
       (error: Error) => {
         this.errorService.dialog(error);

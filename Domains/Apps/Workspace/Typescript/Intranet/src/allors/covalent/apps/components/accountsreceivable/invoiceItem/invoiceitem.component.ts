@@ -118,7 +118,7 @@ export class InvoiceItemEditComponent
           this.goods = loaded.collections.goods as Good[];
           this.vatRates = loaded.collections.vatRates as VatRate[];
           this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
-          this.invoiceItemTypes = loaded.collections.salesInvoiceItemTypes as InvoiceItemType[];
+          this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
           this.productItemType = this.invoiceItemTypes.find(
             (v: InvoiceItemType) =>
               v.UniqueId.toUpperCase() ===
@@ -127,9 +127,7 @@ export class InvoiceItemEditComponent
 
           if (!this.invoiceItem) {
             this.title = "Add invoice Item";
-            this.invoiceItem = this.scope.session.create(
-              "SalesInvoiceItem",
-            ) as SalesInvoiceItem;
+            this.invoiceItem = this.scope.session.create("SalesInvoiceItem") as SalesInvoiceItem;
             this.invoice.AddSalesInvoiceItem(this.invoiceItem);
           } else {
             if (

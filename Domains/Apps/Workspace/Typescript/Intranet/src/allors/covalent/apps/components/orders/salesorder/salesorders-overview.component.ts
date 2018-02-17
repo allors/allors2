@@ -85,6 +85,8 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
         const predicate: And = new And();
         const predicates: Predicate[] = predicate.predicates;
 
+        predicates.push(new Equals({ roleType: m.SalesOrder.TakenBy, value: internalOrganisationId }));
+
         if (data.orderNumber) {
           const like: string = "%" + data.orderNumber + "%";
           predicates.push(new Like({ roleType: m.SalesOrder.OrderNumber, value: like }));
@@ -115,7 +117,7 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
             name: "orders",
             objectType: m.SalesOrder,
             page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.SalesOrder.TakenBy, value: internalOrganisationId }),
+            predicate,
             sort: [new Sort({ roleType: m.SalesOrder.OrderNumber, direction: "Desc" })],
           })];
 

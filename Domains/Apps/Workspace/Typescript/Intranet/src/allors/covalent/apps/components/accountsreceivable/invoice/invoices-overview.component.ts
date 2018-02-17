@@ -35,6 +35,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   public filtered: SalesInvoice[];
   public total: number;
 
+  public internalOrganisations: InternalOrganisation[];
+  public selectedInternalOrganisation: InternalOrganisation;
+  public billToInternalOrganisation: InternalOrganisation;
+
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
@@ -58,6 +62,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
+      internalOrganisation: [""],
       company: [""],
       invoiceNumber: [""],
       reference: [""],
@@ -80,49 +85,71 @@ export class InvoicesOverviewComponent implements OnDestroy {
         ];
       }, [] as [SearchData, number, Date, InternalOrganisation]);
 
+    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+        const internalOrganisationsQuery: Query[] = [ new Query(m.InternalOrganisation) ];
 
-        if (data.invoiceNumber) {
-          const like: string = "%" + data.invoiceNumber + "%";
-          predicates.push(new Like({ roleType: m.SalesInvoice.InvoiceNumber, value: like }));
-        }
+        return this.scope
+        .load("Pull", new PullRequest({ query: internalOrganisationsQuery }))
+        .switchMap((internalOrganisationsLoaded: Loaded) => {
+          this.internalOrganisations = internalOrganisationsLoaded.collections.InternalOrganisationQuery as InternalOrganisation[];
+          this.billToInternalOrganisation = this.internalOrganisations.find(
+            (v) => v.PartyName === data.internalOrganisation,
+          );
 
-        if (data.company) {
-          const partyQuery: Query = new Query({
-            objectType: m.Party, predicate: new Like({
-              roleType: m.Party.PartyName, value: data.company.replace("*", "%") + "%",
-            }),
-          });
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.predicates;
 
-          const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesInvoice.BillToCustomer, query: partyQuery });
-          predicates.push(containedIn);
-        }
+          predicates.push(new Equals({ roleType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }));
 
-        if (data.reference) {
-          const like: string = data.reference.replace("*", "%") + "%";
-          predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
-        }
+          if (data.invoiceNumber) {
+            const like: string = "%" + data.invoiceNumber + "%";
+            predicates.push(new Like({ roleType: m.SalesInvoice.InvoiceNumber, value: like }));
+          }
 
-        const query: Query[] = [new Query(
-          {
-            include: [
-              new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
-            ],
-            name: "invoices",
-            objectType: m.SalesInvoice,
-            page: new Page({ skip: 0, take }),
-            predicate: new Equals({ roleType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }),
-            sort: [new Sort({ roleType: m.SalesInvoice.InvoiceNumber, direction: "Desc" })],
-          })];
+          if (data.company) {
+            const partyQuery: Query = new Query({
+              objectType: m.Party, predicate: new Like({
+                roleType: m.Party.PartyName, value: data.company.replace("*", "%") + "%",
+              }),
+            });
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+            const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesInvoice.BillToCustomer, query: partyQuery });
+            predicates.push(containedIn);
+          }
 
+          if (data.internalOrganisation) {
+            predicates.push(
+              new Equals({
+                roleType: m.SalesInvoice.BillToInternalOrganisation,
+                value: this.billToInternalOrganisation,
+              }),
+            );
+          }
+
+          if (data.reference) {
+            const like: string = data.reference.replace("*", "%") + "%";
+            predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
+          }
+
+          const query: Query[] = [new Query(
+            {
+              include: [
+                new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
+                new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
+              ],
+              name: "invoices",
+              objectType: m.SalesInvoice,
+              page: new Page({ skip: 0, take }),
+              predicate,
+              sort: [new Sort({ roleType: m.SalesInvoice.InvoiceNumber, direction: "Desc" })],
+            })];
+
+          return this.scope.load("Pull", new PullRequest({ query }));
+        });
       })
       .subscribe((loaded) => {
         this.data = loaded.collections.invoices as SalesInvoice[];

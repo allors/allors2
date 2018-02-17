@@ -77,7 +77,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.SalesOrderItem.Product }),
-                  new TreeNode({ roleType: m.SalesOrderItem.ItemType }),
+                  new TreeNode({ roleType: m.SalesOrderItem.InvoiceItemType }),
                   new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
                 ],
                 roleType: m.SalesOrder.SalesOrderItems,

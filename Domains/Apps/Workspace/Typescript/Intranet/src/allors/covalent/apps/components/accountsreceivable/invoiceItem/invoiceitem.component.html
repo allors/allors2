@@ -8,21 +8,21 @@
         </div>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="invoiceItem.SalesInvoiceItemType && invoiceItem.SalesInvoiceItemType !== productItemType">
-        <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemType" [options]="salesInvoiceItemTypes"
+      <div class="grid-2_xs-1" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType">
+        <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes"
           display="Name"></a-mat-select>
         <a-mat-input class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="!invoiceItem.SalesInvoiceItemType || invoiceItem.SalesInvoiceItemType === productItemType">
-        <a-mat-autocomplete class="col" *ngIf="!invoiceItem.SalesInvoiceItemType || invoiceItem.SalesInvoiceItemType === productItemType"
+      <div class="grid-2_xs-1" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
+        <a-mat-autocomplete class="col" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType"
           [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)"
           [filter]="goodsFilter.create()"></a-mat-autocomplete>
-        <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemType" [options]="salesInvoiceItemTypes"
+        <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes"
           display="Name"></a-mat-select>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="invoiceItem.SalesInvoiceItemType && invoiceItem.SalesInvoiceItemType === productItemType">
+      <div class="grid-2_xs-1" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType">
         <a-mat-input class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
         <a-mat-input class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice"></a-mat-input>
       </div>
