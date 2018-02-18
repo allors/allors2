@@ -138,9 +138,10 @@ namespace Allors.Domain
                 this.ShipmentMethod = this.ShipToCustomer.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
             }
 
-            if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
+            if (!this.ExistBillToEndCustomerContactMechanism && this.ExistBillToCustomer &&
+                !(this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation))
             {
-                this.BillToContactMechanism = this.BillToCustomer.ExistBillingAddress ?
+                this.BillToEndCustomerContactMechanism = this.BillToCustomer.ExistBillingAddress ?
                                                   this.BillToCustomer.BillingAddress : this.BillToCustomer.ExistShippingAddress ? this.BillToCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
             }
 
@@ -216,7 +217,7 @@ namespace Allors.Domain
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
                 derivation.Validation.AssertExists(this, this.Meta.ShipToAddress);
-                derivation.Validation.AssertExists(this, this.Meta.BillToContactMechanism);
+                derivation.Validation.AssertExists(this, this.Meta.BillToEndCustomerContactMechanism);
             }
 
             this.AppsOnDeriveOrderItems(derivation);
@@ -655,7 +656,7 @@ namespace Allors.Domain
                 pendingShipment = new CustomerShipmentBuilder(this.Strategy.Session)
                     .WithShipFromAddress(this.TakenBy.ShippingAddress)
                     .WithBillToParty(this.BillToCustomer)
-                    .WithBillToContactMechanism(this.BillToContactMechanism)
+                    .WithBillToContactMechanism(this.BillToEndCustomerContactMechanism)
                     .WithShipToAddress(address.Key)
                     .WithShipToParty(address.Value)
                     .WithShipmentPackage(new ShipmentPackageBuilder(this.Strategy.Session).Build())
@@ -772,7 +773,13 @@ namespace Allors.Domain
         {
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                 .WithSalesOrder(this)
-                .WithBillToInternalOrganisation(this.BillToInternalOrganisation)
+                .WithBilledFrom(this.TakenBy)
+                .WithBilledFromContactMechanism(this.BillFromContactMechanism)
+                .WithBillToCustomer(this.BillToCustomer)
+                .WithBillToEndCustomer(this.BillToEndCustomer)
+                .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithShipToCustomer(this.ShipToCustomer)
+                .WithShipToAddress(this.ShipToAddress)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
                 .WithInvoiceDate(DateTime.UtcNow)
@@ -780,11 +787,6 @@ namespace Allors.Domain
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
                 .WithContactPerson(this.ContactPerson)
-                .WithBilledFromContactMechanism(this.BillFromContactMechanism)
-                .WithBillToContactMechanism(this.BillToContactMechanism)
-                .WithBillToCustomer(this.BillToCustomer)
-                .WithShipToCustomer(this.ShipToCustomer)
-                .WithShipToAddress(this.ShipToAddress)
                 .WithDiscountAdjustment(this.DiscountAdjustment)
                 .WithSurchargeAdjustment(this.SurchargeAdjustment)
                 .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)

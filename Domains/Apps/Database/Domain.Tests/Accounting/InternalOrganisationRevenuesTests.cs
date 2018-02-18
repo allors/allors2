@@ -88,7 +88,7 @@ namespace Allors.Domain
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(customer1)
-                .WithBillToContactMechanism(contactMechanism)
+                .WithBillToEndCustomerContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
 
@@ -112,7 +112,7 @@ namespace Allors.Domain
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(customer2)
-                .WithBillToContactMechanism(contactMechanism)
+                .WithBillToEndCustomerContactMechanism(contactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .Build();
 

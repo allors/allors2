@@ -210,7 +210,7 @@ namespace Allors.Domain
 
             this.invoice = new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithBillToEndCustomerContactMechanism(this.billToContactMechanismMechelen)
                 .WithBillToCustomer(this.billToCustomer)
                 .WithShipToAddress(this.shipToContactMechanismKiev)
                 .WithShipToCustomer(this.shipToCustomer)
@@ -269,7 +269,7 @@ namespace Allors.Domain
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithBillToEndCustomerContactMechanism(this.billToContactMechanismMechelen)
                 .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
@@ -290,7 +290,7 @@ namespace Allors.Domain
 
             var salesInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithBillToEndCustomerContactMechanism(this.billToContactMechanismMechelen)
                 .WithVatRegime(new VatRegimes(this.Session).Export)
                 .Build();
 
@@ -479,7 +479,7 @@ namespace Allors.Domain
 
             var invoice2 = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithBillToEndCustomerContactMechanism(this.billToContactMechanismMechelen)
                 .Build();
 
             item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).WithQuantity(3).Build();
@@ -2207,7 +2207,7 @@ namespace Allors.Domain
 
             var newInvoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToContactMechanism(this.billToContactMechanismMechelen)
+                .WithBillToEndCustomerContactMechanism(this.billToContactMechanismMechelen)
                 .Build();
 
             const decimal quantity = 3;

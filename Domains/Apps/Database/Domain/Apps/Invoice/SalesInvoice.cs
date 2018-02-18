@@ -215,9 +215,9 @@ namespace Allors.Domain
                 this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
             }
 
-            if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
+            if (!this.ExistBillToEndCustomerContactMechanism && this.ExistBillToCustomer)
             {
-                this.BillToContactMechanism = this.BillToCustomer.BillingAddress;
+                this.BillToEndCustomerContactMechanism = this.BillToCustomer.BillingAddress;
             }
 
             if (!this.ExistBilledFromContactMechanism)
@@ -343,13 +343,13 @@ namespace Allors.Domain
         public void AppsSend(SalesInvoiceSend method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Sent;
-            if (this.ExistBillToInternalOrganisation)
+            if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.BilledFrom)
-                    .WithBilledTo(this.BillToInternalOrganisation)
-                    .WithBillToCustomer(this.BillToCustomer)
-                    .WithBillToCustomerContactMechanism(this.BillToContactMechanism)
+                    .WithBilledTo((InternalOrganisation) this.BillToCustomer)
+                    .WithBillToCustomer(this.BillToEndCustomer)
+                    .WithBillToCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
                     .WithBillToCustomerPaymentMethod(this.PaymentMethod)
                     .WithContactPerson(this.ContactPerson)
                     .WithDescription(this.Description)

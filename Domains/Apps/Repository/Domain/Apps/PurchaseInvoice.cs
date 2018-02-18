@@ -120,16 +120,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("4cf09eb7-820f-4677-bfc0-92a48d0a938b")]
-        [AssociationId("5a71ca58-db28-4edc-9065-32396380bd80")]
-        [RoleId("fa280c8d-ac7b-4d99-80dd-fba155d4aef9")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
-
-        #region Allors
         [Id("d4bbc5ed-08a4-4d89-ad53-7705ae71d029")]
         [AssociationId("8ce81b66-22e5-4195-a270-5e9f761ff51e")]
         [RoleId("58245287-7a75-45c4-a000-d3944ec9319a")]
@@ -180,6 +170,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public PaymentMethod BillToCustomerPaymentMethod { get; set; }
+
+        #region Allors
+        [Id("4cf09eb7-820f-4677-bfc0-92a48d0a938b")]
+        [AssociationId("5a71ca58-db28-4edc-9065-32396380bd80")]
+        [RoleId("fa280c8d-ac7b-4d99-80dd-fba155d4aef9")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        public PurchaseInvoiceItem[] PurchaseInvoiceItems { get; set; }
 
         #region Allors
         [Id("e444b5e7-0128-49fc-86cb-a6fe39c280ae")]

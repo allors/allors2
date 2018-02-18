@@ -195,7 +195,7 @@ namespace Allors.Domain
             var invoice1 = new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(billToContactMechanism)
+                .WithBillToEndCustomerContactMechanism(billToContactMechanism)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
@@ -204,7 +204,7 @@ namespace Allors.Domain
             var invoice2 = new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(billToContactMechanism)
+                .WithBillToEndCustomerContactMechanism(billToContactMechanism)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(200M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
 
@@ -266,7 +266,7 @@ namespace Allors.Domain
             var invoice1 = new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(billToContactMechanism)
+                .WithBillToEndCustomerContactMechanism(billToContactMechanism)
                 .WithInvoiceDate(DateTime.UtcNow.AddDays(-30))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
@@ -276,7 +276,7 @@ namespace Allors.Domain
             var invoice2 = new SalesInvoiceBuilder(this.Session)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithBillToCustomer(customer)
-                .WithBillToContactMechanism(billToContactMechanism)
+                .WithBillToEndCustomerContactMechanism(billToContactMechanism)
                 .WithInvoiceDate(DateTime.UtcNow.AddDays(-5))
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithActualUnitPrice(200M).WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem).Build())
                 .Build();
