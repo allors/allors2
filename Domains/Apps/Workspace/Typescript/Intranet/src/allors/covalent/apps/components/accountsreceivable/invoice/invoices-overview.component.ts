@@ -18,6 +18,7 @@ import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 
 interface SearchData {
+  internalOrganisation: string;
   company: string;
   reference: string;
   invoiceNumber: string;
@@ -124,7 +125,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
           if (data.internalOrganisation) {
             predicates.push(
               new Equals({
-                roleType: m.SalesInvoice.BillToInternalOrganisation,
+                roleType: m.SalesInvoice.BillToCustomer,
                 value: this.billToInternalOrganisation,
               }),
             );

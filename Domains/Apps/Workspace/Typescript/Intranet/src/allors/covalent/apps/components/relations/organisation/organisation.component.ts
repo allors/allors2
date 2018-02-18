@@ -9,9 +9,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, Locale, Organisation, OrganisationRole } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query } from "../../../../../framework";
+import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole } from "../../../../../domain";
+import { Equals, Fetch, Path, PullRequest, Query } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./organisation.component.html",
@@ -30,22 +32,26 @@ export class OrganisationComponent implements OnInit, OnDestroy {
   public classifications: CustomOrganisationClassification[];
   public industries: IndustryClassification[];
   public customerRelationships: CustomerRelationship[];
+  public internalOrganisation: InternalOrganisation;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
   private customerRole: OrganisationRole;
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public media: TdMediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
@@ -56,6 +62,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
 
         const fetch: Fetch[] = [
+          this.fetcher.internalOrganisation,
           new Fetch({
             name: "organisation",
             id,
@@ -98,6 +105,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
         this.subTitle = "edit organisation";
         this.organisation = loaded.objects.organisation as Organisation;
         this.customerRelationships = loaded.collections.customerRelationships as CustomerRelationship[];
+        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.organisation) {
           this.subTitle = "add a new organisation";
@@ -128,6 +136,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
     if (this.organisation.OrganisationRoles.indexOf(this.customerRole) > -1 && this.customerRelationships === undefined) {
       const customerRelationship = this.scope.session.create("CustomerRelationship") as CustomerRelationship;
       customerRelationship.Customer = this.organisation;
+      customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
 
     this.scope

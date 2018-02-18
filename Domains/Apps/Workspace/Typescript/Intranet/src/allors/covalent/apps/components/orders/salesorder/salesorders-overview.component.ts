@@ -18,6 +18,7 @@ import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 
 interface SearchData {
+  internalOrganisation: string;
   company: string;
   reference: string;
   orderNumber: string;
@@ -34,6 +35,10 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
   public data: SalesOrder[];
   public filtered: SalesOrder[];
   public total: number;
+
+  public internalOrganisations: InternalOrganisation[];
+  public selectedInternalOrganisation: InternalOrganisation;
+  public billToInternalOrganisation: InternalOrganisation;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -56,6 +61,7 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
+      internalOrganisation: [""],
       company: [""],
       orderNumber: [""],
       reference: [""],
@@ -78,51 +84,71 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
         ];
       }, [] as [SearchData, number, Date, InternalOrganisation]);
 
+    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+        const internalOrganisationsQuery: Query[] = [ new Query(m.InternalOrganisation) ];
 
-        predicates.push(new Equals({ roleType: m.SalesOrder.TakenBy, value: internalOrganisationId }));
+        return this.scope
+        .load("Pull", new PullRequest({ query: internalOrganisationsQuery }))
+        .switchMap((internalOrganisationsLoaded: Loaded) => {
+          this.internalOrganisations = internalOrganisationsLoaded.collections.InternalOrganisationQuery as InternalOrganisation[];
+          this.billToInternalOrganisation = this.internalOrganisations.find(
+            (v) => v.PartyName === data.internalOrganisation,
+          );
 
-        if (data.orderNumber) {
-          const like: string = "%" + data.orderNumber + "%";
-          predicates.push(new Like({ roleType: m.SalesOrder.OrderNumber, value: like }));
-        }
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.predicates;
 
-        if (data.company) {
-          const partyQuery: Query = new Query({
-            objectType: m.Party, predicate: new Like({
-              roleType: m.Party.PartyName, value: data.company.replace("*", "%") + "%",
-            }),
+          predicates.push(new Equals({ roleType: m.SalesOrder.TakenBy, value: internalOrganisationId }));
+
+          if (data.orderNumber) {
+            const like: string = "%" + data.orderNumber + "%";
+            predicates.push(new Like({ roleType: m.SalesOrder.OrderNumber, value: like }));
+          }
+
+          if (data.company) {
+            const partyQuery: Query = new Query({
+              objectType: m.Party, predicate: new Like({
+                roleType: m.Party.PartyName, value: data.company.replace("*", "%") + "%",
+              }),
+            });
+
+            const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesOrder.ShipToCustomer, query: partyQuery });
+            predicates.push(containedIn);
+          }
+
+          if (data.internalOrganisation) {
+            predicates.push(
+              new Equals({
+                roleType: m.SalesOrder.BillToCustomer,
+                value: this.billToInternalOrganisation,
+              }),
+            );
+          }
+
+          if (data.reference) {
+            const like: string = data.reference.replace("*", "%") + "%";
+            predicates.push(new Like({ roleType: m.SalesOrder.CustomerReference, value: like }));
+          }
+
+          const query: Query[] = [new Query(
+            {
+              include: [
+                new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
+                new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
+              ],
+              name: "orders",
+              objectType: m.SalesOrder,
+              page: new Page({ skip: 0, take }),
+              predicate,
+              sort: [new Sort({ roleType: m.SalesOrder.OrderNumber, direction: "Desc" })],
+            })];
+
+          return this.scope.load("Pull", new PullRequest({ query }));
           });
-
-          const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesOrder.ShipToCustomer, query: partyQuery });
-          predicates.push(containedIn);
-        }
-
-        if (data.reference) {
-          const like: string = data.reference.replace("*", "%") + "%";
-          predicates.push(new Like({ roleType: m.SalesOrder.CustomerReference, value: like }));
-        }
-
-        const query: Query[] = [new Query(
-          {
-            include: [
-              new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
-            ],
-            name: "orders",
-            objectType: m.SalesOrder,
-            page: new Page({ skip: 0, take }),
-            predicate,
-            sort: [new Sort({ roleType: m.SalesOrder.OrderNumber, direction: "Desc" })],
-          })];
-
-        return this.scope.load("Pull", new PullRequest({ query }));
-
       })
       .subscribe((loaded) => {
         this.data = loaded.collections.orders as SalesOrder[];

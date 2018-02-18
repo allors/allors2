@@ -180,7 +180,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(10M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date1)
-                .WithBillToEndCustomerContactMechanism(contactMechanism)
+                .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice1")
                 .Build();
 
@@ -189,7 +189,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date2)
-                .WithBillToEndCustomerContactMechanism(contactMechanism)
+                .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice2")
                 .Build();
 
@@ -198,7 +198,7 @@ namespace Allors.Domain
                 .WithBillToCustomer(customer)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session).WithProduct(good).WithActualUnitPrice(100M).WithQuantity(1).WithInvoiceItemType(productItem).Build())
                 .WithInvoiceDate(date3)
-                .WithBillToEndCustomerContactMechanism(contactMechanism)
+                .WithBillToContactMechanism(contactMechanism)
                 .WithComment("invoice3")
                 .Build();
 

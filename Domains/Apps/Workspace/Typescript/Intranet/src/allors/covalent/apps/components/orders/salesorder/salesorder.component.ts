@@ -39,6 +39,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public internalOrganisations: InternalOrganisation[];
   public currencies: Currency[];
   public billToContactMechanisms: ContactMechanism[];
+  public billToEndCustomerContactMechanisms: ContactMechanism[];
   public ShipToAddresses: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
@@ -52,7 +53,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
 
-  public addContactMechanism: boolean;
+  public addShipToContactMechanism: boolean;
+  public addBillToContactMechanism: boolean;
+  public addBillToEndCustomerContactMechanism: boolean;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -159,6 +162,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.SalesOrder.ShipToAddress }),
                   new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
                   new TreeNode({ roleType: m.SalesOrder.BillToContactMechanism }),
+                  new TreeNode({ roleType: m.SalesOrder.BillToEndCustomerContactMechanism }),
                   new TreeNode({ roleType: m.SalesOrder.Quote }),
                   new TreeNode({
                     nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
@@ -195,7 +199,11 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
         if (this.order.BillToCustomer) {
           this.updateBillToCustomer(this.order.BillToCustomer);
-    }
+        }
+
+        if (this.order.BillToEndCustomer) {
+          this.updateBillToEndCustomer(this.order.BillToEndCustomer);
+        }
 
         this.previousShipToCustomer = this.order.ShipToCustomer;
         this.previousBillToCustomer = this.order.BillToCustomer;
@@ -225,15 +233,26 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     this.contacts.push(contact);
   }
 
-  public partyContactMechanismCancelled() {
-    this.addContactMechanism = false;
+  public billToContactMechanismCancelled() {
+    this.addBillToContactMechanism = false;
   }
 
-  public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
+  public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addBillToContactMechanism = false;
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public billToEndCustomerContactMechanismCancelled() {
+    this.addBillToEndCustomerContactMechanism = false;
+  }
+
+  public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addBillToEndCustomerContactMechanism = false;
+
+    this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.order.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public shipToAddressCancelled(): void {
@@ -518,9 +537,11 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public billToCustomerSelected(party: Party) {
-    if (party) {
       this.updateBillToCustomer(party);
-    }
+  }
+
+  public billToEndCustomerSelected(party: Party) {
+      this.updateBillToEndCustomer(party);
   }
 
   public refresh(): void {
@@ -569,11 +590,6 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             this.previousShipToCustomer =  this.order.ShipToCustomer;
           }
 
-          if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
-            this.order.BillToCustomer = this.order.ShipToCustomer;
-            this.updateBillToCustomer(this.order.BillToCustomer);
-          }
-
           const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
           this.ShipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
           this.contacts = loaded.collections.currentContacts as Person[];
@@ -612,18 +628,58 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         .load("Pull", new PullRequest({ fetch }))
         .subscribe((loaded) => {
 
-          if (this.order.BillToCustomer !== this.previousBillToCustomer) {
-            this.order.BillToContactMechanism = null;
-            this.previousBillToCustomer =  this.order.BillToCustomer;
-          }
+          this.previousBillToCustomer =  this.order.BillToCustomer;
 
-          if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
+          if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null &&
+              !(this.order.BillToCustomer instanceof Organisation && this.order.BillToCustomer.IsInternalOrganisation)) {
             this.order.ShipToCustomer = this.order.BillToCustomer;
             this.updateShipToCustomer(this.order.ShipToCustomer);
           }
 
           const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
           this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
+      );
+    }
+
+    private updateBillToEndCustomer(party: Party) {
+
+      const fetch: Fetch[] = [
+        new Fetch({
+          id: party.id,
+          include: [
+            new TreeNode({
+              nodes: [
+                new TreeNode({
+                  nodes: [
+                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                  ],
+                  roleType: this.m.PostalAddress.PostalBoundary,
+                }),
+              ],
+              roleType: this.m.PartyContactMechanism.ContactMechanism,
+            }),
+          ],
+          name: "partyContactMechanisms",
+          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+        }),
+      ];
+
+      this.scope
+        .load("Pull", new PullRequest({ fetch }))
+        .subscribe((loaded) => {
+
+          if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
+            this.order.ShipToCustomer = this.order.BillToEndCustomer;
+            this.updateShipToCustomer(this.order.ShipToCustomer);
+          }
+
+          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+          this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         },
         (error: Error) => {
           this.errorService.message(error);

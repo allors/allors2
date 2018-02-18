@@ -1,27 +1,38 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <mat-input-container>
-        <input matInput placeholder="Organisation" formControlName="company">
-      </mat-input-container>
-      <mat-input-container>
-        <input matInput placeholder="Number" formControlName="orderNumber">
-      </mat-input-container>
-      <mat-input-container>
-        <input matInput placeholder="Customer Reference" formControlName="reference">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-input-container>
+      <div class="grid-8_xs-1">
+        <mat-input-container class="col">
+          <input matInput placeholder="Organisation" formControlName="company">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation"
+            placeholder="To Internal Organisation">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="Number" formControlName="orderNumber">
+        </mat-input-container>
+        <mat-input-container class="col">
+          <input matInput placeholder="Customer Reference" formControlName="reference">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-input-container>
+      </div>
     </form>
   </div>
 
@@ -42,18 +53,18 @@
           <span flex></span>
 
           <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ order.CreationDate | date }} </div>
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ order.LastModifiedDate | timeAgo }} </div>
-            </span>
+            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ order.CreationDate | date }} </div>
+            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ order.LastModifiedDate | timeAgo }} </div>
+          </span>
 
           <span>
             <button mat-icon-button [mat-menu-trigger-for]="menu">
-            <mat-icon>more_vert</mat-icon>
+              <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu x-position="before" #menu="matMenu">
-            <a [routerLink]="['/orders/salesOrder/' + order.id ]" mat-menu-item>Details</a>
-            <a [routerLink]="['/printsalesorder/' + order.id ]" mat-menu-item>Print</a>
-            <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
+              <a [routerLink]="['/orders/salesOrder/' + order.id ]" mat-menu-item>Details</a>
+              <a [routerLink]="['/printsalesorder/' + order.id ]" mat-menu-item>Print</a>
+              <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
             </mat-menu>
           </span>
 

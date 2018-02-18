@@ -31,8 +31,6 @@
       </div>
 
       <div class="grid-2_xs-1">
-        <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToInternalOrganisation" [options]="internalOrganisations"
-        display="displayName"></a-mat-select>
         <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="organisations"
           [filter]="organisationsFilter.create()" display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
         <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="people"
@@ -80,20 +78,41 @@
 
       <div class="grid-2_md-1">
         <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="organisations"
-          [filter]="organisationsFilter.create()" display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to organisation"></a-mat-autocomplete>
+          [filter]="organisationsFilter.create()" display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
         <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people"
           [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer" type="button" (click)="addContactMechanism = !addContactMechanism">
-              <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
-              <mat-icon *ngIf="addContactMechanism">close</mat-icon>
+            <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer" type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
+              <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
+              <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
             </button>
           </div>
 
-          <party-contactmechanism *ngIf="order.ShipToCustomer && addContactMechanism" [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+          <party-contactmechanism *ngIf="order.BillToCustomer && addBillToContactMechanism" [scope]="scope" (saved)="billToContactMechanismAdded($event)" (cancelled)="billToContactMechanismCancelled()">
+          </party-contactmechanism>
+
+        </div>
+      </div>
+
+      <div class="grid-2_md-1">
+        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer" [options]="organisations"
+          [filter]="organisationsFilter.create()" display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
+        <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people"
+          [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
+        <div class="col">
+          <div fxLayout fxLayoutGap="1em">
+            <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism" [options]="billToEndCustomerContactMechanisms"
+              display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer" type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
+              <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
+              <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
+            </button>
+          </div>
+
+          <party-contactmechanism *ngIf="order.BillToEndCustomer && addBillToEndCustomerContactMechanism" [scope]="scope" (saved)="billToEndCustomerContactMechanismAdded($event)" (cancelled)="billToEndCustomerContactMechanismCancelled()">
           </party-contactmechanism>
 
         </div>

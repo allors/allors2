@@ -48,7 +48,7 @@
           </div>
 
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order.ShipToAddress != order.BillToContactMechanism" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism"
+            <a-mat-static class="col" *ngIf="order.ShipToAddress != order.BillToEndCustomerContactMechanism" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism"
               display="displayName" label="Bill to"></a-mat-static>
           </div>
 

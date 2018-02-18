@@ -306,7 +306,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .WithVatRegime(assessable)
                 .Build();
 
@@ -392,7 +392,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
@@ -531,7 +531,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
@@ -595,7 +595,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
@@ -650,7 +650,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
@@ -715,7 +715,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
@@ -774,7 +774,7 @@ namespace Allors.Domain
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithShipToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .Build();
 
             var item = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
@@ -1064,7 +1064,7 @@ namespace Allors.Domain
             var order1 = new SalesOrderBuilder(this.Session)
                 .WithStore(new Stores(this.Session).FindBy(M.Store.Name, "store"))
                 .WithBillToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(mechelenAddress)
+                .WithBillToContactMechanism(mechelenAddress)
                 .WithShipToCustomer(customer)
                 .Build();
 
@@ -1513,7 +1513,7 @@ namespace Allors.Domain
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(billToContactMechanismMechelen)
+                .WithBillToContactMechanism(billToContactMechanismMechelen)
                 .WithShipToCustomer(customer)
                 .Build();
 

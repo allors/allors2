@@ -215,14 +215,19 @@ namespace Allors.Domain
                 this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
             }
 
-            if (!this.ExistBillToEndCustomerContactMechanism && this.ExistBillToCustomer)
-            {
-                this.BillToEndCustomerContactMechanism = this.BillToCustomer.BillingAddress;
-            }
-
             if (!this.ExistBilledFromContactMechanism)
             {
                 this.BilledFromContactMechanism = this.BilledFrom.BillingAddress;
+            }
+
+            if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
+            {
+                this.BillToContactMechanism = this.BillToCustomer.BillingAddress;
+            }
+
+            if (!this.ExistBillToEndCustomerContactMechanism && this.ExistBillToEndCustomer)
+            {
+                this.BillToEndCustomerContactMechanism = this.BillToEndCustomer.BillingAddress;
             }
 
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
@@ -356,7 +361,6 @@ namespace Allors.Domain
                     .WithInvoiceDate(DateTime.UtcNow)
                     .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Strategy.Session).PurchaseInvoice)
                     .WithVatRegime(this.VatRegime)
-                    .WithContactPerson(this.ContactPerson)
                     .WithDiscountAdjustment(this.DiscountAdjustment)
                     .WithSurchargeAdjustment(this.SurchargeAdjustment)
                     .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)

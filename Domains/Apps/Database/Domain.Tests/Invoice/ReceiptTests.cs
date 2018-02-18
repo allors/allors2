@@ -95,7 +95,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(this.billToCustomer)
-                .WithBillToEndCustomerContactMechanism(contactMechanism)
+                .WithBillToContactMechanism(contactMechanism)
                 .Build();
 
             var item1 = new SalesInvoiceItemBuilder(this.Session).WithProduct(this.good).WithQuantity(1).WithActualUnitPrice(100M).WithInvoiceItemType(productItem).Build();
@@ -153,7 +153,7 @@ namespace Allors.Domain
 
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(customer)
-                .WithBillToEndCustomerContactMechanism(billToContactMechanism)
+                .WithBillToContactMechanism(billToContactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session)
                                         .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)

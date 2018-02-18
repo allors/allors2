@@ -32,7 +32,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public organisations: Organisation[];
   public internalOrganisations: InternalOrganisation[];
   public currencies: Currency[];
-  public contactMechanisms: ContactMechanism[];
+  public billToContactMechanisms: ContactMechanism[];
+  public billToEndCustomerContactMechanisms: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
   public contacts: Person[];
@@ -42,7 +43,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public currenciesFilter: Filter;
 
   public addContactPerson: boolean = false;
-  public addContactMechanism: boolean = false;
+  public addBillToContactMechanism: boolean = false;
+  public addBillToEndCustomerContactMechanism: boolean = false;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -137,6 +139,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 include: [
                   new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
                   new TreeNode({ roleType: m.SalesInvoice.BillToContactMechanism }),
+                  new TreeNode({ roleType: m.SalesInvoice.BillToEndCustomerContactMechanism }),
                   new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
                   new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
                 ],
@@ -163,7 +166,11 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
 
         if (this.invoice.BillToCustomer) {
-          this.update(this.invoice.BillToCustomer);
+          this.updateBillToCustomer(this.invoice.BillToCustomer);
+        }
+
+        if (this.invoice.BillToEndCustomer) {
+          this.updateBillToEndCustomer(this.invoice.BillToEndCustomer);
         }
 
         this.previousBillToCustomer = this.invoice.BillToCustomer;
@@ -188,21 +195,32 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     const contact: Person = this.scope.session.get(id) as Person;
 
     const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
+    organisationContactRelationship.Organisation = this.invoice.BillToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
     this.contacts.push(contact);
   }
 
-  public partyContactMechanismCancelled() {
-    this.addContactMechanism = false;
+  public billToContactMechanismCancelled() {
+    this.addBillToContactMechanism = false;
   }
 
-  public partyContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
-    this.addContactMechanism = false;
+  public billToContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addBillToContactMechanism = false;
 
-    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public billToEndCustomerContactMechanismCancelled() {
+    this.addBillToContactMechanism = false;
+  }
+
+  public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addBillToEndCustomerContactMechanism = false;
+
+    this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public send(): void {
@@ -328,9 +346,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       });
   }
 
-  public receiverSelected(party: Party) {
+  public billToCustomerSelected(party: Party) {
     if (party) {
-      this.update(party);
+      this.updateBillToCustomer(party);
+    }
+  }
+
+  public billToEndCustomerSelected(party: Party) {
+    if (party) {
+      this.updateBillToEndCustomer(party);
     }
   }
 
@@ -342,7 +366,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  private update(party: Party) {
+  private updateBillToCustomer(party: Party) {
     const fetch: Fetch[] = [
       new Fetch({
         id: party.id,
@@ -375,12 +399,56 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
           this.invoice.ShipToAddress = null;
-          this.invoice.ContactPerson = null;
           this.previousBillToCustomer =  this.invoice.BillToCustomer;
         }
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+
+        if (!(this.invoice.BillToCustomer instanceof Organisation && this.invoice.BillToCustomer.IsInternalOrganisation)) {
+          this.contacts = loaded.collections.currentContacts as Person[];
+        }
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
+
+  private updateBillToEndCustomer(party: Party) {
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded) => {
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {

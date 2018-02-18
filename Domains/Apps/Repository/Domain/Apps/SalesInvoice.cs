@@ -162,6 +162,17 @@ namespace Allors.Repository
         public Party PreviousBillToCustomer { get; set; }
 
         #region Allors
+        [Id("8FCCF6B4-69EE-4087-8F42-9BDAC9971FA3")]
+        [AssociationId("CFA8E6AC-66B7-4F14-A3D2-A848A8E53F40")]
+        [RoleId("24A2D620-6EB8-4C60-87DC-02FAEDC2BD97")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
+        [Workspace]
+        public ContactMechanism BillToContactMechanism { get; set; }
+
+        #region Allors
         [Id("B51570D0-05F5-45D1-B820-6FA693A60EB9")]
         [AssociationId("CFF27770-62ED-44FD-B3BD-B0ECAC5200CF")]
         [RoleId("316B4B5C-AAEB-4794-8823-9D1F69647AE8")]
@@ -169,7 +180,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public InternalOrganisation BillToEndCustomer { get; set; }
+        public Party BillToEndCustomer { get; set; }
 
         #region Allors
         [Id("27faaa2c-d4db-4cab-aa04-8ec4997d73d2")]
@@ -178,7 +189,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
         public ContactMechanism BillToEndCustomerContactMechanism { get; set; }
 

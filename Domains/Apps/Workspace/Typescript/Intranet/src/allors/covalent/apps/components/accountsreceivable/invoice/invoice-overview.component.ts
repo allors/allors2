@@ -98,7 +98,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                     roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
-                roleType: m.SalesInvoice.BillToContactMechanism,
+                roleType: m.SalesInvoice.BillToEndCustomerContactMechanism,
               }),
             ],
             name: "invoice",

@@ -138,13 +138,6 @@ namespace Allors.Domain
                 this.ShipmentMethod = this.ShipToCustomer.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
             }
 
-            if (!this.ExistBillToEndCustomerContactMechanism && this.ExistBillToCustomer &&
-                !(this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation))
-            {
-                this.BillToEndCustomerContactMechanism = this.BillToCustomer.ExistBillingAddress ?
-                                                  this.BillToCustomer.BillingAddress : this.BillToCustomer.ExistShippingAddress ? this.BillToCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
-            }
-
             if (!this.ExistBillFromContactMechanism)
             {
                 this.BillFromContactMechanism = this.TakenBy.ExistBillingAddress ? this.TakenBy.BillingAddress : this.TakenBy.GeneralCorrespondence;
@@ -153,6 +146,18 @@ namespace Allors.Domain
             if (!this.ExistTakenByContactMechanism)
             {
                 this.TakenByContactMechanism = this.TakenBy.ExistOrderAddress ? this.TakenBy.OrderAddress : this.TakenBy.GeneralCorrespondence;
+            }
+
+            if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
+            {
+                this.BillToContactMechanism = this.BillToCustomer.ExistBillingAddress ?
+                    this.BillToCustomer.BillingAddress : this.BillToCustomer.ExistShippingAddress ? this.BillToCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
+            }
+
+            if (!this.ExistBillToEndCustomerContactMechanism && this.ExistBillToEndCustomer)
+            {
+                this.BillToEndCustomerContactMechanism = this.BillToEndCustomer.ExistBillingAddress ?
+                    this.BillToEndCustomer.BillingAddress : this.BillToEndCustomer.ExistShippingAddress ? this.BillToEndCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
             }
 
             if (!this.ExistCurrency)
@@ -217,7 +222,7 @@ namespace Allors.Domain
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
                 derivation.Validation.AssertExists(this, this.Meta.ShipToAddress);
-                derivation.Validation.AssertExists(this, this.Meta.BillToEndCustomerContactMechanism);
+                derivation.Validation.AssertExists(this, this.Meta.BillToContactMechanism);
             }
 
             this.AppsOnDeriveOrderItems(derivation);
@@ -776,6 +781,7 @@ namespace Allors.Domain
                 .WithBilledFrom(this.TakenBy)
                 .WithBilledFromContactMechanism(this.BillFromContactMechanism)
                 .WithBillToCustomer(this.BillToCustomer)
+                .WithBillToContactMechanism(this.BillToContactMechanism)
                 .WithBillToEndCustomer(this.BillToEndCustomer)
                 .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
                 .WithShipToCustomer(this.ShipToCustomer)

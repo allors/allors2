@@ -115,7 +115,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                     roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
-                roleType: m.SalesOrder.BillToContactMechanism,
+                roleType: m.SalesOrder.BillToEndCustomerContactMechanism,
               }),
             ],
             name: "order",

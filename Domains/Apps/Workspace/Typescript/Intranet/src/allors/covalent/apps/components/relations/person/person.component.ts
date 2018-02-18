@@ -3,12 +3,16 @@ import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
 import { TdMediaService } from "@covalent/core";
 
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CustomerRelationship, Enumeration, Locale, Person, PersonRole } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { CustomerRelationship, Enumeration, InternalOrganisation, Locale, Person, PersonRole } from "../../../../../domain";
+import { Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./person.component.html",
@@ -27,10 +31,14 @@ export class PersonComponent implements OnInit, OnDestroy {
   public salutations: Enumeration[];
   public roles: PersonRole[];
   public customerRelationships: CustomerRelationship[];
+  public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
   private scope: Scope;
+  private refresh$: BehaviorSubject<Date>;
   private customerRole: PersonRole;
+
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -38,22 +46,26 @@ export class PersonComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public media: TdMediaService,
     private titleService: Title,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.titleService.setTitle(this.title);
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
-    this.subscription = this.route.url
-      .switchMap((url: any) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const fetch: Fetch[] = [
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
@@ -99,6 +111,7 @@ export class PersonComponent implements OnInit, OnDestroy {
         this.subTitle = "edit person";
         this.person = loaded.objects.person as Person;
         this.customerRelationships = loaded.collections.customerRelationships as CustomerRelationship[];
+        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.person) {
           this.subTitle = "add a new person";
@@ -129,6 +142,7 @@ export class PersonComponent implements OnInit, OnDestroy {
     if (this.person.PersonRoles.indexOf(this.customerRole) > -1 && this.customerRelationships === undefined) {
       const customerRelationship = this.scope.session.create("CustomerRelationship") as CustomerRelationship;
       customerRelationship.Customer = this.person;
+      customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
 
     this.scope
