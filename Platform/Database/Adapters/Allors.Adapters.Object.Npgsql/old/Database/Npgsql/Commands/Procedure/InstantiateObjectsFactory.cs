@@ -75,7 +75,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                     while (reader.Read())
                     {
                         var idString = reader[0].ToString();
-                        var id = this.Database.AllorsObjectIds.Parse(idString);
+                        var id = long.Parse(idString);
                         var classId = this.GetClassId(reader, 1);
                         var cacheId = this.GetCachId(reader, 2);
 

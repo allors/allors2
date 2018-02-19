@@ -56,7 +56,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 var roleType = associationType.RoleType;
 
                 string sql;
-                if (associationType.RelationType.ExistExclusiveLeafClasses)
+                if (associationType.RelationType.ExistExclusiveClasses)
                 {
                     if (roleType.IsOne)
                     {
@@ -100,22 +100,22 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(associationType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId.Value);
+                    this.AddInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
 
                     this.commandByAssociationType[associationType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId.Value);
+                    this.SetInObject(command, this.Database.Schema.RoleId.Param, role.ObjectId);
                 }
 
                 object result = command.ExecuteScalar();
 
                 if (result != null && result != DBNull.Value)
                 {
-                    long id = this.Database.AllorsObjectIds.Parse(result.ToString());
+                    long id = long.Parse(result.ToString());
 
-                    if (associationType.ObjectType.ExistExclusiveLeafClass)
+                    if (associationType.ObjectType.ExistExclusiveClass)
                     {
                         associationObject = this.Session.GetOrCreateAssociationForExistingObject(associationType.ObjectType.ExclusiveClass.ExclusiveClass, id);
                     }

@@ -80,7 +80,7 @@ namespace Allors.Adapters.Database.Sql
 
                 if (role.ObjectType is IComposite)
                 {
-                    if ((association.IsMany && role.IsMany) || !relationType.ExistExclusiveLeafClasses)
+                    if ((association.IsMany && role.IsMany) || !relationType.ExistExclusiveClasses)
                     {
                         this.Append(" LEFT OUTER JOIN " + this.Schema.Table(role) + " " + role.SingularPropertyName + "_R");
                         this.Append(" ON " + alias + "." + this.Schema.ObjectId + "=" + role.SingularPropertyName + "_R." + this.Schema.AssociationId);
@@ -103,7 +103,7 @@ namespace Allors.Adapters.Database.Sql
 
                 if (role.ObjectType is IComposite && role.IsOne)
                 {
-                    if (!relationType.ExistExclusiveLeafClasses)
+                    if (!relationType.ExistExclusiveClasses)
                     {
                         this.Append(" LEFT OUTER JOIN " + this.Schema.Objects + " " + this.GetJoinName(role));
                         this.Append(" ON " + this.GetJoinName(role) + "." + this.Schema.ObjectId + "=" + role.SingularPropertyName + "_R." + this.Schema.RoleId + " ");
@@ -121,7 +121,7 @@ namespace Allors.Adapters.Database.Sql
                 var relationType = association.RelationType;
                 var role = relationType.RoleType;
 
-                if ((association.IsMany && role.IsMany) || !relationType.ExistExclusiveLeafClasses)
+                if ((association.IsMany && role.IsMany) || !relationType.ExistExclusiveClasses)
                 {
                     this.Append(" LEFT OUTER JOIN " + Schema.Table(association) + " " + association.SingularName + "_A");
                     this.Append(" ON " + alias + "." + this.Schema.ObjectId + "=" + association.SingularName + "_A." + this.Schema.RoleId);
@@ -143,7 +143,7 @@ namespace Allors.Adapters.Database.Sql
 
                 if (association.ObjectType is IComposite && association.IsOne)
                 {
-                    if (!relationType.ExistExclusiveLeafClasses)
+                    if (!relationType.ExistExclusiveClasses)
                     {
                         this.Append(" LEFT OUTER JOIN " + this.Schema.Objects + " " + this.GetJoinName(association));
                         this.Append(" ON " + this.GetJoinName(association) + "." + this.Schema.ObjectId + "=" + association.SingularName + "_A." + this.Schema.AssociationId + " ");
@@ -169,7 +169,7 @@ namespace Allors.Adapters.Database.Sql
 
         public bool AddWhere(IObjectType leafClass, string alias)
         {
-            var useWhere = !this.Extent.ObjectType.ExistExclusiveLeafClass;
+            var useWhere = !this.Extent.ObjectType.ExistExclusiveClass;
             
             if (useWhere)
             {

@@ -118,7 +118,7 @@ namespace Allors.Adapters.Database.Sql
 
         public void SetUnitRole(IRoleType roleType, object role)
         {
-            this.ChangeSet.OnChangingUnitRole(this, roleType);
+            this.ChangeSet.OnChangingUnitRole(this.Reference.ObjectId, roleType);
 
             this.SetOriginal(roleType, role);
 
@@ -128,7 +128,7 @@ namespace Allors.Adapters.Database.Sql
             this.Reference.Session.RequireFlush(this.Reference, this);
         }
 
-        public virtual long GetCompositeRole(IRoleType roleType)
+        public virtual long? GetCompositeRole(IRoleType roleType)
         {
             object role = null;
             if (this.modifiedRoleByRoleType == null || !this.modifiedRoleByRoleType.TryGetValue(roleType, out role))
@@ -143,15 +143,15 @@ namespace Allors.Adapters.Database.Sql
                 }
             }
 
-            return (ObjectId)role;
+            return (long?)role;
         }
 
         public void SetCompositeRole(IRoleType roleType, Strategy newRoleStrategy)
         {
             var previousRole = this.GetCompositeRole(roleType);
-            var newRole = newRoleStrategy == null ? null : newRoleStrategy.Reference.ObjectId;
+            var newRole = newRoleStrategy?.Reference.ObjectId;
 
-            this.ChangeSet.OnChangingCompositeRole(this, roleType, previousRole, newRole);
+            this.ChangeSet.OnChangingCompositeRole(this.Reference.ObjectId, roleType, previousRole, newRole);
 
             if (newRole != null && !newRole.Equals(previousRole))
             {
@@ -159,18 +159,18 @@ namespace Allors.Adapters.Database.Sql
                 {
                     if (previousRole != null)
                     {
-                        var previousRoleStrategy = this.Reference.Session.GetOrCreateAssociationForExistingObject(previousRole).Strategy;
-                        var previousAssociation = previousRoleStrategy.GetCompositeAssociation(roleType.AssociationType);
+                        var previousRoleStrategy = this.Reference.Session.GetOrCreateAssociationForExistingObject(previousRole.Value).Strategy;
+                        var previousAssociation = previousRoleStrategy.GetCompositeAssociation(roleType.RelationType);
                         if (previousAssociation != null)
                         {
-                            previousAssociation.Strategy.RemoveCompositeRole(roleType);
+                            previousAssociation.Strategy.RemoveCompositeRole(roleType.RelationType);
                         }
                     }
 
-                    var newRoleAssociation = newRoleStrategy.GetCompositeAssociation(roleType.AssociationType);
+                    var newRoleAssociation = newRoleStrategy.GetCompositeAssociation(roleType.RelationType);
                     if (newRoleAssociation != null && !newRoleAssociation.Id.Equals(this.Reference.ObjectId))
                     {
-                        newRoleAssociation.Strategy.RemoveCompositeRole(roleType);
+                        newRoleAssociation.Strategy.RemoveCompositeRole(roleType.RelationType);
                     }
 
                     this.Reference.Session.SetAssociation(this.Reference, newRoleStrategy, roleType.AssociationType);
@@ -179,7 +179,7 @@ namespace Allors.Adapters.Database.Sql
                 {
                     if (previousRole != null)
                     {
-                        var previousRoleReference = this.Reference.Session.GetOrCreateAssociationForExistingObject(previousRole);
+                        var previousRoleReference = this.Reference.Session.GetOrCreateAssociationForExistingObject(previousRole.Value);
                         this.Reference.Session.RemoveAssociation(this.Reference, previousRoleReference, roleType.AssociationType);
                     }
                 }
@@ -187,7 +187,7 @@ namespace Allors.Adapters.Database.Sql
 
             if (previousRole != null && !previousRole.Equals(newRole))
             {
-                this.Reference.Session.TriggerFlush(previousRole, roleType.AssociationType);
+                this.Reference.Session.TriggerFlush(previousRole.Value, roleType.AssociationType);
             }
 
             if ((newRole == null && previousRole != null) ||
@@ -203,7 +203,7 @@ namespace Allors.Adapters.Database.Sql
                     if (roleType.AssociationType.IsMany)
                     {
                         this.Reference.Session.AddAssociation(this.Reference, newRoleStrategy.Reference, roleType.AssociationType);
-                        this.Reference.Session.TriggerFlush(newRole, roleType.AssociationType);
+                        this.Reference.Session.TriggerFlush(newRole.Value, roleType.AssociationType);
                     }
                 }
             }
@@ -214,9 +214,9 @@ namespace Allors.Adapters.Database.Sql
             var currentRole = this.GetCompositeRole(roleType);
             if (currentRole != null)
             {
-                var currentRoleStrategy = this.Reference.Session.GetOrCreateAssociationForExistingObject(currentRole).Strategy;
+                var currentRoleStrategy = this.Reference.Session.GetOrCreateAssociationForExistingObject(currentRole.Value).Strategy;
 
-                this.ChangeSet.OnChangingCompositeRole(this, roleType, currentRoleStrategy == null ? null : currentRoleStrategy.ObjectId, null);
+                this.ChangeSet.OnChangingCompositeRole(this.Reference.ObjectId, roleType, currentRoleStrategy?.ObjectId, null);
 
                 if (roleType.AssociationType.IsOne)
                 {
@@ -225,7 +225,7 @@ namespace Allors.Adapters.Database.Sql
                 else
                 {
                     this.Reference.Session.RemoveAssociation(this.Reference, currentRoleStrategy.Reference, roleType.AssociationType);
-                    this.Reference.Session.TriggerFlush(currentRole, roleType.AssociationType);
+                    this.Reference.Session.TriggerFlush(currentRole.Value, roleType.AssociationType);
                 }
 
                 this.SetOriginal(roleType, null);
@@ -255,7 +255,7 @@ namespace Allors.Adapters.Database.Sql
                 this.ModifiedRolesByRoleType[roleType] = compositeRoles;
             }
 
-            this.ChangeSet.OnChangingCompositesRole(this, roleType, role);
+            this.ChangeSet.OnChangingCompositesRole(this.Reference.ObjectId, roleType, role);
 
             if (!compositeRoles.Contains(role.ObjectId))
             {
@@ -263,11 +263,13 @@ namespace Allors.Adapters.Database.Sql
 
                 if (roleType.AssociationType.IsOne)
                 {
-                    var previousAssociationObject = role.GetCompositeAssociation(roleType.AssociationType);
+                    var previousAssociationObject = role.GetCompositeAssociation(roleType.RelationType);
                     var previousAssociation = previousAssociationObject != null ? (Strategy)previousAssociationObject.Strategy : null;
                     if (previousAssociation != null && !previousAssociation.ObjectId.Equals(this.Reference.ObjectId))
                     {
-                        previousAssociation.RemoveCompositeRole(roleType, role.GetObject());
+                        this.ChangeSet.OnChangingCompositesRole(previousAssociation.ObjectId, roleType, null);
+
+                        previousAssociation.RemoveCompositeRole(roleType.RelationType, role.GetObject());
                     }
 
                     this.Reference.Session.SetAssociation(this.Reference, role, roleType.AssociationType);
@@ -294,7 +296,7 @@ namespace Allors.Adapters.Database.Sql
 
             if (compositeRoles.Contains(role.ObjectId))
             {
-                this.ChangeSet.OnChangingCompositesRole(this, roleType, role);
+                this.ChangeSet.OnChangingCompositesRole(this.Reference.ObjectId, roleType, role);
 
                 compositeRoles.Remove(role.ObjectId);
 
@@ -352,7 +354,7 @@ namespace Allors.Adapters.Database.Sql
                         var role = this.GetCompositeRole(flushRole);
                         if (role != null)
                         {
-                            flush.SetCompositeRole(this.Reference, flushRole, role);
+                            flush.SetCompositeRole(this.Reference, flushRole, role.Value);
                         }
                         else
                         {
@@ -397,7 +399,7 @@ namespace Allors.Adapters.Database.Sql
             if (this.ModifiedRolesByRoleType != null && this.ModifiedRolesByRoleType.TryGetValue(roleType, out compositeRoles))
             {
                 var objectId = compositeRoles.First;
-                return objectId == null ? null : session.GetOrCreateAssociationForExistingObject(objectId).Strategy.GetObject();
+                return objectId == null ? null : session.GetOrCreateAssociationForExistingObject(objectId.Value).Strategy.GetObject();
             }
 
             var nonModifiedCompositeRoles = this.GetNonModifiedCompositeRoles(roleType);
@@ -459,7 +461,7 @@ namespace Allors.Adapters.Database.Sql
                 return role;
             }
 
-            return ObjectId.EmptyObjectIds;
+            return Database.EmptyObjectIds;
         }
 
         private void SetOriginal(IRoleType roleType, object role)

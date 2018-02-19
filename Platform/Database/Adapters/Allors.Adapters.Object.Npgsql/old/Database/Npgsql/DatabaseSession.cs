@@ -39,6 +39,7 @@ namespace Allors.Adapters.Database.Npgsql
         private SessionCommands sessionCommands;
 
         internal DatabaseSession(Database database)
+        : base(database)
         {
             this.database = database;
         }

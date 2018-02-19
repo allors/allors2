@@ -83,13 +83,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(objectType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId.Value);
+                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId.Value);
+                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, reference.ObjectId);
                 }
 
                 using (DbDataReader reader = command.ExecuteReader())
@@ -109,29 +109,29 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                                 var unitTypeTag = unitType.UnitTag;
                                 switch (unitTypeTag)
                                 {
-                                    case UnitTags.AllorsString:
+                                    case UnitTags.String:
                                         unit = reader.GetString(i);
                                         break;
-                                    case UnitTags.AllorsInteger:
+                                    case UnitTags.Integer:
                                         unit = reader.GetInt32(i);
                                         break;
-                                    case UnitTags.AllorsDecimal:
+                                    case UnitTags.Decimal:
                                         unit = reader.GetDecimal(i);
                                         break;
-                                    case UnitTags.AllorsFloat:
+                                    case UnitTags.Float:
                                         unit = reader.GetDouble(i);
                                         break;
-                                    case UnitTags.AllorsBoolean:
+                                    case UnitTags.Boolean:
                                         unit = reader.GetBoolean(i);
                                         break;
-                                    case UnitTags.AllorsDate:
+                                    case UnitTags.DateTime:
                                         var dateTime = reader.GetDateTime(i);
                                         unit = new DateTime(dateTime.Ticks, DateTimeKind.Utc);
                                         break;
-                                    case UnitTags.AllorsUnique:
+                                    case UnitTags.Unique:
                                         unit = reader.GetGuid(i);
                                         break;
-                                    case UnitTags.AllorsBinary:
+                                    case UnitTags.Binary:
                                         var byteArray = (byte[])reader.GetValue(i);
                                         unit = byteArray;
                                         break;

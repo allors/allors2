@@ -111,7 +111,7 @@ namespace Allors.Adapters.Database.Sql
 
                 if (paramValue is IObject)
                 {
-                    this.command.AddInParameter(paramName, ((IObject)paramValue).Strategy.ObjectId.Value);
+                    this.command.AddInParameter(paramName, ((IObject)paramValue).Strategy.ObjectId);
                 }
                 else
                 {

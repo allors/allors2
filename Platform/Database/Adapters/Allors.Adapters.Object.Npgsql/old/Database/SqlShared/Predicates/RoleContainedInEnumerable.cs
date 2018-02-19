@@ -49,7 +49,7 @@ namespace Allors.Adapters.Database.Sql
                 inStatement.Append(inObject.Id);
             }
 
-            if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveLeafClasses)
+            if ((this.role.IsMany && this.role.RelationType.AssociationType.IsMany) || !this.role.RelationType.ExistExclusiveClasses)
             {
                 statement.Append(" (" + this.role.SingularPropertyName + "_R." + schema.RoleId + " IS NOT NULL AND ");
                 statement.Append(" " + this.role.SingularPropertyName + "_R." + schema.AssociationId + " IN (");

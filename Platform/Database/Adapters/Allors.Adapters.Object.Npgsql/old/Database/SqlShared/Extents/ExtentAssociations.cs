@@ -58,7 +58,7 @@ namespace Allors.Adapters.Database.Sql
                     return this.upgrade.Count;
                 }
 
-                return this.strategy.ExtentGetCompositeAssociations(this.associationType).Length;
+                return this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType).Length;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Allors.Adapters.Database.Sql
                     return this.upgrade.First;
                 }
 
-                var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType);
+                var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType);
                 if (associations.Length == 0)
                 {
                     return null;
@@ -111,7 +111,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.GetEnumerator();
             }
 
-            var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType);
+            var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType);
             var references = this.strategy.SqlSession.GetOrCreateAssociationsForExistingObjects(associations);
             return new ExtentEnumerator(references);
         }
@@ -128,7 +128,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.IndexOf(value);
             }
 
-            var associations = (IList<long>)this.strategy.ExtentGetCompositeAssociations(this.associationType);
+            var associations = (IList<long>)this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType);
             return associations.IndexOf(((IObject)value).Id);
         }
 
@@ -150,7 +150,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.ToArray(type);
             }
 
-            var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType);
+            var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType);
             var references = this.strategy.SqlSession.GetOrCreateAssociationsForExistingObjects(associations);
 
             var objects = new IObject[references.Length];
@@ -187,7 +187,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.Contains(value);
             }
 
-            var associations = (IList<long>)this.strategy.ExtentGetCompositeAssociations(this.associationType);
+            var associations = (IList<long>)this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType);
             return associations.Contains(((IObject)value).Id);
         }
 
@@ -198,7 +198,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.InternalGetItem(index);
             }
 
-            var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType);
+            var associations = this.strategy.ExtentGetCompositeAssociations(this.associationType.RelationType);
             return this.strategy.SqlSession.GetOrCreateAssociationForExistingObject(associations[index]).Strategy.GetObject();
         }
 

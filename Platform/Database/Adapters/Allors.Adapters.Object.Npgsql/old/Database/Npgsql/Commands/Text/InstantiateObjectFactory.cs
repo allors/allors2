@@ -63,11 +63,11 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 if (this.command == null)
                 {
                     this.command = this.Session.CreateNpgsqlCommand(this.factory.Sql);
-                    this.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId.Value);
+                    this.AddInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
                 }
                 else
                 {
-                    this.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId.Value);
+                    this.SetInObject(this.command, this.Database.Schema.ObjectId.Param, objectId);
                 }
 
                 using (var reader = this.command.ExecuteReader())

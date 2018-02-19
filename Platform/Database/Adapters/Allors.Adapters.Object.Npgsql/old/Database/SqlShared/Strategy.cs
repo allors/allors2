@@ -297,7 +297,7 @@ namespace Allors.Adapters.Database.Sql
             this.AssertExist();
             var roleType = relationType.RoleType;
             var role = this.Roles.GetCompositeRole(roleType);
-            return (role == null) ? null : this.SqlSession.GetOrCreateAssociationForExistingObject(role).Strategy.GetObject();
+            return (role == null) ? null : this.SqlSession.GetOrCreateAssociationForExistingObject(role.Value).Strategy.GetObject();
         }
 
         public virtual void SetCompositeRole(IRelationType relationType, IObject newRoleObject)

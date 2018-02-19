@@ -71,7 +71,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 }
 
                 var result = command.ExecuteScalar();
-                var objectId = this.Database.AllorsObjectIds.Parse(result.ToString());
+                var objectId = long.Parse(result.ToString());
                 return this.Session.CreateAssociationForNewObject(objectType, objectId);
             }
         }

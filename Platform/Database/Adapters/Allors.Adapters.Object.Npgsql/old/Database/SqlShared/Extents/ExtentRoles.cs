@@ -57,7 +57,7 @@ namespace Allors.Adapters.Database.Sql
                     return this.upgrade.Count;
                 }
 
-                return this.strategy.ExtentRolesGetCount(this.roleType);
+                return this.strategy.ExtentRolesGetCount(this.roleType.RelationType);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Allors.Adapters.Database.Sql
                     return this.upgrade.First;
                 }
 
-                return this.strategy.ExtentRolesFirst(this.roleType);
+                return this.strategy.ExtentRolesFirst(this.roleType.RelationType);
             }
         }
 
@@ -99,7 +99,7 @@ namespace Allors.Adapters.Database.Sql
                 this.upgrade.CopyTo(array, index);
             }
 
-            this.strategy.ExtentRolesCopyTo(this.roleType, array, index);
+            this.strategy.ExtentRolesCopyTo(this.roleType.RelationType, array, index);
         }
 
         public override IEnumerator GetEnumerator()
@@ -126,7 +126,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.IndexOf(value);
             }
 
-            return this.strategy.ExtentIndexOf(this.roleType, (IObject)value);
+            return this.strategy.ExtentIndexOf(this.roleType.RelationType, (IObject)value);
         }
 
         public override IObject[] ToArray()
@@ -176,7 +176,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.Contains(value);
             }
 
-            return this.strategy.ExtentRolesContains(this.roleType, (IObject)value);
+            return this.strategy.ExtentRolesContains(this.roleType.RelationType, (IObject)value);
         }
 
         protected override IObject GetItem(int index)
@@ -186,7 +186,7 @@ namespace Allors.Adapters.Database.Sql
                 return this.upgrade.InternalGetItem(index);
             }
 
-            return this.strategy.ExtentGetItem(this.roleType, index);
+            return this.strategy.ExtentGetItem(this.roleType.RelationType, index);
         }
 
         private void LazyUpgrade()

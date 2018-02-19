@@ -88,9 +88,9 @@ namespace Allors.Adapters.Database.Sql
             this.LazyLoadFilter();
             this.filter.Setup(statement);
 
-            if (this.objectType.ExistLeafClasses)
+            if (this.objectType.ExistClass)
             {
-                if (this.objectType.ExistExclusiveLeafClass)
+                if (this.objectType.ExistExclusiveClass)
                 {
                     return this.BuildSqlWithExclusiveLeafClass(statement);
                 }
@@ -103,7 +103,8 @@ namespace Allors.Adapters.Database.Sql
 
         public void CheckAssociation(IAssociationType association)
         {
-            if (!this.objectType.ContainsAssociationType(association))
+            // TODO: Optimize
+            if (!new List<IAssociationType>(this.objectType.AssociationTypes).Contains(association))
             {
                 throw new ArgumentException("Extent does not implement association " + association);
             }
@@ -111,7 +112,8 @@ namespace Allors.Adapters.Database.Sql
 
         public void CheckRole(IRoleType role)
         {
-            if (!this.objectType.ContainsRoleType(role))
+            // TODO: Optimize
+            if (!new List<IRoleType>(this.objectType.RoleTypes).Contains(role))
             {
                 throw new ArgumentException("Extent does not implement role " + role);
             }
@@ -121,7 +123,7 @@ namespace Allors.Adapters.Database.Sql
         {
             if (this.Strategy != null)
             {
-                return this.Strategy.ExtentGetCompositeAssociations(this.AssociationType);
+                return this.Strategy.ExtentGetCompositeAssociations(this.AssociationType.RelationType);
             }
 
             this.session.Flush();
@@ -139,7 +141,7 @@ namespace Allors.Adapters.Database.Sql
                     {
                         while (reader.Read())
                         {
-                            var objectId = this.session.SqlDatabase.AllorsObjectIds.Parse(reader.GetValue(0).ToString());
+                            var objectId = long.Parse(reader.GetValue(0).ToString());
                             objectIds.Add(objectId);
                         }
 
@@ -197,7 +199,7 @@ namespace Allors.Adapters.Database.Sql
                 {
                     var inRole = inStatement.RoleType;
                     var inRelationType = inRole.RelationType;
-                    if (inRelationType.IsManyToMany || !inRelationType.ExistExclusiveLeafClasses)
+                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                     {
                         statement.Append("SELECT " + inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId);
                     }
@@ -232,7 +234,7 @@ namespace Allors.Adapters.Database.Sql
                         statement.Append(" WHERE ");
                     }
 
-                    if (inRelationType.IsManyToMany || !inRelationType.ExistExclusiveLeafClasses)
+                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                     {
                         statement.Append(inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
                     }
@@ -254,7 +256,7 @@ namespace Allors.Adapters.Database.Sql
                     var inAssociation = inStatement.AssociationType;
                     var inRelationType = inAssociation.RelationType;
 
-                    if (inRelationType.IsManyToMany || !inRelationType.ExistExclusiveLeafClasses)
+                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                     {
                         statement.Append("SELECT " + inAssociation.RoleType.SingularPropertyName + "_R." + this.Schema.RoleId);
                     }
@@ -290,7 +292,7 @@ namespace Allors.Adapters.Database.Sql
                         statement.Append(" WHERE ");
                     }
 
-                    if (inRelationType.IsManyToMany || !inRelationType.ExistExclusiveLeafClasses)
+                    if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                     {
                         statement.Append(inAssociation.RoleType.SingularPropertyName + "_R." + this.Schema.RoleId + " IS NOT NULL ");
                     }
@@ -316,7 +318,7 @@ namespace Allors.Adapters.Database.Sql
         {
             if (statement.IsRoot)
             {
-                var leafClasses = this.objectType.LeafClasses.ToArray();
+                var leafClasses = this.objectType.Classes.ToArray();
                 for (var i = 0; i < leafClasses.Length; i++)
                 {
                     var alias = statement.CreateAlias();
@@ -351,12 +353,12 @@ namespace Allors.Adapters.Database.Sql
                 if (inStatement.RoleType != null)
                 {
                     var useUnion = false;
-                    foreach (var leafClass in this.objectType.LeafClasses)
+                    foreach (var leafClass in this.objectType.Classes)
                     {
                         var inRole = inStatement.RoleType;
                         var inRelationType = inRole.RelationType;
 
-                        if (!((IComposite)inRole.ObjectType).LeafClasses.Contains(leafClass))
+                        if (!((IComposite)inRole.ObjectType).Classes.Contains(leafClass))
                         {
                             continue;
                         }
@@ -372,7 +374,7 @@ namespace Allors.Adapters.Database.Sql
 
                         var alias = statement.CreateAlias();
 
-                        if (inRelationType.IsManyToMany || !inRelationType.ExistExclusiveLeafClasses)
+                        if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                         {
                             statement.Append("SELECT " + inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId);
                         }
@@ -408,7 +410,7 @@ namespace Allors.Adapters.Database.Sql
                             statement.Append(" WHERE ");
                         }
 
-                        if (inRelationType.IsManyToMany || !inRelationType.ExistExclusiveLeafClasses)
+                        if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                         {
                             statement.Append(inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
                         }
@@ -427,7 +429,7 @@ namespace Allors.Adapters.Database.Sql
                 }
                 else
                 {
-                    var leafClasses = this.objectType.LeafClasses.ToArray();
+                    var leafClasses = this.objectType.Classes.ToArray();
                     for (var i = 0; i < leafClasses.Length; i++)
                     {
                         var alias = statement.CreateAlias();

@@ -98,21 +98,21 @@ namespace Allors.Adapters.Database.Sql
         {
             switch (unitTypeTag)
             {
-                case UnitTags.AllorsString:
+                case UnitTags.String:
                     return this.GetString(reader, i);
-                case UnitTags.AllorsInteger:
+                case UnitTags.Integer:
                     return this.GetInteger(reader, i);
-                case UnitTags.AllorsDecimal:
+                case UnitTags.Decimal:
                     return this.GetDecimal(reader, i);
-                case UnitTags.AllorsFloat:
+                case UnitTags.Float:
                     return this.GetDouble(reader, i);
-                case UnitTags.AllorsBoolean:
+                case UnitTags.Boolean:
                     return this.GetBoolean(reader, i);
-                case UnitTags.AllorsDate:
+                case UnitTags.DateTime:
                     return this.GetDateTime(reader, i);
-                case UnitTags.AllorsUnique:
+                case UnitTags.Unique:
                     return this.GetUnique(reader, i);
-                case UnitTags.AllorsBinary:
+                case UnitTags.Binary:
                     return this.GetBinary(reader, i);
                 default:
                     throw new ArgumentException("Unknown Unit IObjectType: " + unitTypeTag);

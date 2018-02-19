@@ -46,6 +46,7 @@
   <ItemGroup>
     <None Include="Accounting\Customer.cd" />
     <None Include="General\Localised.cd" />
+    <None Include="Products\ProductQuote.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

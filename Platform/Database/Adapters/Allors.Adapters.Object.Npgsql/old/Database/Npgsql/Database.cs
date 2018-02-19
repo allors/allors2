@@ -33,8 +33,8 @@ namespace Allors.Adapters.Database.Npgsql
     {
         private readonly CommandFactories commandFactories;
 
-        protected Database(Configuration configuration)
-            : base(configuration)
+        protected Database(IServiceProvider serviceProvider, Configuration configuration)
+            : base(serviceProvider, configuration)
         {
             this.commandFactories = new CommandFactories(this);
         }
@@ -87,35 +87,36 @@ namespace Allors.Adapters.Database.Npgsql
 
         internal object[] CreateObjectTable(IEnumerable<long> objectIds)
         {
-            return objectIds.Select(objectId => objectId.Value).ToArray();
+            return objectIds.Cast<object>().ToArray();
         }
 
         internal object[] CreateObjectTable(IEnumerable<Reference> strategies)
         {
-            return strategies.Select(strategy => strategy.ObjectId.Value).ToArray();
+            return strategies.Select(strategy => strategy.ObjectId).Cast<object>().ToArray();
         }
 
         internal object[] CreateObjectTable(Dictionary<Reference, Roles> rolesByReference)
         {
             return rolesByReference
                 .Select(dictionaryEntry => dictionaryEntry.Key)
-                .Select(strategy => strategy.ObjectId.Value)
+                .Select(strategy => strategy.ObjectId)
+                .Cast<object>()
                 .ToArray();
         }
 
         internal object[] CreateAssociationTable(IEnumerable<CompositeRelation> relations)
         {
-            return relations.Select(relation => relation.Association.Value).ToArray();
+            return relations.Select(relation => relation.Association).Cast<object>().ToArray();
         }
         
         internal object[] CreateAssociationTable(IEnumerable<UnitRelation> relations)
         {
-            return relations.Select(relation => relation.Association.Value).ToArray(); 
+            return relations.Select(relation => relation.Association).Cast<object>().ToArray(); 
         }
         
         internal object[] CreateRoleTable(IEnumerable<CompositeRelation> relations)
         {
-            return relations.Select(relation => relation.Role.Value).ToArray();
+            return relations.Select(relation => relation.Role).Cast<object>().ToArray();
         }
 
         internal object[] CreateRoleTable(IEnumerable<UnitRelation> relations)

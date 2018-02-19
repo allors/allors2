@@ -87,13 +87,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 if (!this.commandByObjectType.TryGetValue(objectType, out command))
                 {
                     command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(objectType));
-                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId.Value);
+                    this.AddInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
 
                     this.commandByObjectType[objectType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId.Value);
+                    this.SetInObject(command, this.Database.Schema.ObjectId.Param, strategy.ObjectId);
                 }
                 
                 command.ExecuteNonQuery();

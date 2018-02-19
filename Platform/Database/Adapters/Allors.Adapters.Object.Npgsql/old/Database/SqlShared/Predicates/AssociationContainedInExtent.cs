@@ -42,7 +42,7 @@ namespace Allors.Adapters.Database.Sql
 
             inStatement.UseRole(this.association.RoleType);
 
-            if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveLeafClasses)
+            if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
                 statement.Append(" (" + this.association.SingularName + "_A." + schema.RoleId + " IS NOT NULL AND ");
                 statement.Append(" " + this.association.SingularName + "_A." + schema.RoleId + " IN (\n");

@@ -53,7 +53,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 var associationType = roleType.AssociationType;
 
                 string sql;
-                if (associationType.IsMany || !roleType.RelationType.ExistExclusiveLeafClasses)
+                if (associationType.IsMany || !roleType.RelationType.ExistExclusiveClasses)
                 {
                     sql = Sql.Schema.AllorsPrefix + "A_" + roleType.SingularFullName;
                 }

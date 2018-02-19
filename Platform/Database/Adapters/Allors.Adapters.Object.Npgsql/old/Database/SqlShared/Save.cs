@@ -96,14 +96,14 @@ namespace Allors.Adapters.Database.Sql
                                 atLeastOne = true;
 
                                 this.writer.WriteStartElement(Serialization.ObjectType);
-                                this.writer.WriteAttributeString(Serialization.Id, type.IdAsString);
+                                this.writer.WriteAttributeString(Serialization.Id, type.Id.ToString());
                             }
                             else
                             {
                                 this.writer.WriteString(Serialization.ObjectsSplitter);
                             }
 
-                            var objectId = this.database.AllorsObjectIds.Parse(reader[0].ToString());
+                            var objectId = long.Parse(reader[0].ToString());
                             this.writer.WriteString(objectId.ToString());
                         }
 
@@ -129,7 +129,7 @@ namespace Allors.Adapters.Database.Sql
             {
                 var associationType = relation.AssociationType;
 
-                if (associationType.ObjectType.ExistLeafClasses)
+                if (associationType.ObjectType.ExistClass)
                 {
                     var roleType = relation.RoleType;
                 
@@ -140,7 +140,7 @@ namespace Allors.Adapters.Database.Sql
                         if (!exclusiveLeafClassesByObjectType.TryGetValue(associationType.ObjectType, out exclusiveLeafClasses))
                         {
                             exclusiveLeafClasses = new HashSet<IClass>();
-                            foreach (var concreteClass in associationType.ObjectType.LeafClasses)
+                            foreach (var concreteClass in associationType.ObjectType.Classes)
                             {
                                 exclusiveLeafClasses.Add(concreteClass.ExclusiveClass);
                             }
@@ -169,7 +169,7 @@ namespace Allors.Adapters.Database.Sql
                     }
                     else
                     {
-                        if ((roleType.IsMany && associationType.IsMany) || !relation.ExistExclusiveLeafClasses)
+                        if ((roleType.IsMany && associationType.IsMany) || !relation.ExistExclusiveClasses)
                         {
                             sql += "SELECT " + this.database.Schema.AssociationId + "," + this.database.Schema.RoleId + "\n";
                             sql += "FROM " + this.database.Schema.Table(relation) + "\n";

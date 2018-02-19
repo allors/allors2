@@ -85,7 +85,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 {
                     while (reader.Read())
                     {
-                        object id = this.Database.AllorsObjectIds.Parse(reader[0].ToString());
+                        object id = long.Parse(reader[0].ToString());
                         objectIds.Add(id);
                     }
                 }
@@ -94,7 +94,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 
                 foreach (object id in objectIds)
                 {
-                    long objectId = this.factory.Database.AllorsObjectIds.Parse(id.ToString());
+                    long objectId = long.Parse(id.ToString());
                     var strategySql = this.Session.CreateAssociationForNewObject(objectType, objectId);
                     strategies.Add(strategySql);
                 }

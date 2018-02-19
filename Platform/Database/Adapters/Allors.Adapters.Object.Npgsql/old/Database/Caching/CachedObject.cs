@@ -26,17 +26,17 @@ namespace Allors.Adapters.Database.Caching
 
     public class CachedObject : ICachedObject
     {
-        private readonly int localCacheVersion;
+        private readonly long localCacheVersion;
 
         private readonly Dictionary<IRoleType, object> roleByRoleType;
 
-        internal CachedObject(int localCacheVersion)
+        internal CachedObject(long localCacheVersion)
         {
             this.localCacheVersion = localCacheVersion;
             this.roleByRoleType = new Dictionary<IRoleType, object>();
         }
 
-        public int LocalCacheVersion
+        public long LocalCacheVersion
         {
             get
             {

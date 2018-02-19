@@ -20,23 +20,15 @@
 
 namespace Allors.Adapters.Database.Npgsql.LongId
 {
-    using Allors.Adapters.Database.Sql;
+    using System;
 
     public class Database : Npgsql.Database 
     {
-        private readonly IObjectIds allorsObjectIds;
-       
         private Schema schema;
 
-        public Database(Npgsql.Configuration configuration)
-            : base(configuration)
+        public Database(IServiceProvider serviceProvider, Npgsql.Configuration configuration)
+            : base(serviceProvider, configuration)
         {
-            this.allorsObjectIds = new ObjectLongIds();
-        }
-
-        public override IObjectIds AllorsObjectIds
-        {
-            get { return this.allorsObjectIds; }
         }
         
         public override Npgsql.Schema NpgsqlSchema

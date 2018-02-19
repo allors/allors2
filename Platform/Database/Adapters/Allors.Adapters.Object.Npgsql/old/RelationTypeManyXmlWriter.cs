@@ -119,7 +119,7 @@ namespace Allors.Adapters
                     this.xmlWriter.WriteStartElement(Serialization.RelationTypeComposite);
                 }
 
-                this.xmlWriter.WriteAttributeString(Serialization.Id, this.relationType.IdAsString);
+                this.xmlWriter.WriteAttributeString(Serialization.Id, this.relationType.Id.ToString());
             }
 
             if (this.previousAssociationId != associationId)

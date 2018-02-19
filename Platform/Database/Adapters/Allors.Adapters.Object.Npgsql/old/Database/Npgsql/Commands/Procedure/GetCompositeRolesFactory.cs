@@ -56,7 +56,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 var associationType = roleType.AssociationType;
 
                 string sql;
-                if (associationType.IsMany || !roleType.RelationType.ExistExclusiveLeafClasses)
+                if (associationType.IsMany || !roleType.RelationType.ExistExclusiveClasses)
                 {
                     sql = Schema.AllorsPrefix + "GR_" + roleType.SingularFullName;
                 }
@@ -93,13 +93,13 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 {
                     command = this.Session.CreateNpgsqlCommand(this.factory.GetSql(roleType));
                     command.CommandType = CommandType.StoredProcedure;
-                    this.AddInObject(command, this.Database.Schema.AssociationId.Param, reference.ObjectId.Value);
+                    this.AddInObject(command, this.Database.Schema.AssociationId.Param, reference.ObjectId);
 
                     this.commandByRoleType[roleType] = command;
                 }
                 else
                 {
-                    this.SetInObject(command, this.Database.Schema.AssociationId.Param, reference.ObjectId.Value);
+                    this.SetInObject(command, this.Database.Schema.AssociationId.Param, reference.ObjectId);
                 }
 
                 var objectIds = new List<long>();
@@ -108,7 +108,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                     while (reader.Read())
                     {
                         var idString = reader[0].ToString();
-                        var id = this.Database.AllorsObjectIds.Parse(idString);
+                        var id = long.Parse(idString);
                         objectIds.Add(id);
                     }
                 }

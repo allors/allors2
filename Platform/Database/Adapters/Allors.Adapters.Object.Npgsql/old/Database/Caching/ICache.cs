@@ -29,7 +29,7 @@ namespace Allors.Adapters.Database.Caching
     /// </summary>
     public interface ICache
     {
-        ICachedObject GetOrCreateCachedObject(IObjectType concreteClass, long objectId, int localCacheId);
+        ICachedObject GetOrCreateCachedObject(IObjectType concreteClass, long objectId, long localCacheId);
 
         IObjectType GetObjectType(long objectId);
 

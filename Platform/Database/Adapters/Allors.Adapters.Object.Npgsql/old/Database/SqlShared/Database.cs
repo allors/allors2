@@ -36,6 +36,8 @@ namespace Allors.Adapters.Database.Sql
 
     public abstract class Database : Population, IDatabase
     {
+        public static readonly long[] EmptyObjectIds = { };
+
         private const string ConnectionStringsKey = "allors";
 
         private readonly string id;
@@ -132,9 +134,7 @@ namespace Allors.Adapters.Database.Sql
         public abstract Schema Schema { get; }
 
         public abstract CommandFactories CommandFactories { get; }
-
-        public abstract IObjectIds AllorsObjectIds { get; }
-        
+       
         public ICache Cache
         {
             get

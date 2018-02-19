@@ -49,7 +49,7 @@ namespace Allors.Adapters.Database.Sql
                 inStatement.Append(inObject.Id.ToString());
             }
 
-            if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveLeafClasses)
+            if ((this.association.IsMany && this.association.RelationType.RoleType.IsMany) || !this.association.RelationType.ExistExclusiveClasses)
             {
                 statement.Append(" (" + this.association.SingularName + "_A." + schema.AssociationId + " IS NOT NULL AND ");
                 statement.Append(" " + this.association.SingularName + "_A." + schema.AssociationId + " IN (\n");

@@ -99,7 +99,7 @@ namespace Allors.Adapters.Database.Sql
                 {
                     while (reader.Read())
                     {
-                        var objectId = this.Session.SqlDatabase.AllorsObjectIds.Parse(reader.GetValue(0).ToString());
+                        var objectId = long.Parse(reader.GetValue(0).ToString());
                         objectIds.Add(objectId);
                     }
 

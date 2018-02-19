@@ -93,35 +93,35 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 var unitTypeTag = unitType.UnitTag;
                 switch (unitTypeTag)
                 {
-                    case UnitTags.AllorsString:
+                    case UnitTags.String:
                         arrayParam = schema.StringRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsInteger:
+                    case UnitTags.Integer:
                         arrayParam = schema.IntegerRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsFloat:
+                    case UnitTags.Float:
                         arrayParam = schema.DoubleRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsBoolean:
+                    case UnitTags.Boolean:
                         arrayParam = schema.BooleanRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsDate:
+                    case UnitTags.DateTime:
                         arrayParam = schema.DateTimeRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsUnique:
+                    case UnitTags.Unique:
                         arrayParam = schema.UniqueRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsBinary:
+                    case UnitTags.Binary:
                         arrayParam = schema.BinaryRelationArrayParam;
                         break;
 
-                    case UnitTags.AllorsDecimal:
+                    case UnitTags.Decimal:
                         arrayParam = schema.DecimalRelationTableParameterByScaleByPrecision[roleType.Precision.Value][roleType.Scale.Value];
                         break;
 

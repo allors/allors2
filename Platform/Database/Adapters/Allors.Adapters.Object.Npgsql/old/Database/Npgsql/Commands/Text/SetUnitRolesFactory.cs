@@ -76,7 +76,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 if (!commandByKey.TryGetValue(sortedRoleTypes, out command))
                 {
                     command = this.session.CreateNpgsqlCommand();
-                    this.AddInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId.Value);
+                    this.AddInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId);
 
                     var sql = new StringBuilder();
                     sql.Append("UPDATE " + schema.Table(exclusiveLeafClass) + " SET\n");
@@ -107,7 +107,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 }
                 else
                 {
-                    this.SetInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId.Value);
+                    this.SetInObject(command, schema.ObjectId.Param, roles.Reference.ObjectId);
                     
                     foreach (var roleType in sortedRoleTypes)
                     {

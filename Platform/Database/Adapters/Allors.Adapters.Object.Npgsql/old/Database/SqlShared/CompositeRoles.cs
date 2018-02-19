@@ -84,7 +84,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public long First
+        public long? First
         {
             get
             {

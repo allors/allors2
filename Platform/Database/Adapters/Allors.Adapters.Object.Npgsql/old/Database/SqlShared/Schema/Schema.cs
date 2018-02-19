@@ -324,21 +324,21 @@ namespace Allors.Adapters.Database.Sql
             var unitTypeTag = unitType.UnitTag;
             switch (unitTypeTag)
             {
-                case UnitTags.AllorsString:
+                case UnitTags.String:
                     return DbType.String;
-                case UnitTags.AllorsInteger:
+                case UnitTags.Integer:
                     return DbType.Int32;
-                case UnitTags.AllorsDecimal:
+                case UnitTags.Decimal:
                     return DbType.Decimal;
-                case UnitTags.AllorsFloat:
+                case UnitTags.Float:
                     return DbType.Double;
-                case UnitTags.AllorsBoolean:
+                case UnitTags.Boolean:
                     return DbType.Boolean;
-                case UnitTags.AllorsDate:
+                case UnitTags.DateTime:
                     return DbType.DateTime;
-                case UnitTags.AllorsUnique:
+                case UnitTags.Unique:
                     return DbType.Guid;
-                case UnitTags.AllorsBinary:
+                case UnitTags.Binary:
                     return DbType.Binary;
                 default:
                     throw new ArgumentException("Unkown unit type " + role.ObjectType);
@@ -358,7 +358,7 @@ namespace Allors.Adapters.Database.Sql
                 var roleType = relationType.RoleType;
 
                 if (roleType.ObjectType is IComposite && 
-                    ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveLeafClasses))
+                    ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
                 {
                     var column = new SchemaColumn(this, "R", this.ObjectDbType, false, true, relationType.IsIndexed ? SchemaIndexType.Combined : SchemaIndexType.None, relationType);
                     this.ColumnsByRelationType.Add(relationType, column);
@@ -370,7 +370,7 @@ namespace Allors.Adapters.Database.Sql
                         var column = new SchemaColumn(this, roleType.SingularPropertyName, this.GetDbType(roleType), false, false, relationType.IsIndexed ? SchemaIndexType.Single : SchemaIndexType.None, relationType, roleType.Size, roleType.Precision, roleType.Scale);
                         this.ColumnsByRelationType.Add(relationType, column);
                     }
-                    else if (relationType.ExistExclusiveLeafClasses)
+                    else if (relationType.ExistExclusiveClasses)
                     {
                         if (roleType.IsOne)
                         {
@@ -421,7 +421,7 @@ namespace Allors.Adapters.Database.Sql
                     {
                         var relationType = associationType.RelationType;
                         var roleType = relationType.RoleType;
-                        if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveLeafClasses && roleType.IsMany)
+                        if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses && roleType.IsMany)
                         {
                             schemaTable.AddColumn(this.Column(relationType));
                         }
@@ -437,7 +437,7 @@ namespace Allors.Adapters.Database.Sql
                         }
                         else
                         {
-                            if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveLeafClasses && !roleType.IsMany)
+                            if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses && !roleType.IsMany)
                             {
                                 schemaTable.AddColumn(this.Column(relationType));
                             }
@@ -451,7 +451,7 @@ namespace Allors.Adapters.Database.Sql
                 var associationType = relationType.AssociationType;
                 var roleType = relationType.RoleType;
 
-                if (roleType.ObjectType is IComposite && ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveLeafClasses))
+                if (roleType.ObjectType is IComposite && ((associationType.IsMany && roleType.IsMany) || !relationType.ExistExclusiveClasses))
                 {
                     var schemaTable = new SchemaTable(this, SchemaTableKind.Relation, relationType);
                     this.TablesByName.Add(schemaTable.Name, schemaTable);

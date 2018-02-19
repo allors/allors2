@@ -175,16 +175,16 @@ namespace Allors.Adapters.Database.Sql
                                 for (var i = 0; i < objectIds.Length; i++)
                                 {
                                     var objectIdString = objectIdStringArray[i];
+                                    var objectId = long.Parse(objectIdString);
  
                                     if (canLoad)
                                     {
-                                        var objectId = this.database.AllorsObjectIds.Parse(objectIdString);
                                         objectIds[i] = objectId;
                                         this.objectTypeByObjectId[objectId] = (IClass)objectType;
                                     }
                                     else
                                     {
-                                        this.OnObjectNotLoaded(objectTypeId, objectIdString);
+                                        this.OnObjectNotLoaded(objectTypeId, objectId);
                                     }
                                 }
 
@@ -365,7 +365,7 @@ namespace Allors.Adapters.Database.Sql
                                 throw new Exception("Association id is missing");
                             }
 
-                            var associationId = this.database.AllorsObjectIds.Parse(associationIdString);
+                            var associationId = long.Parse(associationIdString);
                             IClass associationConcreteClass;
                             this.objectTypeByObjectId.TryGetValue(associationId, out associationConcreteClass);
 
@@ -374,7 +374,7 @@ namespace Allors.Adapters.Database.Sql
                                 if (associationConcreteClass == null ||
                                     !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
                                 {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, string.Empty);
+                                    this.OnRelationNotLoaded(relationType.Id, associationId, string.Empty);
                                 }
                                 else
                                 {
@@ -382,7 +382,7 @@ namespace Allors.Adapters.Database.Sql
                                     var unitType = (IUnit)relationType.RoleType.ObjectType;
                                     switch (unitType.UnitTag)
                                     {
-                                        case UnitTags.AllorsString:
+                                        case UnitTags.String:
                                             {
                                                 List<UnitRelation> relations;
                                                 if (!relationsByExclusiveLeafClass.TryGetValue(associationConcreteClass.ExclusiveClass, out relations))
@@ -397,7 +397,7 @@ namespace Allors.Adapters.Database.Sql
                                             
                                             break;
 
-                                        case UnitTags.AllorsBinary:
+                                        case UnitTags.Binary:
                                             {
                                                 List<UnitRelation> relations;
                                                 if (!relationsByExclusiveLeafClass.TryGetValue(associationConcreteClass.ExclusiveClass, out relations))
@@ -413,7 +413,7 @@ namespace Allors.Adapters.Database.Sql
                                             break;
 
                                         default:
-                                            this.OnRelationNotLoaded(relationType.Id, associationIdString, string.Empty);
+                                            this.OnRelationNotLoaded(relationType.Id, associationId, string.Empty);
                                             break;
                                     }
                                 }
@@ -424,7 +424,7 @@ namespace Allors.Adapters.Database.Sql
                                 if (associationConcreteClass == null ||
                                    !this.database.ContainsConcreteClass(relationType.AssociationType.ObjectType, associationConcreteClass))
                                 {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
+                                    this.OnRelationNotLoaded(relationType.Id, associationId, value);
                                 }
                                 else
                                 {
@@ -447,7 +447,7 @@ namespace Allors.Adapters.Database.Sql
                                     }
                                     catch
                                     {
-                                        this.OnRelationNotLoaded(relationType.Id, associationIdString, value);
+                                        this.OnRelationNotLoaded(relationType.Id, associationId, value);
                                     }
                                 }
                             }
@@ -489,7 +489,7 @@ namespace Allors.Adapters.Database.Sql
                                 throw new Exception("Role is missing");
                             }
 
-                            var association = this.database.AllorsObjectIds.Parse(associationIdString);
+                            var association = long.Parse(associationIdString);
                             IClass associationConcreteClass;
                             this.objectTypeByObjectId.TryGetValue(association, out associationConcreteClass);
 
@@ -502,21 +502,21 @@ namespace Allors.Adapters.Database.Sql
                             {
                                 foreach (var r in rs)
                                 {
-                                    this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
+                                    this.OnRelationNotLoaded(relationType.Id, association, r);
                                 }
                             }
                             else
                             {
                                 foreach (var r in rs)
                                 {
-                                    var role = this.database.AllorsObjectIds.Parse(r);
+                                    var role = long.Parse(r);
                                     IClass roleConcreteClass;
                                     this.objectTypeByObjectId.TryGetValue(role, out roleConcreteClass);
 
                                     if (roleConcreteClass == null ||
                                         !this.database.ContainsConcreteClass((IComposite)relationType.RoleType.ObjectType, roleConcreteClass))
                                     {
-                                        this.OnRelationNotLoaded(relationType.Id, associationIdString, r);
+                                        this.OnRelationNotLoaded(relationType.Id, association, r);
                                     }
                                     else
                                     {
@@ -552,6 +552,7 @@ namespace Allors.Adapters.Database.Sql
                         if (this.reader.Name.Equals(Serialization.Relation))
                         {
                             var a = this.reader.GetAttribute(Serialization.Association);
+                            var associationId = long.Parse(a);
                             var value = string.Empty;
 
                             if (!this.reader.IsEmptyElement)
@@ -559,7 +560,7 @@ namespace Allors.Adapters.Database.Sql
                                 value = this.reader.ReadString();
                             }
 
-                            this.OnRelationNotLoaded(relationTypeId, a, value);
+                            this.OnRelationNotLoaded(relationTypeId, associationId, value);
                         }
 
                         break;
@@ -584,9 +585,11 @@ namespace Allors.Adapters.Database.Sql
                                 throw new Exception("Association id is missing");
                             }
 
+                            var associationId = long.Parse(associationIdString);
+
                             if (this.reader.IsEmptyElement)
                             {
-                                this.OnRelationNotLoaded(relationTypeId, associationIdString, null);
+                                this.OnRelationNotLoaded(relationTypeId, associationId, null);
                             }
                             else
                             {
@@ -594,7 +597,7 @@ namespace Allors.Adapters.Database.Sql
                                 var rs = value.Split(Serialization.ObjectsSplitterCharArray);
                                 foreach (var r in rs)
                                 {
-                                    this.OnRelationNotLoaded(relationTypeId, associationIdString, r);
+                                    this.OnRelationNotLoaded(relationTypeId, associationId, r);
                                 }
                             }
                         }
@@ -606,7 +609,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        private void OnObjectNotLoaded(Guid objectTypeId, string allorsObjectId)
+        private void OnObjectNotLoaded(Guid objectTypeId, long allorsObjectId)
         {
             if (this.objectNotLoaded != null)
             {
@@ -618,7 +621,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        private void OnRelationNotLoaded(Guid relationTypeId, string associationObjectId, string roleContents)
+        private void OnRelationNotLoaded(Guid relationTypeId, long associationObjectId, string roleContents)
         {
             var args = new RelationNotLoadedEventArgs(relationTypeId, associationObjectId, roleContents);
             if (this.relationNotLoaded != null)

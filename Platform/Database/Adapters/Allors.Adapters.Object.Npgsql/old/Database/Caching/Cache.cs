@@ -44,7 +44,7 @@ namespace Allors.Adapters.Database.Caching
                 this.transientConcreteClasses = new HashSet<IObjectType>();
                 foreach (var transientObjectType in transientObjectTypes)
                 {
-                    foreach (var transientConcreteClass in transientObjectType.LeafClasses)
+                    foreach (var transientConcreteClass in transientObjectType.Classes)
                     {
                         this.transientConcreteClasses.Add(transientConcreteClass);
                     }
@@ -66,7 +66,7 @@ namespace Allors.Adapters.Database.Caching
             this.objectTypeByObjectId.Clear();
         }
 
-        public ICachedObject GetOrCreateCachedObject(IObjectType concreteClass, long objectId, int localCacheId)
+        public ICachedObject GetOrCreateCachedObject(IObjectType concreteClass, long objectId, long localCacheId)
         {
             if (this.transientConcreteClasses != null && this.transientConcreteClasses.Contains(concreteClass))
             {

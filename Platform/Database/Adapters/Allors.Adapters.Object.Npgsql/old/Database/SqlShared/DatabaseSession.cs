@@ -165,7 +165,7 @@ namespace Allors.Adapters.Database.Sql
 
         public virtual IObject Insert(IClass domainType, string objectIdString)
         {
-            var objectId = this.SqlDatabase.AllorsObjectIds.Parse(objectIdString);
+            var objectId = long.Parse(objectIdString);
             var insertedObject = this.Insert(domainType, objectId);
 
             this.changeSet.OnCreated(objectId);
@@ -200,7 +200,7 @@ namespace Allors.Adapters.Database.Sql
 
         public virtual IObject Instantiate(string objectId)
         {
-            var id = this.SqlDatabase.AllorsObjectIds.Parse(objectId);
+            var id = long.Parse(objectId);
             return this.Instantiate(id);
         }
 
@@ -232,7 +232,7 @@ namespace Allors.Adapters.Database.Sql
             var objectIds = new long[objectIdStrings.Length];
             for (var i = 0; i < objectIdStrings.Length; i++)
             {
-                objectIds[i] = this.SqlDatabase.AllorsObjectIds.Parse(objectIdStrings[i]);
+                objectIds[i] = long.Parse(objectIdStrings[i]);
             }
 
             return this.Instantiate(objectIds);

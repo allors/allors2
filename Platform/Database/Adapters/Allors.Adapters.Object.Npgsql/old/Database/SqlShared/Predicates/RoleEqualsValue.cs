@@ -63,7 +63,7 @@ namespace Allors.Adapters.Database.Sql
             {
                 var allorsObject = (IObject)this.obj;
 
-                if (this.roleType.RelationType.ExistExclusiveLeafClasses)
+                if (this.roleType.RelationType.ExistExclusiveClasses)
                 {
                     statement.Append(" (" + alias + "." + schema.Column(this.roleType) + " IS NOT NULL AND ");
                     statement.Append(" " + alias + "." + schema.Column(this.roleType) + "=" + allorsObject.Strategy.ObjectId + ")");
