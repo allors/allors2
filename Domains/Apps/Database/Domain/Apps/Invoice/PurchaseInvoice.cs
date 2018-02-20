@@ -63,18 +63,7 @@ namespace Allors.Domain
                 derivation.AddDependency(this, internalOrganisation);
             }
 
-            if (this.ExistBilledFrom)
-            {
-                var supplier = this.BilledFrom as Organisation;
-                if (supplier != null)
-                {
-                    // TODO: Isn't this too broad?
-                    foreach (Organisation supplierRelationship in new Organisations(this.strategy.Session).Suppliers)
-                    {
-                        derivation.AddDependency(this, supplierRelationship);
-                    }
-                }
-            }
+            derivation.AddDependency(this, this.BilledFrom);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -144,7 +133,7 @@ namespace Allors.Domain
                 salesInvoice.AddSalesInvoiceItem(invoiceItem);
             }
 
-            var internalOrganisation = (InternalOrganisation) salesInvoice.BilledFrom;
+            var internalOrganisation = (InternalOrganisation)salesInvoice.BilledFrom;
             if (!internalOrganisation.ActiveCustomers.Contains(salesInvoice.BillToCustomer))
             {
                 new CustomerRelationshipBuilder(this.strategy.Session)
