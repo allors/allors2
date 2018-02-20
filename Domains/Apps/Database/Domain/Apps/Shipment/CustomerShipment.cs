@@ -183,12 +183,12 @@ namespace Allors.Domain
 
             if (!this.ExistShipFromAddress)
             {
-                this.ShipFromAddress = this.ShipFromParty.ShippingAddress;
+                this.ShipFromAddress = this.ShipFromParty?.ShippingAddress;
             }
 
             if (!this.ExistBillFromContactMechanism)
             {
-                this.BillFromContactMechanism = this.ShipFromParty.BillingAddress;
+                this.BillFromContactMechanism = this.ShipFromParty?.BillingAddress;
             }
 
             this.CreatePickList(derivation);

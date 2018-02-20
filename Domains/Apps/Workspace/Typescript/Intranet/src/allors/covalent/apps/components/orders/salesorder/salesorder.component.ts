@@ -108,11 +108,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           new Query(m.VatRegime),
           new Query(
             {
-            include: [
-              new TreeNode({ roleType: m.Store.BillingProcess }),
-            ],
-            name: "stores",
+              include: [new TreeNode({ roleType: m.Store.BillingProcess })],
+              name: "stores",
               objectType: m.Store,
+              predicate: new Equals({ roleType: m.Store.InternalOrganisation, value: internalOrganisationId }),
             }),
           new Query(
             {

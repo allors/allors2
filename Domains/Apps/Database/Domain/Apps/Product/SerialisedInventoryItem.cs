@@ -28,7 +28,7 @@ namespace Allors.Domain
         {
             if (!this.ExistSerialisedInventoryItemState)
             {
-                this.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Good;
+                this.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).ForSale;
             }
         }
 

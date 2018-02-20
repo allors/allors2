@@ -52,7 +52,7 @@ namespace Allors.Domain
                 salesInvoiceNumber = fiscalYearInvoiceNumber.DeriveNextSalesInvoiceNumber();
             }
 
-            return string.Concat(this.SalesInvoiceNumberPrefix, salesInvoiceNumber);
+            return string.Concat(this.SalesInvoiceNumberPrefix, salesInvoiceNumber).Replace("{year}", year.ToString());
         }
 
         // TODO: Cascading delete

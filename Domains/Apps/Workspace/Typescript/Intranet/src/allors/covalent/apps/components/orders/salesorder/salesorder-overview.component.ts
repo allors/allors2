@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
-import { MatSnackBar } from "@angular/material";
+import { MatDialog, MatSnackBar } from "@angular/material";
 import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
@@ -10,9 +10,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm} from "../../../../../domain";
+import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+
+import { CustomerShipmentDialogComponent } from "./customershipment-dialog.module";
 
 @Component({
   templateUrl: "./salesorder-overview.component.html",
@@ -28,7 +30,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   public salesInvoice: SalesInvoice;
   public billingProcesses: BillingProcess[];
   public billingForOrderItems: BillingProcess;
-
+  public selectedSerialisedInventoryState: string;
+  public inventoryItemStates: SerialisedInventoryItemState[];
   private subscription: Subscription;
   private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
@@ -39,6 +42,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public dialogService: TdDialogService,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
 
@@ -133,16 +137,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         }
 
         const query: Query[] = [
-          new Query(
-            {
-              name: "goods",
-              objectType: m.Good,
-            }),
-            new Query(
-            {
-              name: "processFlows",
-              objectType: m.BillingProcess,
-            }),
+          new Query(m.Good),
+          new Query(m.BillingProcess),
+          new Query(m.SerialisedInventoryItemState),
         ];
 
         return this.scope
@@ -150,10 +147,11 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.goods = loaded.collections.goods as Good[];
+        this.goods = loaded.collections.GoodQuery as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.billingProcesses = loaded.collections.processFlows as BillingProcess[];
+        this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
+        this.billingProcesses = loaded.collections.BillingProcessQuery as BillingProcess[];
         this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
 
         if (this.order) {
@@ -214,6 +212,21 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   }
 
   public ship(): void {
+    const dialogRef = this.dialog.open(CustomerShipmentDialogComponent, {
+      data: { selectedState: this.selectedSerialisedInventoryState },
+      height: "300px",
+      width: "700px",
+    });
+
+    // dialogRef.afterClosed().subscribe((answer: string) => {
+    //   if (answer === "Serialised") {
+    //     this.router.navigate(["/serialisedGood"]);
+    //   }
+    //   if (answer === "NonSerialised") {
+    //     this.router.navigate(["/nonSerialisedGood"]);
+    //   }
+    // });
+
     this.scope.invoke(this.order.Ship)
       .subscribe((invoked: Invoked) => {
         this.goBack();

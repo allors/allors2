@@ -17,7 +17,6 @@
         <div class="col">
           <div class="grid-2_md-1">
           <a-mat-static class="col"  [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
-          <a-mat-static  class="col" *ngIf="stores.length == 1 || order.Store" [object]="order" [roleType]="m.SalesOrder.Store" display="Name"></a-mat-static>
           <a-mat-select  class="col" *ngIf="stores.length > 1 && !order.Store" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores"
             display="Name"></a-mat-select>
           </div>
@@ -25,7 +24,6 @@
       </div>
 
       <div class="grid-2_xs-1" *ngIf="order.isNew">
-        <a-mat-static class="col" *ngIf="stores.length == 1" [object]="order" [roleType]="m.SalesOrder.Store" display="Name"></a-mat-static>
         <a-mat-select class="col" *ngIf="stores.length > 1" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores"
           display="Name"></a-mat-select>
       </div>
