@@ -18,20 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
+    using System;
+
     using Adapters;
 
-    using Xunit;
-
-    
     public class ChangesTest : Adapters.ChangesTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
+
         public void Dispose()
         {
             this.profile.Dispose();

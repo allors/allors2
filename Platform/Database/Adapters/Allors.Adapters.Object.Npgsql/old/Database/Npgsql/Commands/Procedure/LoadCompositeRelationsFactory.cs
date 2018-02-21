@@ -50,7 +50,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 else
                 {
                     var compositeType = (IComposite)roleType.ObjectType;
-                    sql = Schema.AllorsPrefix + "A_" + compositeType.ExclusiveClass.Name + "_" + associationType.SingularName;
+                    sql = Schema.AllorsPrefix + "A_" + compositeType.ExclusiveClass.Name + "_" + associationType.SingularFullName;
                 }
             }
             else

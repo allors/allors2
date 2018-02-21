@@ -22,7 +22,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using Xunit;
 
-    public abstract class SchemaIntegerIdTest : SchemaTest
+    public abstract class SchemaTest : Object.SchemaTest
     {
         [Fact(Skip = "Explicit")]
         public void Recover()
@@ -61,9 +61,5 @@ namespace Allors.Adapters.Object.SqlClient
 
             //Assert.False(exceptionThrown);
         }
-    }
-
-    public abstract class SchemaLongIdTest : SchemaTest
-    {
     }
 }

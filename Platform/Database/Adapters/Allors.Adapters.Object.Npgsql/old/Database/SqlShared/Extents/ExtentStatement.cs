@@ -123,15 +123,15 @@ namespace Allors.Adapters.Database.Sql
 
                 if ((association.IsMany && role.IsMany) || !relationType.ExistExclusiveClasses)
                 {
-                    this.Append(" LEFT OUTER JOIN " + Schema.Table(association) + " " + association.SingularName + "_A");
-                    this.Append(" ON " + alias + "." + this.Schema.ObjectId + "=" + association.SingularName + "_A." + this.Schema.RoleId);
+                    this.Append(" LEFT OUTER JOIN " + Schema.Table(association) + " " + association.SingularFullName + "_A");
+                    this.Append(" ON " + alias + "." + this.Schema.ObjectId + "=" + association.SingularFullName + "_A." + this.Schema.RoleId);
                 }
                 else
                 {
                     if (!role.IsMany)
                     {
-                        this.Append(" LEFT OUTER JOIN " + Schema.Table(association.ObjectType.ExclusiveClass) + " " + association.SingularName + "_A");
-                        this.Append(" ON " + alias + "." + this.Schema.ObjectId + "=" + association.SingularName + "_A." + Schema.Column(role));
+                        this.Append(" LEFT OUTER JOIN " + Schema.Table(association.ObjectType.ExclusiveClass) + " " + association.SingularFullName + "_A");
+                        this.Append(" ON " + alias + "." + this.Schema.ObjectId + "=" + association.SingularFullName + "_A." + Schema.Column(role));
                     }
                 }
             }
@@ -146,14 +146,14 @@ namespace Allors.Adapters.Database.Sql
                     if (!relationType.ExistExclusiveClasses)
                     {
                         this.Append(" LEFT OUTER JOIN " + this.Schema.Objects + " " + this.GetJoinName(association));
-                        this.Append(" ON " + this.GetJoinName(association) + "." + this.Schema.ObjectId + "=" + association.SingularName + "_A." + this.Schema.AssociationId + " ");
+                        this.Append(" ON " + this.GetJoinName(association) + "." + this.Schema.ObjectId + "=" + association.SingularFullName + "_A." + this.Schema.AssociationId + " ");
                     }
                     else
                     {
                         if (role.IsOne)
                         {
                             this.Append(" LEFT OUTER JOIN " + this.Schema.Objects + " " + this.GetJoinName(association));
-                            this.Append(" ON " + this.GetJoinName(association) + "." + this.Schema.ObjectId + "=" + association.SingularName + "_A." + this.Schema.ObjectId + " ");
+                            this.Append(" ON " + this.GetJoinName(association) + "." + this.Schema.ObjectId + "=" + association.SingularFullName + "_A." + this.Schema.ObjectId + " ");
                         }
                         else
                         {
@@ -200,7 +200,7 @@ namespace Allors.Adapters.Database.Sql
 
         public string GetJoinName(IAssociationType association)
         {
-            return association.SingularName + "_AC";
+            return association.SingularFullName + "_AC";
         }
 
         public string GetJoinName(IRoleType role)

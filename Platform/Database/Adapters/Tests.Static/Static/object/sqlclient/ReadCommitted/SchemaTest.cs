@@ -14,20 +14,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
+    using System;
+
     using Adapters;
     using Adapters.Object.SqlClient;
 
     using Allors.Meta;
 
-    using Xunit;
-
-    
-    public class SchemaTest : SchemaIntegerIdTest, IDisposable
+    public class SchemaTest : SqlClient.SchemaTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 

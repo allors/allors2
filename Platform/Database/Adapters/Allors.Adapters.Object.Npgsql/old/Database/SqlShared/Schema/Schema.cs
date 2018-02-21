@@ -379,7 +379,7 @@ namespace Allors.Adapters.Database.Sql
                         }
                         else
                         {
-                            var column = new SchemaColumn(this, associationType.SingularName, this.ObjectDbType, false, false, relationType.IsIndexed ? SchemaIndexType.Combined : SchemaIndexType.None, relationType);
+                            var column = new SchemaColumn(this, associationType.SingularFullName, this.ObjectDbType, false, false, relationType.IsIndexed ? SchemaIndexType.Combined : SchemaIndexType.None, relationType);
                             this.ColumnsByRelationType.Add(relationType, column);
                         }
                     }

@@ -135,6 +135,11 @@ namespace Allors.Adapters.Database.Npgsql
             switch (column.DbType)
             {
                 case DbType.String:
+                    if (column.Size == -1)
+                    {
+                        return "text";
+                    }
+
                     return "VARCHAR(" + column.Size + ") ";
                 case DbType.Int32:
                     return "INTEGER ";

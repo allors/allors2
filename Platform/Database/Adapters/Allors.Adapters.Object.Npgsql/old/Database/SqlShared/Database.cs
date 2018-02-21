@@ -60,7 +60,7 @@ namespace Allors.Adapters.Database.Sql
             this.isolationLevel = configuration.IsolationLevel;
 
             var connectionStringBuilder = new NpgsqlConnectionStringBuilder(this.ConnectionString);
-            var applicationName = connectionStringBuilder.ApplicationName.Trim();
+            var applicationName = connectionStringBuilder.ApplicationName?.Trim();
             if (!string.IsNullOrWhiteSpace(applicationName))
             {
                 this.id = applicationName;

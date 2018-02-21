@@ -201,7 +201,7 @@ namespace Allors.Adapters.Database.Sql
                     var inRelationType = inRole.RelationType;
                     if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                     {
-                        statement.Append("SELECT " + inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId);
+                        statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId);
                     }
                     else
                     {
@@ -211,7 +211,7 @@ namespace Allors.Adapters.Database.Sql
                         }
                         else
                         {
-                            statement.Append("SELECT " + inRole.AssociationType.SingularName + "_A." + this.Schema.Column(inRole.AssociationType));
+                            statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.Column(inRole.AssociationType));
                         }
                     }
 
@@ -236,7 +236,7 @@ namespace Allors.Adapters.Database.Sql
 
                     if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                     {
-                        statement.Append(inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
+                        statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
                     }
                     else
                     {
@@ -246,7 +246,7 @@ namespace Allors.Adapters.Database.Sql
                         }
                         else
                         {
-                            statement.Append(inRole.AssociationType.SingularName + "_A." +
+                            statement.Append(inRole.AssociationType.SingularFullName + "_A." +
                                              this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
                         }
                     }
@@ -376,7 +376,7 @@ namespace Allors.Adapters.Database.Sql
 
                         if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                         {
-                            statement.Append("SELECT " + inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId);
+                            statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId);
                         }
                         else
                         {
@@ -386,7 +386,7 @@ namespace Allors.Adapters.Database.Sql
                             }
                             else
                             {
-                                statement.Append("SELECT " + inRole.AssociationType.SingularName + "_A." + this.Schema.Column(inRole.AssociationType));
+                                statement.Append("SELECT " + inRole.AssociationType.SingularFullName + "_A." + this.Schema.Column(inRole.AssociationType));
                             }
                         }
 
@@ -412,7 +412,7 @@ namespace Allors.Adapters.Database.Sql
 
                         if (inRelationType.Multiplicity == Multiplicity.ManyToMany || !inRelationType.ExistExclusiveClasses)
                         {
-                            statement.Append(inRole.AssociationType.SingularName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
+                            statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Schema.AssociationId + " IS NOT NULL ");
                         }
                         else
                         {
@@ -422,7 +422,7 @@ namespace Allors.Adapters.Database.Sql
                             }
                             else
                             {
-                                statement.Append(inRole.AssociationType.SingularName + "_A." + this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
+                                statement.Append(inRole.AssociationType.SingularFullName + "_A." + this.Schema.Column(inRole.AssociationType) + " IS NOT NULL ");
                             }
                         }
                     }

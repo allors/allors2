@@ -20,10 +20,8 @@
 
 namespace Allors.Adapters.Object.SqlClient
 {
-    using System;
     using Allors.Domain;
     using Xunit;
-
     
     public abstract class UnitTest : Adapters.UnitTest
     {

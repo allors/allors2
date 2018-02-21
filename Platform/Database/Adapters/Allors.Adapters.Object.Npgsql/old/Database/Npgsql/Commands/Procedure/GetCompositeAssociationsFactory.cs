@@ -61,7 +61,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Text
                 }
                 else
                 {
-                    sql = Sql.Schema.AllorsPrefix + "GA_" + associationType.ObjectType.ExclusiveClass.Name + "_" + associationType.SingularName;
+                    sql = Sql.Schema.AllorsPrefix + "GA_" + associationType.ObjectType.ExclusiveClass.Name + "_" + associationType.SingularFullName;
                 }
 
                 this.sqlByAssociationType[associationType] = sql;

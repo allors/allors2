@@ -18,15 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
+    using System;
+
     using Adapters;
 
-    using Xunit;
-
-    
     public class Many2OneTest : Adapters.Many2OneTest, IDisposable
     {
         private readonly Profile profile = new Profile();

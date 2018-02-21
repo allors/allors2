@@ -43,7 +43,7 @@ namespace Allors.Adapters.Database.Sql
         }
 
         public SchemaTable(Schema schema, SchemaTableKind kind, IRelationType relationType)
-            : this(schema, kind, relationType.AssociationType.SingularName + relationType.RoleType.SingularName)
+            : this(schema, kind, relationType.AssociationType.SingularFullName + relationType.RoleType.SingularName)
         {
             this.RelationType = relationType;
         }

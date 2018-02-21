@@ -18,15 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
+    using System;
+    
     using Adapters;
 
-    using Xunit;
-
-    
     public class SandboxTest : Adapters.SandboxTest, IDisposable
     {
         private readonly Profile profile = new Profile();

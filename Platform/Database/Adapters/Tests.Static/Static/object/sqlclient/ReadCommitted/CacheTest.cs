@@ -18,24 +18,22 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
-    using Xunit;
+    using System;
 
-    
     public class CacheTest : Adapters.CacheTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
-        protected override IDatabase CreateDatabase()
-        {
-            return this.profile.CreateDatabase();
-        }
         public void Dispose()
         {
             this.profile.Dispose();
+        }
+
+        protected override IDatabase CreateDatabase()
+        {
+            return this.profile.CreateDatabase();
         }
     }
 }

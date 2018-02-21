@@ -25,7 +25,6 @@ namespace Allors.Adapters.Object.SqlClient
     using Allors.Meta;
 
     using Xunit;
-
     
     public abstract class SqlClientTest
     {
