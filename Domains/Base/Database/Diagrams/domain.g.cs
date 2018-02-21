@@ -30,9 +30,9 @@ namespace Allors.Domain
 		}
 		public interface Enumeration  : AccessControlledObject, UniquelyIdentifiable 
 		{
-						LocalisedText LocalisedNames {set;}
-
 						global::System.String Name {set;}
+
+						LocalisedText LocalisedNames {set;}
 
 						global::System.Boolean IsActive {set;}
 
@@ -370,9 +370,9 @@ namespace Allors.Domain
 
 						global::System.String Name {set;}
 
-						global::System.String NativeName {set;}
-
 						LocalisedText LocalisedNames {set;}
+
+						global::System.String NativeName {set;}
 
 		}
 		public interface Locale  : AccessControlledObject 
@@ -490,7 +490,7 @@ namespace Allors.Domain
 		{
 						Locale DefaultLocale {set;}
 
-						Locale Locales {set;}
+						Locale AdditionalLocales {set;}
 
 						User Guest {set;}
 

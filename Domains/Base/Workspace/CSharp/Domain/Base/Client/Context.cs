@@ -20,6 +20,15 @@
             this.Session = new Session(this.workspace);
         }
 
+        public Context(Context parentContext, string name)
+        {
+            this.name = name;
+            this.database = parentContext.database;
+            this.workspace = parentContext.workspace;
+
+            this.Session = parentContext.Session;
+        }
+
         public Session Session { get; }
 
         public Indexer<SessionObject> Objects { get; private set; }

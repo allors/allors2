@@ -16,6 +16,8 @@ namespace Tests.Remote
     [Collection("Remote")]
     public class RemoteTest : IDisposable
     {
+        public const string Url = "http://localhost:5000";
+
         public const string InitUrl = "/Test/Init";
         public const string SetupUrl = "/Test/Setup";
         public const string LoginUrl = "/Test/Login";
@@ -28,7 +30,7 @@ namespace Tests.Remote
         {
             var client = new HttpClient()
             {
-                BaseAddress = new Uri(RemoteFixture.Url),
+                BaseAddress = new Uri(Url),
             };
 
             this.Database = new Database(client);

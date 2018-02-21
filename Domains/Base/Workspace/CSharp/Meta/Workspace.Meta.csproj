@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,40 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>    
-    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Resources\**" />
-    <EmbeddedResource Remove="Resources\**" />
-    <None Remove="Resources\**" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.0" />
+    <PackageReference Include="Nito.AsyncEx" Version="4.0.1" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="Moq" Version="4.7.8" />
-    <PackageReference Include="Nito.AsyncEx.Core" Version="1.0.0-rc2-001" />
-    <PackageReference Include="xunit" Version="2.2.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Platform\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Platform\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Platform\Framework\Allors\Allors.csproj" />
-    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
-    <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
-    <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
-    <ProjectReference Include="..\..\..\Database\Server\Server.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj" />
     <ProjectReference Include="..\Domain\Workspace.Domain.csproj" />
     <ProjectReference Include="..\Meta\Workspace.Meta.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
 </Project>

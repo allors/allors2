@@ -28,6 +28,7 @@ namespace Allors.Domain
 
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
             config.GrantAdministrator(this.ObjectType, full);
+            config.GrantGuest(this.ObjectType, Operations.Read);
         }
     }
 }

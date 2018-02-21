@@ -3,9 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
-
     using Allors.Meta;
-
     using Meta;
 
     public interface ISessionObject
@@ -111,7 +109,7 @@
             var value = this.Get(roleType);
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
             {
-                return !((IEnumerable<SessionObject>)value).Any();
+                return ((IEnumerable<SessionObject>)value).Any();
             }
 
             return value != null;
@@ -191,8 +189,7 @@
                                     }
                                 }
 
-                                // TODO: Optimize
-                                return Array.CreateInstance(roleType.ObjectType.ClrType, 0);
+                                return new ArrayList().ToArray(roleType.ObjectType.ClrType);
                             }
                         }
                         catch(Exception e)
@@ -213,7 +210,7 @@
                     if (roleType.ObjectType.IsComposite && roleType.IsMany)
                     {
                         // TODO: Optimize
-                        value = Array.CreateInstance(roleType.ObjectType.ClrType, 0);
+                        value = new ArrayList(new ISessionObject[0]).ToArray(roleType.ObjectType.ClrType);
                     }
                 }
 
@@ -236,10 +233,8 @@
 
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
             {
-                var untypedArray = (Array)value;
-                var typedArray = Array.CreateInstance(roleType.ObjectType.ClrType, untypedArray.Length);
-                Array.Copy(untypedArray, typedArray, typedArray.Length);
-                value = typedArray;
+                // TODO: Optimize
+                value = new ArrayList((Array)value).ToArray(roleType.ObjectType.ClrType);
             }
             
             this.roleByRoleType[roleType] = value;

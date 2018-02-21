@@ -25,21 +25,21 @@
             var workspace = new Workspace(Config.ObjectFactory);
             var client = new Client(database, workspace);
 
-            var host = new Host(this.Application, this.CustomTaskPanes, Globals.Factory);
+            //var host = new Host(this.Application, this.CustomTaskPanes, Globals.Factory);
 
-            var mediator = new Mediator();
-            var sheets = new Sheets(host, client, mediator);
-            var commands = new Commands(sheets);
+            //var mediator = new Mediator();
+            //var sheets = new Sheets(host, client, mediator);
+            //var commands = new Commands(sheets);
 
-            this.Application.WindowActivate += (wb, wn) => mediator.OnStateChanged();
-            this.Application.WorkbookOpen += wb => mediator.OnStateChanged();
-            this.Application.WorkbookActivate += wb => mediator.OnStateChanged();
-            this.Application.WorkbookNewSheet += (wb, sh) => mediator.OnStateChanged();
-            this.Application.SheetActivate += sh => mediator.OnStateChanged();
+            //this.Application.WindowActivate += (wb, wn) => mediator.OnStateChanged();
+            //this.Application.WorkbookOpen += wb => mediator.OnStateChanged();
+            //this.Application.WorkbookActivate += wb => mediator.OnStateChanged();
+            //this.Application.WorkbookNewSheet += (wb, sh) => mediator.OnStateChanged();
+            //this.Application.SheetActivate += sh => mediator.OnStateChanged();
 
-            Globals.Ribbons.Ribbon.Init(commands, sheets, mediator);
+            //Globals.Ribbons.Ribbon.Init(commands, sheets, mediator);
 
-            this.Login(database);
+            //this.Login(database);
         }
 
         private void ExcelAddInShutdown(object sender, EventArgs e)
