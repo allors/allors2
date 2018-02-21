@@ -1,4 +1,4 @@
-﻿namespace Allors.Excel.People
+﻿namespace ExcelAddIn.Custom.Relation.People
 {
 
 

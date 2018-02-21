@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Excel.Host">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <AssociationLine Name="CustomTaskPanes" Type="Microsoft.Office.Tools.CustomTaskPaneCollection" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.75" Y="1.938" />
+        <Point X="6.875" Y="1.938" />
+        <Point X="6.875" Y="1.45" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAABAAAAAAAAAQAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Host.cs</FileName>
+      <NewMemberFileName>Base\AddIn.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Application" />
+      <Property Name="CustomTaskPanes" />
+      <Property Name="ApplicationFactory" />
+      <Property Name="ActiveWorksheet" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Excel.Commands">
+    <Position X="11.75" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAIQIAAAALAAAEAAAEAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Commands.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sheets" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Excel.Mediator">
+    <Position X="8.5" Y="7.75" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Allors.Excel.Mediator.ChangeEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Base\Mediator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Base\Mediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Excel.Sheet">
+    <Position X="4" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAIgJIIAEAAAAAAIEJAACAAAgAgCAAAECCAAA=</HashCode>
+      <FileName>Base\Sheet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Sheets" />
+      <Property Name="Worksheet" />
+      <Property Name="Context" />
+      <Property Name="TaskPane" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Excel.Sheets">
+    <Position X="8" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAIAAAAAGAQAAJAACAAACAAAAAAAAACAAAQ=</HashCode>
+      <FileName>Base\Sheets.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Host" />
+      <Property Name="Client" />
+      <Property Name="Mediator" />
+      <Property Name="ActiveSheet" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="SheetByWorksheet" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Allors.Workspace.Client.Database" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Workspace.Workspace" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Workspace.Client.Context">
+    <Position X="1.25" Y="7.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Excel.Client">
+    <Position X="9.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Base\Client.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Database" />
+      <Property Name="Workspace" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="Microsoft.Office.Interop.Excel.Application" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Office.Tools.Excel.Worksheet" Collapsed="true">
+    <Position X="1" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Office.Tools.Excel.ApplicationFactory" Collapsed="true">
+    <Position X="2.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Office.Tools.CustomTaskPaneCollection" Collapsed="true">
+    <Position X="5.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="Microsoft.Office.Tools.CustomTaskPane" Collapsed="true">
+    <Position X="1.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

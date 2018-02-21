@@ -8,6 +8,9 @@
 
     public partial class Ribbon
     {
+        private void Ribbon_Load(object sender, RibbonUIEventArgs e)
+        {
+        }
 
         private Commands Commands { get; set; }
 

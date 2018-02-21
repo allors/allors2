@@ -1,7 +1,110 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B01846A2-2E2B-4676-BE34-F9E14442F80F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Allors.Framework</RootNamespace>
+    <AssemblyName>Allors.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Adapters\ArrayExtensions.cs" />
+    <Compile Include="Adapters\ClassCache.cs" />
+    <Compile Include="Adapters\Configuration.cs" />
+    <Compile Include="Adapters\EmptySet.cs" />
+    <Compile Include="Adapters\IClassCache.cs" />
+    <Compile Include="Adapters\IRoleCache.cs" />
+    <Compile Include="Adapters\PredicateAssertions.cs" />
+    <Compile Include="Adapters\RoleAssertions.cs" />
+    <Compile Include="Adapters\RoleCache.cs" />
+    <Compile Include="Adapters\RoleTypeExtensions.cs" />
+    <Compile Include="Adapters\Schema\Objects.cs" />
+    <Compile Include="Adapters\Schema\ObjectType.cs" />
+    <Compile Include="Adapters\Schema\Population.cs" />
+    <Compile Include="Adapters\Schema\Relation.cs" />
+    <Compile Include="Adapters\Schema\Relations.cs" />
+    <Compile Include="Adapters\Schema\RelationTypeComposite.cs" />
+    <Compile Include="Adapters\Schema\RelationTypeUnit.cs" />
+    <Compile Include="Adapters\Schema\Xml.cs" />
+    <Compile Include="Adapters\Serialization.cs" />
+    <Compile Include="Extent.cs" />
+    <Compile Include="ExtentT.cs" />
+    <Compile Include="IChangeSet.cs" />
+    <Compile Include="ICompositePredicate.cs" />
+    <Compile Include="IDatabase.cs" />
+    <Compile Include="IObject.cs" />
+    <Compile Include="IObjectFactory.cs" />
+    <Compile Include="ISession.cs" />
+    <Compile Include="IStrategy.cs" />
+    <Compile Include="Meta\IAssociationType.cs" />
+    <Compile Include="Meta\IClass.cs" />
+    <Compile Include="Meta\IComposite.cs" />
+    <Compile Include="Meta\IDomain.cs" />
+    <Compile Include="Meta\IInterface.cs" />
+    <Compile Include="Meta\IMetaObject.cs" />
+    <Compile Include="Meta\IMetaPopulation.cs" />
+    <Compile Include="Meta\IObjectType.cs" />
+    <Compile Include="Meta\IPropertyType.cs" />
+    <Compile Include="Meta\IRelationType.cs" />
+    <Compile Include="Meta\IRoleType.cs" />
+    <Compile Include="Meta\IUnit.cs" />
+    <Compile Include="Meta\IValidationLog.cs" />
+    <Compile Include="Meta\UnitIds.cs" />
+    <Compile Include="Meta\UnitNames.cs" />
+    <Compile Include="Meta\UnitTags.cs" />
+    <Compile Include="Multiplicity.cs" />
+    <Compile Include="ObjectFactory.cs" />
+    <Compile Include="ObjectNotLoadedEventArgs.cs" />
+    <Compile Include="Prefetch\PrefetchPolicy.cs" />
+    <Compile Include="Prefetch\PrefetchPolicyBuilder.cs" />
+    <Compile Include="Prefetch\PrefetchRule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RelationNotLoadedEventArgs.cs" />
+    <Compile Include="SessionCommittedEventArgs.cs" />
+    <Compile Include="SessionCommittingEventArgs.cs" />
+    <Compile Include="SessionRolledBackEventArgs.cs" />
+    <Compile Include="SessionRollingBackEventArgs.cs" />
+    <Compile Include="Sort.cs" />
+    <Compile Include="SortDirection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Adapters\Schema\Serialization.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Meta\Overview.cd" />
+    <None Include="Prefetch\Prefetch.cd" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

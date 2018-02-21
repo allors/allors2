@@ -84,18 +84,17 @@
             return invokeResponse;
         }
 
-        private async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args)
+        public async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args)
         {
             var json = JsonConvert.SerializeObject(args);
            return await this.HttpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
         }
 
-        private async Task<T> ReadAsAsync<T>(HttpResponseMessage response)
+        public async Task<T> ReadAsAsync<T>(HttpResponseMessage response)
         {
             var json = await response.Content.ReadAsStringAsync();
             var deserializedObject = JsonConvert.DeserializeObject<T>(json);
             return deserializedObject;
         }
-
     }
 }

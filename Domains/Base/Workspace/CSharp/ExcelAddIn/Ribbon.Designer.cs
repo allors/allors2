@@ -34,86 +34,78 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.baseTab = this.Factory.CreateRibbonTab();
-            this.generalGroup = this.Factory.CreateRibbonGroup();
+            this.allorsTab = this.Factory.CreateRibbonTab();
+            this.group1 = this.Factory.CreateRibbonGroup();
             this.saveButton = this.Factory.CreateRibbonButton();
             this.refreshButton = this.Factory.CreateRibbonButton();
-            this.peopleGroup = this.Factory.CreateRibbonGroup();
+            this.group2 = this.Factory.CreateRibbonGroup();
             this.peopleInitializeButton = this.Factory.CreateRibbonButton();
-            this.baseTab.SuspendLayout();
-            this.generalGroup.SuspendLayout();
-            this.peopleGroup.SuspendLayout();
+            this.allorsTab.SuspendLayout();
+            this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // baseTab
+            // allorsTab
             // 
-            this.baseTab.Groups.Add(this.generalGroup);
-            this.baseTab.Groups.Add(this.peopleGroup);
-            this.baseTab.Label = "Base";
-            this.baseTab.Name = "baseTab";
+            this.allorsTab.Groups.Add(this.group1);
+            this.allorsTab.Groups.Add(this.group2);
+            this.allorsTab.Label = "Allors";
+            this.allorsTab.Name = "allorsTab";
             // 
-            // generalGroup
+            // group1
             // 
-            this.generalGroup.Items.Add(this.saveButton);
-            this.generalGroup.Items.Add(this.refreshButton);
-            this.generalGroup.Label = "General";
-            this.generalGroup.Name = "generalGroup";
+            this.group1.Items.Add(this.saveButton);
+            this.group1.Items.Add(this.refreshButton);
+            this.group1.Label = "General";
+            this.group1.Name = "group1";
             // 
             // saveButton
             // 
-            this.saveButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.saveButton.Label = "Save";
             this.saveButton.Name = "saveButton";
-            this.saveButton.OfficeImageId = "FileSave";
-            this.saveButton.ShowImage = true;
             this.saveButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SaveButtonClick);
             // 
             // refreshButton
             // 
-            this.refreshButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.refreshButton.Label = "Refresh";
             this.refreshButton.Name = "refreshButton";
-            this.refreshButton.OfficeImageId = "ImportMoreMenu";
-            this.refreshButton.ShowImage = true;
             this.refreshButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.RefreshButtonClick);
             // 
-            // peopleGroup
+            // group2
             // 
-            this.peopleGroup.Items.Add(this.peopleInitializeButton);
-            this.peopleGroup.Label = "People";
-            this.peopleGroup.Name = "peopleGroup";
+            this.group2.Items.Add(this.peopleInitializeButton);
+            this.group2.Label = "Relations";
+            this.group2.Name = "group2";
             // 
             // peopleInitializeButton
             // 
-            this.peopleInitializeButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.peopleInitializeButton.Label = "Initialize";
+            this.peopleInitializeButton.Label = "Initialize People";
             this.peopleInitializeButton.Name = "peopleInitializeButton";
-            this.peopleInitializeButton.OfficeImageId = "TableInsertExcel";
-            this.peopleInitializeButton.ShowImage = true;
             this.peopleInitializeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.PeopleInitializeButtonClick);
             // 
             // Ribbon
             // 
             this.Name = "Ribbon";
             this.RibbonType = "Microsoft.Excel.Workbook";
-            this.Tabs.Add(this.baseTab);
-            this.baseTab.ResumeLayout(false);
-            this.baseTab.PerformLayout();
-            this.generalGroup.ResumeLayout(false);
-            this.generalGroup.PerformLayout();
-            this.peopleGroup.ResumeLayout(false);
-            this.peopleGroup.PerformLayout();
+            this.Tabs.Add(this.allorsTab);
+            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
+            this.allorsTab.ResumeLayout(false);
+            this.allorsTab.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private Microsoft.Office.Tools.Ribbon.RibbonTab baseTab;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup generalGroup;
+        private Microsoft.Office.Tools.Ribbon.RibbonTab allorsTab;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton saveButton;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton refreshButton;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup peopleGroup;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton peopleInitializeButton;
     }
 
