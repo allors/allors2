@@ -19,7 +19,7 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Workspace.Meta
+namespace Allors.Meta
 {
     public partial class ConcreteRoleType
     {

@@ -19,9 +19,8 @@
 // <summary>Defines the AssociationType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Allors.Meta;
 
-namespace Allors.Workspace.Meta
+namespace Allors.Meta
 {
     using System;
 

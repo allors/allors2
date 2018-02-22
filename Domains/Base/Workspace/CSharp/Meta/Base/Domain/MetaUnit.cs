@@ -19,7 +19,7 @@
 // <summary>Defines the AssociationType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Workspace.Meta
+namespace Allors.Meta
 {
     public abstract partial class MetaUnit 
     {

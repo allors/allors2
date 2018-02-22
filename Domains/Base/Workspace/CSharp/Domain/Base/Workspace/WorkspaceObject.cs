@@ -1,7 +1,7 @@
 ﻿namespace Allors.Workspace
 {
     using System.Collections.Generic;
-    using Meta;
+    using Allors.Meta;
 
     public class WorkspaceObject {
         public Workspace Workspace { get; }
@@ -71,7 +71,7 @@
 
         public bool CanExecute(string methodTypeName)
         {
-            return (bool)this.Roles[$"CanExecute{methodTypeName}"];
+            return (bool)this.Methods[$"CanExecute{methodTypeName}"];
         }
     }
 }

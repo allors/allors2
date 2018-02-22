@@ -5,7 +5,7 @@
     using System.Linq;
 
     using Data;
-    using Meta;
+    using Allors.Meta;
     
     public class Session
     {

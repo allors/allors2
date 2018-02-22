@@ -19,7 +19,7 @@
 // <summary>Defines the ValidationReport type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Workspace.Meta
+namespace Allors.Meta
 {
     /// <summary>
     /// The kind of validation that was performed.

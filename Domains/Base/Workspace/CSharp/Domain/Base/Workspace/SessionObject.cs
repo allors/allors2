@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
-    using Meta;
 
     public interface ISessionObject
     {

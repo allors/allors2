@@ -69,6 +69,45 @@
 
         public abstract Task Refresh();
         
+        public Worksheet WorksheetByName(string name)
+        {
+            var sheet = this.Sheets.Host.Application.ActiveWorkbook.Sheets
+                .Cast<Microsoft.Office.Interop.Excel.Worksheet>()
+                .FirstOrDefault(ws => name.Equals(ws.Name, StringComparison.OrdinalIgnoreCase));
+
+            if (sheet != null)
+            {
+                return this.Sheets.Host.ApplicationFactory
+                    .GetVstoObject(sheet);
+            }
+
+            return null;
+
+        }
+
+        public async Task SaveAndInvokeSilent(Method method)
+        {
+            await this.OnSaving();
+
+            ErrorResponse response = await this.Context.Save();
+
+            if (response.hasErrors)
+            {
+                response.Log(this.Context.Session);
+                response.Show();
+            }
+            else
+            {
+                response = await this.Sheets.Client.Database.Invoke(method);
+
+                if (response.hasErrors)
+                {
+                    response.Log(this.Context.Session);
+                    response.Show();
+                }
+            }
+        }
+
         public async Task Invoke(Method method)
         {
             var response = await this.Sheets.Client.Database.Invoke(method);

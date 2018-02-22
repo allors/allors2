@@ -22,7 +22,7 @@ namespace Allors.Workspace
 {
     using Domain;
 
-    using Meta;
+    using Allors.Meta;
 
     public static partial class Config
     {
