@@ -40,9 +40,9 @@ dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
 @echo Domain and Workspace
 @echo ====================
 
-dotnet restore Apps.sln
-dotnet msbuild Apps.sln /target:Clean /verbosity:minimal
-dotnet msbuild Apps.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+dotnet restore Database.sln
+dotnet msbuild Database.sln /target:Clean /verbosity:minimal
+dotnet msbuild Database.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
 @echo Generating
 

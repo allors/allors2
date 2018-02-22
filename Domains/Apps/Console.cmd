@@ -2,7 +2,7 @@
 
 echo Preparing Console
 
-dotnet msbuild Apps.sln /target:Database\Console /verbosity:quiet /nologo
+dotnet msbuild Database.sln /target:Database\Console /verbosity:quiet /nologo
 
 dotnet Database\Console\bin\Debug\netcoreapp2.0\Console.dll -h
 
