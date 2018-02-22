@@ -7,7 +7,7 @@ namespace Tests.Remote
     using Allors.Workspace;
     using Allors.Workspace.Client;
     using Allors.Workspace.Domain;
-    using Allors.Workspace.Meta;
+    using Allors.Meta;
 
     using Nito.AsyncEx;
 

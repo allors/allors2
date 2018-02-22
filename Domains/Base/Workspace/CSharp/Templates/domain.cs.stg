@@ -2,7 +2,7 @@ delimiters "$", "$"
 
 TemplateId() ::= <<07F63139-1791-4F55-AAED-F1A6D8D40055>>
 TemplateName() ::= <<Allors C# Workspace Domain>>
-TemplateVersion() ::= <<1.0.4>>
+TemplateVersion() ::= <<1.0.5>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta) ::= <<
 $!
@@ -123,11 +123,11 @@ $class.XmlDocComment$
 		{
 		}
 
-		public Allors.Workspace.Meta.Meta$class.name$ Meta
+		public Allors.Meta.Meta$class.name$ Meta
 		{
 			get
 			{
-				return Allors.Workspace.Meta.Meta$class.SingularName$.Instance;
+				return Allors.Meta.Meta$class.SingularName$.Instance;
 			}
 		}
 	

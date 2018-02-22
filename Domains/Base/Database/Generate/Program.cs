@@ -31,20 +31,20 @@
                     { "Workspace/Csharp/Templates/meta.cs.stg", "Workspace/CSharp/Meta/generated" },
                     { "Workspace/Csharp/Templates/domain.cs.stg", "Workspace/CSharp/Domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Domain/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Domain/src/allors/domain/generated" },
+                    { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Domain/src/allors/meta/generated" },
+                    { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Domain/src/allors/domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Angular/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Angular/src/allors/domain/generated" },
+                    { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Angular/src/allors/meta/generated" },
+                    { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Angular/src/allors/domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Material/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Material/src/allors/domain/generated" },
+                    { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Material/src/allors/meta/generated" },
+                    { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Material/src/allors/domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Covalent/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Covalent/src/allors/domain/generated" },
+                    { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Covalent/src/allors/meta/generated" },
+                    { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Covalent/src/allors/domain/generated" },
 
-                    { "Workspace/Typescript/Templates/meta.ts.stg", "Workspace/Typescript/Promise/src/allors/meta/generated" },
-                    { "Workspace/Typescript/Templates/domain.ts.stg", "Workspace/Typescript/Promise/src/allors/domain/generated" },
+                    { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Promise/src/allors/meta/generated" },
+                    { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Promise/src/allors/domain/generated" },
                 };
 
             for (var i = 0; i < config.GetLength(0); i++)

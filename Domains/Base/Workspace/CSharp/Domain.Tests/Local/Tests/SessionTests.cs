@@ -6,7 +6,7 @@ namespace Tests.Local
     using Allors.Workspace;
     using Allors.Workspace.Data;
     using Allors.Workspace.Domain;
-    using Allors.Workspace.Meta;
+    using Allors.Meta;
 
     using Xunit;
 

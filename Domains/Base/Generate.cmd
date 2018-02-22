@@ -32,8 +32,8 @@ dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
 @echo Domain and Workspace
 @echo ====================
 
-dotnet msbuild Base.sln /target:Clean /verbosity:minimal
-dotnet msbuild Base.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
+dotnet msbuild Database.sln /target:Clean /verbosity:minimal
+dotnet msbuild Database.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal || SET /A errno^|=%ERROR_BUILD_META% && GOTO :END
 
 @echo Generating
 
