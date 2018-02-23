@@ -1,9 +1,8 @@
 ﻿namespace Allors.Excel
 {
     using System;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
-
-    using Nito.AsyncEx;
 
     using NLog;
 
@@ -24,46 +23,38 @@
 
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
-        public void Save()
+        public async Task Save()
         {
             try
             {
-                AsyncContext.Run(
-                    async () =>
+                var sheet = this.Sheets.ActiveSheet;
+                if (sheet != null)
+                {
+                    if (await sheet.Save())
                     {
-                        var sheet = this.Sheets.ActiveSheet;
-                        if (sheet != null)
-                        {
-                            if (await sheet.Save())
-                            {
-                                await sheet.Refresh();
-                            };
-                        }
-                    });
+                        await sheet.Refresh();
+                    };
+                }
             }
             catch (Exception e)
             {
-                this.OnError(e);
+                e.Handle();
             }
         }
 
-        public void Refresh()
+        public async Task Refresh()
         {
             try
             {
-                AsyncContext.Run(
-                    async () =>
-                    {
-                        var sheet = this.Sheets.ActiveSheet;
-                        if (sheet != null)
-                        {
-                            await sheet.Refresh();
-                        }
-                    });
+                var sheet = this.Sheets.ActiveSheet;
+                if (sheet != null)
+                {
+                    await sheet.Refresh();
+                }
             }
             catch (Exception e)
             {
-                this.OnError(e);
+                e.Handle();
             }
         }
     }
