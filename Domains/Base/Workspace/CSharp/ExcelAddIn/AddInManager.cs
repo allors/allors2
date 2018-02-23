@@ -4,6 +4,8 @@
     using System.Configuration;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using System.Windows.Forms;
 
     using Allors.Excel;
     using Allors.Workspace;
@@ -35,35 +37,46 @@
 
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
 
-        public void Init()
+        public async Task Init()
         {
-            var httpClient = new HttpClient(new HttpClientHandler { UseDefaultCredentials = true })
+            try
             {
-                BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
-            };
+                // Make sure we have a SynchroniztionContext
+                var form = new Form();
 
-            var database = new Database(httpClient);
-            var workspace = new Workspace(Config.ObjectFactory);
-            var client = new Client(database, workspace);
+                var httpClientHandler = new HttpClientHandler { UseDefaultCredentials = true };
+                var httpClient = new HttpClient(httpClientHandler)
+                        {
+                            BaseAddress = new Uri(ConfigurationManager.AppSettings[AllorsDatabaseAddressKey]),
+                        };
 
-            var host = new Host(this.application, this.customTaskPanes, this.factory);
+                var database = new Database(httpClient);
+                var workspace = new Workspace(Config.ObjectFactory);
+                var client = new Client(database, workspace);
 
-            var mediator = new Mediator();
-            var sheets = new Sheets(host, client, mediator);
-            var commands = new Commands(sheets);
+                var host = new Host(this.application, this.customTaskPanes, this.factory);
 
-            this.application.WindowActivate += (wb, wn) => mediator.OnStateChanged();
-            this.application.WorkbookOpen += wb => mediator.OnStateChanged();
-            this.application.WorkbookActivate += wb => mediator.OnStateChanged();
-            this.application.WorkbookNewSheet += (wb, sh) => mediator.OnStateChanged();
-            this.application.SheetActivate += sh => mediator.OnStateChanged();
+                var mediator = new Mediator();
+                var sheets = new Sheets(host, client, mediator);
+                var commands = new Commands(sheets);
 
-            Globals.Ribbons.Ribbon.Init(commands, sheets, mediator);
+                this.application.WindowActivate += (wb, wn) => mediator.OnStateChanged();
+                this.application.WorkbookOpen += wb => mediator.OnStateChanged();
+                this.application.WorkbookActivate += wb => mediator.OnStateChanged();
+                this.application.WorkbookNewSheet += (wb, sh) => mediator.OnStateChanged();
+                this.application.SheetActivate += sh => mediator.OnStateChanged();
 
-            this.Login(database);
+                Globals.Ribbons.Ribbon.Init(commands, sheets, mediator);
+
+                await this.Login(database);
+            }
+            catch (Exception e)
+            {
+                e.Handle();
+            }
         }
 
-        private async void Login(Database database)
+        private async Task Login(Database database)
         {
             try
             {

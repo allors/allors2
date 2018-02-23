@@ -7,10 +7,10 @@
     {
         public AddInManager AddInManager { get; private set; }
 
-        private void ThisAddIn_Startup(object sender, System.EventArgs e)
+        private async void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             this.AddInManager = new AddInManager(this.Application, this.CustomTaskPanes, Globals.Factory);
-            this.AddInManager.Init();
+            await this.AddInManager.Init();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

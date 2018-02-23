@@ -10,6 +10,8 @@
 
     using Newtonsoft.Json;
 
+    using Polly;
+
     public class Database
     {
         public Database(HttpClient httpClient)
@@ -27,13 +29,16 @@
 
         public HttpClient HttpClient { get; }
 
+        public Policy Policy { get; set; } = Policy
+            .Handle<HttpRequestException>()
+            .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
+
         public async Task<PullResponse> Pull(string name, object args)
         {
             var uri = new Uri(name + "/pull", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             response.EnsureSuccessStatusCode();
-
-            var pullResponse = await ReadAsAsync<PullResponse>(response);
+            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
             return pullResponse;
         }
 
@@ -43,7 +48,7 @@
             var response = await this.PostAsJsonAsync(uri, syncRequest);
             response.EnsureSuccessStatusCode();
 
-            var syncResponse = await ReadAsAsync<SyncResponse>(response);
+            var syncResponse = await this.ReadAsAsync<SyncResponse>(response);
             return syncResponse;
         }
 
@@ -53,24 +58,24 @@
             var response = await this.PostAsJsonAsync(uri, pushRequest);
             response.EnsureSuccessStatusCode();
 
-            var pushResponse = await ReadAsAsync<PushResponse>(response);
+            var pushResponse = await this.ReadAsAsync<PushResponse>(response);
             return pushResponse;
         }
 
         public async Task<InvokeResponse> Invoke(Method method)
         {
             var invokeRequest = new InvokeRequest
-            {
-                i = method.Object.Id.ToString(),
-                v = method.Object.Version.ToString(),
-                m = method.Name,
-            };
+                                    {
+                                        i = method.Object.Id.ToString(),
+                                        v = method.Object.Version.ToString(),
+                                        m = method.Name,
+                                    };
 
             var uri = new Uri("Database/Invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);
             response.EnsureSuccessStatusCode();
 
-            var invokeResponse = await ReadAsAsync<InvokeResponse>(response);
+            var invokeResponse = await this.ReadAsAsync<InvokeResponse>(response);
             return invokeResponse;
         }
 
@@ -80,14 +85,20 @@
             var response = await this.PostAsJsonAsync(uri, args);
             response.EnsureSuccessStatusCode();
 
-            var invokeResponse = await ReadAsAsync<InvokeResponse>(response);
+            var invokeResponse = await this.ReadAsAsync<InvokeResponse>(response);
             return invokeResponse;
         }
 
         public async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args)
         {
-            var json = JsonConvert.SerializeObject(args);
-           return await this.HttpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
+            return await this.Policy.ExecuteAsync(
+                       async () =>
+                           {
+                               var json = JsonConvert.SerializeObject(args);
+                               return await this.HttpClient.PostAsync(
+                                          uri,
+                                          new StringContent(json, Encoding.UTF8, "application/json"));
+                           });
         }
 
         public async Task<T> ReadAsAsync<T>(HttpResponseMessage response)
