@@ -369,7 +369,7 @@ namespace Allors.Domain
                         PickListItem pickListItem = null;
                         foreach (PickListItem item in pendingPickList.PickListItems)
                         {
-                            if (item.InventoryItem.Equals(orderItem.ReservedFromInventoryItem))
+                            if (item.InventoryItem.Equals(orderItem.ReservedFromNonSerialisedInventoryItem))
                             {
                                 pickListItem = item;
                                 break;
@@ -388,13 +388,28 @@ namespace Allors.Domain
                         {
                             var quantity = shipmentItem.Quantity - quantityIssued;
                             pickListItem = new PickListItemBuilder(this.Strategy.Session)
-                                .WithInventoryItem(orderItem.ReservedFromInventoryItem)
+                                .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
                                 .WithRequestedQuantity(quantity)
                                 .WithActualQuantity(quantity)
                                 .Build();
 
+                            if (orderItem.ExistReservedFromNonSerialisedInventoryItem)
+                            {
+                                pickListItem.InventoryItem = orderItem.ReservedFromNonSerialisedInventoryItem;
+                            }
+
+                            if (orderItem.ExistReservedFromSerialisedInventoryItem)
+                            {
+                                pickListItem.InventoryItem = orderItem.ReservedFromSerialisedInventoryItem;
+                                if (orderItem.ExistNewSerialisedInventoryItemState)
+                                {
+                                    orderItem.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState =
+                                        orderItem.NewSerialisedInventoryItemState;
+                                }
+                            }
+
                             new ItemIssuanceBuilder(this.Strategy.Session)
-                                .WithInventoryItem(orderItem.ReservedFromInventoryItem)
+                                .WithInventoryItem(pickListItem.InventoryItem)
                                 .WithShipmentItem(shipmentItem)
                                 .WithQuantity(quantity)
                                 .WithPickListItem(pickListItem)
@@ -423,7 +438,7 @@ namespace Allors.Domain
                     .Build();
 
                 pickList.AddPickListItem(new PickListItemBuilder(this.Strategy.Session)
-                                        .WithInventoryItem(orderItem.ReservedFromInventoryItem)
+                                        .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
                                         .WithRequestedQuantity(0 - quantity)
                                         .Build());
             }

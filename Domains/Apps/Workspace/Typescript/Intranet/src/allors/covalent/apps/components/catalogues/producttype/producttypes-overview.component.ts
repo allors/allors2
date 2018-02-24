@@ -83,7 +83,8 @@ export class ProductTypesOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.ProductType.Name, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const query: Query[] = [
+          new Query(
           {
             name: "productTypes",
             objectType: m.ProductType,
@@ -92,7 +93,8 @@ export class ProductTypesOverviewComponent implements OnDestroy {
             include: [
               new TreeNode({ roleType: m.ProductType.SerialisedInventoryItemCharacteristicTypes }),
             ],
-          })];
+          }),
+        ];
 
         return this.scope.load("Pull", new PullRequest({ query }));
 

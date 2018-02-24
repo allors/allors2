@@ -94,8 +94,6 @@ namespace Allors.Domain
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
 
-            this.AppsOnDeriveRoles(derivation);
-
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -104,50 +102,6 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(deletePermission);
-            }
-        }
-
-        public void AppsOnDeriveRoles(IDerivation derivation)
-        {
-            var contactRole = new PersonRoles(this.strategy.Session).Contact;
-            var customerRole = new PersonRoles(this.strategy.Session).Customer;
-            var employeeRole = new PersonRoles(this.strategy.Session).Employee;
-            var salesRepRole = new PersonRoles(this.strategy.Session).SalesRep;
-
-            if (this.AppsIsActiveContact(DateTime.UtcNow))
-            {
-                this.AddPersonRole(contactRole);
-            }
-            else
-            {
-                this.RemovePersonRole(contactRole);
-            }
-
-            if (this.AppsIsActiveEmployee(DateTime.UtcNow))
-            {
-                this.AddPersonRole(employeeRole);
-            }
-            else
-            {
-                this.RemovePersonRole(employeeRole);
-            }
-
-            if (this.AppsIsActiveSalesRep(DateTime.UtcNow))
-            {
-                this.AddPersonRole(salesRepRole);
-            }
-            else
-            {
-                this.RemovePersonRole(salesRepRole);
-            }
-
-            if (this.AppsIsActiveCustomer(DateTime.UtcNow))
-            {
-                this.AddPersonRole(customerRole);
-            }
-            else
-            {
-                this.RemovePersonRole(customerRole);
             }
         }
 

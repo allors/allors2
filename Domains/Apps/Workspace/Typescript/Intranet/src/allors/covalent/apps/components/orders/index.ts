@@ -28,7 +28,6 @@ import { ProductQuotePrintModule } from "./productquote/productquote-print.modul
 import { ProductQuotesOverviewModule } from "./productquote/productquotes-overview.module";
 import { RequestOverviewModule } from "./request/request-overview.module";
 import { RequestsOverviewModule } from "./request/requests-overview.module";
-import { CustomerShipmentDialogModule } from "./salesorder/customershipment-dialog.module";
 import { SalesOrderOverviewModule } from "./salesorder/salesorder-overview.module";
 import { SalesOrderPrintModule } from "./salesorder/salesorder-print.module";
 import { SalesOrdersOverviewModule } from "./salesorder/salesorders-overview.module";
@@ -47,7 +46,6 @@ export const Modules = [
   // Overview
   OverviewModule,
 
-  CustomerShipmentDialogModule,
   IncoTermEditModule,
   InvoiceTermEditModule,
   OrdersOverviewModule,

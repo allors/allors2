@@ -13,9 +13,10 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
-import { Country, CustomOrganisationClassification, Organisation, OrganisationRole } from "../../../../../domain";
+import { Country, CustomOrganisationClassification, InternalOrganisation, Organisation, OrganisationRole } from "../../../../../domain";
 import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 interface SearchData {
   name: string;
@@ -64,7 +65,8 @@ export class OrganisationsOverviewComponent implements OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService,
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.titleService.setTitle("Organisations");
 
@@ -82,23 +84,23 @@ export class OrganisationsOverviewComponent implements OnDestroy {
 
     this.page$ = new BehaviorSubject<number>(50);
 
-    const search$: Observable<SearchData> = this.searchForm.valueChanges
+    const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
       return [
         data,
         data !== previousData ? 50 : take,
         date,
+        internalOrganisationId,
       ];
-    }, [] as [SearchData, number, Date]);
+    }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take]: [SearchData, number]) => {
+      .switchMap(([data, take, , internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const organisationRolesQuery: Query[] = [
@@ -191,9 +193,9 @@ export class OrganisationsOverviewComponent implements OnDestroy {
             const predicate: And = new And();
             const predicates: Predicate[] = predicate.predicates;
 
-            if (data.role) {
-              predicates.push(new Contains({ roleType: m.Organisation.OrganisationRoles, object: this.role }));
-            }
+            // if (data.role) {
+            //   predicates.push(new Contains({ roleType: m.Organisation.OrganisationRoles, object: this.role }));
+            // }
 
             if (data.classification) {
               predicates.push(new Contains({ roleType: m.Organisation.OrganisationClassifications, object: this.classification }));

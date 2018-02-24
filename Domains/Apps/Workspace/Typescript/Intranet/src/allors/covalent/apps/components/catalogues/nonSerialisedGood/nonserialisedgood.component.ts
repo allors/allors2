@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductFeature, ProductType, Singleton, VarianceReason, VatRate, VendorProduct } from "../../../../../domain";
-import { Contains, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
+import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 import { Fetcher } from "../../Fetcher";
@@ -111,7 +111,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(this.m.OrganisationRole),
           new Query(this.m.ProductCategory),
           new Query(this.m.ProductType),
           new Query(this.m.VarianceReason),
@@ -142,6 +141,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             this.locales = loaded.collections.locales as Locale[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
+            this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Non serialised");
@@ -177,22 +177,12 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             this.subTitle = "Non Serialised";
             this.actualQuantityOnHand = this.good.QuantityOnHand;
 
-            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const manufacturerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Manufacturer");
-            const supplierRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Supplier");
-
             const Query2: Query[] = [
               new Query(
                 {
                   name: "manufacturers",
                   objectType: m.Organisation,
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: manufacturerRole }),
-                }),
-              new Query(
-                {
-                  name: "suppliers",
-                  objectType: m.Organisation,
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: supplierRole }),
+                  predicate: new Equals({ roleType: m.Organisation.IsManufacturer, value: true}),
                 }),
             ];
 
@@ -201,7 +191,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
-        this.suppliers = loaded.collections.suppliers as Organisation[];
       },
       (error: any) => {
         this.errorService.message(error);

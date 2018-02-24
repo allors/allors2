@@ -109,8 +109,6 @@ namespace Allors.Domain
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriverContactUserGroup(derivation);
 
-            this.AppsOnDeriveRoles(derivation);
-
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
             {
@@ -119,40 +117,6 @@ namespace Allors.Domain
             else
             {
                 this.AddDeniedPermission(deletePermission);
-            }
-        }
-
-        public void AppsOnDeriveRoles(IDerivation derivation)
-        {
-            var customerRole = new OrganisationRoles(this.strategy.Session).Customer;
-            var supplierRole = new OrganisationRoles(this.strategy.Session).Supplier;
-            var manufacturerRole = new OrganisationRoles(this.strategy.Session).Manufacturer;
-
-            if (this.AppsIsActiveSupplier(DateTime.UtcNow))
-            {
-                this.AddOrganisationRole(supplierRole);
-            }
-            else
-            {
-                this.AddOrganisationRole(supplierRole);
-            }
-
-            if (this.AppsIsActiveCustomer(DateTime.UtcNow))
-            {
-                this.AddOrganisationRole(customerRole);
-            }
-            else
-            {
-                this.AddOrganisationRole(customerRole);
-            }
-
-            if (this.IsManufacturer)
-            {
-                this.AddOrganisationRole(customerRole);
-            }
-            else
-            {
-                this.AddOrganisationRole(customerRole);
             }
         }
 
@@ -305,6 +269,11 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
+                foreach (PartyFinancialRelationship partyFinancialRelationship in this.PartyFinancialRelationshipsWhereParty)
+                {
+                    partyFinancialRelationship.Delete();
+                }
+
                 foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
                 {
                     partyContactMechanism.ContactMechanism.Delete();

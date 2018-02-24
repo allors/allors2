@@ -26,17 +26,6 @@ namespace Allors.Domain
         public static readonly Guid AdministratorId = new Guid("FF791BA1-6E02-4F64-83A3-E6BEE1208C11");
         public static readonly Guid GuestId = new Guid("1261CB56-67F2-4725-AF7D-604A117ABBEC");
 
-        public Extent<Person> Employees
-        {
-            get
-            {
-                var employees = new People(this.Session).Extent();
-                var employeeRole = new PersonRoles(this.Session).Employee;
-                employees.Filter.AddContains(M.Person.PersonRoles, employeeRole);
-                return employees;
-            }
-        }
-
         public static void AppsOnDeriveCommissions(ISession session)
         {
             foreach (Person person in session.Extent<Person>())
@@ -50,10 +39,17 @@ namespace Allors.Domain
 
         protected override void AppsSetup(Setup config)
         {
+            var internalOrganisations = this.Session.Extent<Organisation>();
+            internalOrganisations.Filter.AddEquals(M.Organisation.IsInternalOrganisation, true);
+
             var users = new Users(this.Session).Extent();
+
             foreach (Person person in users)
             {
-                person.AddPersonRole(new PersonRoles(this.Session).Employee);
+                foreach (InternalOrganisation internalOrganisation in internalOrganisations)
+                {
+                    new EmploymentBuilder(this.Session).WithEmployer(internalOrganisation).WithEmployee(person).Build();
+                }
             }
         }
 

@@ -139,7 +139,7 @@ namespace Allors.Domain
                 }
             }
 
-            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromInventoryItem)
+            foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
             {
                 var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
                 if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)

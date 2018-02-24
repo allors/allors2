@@ -24,10 +24,9 @@ namespace Allors.Domain
         private static readonly Guid SlightlyDamagedId = new Guid("9CA506D4-ACB1-40ac-BEEC-83F080E6029E");
         private static readonly Guid DefectiveId = new Guid("36F94BB5-D93E-44cc-8F10-37A046002E5B");
         private static readonly Guid ScrapId = new Guid("9D02749B-A30E-4bb4-B016-E1CF96A5F99B");
-        private static readonly Guid ForSaleId = new Guid("E5AD6F2D-2EDF-4563-8AD4-59EF1211273F");
+        private static readonly Guid AvailableId = new Guid("E5AD6F2D-2EDF-4563-8AD4-59EF1211273F");
         private static readonly Guid SoldId = new Guid("FECCF869-98D7-4E9C-8979-5611A43918BC");
         private static readonly Guid InRentId = new Guid("9ACC6C05-60B5-4085-8B43-EB730939DB47");
-        private static readonly Guid OutOfRentId = new Guid("8422F80C-6923-4395-B998-23E5CBC9868A");
         private static readonly Guid AssignedId = new Guid("3AD2DEC0-65AB-4E31-BDE0-3227727D9329");
 
         private UniquelyIdentifiableSticky<SerialisedInventoryItemState> stateCache;
@@ -42,13 +41,11 @@ namespace Allors.Domain
 
         public SerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
 
-        public SerialisedInventoryItemState ForSale => this.StateCache[ForSaleId];
+        public SerialisedInventoryItemState Available => this.StateCache[AvailableId];
 
         public SerialisedInventoryItemState Sold => this.StateCache[SoldId];
 
         public SerialisedInventoryItemState InRent => this.StateCache[InRentId];
-
-        public SerialisedInventoryItemState OutOfRent => this.StateCache[OutOfRentId];
 
         public SerialisedInventoryItemState Assigned => this.StateCache[AssignedId];
 
@@ -84,8 +81,8 @@ namespace Allors.Domain
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(ForSaleId)
-                .WithName("ForSale")
+                .WithUniqueId(AvailableId)
+                .WithName("Available")
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
@@ -96,11 +93,6 @@ namespace Allors.Domain
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(InRentId)
                 .WithName("InRent")
-                .Build();
-
-            new SerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(OutOfRentId)
-                .WithName("OutOfRent")
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)

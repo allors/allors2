@@ -112,17 +112,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("1989EDA9-D141-4DA4-9830-58578AA0961C")]
-        [AssociationId("7CF94E43-09A3-4374-86A2-A68F0B59B946")]
-        [RoleId("FA302FEB-46CA-40B3-8811-CBE85536F061")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Required]
-        [Workspace]
-        public OrganisationRole[] OrganisationRoles { get; set; }
-
-        #region Allors
         [Id("45CDF666-F891-4F5D-8583-0CB5D489C918")]
         [AssociationId("32AC1395-3787-4510-8169-A705917101A0")]
         [RoleId("F0ABA345-88FC-4693-B6F4-9AFFDC11B22C")]
@@ -168,7 +157,6 @@ namespace Allors.Repository
         [RoleId("13C0A269-41B1-4F7E-A3DB-6CCD1BD33572")]
         #endregion
         [Indexed]
-        [Required]
         [Size(256)]
         [Workspace]
         public string Name { get; set; }

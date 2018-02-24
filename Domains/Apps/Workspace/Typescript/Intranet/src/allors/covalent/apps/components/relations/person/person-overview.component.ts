@@ -81,7 +81,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             id,
             include: [
               new TreeNode({ roleType: m.Party.Locale }),
-              new TreeNode({ roleType: m.Person.PersonRoles }),
+              // new TreeNode({ roleType: m.Person.PersonRoles }),
               new TreeNode({ roleType: m.Person.LastModifiedBy }),
               new TreeNode({
                 nodes: [

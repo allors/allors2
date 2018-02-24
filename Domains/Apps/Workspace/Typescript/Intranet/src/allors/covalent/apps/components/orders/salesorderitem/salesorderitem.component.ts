@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -34,6 +34,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public inventoryItems: InventoryItem[];
   public serialisedInventoryItem: SerialisedInventoryItem;
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
+  public serialisedInventoryItemStates: SerialisedInventoryItemState[];
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
 
@@ -55,7 +56,10 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name]});
+    this.goodsFilter = new Filter({
+      scope: this.scope,
+      objectType: this.m.Good,
+      roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {
@@ -76,6 +80,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             id: itemId,
             include: [
               new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
+              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemShipmentState }),
+              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemPaymentState }),
+              new TreeNode({ roleType: m.SalesOrderItem.ReservedFromNonSerialisedInventoryItem }),
+              new TreeNode({ roleType: m.SalesOrderItem.ReservedFromSerialisedInventoryItem }),
+              new TreeNode({ roleType: m.SalesOrderItem.NewSerialisedInventoryItemState }),
               new TreeNode({ roleType: m.SalesOrderItem.QuoteItem }),
               new TreeNode({ roleType: m.SalesOrderItem.DiscountAdjustment }),
               new TreeNode({ roleType: m.SalesOrderItem.SurchargeAdjustment }),
@@ -90,26 +99,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: "goods",
-              objectType: m.Good,
-            }),
-          new Query(
-            {
-              name: "vatRates",
-              objectType: m.VatRate,
-            }),
-          new Query(
-            {
-              name: "vatRegimes",
-              objectType: m.VatRegime,
-            }),
-          new Query(
-            {
-              name: "invoiceItemTypes",
-              objectType: m.InvoiceItemType,
-            }),
+          new Query(m.Good),
+          new Query(m.VatRate),
+          new Query(m.VatRegime),
+          new Query(m.InvoiceItemType),
+          new Query(m.SerialisedInventoryItemState),
           ];
 
         return this.scope
@@ -120,10 +114,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
-        this.goods = loaded.collections.goods as Good[];
-        this.vatRates = loaded.collections.vatRates as VatRate[];
-        this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
-        this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
+        this.goods = loaded.collections.GoodQuery as Good[];
+        this.vatRates = loaded.collections.VatRateQuery as VatRate[];
+        this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
+        this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
+        this.invoiceItemTypes = loaded.collections.InvoiceItemTypeQuery as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
 
         if (!this.orderItem) {
@@ -210,6 +205,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         .subscribe((loaded) => {
           this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
           if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+            this.orderItem.QuantityOrdered = 1;
             this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
           }
           if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
@@ -222,5 +218,4 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         },
       );
   }
-
 }

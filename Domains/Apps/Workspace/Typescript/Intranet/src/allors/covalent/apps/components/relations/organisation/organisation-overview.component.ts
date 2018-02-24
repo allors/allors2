@@ -10,9 +10,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CommunicationEvent, ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, TelecommunicationsNumber } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { CommunicationEvent, ContactMechanism, CustomerRelationship, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, SupplierRelationship, TelecommunicationsNumber } from "../../../../../domain";
+import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./organisation-overview.component.html",
@@ -23,6 +25,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   public title: string = "Organisation overview";
   public organisation: Organisation;
+  public internalOrganisation: InternalOrganisation;
   public communicationEvents: CommunicationEvent[];
 
   public contactsCollection: string = "Current";
@@ -35,9 +38,20 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public inactiveContactMechanisms: PartyContactMechanism[] = [];
   public allContactMechanisms: PartyContactMechanism[] = [];
 
+  public roles: OrganisationRole[];
+  public activeRoles: OrganisationRole[] = [];
+  public rolesText: string;
+  private customerRelationship: CustomerRelationship;
+  private supplierRelationship: SupplierRelationship;
+  private customerRole: OrganisationRole;
+  private supplierRole: OrganisationRole;
+  private manufacturerRole: OrganisationRole;
+  private isActiveCustomer: boolean;
+  private isActiveSupplier: boolean;
+
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-
+  private fetcher: Fetcher;
   private scope: Scope;
 
   constructor(
@@ -46,11 +60,14 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dialogService: TdDialogService,
     private snackBar: MatSnackBar,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   get contactRelationships(): any {
@@ -81,8 +98,8 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
@@ -123,14 +140,23 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
+        const customerRelationshipPredicate: And = new And();
+        const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.predicates;
+
+        customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.Customer, value: id }));
+        customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
+        const not = new Not();
+        customerRelationshipPredicates.push(not);
+        not.predicate = new Exists({ roleType: m.CustomerRelationship.ThroughDate });
+
         const fetch: Fetch[] = [
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
               new TreeNode({ roleType: m.Party.Locale }),
               new TreeNode({ roleType: m.Organisation.LogoImage }),
               new TreeNode({ roleType: m.Organisation.IndustryClassifications }),
-              new TreeNode({ roleType: m.Organisation.OrganisationRoles }),
               new TreeNode({ roleType: m.Organisation.OrganisationClassifications }),
               new TreeNode({ roleType: m.Organisation.LastModifiedBy }),
               new TreeNode({
@@ -189,43 +215,22 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
+          new Query(this.m.OrganisationRole),
           new Query(
             {
-              name: "countries",
-              objectType: m.Country,
+              name: "customerRelationships",
+              objectType: m.CustomerRelationship,
+              predicate: customerRelationshipPredicate,
             }),
-          new Query(
-            {
-              name: "genders",
-              objectType: m.GenderType,
-            }),
-          new Query(
-            {
-              name: "salutations",
-              objectType: m.Salutation,
-            }),
-          new Query(
-            {
-              name: "organisationContactKinds",
-              objectType: m.OrganisationContactKind,
-            }),
-          new Query(
-            {
-              name: "contactMechanismPurposes",
-              objectType: m.ContactMechanismPurpose,
-            }),
-          new Query(
-            {
-              name: "internalOrganisation",
-              objectType: m.InternalOrganisation,
-            }),
-        ];
+          ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
+        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
 
         this.organisation = loaded.objects.organisation as Organisation;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
@@ -237,6 +242,30 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
         this.currentContactMechanisms = this.organisation.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.inactiveContactMechanisms = this.organisation.InactivePartyContactMechanisms as PartyContactMechanism[];
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
+
+        this.roles = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
+        this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "8B5E0CEE-4C98-42F1-8F18-3638FBA943A0");
+        this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "8C6D629B-1E27-4520-AA8C-E8ADF93A5095");
+        this.manufacturerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "32E74BEF-2D79-4427-8902-B093AFA81661");
+
+        this.activeRoles = [];
+        if (this.internalOrganisation.ActiveCustomers.includes(this.organisation)) {
+          this.isActiveCustomer = true;
+          this.activeRoles.push(this.customerRole);
+        }
+
+        if (this.internalOrganisation.ActiveSuppliers.includes(this.organisation)) {
+          this.isActiveSupplier = true;
+          this.activeRoles.push(this.supplierRole);
+        }
+
+        if (this.organisation.IsManufacturer) {
+          this.activeRoles.push(this.manufacturerRole);
+        }
+
+        this.rolesText = this.activeRoles
+          .map((v: OrganisationRole) => v.Name)
+          .reduce((acc: string, cur: string) => acc + ", " + cur);
       },
       (error: any) => {
         this.errorService.message(error);

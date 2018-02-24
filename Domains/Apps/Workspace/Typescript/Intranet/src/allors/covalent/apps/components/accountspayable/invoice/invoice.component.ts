@@ -27,8 +27,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public subTitle: string;
   public invoice: PurchaseInvoice;
   public order: PurchaseOrder;
-  public people: Person[];
-  public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
   public vatRates: VatRate[];
@@ -86,8 +84,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const rolesQuery: Query[] = [
-          new Query(m.OrganisationRole),
-          new Query(m.PersonRole),
           new Query(m.Currency),
           new Query(m.VatRate),
           new Query(m.VatRegime),
@@ -100,27 +96,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
-
-            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
-
-            const personRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
-
-            const query: Query[] = [
-              new Query(
-                {
-                  name: "organisations",
-                  objectType: this.m.Organisation,
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
-                }),
-              new Query(
-                {
-                  name: "persons",
-                  objectType: this.m.Person,
-                  predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
-                }),
-            ];
 
             const fetch: Fetch[] = [
               this.fetcher.internalOrganisation,
@@ -140,7 +115,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               }),
             ];
 
-            return this.scope.load("Pull", new PullRequest({ fetch, query }));
+            return this.scope.load("Pull", new PullRequest({ fetch }));
           });
       })
       .subscribe((loaded) => {
@@ -158,8 +133,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
 
         this.previousBillToCustomer = this.invoice.BillToCustomer;
-        this.organisations = loaded.collections.organisations as Organisation[];
-        this.people = loaded.collections.parties as Person[];
         this.title = "Purchase Invoice from " + this.invoice.BilledFrom.PartyName;
       },
       (error: Error) => {

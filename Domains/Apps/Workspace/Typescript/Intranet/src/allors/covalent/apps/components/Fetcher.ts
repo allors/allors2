@@ -17,6 +17,9 @@ export class Fetcher {
         new TreeNode({ roleType: this.m.InternalOrganisation.DefaultShipmentMethod}),
         new TreeNode({ roleType: this.m.InternalOrganisation.PaymentMethods}),
         new TreeNode({ roleType: this.m.InternalOrganisation.ActiveCollectionMethods}),
+        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveCustomers}),
+        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveEmployees}),
+        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveSuppliers}),
       ],
       name: "internalOrganisation",
     });

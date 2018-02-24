@@ -153,6 +153,26 @@ namespace Allors.Repository
         public decimal RequiredProfitMargin { get; set; }
 
         #region Allors
+        [Id("A442312C-71F5-4C96-ABF7-7C303A6E17F4")]
+        [AssociationId("C046A01B-2478-4242-AADD-C1B955BC42DE")]
+        [RoleId("82F2571B-D270-4028-A3B7-B8841158F561")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedInventoryItem ReservedFromSerialisedInventoryItem { get; set; }
+
+        #region Allors
+        [Id("219FE50D-5CEE-4266-93F7-496668668A00")]
+        [AssociationId("EA882CE2-E738-4B52-962B-767BAED08B5B")]
+        [RoleId("587BD4A0-805F-4D0B-9FB5-1C236E52C87D")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public NonSerialisedInventoryItem ReservedFromNonSerialisedInventoryItem { get; set; }
+
+        #region Allors
         [Id("C90C49BE-C67A-4B66-B110-A7CF09D8235A")]
         [AssociationId("879107B2-49BE-4252-88CC-9ACF931156B5")]
         [RoleId("A793FAAD-60E1-4069-99BD-2B24561539F1")]
@@ -160,7 +180,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
-        public NonSerialisedInventoryItem PreviousReservedFromInventoryItem { get; set; }
+        public NonSerialisedInventoryItem PreviousReservedFromNonSerialisedInventoryItem { get; set; }
+
+        #region Allors
+        [Id("BBD58CD0-83BD-47B4-955F-95CC4A66E880")]
+        [AssociationId("CF7704F9-16EE-4064-94AD-A94C53FFD6CB")]
+        [RoleId("3B71B8E3-17B8-4A33-9FE3-CC151DBF1B35")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedInventoryItemState NewSerialisedInventoryItemState { get; set; }
 
         #region Allors
         [Id("15F563BF-34DE-4716-A36B-5F6C36A663F6")]
@@ -339,16 +369,6 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal InitialMarkupPercentage { get; set; }
-
-        #region Allors
-        [Id("219FE50D-5CEE-4266-93F7-496668668A00")]
-        [AssociationId("EA882CE2-E738-4B52-962B-767BAED08B5B")]
-        [RoleId("587BD4A0-805F-4D0B-9FB5-1C236E52C87D")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public NonSerialisedInventoryItem ReservedFromInventoryItem { get; set; }
 
         #region Allors
         [Id("F79B3A47-46AE-4098-A4C4-21D098621F52")]

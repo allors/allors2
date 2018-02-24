@@ -2,14 +2,10 @@
   <form #form="ngForm" *ngIf="orderItem" (submit)="save()">
 
     <div class="pad">
-      <div class="grid-2_md-1" *ngIf="!orderItem.isNew">
-        <div class="col">
-          <a-mat-static [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name" label="Status"></a-mat-static>
-          <div class="grid">
-            <!-- <button *ngIf="orderItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
-        <button *ngIf="orderItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button> -->
-          </div>
-        </div>
+      <div *ngIf="!orderItem.isNew" class="grid-4_lg-2_sm-1">
+          <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemShipmentState" display="Name" label="Shipment Status"></a-mat-static>
+          <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemPaymentState" display="Name" label="Payment Status"></a-mat-static>
       </div>
 
       <div class="grid-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
@@ -21,11 +17,15 @@
         <a-mat-autocomplete class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"
           (onChange)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
         <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
+        <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="new State"></a-mat-select>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
-        <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
+      <div class="grid-4_md-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
+        <a-mat-input class="col" *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
+        <a-mat-static class="col" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
         <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
+        <a-mat-static class="col" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       </div>
 
       <div class="grid-4_md-2_xs-1">
@@ -36,11 +36,14 @@
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
       </div>
 
-      <div class="grid-2_xs-1">
-        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
-        <a-mat-static class="col_xs-12" *ngIf="orderItem.InvoiceItemType === productItemType" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+      <div *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" class="grid-4_md-2_xs-1">
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityReserved" ></a-mat-static>
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityRequestsShipping" ></a-mat-static>
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityPicked" ></a-mat-static>
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShipped" ></a-mat-static>
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShortFalled" label="Quantity short"></a-mat-static>
       </div>
-
+  
       <!-- <mat-input-container>
         <input matInput placeholder="Discount amount" name="discount" [(ngModel)]="discount">
       </mat-input-container>
@@ -67,8 +70,9 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="orderItem.CanWriteQuantityOrdered" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button *ngIf="orderItem.CanWriteQuantityOrdered" mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="!orderItem.CanWriteQuantityOrdered" mat-button (click)="goBack()" type="button">DONE</button>
     </mat-card-actions>
   </form>
 </td-layout-card-over>

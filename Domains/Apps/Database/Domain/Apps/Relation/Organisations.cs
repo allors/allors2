@@ -27,25 +27,5 @@ namespace Allors.Domain
             setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
             setup.AddDependency(this.Meta.ObjectType, M.Singleton);
         }
-
-        public Extent<Organisation> Suppliers
-        {
-            get
-            {
-                var suppliers = new Organisations(this.Session).Extent();
-                suppliers.Filter.AddContains(M.Organisation.OrganisationRoles, new OrganisationRoles(this.Session).Supplier);
-                return suppliers;
-            }
-        }
-
-        public Extent<Organisation> Customers
-        {
-            get
-            {
-                var customers = new Organisations(this.Session).Extent();
-                customers.Filter.AddContains(M.Organisation.OrganisationRoles, new OrganisationRoles(this.Session).Customer);
-                return customers;
-            }
-        }
     }
 }

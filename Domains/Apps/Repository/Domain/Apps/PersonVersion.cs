@@ -113,16 +113,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("2788011C-D6E5-4336-A756-6289A72253F5")]
-        [AssociationId("A3507056-8A72-4628-8EE6-13AA16C121EF")]
-        [RoleId("3956A3B1-D209-49E8-9D9A-9162601894D5")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        public PersonRole[] PersonRoles { get; set; }
-
-        #region Allors
         [Id("57345BFB-05EC-429F-88AF-BEE30408B121")]
         [AssociationId("1225C556-BB23-433C-9072-0AAA792BBDCE")]
         [RoleId("EE484B8C-2FB4-4ECE-9368-DDE8BF3BE2D9")]

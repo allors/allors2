@@ -597,7 +597,8 @@ namespace Allors.Domain
 
         public void AppsDeriveCanShip(IDerivation derivation)
         {
-            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) ||
+                this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Completed))
             {
                 var somethingToShip = false;
                 var allItemsAvailable = true;

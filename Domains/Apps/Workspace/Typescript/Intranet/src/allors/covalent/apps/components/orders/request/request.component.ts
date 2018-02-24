@@ -26,8 +26,6 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   public title: string;
   public subTitle: string;
   public request: RequestForQuote;
-  public people: Person[];
-  public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
@@ -84,7 +82,6 @@ export class RequestEditComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const rolesQuery: Query[] = [
-          new Query(m.OrganisationRole),
           new Query(m.PersonRole),
           new Query(m.Currency),
         ];
@@ -94,12 +91,6 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
             this.scope.session.reset();
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
-
-            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
-
-            const personRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
 
             const fetch: Fetch[] = [
               this.fetcher.internalOrganisation,
@@ -124,23 +115,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
               }),
             ];
 
-            const query: Query[] = [
-              new Query(
-                {
-                  include: [new TreeNode({ roleType: m.Party.CurrentContacts })],
-                  name: "organisations",
-                  objectType: this.m.Organisation,
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
-                }),
-              new Query(
-                {
-                  name: "persons",
-                  objectType: this.m.Person,
-                  predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
-                }),
-            ];
-
-            return this.scope.load("Pull", new PullRequest({ fetch, query }));
+            return this.scope.load("Pull", new PullRequest({ fetch }));
           });
       })
       .subscribe((loaded) => {
@@ -163,8 +138,6 @@ export class RequestEditComponent implements OnInit, OnDestroy {
         }
 
         this.previousOriginator = this.request.Originator;
-        this.organisations = loaded.collections.organisations as Organisation[];
-        this.people = loaded.collections.parties as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);

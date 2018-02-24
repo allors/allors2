@@ -139,11 +139,11 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    if (this.person.PersonRoles.indexOf(this.customerRole) > -1 && this.customerRelationships === undefined) {
-      const customerRelationship = this.scope.session.create("CustomerRelationship") as CustomerRelationship;
-      customerRelationship.Customer = this.person;
-      customerRelationship.InternalOrganisation = this.internalOrganisation;
-    }
+    // if (this.person.PersonRoles.indexOf(this.customerRole) > -1 && this.customerRelationships === undefined) {
+    //   const customerRelationship = this.scope.session.create("CustomerRelationship") as CustomerRelationship;
+    //   customerRelationship.Customer = this.person;
+    //   customerRelationship.InternalOrganisation = this.internalOrganisation;
+    // }
 
     this.scope
       .save()

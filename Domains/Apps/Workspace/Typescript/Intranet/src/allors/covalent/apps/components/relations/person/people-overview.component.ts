@@ -13,9 +13,10 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Person } from "../../../../../domain";
+import { InternalOrganisation, Person } from "../../../../../domain";
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 interface SearchData {
   firstName: string;
@@ -49,7 +50,8 @@ export class PeopleOverviewComponent implements OnDestroy {
     private snackBarService: MatSnackBar,
     public media: TdMediaService,
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private changeDetectorRef: ChangeDetectorRef,
+    private stateService: StateService) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
@@ -62,23 +64,23 @@ export class PeopleOverviewComponent implements OnDestroy {
 
     this.page$ = new BehaviorSubject<number>(50);
 
-    const search$: Observable<SearchData> = this.searchForm.valueChanges
+    const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
       return [
         data,
         data !== previousData ? 50 : take,
         date,
+        internalOrganisationId,
       ];
-    }, [] as [SearchData, number, Date]);
+    }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take]: [SearchData, number]) => {
+      .switchMap(([data, take, , internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();

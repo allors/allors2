@@ -56,11 +56,11 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, onHold, confirm, reject, approve, hold, ship, invoice);
             config.Deny(this.ObjectType, rejected, reject, ship, invoice);
             config.Deny(this.ObjectType, cancelled, cancel, ship, invoice);
-            config.Deny(this.ObjectType, completed, complete, ship, invoice);
+            config.Deny(this.ObjectType, completed, complete, reject, cancel, approve, hold, @continue, confirm, invoice);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }

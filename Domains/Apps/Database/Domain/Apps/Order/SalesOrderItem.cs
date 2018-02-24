@@ -141,6 +141,7 @@ namespace Allors.Domain
             }
 
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ReservedFromSerialisedInventoryItem, M.SalesOrderItem.ReservedFromNonSerialisedInventoryItem);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
 
@@ -149,14 +150,15 @@ namespace Allors.Domain
             this.AppsOnDeriveShipTo(derivation);
             this.AppsOnDeriveVatRegime(derivation);
             this.AppsOnDeriveIsValidOrderItem(derivation);
+            this.AppsOnDeriveReservedFromInventoryItem(derivation);
 
             if (this.ExistQuantityShipNow && this.QuantityShipNow != 0)
             {
                 this.AppsShipNow(derivation);
 
-                if (this.ExistReservedFromInventoryItem)
+                if (this.ExistReservedFromNonSerialisedInventoryItem)
                 {
-                    this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                    this.ReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
                 }
 
                 this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
@@ -210,18 +212,37 @@ namespace Allors.Domain
 
             if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess))
             {
-                this.AppsOnDeriveReservedFromInventoryItem(derivation);
-                this.AppsOnDeriveQuantities(derivation);
+                if (this.ExistReservedFromNonSerialisedInventoryItem)
+                {
+                    this.AppsOnDeriveQuantities(derivation);
 
-                this.PreviousQuantity = this.QuantityOrdered;
-                this.PreviousReservedFromInventoryItem = this.ReservedFromInventoryItem;
-                this.PreviousProduct = this.Product;
+                    this.PreviousQuantity = this.QuantityOrdered;
+                    this.PreviousReservedFromNonSerialisedInventoryItem = this.ReservedFromNonSerialisedInventoryItem;
+                    this.PreviousProduct = this.Product;
+                }
+
+                if (this.ExistReservedFromSerialisedInventoryItem && !this.ReservedFromSerialisedInventoryItem.Good.ExistSalesDiscontinuationDate)
+                {
+                    this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.strategy.Session).Assigned;
+                    this.ReservedFromSerialisedInventoryItem.Good.SalesDiscontinuationDate = this.strategy.Session.Now();
+                    this.QuantityReserved = 1;
+                    this.QuantityRequestsShipping = 1;
+                }
             }
 
             if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled) ||
                 this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected))
             {
-                this.AppsOnDeriveQuantities(derivation);
+                if (this.ExistReservedFromNonSerialisedInventoryItem)
+                {
+                    this.AppsOnDeriveQuantities(derivation);
+                }
+
+                if (this.ExistReservedFromSerialisedInventoryItem)
+                {
+                    this.ReservedFromSerialisedInventoryItem.Good.RemoveSalesDiscontinuationDate();
+                    this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.strategy.Session).Available;
+                }
             }
         }
 
@@ -282,20 +303,26 @@ namespace Allors.Domain
                 {
                     if (good.ExistFinishedGood)
                     {
-                        if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Part.Equals(good.FinishedGood))
+                        if (!this.ExistReservedFromNonSerialisedInventoryItem || !this.ReservedFromNonSerialisedInventoryItem.Part.Equals(good.FinishedGood))
                         {
                             var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
                             inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
-                            this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
+                            this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
                     else
                     {
-                        if (!this.ExistReservedFromInventoryItem || !this.ReservedFromInventoryItem.Good.Equals(good))
+                        if (good.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                         {
                             var inventoryItems = good.InventoryItemsWhereGood;
                             inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
-                            this.ReservedFromInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
+                            this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
+                        }
+                        else
+                        {
+                            var inventoryItems = good.InventoryItemsWhereGood;
+                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
+                            this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                         }
                     }
                 }
@@ -322,7 +349,7 @@ namespace Allors.Domain
                 this.QuantityOrdered = item.QuantityOrdered;
             }
 
-            if (this.ExistReservedFromInventoryItem &&
+            if (this.ExistReservedFromNonSerialisedInventoryItem &&
                 this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) &&
                 (this.QuantityReserved > 0 || this.QuantityPendingShipment > 0))
             {
@@ -356,14 +383,14 @@ namespace Allors.Domain
                             this.DecreasePendingShipmentQuantity(derivation, 0 - shipmentCorrection);
                         }
 
-                        this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                        this.ReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
                     }
                 }
 
                 this.PreviousQuantity = this.QuantityOrdered;
             }
 
-            if (this.ExistReservedFromInventoryItem &&
+            if (this.ExistReservedFromNonSerialisedInventoryItem &&
                 (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled) ||
                 this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected)))
             {
@@ -372,7 +399,7 @@ namespace Allors.Domain
                     this.DecreasePendingShipmentQuantity(derivation, this.QuantityPendingShipment);
                 }
 
-                this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                this.ReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
             }
         }
 
@@ -383,11 +410,11 @@ namespace Allors.Domain
                 this.QuantityOrdered = item.QuantityOrdered;
             }
 
-            if (this.ExistReservedFromInventoryItem && this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess))
+            if (this.ExistReservedFromNonSerialisedInventoryItem && this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess))
             {
-                if (this.ExistPreviousReservedFromInventoryItem && !this.ReservedFromInventoryItem.Equals(this.PreviousReservedFromInventoryItem))
+                if (this.ExistPreviousReservedFromNonSerialisedInventoryItem && !this.ReservedFromNonSerialisedInventoryItem.Equals(this.PreviousReservedFromNonSerialisedInventoryItem))
                 {
-                    this.PreviousReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                    this.PreviousReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
 
                     this.SetQuantitiesWithInventoryFirstTime(derivation);
                 }
@@ -401,10 +428,10 @@ namespace Allors.Domain
                         {
                             this.QuantityReserved += diff;
 
-                            if (diff > this.ReservedFromInventoryItem.AvailableToPromise)
+                            if (diff > this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise)
                             {
-                                this.QuantityRequestsShipping += this.ReservedFromInventoryItem.AvailableToPromise;
-                                this.QuantityShortFalled += diff - this.ReservedFromInventoryItem.AvailableToPromise;
+                                this.QuantityRequestsShipping += this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise;
+                                this.QuantityShortFalled += diff - this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise;
                             }
                             else
                             {
@@ -438,7 +465,7 @@ namespace Allors.Domain
                             }
                         }
 
-                        this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                        this.ReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
                     }
 
                     //// When first Confirmed.
@@ -451,7 +478,7 @@ namespace Allors.Domain
                 this.PreviousQuantity = this.QuantityOrdered;
             }
 
-            if (this.ExistReservedFromInventoryItem &&
+            if (this.ExistReservedFromNonSerialisedInventoryItem &&
                 (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled) ||
                 this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected)))
             {
@@ -460,7 +487,7 @@ namespace Allors.Domain
                     this.DecreasePendingShipmentQuantity(derivation, this.QuantityPendingShipment);
                 }
 
-                this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+                this.ReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
             }
         }
 
@@ -470,8 +497,8 @@ namespace Allors.Domain
             this.QuantityRequestsShipping = 0;
             this.QuantityShortFalled = 0;
 
-            this.QuantityRequestsShipping = this.QuantityOrdered > this.ReservedFromInventoryItem.AvailableToPromise ?
-                this.ReservedFromInventoryItem.AvailableToPromise : this.QuantityOrdered;
+            this.QuantityRequestsShipping = this.QuantityOrdered > this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise ?
+                this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise : this.QuantityOrdered;
 
             if (this.QuantityRequestsShipping < 0)
             {
@@ -481,7 +508,7 @@ namespace Allors.Domain
             this.QuantityReserved = this.QuantityOrdered;
             this.QuantityShortFalled = this.QuantityOrdered - this.QuantityRequestsShipping;
 
-            this.ReservedFromInventoryItem.OnDerive(x => x.WithDerivation(derivation));
+            this.ReservedFromNonSerialisedInventoryItem.OnDerive(x => x.WithDerivation(derivation));
         }
 
         private void DecreasePendingShipmentQuantity(IDerivation derivation, decimal diff)
@@ -927,7 +954,7 @@ namespace Allors.Domain
             {
                 var quantity = this.QuantityShipNow ?? 0;
 
-                if (this.ExistReservedFromInventoryItem && quantity > this.ReservedFromInventoryItem.AvailableToPromise)
+                if (this.ExistReservedFromNonSerialisedInventoryItem && quantity > this.ReservedFromNonSerialisedInventoryItem.AvailableToPromise)
                 {
                     derivation.Validation.AddError(this, M.SalesOrderItem.QuantityShipNow, ErrorMessages.SalesOrderItemQuantityToShipNowNotAvailable);
                 }

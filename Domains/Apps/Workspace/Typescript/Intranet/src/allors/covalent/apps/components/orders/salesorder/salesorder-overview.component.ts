@@ -14,8 +14,6 @@ import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrde
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
-import { CustomerShipmentDialogComponent } from "./customershipment-dialog.module";
-
 @Component({
   templateUrl: "./salesorder-overview.component.html",
 })
@@ -83,6 +81,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.SalesOrderItem.Product }),
                   new TreeNode({ roleType: m.SalesOrderItem.InvoiceItemType }),
                   new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
+                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemShipmentState }),
+                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemPaymentState }),
                 ],
                 roleType: m.SalesOrder.SalesOrderItems,
               }),
@@ -212,21 +212,6 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   }
 
   public ship(): void {
-    const dialogRef = this.dialog.open(CustomerShipmentDialogComponent, {
-      data: { selectedState: this.selectedSerialisedInventoryState },
-      height: "300px",
-      width: "700px",
-    });
-
-    // dialogRef.afterClosed().subscribe((answer: string) => {
-    //   if (answer === "Serialised") {
-    //     this.router.navigate(["/serialisedGood"]);
-    //   }
-    //   if (answer === "NonSerialised") {
-    //     this.router.navigate(["/nonSerialisedGood"]);
-    //   }
-    // });
-
     this.scope.invoke(this.order.Ship)
       .subscribe((invoked: Invoked) => {
         this.goBack();

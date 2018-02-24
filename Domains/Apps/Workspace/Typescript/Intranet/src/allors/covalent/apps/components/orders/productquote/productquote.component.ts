@@ -27,8 +27,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   public subTitle: string;
   public quote: ProductQuote;
   public request: RequestForQuote;
-  public people: Person[];
-  public organisations: Organisation[];
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
@@ -85,8 +83,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const rolesQuery: Query[] = [
-          new Query(m.OrganisationRole),
-          new Query(m.PersonRole),
           new Query(m.Currency),
         ];
 
@@ -95,27 +91,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
             this.scope.session.reset();
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
-
-            const organisationRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const oCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
-
-            const personRoles: OrganisationRole[] = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
-            const pCustomerRole: OrganisationRole = organisationRoles.find((v: OrganisationRole) => v.Name === "Customer");
-
-            const query: Query[] = [
-              new Query(
-                {
-                  name: "organisations",
-                  objectType: this.m.Organisation,
-                  predicate: new Contains({ roleType: m.Organisation.OrganisationRoles, object: oCustomerRole }),
-                }),
-              new Query(
-                {
-                  name: "persons",
-                  objectType: this.m.Person,
-                  predicate: new Contains({ roleType: m.Person.PersonRoles, object: pCustomerRole }),
-                }),
-            ];
 
             const fetch: Fetch[] = [
               this.fetcher.internalOrganisation,
@@ -131,7 +106,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
               }),
             ];
 
-            return this.scope.load("Pull", new PullRequest({ fetch, query }));
+            return this.scope.load("Pull", new PullRequest({ fetch }));
           });
       })
       .subscribe((loaded) => {
@@ -154,8 +129,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         }
 
         this.previousReceiver = this.quote.Receiver;
-        this.organisations = loaded.collections.organisations as Organisation[];
-        this.people = loaded.collections.parties as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);

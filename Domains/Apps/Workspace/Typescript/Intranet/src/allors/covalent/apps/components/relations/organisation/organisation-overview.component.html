@@ -21,7 +21,9 @@
         <div class="pad">
           <div class="grid-2_xs-1">
             <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
-            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.OrganisationRoles" display="Name"></a-mat-static>
+            <mat-input-container class="col">
+              <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true"/>
+            </mat-input-container>
           </div>
 
           <div class="grid-2_xs-1">
