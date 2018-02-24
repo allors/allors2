@@ -1300,19 +1300,19 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(3, item1.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(7, item3.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(3, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(7, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
 
             order.Reject();
 
             this.Session.Derive();
 
-            Assert.Equal(0, item1.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
         }
 
         [Fact]
@@ -1382,19 +1382,19 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(3, item1.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(7, item3.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(3, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(7, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
 
             order.Cancel();
 
             this.Session.Derive();
 
-            Assert.Equal(0, item1.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
         }
 
         [Fact]
@@ -2351,10 +2351,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(6, item1.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(3, item3.ReservedFromInventoryItem.QuantityCommittedOut);
-            Assert.Equal(0, item3.ReservedFromInventoryItem.AvailableToPromise);
+            Assert.Equal(6, item1.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(3, item3.ReservedFromNonSerialisedInventoryItem.QuantityCommittedOut);
+            Assert.Equal(0, item3.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
         }
 
         [Fact]

@@ -360,8 +360,8 @@ namespace Allors.Domain
             Assert.Equal(20, item4.QuantityReserved);
             Assert.Equal(20, item4.QuantityShortFalled);
 
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(5, item1.ReservedFromInventoryItem.QuantityOnHand);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(5, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(15).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
@@ -389,8 +389,8 @@ namespace Allors.Domain
             Assert.Equal(20, item4.QuantityReserved);
             Assert.Equal(20, item4.QuantityShortFalled);
 
-            Assert.Equal(0, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(20, item1.ReservedFromInventoryItem.QuantityOnHand);
+            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(20, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(85).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
@@ -418,8 +418,8 @@ namespace Allors.Domain
             Assert.Equal(20, item4.QuantityReserved);
             Assert.Equal(0, item4.QuantityShortFalled);
                 
-            Assert.Equal(45, item1.ReservedFromInventoryItem.AvailableToPromise);
-            Assert.Equal(105, item1.ReservedFromInventoryItem.QuantityOnHand);
+            Assert.Equal(45, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(105, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
         }
 
         [Fact]
