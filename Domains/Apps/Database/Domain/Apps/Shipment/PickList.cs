@@ -105,7 +105,7 @@ namespace Allors.Domain
                     {
                         var shipment = itemIssuance.ShipmentItem.ShipmentWhereShipmentItem as CustomerShipment;
 
-                        if (shipment?.ShipmentPackages.Count == 0)
+                        if (shipment?.ShipmentPackages[0].PackagingContents.Count == 0)
                         {
                             shipment?.ShipmentPackages[0].AddPackagingContent(
                                 new PackagingContentBuilder(this.strategy.Session)

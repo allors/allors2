@@ -267,9 +267,8 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
 
-            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) && Equals(
-                    this.Store.BillingProcess,
-                    new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) && 
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
             {
                 this.RemoveDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
@@ -617,8 +616,7 @@ namespace Allors.Domain
                     }
                 }
 
-                if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
-                    ((!this.PartiallyShip && allItemsAvailable) || somethingToShip))
+                if ((!this.PartiallyShip && allItemsAvailable) || somethingToShip)
                 {
                     this.CanShip = true;
                     return;
@@ -730,6 +728,12 @@ namespace Allors.Domain
             }
 
             // TODO: Check
+
+            if (this.Store.IsAutomaticallyShipped)
+            {
+                pendingShipment.Ship();
+            }
+
             pendingShipment.OnDerive(x => x.WithDerivation(derivation));
             return pendingShipment;
         }

@@ -17,11 +17,11 @@
         <a-mat-autocomplete class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"
           (onChange)="goodSelected($event)" [filter]="goodsFilter.create()"></a-mat-autocomplete>
         <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
-        <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="new State"></a-mat-select>
+        <a-mat-select *ngIf="orderItem.ReservedFromSerialisedInventoryItem" class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="new State"></a-mat-select>
       </div>
 
       <div class="grid-4_md-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
-        <a-mat-input class="col" *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
+        <a-mat-input class="col" *ngIf="orderItem.isNew || orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
         <a-mat-static class="col" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
         <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>

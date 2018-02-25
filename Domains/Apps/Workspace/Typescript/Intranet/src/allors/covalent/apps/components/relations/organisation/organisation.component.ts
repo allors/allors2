@@ -28,23 +28,24 @@ export class OrganisationComponent implements OnInit, OnDestroy {
   public organisation: Organisation;
 
   public locales: Locale[];
-  public roles: OrganisationRole[];
-  public selectableRoles: OrganisationRole[] = [];
-  public activeRoles: OrganisationRole[] = [];
   public classifications: CustomOrganisationClassification[];
   public industries: IndustryClassification[];
+
   public customerRelationship: CustomerRelationship;
   public supplierRelationship: SupplierRelationship;
   public internalOrganisation: InternalOrganisation;
-
-  private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
-  private scope: Scope;
+  public roles: OrganisationRole[];
+  public selectableRoles: OrganisationRole[] = [];
+  public activeRoles: OrganisationRole[] = [];
   private customerRole: OrganisationRole;
   private supplierRole: OrganisationRole;
   private manufacturerRole: OrganisationRole;
   private isActiveCustomer: boolean;
   private isActiveSupplier: boolean;
+
+  private refresh$: BehaviorSubject<Date>;
+  private subscription: Subscription;
+  private scope: Scope;
 
   private fetcher: Fetcher;
 
@@ -78,24 +79,6 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const customerRelationshipPredicate: And = new And();
-        const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.predicates;
-
-        customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.Customer, value: id }));
-        customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
-        const not1 = new Not();
-        customerRelationshipPredicates.push(not1);
-        not1.predicate = new Exists({ roleType: m.CustomerRelationship.ThroughDate });
-
-        const supplierRelationshipPredicate: And = new And();
-        const supplierRelationshipPredicates: Predicate[] = supplierRelationshipPredicate.predicates;
-
-        supplierRelationshipPredicates.push(new Equals({ roleType: m.SupplierRelationship.Supplier, value: id }));
-        supplierRelationshipPredicates.push(new Equals({ roleType: m.SupplierRelationship.InternalOrganisation, value: internalOrganisationId }));
-        const not2 = new Not();
-        customerRelationshipPredicates.push(not2);
-        not2.predicate = new Exists({ roleType: m.SupplierRelationship.ThroughDate });
-
         const query: Query[] = [
           new Query(this.m.Locale),
           new Query(this.m.OrganisationRole),
@@ -104,6 +87,24 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           ];
 
         if (id != null) {
+          const customerRelationshipPredicate: And = new And();
+          const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.predicates;
+
+          customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.Customer, value: id }));
+          customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
+          const not1 = new Not();
+          customerRelationshipPredicates.push(not1);
+
+          not1.predicate = new Exists({ roleType: m.CustomerRelationship.ThroughDate });
+          const supplierRelationshipPredicate: And = new And();
+          const supplierRelationshipPredicates: Predicate[] = supplierRelationshipPredicate.predicates;
+
+          supplierRelationshipPredicates.push(new Equals({ roleType: m.SupplierRelationship.Supplier, value: id }));
+          supplierRelationshipPredicates.push(new Equals({ roleType: m.SupplierRelationship.InternalOrganisation, value: internalOrganisationId }));
+          const not2 = new Not();
+          customerRelationshipPredicates.push(not2);
+          not2.predicate = new Exists({ roleType: m.SupplierRelationship.ThroughDate });
+
           query.push(new Query(
             {
               name: "customerRelationships",

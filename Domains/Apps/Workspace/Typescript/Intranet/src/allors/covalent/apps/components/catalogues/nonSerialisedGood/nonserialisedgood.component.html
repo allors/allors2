@@ -45,6 +45,15 @@
 
       </mat-tab>
 
+      <mat-tab *ngIf="inventoryItems.length === 1" label="Inventory">
+        <div class="grid pad-top">
+          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.QuantityOnHand" label="Actual Quantity in stock"></a-mat-static>
+          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.QuantityCommittedOut" ></a-mat-static>
+          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.AvailableToPromise" ></a-mat-static>
+          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.QuantityExpectedIn" ></a-mat-static>
+        </div>
+      </mat-tab>
+
       <mat-tab label="Comments">
         <div class="grid pad-top">
           <a-mat-textarea class="col" [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>

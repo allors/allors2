@@ -11,9 +11,11 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CommunicationEvent, ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, WorkEffort, WorkEffortAssignment } from "../../../../../domain";
+import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./person-overview.component.html",
@@ -28,15 +30,25 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   public title: string = "Person overview";
   public person: Person;
   public organisation: Organisation;
+  public internalOrganisation: InternalOrganisation;
 
   public contactMechanismsCollection: string = "Current";
   public currentContactMechanisms: PartyContactMechanism[] = [];
   public inactiveContactMechanisms: PartyContactMechanism[] = [];
   public allContactMechanisms: PartyContactMechanism[] = [];
 
+  public roles: PersonRole[];
+  public activeRoles: PersonRole[] = [];
+  public rolesText: string;
+  private customerRole: PersonRole;
+  private employeeRole: PersonRole;
+  private isActiveCustomer: boolean;
+  private isActiveEmployee: boolean;
+
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -46,13 +58,15 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef,
-    private titleService: Title) {
+    private titleService: Title,
+    private stateService: StateService) {
 
     titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   get contactMechanisms(): any {
@@ -70,13 +84,14 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             include: [
@@ -191,36 +206,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: "countries",
-              objectType: m.Country,
-            }),
-          new Query(
-            {
-              name: "genders",
-              objectType: m.GenderType,
-            }),
-          new Query(
-            {
-              name: "salutations",
-              objectType: m.Salutation,
-            }),
-          new Query(
-            {
-              name: "organisationContactKinds",
-              objectType: m.OrganisationContactKind,
-            }),
-          new Query(
-            {
-              name: "contactMechanismPurposes",
-              objectType: m.ContactMechanismPurpose,
-            }),
-          new Query(
-            {
-              name: "internalOrganisation",
-              objectType: m.InternalOrganisation,
-            }),
+          new Query(this.m.PersonRole),
         ];
 
         return this.scope
@@ -228,6 +214,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
+        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         this.person = loaded.objects.person as Person;
         const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
@@ -238,6 +225,25 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
+
+        this.roles = loaded.collections.PersonRoleQuery as PersonRole[];
+        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
+        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "DB06A3E1-6146-4C18-A60D-DD10E19F7243");
+
+        this.activeRoles = [];
+        if (this.internalOrganisation.ActiveCustomers.includes(this.person)) {
+          this.isActiveCustomer = true;
+          this.activeRoles.push(this.customerRole);
+        }
+
+        if (this.internalOrganisation.ActiveEmployees.includes(this.person)) {
+          this.isActiveEmployee = true;
+          this.activeRoles.push(this.employeeRole);
+        }
+
+        this.rolesText = this.activeRoles
+          .map((v: PersonRole) => v.Name)
+          .reduce((acc: string, cur: string) => acc + ", " + cur);
       },
       (error: any) => {
         this.errorService.message(error);

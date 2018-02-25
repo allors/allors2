@@ -215,7 +215,7 @@ export class GoodsOverviewComponent implements OnDestroy {
                 (v: Organisation) => v.Name === data.manufacturer,
               );
 
-              this.suppliers = loaded.collections.suppliers as Organisation[];
+              this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
               this.supplier = this.suppliers.find(
                 (v: Organisation) => v.Name === data.supplier,
               );

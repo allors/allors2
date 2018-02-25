@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CommunicationEvent, ContactMechanism, CustomerRelationship, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, SupplierRelationship, TelecommunicationsNumber } from "../../../../../domain";
+import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber } from "../../../../../domain";
 import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -41,8 +41,6 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public roles: OrganisationRole[];
   public activeRoles: OrganisationRole[] = [];
   public rolesText: string;
-  private customerRelationship: CustomerRelationship;
-  private supplierRelationship: SupplierRelationship;
   private customerRole: OrganisationRole;
   private supplierRole: OrganisationRole;
   private manufacturerRole: OrganisationRole;
@@ -140,15 +138,6 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const customerRelationshipPredicate: And = new And();
-        const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.predicates;
-
-        customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.Customer, value: id }));
-        customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
-        const not = new Not();
-        customerRelationshipPredicates.push(not);
-        not.predicate = new Exists({ roleType: m.CustomerRelationship.ThroughDate });
-
         const fetch: Fetch[] = [
           this.fetcher.internalOrganisation,
           new Fetch({
@@ -216,12 +205,6 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
         const query: Query[] = [
           new Query(this.m.OrganisationRole),
-          new Query(
-            {
-              name: "customerRelationships",
-              objectType: m.CustomerRelationship,
-              predicate: customerRelationshipPredicate,
-            }),
           ];
 
         return this.scope
@@ -230,7 +213,6 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-        this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
 
         this.organisation = loaded.objects.organisation as Organisation;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];

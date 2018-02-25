@@ -21,7 +21,8 @@ namespace Allors.Domain
 
     public partial class Person
     {
-        private bool IsDeletable => !this.ExistCurrentOrganisationContactRelationships;
+        private bool IsDeletable => !this.ExistCurrentOrganisationContactRelationships && 
+                                    !this.ExistEmploymentsWhereEmployee;
 
         public bool AppsIsActiveEmployee(DateTime? date)
         {

@@ -246,6 +246,15 @@ namespace Allors.Repository
         [Workspace]
         public bool IsImmediatelyPicked { get; set; }
 
+        #region Allors
+        [Id("1136BB3C-905C-411B-AFED-FBE04BE132BD")]
+        [AssociationId("7008A454-EE6C-402E-BAD0-0D06F76BA294")]
+        [RoleId("B427AF19-EBE2-430D-B852-2CF56079F269")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool IsAutomaticallyShipped { get; set; }
+
         #region inherited methods
 
 

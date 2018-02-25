@@ -35,6 +35,11 @@ namespace Allors.Domain
         {
             get
             {
+                if (!this.Store.IsAutomaticallyShipped)
+                {
+                    return true;
+                }
+
                 if (!this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Packed))
                 {
                     return false;
@@ -80,7 +85,7 @@ namespace Allors.Domain
                 PickList pendingPickList = null;
                 foreach (PickList picklist in picklists)
                 {
-                    if (!picklist.IsNegativePickList)
+                    if (!picklist.IsNegativePickList && !this.Store.IsImmediatelyPicked)
                     {
                         pendingPickList = picklist;
                         break;
@@ -165,7 +170,6 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
 
             var internalOrganisations = new Organisations(this.strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
@@ -671,7 +675,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCustomerShipmentState && !this.CustomerShipmentState.Equals(this.LastCustomerShipmentState))
+            if (this.ExistCustomerShipmentState)
             {
                 if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
                 {

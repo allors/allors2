@@ -22,7 +22,9 @@
             <div class="col pointer" *ngIf="organisation" [routerLink]="['/relations/organisation/' + organisation.id]">
               <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
             </div>
-            <a-mat-static class="col" [object]="person" [roleType]="m.Person.PersonRoles" display="Name"></a-mat-static>
+            <mat-input-container class="col">
+              <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true" />
+            </mat-input-container>
           </div>
 
           <div class="grid-2_xs-1">

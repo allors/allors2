@@ -96,6 +96,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.BillToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
+              new TreeNode({ roleType: m.SalesOrder.SalesOrderShipmentState }),
+              new TreeNode({ roleType: m.SalesOrder.SalesOrderPaymentState }),
               new TreeNode({ roleType: m.SalesOrder.CreatedBy }),
               new TreeNode({ roleType: m.SalesOrder.LastModifiedBy }),
               new TreeNode({ roleType: m.SalesOrder.Quote }),
@@ -216,6 +218,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       .subscribe((invoked: Invoked) => {
         this.goBack();
         this.snackBar.open("Customer Shipment successfully created.", "close", { duration: 5000 });
+        this.refresh();
       },
       (error: Error) => {
         this.errorService.dialog(error);

@@ -29,7 +29,7 @@
       </div>
 
       <div class="grid-2_xs-1">
-        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="organisations"
+        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" 
           [filter]="organisationsFilter.create()" display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
         <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [options]="people"
           [filter]="peopleFilter.create()" display="displayName" (onChange)="shipToCustomerSelected($event)" label="Ship to private  person "></a-mat-autocomplete> -->
@@ -75,7 +75,7 @@
       </div>
 
       <div class="grid-2_md-1">
-        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="organisations"
+        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" 
           [filter]="organisationsFilter.create()" display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
         <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people"
           [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
@@ -96,7 +96,7 @@
       </div>
 
       <div class="grid-2_md-1">
-        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer" [options]="organisations"
+        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer" 
           [filter]="organisationsFilter.create()" display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
         <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people"
           [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
