@@ -9,15 +9,24 @@
 
     public partial class Sheets
     {
-        private readonly Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Sheet> sheetByWorksheet;
-        
         public Sheets(Host host, Client client, Mediator mediator)
         {
             this.Host = host;
             this.Client = client;
             this.Mediator = mediator;
 
-            this.sheetByWorksheet = new Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Sheet>();
+            this.SheetByVstoWorksheet = new Dictionary<Worksheet, Sheet>();
+
+            this.Host.Application.SheetActivate += (obj) =>
+                {
+                    var interopWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)obj;
+                    var vstoWorksheet = this.Host.GetVstoWorksheet(interopWorksheet);
+                    var sheet = this.Instantiate(vstoWorksheet);
+                    if (sheet != null)
+                    {
+                        this.SheetByVstoWorksheet[vstoWorksheet] = sheet;
+                    }
+                };
 
             this.Mediator.StateChanged += this.MediatorOnStateChanged;
         }
@@ -30,42 +39,27 @@
 
         public Sheet ActiveSheet => this[this.Host.ActiveWorksheet];
 
+        public Dictionary<Worksheet, Sheet> SheetByVstoWorksheet { get; }
+
         protected Logger Logger { get; } = LogManager.GetCurrentClassLogger();
-
-        protected Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Sheet> SheetByWorksheet
-        {
-            get
-            {
-                foreach (Microsoft.Office.Interop.Excel.Worksheet interopWorksheet in this.Host.Application.Worksheets)
-                {
-                    if (!this.sheetByWorksheet.ContainsKey(interopWorksheet))
-                    {
-                        var worksheet = this.Host.ApplicationFactory.GetVstoObject(interopWorksheet);
-                        var sheet = this.Instantiate(worksheet);
-                        if (sheet != null)
-                        {
-                            this.sheetByWorksheet[interopWorksheet] = sheet;
-                        }
-                    }
-                }
-
-                return this.sheetByWorksheet;
-            }
-        }
 
         public Sheet this[Worksheet worksheet]
         {
             get
             {
-                Sheet sheet;
-                this.SheetByWorksheet.TryGetValue(worksheet.InnerObject, out sheet);
+                if (worksheet == null)
+                {
+                    return null;
+                }
+
+                this.SheetByVstoWorksheet.TryGetValue(worksheet, out var sheet);
                 return sheet;
             }
         }
 
         private void MediatorOnStateChanged(object sender, EventArgs eventArgs)
         {
-            foreach (var sheet in this.SheetByWorksheet.Values)
+            foreach (var sheet in this.SheetByVstoWorksheet.Values)
             {
                 sheet.MediatorOnStateChanged();
             }

@@ -42,7 +42,7 @@
             await this.Context.Load(args);
         }
 
-        public async Task<bool> Save()
+        public async Task<PushResponse> Save()
         {
             await this.OnSaving();
 
@@ -56,7 +56,7 @@
 
             this.OnSaved(saveResponse);
 
-            return saveResponse.hasErrors;
+            return saveResponse;
         }
 
         public virtual void MediatorOnStateChanged()
@@ -77,12 +77,10 @@
 
             if (sheet != null)
             {
-                return this.Sheets.Host.ApplicationFactory
-                    .GetVstoObject(sheet);
+                return this.Sheets.Host.GetVstoWorksheet(sheet);
             }
 
             return null;
-
         }
 
         public async Task SaveAndInvokeSilent(Method method)
@@ -229,7 +227,7 @@
             {
                 if (interopListObject.Name != null && interopListObject.Name.ToLowerInvariant().Equals(name?.ToLowerInvariant()))
                 {
-                    return this.Sheets.Host.ApplicationFactory.GetVstoObject(interopListObject);
+                    return this.Sheets.Host.GetVstoListObject(interopListObject);
                 }
             }
 

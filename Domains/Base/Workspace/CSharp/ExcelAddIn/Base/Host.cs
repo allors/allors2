@@ -1,11 +1,14 @@
 ﻿namespace Allors.Excel
 {
+    using System.Collections.Generic;
+
     using Microsoft.Office.Interop.Excel;
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
 
-    using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
+    using ListObject = Microsoft.Office.Tools.Excel.ListObject;
     using Workbook = Microsoft.Office.Tools.Excel.Workbook;
+    using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
 
     public partial class Host
     {
@@ -14,16 +17,58 @@
             this.Application = application;
             this.CustomTaskPanes = customTaskPanes;
             this.ApplicationFactory = applicationFactory;
+
+            this.vstoWorksheetByInteropWorksheet = new Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Worksheet>();
+
+            this.Application.SheetActivate += (obj) =>
+                {
+                    this.ActivateWorksheet((Microsoft.Office.Interop.Excel.Worksheet)obj);
+                };
+
+            this.Application.WorkbookActivate += (obj) =>
+                {
+                    var interopWorkbook = (Microsoft.Office.Interop.Excel.Workbook)obj;
+                    this.ActiveWorkbook = this.ApplicationFactory.GetVstoObject(interopWorkbook);
+
+                    this.ActivateWorksheet(this.Application.ActiveWorkbook.ActiveSheet);
+                };
+
+            this.Application.WorkbookNewSheet += (wb, sh) =>
+                {
+                    this.ActivateWorksheet((Microsoft.Office.Interop.Excel.Worksheet)sh);
+                };
+
+            // TODO: sheet.DeActivate
         }
+
+        private Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Microsoft.Office.Tools.Excel.Worksheet> vstoWorksheetByInteropWorksheet { get; }
 
         public Application Application { get; }
 
         public CustomTaskPaneCollection CustomTaskPanes { get; }
 
-        public ApplicationFactory ApplicationFactory { get; }
+        public Worksheet ActiveWorksheet { get; private set; }
 
-        public Worksheet ActiveWorksheet => (Worksheet)this.ApplicationFactory.GetVstoObject(this.Application.ActiveWorkbook.ActiveSheet);
+        public Workbook ActiveWorkbook { get; private set; }
 
-        public Workbook ActiveWorkbook => (Workbook)this.ApplicationFactory.GetVstoObject(this.Application.ActiveWorkbook);
+        private ApplicationFactory ApplicationFactory { get; }
+        public Worksheet GetVstoWorksheet(Microsoft.Office.Interop.Excel.Worksheet sheet)
+        {
+            this.vstoWorksheetByInteropWorksheet.TryGetValue(sheet, out var vstoWorksheet);
+            return vstoWorksheet;
+        }
+
+        public ListObject GetVstoListObject(Microsoft.Office.Interop.Excel.ListObject interopListObject)
+        {
+            return this.ApplicationFactory.GetVstoObject(interopListObject);
+        }
+
+        private void ActivateWorksheet(Microsoft.Office.Interop.Excel.Worksheet interopWorksheet)
+        {
+            var vstoWorksheet = this.ApplicationFactory.GetVstoObject(interopWorksheet);
+            this.vstoWorksheetByInteropWorksheet[interopWorksheet] = vstoWorksheet;
+
+            this.ActiveWorksheet = vstoWorksheet;
+        }
     }
 }
