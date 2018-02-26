@@ -21,10 +21,13 @@
                 {
                     var interopWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)obj;
                     var vstoWorksheet = this.Host.GetVstoWorksheet(interopWorksheet);
-                    var sheet = this.Instantiate(vstoWorksheet);
-                    if (sheet != null)
+                    if (!this.SheetByVstoWorksheet.ContainsKey(vstoWorksheet))
                     {
-                        this.SheetByVstoWorksheet[vstoWorksheet] = sheet;
+                        var sheet = this.Instantiate(vstoWorksheet);
+                        if (sheet != null)
+                        {
+                            this.SheetByVstoWorksheet[vstoWorksheet] = sheet;
+                        }
                     }
                 };
 
