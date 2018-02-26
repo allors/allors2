@@ -30,7 +30,7 @@
                     var interopWorkbook = (Microsoft.Office.Interop.Excel.Workbook)obj;
                     this.ActiveWorkbook = this.ApplicationFactory.GetVstoObject(interopWorkbook);
 
-                    this.ActivateWorksheet(this.Application.ActiveWorkbook.ActiveSheet);
+                    this.ActivateWorksheet(interopWorkbook.ActiveSheet);
                 };
 
             this.Application.WorkbookNewSheet += (wb, sh) =>
