@@ -101,11 +101,6 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this.SalesOrderItem, this);
             }
-
-            if (this.ExistShipmentItemWhereInvoiceItem)
-            {
-                derivation.AddDependency(this.ShipmentItemWhereInvoiceItem, this);
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

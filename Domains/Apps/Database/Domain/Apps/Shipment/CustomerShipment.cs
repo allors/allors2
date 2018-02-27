@@ -35,11 +35,6 @@ namespace Allors.Domain
         {
             get
             {
-                if (!this.Store.IsAutomaticallyShipped)
-                {
-                    return true;
-                }
-
                 if (!this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Packed))
                 {
                     return false;
@@ -200,6 +195,11 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentShipmentState(derivation);
 
             this.AppsOnDeriveCurrentObjectState(derivation);
+
+            if (this.CanShip && this.Store.IsAutomaticallyShipped)
+            {
+                this.Ship();
+            }
         }
 
         public void AppsOnDeriveInvoices(IDerivation derivation)
@@ -222,6 +222,7 @@ namespace Allors.Domain
                             .WithBilledFrom(salesOrder.TakenBy)
                             .WithBilledFromContactMechanism(salesOrder.BillFromContactMechanism)
                             .WithBillToCustomer(salesOrder.BillToCustomer)
+                            .WithBillToContactMechanism(salesOrder.BillToContactMechanism)
                             .WithBillToEndCustomer(salesOrder.BillToEndCustomer)
                             .WithBillToEndCustomerContactMechanism(salesOrder.BillToEndCustomerContactMechanism)
                             .WithShipToCustomer(salesOrder.ShipToCustomer)
@@ -478,15 +479,11 @@ namespace Allors.Domain
 
         public void AppsOnDeriveOrderItemQuantityShipped(IDerivation derivation)
         {
-            var salesOrders = new List<SalesOrder>();
-
             foreach (ShipmentItem shipmentItem in this.ShipmentItems)
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    var order = (SalesOrder)orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem;
                     orderShipment.SalesOrderItem.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
-                    salesOrders.Add(order);
                 }
             }
         }
@@ -675,7 +672,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCustomerShipmentState)
+            if (this.ExistCustomerShipmentState && !this.CustomerShipmentState.Equals(this.LastCustomerShipmentState))
             {
                 if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
                 {

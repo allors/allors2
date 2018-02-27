@@ -429,7 +429,7 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.Equal(billingAddress.ContactMechanism, invoice.BillToEndCustomerContactMechanism);
+            Assert.Equal(billingAddress.ContactMechanism, invoice.BillToContactMechanism);
         }
 
         [Fact]

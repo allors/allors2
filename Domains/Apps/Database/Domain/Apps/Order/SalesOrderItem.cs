@@ -296,7 +296,7 @@ namespace Allors.Domain
         {
             var internalOrganisation = this.SalesOrderWhereSalesOrderItem.TakenBy;
 
-            if (this.ExistProduct)
+            if (this.ExistProduct && internalOrganisation != null)
             {
                 var good = this.Product as Good;
                 if (good != null)

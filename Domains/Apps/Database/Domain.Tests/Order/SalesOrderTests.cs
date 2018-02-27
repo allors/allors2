@@ -273,6 +273,14 @@ namespace Allors.Domain
                 .WithEffectiveDate(DateTime.UtcNow)
                 .Build();
 
+
+            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
+            derivation.Derive();
+
+            var list = ((DerivationLog)derivation.DerivationLog).List;
+            //list.RemoveAll(v => !v.StartsWith("Dependency"));
+
+
             this.Session.Derive();
 
             Assert.Equal(new SalesOrderStates(this.Session).InProcess, order.SalesOrderState);

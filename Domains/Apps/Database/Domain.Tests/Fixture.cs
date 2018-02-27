@@ -96,6 +96,7 @@ namespace Allors
 
                 new StoreBuilder(session)
                     .WithName("store")
+                    .WithBillingProcess(new BillingProcesses(session).BillingForShipmentItems)
                     .WithInternalOrganisation(internalOrganisation)
                     .WithOutgoingShipmentNumberPrefix("shipmentno: ")
                     .WithSalesInvoiceNumberPrefix("invoiceno: ")
@@ -105,7 +106,7 @@ namespace Allors
                     .WithCreditLimit(500)
                     .WithPaymentGracePeriod(10)
                     .WithDefaultCollectionMethod(collectionMethod)
-                    .WithIsImmediatelyPicked(true)
+                    .WithIsImmediatelyPicked(false)
                     .Build();
 
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();

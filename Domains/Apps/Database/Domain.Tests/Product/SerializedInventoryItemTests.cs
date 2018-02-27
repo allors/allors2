@@ -84,7 +84,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new SerialisedInventoryItemStates(this.Session).Good, item.SerialisedInventoryItemState);
+            Assert.Equal(new SerialisedInventoryItemStates(this.Session).Available, item.SerialisedInventoryItemState);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);
         }
     }
