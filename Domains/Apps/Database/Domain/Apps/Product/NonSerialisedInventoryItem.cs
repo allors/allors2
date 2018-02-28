@@ -142,7 +142,9 @@ namespace Allors.Domain
             foreach (SalesOrderItem salesOrderItem in this.SalesOrderItemsWhereReservedFromNonSerialisedInventoryItem)
             {
                 var order = (SalesOrder)salesOrderItem.SalesOrderWhereSalesOrderItem;
-                if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)
+                if (salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Completed) ||
+                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Finished) ||
+                    salesOrderItem.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).InProcess) && !order.ScheduledManually)
                 {
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
                 }
@@ -157,7 +159,9 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.Good.PurchaseOrderItemsWhereProduct)
                 {
-                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
+                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Completed) ||
+                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Finished) ||
+                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
                     {
                         this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
                         this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
@@ -169,7 +173,9 @@ namespace Allors.Domain
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
                 {
-                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
+                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Completed) ||
+                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Finished) ||
+                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
                     {
                         this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
                         this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;

@@ -10,11 +10,15 @@
           <!-- <a-mat-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.NonSerialisedInventoryItemState"
             [options]="inventoryItemObjectStates" display="Name" label="Status"></a-mat-select> -->
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
-          <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+        </div>
+
+        <div class="grid-2_md-1 pad-top">
           <a-mat-autocomplete class="col" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-autocomplete>
+          <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
           <mat-input-container class="col">
             <input matInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
           </mat-input-container>
+          <a-mat-static class="col" [object]="good" [roleType]="m.Good.AvailableToPromise"></a-mat-static>
           <mat-form-field class="col">
             <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
               <mat-option>None</mat-option>
@@ -43,15 +47,6 @@
           </div>
         </td-expansion-panel>
 
-      </mat-tab>
-
-      <mat-tab *ngIf="inventoryItems.length === 1" label="Inventory">
-        <div class="grid pad-top">
-          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.QuantityOnHand" label="Actual Quantity in stock"></a-mat-static>
-          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.QuantityCommittedOut" ></a-mat-static>
-          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.AvailableToPromise" ></a-mat-static>
-          <a-mat-static class="col" [object]="inventoryItems[0]" [roleType]="m.NonSerialisedInventoryItem.QuantityExpectedIn" ></a-mat-static>
-        </div>
       </mat-tab>
 
       <mat-tab label="Comments">

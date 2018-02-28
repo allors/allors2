@@ -33,6 +33,9 @@ namespace Allors.Domain
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.SalesOrder, M.SalesOrder.SalesOrderState),
+                new TransitionalConfiguration(M.SalesOrder, M.SalesOrder.SalesOrderShipmentState),
+                new TransitionalConfiguration(M.SalesOrder, M.SalesOrder.SalesOrderInvoiceState),
+                new TransitionalConfiguration(M.SalesOrder, M.SalesOrder.SalesOrderPaymentState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
@@ -228,6 +231,7 @@ namespace Allors.Domain
             this.AppsOnDeriveOrderItems(derivation);
 
             this.AppsOnDeriveOrderShipmentState(derivation);
+            this.AppsOnDeriveOrderInvoiceState(derivation);
             this.AppsOnDeriveOrderState(derivation);
             this.AppsOnDeriveLocale(derivation);
             this.AppsOnDeriveOrderTotals(derivation);
@@ -404,14 +408,57 @@ namespace Allors.Domain
             this.AppsOnDeriveOrderState(derivation);
         }
 
+        public void AppsOnDeriveOrderInvoiceState(IDerivation derivation)
+        {
+            var itemsInvoiced = false;
+            var itemsPartiallyInvoiced = false;
+            var itemsNotInvoiced = false;
+
+            foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+            {
+                if (orderItem.ExistSalesOrderItemInvoiceState)
+                {
+                    if (orderItem.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).PartiallyInvoiced))
+                    {
+                        itemsPartiallyInvoiced = true;
+                    }
+
+                    if (orderItem.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced))
+                    {
+                        itemsInvoiced = true;
+                    }
+                }
+                else
+                {
+                    itemsNotInvoiced = true;
+                }
+            }
+
+            if (itemsInvoiced && !itemsNotInvoiced && !itemsPartiallyInvoiced &&
+                (!this.ExistSalesOrderInvoiceState || !this.SalesOrderInvoiceState.Equals(new SalesOrderInvoiceStates(this.Strategy.Session).Invoiced)))
+            {
+                this.SalesOrderInvoiceState = new SalesOrderInvoiceStates(this.Strategy.Session).Invoiced;
+            }
+
+            if ((itemsPartiallyInvoiced || (itemsInvoiced && itemsNotInvoiced)) &&
+                (!this.ExistSalesOrderInvoiceState || !this.SalesOrderInvoiceState.Equals(new SalesOrderInvoiceStates(this.Strategy.Session).PartiallyInvoiced)))
+            {
+                this.SalesOrderInvoiceState = new SalesOrderInvoiceStates(this.Strategy.Session).PartiallyInvoiced;
+            }
+
+            this.AppsOnDeriveOrderState(derivation);
+        }
+
         public void AppsOnDeriveOrderState(IDerivation derivation)
         {
-            if (this.ExistSalesOrderShipmentState && this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).Shipped))
+            if (this.ExistSalesOrderShipmentState && this.SalesOrderShipmentState.Equals(new SalesOrderShipmentStates(this.Strategy.Session).Shipped) &&
+                this.ExistSalesOrderInvoiceState && this.SalesOrderInvoiceState.Equals(new SalesOrderInvoiceStates(this.Strategy.Session).Invoiced))
             {
                 this.Complete();
             }
 
-            if (this.ExistSalesOrderPaymentState && this.SalesOrderPaymentState.Equals(new SalesOrderPaymentStates(this.Strategy.Session).Paid))
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Completed) &&
+                this.ExistSalesOrderPaymentState && this.SalesOrderPaymentState.Equals(new SalesOrderPaymentStates(this.Strategy.Session).Paid))
             {
                 this.SalesOrderState = new SalesOrderStates(this.strategy.Session).Finished;
             }
@@ -596,8 +643,7 @@ namespace Allors.Domain
 
         public void AppsDeriveCanShip(IDerivation derivation)
         {
-            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) ||
-                this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).Completed))
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess))
             {
                 var somethingToShip = false;
                 var allItemsAvailable = true;
@@ -755,12 +801,24 @@ namespace Allors.Domain
             return addresses;
         }
 
-        public void AppsDeriveCanInvoice(IDerivation derivation)
+        private void AppsDeriveCanInvoice(IDerivation derivation)
         {
             if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
                 Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForOrderItems))
             {
-                this.CanInvoice = true;
+                this.CanInvoice = false;
+
+                foreach (SalesOrderItem orderItem in this.ValidOrderItems)
+                {
+                    var amountAlreadyInvoiced = orderItem.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
+
+                    var invoiceAmount = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+
+                    if (invoiceAmount != amountAlreadyInvoiced)
+                    {
+                        this.CanInvoice = true;
+                    }
+                }
             }
             else
             {
@@ -867,7 +925,7 @@ namespace Allors.Domain
             }
         }
 
-            public void AppsOnDeriveOrderItems(IDerivation derivation)
+        public void AppsOnDeriveOrderItems(IDerivation derivation)
         {
             var quantityOrderedByProduct = new Dictionary<Product, decimal>();
             var totalBasePriceByProduct = new Dictionary<Product, decimal>();

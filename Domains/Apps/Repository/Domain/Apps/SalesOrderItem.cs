@@ -128,6 +128,39 @@ namespace Allors.Repository
         public SalesOrderItemPaymentState SalesOrderItemPaymentState { get; set; }
         #endregion
 
+        #region SalesOrderItemInvoiceState
+
+        #region Allors
+        [Id("53D4E265-78FA-47E0-A452-03B55F4B1620")]
+        [AssociationId("6F1F2ABD-FAC0-4EB7-B6DA-5E082964763D")]
+        [RoleId("FDFF17E5-ADF1-41B3-9679-5FF626E1FC03")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemInvoiceState PreviousSalesOrderItemInvoiceState { get; set; }
+
+        #region Allors
+        [Id("8F1D474D-3807-4591-8016-21796AF89184")]
+        [AssociationId("86294D4D-A7D6-4395-8D10-EFCD74614078")]
+        [RoleId("9F34E256-D162-4C07-BE67-7D864342C99C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SalesOrderItemInvoiceState LastSalesOrderItemInvoiceState { get; set; }
+
+        #region Allors
+        [Id("219A398F-DDE3-4A50-A76D-34F7A1C086F7")]
+        [AssociationId("C27E26FC-ACBD-45AF-ACBE-3842F8C880DE")]
+        [RoleId("9EAD8A3B-1B77-4026-914E-E9A88486EBA5")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SalesOrderItemInvoiceState SalesOrderItemInvoiceState { get; set; }
+        #endregion
+
         #region SalesOrderItemShipmentState
         #region Allors
         [Id("16139169-9E1C-4B3A-9635-660CA07F3190")]
