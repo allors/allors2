@@ -173,7 +173,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
-        public SalesOrderShipmentState PreviousSalesShipmentOrderState { get; set; }
+        public SalesOrderShipmentState PreviousSalesOrderShipmentState { get; set; }
 
         #region Allors
         [Id("3B64B544-C2EB-48AE-8DBC-32F5B31C21D2")]

@@ -14,33 +14,6 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public int? PaymentNetDays
-        {
-            get
-            {
-                int? invoicePaymentNetDays = null;
-                if (this.ExistSalesTerms)
-                {
-                    foreach (AgreementTerm term in this.SalesTerms)
-                    {
-                        if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
-                        {
-                            int netDays;
-                            if (int.TryParse(term.TermValue, out netDays))
-                            {
-                                invoicePaymentNetDays = netDays;
-                            }
-
-                            return invoicePaymentNetDays;
-                        }
-                    }
-                }
-
-                var invoice = (SalesInvoice)this.SalesInvoiceWhereSalesInvoiceItem;
-                return invoice.PaymentNetDays;
-            }
-        }
-
         public decimal PriceAdjustment => this.TotalSurcharge - this.TotalDiscount;
 
         public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);

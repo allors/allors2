@@ -36,61 +36,45 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public int? PaymentNetDays
+        public int PaymentNetDays
         {
             get
             {
-                int? invoicePaymentNetDays = null;
                 if (this.ExistSalesTerms)
                 {
                     foreach (AgreementTerm term in this.SalesTerms)
                     {
                         if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
                         {
-                            int netDays;
-                            if (int.TryParse(term.TermValue, out netDays))
+                            if (int.TryParse(term.TermValue, out var netDays))
                             {
-                                invoicePaymentNetDays = netDays;
+                                return netDays;
                             }
-
-                            return invoicePaymentNetDays;
                         }
                     }
                 }
 
-                return null;
+                if (this.ExistBillToCustomer && this.BillToCustomer.PaymentNetDays() != null)
+                {
+                    return this.BillToCustomer.PaymentNetDays().Value;
+                }
+
+                if (this.ExistStore && this.Store.ExistPaymentNetDays)
+                {
+                    return this.Store.PaymentNetDays;
+                }
+
+                return 0;
             }
         }
 
-        /// <summary>
-        /// Gets the due date of an invoice, either
-        /// <list type="bullet">
-        ///     <item>
-        ///         <description>InvoiceDate + PaymentNetDays (if exists)</description>
-        ///     </item>
-        ///     <item>
-        ///         <description>InvoiceDate +  Store.PaymentNetDays (if exists)</description>
-        ///     </item>
-        /// </list>
-        /// or null.
-        /// </summary>
         public DateTime? DueDate
         {
             get
             {
                 if (this.ExistInvoiceDate)
                 {
-                    if (this.ExistBillToCustomer && this.BillToCustomer.PaymentNetDays() != null)
-                    {
-                        var paymentNetDays = this.BillToCustomer.PaymentNetDays().Value;
-                        return this.InvoiceDate.AddDays(paymentNetDays);
-                    }
-
-                    if (this.ExistStore && this.Store.ExistPaymentNetDays)
-                    {
-                        var storePaymentNetDays = this.Store.PaymentNetDays;
-                        return this.InvoiceDate.AddDays(storePaymentNetDays);
-                    }
+                    return this.InvoiceDate.AddDays(this.PaymentNetDays);
                 }
 
                 return null;

@@ -150,7 +150,9 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/term']">+ Add</button>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/incoterm']">+ Incoterm</button>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/invoiceterm']">+ Invoice term</button>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/orderterm']">+ Order term</button>
       </mat-card-actions>
     </mat-card>
   </div>

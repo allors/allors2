@@ -93,6 +93,30 @@ namespace Allors.Repository
         public decimal AvailableToPromise { get; set; }
 
         #region Allors
+        [Id("75CC0426-6695-4930-BB16-4B8B8618D7C8")]
+        [AssociationId("14629D25-2A27-45BC-BF8C-A5D91997AF7C")]
+        [RoleId("03733A79-F65B-4481-9B08-5C5DDEA7CB17")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityCommittedOut { get; set; }
+
+        #region Allors
+        [Id("2ED8E0B8-3ABA-4CDE-93C7-E45AFB381E66")]
+        [AssociationId("D625F49C-3156-4BE7-97B0-197C9CD813E9")]
+        [RoleId("F27E47C0-5D1E-4DF3-BCCF-DD5809324938")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityExpectedIn { get; set; }
+
+        #region Allors
         [Id("2ca90db1-8595-4de0-957e-dc4476be1654")]
         [AssociationId("637fa802-fc65-4b5e-aaf5-e49ac5218b9b")]
         [RoleId("64036e01-6767-46d0-aca7-def5876db81f")]

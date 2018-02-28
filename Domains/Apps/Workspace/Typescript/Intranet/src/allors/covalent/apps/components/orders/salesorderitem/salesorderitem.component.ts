@@ -21,7 +21,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title: string = "Edit Sales Order Item";
+  public title: string;
   public subTitle: string;
   public order: SalesOrder;
   public orderItem: SalesOrderItem;
@@ -81,6 +81,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
               new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemShipmentState }),
+              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemInvoiceState }),
               new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemPaymentState }),
               new TreeNode({ roleType: m.SalesOrderItem.ReservedFromNonSerialisedInventoryItem }),
               new TreeNode({ roleType: m.SalesOrderItem.ReservedFromSerialisedInventoryItem }),
@@ -126,12 +127,21 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.orderItem = this.scope.session.create("SalesOrderItem") as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
+
+          if (this.orderItem.CanWriteActualUnitPrice) {
+            this.title = "Edit Sales Order Item";
+          } else {
+            this.title = "View Sales Order Item";
+          }
+
           if (this.orderItem.InvoiceItemType === this.productItemType) {
             this.update(this.orderItem.Product);
           }
+
           if (this.orderItem.DiscountAdjustment) {
             this.discount = this.orderItem.DiscountAdjustment.Amount;
           }
+
           if (this.orderItem.SurchargeAdjustment) {
             this.surcharge = this.orderItem.SurchargeAdjustment.Amount;
           }

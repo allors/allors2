@@ -92,6 +92,8 @@ namespace Allors.Domain
             {
                 this.Good.DeriveAvailableToPromise();
                 this.Good.DeriveQuantityOnHand();
+                this.Good.DeriveQuantityCommittedOut();
+                this.Good.DeriveQuantityExpectedIn();
             }
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;

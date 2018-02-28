@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Allors.Domain
 {
     using System;
@@ -148,10 +150,10 @@ namespace Allors.Domain
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
 
+            this.AppsOnDeriveVatRegime(derivation);
             this.AppsOnDerivePrices(derivation, 0, 0);
             this.AppsOnDeriveDeliveryDate(derivation);
             this.AppsOnDeriveShipTo(derivation);
-            this.AppsOnDeriveVatRegime(derivation);
             this.AppsOnDeriveIsValidOrderItem(derivation);
             this.AppsOnDeriveReservedFromInventoryItem(derivation);
 
@@ -168,6 +170,17 @@ namespace Allors.Domain
             }
 
             this.AppsOnDeriveCurrentObjectState(derivation);
+        }
+
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (this.ExistSalesOrderItemInvoiceState && this.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced))
+            {
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.QuantityOrdered, Operations.Write));
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.ActualUnitPrice, Operations.Write));
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.InvoiceItemType, Operations.Write));
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Product, Operations.Write));
+            }
         }
 
         public void AppsOnDeriveIsValidOrderItem(IDerivation derivation)
@@ -537,19 +550,14 @@ namespace Allors.Domain
 
         public void AppsOnDeriveOrderItemState(IDerivation derivation)
         {
-            if (this.ExistSalesOrderItemShipmentState && this.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).PartiallyShipped))
-            {
-                this.SalesOrderItemShipmentState = new SalesOrderItemShipmentStates(this.Strategy.Session).PartiallyShipped;
-                this.AppsOnDeriveCurrentObjectState(derivation);
-            }
-
-            if (this.ExistSalesOrderItemShipmentState && this.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped))
+            if (this.ExistSalesOrderItemShipmentState && this.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped) &&
+                this.ExistSalesOrderItemInvoiceState && this.SalesOrderItemInvoiceState.Equals(new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced))
             {
                 this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Completed;
                 this.AppsOnDeriveCurrentObjectState(derivation);
             }
 
-            if (this.ExistSalesOrderItemShipmentState && this.SalesOrderItemShipmentState.Equals(new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped) &&
+            if (this.ExistSalesOrderItemState && this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Completed) &&
                 this.ExistSalesOrderItemPaymentState && this.SalesOrderItemPaymentState.Equals(new SalesOrderItemPaymentStates(this.Strategy.Session).Paid))
             {
                 this.SalesOrderItemState = new SalesOrderItemStates(this.Strategy.Session).Finished;
@@ -1086,6 +1094,25 @@ namespace Allors.Domain
                         this.SalesOrderItemShipmentState = new SalesOrderItemShipmentStates(this.Strategy.Session).Shipped;
                     }
                 }
+            }
+
+            this.AppsOnDeriveOrderItemState(derivation);
+        }
+
+        public void AppsOnDeriveInvoiceState(IDerivation derivation)
+        {
+            var amountAlreadyInvoiced = this.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
+
+            var leftToInvoice = (this.QuantityOrdered * this.ActualUnitPrice) - amountAlreadyInvoiced;
+
+            if (amountAlreadyInvoiced > 0 && leftToInvoice > 0)
+            {
+                this.SalesOrderItemInvoiceState = new SalesOrderItemInvoiceStates(this.Strategy.Session).PartiallyInvoiced;
+            }
+
+            if (amountAlreadyInvoiced > 0 && leftToInvoice == 0)
+            {
+                this.SalesOrderItemInvoiceState = new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced;
             }
 
             this.AppsOnDeriveOrderItemState(derivation);

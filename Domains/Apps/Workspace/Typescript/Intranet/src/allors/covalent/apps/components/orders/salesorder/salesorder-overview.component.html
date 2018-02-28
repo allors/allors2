@@ -25,6 +25,7 @@
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
             <a-mat-static class="col link" *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id ]"></a-mat-static>
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderShipmentState" display="Name" label="Shipment Status"></a-mat-static>
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderPaymentState" display="Name" label="Payment Status"></a-mat-static>
           </div>
 

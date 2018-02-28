@@ -114,7 +114,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public SalesOrderItemInvoiceState SalesOrderInvoiceState { get; set; }
+        public SalesOrderItemInvoiceState SalesOrderItemInvoiceState { get; set; }
 
         #region Allors
         [Id("0BA7F287-96FD-488C-9AED-493F90574CA5")]
@@ -124,7 +124,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public SalesOrderItemPaymentState SalesOrderPaymentState { get; set; }
+        public SalesOrderItemPaymentState SalesOrderItemPaymentState { get; set; }
 
         #region Allors
         [Id("70D8D5BA-D759-414B-BE25-1E05C1E7F72E")]

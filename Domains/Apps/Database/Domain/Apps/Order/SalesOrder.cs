@@ -271,7 +271,7 @@ namespace Allors.Domain
                 this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
             }
 
-            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) && 
+            if (this.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).InProcess) &&
                 Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
             {
                 this.RemoveDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.Invoice, Operations.Execute));
@@ -812,9 +812,9 @@ namespace Allors.Domain
                 {
                     var amountAlreadyInvoiced = orderItem.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
 
-                    var invoiceAmount = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+                    var leftToInvoice = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
 
-                    if (invoiceAmount != amountAlreadyInvoiced)
+                    if (leftToInvoice > 0)
                     {
                         this.CanInvoice = true;
                     }
@@ -833,7 +833,6 @@ namespace Allors.Domain
             if (this.CanInvoice)
             {
                 this.AppsInvoiceThis(derivation);
-                this.Complete();
             }
         }
 
@@ -870,9 +869,9 @@ namespace Allors.Domain
             {
                 var amountAlreadyInvoiced = orderItem.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
 
-                var invoiceAmount = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+                var leftToInvoice = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
 
-                if (invoiceAmount != amountAlreadyInvoiced)
+                if (leftToInvoice > 0)
                 { 
                     var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                         .WithInvoiceItemType(orderItem.InvoiceItemType)
@@ -887,7 +886,7 @@ namespace Allors.Domain
 
                     new OrderItemBillingBuilder(this.strategy.Session)
                         .WithQuantity(orderItem.QuantityOrdered)
-                        .WithAmount(invoiceAmount)
+                        .WithAmount(leftToInvoice)
                         .WithOrderItem(orderItem)
                         .WithSalesInvoiceItem(invoiceItem)
                         .Build();
@@ -945,11 +944,12 @@ namespace Allors.Domain
 
                 salesOrderItem.AppsOnDeriveDeliveryDate(derivation);
                 salesOrderItem.AppsOnDeriveSalesRep(derivation);
+                salesOrderItem.AppsOnDeriveVatRegime(derivation);
                 salesOrderItem.AppsCalculatePurchasePrice(derivation);
                 salesOrderItem.AppsCalculateUnitPrice(derivation);
                 salesOrderItem.AppsOnDerivePrices(derivation, 0, 0);
                 salesOrderItem.AppsOnDeriveShipmentState(derivation);
-                salesOrderItem.AppsOnDeriveVatRegime(derivation);
+                salesOrderItem.AppsOnDeriveInvoiceState(derivation);
                 salesOrderItem.AppsOnDerivePaymentState(derivation);
 
                 // for the second time, because unitbaseprice might not be set

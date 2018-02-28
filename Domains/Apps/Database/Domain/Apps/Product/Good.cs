@@ -95,6 +95,8 @@ namespace Allors.Domain
             this.DeriveProductCategoriesExpanded(derivation);
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
+            this.DeriveQuantityCommittedOut();
+            this.DeriveQuantityExpectedIn();
         }
 
         public void DeriveVirtualProductPriceComponent()
@@ -175,6 +177,34 @@ namespace Allors.Domain
                 {
                     var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
                     this.AvailableToPromise += nonSerialised.AvailableToPromise;
+                }
+            }
+        }
+
+        public void DeriveQuantityCommittedOut()
+        {
+            this.QuantityCommittedOut = 0;
+
+            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            {
+                if (inventoryItem is NonSerialisedInventoryItem)
+                {
+                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                    this.QuantityCommittedOut += nonSerialised.QuantityCommittedOut;
+                }
+            }
+        }
+
+        public void DeriveQuantityExpectedIn()
+        {
+            this.QuantityExpectedIn = 0;
+
+            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            {
+                if (inventoryItem is NonSerialisedInventoryItem)
+                {
+                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                    this.QuantityExpectedIn += nonSerialised.QuantityExpectedIn;
                 }
             }
         }

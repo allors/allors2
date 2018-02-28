@@ -138,6 +138,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (!this.invoice) {
           this.invoice = this.scope.session.create("SalesInvoice") as SalesInvoice;
           this.invoice.BilledFrom = internalOrganisation;
+          this.title = "Add Sales Invoice";
+        } else {
+          this.title = "Sales Invoice for: " + this.invoice.BillToCustomer.PartyName;
         }
 
         if (this.invoice.BillToCustomer) {
@@ -149,7 +152,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
 
         this.previousBillToCustomer = this.invoice.BillToCustomer;
-        this.title = "Sales Invoice for: " + this.invoice.BillToCustomer.PartyName;
       },
       (error: Error) => {
         this.errorService.message(error);

@@ -60,7 +60,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, rejected, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, completed, Operations.Write);
+            config.Deny(this.ObjectType, completed, Operations.Execute, Operations.Write);
             config.Deny(this.ObjectType, finished, Operations.Execute, Operations.Write);
         }
     }

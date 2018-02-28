@@ -19,6 +19,8 @@
             <input matInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
           </mat-input-container>
           <a-mat-static class="col" [object]="good" [roleType]="m.Good.AvailableToPromise"></a-mat-static>
+          <a-mat-static class="col" [object]="good" [roleType]="m.Good.QuantityCommittedOut"></a-mat-static>
+          <a-mat-static class="col" [object]="good" [roleType]="m.Good.QuantityExpectedIn"></a-mat-static>
           <mat-form-field class="col">
             <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
               <mat-option>None</mat-option>

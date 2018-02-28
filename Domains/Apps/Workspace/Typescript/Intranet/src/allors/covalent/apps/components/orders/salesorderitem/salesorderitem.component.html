@@ -5,6 +5,7 @@
       <div *ngIf="!orderItem.isNew" class="grid-4_lg-2_sm-1">
           <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name" label="Status"></a-mat-static>
           <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemShipmentState" display="Name" label="Shipment Status"></a-mat-static>
+          <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
           <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemPaymentState" display="Name" label="Payment Status"></a-mat-static>
       </div>
 
@@ -24,16 +25,16 @@
         <a-mat-input class="col" *ngIf="orderItem.isNew || orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
         <a-mat-static class="col" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
         <a-mat-input class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
+        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
         <a-mat-static class="col" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       </div>
 
       <div class="grid-4_md-2_xs-1">
-        <a-mat-static class="col" [object]="orderItem.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate" label="VAT % from order"></a-mat-static>
+        <a-mat-static class="col" [object]="order.VatRegime.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
         <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
           label="Item VAT regime"></a-mat-select>
         <a-mat-static class="col" [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
-        <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
       </div>
 
       <div *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" class="grid-4_md-2_xs-1">
