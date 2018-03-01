@@ -48,7 +48,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
             }
         }
 
-        protected string ConnectionString => "Server=localhost;User Id=allors;Password=allors;Database=adapters";
+        protected string ConnectionString => "Server=localhost; User Id=allors; Password=allors; Database=adapters; Pooling=false; Timeout=300; CommandTimeout=300";
         
         public IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {

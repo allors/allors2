@@ -271,7 +271,14 @@ namespace Allors.Adapters.Database.Sql
             }
             catch
             {
-                session.Rollback();
+                try
+                {
+                    session.Rollback();
+                }
+                catch
+                {
+                }
+
                 throw;
             }
             finally

@@ -30,7 +30,7 @@ namespace Allors.Adapters.Database.Sql
 
         protected SchemaParameter(Schema schema, string name, DbType type)
         {
-            this.Name = string.Format(schema.ParamFormat, name);
+            this.Name = string.Format(schema.ParamFormat, name).ToLowerInvariant();
             this.InvocationName = string.Format(schema.ParamInvocationFormat, name);
             this.DbType = type;
         }

@@ -23,6 +23,7 @@
 
 namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
 {
+    using System;
     using System.Collections.Generic;
     using System.Data;
 
@@ -59,7 +60,7 @@ namespace Allors.Adapters.Database.Npgsql.Commands.Procedure
                 NpgsqlCommand command;
                 if (!this.commandByObjectType.TryGetValue(exclusiveLeafClass, out command))
                 {
-                    command = this.Session.CreateNpgsqlCommand(Sql.Schema.AllorsPrefix + "CO_" + exclusiveLeafClass.Name);
+                    command = this.Session.CreateNpgsqlCommand(Schema.AllorsPrefix + "CO_" + exclusiveLeafClass.Name);
                     command.CommandType = CommandType.StoredProcedure;
                     this.AddInObject(command, schema.TypeId.Param, objectType.Id);
 

@@ -24,13 +24,13 @@ namespace Allors.Adapters.Memory
 
     using Adapters;
 
-    public class ExtentTest : Adapters.ExtentTest, IDisposable
+    public class ExtentTest : Adapters.ExtentTest
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

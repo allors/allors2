@@ -466,8 +466,8 @@ FROM information_schema.columns"))
 CREATE FUNCTION " + procedure.Name + @"(" + this.ObjectArrayParam + @" " + this.ObjectArrayParam.TypeName + @")
 RETURNS TABLE 
 (
-     __" + this.ObjectId + " " + this.database.GetSqlType(this.ObjectId.DbType) + @",
-     __" + this.CacheId + " " + this.database.GetSqlType(this.CacheId.DbType) + @"
+     __" + this.ObjectId + " " + this.database.GetSqlType(this.ObjectId) + @",
+     __" + this.CacheId + " " + this.database.GetSqlType(this.CacheId) + @"
 ) 
 AS $$
 BEGIN
@@ -535,9 +535,9 @@ $$ language plpgsql;
 CREATE FUNCTION " + procedure.Name + @"(" + this.ObjectArrayParam + @" " + this.ObjectArrayParam.TypeName + @")
 RETURNS TABLE 
 (
-     __" + this.ObjectId + " " + this.database.GetSqlType(this.ObjectId.DbType) + @",
-     __" + this.TypeId + " " + this.database.GetSqlType(this.TypeId.DbType) + @",
-     __" + this.CacheId + " " + this.database.GetSqlType(this.CacheId.DbType) + @"
+     __" + this.ObjectId + " " + this.database.GetSqlType(this.ObjectId) + @",
+     __" + this.TypeId + " " + this.database.GetSqlType(this.TypeId) + @",
+     __" + this.CacheId + " " + this.database.GetSqlType(this.CacheId) + @"
 ) 
 AS $$
 BEGIN
@@ -578,7 +578,7 @@ RETURNS TABLE
                             procedure.Definition += ", ";
                         }
 
-                        procedure.Definition += "__" + this.ColumnsByRelationType[role.RelationType].Name + " " + this.database.GetSqlType(this.ColumnsByRelationType[role.RelationType].DbType);
+                        procedure.Definition += "__" + this.ColumnsByRelationType[role.RelationType].Name + " " + this.database.GetSqlType(this.ColumnsByRelationType[role.RelationType]);
                     }
 
                     procedure.Definition += @") 

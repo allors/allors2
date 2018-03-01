@@ -40,7 +40,7 @@ namespace Allors.Adapters
         Four = 4
     }
 
-    public abstract class ExtentTest
+    public abstract class ExtentTest : IDisposable
     {
         protected static readonly bool[] TrueFalse = { true, false };
 
@@ -72,6 +72,8 @@ namespace Allors.Adapters
         protected Action[] Inits => this.Profile.Inits;
 
         protected virtual bool[] UseOperator => new[] { false, true };
+
+        public abstract void Dispose();
 
         [Fact]
         public void AndGreaterThanLessThan()
