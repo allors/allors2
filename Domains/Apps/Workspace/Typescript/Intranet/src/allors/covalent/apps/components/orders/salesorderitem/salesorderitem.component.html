@@ -31,7 +31,7 @@
       </div>
 
       <div class="grid-4_md-2_xs-1">
-        <a-mat-static class="col" [object]="order.VatRegime.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
+        <a-mat-static class="col" [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
         <a-mat-select class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
           label="Item VAT regime"></a-mat-select>
         <a-mat-static class="col" [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
@@ -43,7 +43,7 @@
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityPicked" ></a-mat-static>
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShipped" ></a-mat-static>
         <a-mat-static class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShortFalled" label="Quantity short"></a-mat-static>
-      </div>
+      </div> 
   
       <!-- <mat-input-container>
         <input matInput placeholder="Discount amount" name="discount" [(ngModel)]="discount">

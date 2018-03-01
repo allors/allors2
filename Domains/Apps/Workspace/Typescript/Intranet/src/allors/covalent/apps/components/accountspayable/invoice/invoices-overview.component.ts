@@ -90,12 +90,19 @@ export class InvoicesOverviewComponent implements OnDestroy {
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
 
-        const internalOrganisationsQuery: Query[] = [ new Query(m.InternalOrganisation) ];
+        const internalOrganisationsQuery: Query[] = [
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: m.Organisation,
+              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            }),
+        ];
 
         return this.scope
         .load("Pull", new PullRequest({ query: internalOrganisationsQuery }))
         .switchMap((internalOrganisationsLoaded: Loaded) => {
-          this.internalOrganisations = internalOrganisationsLoaded.collections.InternalOrganisationQuery as InternalOrganisation[];
+          this.internalOrganisations = internalOrganisationsLoaded.collections.internalOrganisations as InternalOrganisation[];
           this.billedFromInternalOrganisation = this.internalOrganisations.find(
             (v) => v.PartyName === data.internalOrganisation,
           );

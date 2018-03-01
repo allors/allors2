@@ -231,6 +231,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "DB06A3E1-6146-4C18-A60D-DD10E19F7243");
 
         this.activeRoles = [];
+        this.rolesText = "";
         if (this.internalOrganisation.ActiveCustomers.includes(this.person)) {
           this.isActiveCustomer = true;
           this.activeRoles.push(this.customerRole);
@@ -241,9 +242,11 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
           this.activeRoles.push(this.employeeRole);
         }
 
-        this.rolesText = this.activeRoles
+        if (this.activeRoles.length > 0) {
+          this.rolesText = this.activeRoles
           .map((v: PersonRole) => v.Name)
           .reduce((acc: string, cur: string) => acc + ", " + cur);
+        }
       },
       (error: any) => {
         this.errorService.message(error);

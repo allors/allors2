@@ -12,9 +12,11 @@
         </div>
       </div>
 
-      <div class="grid_md-2_xs-1">
+      <div class="grid-1">
         <a-mat-autocomplete class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name" [filter]="goodsFilter.create()"
           (onChange)="goodSelected($event)"></a-mat-autocomplete>
+      </div>
+      <div class="grid_md-2_xs-1">
         <a-mat-input class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
         <a-mat-select class="col" [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
         <a-mat-input class="col" [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>

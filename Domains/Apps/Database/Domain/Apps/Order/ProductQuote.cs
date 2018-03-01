@@ -48,12 +48,13 @@ namespace Allors.Domain
         private SalesOrder OrderThis()
         {
             var salesOrder = new SalesOrderBuilder(this.Strategy.Session)
+                .WithTakenBy(this.Issuer)
+                .WithBillToCustomer(this.Receiver)
                 .WithComment(this.Comment)
                 .WithDescription(this.Description)
                 .WithContactPerson(this.ContactPerson)
                 .WithInternalComment(this.InternalComment)
                 .WithQuote(this)
-                .WithBillToCustomer(this.Receiver)
                 .Build();
 
             var quoteItems = this.QuoteItems.Where(i => i.QuoteItemState.Equals(new QuoteItemStates(this.Strategy.Session).Submitted)).ToArray();

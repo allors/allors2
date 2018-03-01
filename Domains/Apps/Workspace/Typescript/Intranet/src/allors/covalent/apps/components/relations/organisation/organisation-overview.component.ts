@@ -231,6 +231,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
         this.manufacturerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "32E74BEF-2D79-4427-8902-B093AFA81661");
 
         this.activeRoles = [];
+        this.rolesText = "";
         if (this.internalOrganisation.ActiveCustomers.includes(this.organisation)) {
           this.isActiveCustomer = true;
           this.activeRoles.push(this.customerRole);
@@ -245,9 +246,11 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           this.activeRoles.push(this.manufacturerRole);
         }
 
+        if (this.activeRoles.length > 0) {
         this.rolesText = this.activeRoles
           .map((v: OrganisationRole) => v.Name)
           .reduce((acc: string, cur: string) => acc + ", " + cur);
+        }
       },
       (error: any) => {
         this.errorService.message(error);
