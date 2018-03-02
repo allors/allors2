@@ -24,13 +24,13 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
     using System;
     
-    public class UnitTest : SqlClient.UnitTest, IDisposable
+    public class UnitTest : SqlClient.UnitTest
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

@@ -33,8 +33,8 @@ namespace Allors.Adapters.Database.Sql
             extent.CheckRole(roleType);
             CompositePredicateAssertions.ValidateRoleBetween(roleType, first, second);
             this.roleType = roleType;
-            this.first = extent.Session.SqlDatabase.Internalize(first, roleType);
-            this.second = extent.Session.SqlDatabase.Internalize(second, roleType);
+            this.first = roleType.Normalize(first);
+            this.second = roleType.Normalize(second);
         }
 
         public override bool BuildWhere(ExtentStatement statement, string alias)

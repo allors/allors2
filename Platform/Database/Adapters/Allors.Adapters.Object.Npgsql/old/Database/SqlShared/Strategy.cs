@@ -272,7 +272,7 @@ namespace Allors.Adapters.Database.Sql
 
             if (role != null)
             {
-                role = this.SqlSession.SqlDatabase.Internalize(role, roleType);
+                role = roleType.Normalize(role);
             }
 
             var oldUnit = this.GetUnitRole(relationType);

@@ -32,7 +32,7 @@ namespace Allors.Adapters
     /// WeakReference test must have their own proper method,
     /// otherwise the GC.Collect() doesn't work.
     /// </summary>
-    public abstract class UnitTest
+    public abstract class UnitTest : IDisposable
     {
         protected virtual bool UseFloatMaximum => true;
 
@@ -45,6 +45,8 @@ namespace Allors.Adapters
         protected Action[] Markers => this.Profile.Markers;
 
         protected Action[] Inits => this.Profile.Inits;
+
+        public abstract void Dispose();
 
         [Fact]
         public void AllorsBoolean()

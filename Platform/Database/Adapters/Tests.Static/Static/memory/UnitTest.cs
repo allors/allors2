@@ -26,13 +26,13 @@ namespace Allors.Adapters.Memory
     using System;
     using Adapters;
 
-    public class UnitTest : Adapters.UnitTest, IDisposable
+    public class UnitTest : Adapters.UnitTest
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }
