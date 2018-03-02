@@ -37,8 +37,9 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="requestItem.CanWriteQuantity" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button *ngIf="requestItem.CanWriteQuantity" mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="!requestItem.CanWriteQuantity" mat-button (click)="goBack()" type="button">DONE</button>
     </mat-card-actions>
 
   </form>

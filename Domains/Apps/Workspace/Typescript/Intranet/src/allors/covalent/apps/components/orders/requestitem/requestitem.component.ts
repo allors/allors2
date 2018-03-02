@@ -21,7 +21,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title: string = "Edit Request Item";
+  public title: string;
   public subTitle: string;
   public request: RequestForQuote;
   public requestItem: RequestItem;
@@ -104,6 +104,13 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
+
+          if (this.requestItem.CanWriteQuantity) {
+            this.title = "Edit Request Item";
+          } else {
+            this.title = "View Request Item";
+          }
+
           this.update(this.requestItem.Product);
         }
       },

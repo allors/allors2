@@ -15,6 +15,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Linq;
+
+    using Allors.Adapters;
+
     using Meta;
 
     public partial class SerialisedInventoryItem
@@ -65,7 +69,36 @@ namespace Allors.Domain
                 this.Name = this.Part.Name;
             }
 
+            this.AppsOnDeriveProductCharacteristics(derivation);
             this.AppsOnDeriveProductCategories(derivation);
+        }
+
+        private void AppsOnDeriveProductCharacteristics(IDerivation derivation)
+        {
+            var characteristicsToDelete = this.SerialisedInventoryItemCharacteristics.ToList();
+            if (this.ExistGood && this.Good.ExistProductType)
+            {
+                foreach (SerialisedInventoryItemCharacteristicType characteristicType in this.Good.ProductType.SerialisedInventoryItemCharacteristicTypes)
+                {
+                    var characteristic = this.SerialisedInventoryItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedInventoryItemCharacteristicType, characteristicType));
+                    if (characteristic == null)
+                    {
+                        this.AddSerialisedInventoryItemCharacteristic(
+                            new SerialisedInventoryItemCharacteristicBuilder(this.strategy.Session)
+                            .WithSerialisedInventoryItemCharacteristicType(characteristicType)
+                            .Build());
+                    }
+                    else
+                    {
+                        characteristicsToDelete.Remove(characteristic);
+                    }
+                }
+            }
+
+            foreach (SerialisedInventoryItemCharacteristic characteristic in characteristicsToDelete)
+            {
+                this.RemoveSerialisedInventoryItemCharacteristic(characteristic);
+            }
         }
 
         public void AppsDelete(DeletableDelete method)

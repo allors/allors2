@@ -183,6 +183,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                   name: "manufacturers",
                   objectType: m.Organisation,
                   predicate: new Equals({ roleType: m.Organisation.IsManufacturer, value: true}),
+                  sort: [new Sort({ roleType: m.Organisation.PartyName, direction: "Asc" })],
                 }),
             ];
 

@@ -292,9 +292,18 @@ export class GoodsOverviewComponent implements OnDestroy {
 
               if (data.supplier) {
                 goodsPredicates.push(
-                  new Equals({
+                  new Contains({
+                    object: this.supplier,
                     roleType: m.Good.SuppliedBy,
-                    value: this.supplier,
+                  }),
+                );
+              }
+
+              if (data.productType) {
+                goodsPredicates.push(
+                  new Equals({
+                    roleType: m.Product.ProductType,
+                    value: this.productType,
                   }),
                 );
               }
@@ -331,33 +340,6 @@ export class GoodsOverviewComponent implements OnDestroy {
                 const containedIn: ContainedIn = new ContainedIn({
                   associationType: m.Good.InventoryItemsWhereGood,
                   query: serialisedInventoryQuery,
-                });
-                goodsPredicates.push(containedIn);
-              }
-
-              if (data.productType) {
-                const inventoryPredicate: And = new And();
-                const inventoryPredicates: Predicate[] =
-                  inventoryPredicate.predicates;
-
-                // TODO:
-                // if (data.productType) {
-                //   inventoryPredicates.push(
-                //     new Equals({
-                //       roleType: m.InventoryItem.ProductType,
-                //       value: this.productType,
-                //     }),
-                //   );
-                // }
-
-                const inventoryQuery: Query = new Query({
-                  objectType: m.InventoryItem,
-                  predicate: inventoryPredicate,
-                });
-
-                const containedIn: ContainedIn = new ContainedIn({
-                  associationType: m.Good.InventoryItemsWhereGood,
-                  query: inventoryQuery,
                 });
                 goodsPredicates.push(containedIn);
               }

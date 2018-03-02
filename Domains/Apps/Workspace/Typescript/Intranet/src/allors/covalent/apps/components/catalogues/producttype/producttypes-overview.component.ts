@@ -14,7 +14,7 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
 import { ProductType } from "../../../../../domain";
-import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 interface SearchData {
@@ -93,6 +93,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
             include: [
               new TreeNode({ roleType: m.ProductType.SerialisedInventoryItemCharacteristicTypes }),
             ],
+            sort: [new Sort({ roleType: m.ProductType.Name, direction: "Asc" })],
           }),
         ];
 

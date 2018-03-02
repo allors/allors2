@@ -105,8 +105,10 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
               new TreeNode({  roleType: m.SerialisedInventoryItem.Ownership }),
               new TreeNode({  roleType: m.SerialisedInventoryItem.SerialisedInventoryItemCharacteristics,
                               nodes: [
-                                new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristic.SerialisedInventoryItemCharacteristicType }),
-                                new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristic.LocalisedValues, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
+                                new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristic.SerialisedInventoryItemCharacteristicType,
+                                  nodes: [new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure })]  }),
+                                new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristic.LocalisedValues,
+                                  nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
                               ],
               }),
             ],
@@ -167,7 +169,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
-              this.productCharacteristicValues = this.inventoryItem.SerialisedInventoryItemCharacteristics;
+              this.productCharacteristicValues = this.inventoryItem.SerialisedInventoryItemCharacteristics.filter((v) => v.SerialisedInventoryItemCharacteristicType.UnitOfMeasure !== null);
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
                  if (feature instanceof (Brand)) {
                    this.selectedBrand = feature;
@@ -188,6 +190,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                   name: "manufacturers",
                   objectType: m.Organisation,
                   predicate: new Equals({ roleType: m.Organisation.IsManufacturer, value: true}),
+                  sort: [new Sort({ roleType: m.Organisation.PartyName, direction: "Asc" })],
                 }),
             ];
 
@@ -223,7 +226,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
       this.good.AddStandardFeature(this.selectedModel);
     }
 
-    this.inventoryItem.SerialisedInventoryItemCharacteristics = this.productCharacteristicValues;
+    // this.inventoryItem.SerialisedInventoryItemCharacteristics = this.productCharacteristicValues;
 
     this.scope
       .save()

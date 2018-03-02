@@ -5,7 +5,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { ProductType, SerialisedInventoryItemCharacteristicType } from "../../../../../domain";
-import { Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Fetch, PullRequest, Query, TreeNode, Sort } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -52,7 +52,14 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [ new Query(this.m.SerialisedInventoryItemCharacteristicType) ];
+        const query: Query[] = [
+          new Query(
+            {
+            name: "characteristics",
+            objectType: m.SerialisedInventoryItemCharacteristicType,
+            sort: [new Sort({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, direction: "Asc" })],
+            }),
+         ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -64,7 +71,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           this.productType = this.scope.session.create("ProductType") as ProductType;
         }
 
-        this.characteristics = loaded.collections.SerialisedInventoryItemCharacteristicTypeQuery as SerialisedInventoryItemCharacteristicType[];
+        this.characteristics = loaded.collections.characteristics as SerialisedInventoryItemCharacteristicType[];
       },
       (error: any) => {
         this.errorService.message(error);

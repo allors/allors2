@@ -76,6 +76,7 @@
       <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">Edit</button>
+        <button *ngIf="!request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">View</button>
         <button *ngIf="request.CanExecuteCreateQuote && request.RequestItems.length > 0" mat-button (click)="createQuote()">Create Quote</button>
       </mat-card-actions>
     </mat-card>
@@ -99,7 +100,8 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="request.CanWriteRequestItems" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="!request.CanWriteRequestItems" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>View</a>
                     <button mat-menu-item (click)="deleteRequestItem(requestItem)" [disabled]="!requestItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>

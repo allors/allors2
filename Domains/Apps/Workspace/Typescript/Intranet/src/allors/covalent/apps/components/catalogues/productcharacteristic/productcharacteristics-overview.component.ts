@@ -14,7 +14,7 @@ import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
 import { SerialisedInventoryItemCharacteristicType } from "../../../../../domain";
-import { And, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 interface SearchData {
@@ -92,6 +92,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
             objectType: m.SerialisedInventoryItemCharacteristicType,
             page: new Page({ skip: 0, take }),
             predicate,
+            sort: [new Sort({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, direction: "Asc" })],
           })];
 
         return this.scope.load("Pull", new PullRequest({ query }));

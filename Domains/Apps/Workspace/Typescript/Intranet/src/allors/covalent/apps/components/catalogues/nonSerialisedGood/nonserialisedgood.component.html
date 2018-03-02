@@ -34,8 +34,7 @@
             </mat-select>
           </mat-form-field>
           <a-mat-autocomplete class="col" [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-mat-autocomplete>
-          <a-mat-autocomplete class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [filter]="manufacturersFilter.create()"
-            display="Name"></a-mat-autocomplete>
+          <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
           <a-mat-datepicker class="col" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
         </div>
 
