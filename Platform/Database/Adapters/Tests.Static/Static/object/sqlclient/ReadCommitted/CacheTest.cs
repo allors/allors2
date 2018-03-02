@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
     {
         private readonly Profile profile = new Profile();
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

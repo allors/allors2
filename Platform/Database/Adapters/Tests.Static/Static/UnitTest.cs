@@ -268,9 +268,10 @@ namespace Allors.Adapters
                         values.S1AllorsDateTime = DateTime.MaxValue;
 
                         mark();
-                        Assert.Equal(DateTime.MaxValue, values.C1AllorsDateTime);
-                        Assert.Equal(DateTime.MaxValue, values.I1AllorsDateTime);
-                        Assert.Equal(DateTime.MaxValue, values.S1AllorsDateTime);
+
+                        Assert.Equal(DateTime.MaxValue.ToLongTimeString(), values.C1AllorsDateTime?.ToLongTimeString());
+                        Assert.Equal(DateTime.MaxValue.ToLongTimeString(), values.I1AllorsDateTime?.ToLongTimeString());
+                        Assert.Equal(DateTime.MaxValue.ToLongTimeString(), values.S1AllorsDateTime?.ToLongTimeString());
                     }
                 }
             }
@@ -474,10 +475,13 @@ namespace Allors.Adapters
 
                     c1.C1AllorsDateTime = new DateTime(1973, 03, 27, 1, 2, 3, 4, DateTimeKind.Utc);
 
+                    this.Session.Commit();
+
                     // Force a Flush
                     Extent<C1> extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddEquals(C1.Meta.C1AllorsDateTime, new DateTime(1973, 03, 27, 1, 2, 3, 4, DateTimeKind.Utc));
-                    Assert.NotNull(extent.First);
+                    var first = extent.First;
+                    Assert.NotNull(first);
 
                     // Garbage Collect
                     c1 = null;

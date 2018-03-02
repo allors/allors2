@@ -27,7 +27,7 @@ namespace Allors.Adapters
 
     using Xunit;
 
-    public abstract class SerializationTest
+    public abstract class SerializationTest : IDisposable
     {
         protected static readonly bool[] TrueFalse = { true, false };
         private static readonly string GuidString = Guid.NewGuid().ToString();
@@ -63,6 +63,8 @@ namespace Allors.Adapters
         protected Action[] Markers => this.Profile.Markers;
 
         protected Action[] Inits => this.Profile.Inits;
+
+        public abstract void Dispose();
 
         [Fact]
         public void DifferentVersion()

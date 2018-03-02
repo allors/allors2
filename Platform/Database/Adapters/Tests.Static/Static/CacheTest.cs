@@ -20,6 +20,8 @@
 
 namespace Allors.Adapters
 {
+    using System;
+
     using Allors;
 
     using Domain;
@@ -28,9 +30,11 @@ namespace Allors.Adapters
 
     using IDatabase = IDatabase;
 
-    
-    public abstract class CacheTest
+    public abstract class CacheTest : IDisposable
     {
+        public abstract void Dispose();
+
+
         [Fact(Skip="Cache invalidation")]
         public void InitDifferentDatabase()
         {

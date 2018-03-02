@@ -152,7 +152,6 @@ namespace Allors.Adapters.Database.Npgsql
                 case DbType.Boolean:
                     return "BOOLEAN ";
                 case DbType.Date:
-                    return "TIMESTAMP ";
                 case DbType.DateTime:
                     return "TIMESTAMP ";
                 case DbType.Guid:
@@ -181,7 +180,6 @@ namespace Allors.Adapters.Database.Npgsql
                 case DbType.Boolean:
                     return "BOOLEAN";
                 case DbType.Date:
-                    return "TIMESTAMP";
                 case DbType.DateTime:
                     return "TIMESTAMP";
                 case DbType.Guid:

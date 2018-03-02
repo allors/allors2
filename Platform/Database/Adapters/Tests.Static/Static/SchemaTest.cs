@@ -45,7 +45,7 @@ namespace Allors.Adapters
         Unique,
     }
 
-    public abstract class SchemaTest
+    public abstract class SchemaTest : IDisposable
     {
         protected Domain domain;
 
@@ -60,6 +60,8 @@ namespace Allors.Adapters
         protected Action[] Inits => this.Profile.Inits;
 
         // TODO: Save Load (remove and add relations)
+
+        public abstract void Dispose();
 
         [Fact]
         public void Objects()

@@ -39,7 +39,7 @@ namespace Allors.Adapters.Memory
         {
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

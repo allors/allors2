@@ -18,25 +18,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Memory
 {
+    using System;
+
     using Adapters;
-   
+
     public class One2ManyTest : Adapters.One2ManyTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
-        protected override IProfile Profile
-        {
-            get
-            {
-                return this.profile;
-            }
-        }
+        protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

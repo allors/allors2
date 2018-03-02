@@ -26,6 +26,8 @@ namespace Allors.Adapters.Database.Npgsql
 
     using global::Npgsql;
 
+    using NpgsqlTypes;
+
     internal class Command : Sql.Command
     {
         private readonly NpgsqlCommand command;
@@ -47,6 +49,12 @@ namespace Allors.Adapters.Database.Npgsql
             {
                 sqlParameter = this.command.CreateParameter();
                 sqlParameter.ParameterName = parameterName;
+
+                if (value is DateTime)
+                {
+                    sqlParameter.NpgsqlDbType = NpgsqlDbType.Timestamp;
+                }
+
                 this.command.Parameters.Add(sqlParameter);
             }
 

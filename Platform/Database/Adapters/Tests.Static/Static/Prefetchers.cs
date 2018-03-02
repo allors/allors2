@@ -38,8 +38,7 @@ namespace Allors.Adapters
         {
             get
             {
-                PrefetchPolicy prefetchPolicy;
-                if (!this.prefetchPolicyByClass.TryGetValue(@class, out prefetchPolicy))
+                if (!this.prefetchPolicyByClass.TryGetValue(@class, out var prefetchPolicy))
                 {
                     var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
 

@@ -26,11 +26,11 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
     public class ChangesTest : Adapters.ChangesTest, IDisposable
     {
-        private readonly Adapters.Object.SqlClient.ReadCommitted.Profile profile = new Adapters.Object.SqlClient.ReadCommitted.Profile();
+        private readonly SqlClient.ReadCommitted.Profile profile = new SqlClient.ReadCommitted.Profile();
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

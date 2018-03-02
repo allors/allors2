@@ -25,43 +25,28 @@ namespace Allors.Adapters
 {
     using System;
 
-    using Allors;
+    using Adapters;
 
+    using Allors;
     using Allors.Domain;
     using Allors.Meta;
-    using Adapters;
 
     using Xunit;
 
-    public abstract class Many2OneTest
+    public abstract class Many2OneTest : IDisposable
     {
         public static int NR_OF_RUNS = Settings.NumberOfRuns;
 
         protected abstract IProfile Profile { get; }
 
-        protected ISession Session
-        {
-            get
-            {
-                return this.Profile.Session;
-            }
-        }
+        protected ISession Session => this.Profile.Session;
 
-        protected Action[] Markers
-        {
-            get
-            {
-                return this.Profile.Markers;
-            }
-        }
+        protected Action[] Markers => this.Profile.Markers;
 
-        protected Action[] Inits
-        {
-            get
-            {
-                return this.Profile.Inits;
-            }
-        }
+        protected Action[] Inits => this.Profile.Inits;
+
+        public abstract void Dispose();
+
         [Fact]
         public void C1_C1many2one()
         {

@@ -18,16 +18,13 @@ namespace Allors.Adapters
 {
     using System;
 
-    using Allors.Meta;
-
     using Allors;
-
     using Allors.Domain;
-    using Adapters;
+    using Allors.Meta;
 
     using Xunit;
 
-    public abstract class RelationExtentTest
+    public abstract class RelationExtentTest : IDisposable
     {
         #region population
         private C1 c1_0;
@@ -50,29 +47,14 @@ namespace Allors.Adapters
 
         protected abstract IProfile Profile { get; }
 
-        protected ISession Session
-        {
-            get
-            {
-                return this.Profile.Session;
-            }
-        }
+        protected ISession Session => this.Profile.Session;
 
-        protected Action[] Markers
-        {
-            get
-            {
-                return this.Profile.Markers;
-            }
-        }
+        protected Action[] Markers => this.Profile.Markers;
 
-        protected Action[] Inits
-        {
-            get
-            {
-                return this.Profile.Inits;
-            }
-        }
+        protected Action[] Inits => this.Profile.Inits;
+
+        public abstract void Dispose();
+
 
         [Fact]
         public void UpgradeAssociation()

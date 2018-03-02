@@ -31,7 +31,7 @@ namespace Allors.Adapters
 
     using Xunit;
 
-    public abstract class SandboxTest
+    public abstract class SandboxTest : IDisposable
     {
         protected abstract IProfile Profile { get; }
 
@@ -42,6 +42,8 @@ namespace Allors.Adapters
         protected Action[] Markers => this.Profile.Markers;
 
         protected Action[] Inits => this.Profile.Inits;
+
+        public abstract void Dispose();
 
         [Fact]
         public void SqlReservedWords()

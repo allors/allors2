@@ -28,39 +28,22 @@ namespace Allors.Adapters
     using Allors;
     using Allors.Domain;
     using Allors.Meta;
-    using Adapters;
 
     using Xunit;
 
-    public abstract class LifeCycleTest
+    public abstract class LifeCycleTest : IDisposable
     {
         protected static readonly bool[] TrueFalse = { true, false };
 
         protected abstract IProfile Profile { get; }
 
-        protected ISession Session
-        {
-            get
-            {
-                return this.Profile.Session;
-            }
-        }
+        protected ISession Session => this.Profile.Session;
 
-        protected Action[] Markers
-        {
-            get
-            {
-                return this.Profile.Markers;
-            }
-        }
+        protected Action[] Markers => this.Profile.Markers;
 
-        protected Action[] Inits
-        {
-            get
-            {
-                return this.Profile.Inits;
-            }
-        }
+        protected Action[] Inits => this.Profile.Inits;
+
+        public abstract void Dispose();
 
         [Fact]
         public void NextId()

@@ -18,27 +18,28 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace Allors.Adapters.Memory
 {
-    using Allors;
+    using System;
+
     using Adapters;
 
-    
+    using Allors;
+
     public class SerializationTest : Adapters.SerializationTest, IDisposable
     {
         private readonly Profile profile = new Profile();
 
         protected override IProfile Profile => this.profile;
 
+        public override void Dispose()
+        {
+            this.profile.Dispose();
+        }
+
         protected override IDatabase CreatePopulation()
         {
             return this.profile.CreatePopulation();
-        }
-        public void Dispose()
-        {
-            this.profile.Dispose();
         }
     }
 }

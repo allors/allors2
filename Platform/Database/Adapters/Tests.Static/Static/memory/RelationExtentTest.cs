@@ -27,14 +27,9 @@ namespace Allors.Adapters.Memory
     {
         private readonly Profile profile = new Profile();
 
-        protected override IProfile Profile
-        {
-            get
-            {
-                return this.profile;
-            }
-        }
-        public void Dispose()
+        protected override IProfile Profile => this.profile;
+
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

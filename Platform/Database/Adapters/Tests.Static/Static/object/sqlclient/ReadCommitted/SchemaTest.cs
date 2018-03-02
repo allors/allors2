@@ -19,7 +19,6 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
     using System;
 
     using Adapters;
-    using Adapters.Object.SqlClient;
 
     using Allors.Meta;
 
@@ -29,14 +28,14 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
         protected override IProfile Profile => this.profile;
 
+        public override void Dispose()
+        {
+            this.profile.Dispose();
+        }
+
         protected override IDatabase CreateDatabase(IMetaPopulation metaPopulation, bool init)
         {
             return this.profile.CreateDatabase(metaPopulation, init);
-        }
-
-        public void Dispose()
-        {
-            this.profile.Dispose();
         }
 
         protected override void DropTable(string schema, string tableName)

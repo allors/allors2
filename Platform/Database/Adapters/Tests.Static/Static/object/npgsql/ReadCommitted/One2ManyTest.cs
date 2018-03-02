@@ -28,7 +28,7 @@ namespace Allors.Adapters.Object.Npgsql.ReadCommitted
 
         protected override IProfile Profile => this.profile;
 
-        public void Dispose()
+        public override void Dispose()
         {
             this.profile.Dispose();
         }

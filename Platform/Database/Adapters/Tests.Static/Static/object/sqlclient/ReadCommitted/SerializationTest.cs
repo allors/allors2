@@ -32,14 +32,14 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
         protected override IProfile Profile => this.profile;
 
+        public override void Dispose()
+        {
+            this.profile.Dispose();
+        }
+
         protected override IDatabase CreatePopulation()
         {
             return this.profile.CreatePopulation();
-        }
-
-        public void Dispose()
-        {
-            this.profile.Dispose();
         }
     }
 }

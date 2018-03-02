@@ -34,7 +34,7 @@ namespace Allors.Adapters
     using Xunit;
     using Allors.Meta;
 
-    public abstract class One2ManyTest
+    public abstract class One2ManyTest : IDisposable
     {
         protected abstract IProfile Profile { get; }
 
@@ -61,6 +61,8 @@ namespace Allors.Adapters
                 return this.Profile.Inits;
             }
         }
+
+        public abstract void Dispose();
 
         [Fact]
         public void C1_C1one2manies()
