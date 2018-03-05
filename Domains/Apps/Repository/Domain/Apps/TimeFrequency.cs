@@ -26,7 +26,7 @@ namespace Allors.Repository
 
         public UnitOfMeasureConversion[] UnitOfMeasureConversions { get; set; }
 
-        public string Abbreviation { get; set; }
+        public string Symbol { get; set; }
 
         #endregion
 

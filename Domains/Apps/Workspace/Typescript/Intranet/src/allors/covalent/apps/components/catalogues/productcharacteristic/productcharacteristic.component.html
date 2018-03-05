@@ -5,7 +5,7 @@
       <div class="grid">
         <a-mat-input class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name"></a-mat-input>
         <a-mat-select class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure"
-          [options]="uoms" display="Name"></a-mat-select>
+          [options]="allUoms" display="Name"></a-mat-select>
       </div>
 
       <td-expansion-panel *ngIf="locales" label="Translations">

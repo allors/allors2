@@ -31,7 +31,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public locales: Locale[];
   public categories: ProductCategory[];
   public productTypes: ProductType[];
-  public productCharacteristicValues: SerialisedInventoryItemCharacteristic[];
   public manufacturers: Organisation[];
   public suppliers: Organisation[];
   public brands: Brand[];
@@ -169,7 +168,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             } else {
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
-              this.productCharacteristicValues = this.inventoryItem.SerialisedInventoryItemCharacteristics.filter((v) => v.SerialisedInventoryItemCharacteristicType.UnitOfMeasure !== null);
+
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
                  if (feature instanceof (Brand)) {
                    this.selectedBrand = feature;
@@ -225,8 +224,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     if (this.selectedModel != null) {
       this.good.AddStandardFeature(this.selectedModel);
     }
-
-    // this.inventoryItem.SerialisedInventoryItemCharacteristics = this.productCharacteristicValues;
 
     this.scope
       .save()

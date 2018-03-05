@@ -59,18 +59,28 @@
           </mat-input-container>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
         </div>
-        <div class="grid-2_md-1">
-          <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" class="col">
-            <a-mat-textarea [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-textarea>
+        <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
+          <div class="grid">
+            <a-mat-input class="col" *ngIf="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
+              [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
           </div>
         </div>
 
-        <td-expansion-panel *ngIf="locales" label="Translations">
+        <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
+          <div class="grid">
+            <a-mat-textarea class="col" *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
+              [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-textarea>
+          </div>
+        </div>
+
+        <td-expansion-panel *ngIf="locales" label="Translations" [expand]="false">
           <div *ngFor="let locale of locales; let i = index">
             <mat-divider *ngIf="i > 0"></mat-divider>
-            <div class="grid-2_md-1 pad">
-              <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" class="col">
-                <a-mat-localised-text class="col" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-localised-text>
+            <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
+              <div class="grid pad">
+                <a-mat-localised-text *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" class="col"
+                  [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.LocalisedValues"
+                  [locale]="locale" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-localised-text>
               </div>
             </div>
           </div>

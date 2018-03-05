@@ -32,7 +32,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public IUnitOfMeasure UnitOfMeasure { get; set; }
 
         #region inherited methods
 

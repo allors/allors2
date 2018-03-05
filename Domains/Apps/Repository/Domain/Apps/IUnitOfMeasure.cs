@@ -7,10 +7,8 @@ namespace Allors.Repository
     #region Allors
     [Id("b7215af5-97d6-42b0-9f6f-c1fccb2bc695")]
     #endregion
-	public partial interface IUnitOfMeasure : AccessControlledObject, UniquelyIdentifiable 
+	public partial interface IUnitOfMeasure : Enumeration
     {
-
-
         #region Allors
         [Id("22d65b11-5d96-4632-9e95-72e30b885942")]
         [AssociationId("873998c2-8c2e-415a-a3c3-6406b21febd8")]
@@ -33,13 +31,10 @@ namespace Allors.Repository
 
 
         #region Allors
-        [Id("9b0e7410-6201-420c-9efc-0689edb33d42")]
-        [AssociationId("2e153d1b-3e03-4ff6-84a6-39c9186999f8")]
-        [RoleId("60ebb0ec-bcb8-46c5-8293-36b3b0ad3bdb")]
+        [Id("D35B0EDF-4196-4FE9-8DAA-8B93AEE3B70D")]
+        [AssociationId("F3249A01-7C98-4991-B361-078EA6D1DDD8")]
+        [RoleId("5530284E-3249-4FD0-979B-C28A2443EF13")]
         #endregion
-        [Size(256)]
-
-        string Abbreviation { get; set; }
-
+        string Symbol { get; set; }
     }
 }

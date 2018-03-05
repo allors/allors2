@@ -5,8 +5,8 @@ import { TdMediaService } from "@covalent/core";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Locale, SerialisedInventoryItemCharacteristicType, Singleton, UnitOfMeasure } from "../../../../../domain";
-import { Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { IUnitOfMeasure, Locale, SerialisedInventoryItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from "../../../../../domain";
+import { Fetch, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -24,6 +24,8 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   public singleton: Singleton;
   public locales: Locale[];
   public uoms: UnitOfMeasure[];
+  public timeFrequencies: TimeFrequency[];
+  public allUoms: IUnitOfMeasure[];
 
   private subscription: Subscription;
   private scope: Scope;
@@ -75,7 +77,12 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
                 name: "uoms",
                 objectType: this.m.UnitOfMeasure,
               }),
-          ];
+            new Query(
+              {
+                name: "timeFrequencies",
+                objectType: this.m.TimeFrequency,
+              }),
+            ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -88,8 +95,10 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
-        this.uoms = loaded.collections.uoms as UnitOfMeasure[];
         this.locales = this.singleton.AdditionalLocales;
+        this.uoms = loaded.collections.uoms as UnitOfMeasure[];
+        this.timeFrequencies = loaded.collections.timeFrequencies as TimeFrequency[];
+        this.allUoms = this.uoms.concat(this.timeFrequencies).sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       },
       (error: any) => {
         this.errorService.message(error);

@@ -39,6 +39,7 @@ namespace Allors.Domain
             {
                 if (existingLocalisedtexts.TryGetValue(locale, out LocalisedText localisedText))
                 {
+                    localisedText.Text = this.Value;
                     existingLocalisedtexts.Remove(locale);
                 }
                 else

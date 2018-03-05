@@ -8,7 +8,10 @@ namespace Allors.Repository
         public Guid UniqueId { get; set; }
         public string Description { get; set; }
         public UnitOfMeasureConversion[] UnitOfMeasureConversions { get; set; }
-        public string Abbreviation { get; set; }
+
+        public string Symbol { get; set; }
         #endregion
+
+        public bool IsActive { get; set; }
     }
 }
