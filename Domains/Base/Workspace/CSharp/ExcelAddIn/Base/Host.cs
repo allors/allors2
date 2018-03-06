@@ -1,11 +1,13 @@
 ﻿namespace Allors.Excel
 {
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Windows.Forms;
 
-    using Microsoft.Office.Interop.Excel;
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
 
+    using Application = Microsoft.Office.Interop.Excel.Application;
     using ListObject = Microsoft.Office.Tools.Excel.ListObject;
     using Workbook = Microsoft.Office.Tools.Excel.Workbook;
     using Worksheet = Microsoft.Office.Tools.Excel.Worksheet;
@@ -69,6 +71,14 @@
             this.vstoWorksheetByInteropWorksheet[interopWorksheet] = vstoWorksheet;
 
             this.ActiveWorksheet = vstoWorksheet;
+        }
+
+        public void EnsureSynchronizationContext()
+        {
+            if (SynchronizationContext.Current == null)
+            {
+                var form = new Form();
+            }
         }
     }
 }
