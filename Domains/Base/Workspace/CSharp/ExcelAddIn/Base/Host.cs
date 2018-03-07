@@ -20,43 +20,59 @@
             this.CustomTaskPanes = customTaskPanes;
             this.ApplicationFactory = applicationFactory;
 
-            this.vstoWorksheetByInteropWorksheet = new Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Worksheet>();
-
-            this.Application.SheetActivate += (obj) =>
-                {
-                    this.ActivateWorksheet((Microsoft.Office.Interop.Excel.Worksheet)obj);
-                };
-
-            this.Application.WorkbookActivate += (obj) =>
-                {
-                    var interopWorkbook = (Microsoft.Office.Interop.Excel.Workbook)obj;
-                    this.ActiveWorkbook = this.ApplicationFactory.GetVstoObject(interopWorkbook);
-
-                    this.ActivateWorksheet(interopWorkbook.ActiveSheet);
-                };
-
-            this.Application.WorkbookNewSheet += (wb, sh) =>
-                {
-                    this.ActivateWorksheet((Microsoft.Office.Interop.Excel.Worksheet)sh);
-                };
-
-            // TODO: sheet.DeActivate
+            this.VstoWorksheetByInteropWorksheet = new Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Worksheet>();
+            this.VstoWorkbookByInteropWorkbook = new Dictionary<Microsoft.Office.Interop.Excel.Workbook, Workbook>();
         }
-
-        private Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Microsoft.Office.Tools.Excel.Worksheet> vstoWorksheetByInteropWorksheet { get; }
 
         public Application Application { get; }
 
         public CustomTaskPaneCollection CustomTaskPanes { get; }
 
-        public Worksheet ActiveWorksheet { get; private set; }
+        public Worksheet ActiveWorksheet
+        {
+            get
+            {
+                var interop = this.Application.ActiveWorkbook.ActiveSheet;
 
-        public Workbook ActiveWorkbook { get; private set; }
+                if (this.VstoWorksheetByInteropWorksheet.TryGetValue(interop, out Worksheet activeWorksheet))
+                {
+                    return activeWorksheet;
+                }
 
+                activeWorksheet = this.ApplicationFactory.GetVstoObject(interop);
+                this.VstoWorksheetByInteropWorksheet[interop] = activeWorksheet;
+
+                return activeWorksheet;
+            }
+        }
+
+        public Workbook ActiveWorkbook
+        {
+            get
+            {
+                var interop = this.Application.ActiveWorkbook;
+
+                if (this.VstoWorkbookByInteropWorkbook.TryGetValue(interop, out Workbook activeWorkbook))
+                {
+                    return activeWorkbook;
+                }
+
+                activeWorkbook = this.ApplicationFactory.GetVstoObject(interop);
+                this.VstoWorkbookByInteropWorkbook[interop] = activeWorkbook;
+
+                return activeWorkbook;
+            }
+        }
+
+        private Dictionary<Microsoft.Office.Interop.Excel.Worksheet, Worksheet> VstoWorksheetByInteropWorksheet { get; }
+
+        private Dictionary<Microsoft.Office.Interop.Excel.Workbook, Workbook> VstoWorkbookByInteropWorkbook { get; }
+        
         private ApplicationFactory ApplicationFactory { get; }
+
         public Worksheet GetVstoWorksheet(Microsoft.Office.Interop.Excel.Worksheet sheet)
         {
-            this.vstoWorksheetByInteropWorksheet.TryGetValue(sheet, out var vstoWorksheet);
+            this.VstoWorksheetByInteropWorksheet.TryGetValue(sheet, out var vstoWorksheet);
             return vstoWorksheet;
         }
 
@@ -64,19 +80,12 @@
         {
             return this.ApplicationFactory.GetVstoObject(interopListObject);
         }
-
-        private void ActivateWorksheet(Microsoft.Office.Interop.Excel.Worksheet interopWorksheet)
-        {
-            var vstoWorksheet = this.ApplicationFactory.GetVstoObject(interopWorksheet);
-            this.vstoWorksheetByInteropWorksheet[interopWorksheet] = vstoWorksheet;
-
-            this.ActiveWorksheet = vstoWorksheet;
-        }
-
+        
         public void EnsureSynchronizationContext()
         {
             if (SynchronizationContext.Current == null)
             {
+                // ReSharper disable once UnusedVariable
                 var form = new Form();
             }
         }
