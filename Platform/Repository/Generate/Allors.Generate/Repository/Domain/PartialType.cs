@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Method.cs" company="Allors bvba">
+// <copyright file="PartialType.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,37 +19,23 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
-    using System;
     using System.Collections.Generic;
 
-    public class Method
+    public abstract class PartialType
     {
-        public Method(Type definingType, string name)
+        protected PartialType(string name)
         {
-            this.AttributeByName = new Dictionary<string, Attribute>();
-            this.AttributesByName = new Dictionary<string, Attribute[]>();
-
-            this.DefiningType = definingType;
             this.Name = name;
+            this.PropertyByName = new Dictionary<string, Property>();
+            this.MethodByName = new Dictionary<string, Method>();
         }
 
         public string Name { get; }
 
-        public XmlDoc XmlDoc { get; set; }
+        public Dictionary<string, Property> PropertyByName { get; }
 
-        public Method DefiningMethod { get; internal set; }
-
-        public Type DefiningType { get; internal set; }
-
-        public Dictionary<string, Attribute> AttributeByName { get; }
-
-        public Dictionary<string, Attribute[]> AttributesByName { get; }
-
-        public override string ToString()
-        {
-            return $"{this.DefiningType.SingularName}.{this.Name}()";
-        }
+        public Dictionary<string, Method> MethodByName { get; }
     }
 }

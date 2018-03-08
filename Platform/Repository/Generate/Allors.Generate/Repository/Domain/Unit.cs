@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="AttributeNames.cs" company="Allors bvba">
+// <copyright file="Unit.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,14 +19,17 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
-    public static class AttributeNames
+    using System;
+
+    public class Unit : Domain.Type
     {
-        public const string Id = "Id";
+        public Unit(string name, Guid id)
+            : base(name)
+        {
+        }
 
-        public const string AssociationId = "AssociationId";
-
-        public const string RoleId = "RoleId";
+        public override string Id { get; }
     }
 }

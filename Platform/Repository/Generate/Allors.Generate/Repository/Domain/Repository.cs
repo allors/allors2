@@ -1,4 +1,4 @@
-﻿namespace Allors.Tools.Repository
+﻿namespace Allors.Repository.Domain
 {
     using System;
     using System.Collections.Generic;
@@ -13,6 +13,8 @@
 
     using NLog;
 
+    using ProjectInfo = Allors.Repository.Roslyn.ProjectInfo;
+    using Type = Type;
     using TypeInfo = System.Reflection.TypeInfo;
 
     public class Repository
@@ -27,12 +29,12 @@
         {
             this.inflector = new Inflector.Inflector(new CultureInfo("en"));
             
-            this.AssemblyByName = new Dictionary<string, Assembly>();
+            this.AssemblyByName = new Dictionary<string, Domain.Assembly>();
             this.UnitBySingularName = new Dictionary<string, Unit>();
             this.InterfaceBySingularName = new Dictionary<string, Interface>();
             this.ClassBySingularName = new Dictionary<string, Class>();
             this.CompositeByName = new Dictionary<string, Composite>();
-            this.TypeBySingularName = new Dictionary<string, Type>();
+            this.TypeBySingularName = new Dictionary<string, Domain.Type>();
 
             var projectInfo = new ProjectInfo(project);
 
@@ -76,7 +78,7 @@
             }
         }
 
-        public IEnumerable<Assembly> Assemblies => this.AssemblyByName.Values;
+        public IEnumerable<Domain.Assembly> Assemblies => this.AssemblyByName.Values;
 
         public IEnumerable<Unit> Units => this.UnitBySingularName.Values;
 
@@ -84,11 +86,11 @@
 
         public IEnumerable<Class> Classes => this.ClassBySingularName.Values;
 
-        public IEnumerable<Type> Types => this.Composites.Cast<Type>().Union(this.Units);
+        public IEnumerable<Domain.Type> Types => this.Composites.Cast<Domain.Type>().Union(this.Units);
 
         public IEnumerable<Composite> Composites => this.ClassBySingularName.Values.Cast<Composite>().Union(this.InterfaceBySingularName.Values);
 
-        public Dictionary<string, Assembly> AssemblyByName { get; }
+        public Dictionary<string, Domain.Assembly> AssemblyByName { get; }
 
         public Dictionary<string, Unit> UnitBySingularName { get; }
 
@@ -96,11 +98,11 @@
 
         public Dictionary<string, Class> ClassBySingularName { get; }
 
-        public Dictionary<string, Type> TypeBySingularName { get; }
+        public Dictionary<string, Domain.Type> TypeBySingularName { get; }
 
         public Dictionary<string, Composite> CompositeByName { get; }
 
-        public Assembly[] SortedAssemblies
+        public Domain.Assembly[] SortedAssemblies
         {
             get
             {
@@ -174,7 +176,7 @@
 
                                 if (attributeType.Equals(projectInfo.ExtendAttributeType))
                                 {
-                                    this.AssemblyByName.Add(assemblyName, new Assembly(assemblyName));
+                                    this.AssemblyByName.Add(assemblyName, new Domain.Assembly(assemblyName));
                                 }
                             }
                         }
@@ -229,7 +231,7 @@
                                     {
                                         var assembly = this.AssemblyByName[assemblyName];
 
-                                        Assembly baseAssembly;
+                                        Domain.Assembly baseAssembly;
                                         if (!this.AssemblyByName.TryGetValue(baseDomainName, out baseAssembly))
                                         {
                                             Logger.Error("Can not find base domain " + baseDomainName);

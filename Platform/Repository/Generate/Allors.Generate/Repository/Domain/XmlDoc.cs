@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="PartialInterface.cs" company="Allors bvba">
+// <copyright file="XmlDoc.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,18 +19,35 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
-    public class PartialInterface : PartialType
-    {
-        public PartialInterface(string name)
-            : base(name)
-        {
-        }
+    using System;
+    using System.Linq;
+    using System.Xml.Linq;
 
-        public override string ToString()
+    public class XmlDoc
+    {
+        public string FullValue { get; }
+
+        public string VerbatimFullValue => this.FullValue?.Replace("\"", "\"\"");
+
+        public string Value { get; }
+
+        public string VerbatimValue => this.Value?.Replace("\"", "\"\"");
+
+        public XmlDoc(string value)
         {
-            return this.Name;
+            this.FullValue = value;
+
+            try
+            {
+                var element = XElement.Parse(value);
+                this.Value = element.Elements().First().ToString();
+            }
+            catch
+            {
+                throw new Exception("Could not parse XmlDoc: \n" + this.FullValue);
+            }
         }
     }
 }

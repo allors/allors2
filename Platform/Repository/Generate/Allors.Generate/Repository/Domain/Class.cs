@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Interface.cs" company="Allors bvba">
+// <copyright file="Class.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,18 +19,19 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
     using System.Collections.Generic;
 
-    public class Interface : Composite
+    public class Class : Composite
     {
-        public Interface(Inflector.Inflector inflector, string name)
+        public Class(Inflector.Inflector inflector, string name)
             : base(inflector, name)
         {
-            this.PartialByAssemblyName = new Dictionary<string, PartialInterface>();
-            this.InheritedPropertyByRoleName = new Dictionary<string, Property>();
+            this.PartialByAssemblyName = new Dictionary<string, PartialClass>();
         }
+
+        public Dictionary<string, PartialClass> PartialByAssemblyName { get; }
 
         public override IEnumerable<Interface> Interfaces
         {
@@ -39,44 +40,18 @@ namespace Allors.Tools.Repository
                 var interfaces = new HashSet<Interface>(this.ImplementedInterfaces);
                 foreach (var implementedInterface in this.ImplementedInterfaces)
                 {
-                    implementedInterface.AddInterfaces(interfaces);
+                    interfaces.UnionWith(implementedInterface.Interfaces);
                 }
 
                 return interfaces;
             }
         }
 
-        private void AddInterfaces(ISet<Interface> interfaces)
-        {
-            interfaces.UnionWith(this.ImplementedInterfaces);
-            foreach (var implementedInterface in this.ImplementedInterfaces)
-            {
-                implementedInterface.AddInterfaces(interfaces);
-            }
-        }
-
-        public Dictionary<string, PartialInterface> PartialByAssemblyName { get; }
-
-        public Dictionary<string, Property> InheritedPropertyByRoleName { get; }
-
-        public IEnumerable<Property> InheritedProperties => this.InheritedPropertyByRoleName.Values;
-
-        public override string ToString()
-        {
-            return this.SingularName;
-        }
-
         public Property GetImplementedProperty(Property property)
         {
-            Property implementedProperty;
-            if (this.PropertyByRoleName.TryGetValue(property.RoleName, out implementedProperty))
-            {
-                return implementedProperty;
-            }
-
             foreach (var @interface in this.ImplementedInterfaces)
             {
-                implementedProperty = @interface.GetImplementedProperty(property);
+                var implementedProperty = @interface.GetImplementedProperty(property);
                 if (implementedProperty != null)
                 {
                     return implementedProperty;
@@ -88,18 +63,12 @@ namespace Allors.Tools.Repository
 
         public Method GetImplementedMethod(Method method)
         {
-            Method implementedMethod;
-            if (this.MethodByName.TryGetValue(method.Name, out implementedMethod))
-            {
-                return implementedMethod;
-            }
-
             foreach (var @interface in this.ImplementedInterfaces)
             {
-                implementedMethod = @interface.GetImplementedMethod(method);
-                if (implementedMethod != null)
+                var implementedProperty = @interface.GetImplementedMethod(method);
+                if (implementedProperty != null)
                 {
-                    return implementedMethod;
+                    return implementedProperty;
                 }
             }
 

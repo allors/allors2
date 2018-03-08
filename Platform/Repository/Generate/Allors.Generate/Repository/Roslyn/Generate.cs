@@ -17,13 +17,15 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // -------------------------------------------------------------------------------------------------
-namespace Allors.Tools.Repository.Tasks
+namespace Allors.Repository.Roslyn
 {
     using System;
     using System.IO;
     using System.Linq;
 
-    using Generation;
+    using Allors.Repository;
+    using Allors.Repository.Domain;
+    using Allors.Repository.Generation;
 
     using Microsoft.CodeAnalysis.MSBuild;
 

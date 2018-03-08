@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository.Storage
+namespace Allors.Repository.Generation
 {
     using System.IO;
 
@@ -34,7 +34,7 @@ namespace Allors.Tools.Repository.Storage
         public string GetRelativeName(DirectoryInfo baseDirectoryInfo)
         {
             var baseDirectory = new AllorsDirectoryInfo(baseDirectoryInfo);
-            var directory = new AllorsDirectoryInfo(fileInfo.Directory);
+            var directory = new AllorsDirectoryInfo(this.fileInfo.Directory);
 
             string relativePath = directory.GetRelativeName(baseDirectory);
             if (relativePath == null)
@@ -47,10 +47,10 @@ namespace Allors.Tools.Repository.Storage
 
         public string GetRelativeOrFullName(DirectoryInfo baseDirectoryInfo)
         {
-            string relativeName = GetRelativeName(baseDirectoryInfo);
+            string relativeName = this.GetRelativeName(baseDirectoryInfo);
             if (relativeName == null)
             {
-                return fileInfo.FullName;
+                return this.fileInfo.FullName;
             }
             return relativeName;
         }

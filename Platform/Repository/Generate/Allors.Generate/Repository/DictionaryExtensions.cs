@@ -19,7 +19,7 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository
 {
     using System.Collections.Generic;
 

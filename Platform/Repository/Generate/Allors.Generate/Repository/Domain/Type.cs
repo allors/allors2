@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Unit.cs" company="Allors bvba">
+// <copyright file="Type.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,17 +19,22 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
-    using System;
-
-    public class Unit : Type
+    public abstract class Type
     {
-        public Unit(string name, Guid id)
-            : base(name)
+        protected Type(string name)
         {
+            this.SingularName = name;
         }
+        
+        public string SingularName { get; }
 
-        public override string Id { get; }
+        public abstract string Id { get; }
+
+        public override string ToString()
+        {
+            return this.SingularName;
+        }
     }
 }

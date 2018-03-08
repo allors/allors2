@@ -1,4 +1,4 @@
-﻿namespace Allors.Tools.Repository
+﻿namespace Allors.Repository.Roslyn
 {
     using System;
     using System.Collections.Generic;

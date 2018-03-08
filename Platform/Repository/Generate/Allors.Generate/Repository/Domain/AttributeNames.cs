@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="XmlDoc.cs" company="Allors bvba">
+// <copyright file="AttributeNames.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,35 +19,14 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
-    using System;
-    using System.Linq;
-    using System.Xml.Linq;
-
-    public class XmlDoc
+    public static class AttributeNames
     {
-        public string FullValue { get; }
+        public const string Id = "Id";
 
-        public string VerbatimFullValue => this.FullValue?.Replace("\"", "\"\"");
+        public const string AssociationId = "AssociationId";
 
-        public string Value { get; }
-
-        public string VerbatimValue => this.Value?.Replace("\"", "\"\"");
-
-        public XmlDoc(string value)
-        {
-            this.FullValue = value;
-
-            try
-            {
-                var element = XElement.Parse(value);
-                this.Value = element.Elements().First().ToString();
-            }
-            catch
-            {
-                throw new Exception("Could not parse XmlDoc: \n" + this.FullValue);
-            }
-        }
+        public const string RoleId = "RoleId";
     }
 }

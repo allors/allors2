@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Type.cs" company="Allors bvba">
+// <copyright file="PartialInterface.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -19,22 +19,18 @@
 // <summary>Defines the IObjectType type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository
+namespace Allors.Repository.Domain
 {
-    public abstract class Type
+    public class PartialInterface : PartialType
     {
-        protected Type(string name)
+        public PartialInterface(string name)
+            : base(name)
         {
-            this.SingularName = name;
         }
-        
-        public string SingularName { get; }
-
-        public abstract string Id { get; }
 
         public override string ToString()
         {
-            return this.SingularName;
+            return this.Name;
         }
     }
 }

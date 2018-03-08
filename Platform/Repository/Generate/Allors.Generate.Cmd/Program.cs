@@ -3,11 +3,11 @@
     using System;
     using System.IO;
 
-    using Repository;
+    using Allors.Repository;
+    using Allors.Repository.Domain;
+    using Allors.Repository.Roslyn;
 
     using NLog;
-
-    using Repository.Tasks;
 
     public class Program
     {

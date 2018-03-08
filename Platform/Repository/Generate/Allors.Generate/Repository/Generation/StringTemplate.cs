@@ -21,18 +21,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Tools.Repository.Generation
+namespace Allors.Repository.Generation
 {
     using System;
     using System.IO;
     using System.Xml;
 
+    using Allors.Repository;
+    using Allors.Repository.Domain;
+
     using Antlr4.StringTemplate;
     using Antlr4.StringTemplate.Misc;
 
     using NLog;
-
-    using Storage;
 
     public class StringTemplate
     {
