@@ -63,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Roslyn\ProjectInfo.cs" />
     <Compile Include="Repository\Domain\Repository.cs" />
+    <Compile Include="Repository\Roslyn\RoslynRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

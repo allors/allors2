@@ -23,7 +23,7 @@ namespace Allors.Repository.Domain
 {
     using System;
 
-    public class Unit : Domain.Type
+    public class Unit : Type
     {
         public Unit(string name, Guid id)
             : base(name)

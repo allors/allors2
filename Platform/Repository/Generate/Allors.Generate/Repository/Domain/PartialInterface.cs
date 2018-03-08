@@ -27,10 +27,5 @@ namespace Allors.Repository.Domain
             : base(name)
         {
         }
-
-        public override string ToString()
-        {
-            return this.Name;
-        }
     }
 }

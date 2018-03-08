@@ -30,7 +30,7 @@ namespace Allors.Repository.Domain
     {
         private readonly Inflector.Inflector inflector;
 
-        private string name;
+        private readonly string name;
         
         public Property(Inflector.Inflector inflector, Composite definingType, string name)
         {

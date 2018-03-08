@@ -17,14 +17,13 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // -------------------------------------------------------------------------------------------------
+
 namespace Allors.Repository.Roslyn
 {
-    using System;
     using System.IO;
     using System.Linq;
 
     using Allors.Repository;
-    using Allors.Repository.Domain;
     using Allors.Repository.Generation;
 
     using Microsoft.CodeAnalysis.MSBuild;
@@ -36,7 +35,7 @@ namespace Allors.Repository.Roslyn
             var workspace = MSBuildWorkspace.Create();
             var solution = workspace.OpenSolutionAsync(solutionPath).Result;
             var project = solution.Projects.First(v => v.Name.ToLowerInvariant().Equals(projectName.ToLowerInvariant()));
-            var repository = new Repository(project);
+            var repository = new RoslynRepository(project);
 
             if (repository.HasErrors)
             {
