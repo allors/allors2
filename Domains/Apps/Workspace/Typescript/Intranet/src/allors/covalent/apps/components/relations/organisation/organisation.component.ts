@@ -137,6 +137,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
         } else {
           this.subTitle = "add a new organisation";
           this.organisation = this.scope.session.create("Organisation") as Organisation;
+          this.organisation.IsManufacturer = false;
         }
 
         this.locales = loaded.collections.LocaleQuery as Locale[];

@@ -106,6 +106,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
           new TreeNode({
             nodes: [
+              new TreeNode({ roleType: m.Person.Salutation }),
               new TreeNode({
                 nodes: [
                   new TreeNode({

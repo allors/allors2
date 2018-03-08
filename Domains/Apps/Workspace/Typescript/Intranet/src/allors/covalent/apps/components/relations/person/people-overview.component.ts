@@ -103,6 +103,7 @@ export class PeopleOverviewComponent implements OnDestroy {
             predicate,
             page: new Page({ skip: 0, take }),
             include: [
+              new TreeNode({ roleType: m.Person.Salutation }),
               new TreeNode({ roleType: m.Person.Picture }),
               new TreeNode({ roleType: m.Person.GeneralPhoneNumber }),
             ],

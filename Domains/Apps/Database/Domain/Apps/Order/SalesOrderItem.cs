@@ -135,6 +135,11 @@ namespace Allors.Domain
                 derivation.Validation.AssertExists(this, M.SalesOrderItem.ProductFeature);
             }
 
+            if (this.ExistInvoiceItemType && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem))
+            {
+                this.QuantityOrdered = 1;
+            }
+
             if (this.ExistProduct && this.ExistQuantityOrdered && this.QuantityOrdered < this.QuantityShipped)
             {
                 derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
@@ -755,7 +760,13 @@ namespace Allors.Domain
             }
 
             this.UnitVat = vat;
-            this.TotalBasePrice = price * this.QuantityOrdered;
+            this.TotalBasePrice = 0;
+
+            if (this.InvoiceItemType == new InvoiceItemTypes(this.strategy.Session).ProductItem)
+            {
+                this.TotalBasePrice = price * this.QuantityOrdered;
+            }
+
             this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
             this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
             this.TotalOrderAdjustment = (0 - discountAdjustmentAmount + surchargeAdjustmentAmount) * this.QuantityOrdered;

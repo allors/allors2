@@ -37,7 +37,7 @@
             <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
             <img *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)"/>
 
-            <h3 mat-line [routerLink]="['/relations/person/' + person.id]"> {{person.PartyName}} </h3>
+            <h3 mat-line [routerLink]="['/relations/person/' + person.id]"> {{person.Salutation?.Name}} {{person.PartyName}} </h3>
             <p *ngIf="person.GeneralPhoneNumber" mat-line> {{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}
 
               <p mat-line hide-gt-md class="mat-caption"> last login: {{ person.LastModifiedDate | timeAgo }} </p>

@@ -130,9 +130,7 @@ export class InvoiceItemEditComponent
             this.invoiceItem = this.scope.session.create("SalesInvoiceItem") as SalesInvoiceItem;
             this.invoice.AddSalesInvoiceItem(this.invoiceItem);
           } else {
-            if (
-              this.invoiceItem.InvoiceItemType === this.productItemType
-            ) {
+            if (this.invoiceItem.InvoiceItemType === this.productItemType) {
               this.goodSelected(this.invoiceItem.Product);
             }
           }

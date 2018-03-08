@@ -98,6 +98,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.Party.Locale }),
               // new TreeNode({ roleType: m.Person.PersonRoles }),
               new TreeNode({ roleType: m.Person.LastModifiedBy }),
+              new TreeNode({ roleType: m.Person.Salutation }),
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),

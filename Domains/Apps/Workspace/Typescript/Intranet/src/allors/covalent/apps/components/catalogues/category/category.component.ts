@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from "../../../../../domain";
-import { Equals, Fetch, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Equals, Fetch, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 import { Fetcher } from "../../Fetcher";
@@ -80,7 +80,15 @@ export class CategoryComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [ new Query(this.m.CatScope), new Query(this.m.ProductCategory) ];
+        const query: Query[] = [
+          new Query(this.m.CatScope),
+          new Query(
+            {
+              name: "categories",
+              objectType: this.m.ProductCategory,
+              sort: [new Sort({ roleType: m.ProductCategory.Name, direction: "Asc" })],
+            }),
+        ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }));
@@ -89,7 +97,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.category = loaded.objects.category as ProductCategory;
-        this.categories = loaded.collections.CategoryQuery as ProductCategory[];
+        this.categories = loaded.collections.categories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopeQuery as CatScope[];
         this.locales = loaded.collections.locales as Locale[];
 

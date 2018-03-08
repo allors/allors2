@@ -88,6 +88,11 @@ namespace Allors.Domain
             {
                 derivation.Validation.AssertExists(this, this.Meta.Quantity);
             }
+
+            if (this.ExistInvoiceItemType && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem))
+            {
+                this.Quantity = 1;
+            }
         }
 
         public void AppsWriteOff(IDerivation derivation)
@@ -312,7 +317,13 @@ namespace Allors.Domain
             }
 
             this.UnitVat = vat;
-            this.TotalBasePrice = price * this.Quantity;
+            this.TotalBasePrice = 0;
+
+            if (this.InvoiceItemType == new InvoiceItemTypes(this.strategy.Session).ProductItem)
+            {
+                this.TotalBasePrice = price * this.Quantity;
+            }
+
             this.TotalDiscount = this.UnitDiscount * this.Quantity;
             this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
             this.TotalInvoiceAdjustment = (0 - discountAdjustmentAmount + surchargeAdjustmentAmount) * this.Quantity;

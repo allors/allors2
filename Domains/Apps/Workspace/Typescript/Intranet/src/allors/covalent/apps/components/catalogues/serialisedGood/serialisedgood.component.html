@@ -31,7 +31,7 @@
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
             display="Name"></a-mat-select>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner"></a-mat-input>
-          <a-mat-autocomplete class="col" [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-mat-autocomplete>
+          <a-mat-select class="col" [object]="good" [roleType]="m.Good.SuppliedBy" [options]="suppliers" display="Name"></a-mat-select>
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
         </div>
 
