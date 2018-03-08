@@ -34,11 +34,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\..\Framework\Allors\Meta\UnitIds.cs">
-      <Link>Meta\UnitIds.cs</Link>
+    <Compile Include="..\..\..\Database\Framework\Allors.Framework\Meta\UnitIds.cs">
+      <Link>UnitIds.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\Framework\Allors\Meta\UnitNames.cs">
-      <Link>Meta\UnitNames.cs</Link>
+    <Compile Include="..\..\..\Database\Framework\Allors.Framework\Meta\UnitNames.cs">
+      <Link>UnitNames.cs</Link>
     </Compile>
     <Compile Include="Repository\Assembly.cs" />
     <Compile Include="Repository\AttributeNames.cs" />
