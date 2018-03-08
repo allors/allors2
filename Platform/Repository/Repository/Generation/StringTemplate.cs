@@ -52,7 +52,7 @@ namespace Allors.Repository.Generation
 
         private readonly FileInfo fileInfo;
 
-        internal StringTemplate(FileInfo fileInfo)
+        public StringTemplate(FileInfo fileInfo)
         {
             this.fileInfo = fileInfo;
 
@@ -85,7 +85,7 @@ namespace Allors.Repository.Generation
             return this.Name;
         }
 
-        internal void Generate(Repository repository, DirectoryInfo outputDirectory)
+        public void Generate(Repository repository, DirectoryInfo outputDirectory)
         {
             TemplateGroup templateGroup = new TemplateGroupFile(this.fileInfo.FullName, '$', '$');
 

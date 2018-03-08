@@ -52,9 +52,9 @@ namespace Allors.Repository.Domain
 
         public Composite DefiningType { get; }
 
-        public Type Type { get; internal set; }
+        public Type Type { get; set; }
 
-        public Property DefiningProperty { get; internal set; }
+        public Property DefiningProperty { get; set; }
 
         public Dictionary<string, Attribute> AttributeByName { get; }
 

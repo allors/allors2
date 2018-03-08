@@ -34,7 +34,7 @@ namespace Allors.Repository.Roslyn
 
     using NLog;
 
-    public class RoslynRepository : Repository
+    public class RoslynRepository : Domain.Repository
     {
         private const string RepositoryNamespaceName = "Allors.Repository";
 

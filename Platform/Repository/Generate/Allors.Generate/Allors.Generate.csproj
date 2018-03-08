@@ -40,29 +40,10 @@
     <Compile Include="..\..\..\Database\Framework\Allors.Framework\Meta\UnitNames.cs">
       <Link>UnitNames.cs</Link>
     </Compile>
-    <Compile Include="Repository\DictionaryExtensions.cs" />
-    <Compile Include="Repository\Domain\Assembly.cs" />
-    <Compile Include="Repository\Domain\AttributeNames.cs" />
     <Compile Include="Repository\RepositoryException.cs" />
-    <Compile Include="Repository\Domain\Composite.cs" />
     <Compile Include="Repository\Roslyn\Generate.cs" />
-    <Compile Include="Repository\Generation\AllorsDirectoryInfo.cs" />
-    <Compile Include="Repository\Generation\AllorsFileInfo.cs" />
-    <Compile Include="Repository\Generation\Location.cs" />
-    <Compile Include="Repository\Generation\StringTemplate.cs" />
-    <Compile Include="Repository\Domain\Class.cs" />
-    <Compile Include="Repository\Domain\XmlDoc.cs" />
-    <Compile Include="Repository\Domain\Unit.cs" />
-    <Compile Include="Repository\Domain\Interface.cs" />
-    <Compile Include="Repository\Domain\Type.cs" />
-    <Compile Include="Repository\Domain\PartialType.cs" />
-    <Compile Include="Repository\Domain\PartialClass.cs" />
-    <Compile Include="Repository\Domain\PartialInterface.cs" />
-    <Compile Include="Repository\Domain\Method.cs" />
-    <Compile Include="Repository\Domain\Property.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Roslyn\ProjectInfo.cs" />
-    <Compile Include="Repository\Domain\Repository.cs" />
     <Compile Include="Repository\Roslyn\RoslynRepository.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +194,10 @@
     <ProjectReference Include="..\..\Attributes\Attributes.csproj">
       <Project>{5db05e81-88cc-4d0d-92f8-18a8ecb50bc2}</Project>
       <Name>Attributes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Repository\Repository.csproj">
+      <Project>{fa51efbb-3e18-4ca8-8609-80929dbea5c4}</Project>
+      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

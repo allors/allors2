@@ -39,9 +39,9 @@ namespace Allors.Repository.Domain
 
         public XmlDoc XmlDoc { get; set; }
 
-        public Method DefiningMethod { get; internal set; }
+        public Method DefiningMethod { get; set; }
 
-        public Type DefiningType { get; internal set; }
+        public Type DefiningType { get; set; }
 
         public Dictionary<string, Attribute> AttributeByName { get; }
 

@@ -4,7 +4,6 @@
     using System.IO;
 
     using Allors.Repository;
-    using Allors.Repository.Domain;
     using Allors.Repository.Roslyn;
 
     using NLog;

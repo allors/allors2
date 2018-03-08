@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FA51EFBB-3E18-4CA8-8609-80929DBEA5C4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Repository</RootNamespace>
+    <AssemblyName>Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.5.0.2, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\Generate\packages\Antlr3.Runtime.3.5.1\lib\net40-client\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr4.StringTemplate, Version=4.0.7.0, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\Generate\packages\StringTemplate4.4.0.8\lib\net35-client\Antlr4.StringTemplate.dll</HintPath>
+    </Reference>
+    <Reference Include="Inflector, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\Generate\packages\Inflector.Portable.1.2.0\lib\portable-net45+sl50+netcore45+wpa81+wp\Inflector.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\Generate\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DictionaryExtensions.cs" />
+    <Compile Include="Domain\Assembly.cs" />
+    <Compile Include="Domain\AttributeNames.cs" />
+    <Compile Include="Domain\Class.cs" />
+    <Compile Include="Domain\Composite.cs" />
+    <Compile Include="Domain\Interface.cs" />
+    <Compile Include="Domain\Method.cs" />
+    <Compile Include="Domain\PartialClass.cs" />
+    <Compile Include="Domain\PartialInterface.cs" />
+    <Compile Include="Domain\PartialType.cs" />
+    <Compile Include="Domain\Property.cs" />
+    <Compile Include="Domain\Repository.cs" />
+    <Compile Include="Domain\Type.cs" />
+    <Compile Include="Domain\Unit.cs" />
+    <Compile Include="Domain\XmlDoc.cs" />
+    <Compile Include="Generation\AllorsDirectoryInfo.cs" />
+    <Compile Include="Generation\AllorsFileInfo.cs" />
+    <Compile Include="Generation\Location.cs" />
+    <Compile Include="Generation\StringTemplate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Settings.StyleCop" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Attributes\Attributes.csproj">
+      <Project>{5db05e81-88cc-4d0d-92f8-18a8ecb50bc2}</Project>
+      <Name>Attributes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
