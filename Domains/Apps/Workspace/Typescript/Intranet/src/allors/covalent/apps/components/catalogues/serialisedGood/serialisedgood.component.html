@@ -8,6 +8,9 @@
           <a-mat-input class="col" [object]="good" [roleType]="m.Good.Description"></a-mat-input>
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates"
             display="Name" label="Status"></a-mat-select>
+          <mat-form-field *ngIf="salesInvoice" class="col">
+            <input matInput placeholder="Invoice" [value]="salesInvoice.InvoiceNumber" readonly="true" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id]">
+          </mat-form-field>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
         </div>
 
@@ -31,7 +34,7 @@
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
             display="Name"></a-mat-select>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner"></a-mat-input>
-          <a-mat-select class="col" [object]="good" [roleType]="m.Good.SuppliedBy" [options]="suppliers" display="Name"></a-mat-select>
+          <!-- <a-mat-select class="col" [object]="good" [roleType]="m.Good.SuppliedBy" [options]="suppliers" display="Name"></a-mat-select> -->
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
         </div>
 
@@ -137,6 +140,7 @@
     <mat-card-actions>
       <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
       <button mat-button (click)="goBack()" type="button">CANCEL</button>
+      <!-- <button mat-button (click)="update()" color="primary" [disabled]="!form.form.valid">SAVE</button> -->
     </mat-card-actions>
 
   </form>

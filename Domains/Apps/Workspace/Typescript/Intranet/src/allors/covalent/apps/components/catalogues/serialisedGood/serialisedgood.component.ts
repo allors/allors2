@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 import { isType } from "@angular/core/src/type";
 import { forEach } from "@angular/router/src/utils/collection";
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, VatRate, VendorProduct } from "../../../../../domain";
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -44,6 +44,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public serialisedInventoryItemStates: SerialisedInventoryItemState[];
   public vatRates: VatRate[];
   public ownerships: Ownership[];
+  public invoiceItems: InvoiceItem[];
+  public salesInvoice: SalesInvoice;
 
   public manufacturersFilter: Filter;
   public suppliersFilter: Filter;
@@ -114,6 +116,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             name: "inventoryItems",
             path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
           }),
+          new Fetch({
+            id,
+            name: "invoiceItems",
+            path: new Path({ step: this.m.Good.InvoiceItemsWhereProduct }),
+          }),
         ];
 
         const query: Query[] = [
@@ -147,6 +154,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
             this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+            this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Serialised");
@@ -183,7 +191,16 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.title = this.good.Name;
             this.subTitle = "Serialised";
 
-            const Query2: Query[] = [
+            const fetch2 = [];
+            if (this.invoiceItems !== undefined && this.invoiceItems.length > 0) {
+                fetch2.push( new Fetch({
+                  id: this.invoiceItems[0].id,
+                  name: "invoice",
+                  path: new Path({ step: this.m.SalesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem }),
+                }));
+            }
+
+            const query2: Query[] = [
               new Query(
                 {
                   name: "manufacturers",
@@ -193,11 +210,12 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 }),
             ];
 
-            return this.scope.load("Pull", new PullRequest({ query: Query2 }));
+            return this.scope.load("Pull", new PullRequest({ query: query2, fetch: fetch2 }));
           });
       })
       .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
+        this.salesInvoice = loaded.objects.invoice as SalesInvoice;
       },
       (error: any) => {
         this.errorService.message(error);
@@ -213,17 +231,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-      this.good.RemoveStandardFeature(feature);
-    });
 
-    if (this.selectedBrand != null) {
-      this.good.AddStandardFeature(this.selectedBrand);
-    }
-
-    if (this.selectedModel != null) {
-      this.good.AddStandardFeature(this.selectedModel);
-    }
+    this.onSave();
 
     this.scope
       .save()
@@ -237,18 +246,20 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public update(): void {
 
-      this.scope
-        .save()
-        .subscribe((saved: Saved) => {
-          this.refresh();
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    }
+    this.onSave();
 
-    public refresh(): void {
-      this.refresh$.next(new Date());
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   public goBack(): void {
@@ -278,5 +289,19 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  private onSave() {
+    this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+      this.good.RemoveStandardFeature(feature);
+    });
+
+    if (this.selectedBrand != null) {
+      this.good.AddStandardFeature(this.selectedBrand);
+    }
+
+    if (this.selectedModel != null) {
+      this.good.AddStandardFeature(this.selectedModel);
+    }
   }
 }

@@ -104,6 +104,8 @@ namespace Allors.Domain
                 .WithBilledFrom(this.BilledTo)
                 .WithBillToCustomer(this.BillToCustomer)
                 .WithBillToContactMechanism(this.BillToCustomerContactMechanism)
+                .WithShipToCustomer(this.ShipToCustomer)
+                .WithShipToAddress(this.ShipToAddress)
                 .WithDescription(this.Description)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)

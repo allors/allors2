@@ -71,6 +71,9 @@ export class InvoiceItemEditComponent
         const fetch: Fetch[] = [
           new Fetch({
             id,
+            include: [
+              new TreeNode({ roleType: m.SalesInvoice.VatRegime }),
+            ],
             name: "salesInvoice",
           }),
           new Fetch({

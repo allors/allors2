@@ -16,9 +16,9 @@
     </div>
 
     <div class="grid-2_xs-1">
-      <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
+      <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
         display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
-      <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
+      <!-- <a-mat-autocomplete class="col" *ngIf="showBillToPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
           display="displayName" (onChange)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete> -->
 
       <div class="col">
@@ -38,9 +38,9 @@
     </div>
 
     <div class="grid-2_xs-1">
-      <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer"
+      <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer"
         [filter]="organisationsFilter.create()" display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
-      <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
+      <!-- <a-mat-autocomplete class="col" *ngIf="showBillToPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="peopleFilter.create()"
             display="displayName" (onChange)="receiverSelected($event)" label="Bill to person"></a-mat-autocomplete> -->
 
       <div class="col">
@@ -59,20 +59,42 @@
       </div>
     </div>
 
+    <div class="grid-2_xs-1">
+      <a-mat-autocomplete class="col" *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer"
+        [filter]="organisationsFilter.create()" display="Name" (onChange)="shipToCustomerSelected($event)"></a-mat-autocomplete>
+      <!-- <a-mat-autocomplete class="col" *ngIf="showShipToPeople" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="peopleFilter.create()"
+              display="displayName" (onChange)="receiverSelected($event)" label="Ship to person"></a-mat-autocomplete> -->
+
+      <div class="col">
+        <div fxLayout fxLayoutGap="1em">
+          <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToContactMechanisms"
+            display="displayName"></a-mat-select>
+          <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer" type="button" (click)="addShipToCustomerContactMechanism = !addShipToCustomerContactMechanism">
+            <mat-icon *ngIf="!addShipToCustomerContactMechanism">add</mat-icon>
+            <mat-icon *ngIf="addShipToCustomerContactMechanism">close</mat-icon>
+          </button>
+        </div>
+
+        <party-contactmechanism *ngIf="invoice.ShipToCustomer && addShipToCustomerContactMechanism" [scope]="scope" (saved)="shipToCustomerContactMechanismAdded($event)"
+          (cancelled)="shipToCustomerContactMechanismCancelled()">
+        </party-contactmechanism>
+      </div>
+    </div>
+
     <div class="grid-2_sm-1">
       <div class="col">
 
         <div fxLayout fxLayoutGap="1em">
-          <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer" type="button" (click)="addContactPerson = !addContactPerson">
-            <mat-icon *ngIf="!addContactPerson">add</mat-icon>
-            <mat-icon *ngIf="addContactPerson">close</mat-icon>
+          <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="billToContacts" display="displayName"></a-mat-select>
+          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer" type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
+            <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
+            <mat-icon *ngIf="addBillToContactPerson">close</mat-icon>
           </button>
         </div>
-        <mat-tab-group dynamicHeight="true" *ngIf="invoice.BillToCustomer && addContactPerson">
+        <mat-tab-group dynamicHeight="true" *ngIf="invoice.BillToCustomer && addBillToContactPerson">
           <mat-tab label="Person">
             <div class="pad tabInlineComponent">
-              <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+              <person-inline (cancelled)="billToPersonCancelled($event); addBillToContactPerson = false" (saved)="billToPersonAdded($event); addBillToContactPerson = false">
               </person-inline>
             </div>
           </mat-tab>

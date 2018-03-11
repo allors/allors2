@@ -340,6 +340,8 @@ namespace Allors.Domain
                     .WithBillToCustomer(this.BillToEndCustomer)
                     .WithBillToCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
                     .WithBillToCustomerPaymentMethod(this.PaymentMethod)
+                    .WithShipToCustomer(this.ShipToCustomer)
+                    .WithShipToAddress(this.ShipToAddress)
                     .WithContactPerson(this.ContactPerson)
                     .WithDescription(this.Description)
                     .WithInvoiceDate(DateTime.UtcNow)
