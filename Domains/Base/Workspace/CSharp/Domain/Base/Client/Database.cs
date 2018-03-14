@@ -81,7 +81,7 @@
 
         public async Task<InvokeResponse> Invoke(string service, object args)
         {
-            var uri = new Uri(service, UriKind.Relative);
+            var uri = new Uri(service + "/Pull", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, args);
             response.EnsureSuccessStatusCode();
 
