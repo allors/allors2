@@ -21,16 +21,19 @@
 
 namespace Allors.Repository.Domain
 {
+    using System;
+
     public abstract class Type
     {
-        protected Type(string name)
+        protected Type(Guid id, string name)
         {
+            this.Id = id;
             this.SingularName = name;
         }
-        
-        public string SingularName { get; }
 
-        public abstract string Id { get; }
+        public Guid Id { get; }
+
+        public string SingularName { get; }
 
         public override string ToString()
         {

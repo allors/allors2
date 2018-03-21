@@ -42,11 +42,11 @@ namespace Allors.Repository.Domain
             this.name = name;
         }
 
-        public string Id => ((IdAttribute)this.AttributeByName.Get(AttributeNames.Id))?.Value;
+        public string Id => ((dynamic)this.AttributeByName.Get(AttributeNames.Id))?.Value;
 
-        public string AssociationId => ((AssociationIdAttribute)this.AttributeByName.Get(AttributeNames.AssociationId))?.Value;
+        public string AssociationId => ((dynamic)this.AttributeByName.Get(AttributeNames.AssociationId))?.Value;
 
-        public string RoleId => ((RoleIdAttribute)this.AttributeByName.Get(AttributeNames.RoleId))?.Value;
+        public string RoleId => ((dynamic)this.AttributeByName.Get(AttributeNames.RoleId))?.Value;
 
         public XmlDoc XmlDoc { get; set; }
 
@@ -69,8 +69,13 @@ namespace Allors.Repository.Domain
                     return Multiplicity.OneToOne;
                 }
 
-                Attribute attribute;
-                return this.AttributeByName.TryGetValue("Multiplicity", out attribute) ? ((MultiplicityAttribute)attribute).Value : Multiplicity.ManyToOne;
+                dynamic attribute = this.AttributeByName.Get("Multiplicity");
+                if (attribute == null)
+                {
+                    return Multiplicity.ManyToOne;
+                }
+
+                return (Multiplicity)(int)attribute.Value;
             }
         }
 
@@ -122,8 +127,8 @@ namespace Allors.Repository.Domain
                 }
                 else
                 {
-                    Attribute attribute;
-                    return this.AttributeByName.TryGetValue("Singular", out attribute) ? ((SingularAttribute)attribute).Value : this.inflector.Singularize(this.name);
+                    dynamic attribute = this.AttributeByName.Get("Singular");
+                    return attribute != null ? attribute.Value : this.inflector.Singularize(this.name);
                 }
             }
         }
@@ -138,8 +143,8 @@ namespace Allors.Repository.Domain
                 }
                 else
                 {
-                    Attribute attribute;
-                    return this.AttributeByName.TryGetValue("Plural", out attribute) ? ((PluralAttribute)attribute).Value : this.inflector.Pluralize(this.name);
+                    dynamic attribute = this.AttributeByName.Get("Plural");
+                    return attribute != null ? attribute.Value : this.inflector.Pluralize(this.name);
                 }
             }
         }

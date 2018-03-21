@@ -1,8 +1,8 @@
 namespace Allors.Domain
 {
-				public interface Version 
+				public interface I1 
 				{
-								global::System.DateTime? DerivationTimeStamp {set;}
+								global::System.String I1AllorsString {set;}
 
 				}
 				public interface Deletable 
@@ -19,6 +19,16 @@ namespace Allors.Domain
 								global::System.Boolean IsActive {set;}
 
 				}
+				public interface UniquelyIdentifiable 
+				{
+								global::System.Guid UniqueId {set;}
+
+				}
+				public interface Version 
+				{
+								global::System.DateTime? DerivationTimeStamp {set;}
+
+				}
 				public interface Localised 
 				{
 								Locale Locale {set;}
@@ -29,9 +39,21 @@ namespace Allors.Domain
 								global::System.String Name {set;}
 
 				}
-				public interface UniquelyIdentifiable 
+				public interface Task : UniquelyIdentifiable, Deletable 
 				{
-								global::System.Guid UniqueId {set;}
+								WorkItem WorkItem {set;}
+
+
+								global::System.DateTime DateCreated {set;}
+
+
+								global::System.DateTime? DateClosed {set;}
+
+
+								Person Participants {set;}
+
+
+								Person Performer {set;}
 
 				}
 				public interface User 
@@ -54,43 +76,187 @@ namespace Allors.Domain
 								NotificationList NotificationList {set;}
 
 				}
-				public interface Task : UniquelyIdentifiable, Deletable 
-				{
-								WorkItem WorkItem {set;}
-
-
-								global::System.DateTime DateCreated {set;}
-
-
-								global::System.DateTime? DateClosed {set;}
-
-
-								Person Participants {set;}
-
-
-								Person Performer {set;}
-
-				}
 				public interface WorkItem 
 				{
 								global::System.String WorkItemDescription {set;}
 
 				}
-				public interface I1 
+				public interface C1 : I1 
 				{
-								global::System.String I1AllorsString {set;}
+								global::System.Byte[] C1AllorsBinary {set;}
+
+
+								global::System.String C1AllorsString {set;}
+
+
+								C1 C1C1One2Manies {set;}
+
+
+								C1 C1C1One2One {set;}
 
 				}
-				public interface LocalisedText : Localised, Deletable 
+				public interface Dependent : Deletable 
 				{
-								global::System.String Text {set;}
+				}
+				public interface Gender : Enumeration 
+				{
+				}
+				public interface Order 
+				{
+								OrderVersion CurrentVersion {set;}
+
+
+								OrderVersion AllVersions {set;}
 
 				}
-				public interface AccessControl : Deletable 
+				public interface OrderLine 
 				{
+								OrderLineVersion CurrentVersion {set;}
+
+
+								OrderLineVersion AllVersions {set;}
+
+				}
+				public interface OrderLineVersion : Version 
+				{
+				}
+				public interface OrderState : ObjectState 
+				{
+				}
+				public interface OrderVersion : Version 
+				{
+				}
+				public interface Organisation : Deletable, UniquelyIdentifiable 
+				{
+								Person Employees {set;}
+
+
+								Person Manager {set;}
+
+
+								global::System.String Name {set;}
+
+
+								Person Owner {set;}
+
+
+								Person Shareholders {set;}
+
+
+								Person CycleOne {set;}
+
+
+								Person CycleMany {set;}
+
+				}
+				public interface PaymentState : ObjectState 
+				{
+				}
+				public interface Person : Deletable, User, UniquelyIdentifiable 
+				{
+								global::System.DateTime? BirthDate {set;}
+
+
+								global::System.String FullName {set;}
+
+
+								global::System.Boolean? IsStudent {set;}
+
+
+								Media Photo {set;}
+
+
+								Media Pictures {set;}
+
+
+								global::System.Decimal? Weight {set;}
+
+
+								Organisation CycleOne {set;}
+
+
+								Organisation CycleMany {set;}
+
+
+								global::System.String FirstName {set;}
+
+
+								global::System.String LastName {set;}
+
+
+								global::System.String MiddleName {set;}
+
+				}
+				public interface ShipmentState : ObjectState 
+				{
+				}
+				public interface Singleton 
+				{
+								Locale DefaultLocale {set;}
+
+
+								Locale AdditionalLocales {set;}
+
+
+								User Guest {set;}
+
+				}
+				public interface UnitSample 
+				{
+								global::System.Byte[] AllorsBinary {set;}
+
+
+								global::System.DateTime? AllorsDateTime {set;}
+
+
+								global::System.Boolean? AllorsBoolean {set;}
+
+
+								global::System.Double? AllorsDouble {set;}
+
+
+								global::System.Int32? AllorsInteger {set;}
+
+
+								global::System.String AllorsString {set;}
+
+
+								global::System.Guid? AllorsUnique {set;}
+
+
+								global::System.Decimal? AllorsDecimal {set;}
+
 				}
 				public interface Counter : UniquelyIdentifiable 
 				{
+				}
+				public interface Media : UniquelyIdentifiable, Deletable 
+				{
+								global::System.Guid? Revision {set;}
+
+
+								MediaContent MediaContent {set;}
+
+
+								global::System.Byte[] InData {set;}
+
+
+								global::System.String InDataUri {set;}
+
+
+								global::System.String FileName {set;}
+
+
+								global::System.String Type {set;}
+
+				}
+				public interface MediaContent : Deletable 
+				{
+								global::System.String Type {set;}
+
+
+								global::System.Byte[] Data {set;}
+
 				}
 				public interface Country 
 				{
@@ -142,77 +308,19 @@ namespace Allors.Domain
 								Country Country {set;}
 
 				}
+				public interface LocalisedText : Localised, Deletable 
+				{
+								global::System.String Text {set;}
+
+				}
+				public interface AccessControl : Deletable 
+				{
+				}
 				public interface Login : Deletable 
-				{
-				}
-				public interface Media : UniquelyIdentifiable, Deletable 
-				{
-								global::System.Guid? Revision {set;}
-
-
-								MediaContent MediaContent {set;}
-
-
-								global::System.Byte[] InData {set;}
-
-
-								global::System.String InDataUri {set;}
-
-
-								global::System.String FileName {set;}
-
-
-								global::System.String Type {set;}
-
-				}
-				public interface MediaContent : Deletable 
-				{
-								global::System.String Type {set;}
-
-
-								global::System.Byte[] Data {set;}
-
-				}
-				public interface AutomatedAgent : User 
 				{
 				}
 				public interface Permission : Deletable 
 				{
-				}
-				public interface Person : User, UniquelyIdentifiable, Deletable 
-				{
-								global::System.String FirstName {set;}
-
-
-								global::System.String LastName {set;}
-
-
-								global::System.String MiddleName {set;}
-
-
-								global::System.DateTime? BirthDate {set;}
-
-
-								global::System.String FullName {set;}
-
-
-								global::System.Boolean? IsStudent {set;}
-
-
-								Media Photo {set;}
-
-
-								Media Pictures {set;}
-
-
-								global::System.Decimal? Weight {set;}
-
-
-								Organisation CycleOne {set;}
-
-
-								Organisation CycleMany {set;}
-
 				}
 				public interface Role : UniquelyIdentifiable 
 				{
@@ -220,18 +328,7 @@ namespace Allors.Domain
 				public interface SecurityToken : Deletable 
 				{
 				}
-				public interface Singleton 
-				{
-								Locale DefaultLocale {set;}
-
-
-								Locale AdditionalLocales {set;}
-
-
-								User Guest {set;}
-
-				}
-				public interface UserGroup : UniquelyIdentifiable 
+				public interface AutomatedAgent : User 
 				{
 				}
 				public interface Notification 
@@ -272,105 +369,8 @@ namespace Allors.Domain
 								global::System.Int32? Count {set;}
 
 				}
-				public interface C1 : I1 
+				public interface UserGroup : UniquelyIdentifiable 
 				{
-								global::System.Byte[] C1AllorsBinary {set;}
-
-
-								global::System.String C1AllorsString {set;}
-
-
-								C1 C1C1One2Manies {set;}
-
-
-								C1 C1C1One2One {set;}
-
-				}
-				public interface Dependent : Deletable 
-				{
-				}
-				public interface Gender : Enumeration 
-				{
-				}
-				public interface Order 
-				{
-								OrderVersion CurrentVersion {set;}
-
-
-								OrderVersion AllVersions {set;}
-
-				}
-				public interface OrderLine 
-				{
-								OrderLineVersion CurrentVersion {set;}
-
-
-								OrderLineVersion AllVersions {set;}
-
-				}
-				public interface OrderLineVersion : Version 
-				{
-				}
-				public interface PaymentState : ObjectState 
-				{
-				}
-				public interface ShipmentState : ObjectState 
-				{
-				}
-				public interface OrderState : ObjectState 
-				{
-				}
-				public interface OrderVersion : Version 
-				{
-				}
-				public interface Organisation : Deletable, UniquelyIdentifiable 
-				{
-								Person Employees {set;}
-
-
-								Person Manager {set;}
-
-
-								global::System.String Name {set;}
-
-
-								Person Owner {set;}
-
-
-								Person Shareholders {set;}
-
-
-								Person CycleOne {set;}
-
-
-								Person CycleMany {set;}
-
-				}
-				public interface UnitSample 
-				{
-								global::System.Byte[] AllorsBinary {set;}
-
-
-								global::System.DateTime? AllorsDateTime {set;}
-
-
-								global::System.Boolean? AllorsBoolean {set;}
-
-
-								global::System.Double? AllorsDouble {set;}
-
-
-								global::System.Int32? AllorsInteger {set;}
-
-
-								global::System.String AllorsString {set;}
-
-
-								global::System.Guid? AllorsUnique {set;}
-
-
-								global::System.Decimal? AllorsDecimal {set;}
-
 				}
 
 }

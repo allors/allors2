@@ -26,5 +26,13 @@ namespace Allors.Repository
         #endregion
         int Index { get; set; }
 
+
+        #region Allors
+
+        [Id("BFDDD727-6793-41A4-873D-BF80535D7DE2")]
+
+        #endregion
+
+        void InheritedDoIt();
     }
 }

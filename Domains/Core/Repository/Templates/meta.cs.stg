@@ -2,7 +2,7 @@ group AllorsCSharpRepository;
 
 TemplateId() ::= <<14F49218-A676-43ba-9CBD-B8FFA059D1BF>>
 TemplateName() ::= <<Allors C# Meta>>
-TemplateVersion() ::= <<1.0.4>>
+TemplateVersion() ::= <<1.0.5>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(repository) ::= <<
 $! 
@@ -58,20 +58,20 @@ $repository.Classes:{class|             $class.SingularName$ = Meta$class.Singul
 	{
 		public void Extend()
 		{
-			$repository.SortedAssemblies:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
+			$repository.SortedDomains:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
 		}
 
-$repository.SortedAssemblies:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
+$repository.SortedDomains:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
 	}
 
 	public partial class MetaClass 
 	{
 		public void Extend()
 		{
-			$repository.SortedAssemblies:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
+			$repository.SortedDomains:{assembly|this.$assembly.Name$Extend();}; separator="\n"$
 		}
 
-$repository.SortedAssemblies:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
+$repository.SortedDomains:{assembly|        internal virtual void $assembly.Name$Extend() {\}}; separator="\n"$
 	}
 }
 >>
@@ -90,12 +90,12 @@ namespace Allors.Meta
 
 		internal void BuildDomains()
 		{
-$repository.Assemblies:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
+$repository.Domains:{assembly|             Meta$assembly.Name$.Instance = new Meta$assembly.Name$(this.metaPopulation);}; separator="\n"$
 		}
 
 		internal void BuildDomainInheritances()
 		{
-$repository.Assemblies:{assembly|$domain_inheritance(assembly)$}; separator="\n"$
+$repository.Domains:{domain|$domain_inheritance(domain)$}; separator="\n"$
 		}
 
 		internal void BuildUnits()
@@ -166,7 +166,11 @@ $repository.Composites:{composite|$inheritedMethods(composite)$}; separator="\n"
 }
 >>
 
-domain_inheritance(assembly) ::= <<$assembly.Bases:{base|             Meta$assembly.Name$.Instance.Domain.AddDirectSuperdomain(Meta$base.Name$.Instance.Domain);}; separator="\n"$>>
+domain_inheritance(domain) ::= <<
+$if(domain.Base)$
+			Meta$domain.Name$.Instance.Domain.AddDirectSuperdomain(Meta$domain.base.Name$.Instance.Domain);
+$endif$
+>>
 
 inheritance(composite) ::= <<$composite.ImplementedInterfaces:{implementedInterface|$inheritance_implentedInterface(composite, implementedInterface)$}; separator="\n"$>>
 inheritance_implentedInterface(composite, implementedInterface) ::= <<            new Inheritance(this.metaPopulation){ Subtype = (Composite)Meta$composite.SingularName$.Instance.ObjectType, Supertype = Meta$implementedInterface.SingularName$.Instance.Interface};>>
@@ -226,7 +230,7 @@ inherited_association(property) ::= <<            Meta$composite.SingularName$.I
 domains(repository) ::= <<
 namespace Allors.Meta
 {
-$repository.Assemblies:{assembly|$domain(assembly)$}; separator="\n\n"$
+$repository.Domains:{assembly|$domain(assembly)$}; separator="\n\n"$
 }
 >>
 

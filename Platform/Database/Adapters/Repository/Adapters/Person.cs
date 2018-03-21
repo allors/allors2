@@ -1,6 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
     using Attributes;
 
     #region Allors
@@ -22,6 +21,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         #endregion
         public Person NextPerson { get; set; }
+
         #region Allors
         [Id("6cc83cb8-cb94-4716-bb7d-e25201f06b20")]
         [AssociationId("1074f507-e2d7-4b5f-8170-f7ca54a946c8")]
@@ -31,9 +31,10 @@ namespace Allors.Repository
         #endregion
         public Company Company { get; set; }
 
-
         #region inherited methods
+        public void InheritedDoIt()
+        {
+        }
         #endregion
-
     }
 }

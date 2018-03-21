@@ -27,9 +27,7 @@ namespace Allors.Repository
         #endregion
         public string From { get; set; }
 
-
         #region inherited methods
         #endregion
-
     }
 }

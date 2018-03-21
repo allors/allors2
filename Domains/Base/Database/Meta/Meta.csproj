@@ -5,11 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\Core\Database\Meta\Core\**\*.cs" />
+    <Compile Include="..\..\..\Core\Database\Meta\Export\**\*.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="generated\" />
   </ItemGroup>
 
 </Project>

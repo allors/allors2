@@ -25,14 +25,12 @@ namespace Allors.Repository.Domain
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Repository.Attributes;
-
     public abstract class Composite : Type
     {
         private readonly Inflector.Inflector inflector;
 
-        protected Composite(Inflector.Inflector inflector, string name)
-            : base(name)
+        protected Composite(Inflector.Inflector inflector, Guid id, string name)
+            : base(id, name)
         {
             this.inflector = inflector;
             this.AttributeByName = new Dictionary<string, Attribute>();
@@ -50,14 +48,12 @@ namespace Allors.Repository.Domain
         {
             get
             {
-                Attribute attribute;
-                return this.AttributeByName.TryGetValue("Plural", out attribute) ? ((PluralAttribute)attribute).Value : this.inflector.Pluralize(this.SingularName);
+                dynamic attribute = this.AttributeByName.Get("Plural");
+                return attribute != null ? attribute.Value : this.inflector.Pluralize(this.SingularName);
             }
         }
 
         public abstract IEnumerable<Interface> Interfaces { get; }
-
-        public override string Id => ((IdAttribute)this.AttributeByName.Get(AttributeNames.Id))?.Value;
 
         public Dictionary<string, Attribute> AttributeByName { get; }
 

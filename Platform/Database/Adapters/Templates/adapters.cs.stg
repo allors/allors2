@@ -2,7 +2,7 @@ delimiters "$", "$"
 
 TemplateId() ::= <<17ED40F8-BDF8-4A7C-9AE9-1C4D2AD6BA2B>>
 TemplateName() ::= <<C# Adapters>>
-TemplateVersion() ::= <<1.0.79>>
+TemplateVersion() ::= <<1.0.80>>
 TemplateAllors() ::= <<1.0>>
 TemplateConfiguration(meta, grp) ::= <<
 $!
@@ -366,7 +366,7 @@ $else$
 		}
 	}
 
-$methodType.ObjectType.LeafClasses:{class|$methodTypeLeafClass()$}$
+$methodType.ObjectType.Classes:{class|$methodTypeLeafClass()$}$
 $endif$
 }
 >>

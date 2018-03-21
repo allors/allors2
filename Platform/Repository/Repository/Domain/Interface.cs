@@ -21,14 +21,15 @@
 
 namespace Allors.Repository.Domain
 {
+    using System;
     using System.Collections.Generic;
 
     public class Interface : Composite
     {
-        public Interface(Inflector.Inflector inflector, string name)
-            : base(inflector, name)
+        public Interface(Inflector.Inflector inflector, Guid id, string name)
+            : base(inflector, id, name)
         {
-            this.PartialByAssemblyName = new Dictionary<string, PartialInterface>();
+            this.PartialByDomainName = new Dictionary<string, PartialInterface>();
             this.InheritedPropertyByRoleName = new Dictionary<string, Property>();
         }
 
@@ -55,7 +56,7 @@ namespace Allors.Repository.Domain
             }
         }
 
-        public Dictionary<string, PartialInterface> PartialByAssemblyName { get; }
+        public Dictionary<string, PartialInterface> PartialByDomainName { get; }
 
         public Dictionary<string, Property> InheritedPropertyByRoleName { get; }
 
@@ -68,8 +69,7 @@ namespace Allors.Repository.Domain
 
         public Property GetImplementedProperty(Property property)
         {
-            Property implementedProperty;
-            if (this.PropertyByRoleName.TryGetValue(property.RoleName, out implementedProperty))
+            if (this.PropertyByRoleName.TryGetValue(property.RoleName, out var implementedProperty))
             {
                 return implementedProperty;
             }

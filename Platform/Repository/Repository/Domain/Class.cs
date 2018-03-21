@@ -21,17 +21,18 @@
 
 namespace Allors.Repository.Domain
 {
+    using System;
     using System.Collections.Generic;
 
     public class Class : Composite
     {
-        public Class(Inflector.Inflector inflector, string name)
-            : base(inflector, name)
+        public Class(Inflector.Inflector inflector, Guid id, string name)
+            : base(inflector, id, name)
         {
-            this.PartialByAssemblyName = new Dictionary<string, PartialClass>();
+            this.PartialByDomainName = new Dictionary<string, PartialClass>();
         }
 
-        public Dictionary<string, PartialClass> PartialByAssemblyName { get; }
+        public Dictionary<string, PartialClass> PartialByDomainName { get; }
 
         public override IEnumerable<Interface> Interfaces
         {

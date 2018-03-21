@@ -25,11 +25,9 @@ namespace Allors.Repository.Domain
 
     public class Unit : Type
     {
-        public Unit(string name, Guid id)
-            : base(name)
+        public Unit(Guid id, string name)
+            : base(id, name)
         {
         }
-
-        public override string Id { get; }
     }
 }
