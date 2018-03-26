@@ -113,8 +113,9 @@ export class InvoiceItemEditComponent
 
         return this.scope.load("Pull", new PullRequest({ fetch, query }));
       })
-      .subscribe(
-        (loaded) => {
+      .subscribe((loaded) => {
+          this.scope.session.reset();
+
           this.invoice = loaded.objects.salesInvoice as SalesInvoice;
           this.invoiceItem = loaded.objects.invoiceItem as SalesInvoiceItem;
           this.orderItem = loaded.objects.orderItem as SalesOrderItem;
@@ -191,6 +192,18 @@ export class InvoiceItemEditComponent
         this.errorService.dialog(error);
       },
     );
+  }
+
+  public update(): void {
+
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 
   public refresh(): void {

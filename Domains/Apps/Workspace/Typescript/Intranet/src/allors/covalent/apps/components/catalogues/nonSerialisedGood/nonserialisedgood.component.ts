@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, ProductCategory, ProductFeature, ProductType, Singleton, VarianceReason, VatRate, VendorProduct } from "../../../../../domain";
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -33,6 +33,9 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public productTypes: ProductType[];
   public manufacturers: Organisation[];
   public suppliers: Organisation[];
+  public activeSuppliers: Organisation[];
+  public selectedSuppliers: Organisation[];
+  public supplierOfferings: SupplierOffering[];
   public brands: Brand[];
   public selectedBrand: Brand;
   public models: Model[];
@@ -108,6 +111,11 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             name: "inventoryItems",
             path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
           }),
+          new Fetch({
+            id,
+            name: "supplierOfferings",
+            path: new Path({ step: this.m.Good.SupplierOfferingsWhereProduct }),
+          }),
         ];
 
         const query: Query[] = [
@@ -131,6 +139,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
+            this.suppliers = this.good.SuppliedBy as Organisation[];
+            this.selectedSuppliers = this.suppliers;
             this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
             this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
             this.varianceReasons = loaded.collections.VarianceReasonQuery as VarianceReason[];
@@ -141,7 +151,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             this.locales = loaded.collections.locales as Locale[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
-            this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+            this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === "Non serialised");
@@ -160,6 +170,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
               this.vendorProduct.Product = this.good;
               this.vendorProduct.InternalOrganisation = internalOrganisation;
             } else {
+              this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
               this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
@@ -245,6 +256,39 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       this.inventoryItem.AddInventoryItemVariance(inventoryItemVariance);
     }
 
+    const suppliersToDelete = this.suppliers;
+
+    this.selectedSuppliers.forEach((supplier: Organisation) => {
+      const index = suppliersToDelete.indexOf(supplier);
+      if (index > -1) {
+          suppliersToDelete.splice(index, 1);
+      }
+
+      const now = new Date();
+      const supplierOffering = this.supplierOfferings.find((v) =>
+        v.Supplier === supplier &&
+        v.FromDate <= now &&
+       (v.ThroughDate === null || v.ThroughDate >= now));
+
+      if (supplierOffering === undefined) {
+        this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
+      } else {
+        supplierOffering.ThroughDate = null;
+      }
+    });
+
+    suppliersToDelete.forEach((supplier: Organisation) => {
+      const now = new Date();
+      const supplierOffering = this.supplierOfferings.find((v) =>
+        v.Supplier === supplier &&
+        v.FromDate <= now &&
+       (v.ThroughDate === null || v.ThroughDate >= now));
+
+      if (supplierOffering !== undefined) {
+        supplierOffering.ThroughDate = new Date();
+      }
+    });
+
     this.scope
       .save()
       .subscribe((saved: Saved) => {
@@ -282,5 +326,12 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
+    const supplierOffering = this.scope.session.create("SupplierOffering") as SupplierOffering;
+    supplierOffering.Supplier = supplier;
+    supplierOffering.Product = good;
+    return supplierOffering;
   }
 }

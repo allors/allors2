@@ -111,6 +111,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           .load("Pull", new PullRequest({ fetch, query }));
       })
       .subscribe((loaded) => {
+        this.scope.session.reset();
 
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
@@ -135,7 +136,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           }
 
           if (this.orderItem.InvoiceItemType === this.productItemType) {
-            this.update(this.orderItem.Product);
+            this.refreshInventory(this.orderItem.Product);
           }
 
           if (this.orderItem.DiscountAdjustment) {
@@ -162,7 +163,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public goodSelected(object: any) {
     if (object) {
-      this.update(object as Product);
+      this.refreshInventory(object as Product);
     }
   }
 
@@ -190,6 +191,18 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
       });
   }
 
+  public update(): void {
+
+    this.scope
+      .save()
+      .subscribe((saved: Saved) => {
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
   public refresh(): void {
     this.refresh$.next(new Date());
   }
@@ -198,7 +211,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  private update(product: Product): void {
+  private refreshInventory(product: Product): void {
 
     this.orderItem.InvoiceItemType = this.productItemType;
 

@@ -77,6 +77,10 @@
       <mat-card-actions>
         <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">Edit</button>
         <button *ngIf="!request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">View</button>
+        <button *ngIf="request.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="request.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="request.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
+        <button *ngIf="request.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
         <button *ngIf="request.CanExecuteCreateQuote && request.RequestItems.length > 0" mat-button (click)="createQuote()">Create Quote</button>
       </mat-card-actions>
     </mat-card>

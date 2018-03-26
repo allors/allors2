@@ -71,9 +71,14 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button *ngIf="orderItem.CanWriteQuantityOrdered" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button *ngIf="orderItem.CanWriteQuantityOrdered" mat-button (click)="goBack()" type="button">CANCEL</button>
-      <button *ngIf="!orderItem.CanWriteQuantityOrdered" mat-button (click)="goBack()" type="button">DONE</button>
+        <div class="pad grid-12">
+            <button *ngIf="orderItem.CanWriteQuantityOrdered" class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
+            <button *ngIf="orderItem.CanWriteQuantityOrdered" class="col" mat-button (click)="goBack()" type="button">CANCEL</button>
+            <button *ngIf="!orderItem.CanWriteQuantityOrdered" class="col" mat-button (click)="goBack()" type="button">DONE</button>
+            <div class="grid-right">
+              <button *ngIf="orderItem.CanWriteQuantityOrdered" class="col" mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
+            </div>
+          </div>
     </mat-card-actions>
   </form>
 </td-layout-card-over>

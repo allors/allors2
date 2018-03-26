@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from "../../../../../domain";
 import { Equals, Fetch, Path, PullRequest, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -179,5 +179,145 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
         this.errorService.message(error);
         this.goBack();
       });
+  }
+
+  public submit(): void {
+    const submitFn: () => void = () => {
+      this.scope.invoke(this.request.Submit)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully submitted.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                submitFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            submitFn();
+          }
+        });
+    } else {
+      submitFn();
+    }
+  }
+
+  public cancel(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.request.Cancel)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  public hold(): void {
+    const holdFn: () => void = () => {
+      this.scope.invoke(this.request.Hold)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully held.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                holdFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            holdFn();
+          }
+        });
+    } else {
+      holdFn();
+    }
+  }
+
+  public reject(): void {
+    const rejectFn: () => void = () => {
+      this.scope.invoke(this.request.Reject)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully rejected.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                rejectFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            rejectFn();
+          }
+        });
+    } else {
+      rejectFn();
+    }
   }
 }

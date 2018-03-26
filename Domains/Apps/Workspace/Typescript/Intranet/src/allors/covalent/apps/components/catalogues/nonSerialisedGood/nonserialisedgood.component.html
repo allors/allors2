@@ -33,7 +33,11 @@
               <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
             </mat-select>
           </mat-form-field>
-          <!-- <a-mat-autocomplete class="col" [object]="good" [roleType]="m.Good.SuppliedBy" [filter]="suppliersFilter.create()" display="Name"></a-mat-autocomplete> -->
+          <mat-input-container class="col">
+              <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+                <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+              </mat-select>
+            </mat-input-container>
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
           <a-mat-datepicker class="col" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
         </div>

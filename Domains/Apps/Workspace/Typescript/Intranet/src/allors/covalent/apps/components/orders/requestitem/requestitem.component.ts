@@ -92,6 +92,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
+
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         this.requestItem = loaded.objects.requestItem as RequestItem;
         this.goods = loaded.collections.goods as Good[];
@@ -111,7 +112,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             this.title = "View Request Item";
           }
 
-          this.update(this.requestItem.Product);
+          this.refreshInventory(this.requestItem.Product);
         }
       },
       (error: Error) => {
@@ -123,7 +124,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   public goodSelected(object: any): void {
     if (object) {
-      this.update(object as Product);
+      this.refreshInventory(object as Product);
     }
   }
 
@@ -258,7 +259,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  private update(product: Product): void {
+  private refreshInventory(product: Product): void {
 
     const fetch: Fetch[] = [
       new Fetch({

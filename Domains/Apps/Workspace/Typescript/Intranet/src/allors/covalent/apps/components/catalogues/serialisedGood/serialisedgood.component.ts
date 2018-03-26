@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 import { isType } from "@angular/core/src/type";
 import { forEach } from "@angular/router/src/utils/collection";
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, VatRate, VendorProduct } from "../../../../../domain";
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, SupplierOffering, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -33,6 +33,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public productTypes: ProductType[];
   public manufacturers: Organisation[];
   public suppliers: Organisation[];
+  public activeSuppliers: Organisation[];
+  public selectedSuppliers: Organisation[];
+  public supplierOfferings: SupplierOffering[];
   public brands: Brand[];
   public selectedBrand: Brand;
   public models: Model[];
@@ -121,6 +124,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             name: "invoiceItems",
             path: new Path({ step: this.m.Good.InvoiceItemsWhereProduct }),
           }),
+          new Fetch({
+            id,
+            name: "supplierOfferings",
+            path: new Path({ step: this.m.Good.SupplierOfferingsWhereProduct }),
+          }),
         ];
 
         const query: Query[] = [
@@ -141,8 +149,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded) => {
+            this.scope.session.reset();
 
             this.good = loaded.objects.good as Good;
+            this.suppliers = this.good.SuppliedBy as Organisation[];
+            this.selectedSuppliers = this.suppliers;
             this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
             this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
@@ -153,7 +164,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.locales = loaded.collections.locales as Locale[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
-            this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+            this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
             this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
@@ -174,6 +185,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
               this.vendorProduct.InternalOrganisation = internalOrganisation;
 
             } else {
+              this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
 
@@ -303,5 +315,45 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     if (this.selectedModel != null) {
       this.good.AddStandardFeature(this.selectedModel);
     }
+
+    const suppliersToDelete = this.suppliers;
+
+    this.selectedSuppliers.forEach((supplier: Organisation) => {
+      const index = suppliersToDelete.indexOf(supplier);
+      if (index > -1) {
+          suppliersToDelete.splice(index, 1);
+      }
+
+      const now = new Date();
+      const supplierOffering = this.supplierOfferings.find((v) =>
+        v.Supplier === supplier &&
+        v.FromDate <= now &&
+       (v.ThroughDate === null || v.ThroughDate >= now));
+
+      if (supplierOffering === undefined) {
+        this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
+      } else {
+        supplierOffering.ThroughDate = null;
+      }
+    });
+
+    suppliersToDelete.forEach((supplier: Organisation) => {
+      const now = new Date();
+      const supplierOffering = this.supplierOfferings.find((v) =>
+        v.Supplier === supplier &&
+        v.FromDate <= now &&
+       (v.ThroughDate === null || v.ThroughDate >= now));
+
+      if (supplierOffering !== undefined) {
+        supplierOffering.ThroughDate = new Date();
+      }
+    });
+  }
+
+  private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
+    const supplierOffering = this.scope.session.create("SupplierOffering") as SupplierOffering;
+    supplierOffering.Supplier = supplier;
+    supplierOffering.Product = good;
+    return supplierOffering;
   }
 }
