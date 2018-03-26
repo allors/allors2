@@ -347,10 +347,18 @@ namespace Allors.Domain
 $if(methodType.ObjectType.IsClass)$
 	public partial class $methodType.FullName$ : Allors.Meta.Method
 	{
-	    private static readonly Allors.Meta.MethodInvocation<$objectType_Name(methodType.ObjectType)$> MethodInvocation = new Allors.Meta.MethodInvocation<$objectType_Name(methodType.ObjectType)$>($methodType.ObjectType.Name$.Meta.ObjectType, $objectType_Name(methodType.ObjectType)$.Meta.$methodType.Name$); 
+	    private static readonly Allors.Meta.MethodInvocation $methodType.FullName$Invocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.$methodType.ObjectType.SingularName$.ObjectType, Allors.Meta.M.$methodType.ObjectType.SingularName$.$methodType.Name$); 
 
 		public $methodType.FullName$($objectType_Name(methodType.ObjectType)$ @object) : base(@object)
 		{
+		}
+
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return $methodType.FullName$Invocation;
+			}
 		}
 
 		public override void Execute()
@@ -374,12 +382,20 @@ $endif$
 methodTypeLeafClass() ::= <<
 	public partial class $class.Name$$methodType.Name$ : $methodType.FullName$
 	{
-	    private static readonly Allors.Meta.MethodInvocation<$class.Name$> MethodInvocation = new Allors.Meta.MethodInvocation<$class.Name$>($class.Name$.Meta.ObjectType, $class.name$.Meta.$methodType.Name$); 
+		private static readonly Allors.Meta.MethodInvocation $class.Name$$methodType.Name$MethodInvocation = new Allors.Meta.MethodInvocation(Allors.Meta.M.$class.SingularName$.ObjectType, Allors.Meta.M.$class.SingularName$.$methodType.Name$); 
 
 		public $class.Name$$methodType.Name$($objectType_Name(methodType.ObjectType)$ @object) : base(@object)
 		{
 		}
 
+		public override Allors.Meta.MethodInvocation MethodInvocation
+		{
+			get
+			{
+				return $class.Name$$methodType.Name$MethodInvocation;
+			}
+		}
+	
 		public override void Execute()
 		{
             MethodInvocation.Execute(this);
