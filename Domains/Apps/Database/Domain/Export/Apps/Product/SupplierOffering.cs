@@ -22,6 +22,21 @@ namespace Allors.Domain
 
     public partial class SupplierOffering
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.Product != null)
+            {
+                derivation.AddDependency(this.Product, this);
+            }
+
+            if (this.Part != null)
+            {
+                derivation.AddDependency(this.Part, this);
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

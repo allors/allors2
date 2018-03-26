@@ -29,6 +29,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public RatingType Rating { get; set; }
         
         #region Allors
@@ -36,6 +37,7 @@ namespace Allors.Repository
         [AssociationId("b81877b2-f7cd-4951-b02e-e60722ca0d72")]
         [RoleId("80326eaa-5546-490e-b433-9ff57f42f85e")]
         #endregion
+        [Workspace]
         public int StandardLeadTime { get; set; }
         
         #region Allors
@@ -45,6 +47,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
+        [Workspace]
         public ProductPurchasePrice[] ProductPurchasePrices { get; set; }
         
         #region Allors
@@ -54,6 +57,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Ordinal Preference { get; set; }
         
         #region Allors
@@ -63,6 +67,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal MinimalOrderQuantity { get; set; }
         
         #region Allors
@@ -72,6 +77,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Product Product { get; set; }
         
         #region Allors
@@ -82,6 +88,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public Party Supplier { get; set; }
         
         #region Allors
@@ -99,6 +106,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Part Part { get; set; }
         
         #region inherited methods

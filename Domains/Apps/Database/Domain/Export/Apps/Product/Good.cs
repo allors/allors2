@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -89,7 +90,18 @@ namespace Allors.Domain
                 this.AddProductCategory(this.PrimaryProductCategory);
             }
 
-            this.SuppliedBy = this.SupplierOfferingsWhereProduct.Select(v => v.Supplier).ToArray();
+            foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWhereProduct)
+            {
+                if (supplierOffering.FromDate <= DateTime.UtcNow && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
+                {
+                    this.AddSuppliedBy(supplierOffering.Supplier);
+                }
+
+                if (supplierOffering.FromDate > DateTime.UtcNow || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < DateTime.UtcNow))
+                {
+                    this.RemoveSuppliedBy(supplierOffering.Supplier);
+                }
+            }
 
             this.DeriveVirtualProductPriceComponent();
             this.DeriveProductCategoriesExpanded(derivation);
