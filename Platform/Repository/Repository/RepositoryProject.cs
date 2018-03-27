@@ -55,7 +55,7 @@ namespace Allors.Repository.Roslyn
             this.Project = project;
             this.Solution = project.Solution;
             var compilation = project.GetCompilationAsync().Result;
-            compilation = compilation.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
+            //compilation = compilation.AddReferences(MetadataReference.CreateFromFile(typeof(object).Assembly.Location));
             this.Compilation = compilation;
 
             this.SemanticModelBySyntaxTree = this.Compilation.SyntaxTrees.ToDictionary(v => v, v => this.Compilation.GetSemanticModel(v));
