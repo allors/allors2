@@ -596,10 +596,10 @@ namespace Allors.Domain
             var invoiceFromOrder = true;
             foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
             {
-                salesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
                 salesInvoiceItem.AppsOnDeriveVatRegime(derivation);
                 salesInvoiceItem.AppsOnDeriveSalesRep(derivation);
                 salesInvoiceItem.AppsOnDeriveCurrentObjectState(derivation);
+                salesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
 
                 if (!salesInvoiceItem.ExistShipmentItemWhereInvoiceItem)
                 {

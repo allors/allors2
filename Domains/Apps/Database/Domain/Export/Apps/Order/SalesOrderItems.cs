@@ -31,7 +31,6 @@ namespace Allors.Domain
         {
             base.AppsSecure(config);
 
-            var created = new SalesOrderItemStates(this.Session).Created;
             var partiallyShipped = new SalesOrderItemShipmentStates(this.Session).PartiallyShipped;
             var shipped = new SalesOrderItemShipmentStates(this.Session).Shipped;
             var inProcess = new SalesOrderItemStates(this.Session).InProcess;
@@ -48,9 +47,9 @@ namespace Allors.Domain
             var reject = this.Meta.Reject;
             var delete = this.Meta.Delete;
 
-            config.Deny(this.ObjectType, created, cancel, reject);
             config.Deny(this.ObjectType, partiallyShipped, delete, cancel, reject);
             config.Deny(this.ObjectType, shipped, delete, cancel, reject);
+            config.Deny(this.ObjectType, completed, delete, cancel, reject);
             config.Deny(this.ObjectType, inProcess, delete);
 
             config.Deny(this.ObjectType, cancelled, Operations.Execute, Operations.Write);

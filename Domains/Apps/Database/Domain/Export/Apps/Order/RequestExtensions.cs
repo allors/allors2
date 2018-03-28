@@ -21,6 +21,8 @@ namespace Allors.Domain
 {
     using System;
 
+    using Allors.Meta;
+
     public static partial class RequestExtensions
     {
         public static void AppsOnDerive(this Request @this, ObjectOnDerive method)

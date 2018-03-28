@@ -42,6 +42,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   public rolesText: string;
   private customerRole: PersonRole;
   private employeeRole: PersonRole;
+  private contactRole: PersonRole;
   private isActiveCustomer: boolean;
   private isActiveEmployee: boolean;
 
@@ -230,6 +231,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.roles = loaded.collections.PersonRoleQuery as PersonRole[];
         this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
         this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "DB06A3E1-6146-4C18-A60D-DD10E19F7243");
+        this.contactRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E");
 
         this.activeRoles = [];
         this.rolesText = "";
@@ -241,6 +243,10 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         if (this.internalOrganisation.ActiveEmployees.includes(this.person)) {
           this.isActiveEmployee = true;
           this.activeRoles.push(this.employeeRole);
+        }
+
+        if (this.organisation !== null) {
+          this.activeRoles.push(this.contactRole);
         }
 
         if (this.activeRoles.length > 0) {

@@ -42,9 +42,9 @@ namespace Allors.Domain
             var sendId = this.Meta.Send;
             var cancelInvoiceId = this.Meta.CancelInvoice;
 
-            config.Deny(this.ObjectType, sent, sendId, cancelInvoiceId);
             config.Deny(this.ObjectType, partiallyPaid, sendId, cancelInvoiceId);
 
+            config.Deny(this.ObjectType, sent, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, paid, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);
             config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);

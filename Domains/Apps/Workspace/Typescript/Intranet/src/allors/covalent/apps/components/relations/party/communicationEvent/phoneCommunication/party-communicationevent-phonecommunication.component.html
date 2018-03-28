@@ -1,6 +1,5 @@
 <td-layout-card-over [cardTitle]="title" [cardSubtitle]="subTitle">
-  <form #form="ngForm" class="pad" *ngIf="communicationEvent" (submit)="save()">
-
+  <form #form="ngForm" *ngIf="communicationEvent" class="pad" (submit)="save()">
     <div class="grid-2_md-1" *ngIf="!communicationEvent.isNew">
       <div class="col">
         <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>

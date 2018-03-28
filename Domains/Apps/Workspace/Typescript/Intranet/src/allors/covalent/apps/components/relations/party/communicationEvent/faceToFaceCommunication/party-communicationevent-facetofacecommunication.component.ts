@@ -95,7 +95,16 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
             id: internalOrganisationId,
             include: [
               new TreeNode({
-                roleType: m.InternalOrganisation.ActiveEmployees }),
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                    ],
+                    roleType: m.Party.CurrentPartyContactMechanisms,
+                  }),
+                ],
+                roleType: m.InternalOrganisation.ActiveEmployees,
+              }),
             ],
             name: "internalOrganisation",
           }),
@@ -116,11 +125,10 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
         this.scope.session.reset();
 
-        this.party = loaded.objects.party as Party;
-        this.singleton = loaded.collections.singletons[0] as Singleton;
-        const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
+        this.party = loaded.objects.party as Party;
         this.communicationEvent = loaded.objects.communicationEvent as FaceToFaceCommunication;
 
         if (!this.communicationEvent) {

@@ -92,6 +92,8 @@ namespace Allors.Repository
 
         public void Reject() { }
 
+        public void Cancel() { }
+
         #endregion
 
         #region Allors

@@ -65,7 +65,11 @@
       <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id]">Edit</button>
-        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
+        <button *ngIf="!invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id]">View</button>
+        <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
+        <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
+      <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
       </mat-card-actions>
     </mat-card>
 
@@ -82,10 +86,10 @@
             <ng-template let-invoiceItem let-last="last" ngFor [ngForOf]="invoice.SalesInvoiceItems">
               <mat-list-item>
                 <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
-                <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
+                <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
 
                 <h3 *ngIf="!invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.InvoiceItemType.Name}}</h3>
-                <h3 *ngIf="!invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line>{{invoiceItem.InvoiceItemType.Name}}</h3>
+                <h3 *ngIf="!invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.InvoiceItemType.Name}}</h3>
 
                 <h4 mat-line>Total ex VAT: {{invoiceItem.TotalExVat}}</h4>
 
@@ -95,6 +99,7 @@
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
                     <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="!invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>View</a>
                     <button mat-menu-item (click)="deleteInvoiceItem(invoiceItem)" [disabled]="!invoiceItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>

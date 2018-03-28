@@ -179,6 +179,105 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
+  public approve(): void {
+      this.scope.invoke(this.order.Approve)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully approved.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+  }
+
+  public cancel(): void {
+    this.scope.invoke(this.order.Reject)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public reject(): void {
+    this.scope.invoke(this.order.Reject)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully rejected.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public hold(): void {
+    this.scope.invoke(this.order.Hold)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully put on hold.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public continue(): void {
+    this.scope.invoke(this.order.Continue)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully removed from hold.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public confirm(): void {
+    this.scope.invoke(this.order.Confirm)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully confirmed.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public finish(): void {
+    this.scope.invoke(this.order.Continue)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully finished.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public cancelOrderItem(orderItem: SalesOrderItem): void {
+    this.scope.invoke(orderItem.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.snackBar.open("Order Item successfully cancelled.", "close", { duration: 5000 });
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public rejectOrderItem(orderItem: SalesOrderItem): void {
+    this.scope.invoke(orderItem.Reject)
+      .subscribe((invoked: Invoked) => {
+        this.snackBar.open("Order Item successfully rejected.", "close", { duration: 5000 });
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
   public deleteOrderItem(orderItem: SalesOrderItem): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this item?" })

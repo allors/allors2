@@ -134,41 +134,6 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public submit(): void {
-    const submitFn: () => void = () => {
-      this.scope.invoke(this.requestItem.Submit)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully submitted.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                submitFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            submitFn();
-          }
-        });
-    } else {
-      submitFn();
-    }
-  }
-
   public cancel(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.requestItem.Cancel)
@@ -201,41 +166,6 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         });
     } else {
       cancelFn();
-    }
-  }
-
-  public hold(): void {
-    const holdFn: () => void = () => {
-      this.scope.invoke(this.requestItem.Hold)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully held.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                holdFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            holdFn();
-          }
-        });
-    } else {
-      holdFn();
     }
   }
 

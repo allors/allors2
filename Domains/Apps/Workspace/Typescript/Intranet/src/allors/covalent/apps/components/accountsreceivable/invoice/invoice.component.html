@@ -25,7 +25,7 @@
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="billToContactMechanisms"
             display="displayName"></a-mat-select>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer" type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
+          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
             <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
             <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
           </button>
@@ -47,7 +47,7 @@
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" [options]="billToEndCustomerContactMechanisms"
             display="displayName"></a-mat-select>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer" type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
+          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
             <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
             <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
           </button>
@@ -69,7 +69,7 @@
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToContactMechanisms"
             display="displayName"></a-mat-select>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer" type="button" (click)="addShipToCustomerContactMechanism = !addShipToCustomerContactMechanism">
+          <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button" (click)="addShipToCustomerContactMechanism = !addShipToCustomerContactMechanism">
             <mat-icon *ngIf="!addShipToCustomerContactMechanism">add</mat-icon>
             <mat-icon *ngIf="addShipToCustomerContactMechanism">close</mat-icon>
           </button>
@@ -86,7 +86,7 @@
 
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson" [options]="billToContacts" display="displayName"></a-mat-select>
-          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer" type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
+          <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
             <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
             <mat-icon *ngIf="addBillToContactPerson">close</mat-icon>
           </button>
@@ -128,8 +128,9 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="!invoice.CanWriteSalesInvoiceItems" mat-button (click)="goBack()" type="button">DONE</button>
     </mat-card-actions>
 
   </form>

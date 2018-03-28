@@ -15,8 +15,17 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     public partial class Parties
     {
+        protected override void AppsPrepare(Setup setup)
+        {
+            base.AppsPrepare(setup);
+
+            setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose);
+        }
+
         public static void AppsOnDeriveRevenues(ISession session)
         {
             foreach (Party party in session.Extent<Party>())

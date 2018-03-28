@@ -112,9 +112,20 @@ namespace Allors.Domain
         public static CustomerShipment AppsGetPendingCustomerShipmentForStore(this Party party, PostalAddress address, Store store, ShipmentMethod shipmentMethod)
         {
             var shipments = party.ShipmentsWhereShipToParty;
-            shipments.Filter.AddEquals(M.Shipment.ShipToAddress, address);
-            shipments.Filter.AddEquals(M.Shipment.Store, store);
-            shipments.Filter.AddEquals(M.Shipment.ShipmentMethod, shipmentMethod);
+            if (address != null)
+            {
+                shipments.Filter.AddEquals(M.Shipment.ShipToAddress, address);
+            }
+
+            if (store != null)
+            {
+                shipments.Filter.AddEquals(M.Shipment.Store, store);
+            }
+
+            if (shipmentMethod != null)
+            {
+                shipments.Filter.AddEquals(M.Shipment.ShipmentMethod, shipmentMethod);
+            }
 
             foreach (CustomerShipment shipment in shipments)
             {

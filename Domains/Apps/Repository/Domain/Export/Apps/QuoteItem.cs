@@ -244,5 +244,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Submit() { }
+
+        #region Allors
+        [Id("BE5F50FE-4524-486C-8D3D-66AB32B27C7B")]
+        #endregion
+        [Workspace]
+        public void Reject() { }
     }
 }

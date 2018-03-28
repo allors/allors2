@@ -75,6 +75,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.QuoteItem.Product }),
+                  new TreeNode({ roleType: m.QuoteItem.QuoteItemState }),
                 ],
                 roleType: m.Quote.QuoteItems,
               }),
@@ -144,21 +145,25 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
-  public deleteQuoteItem(quoteItem: QuoteItem): void {
-    this.dialogService
-      .openConfirm({ message: "Are you sure you want to delete this item?" })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(quoteItem.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.dialog(error);
-            });
-        }
+  public approve(): void {
+    this.scope.invoke(this.quote.Approve)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully approved.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public reject(): void {
+    this.scope.invoke(this.quote.Reject)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully rejected.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
       });
   }
 
@@ -171,6 +176,35 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
       },
       (error: Error) => {
         this.errorService.dialog(error);
+      });
+  }
+
+  public cancelQuoteItem(quoteItem: QuoteItem): void {
+    this.scope.invoke(quoteItem.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.snackBar.open("Quote Item successfully cancelled.", "close", { duration: 5000 });
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public deleteQuoteItem(quoteItem: QuoteItem): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this item?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(quoteItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Quote Item successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
       });
   }
 

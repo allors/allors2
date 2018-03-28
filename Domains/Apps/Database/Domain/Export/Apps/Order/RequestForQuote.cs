@@ -30,6 +30,14 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (!this.ExistOriginator)
+            {
+                this.AddDeniedPermission(new Permissions(this.Strategy.Session).Get(this.Meta.Class, this.Meta.Submit, Operations.Execute));
+            }
+        }
+
         private ProductQuote QuoteThis()
         {
             var productQuote = new ProductQuoteBuilder(this.Strategy.Session)

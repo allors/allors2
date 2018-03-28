@@ -95,7 +95,16 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
             id: internalOrganisationId,
             include: [
               new TreeNode({
-                roleType: m.InternalOrganisation.ActiveEmployees }),
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
+                    ],
+                    roleType: m.Party.CurrentPartyContactMechanisms,
+                  }),
+                ],
+                roleType: m.InternalOrganisation.ActiveEmployees,
+              }),
             ],
             name: "internalOrganisation",
           }),
@@ -116,7 +125,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
         this.scope.session.reset();
 
-        const internalOrganisation = loaded.objects.internalOrganisationId as InternalOrganisation;
+        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
         this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
         this.party = loaded.objects.party as Party;

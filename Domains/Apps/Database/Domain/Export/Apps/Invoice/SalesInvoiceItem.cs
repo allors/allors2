@@ -105,6 +105,11 @@ namespace Allors.Domain
             this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Cancelled;
         }
 
+        public void AppsSend(IDerivation derivation)
+        {
+            this.SalesInvoiceItemState = new SalesInvoiceItemStates(this.Strategy.Session).Sent;
+        }
+
         public void AppsPaymentReceived(IDerivation derivation)
         {
             if (this.AmountPaid < this.TotalIncVat)
@@ -156,6 +161,11 @@ namespace Allors.Domain
                 if (invoice.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).WrittenOff))
                 {
                     this.AppsWriteOff(derivation);
+                }
+
+                if (invoice.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Sent))
+                {
+                    this.AppsSend(derivation);
                 }
             }
         }

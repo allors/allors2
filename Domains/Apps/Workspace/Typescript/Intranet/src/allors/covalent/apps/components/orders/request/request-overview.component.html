@@ -97,16 +97,17 @@
 
             <ng-template let-requestItem let-last="last" ngFor [ngForOf]="request.RequestItems">
               <mat-list-item>
-                <h3 *ngIf="requestItem.Product" mat-line [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">{{requestItem.Quantity}} * {{requestItem.Product.Name}}</h3>
+                <h3 *ngIf="requestItem.Product" mat-line [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">{{requestItem.Quantity}} * {{requestItem.Product.Name}} ({{requestItem.RequestItemState.Name}})</h3>
                 <h4 *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" mat-line>{{ serialisedInventoryItem.ExpectedSalesPrice }}</h4>
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="request.CanWriteRequestItems" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="!request.CanWriteRequestItems" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>View</a>
-                    <button mat-menu-item (click)="deleteRequestItem(requestItem)" [disabled]="!requestItem.CanExecuteDelete">Delete</button>
+                    <a *ngIf="request.CanWriteRequestItems && requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="!request.CanWriteRequestItems || !requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>View</a>
+                    <button [disabled]="!requestItem.CanExecuteCancel" mat-menu-item (click)="cancelRequestItem(requestItem)">Cancel</button>
+                    <button [disabled]="!requestItem.CanExecuteDelete" mat-menu-item (click)="deleteRequestItem(requestItem)" >Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>

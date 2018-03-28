@@ -144,6 +144,39 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     window.history.back();
   }
 
+  public send(): void {
+    this.scope.invoke(this.invoice.Send)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully sent.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public cancel(): void {
+    this.scope.invoke(this.invoice.CancelInvoice)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public writeOff(): void {
+    this.scope.invoke(this.invoice.WriteOff)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully written off.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
   public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this item?" })

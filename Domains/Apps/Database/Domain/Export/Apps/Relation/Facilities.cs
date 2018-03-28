@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Organisations.cs" company="Allors bvba">
+// <copyright file="Facilities.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,20 +13,15 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
-    public partial class Organisations
+    public partial class Facilities
     {
-        protected override void AppsPrepare(Setup setup)
+        protected override void BasePrepare(Setup config)
         {
-            setup.AddDependency(this.Meta.ObjectType, M.Role);
-            setup.AddDependency(this.Meta.ObjectType, M.OrganisationRole);
-            setup.AddDependency(this.Meta.ObjectType, M.InvoiceSequence);
-            setup.AddDependency(this.Meta.ObjectType, M.Singleton);
-            setup.AddDependency(this.Meta.ObjectType, M.FacilityType);
+            config.AddDependency(this.ObjectType, M.FacilityType);
         }
     }
 }

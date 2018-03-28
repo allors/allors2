@@ -54,10 +54,11 @@
 
     <mat-card-actions>
         <div class="pad grid-12">
-            <button class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
-            <button class="col" mat-button (click)="goBack()" type="button">CANCEL</button>
+            <button *ngIf="invoiceItem.CanWriteQuantity" class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
+            <button *ngIf="invoiceItem.CanWriteQuantity" class="col" mat-button (click)="goBack()" type="button">CANCEL</button>
+            <button *ngIf="!invoiceItem.CanWriteQuantity" class="col" mat-button (click)="goBack()" type="button">DONE</button>
             <div class="grid-right">
-              <button class="col" mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
+              <button *ngIf="invoiceItem.CanWriteQuantity" class="col" mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
             </div>
           </div>
         </mat-card-actions>

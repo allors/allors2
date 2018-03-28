@@ -209,5 +209,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Reject();
+
+        #region Allors
+        [Id("712D9F73-0D39-4F25-9CD3-6D8BE6F8AEC8")]
+        #endregion
+        [Workspace]
+        void Cancel();
     }
 }

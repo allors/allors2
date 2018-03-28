@@ -19,8 +19,8 @@
       <mat-card-content>
         <div class="pad">
           <div class="grid-2_xs-1">
-            <div class="col pointer" *ngIf="organisation" [routerLink]="['/relations/organisation/' + organisation.id]">
-              <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"></a-mat-static>
+            <div class="col" *ngIf="organisation">
+              <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
             </div>
             <mat-input-container class="col">
               <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true" />

@@ -82,7 +82,10 @@
       <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="quote.CanWriteQuoteItems" mat-button [routerLink]="['/productQuote/' + quote.id]">Edit</button>
+        <button *ngIf="!quote.CanWriteQuoteItems" mat-button [routerLink]="['/productQuote/' + quote.id]">View</button>
         <button mat-button [routerLink]="['/printproductquote/' + quote.id ]">Print</button>
+        <button *ngIf="quote.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
+        <button *ngIf="quote.CanExecuteReject" mat-button (click)="reject()">Reject</button>
         <button *ngIf="quote.CanExecuteOrder" mat-button (click)="Order()">Create Sales Order</button>
       </mat-card-actions>
     </mat-card>
@@ -99,15 +102,16 @@
 
             <ng-template let-quoteItem let-last="last" ngFor [ngForOf]="quote.QuoteItems">
               <mat-list-item>
-                <h3 *ngIf="quoteItem.Product && quote.CanWriteQuoteItems" mat-line [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]">{{quoteItem.Quantity}} * {{quoteItem.Product.Name}}</h3>
-                <h3 *ngIf="quoteItem.Product && !quote.CanWriteQuoteItems" mat-line>{{quoteItem.Quantity}} * {{quoteItem.Product.Name}}</h3>
+                <h3 *ngIf="quoteItem.Product" mat-line [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]">{{quoteItem.Quantity}} * {{quoteItem.Product.Name}} ({{quoteItem.QuoteItemState.Name}})</h3>
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="quote.CanWriteQuoteItems" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]" mat-menu-item>Edit</a>
-                    <button mat-menu-item (click)="deletequoteItem(quoteItem)" [disabled]="!quoteItem.CanExecuteDelete">Delete</button>
+                    <a *ngIf="quote.CanWriteQuoteItems && quoteItem.CanWriteQuantity" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="!quote.CanWriteQuoteItems || !quoteItem.CanWriteQuantity" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]" mat-menu-item>View</a>
+                    <button [disabled]="!quoteItem.CanExecuteCancel" mat-menu-item (click)="cancelQuoteItem(quoteItem)">Cancel</button>
+                    <button [disabled]="!quoteItem.CanExecuteDelete" mat-menu-item (click)="deleteQuoteItem(quoteItem)" >Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>

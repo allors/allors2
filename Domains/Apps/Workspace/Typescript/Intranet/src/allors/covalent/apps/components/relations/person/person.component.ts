@@ -8,8 +8,8 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Person, PersonRole } from "../../../../../domain";
-import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactRelationship, Person, PersonRole } from "../../../../../domain";
+import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 import { Fetcher } from "../../Fetcher";
@@ -26,6 +26,9 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   public internalOrganisation: InternalOrganisation;
   public person: Person;
+  public organisation: Organisation;
+  public organisations: Organisation[];
+  public organisationContactRelationship: OrganisationContactRelationship;
 
   public locales: Locale[];
   public genders: Enumeration[];
@@ -79,6 +82,11 @@ export class PersonComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.Person.Picture }),
             ],
             name: "person",
+          }),
+          new Fetch({
+            id,
+            name: "organisationContactRelationships",
+            path: new Path({ step: this.m.Person.OrganisationContactRelationshipsWhereContact }),
           }),
         ];
 
@@ -143,40 +151,62 @@ export class PersonComponent implements OnInit, OnDestroy {
         }
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetch, query }))
+          .switchMap((loaded) => {
+            this.scope.session.reset();
+
+            this.subTitle = "edit person";
+            this.person = loaded.objects.person as Person;
+            this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+
+            if (this.person) {
+              this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
+              this.employment = loaded.collections.employments[0] as Employment;
+            } else {
+              this.subTitle = "add a new person";
+              this.person = this.scope.session.create("Person") as Person;
+            }
+
+            this.locales = loaded.collections.locales as Locale[];
+            this.genders = loaded.collections.genders as Enumeration[];
+            this.salutations = loaded.collections.salutations as Enumeration[];
+            this.roles = loaded.collections.roles as PersonRole[];
+
+            if (loaded.collections.organisationContactRelationships !== undefined) {
+              this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;
+            }
+
+            this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
+            this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "DB06A3E1-6146-4C18-A60D-DD10E19F7243");
+            this.selectableRoles.push(this.customerRole);
+            this.selectableRoles.push(this.employeeRole);
+
+            if (this.internalOrganisation.ActiveCustomers.includes(this.person)) {
+              this.isActiveCustomer = true;
+              this.activeRoles.push(this.customerRole);
+            }
+
+            if (this.internalOrganisation.ActiveEmployees.includes(this.person)) {
+              this.isActiveEmployee = true;
+              this.activeRoles.push(this.employeeRole);
+            }
+
+            const organisationQuery: Query[] = [];
+            if (this.organisationContactRelationship === undefined) {
+              organisationQuery.push(
+                new Query(
+                  {
+                    name: "organisations",
+                    objectType: m.Organisation,
+                    sort: [new Sort({ roleType: m.Organisation.Name, direction: "Asc" })],
+                  }),
+              );
+            }
+            return this.scope.load("Pull", new PullRequest({ query: organisationQuery }));
+          });
       })
       .subscribe((loaded) => {
-
-        this.subTitle = "edit person";
-        this.person = loaded.objects.person as Person;
-        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-
-        if (this.person) {
-          this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
-          this.employment = loaded.collections.employments[0] as Employment;
-        } else {
-          this.subTitle = "add a new person";
-          this.person = this.scope.session.create("Person") as Person;
-        }
-
-        this.locales = loaded.collections.locales as Locale[];
-        this.genders = loaded.collections.genders as Enumeration[];
-        this.salutations = loaded.collections.salutations as Enumeration[];
-        this.roles = loaded.collections.roles as PersonRole[];
-        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
-        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "DB06A3E1-6146-4C18-A60D-DD10E19F7243");
-        this.selectableRoles.push(this.customerRole);
-        this.selectableRoles.push(this.employeeRole);
-
-        if (this.internalOrganisation.ActiveCustomers.includes(this.person)) {
-          this.isActiveCustomer = true;
-          this.activeRoles.push(this.customerRole);
-        }
-
-        if (this.internalOrganisation.ActiveEmployees.includes(this.person)) {
-          this.isActiveEmployee = true;
-          this.activeRoles.push(this.employeeRole);
-        }
+        this.organisations = loaded.collections.organisations as Organisation[];
       },
       (error: any) => {
          this.errorService.message(error);
@@ -219,6 +249,12 @@ export class PersonComponent implements OnInit, OnDestroy {
 
     if (this.activeRoles.indexOf(this.employeeRole) === -1 && this.isActiveEmployee) {
       this.employment.ThroughDate = new Date();
+    }
+
+    if (this.organisationContactRelationship === undefined && this.organisation !== null) {
+      const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+      organisationContactRelationship.Contact = this.person;
+      organisationContactRelationship.Organisation = this.organisation;
     }
 
     this.scope

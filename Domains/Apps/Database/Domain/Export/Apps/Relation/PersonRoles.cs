@@ -55,7 +55,7 @@ namespace Allors.Domain
                 .Build();
 
             new PersonRoleBuilder(this.Session)
-                .WithName("Contact")
+                .WithName("Organisation Contact")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ContactId)
                 .Build();

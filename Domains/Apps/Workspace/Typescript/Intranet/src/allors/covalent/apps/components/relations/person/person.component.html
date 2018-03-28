@@ -8,11 +8,11 @@
           <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
         </mat-select>
       </mat-input-container>
-  </div>
+    </div>
 
     <div class="grid-4_md-2_xs-1">
-    <a-mat-select class="col" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
-    <a-mat-input class="col" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+      <a-mat-select class="col" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
+      <a-mat-input class="col" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
       <a-mat-input class="col" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
       <a-mat-input class="col" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
     </div>
@@ -23,9 +23,17 @@
       <a-mat-select class="col" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
     </div>
 
+    <div *ngIf="!organisationContactRelationship" class="grid">
+      <mat-input-container class="col">
+        <mat-select name="role" [(ngModel)]="organisation" placeholder="Organisations">
+          <mat-option *ngFor="let organisation of organisations" [value]="organisation">{{ organisation.Name }}</mat-option>
+        </mat-select>
+      </mat-input-container>
+    </div>
+
     <div class="grid">
-    <a-mat-textarea class="col" [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
-  </div>
+      <a-mat-textarea class="col" [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
+    </div>
 
     <mat-divider></mat-divider>
 

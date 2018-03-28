@@ -71,6 +71,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({
                 nodes: [
                   new TreeNode({ roleType: m.RequestItem.Product }),
+                  new TreeNode({ roleType: m.RequestItem.RequestItemState }),
                 ],
                 roleType: m.Request.RequestItems,
               }),
@@ -144,24 +145,6 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  public deleteRequestItem(requestItem: RequestItem): void {
-    this.dialogService
-      .openConfirm({ message: "Are you sure you want to delete this item?" })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(requestItem.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.dialog(error);
-            });
-        }
-      });
-  }
-
   public gotoQuote(): void {
 
     const fetch: Fetch[] = [new Fetch({
@@ -182,142 +165,75 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
-    const submitFn: () => void = () => {
-      this.scope.invoke(this.request.Submit)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully submitted.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                submitFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            submitFn();
-          }
-        });
-    } else {
-      submitFn();
-    }
+    this.scope.invoke(this.request.Submit)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully submitted.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 
   public cancel(): void {
-    const cancelFn: () => void = () => {
-      this.scope.invoke(this.request.Cancel)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                cancelFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
+    this.scope.invoke(this.request.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 
   public hold(): void {
-    const holdFn: () => void = () => {
-      this.scope.invoke(this.request.Hold)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully held.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
-
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                holdFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            holdFn();
-          }
-        });
-    } else {
-      holdFn();
-    }
+    this.scope.invoke(this.request.Hold)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully held.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
   }
 
   public reject(): void {
-    const rejectFn: () => void = () => {
-      this.scope.invoke(this.request.Reject)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open("Successfully rejected.", "close", { duration: 5000 });
-        },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
-    };
+    this.scope.invoke(this.request.Reject)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully rejected.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
 
-    if (this.scope.session.hasChanges) {
-      this.dialogService
-        .openConfirm({ message: "Save changes?" })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                rejectFn();
-              },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
-          } else {
-            rejectFn();
-          }
-        });
-    } else {
-      rejectFn();
-    }
+  public cancelRequestItem(requestItem: RequestItem): void {
+    this.scope.invoke(requestItem.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.snackBar.open("Request Item successfully cancelled.", "close", { duration: 5000 });
+        this.refresh();
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
+  public deleteRequestItem(requestItem: RequestItem): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to delete this item?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(requestItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully deleted.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+    });
   }
 }

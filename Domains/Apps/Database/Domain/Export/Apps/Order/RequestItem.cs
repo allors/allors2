@@ -47,6 +47,16 @@ namespace Allors.Domain
             {
                 this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
             }
+
+            if (this.RequestWhereRequestItem.RequestState.Equals(new RequestStates(this.Strategy.Session).Cancelled))
+            {
+                this.Cancel();
+            }
+        }
+
+        public void AppsCancel(RequestItemCancel method)
+        {
+            this.RequestItemState = new RequestItemStates(this.Strategy.Session).Cancelled;
         }
     }
 }

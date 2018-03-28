@@ -32,7 +32,7 @@
           <h3>No people to display.</h3>
         </div>
         <ng-template let-person let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item>
+          <mat-list-item class="cursor-pointer">
 
             <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
             <img *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)"/>

@@ -83,6 +83,12 @@
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button *ngIf="!order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">View</button>
         <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
+        <button *ngIf="order.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
+        <button *ngIf="order.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
+        <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button>
+        <button *ngIf="order.CanExecuteHold" mat-button (click)="hold()">Hold</button>
+        <button *ngIf="order.CanExecuteContinue" mat-button (click)="continue()">Continue</button>
+        <button *ngIf="order.CanExecuteConfirm" mat-button (click)="confirm()">Confirm</button>
         <button *ngIf="order.CanExecuteShip" mat-button (click)="ship()">Ship to customer</button>
         <button *ngIf="order.CanExecuteInvoice && order.ValidOrderItems.length > 0" mat-button (click)="createInvoice()">Create Invoice</button>
       </mat-card-actions>
@@ -100,19 +106,19 @@
 
             <ng-template let-orderItem let-last="last" ngFor [ngForOf]="order.SalesOrderItems">
               <mat-list-item>
-                <h3 *ngIf="orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}}</h3>
-
-                <h3 *ngIf="!orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.ItemType.Name}}</h3>
-
+                <h3 *ngIf="orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
+                <h3 *ngIf="!orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.ItemType.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
                 <h4 mat-line>Total ex VAT: {{orderItem.TotalExVat}}</h4>
-
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
-                    <button mat-menu-item (click)="deleteOrderItem(orderItem)" [disabled]="!orderItem.CanExecuteDelete">Delete</button>
+                    <a *ngIf="order.CanWriteSalesOrderItems && orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="!order.CanWriteSalesOrderItems || !orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>View</a>
+                    <button [disabled]="!orderItem.CanExecuteCancel" mat-menu-item (click)="cancelOrderItem(orderItem)">Cancel</button>
+                    <button [disabled]="!orderItem.CanExecuteReject" mat-menu-item (click)="rejectOrderItem(orderItem)">Reject</button>
+                    <button [disabled]="!orderItem.CanExecuteDelete" mat-menu-item (click)="deleteOrderItem(orderItem)">Delete</button>
                   </mat-menu>
                 </span>
               </mat-list-item>

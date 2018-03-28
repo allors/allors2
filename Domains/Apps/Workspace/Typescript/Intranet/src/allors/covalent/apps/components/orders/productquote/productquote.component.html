@@ -27,7 +27,7 @@
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver" (click)="addContactMechanism = !addContactMechanism">
+            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
@@ -40,7 +40,7 @@
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver" (click)="addContactPerson = !addContactPerson">
+            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>
@@ -86,8 +86,9 @@
     <mat-divider></mat-divider>
 
     <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="quote.CanWriteQuoteItems" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button *ngIf="quote.CanWriteQuoteItems" mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="!quote.CanWriteQuoteItems" mat-button (click)="goBack()" type="button">DONE</button>
     </mat-card-actions>
 
   </form>

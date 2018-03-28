@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -209,6 +209,76 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
+  }
+
+  public cancel(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.orderItem.Cancel)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  public reject(): void {
+    const rejectFn: () => void = () => {
+      this.scope.invoke(this.orderItem.Reject)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully reejcted.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                rejectFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            rejectFn();
+          }
+        });
+    } else {
+      rejectFn();
+    }
   }
 
   private refreshInventory(product: Product): void {
