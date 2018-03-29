@@ -31,5 +31,7 @@ dotnet msbuild Database.sln /target:Database\Generate:Rebuild /p:Configuration="
 dotnet Database\Generate\bin\Debug\netcoreapp2.0\Generate.dll
 dotnet msbuild Database\Resources/Merge.proj /verbosity:minimal
 
+rem dotnet msbuild Database\Resources/Merge.proj /verbosity:minimal
+
 
 
