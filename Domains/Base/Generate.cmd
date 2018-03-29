@@ -10,10 +10,13 @@ rmdir /s /q .\Database\Domain\Generated >nul 2>&1
 @echo Repository
 @echo ==========
 
-dotnet msbuild Repository.sln /target:Clean /verbosity:minimal
+dotnet restore ..\..\Platform\Repository\Repository.sln
+dotnet msbuild ..\..\Platform\Repository\Repository.sln
+
+dotnet restore Repository.sln
 
 cd repository/domain
-dotnet ..\..\..\..\Platform\Repository\dist\Generate.dll repository.csproj ../../../Core/Repository/Templates/meta.cs.stg ../../database/meta/generated
+dotnet ..\..\..\..\Platform\Repository\Generate\bin\Debug\netcoreapp2.0\Generate.dll repository.csproj ../../../Core/Repository/Templates/meta.cs.stg ../../database/meta/generated
 cd ../..
 
 @echo ====================

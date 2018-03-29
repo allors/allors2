@@ -14,7 +14,7 @@
     <PackageReference Include="Buildalyzer.Workspaces" Version="0.3.0" />
     <PackageReference Include="Inflector.NetStandard" Version="1.2.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.4.1" />
-    <PackageReference Include="NLog" Version="4.5.0-rc07" />
+    <PackageReference Include="NLog" Version="4.5.0" />
     <PackageReference Include="StringTemplate4" Version="4.0.8" />
   </ItemGroup>
 
