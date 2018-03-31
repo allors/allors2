@@ -11,7 +11,8 @@ import { DefaultErrorService } from "../allors/covalent";
 import { DefaultStateService } from "../allors/covalent/apps/services/DefaultStateService";
 import { StateService } from "../allors/covalent/apps/services/StateService";
 
-import * as ar from "../allors/covalent/apps/components/ar";
+import * as ap from "../allors/covalent/apps/components/accountspayable";
+import * as ar from "../allors/covalent/apps/components/accountsreceivable";
 import * as catalogues from "../allors/covalent/apps/components/catalogues";
 import * as orders from "../allors/covalent/apps/components/orders";
 import * as relations from "../allors/covalent/apps/components/relations";
@@ -43,6 +44,7 @@ import * as common from "./common";
     relations.Modules,
     orders.Modules,
     catalogues.Modules,
+    ap.modules,
     ar.modules,
     workefforts.Modules,
   ],

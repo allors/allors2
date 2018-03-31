@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 
-import * as ar from "../allors/covalent/apps/components/ar";
+import * as ap from "../allors/covalent/apps/components/accountspayable";
+import * as ar from "../allors/covalent/apps/components/accountsreceivable";
 import * as catalogues from "../allors/covalent/apps/components/catalogues";
 import * as orders from "../allors/covalent/apps/components/orders";
 import * as relations from "../allors/covalent/apps/components/relations";
@@ -191,31 +192,50 @@ export const routes: Routes = [
         ],
       },
 
-      // AR
-      {
-        path: "ar", component: ar.OverviewComponent, data: { type: "module", title: "Accounts Receivable", icon: "dashboard" },
-        children: [
-          { path: "", component: ar.DashboardComponent },
-          { path: "invoices", component: ar.InvoicesOverviewComponent, data: { type: "page", title: "Invoices", icon: "attach_money" } },
-          { path: "invoice/:id", component: ar.InvoiceOverviewComponent },
-        ],
-      },
-      {
-        path: "invoice",
-        children: [
-          { path: "", component: ar.InvoiceComponent },
-          { path: ":id", component: ar.InvoiceComponent },
-          { path: ":id/item", component: ar.InvoiceItemEditComponent },
-          { path: ":id/item/:itemId", component: ar.InvoiceItemEditComponent },
-          { path: ":id/incoterm", component: ar.IncoTermEditComponent },
-          { path: ":id/incoterm/:termId", component: ar.IncoTermEditComponent },
-          { path: ":id/invoiceterm", component: ar.InvoiceTermEditComponent },
-          { path: ":id/invoiceterm/:termId", component: ar.InvoiceTermEditComponent },
-          { path: ":id/orderterm", component: ar.OrderTermEditComponent },
-          { path: ":id/orderterm/:termId", component: ar.OrderTermEditComponent },
-        ],
-      },
+     // Accounts Payable
+     {
+      path: "accountspayable", component: ap.OverviewComponent, data: { type: "module", title: "Accounts Payable", icon: "dashboard" },
+      children: [
+        { path: "", component: ap.DashboardComponent },
+        { path: "invoices", component: ap.InvoicesOverviewComponent, data: { type: "page", title: "Invoices", icon: "attach_money" } },
+        { path: "invoice/:id", component: ap.InvoiceOverviewComponent },
+      ],
+    },
+    {
+      path: "purchaseinvoice",
+      children: [
+        { path: "", component: ap.InvoiceComponent },
+        { path: ":id", component: ap.InvoiceComponent },
+        { path: ":id/item", component: ap.InvoiceItemEditComponent },
+        { path: ":id/item/:itemId", component: ap.InvoiceItemEditComponent },
+      ],
+    },
 
+    // Accounts Receivable
+    {
+      path: "accountsreceivable", component: ar.OverviewComponent, data: { type: "module", title: "Accounts Receivable", icon: "dashboard" },
+      children: [
+        { path: "", component: ar.DashboardComponent },
+        { path: "invoices", component: ar.InvoicesOverviewComponent, data: { type: "page", title: "Invoices", icon: "attach_money" } },
+        { path: "invoice/:id", component: ar.InvoiceOverviewComponent },
+      ],
+    },
+    {
+      path: "salesinvoice",
+      children: [
+        { path: "", component: ar.InvoiceComponent },
+        { path: ":id", component: ar.InvoiceComponent },
+        { path: ":id/item", component: ar.InvoiceItemEditComponent },
+        { path: ":id/item/:itemId", component: ar.InvoiceItemEditComponent },
+        { path: ":id/incoterm", component: ar.IncoTermEditComponent },
+        { path: ":id/incoterm/:termId", component: ar.IncoTermEditComponent },
+        { path: ":id/invoiceterm", component: ar.InvoiceTermEditComponent },
+        { path: ":id/invoiceterm/:termId", component: ar.InvoiceTermEditComponent },
+        { path: ":id/orderterm", component: ar.OrderTermEditComponent },
+        { path: ":id/orderterm/:termId", component: ar.OrderTermEditComponent },
+      ],
+    },
+    
       // WorkEfforts
       {
         path: "workefforts", component: workefforts.OverviewComponent, data: { type: "module", title: "Work Efforts", icon: "work" },

@@ -37,7 +37,7 @@ export class MainComponent {
   }
 
   public ngOnInit(): void {
-    this.subscription = this.stateService.internalOrganisation$
+    this.subscription = this.stateService.internalOrganisationId$
      .switchMap((internalOrganisationId) => {
 
       const fetch: Fetch[] = [
@@ -59,7 +59,7 @@ export class MainComponent {
       return this.scope
         .load("Pull", new PullRequest({ fetch, query }));
     })
-    .subscribe((loaded) => {
+    .subscribe((loaded: Loaded) => {
       this.scope.session.reset();
       this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
       this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
@@ -73,7 +73,7 @@ export class MainComponent {
   }
 
   public selectInternalOrganisation(internalOrganisation: Organisation) {
-    this.stateService.selectInternalOrginsation(internalOrganisation);
+    this.stateService.internalOrganisationId = internalOrganisation.id;
   }
 
 }
