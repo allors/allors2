@@ -58,6 +58,9 @@ namespace Allors.Domain
             setup.AddDependency(this.Meta.ObjectType, M.Role);
             setup.AddDependency(this.Meta.ObjectType, M.PersonRole);
             setup.AddDependency(this.Meta.ObjectType, M.InternalOrganisation);
+            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
+            setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose.ObjectType);
+            setup.AddDependency(this.ObjectType, M.InternalOrganisation.ObjectType);
         }
 
         protected override void AppsSecure(Security config)

@@ -20,8 +20,6 @@ namespace Allors
 
         public void Execute()
         {
-            this.SetupUser("admin1@allors.com", "administrator1", "", "x");
-
             var singleton = this.Session.GetSingleton();
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
             singleton.AddAdditionalLocale(dutchLocale);
@@ -109,6 +107,7 @@ namespace Allors
                 .WithName("Headquarters")
                 .WithDescription("Allors HQ")
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithOwner(internalOrganisation)
                 .Build();
 
             internalOrganisation.DefaultFacility = facility;
@@ -124,7 +123,10 @@ namespace Allors
                 .WithBillingProcess(new BillingProcesses(this.Session).BillingForShipmentItems)
                 .WithSalesInvoiceCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithIsImmediatelyPicked(true)
+                .WithInternalOrganisation(internalOrganisation)
                 .Build();
+
+            this.Session.Derive();
 
             var acmePostalAddress = new PostalAddressBuilder(this.Session)
                 .WithAddress1("Acme address 1")
@@ -339,6 +341,7 @@ line2")
             var invoice = new SalesInvoiceBuilder(this.Session)
                 .WithInvoiceNumber("1")
                 .WithBillToCustomer(acme)
+                .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
                 .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
                 .WithSalesInvoiceItem(salesInvoiceItem1)
                 .WithSalesInvoiceItem(salesInvoiceItem2)
