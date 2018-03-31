@@ -1,13 +1,10 @@
-// Protractor configuration file, see link for more information
-// https://github.com/angular/protractor/blob/master/lib/config.ts
-
 const { SpecReporter } = require('jasmine-spec-reporter');
 var TeamCityReporter = require('jasmine-reporters').TeamCityReporter;
 
 exports.config = {
   allScriptsTimeout: 11000,
   specs: [
-    './e2e/**/*.e2e-spec.ts'
+    './out-tsc/e2e/**/*.e2e-spec.js'
   ],
   capabilities: {
     'browserName': 'chrome'
