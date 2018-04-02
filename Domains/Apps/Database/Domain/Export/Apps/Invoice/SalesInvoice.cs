@@ -214,6 +214,11 @@ namespace Allors.Domain
                 this.BillToEndCustomerContactMechanism = this.BillToEndCustomer.BillingAddress;
             }
 
+            if (!this.ExistShipToEndCustomerAddress && this.ExistShipToEndCustomer)
+            {
+                this.ShipToEndCustomerAddress = this.ShipToEndCustomer.ShippingAddress;
+            }
+
             if (!this.ExistShipToAddress && this.ExistShipToCustomer)
             {
                 this.ShipToAddress = this.ShipToCustomer.ShippingAddress;
@@ -342,6 +347,8 @@ namespace Allors.Domain
                     .WithBillToCustomerPaymentMethod(this.PaymentMethod)
                     .WithShipToCustomer(this.ShipToCustomer)
                     .WithShipToAddress(this.ShipToAddress)
+                    .WithShipToEndCustomer(this.ShipToEndCustomer)
+                    .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
                     .WithContactPerson(this.ContactPerson)
                     .WithDescription(this.Description)
                     .WithInvoiceDate(DateTime.UtcNow)

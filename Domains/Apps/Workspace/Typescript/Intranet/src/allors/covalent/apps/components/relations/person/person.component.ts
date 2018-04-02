@@ -8,7 +8,7 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactRelationship, Person, PersonRole } from "../../../../../domain";
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from "../../../../../domain";
 import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -33,6 +33,7 @@ export class PersonComponent implements OnInit, OnDestroy {
   public locales: Locale[];
   public genders: Enumeration[];
   public salutations: Enumeration[];
+  public organisationContactKinds: OrganisationContactKind[];
 
   public roles: PersonRole[];
   public selectableRoles: PersonRole[] = [];
@@ -71,6 +72,7 @@ export class PersonComponent implements OnInit, OnDestroy {
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
+        const organisationId: string = this.route.snapshot.paramMap.get("organisationId");
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
@@ -84,6 +86,10 @@ export class PersonComponent implements OnInit, OnDestroy {
             name: "person",
           }),
           new Fetch({
+            id: organisationId,
+            name: "organisation",
+          }),
+          new Fetch({
             id,
             name: "organisationContactRelationships",
             path: new Path({ step: this.m.Person.OrganisationContactRelationshipsWhereContact }),
@@ -91,26 +97,11 @@ export class PersonComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(
-            {
-              name: "locales",
-              objectType: this.m.Locale,
-            }),
-          new Query(
-            {
-              name: "genders",
-              objectType: this.m.GenderType,
-            }),
-          new Query(
-            {
-              name: "salutations",
-              objectType: this.m.Salutation,
-            }),
-          new Query(
-            {
-              name: "roles",
-              objectType: this.m.PersonRole,
-            }),
+          new Query(m.Locale),
+          new Query(m.GenderType),
+          new Query(m.Salutation),
+          new Query(m.PersonRole),
+          new Query(m.OrganisationContactKind),
         ];
 
         if (id != null) {
@@ -157,6 +148,7 @@ export class PersonComponent implements OnInit, OnDestroy {
 
             this.subTitle = "edit person";
             this.person = loaded.objects.person as Person;
+            this.organisation = loaded.objects.organisation as Organisation;
             this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
             if (this.person) {
@@ -167,13 +159,15 @@ export class PersonComponent implements OnInit, OnDestroy {
               this.person = this.scope.session.create("Person") as Person;
             }
 
-            this.locales = loaded.collections.locales as Locale[];
-            this.genders = loaded.collections.genders as Enumeration[];
-            this.salutations = loaded.collections.salutations as Enumeration[];
-            this.roles = loaded.collections.roles as PersonRole[];
+            this.locales = loaded.collections.LocaleQuery as Locale[];
+            this.genders = loaded.collections.GenderTypeQuery as Enumeration[];
+            this.salutations = loaded.collections.SalutationQuery as Enumeration[];
+            this.roles = loaded.collections.PersonRoleQuery as PersonRole[];
+            this.organisationContactKinds = loaded.collections.OrganisationContactKindQuery as OrganisationContactKind[];
 
             if (loaded.collections.organisationContactRelationships !== undefined) {
               this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;
+              this.organisation = this.organisationContactRelationship.Organisation;
             }
 
             this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
@@ -192,7 +186,7 @@ export class PersonComponent implements OnInit, OnDestroy {
             }
 
             const organisationQuery: Query[] = [];
-            if (this.organisationContactRelationship === undefined) {
+            if (this.organisationContactRelationship === undefined && this.organisation === undefined) {
               organisationQuery.push(
                 new Query(
                   {
@@ -251,7 +245,7 @@ export class PersonComponent implements OnInit, OnDestroy {
       this.employment.ThroughDate = new Date();
     }
 
-    if (this.organisationContactRelationship === undefined && this.organisation !== null) {
+    if (this.organisationContactRelationship === undefined && this.organisation !== undefined) {
       const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
       organisationContactRelationship.Contact = this.person;
       organisationContactRelationship.Organisation = this.organisation;

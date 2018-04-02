@@ -81,10 +81,33 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.PurchaseInvoice.ContactPerson }),
               new TreeNode({ roleType: m.PurchaseInvoice.BilledFrom }),
               new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomer }),
+              new TreeNode({ roleType: m.PurchaseInvoice.ShipToEndCustomer }),
               new TreeNode({ roleType: m.PurchaseInvoice.PurchaseInvoiceState }),
               new TreeNode({ roleType: m.PurchaseInvoice.CreatedBy }),
               new TreeNode({ roleType: m.PurchaseInvoice.LastModifiedBy }),
               new TreeNode({ roleType: m.PurchaseInvoice.PurchaseOrder }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: m.PurchaseInvoice.BillToCustomerContactMechanism,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: m.PurchaseInvoice.ShipToEndCustomerAddress,
+              }),
             ],
             name: "invoice",
           }),
@@ -127,6 +150,94 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
+  }
+
+  public cancel(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.invoice.CancelInvoice)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  public approve(): void {
+    const approveFn: () => void = () => {
+      this.scope.invoke(this.invoice.Approve)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open("Successfully approved.", "close", { duration: 5000 });
+        },
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .openConfirm({ message: "Save changes?" })
+        .afterClosed().subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                approveFn();
+              },
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
+          } else {
+            approveFn();
+          }
+        });
+    } else {
+      approveFn();
+    }
+  }
+
+  public finish(invoice: PurchaseInvoice): void {
+    this.dialogService
+      .openConfirm({ message: "Are you sure you want to finish this invoice?" })
+      .afterClosed()
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(invoice.Finish)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open("Successfully finished.", "close", { duration: 5000 });
+              this.refresh();
+            },
+            (error: Error) => {
+              this.errorService.dialog(error);
+            });
+        }
+      });
   }
 
   public deleteInvoiceItem(invoiceItem: PurchaseInvoiceItem): void {

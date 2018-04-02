@@ -335,6 +335,26 @@ namespace Allors.Repository
         public ContactMechanism BillToEndCustomerContactMechanism { get; set; }
 
         #region Allors
+        [Id("D5B46F18-77AB-4535-A3DA-027489CBA9D1")]
+        [AssociationId("B63B43F8-C7C3-4E8D-915D-7634B4337C90")]
+        [RoleId("13F7C9E8-5789-4DAF-9BE0-249F93459FEF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Party ShipToEndCustomer { get; set; }
+
+        #region Allors
+        [Id("D6216599-925F-4BEA-B6EB-C0B6CCE05617")]
+        [AssociationId("23044C65-5A84-41A6-894C-7963DF55532C")]
+        [RoleId("3FA215D8-FE93-489F-8AD2-683C2BFAC8AE")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public PostalAddress ShipToEndCustomerAddress { get; set; }
+
+        #region Allors
         [Id("d6714c09-dce1-4182-aa2f-bbc887edc89a")]
         [AssociationId("9d679860-d975-4a0a-aef4-08975f45d855")]
         [RoleId("23fc03a8-a44c-431f-bdfa-75905691764b")]

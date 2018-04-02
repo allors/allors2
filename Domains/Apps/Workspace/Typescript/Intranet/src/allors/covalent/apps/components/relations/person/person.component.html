@@ -23,12 +23,18 @@
       <a-mat-select class="col" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
     </div>
 
-    <div *ngIf="!organisationContactRelationship" class="grid">
-      <mat-input-container class="col">
+    <div class="grid-2_md-1">
+      <a-mat-select class="col" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
+        [options]="organisationContactKinds" display="Description" multiple="true"></a-mat-select>
+      <mat-input-container *ngIf="!organisationContactRelationship && !organisation" class="col">
         <mat-select name="role" [(ngModel)]="organisation" placeholder="Organisations">
           <mat-option *ngFor="let organisation of organisations" [value]="organisation">{{ organisation.Name }}</mat-option>
         </mat-select>
       </mat-input-container>
+      <mat-form-field *ngIf="(!organisationContactRelationship && organisation) || (organisationContactRelationship && !person.IsNew)"
+        class="col">
+        <input matInput type="type" [ngModel]="organisation.Name" name="Organisation" placeholder="Organisation" readonly="true">
+      </mat-form-field>
     </div>
 
     <div class="grid">

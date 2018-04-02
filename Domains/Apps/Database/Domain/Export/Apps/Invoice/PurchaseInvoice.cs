@@ -38,7 +38,7 @@ namespace Allors.Domain
         {
             if (!this.ExistPurchaseInvoiceState)
             {
-                this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
+                this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Received;
             }
 
             if (!this.ExistInvoiceDate)
@@ -95,6 +95,15 @@ namespace Allors.Domain
             this.AppsOnDeriveInvoiceTotals();
         }
 
+        public void AppsOnPostDerive(ObjectOnPostDerive method)
+        {
+            if (this.ExistSalesInvoiceWherePurchaseInvoice)
+            {
+                this.AddDeniedPermission(new Permissions(this.strategy.Session).Get(this.Meta.Class, this.Meta.CreateSalesInvoice, Operations.Execute));
+            }
+        }
+
+
         public void AppsCreateSalesInvoice(PurchaseInvoiceCreateSalesInvoice method)
         {
             var derivation = new Derivation(this.Strategy.Session);
@@ -104,8 +113,8 @@ namespace Allors.Domain
                 .WithBilledFrom(this.BilledTo)
                 .WithBillToCustomer(this.BillToCustomer)
                 .WithBillToContactMechanism(this.BillToCustomerContactMechanism)
-                .WithShipToCustomer(this.ShipToCustomer)
-                .WithShipToAddress(this.ShipToAddress)
+                .WithShipToCustomer(this.ShipToEndCustomer)
+                .WithShipToAddress(this.ShipToEndCustomerAddress)
                 .WithDescription(this.Description)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
@@ -170,17 +179,17 @@ namespace Allors.Domain
 
         public void AppsApprove(PurchaseInvoiceApprove method)
         {
-            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Approved;
-        }
-
-        public void AppsReady(PurchaseInvoiceReady method)
-        {
-            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).ReadyForPosting;
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).InProcess;
         }
 
         public void AppsCancelInvoice(PurchaseInvoiceCancelInvoice method)
         {
             this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Cancelled;
+        }
+
+        public void AppsFinish(PurchaseInvoiceFinish method)
+        {
+            this.PurchaseInvoiceState = new PurchaseInvoiceStates(this.Strategy.Session).Finished;
         }
 
         public void AppsOnDeriveInvoiceItems(IDerivation derivation)

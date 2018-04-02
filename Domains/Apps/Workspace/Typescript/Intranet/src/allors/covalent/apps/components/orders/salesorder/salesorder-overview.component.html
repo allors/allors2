@@ -24,35 +24,44 @@
               [routerLink]="['/orders/productQuote/' + order.Quote.id ]"></a-mat-static>
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
             <a-mat-static class="col link" *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id ]"></a-mat-static>
+          </div>
+
+          <div class="grid-3_sm-1">
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderShipmentState" display="Name" label="Shipment Status"></a-mat-static>
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderPaymentState" display="Name" label="Payment Status"></a-mat-static>
           </div>
 
-          <div class="grid-2_xs-1">
-            <a-mat-static class="col link" *ngIf="order.ShipToCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+          <div *ngIf="order.ShipToCustomer" class="grid-2_xs-1">
+            <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
               display="displayName" label="Ship to Customer" [routerLink]="['/relations/organisation/' + order.ShipToCustomer.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="order.ShipToCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+            <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
               display="displayName" label="Ship to Customer" [routerLink]="['/relations/person/' + order.ShipToCustomer.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="order.ContactPerson" [object]="order" [roleType]="m.SalesOrder.ContactPerson" display="displayName"
-              [routerLink]="['/relations/person/' + order.ContactPerson.id ]"></a-mat-static>
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
           </div>
 
-          <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order.ShipToAddress" [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName"
-              label="Ship to"></a-mat-static>
-          </div>
-
-          <div class="grid-2_xs-1" *ngIf="order.ShipToCustomer != order.BillToCustomer">
-            <a-mat-static class="col link" *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+          <div *ngIf="order.BillToCustomer" class="grid-2_xs-1">
+            <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
               display="displayName" label="Bill to Customer" [routerLink]="['/relations/organisation/' + order.BillToCustomer.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="order.BillToCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+            <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
               display="displayName" label="Bill to Customer" [routerLink]="['/relations/person/' + order.BillToCustomer.id ]"></a-mat-static>
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
           </div>
 
-          <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order.ShipToAddress != order.BillToEndCustomerContactMechanism" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism"
-              display="displayName" label="Bill to"></a-mat-static>
+          <div *ngIf="order.BillToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
+              display="displayName" label="Bill to End Customer" [routerLink]="['/relations/organisation/' + order.BillToEndCustomer.id ]"></a-mat-static>
+            <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
+              display="displayName" label="Bill to End Customer" [routerLink]="['/relations/person/' + order.BillToEndCustomer.id ]"></a-mat-static>
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
+          </div>
+
+          <div *ngIf="order.ShipToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
+              display="displayName" label="Ship to End Customer" [routerLink]="['/relations/organisation/' + order.ShipToEndCustomer.id ]"></a-mat-static>
+            <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
+              display="displayName" label="Ship to End Customer" [routerLink]="['/relations/person/' + order.ShipToEndCustomer.id ]"></a-mat-static>
+            <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
           <div class="grid-1">
@@ -114,8 +123,10 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="order.CanWriteSalesOrderItems && orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="!order.CanWriteSalesOrderItems || !orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]" mat-menu-item>View</a>
+                    <a *ngIf="order.CanWriteSalesOrderItems && orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="!order.CanWriteSalesOrderItems || !orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]"
+                      mat-menu-item>View</a>
                     <button [disabled]="!orderItem.CanExecuteCancel" mat-menu-item (click)="cancelOrderItem(orderItem)">Cancel</button>
                     <button [disabled]="!orderItem.CanExecuteReject" mat-menu-item (click)="rejectOrderItem(orderItem)">Reject</button>
                     <button [disabled]="!orderItem.CanExecuteDelete" mat-menu-item (click)="deleteOrderItem(orderItem)">Delete</button>
@@ -159,9 +170,12 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesOrder/' + order.id + '/orderterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesOrder/' + order.id + '/orderterm/' + salesTerm.id ]"
+                      mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!salesTerm.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>

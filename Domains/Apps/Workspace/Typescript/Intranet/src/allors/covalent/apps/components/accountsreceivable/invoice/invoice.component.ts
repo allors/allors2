@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, SalesInvoice, SalesOrder, VatRate, VatRegime } from "../../../../../domain";
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -33,6 +33,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public billToContactMechanisms: ContactMechanism[];
   public billToEndCustomerContactMechanisms: ContactMechanism[];
   public shipToContactMechanisms: ContactMechanism[];
+  public shipToEndCustomerAddresses: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
   public billToContacts: Person[];
@@ -48,6 +49,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public addBillToEndCustomerContactMechanism: boolean = false;
   public addShipToContactMechanism: boolean = false;
   public addShipToCustomerContactMechanism: boolean = false;
+  public addShipToEndCustomerAddress: boolean = false;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -130,6 +132,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                   new TreeNode({ roleType: m.SalesInvoice.BillToEndCustomerContactMechanism }),
                   new TreeNode({ roleType: m.SalesInvoice.ShipToCustomer }),
                   new TreeNode({ roleType: m.SalesInvoice.ShipToAddress }),
+                  new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomerAddress }),
+                  new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomer }),
                   new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
                   new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
                 ],
@@ -168,6 +172,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         if (this.invoice.ShipToCustomer) {
           this.updateShipToCustomer(this.invoice.ShipToCustomer);
+        }
+
+        if (this.invoice.ShipToEndCustomer) {
+          this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
 
         this.previousBillToCustomer = this.invoice.BillToCustomer;
@@ -224,7 +232,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public billToEndCustomerContactMechanismCancelled() {
-    this.addBillToContactMechanism = false;
+    this.addBillToEndCustomerContactMechanism = false;
   }
 
   public billToEndCustomerContactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
@@ -243,6 +251,17 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     this.shipToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
+  }
+
+  public shipToEndCustomerAddressCancelled() {
+    this.addShipToEndCustomerAddress = false;
+  }
+
+  public shipToEndCustomerAddressAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addShipToEndCustomerAddress = false;
+
+    this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
+    this.invoice.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
   }
 
   public send(): void {
@@ -386,6 +405,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     }
   }
 
+  public shipToEndCustomerSelected(party: Party) {
+    if (party) {
+      this.updateShipToEndCustomer(party);
+    }
+  }
+
   public refresh(): void {
     this.refresh$.next(new Date());
   }
@@ -523,6 +548,47 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (!(this.invoice.ShipToCustomer instanceof Organisation && this.invoice.ShipToCustomer.IsInternalOrganisation)) {
           this.shipToContacts = loaded.collections.currentContacts as Person[];
         }
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
+
+  private updateShipToEndCustomer(party: Party) {
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded) => {
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
       },
       (error: Error) => {
         this.errorService.message(error);

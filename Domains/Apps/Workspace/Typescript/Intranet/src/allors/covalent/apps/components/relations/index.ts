@@ -9,8 +9,6 @@ export * from "./person/people-overview.module";
 export * from "./organisation/organisations-overview.module";
 export * from "./organisation/organisation-overview.module";
 export * from "./organisation/organisation.module";
-export * from "./organisation/contactrelationship/organisation-contactrelationship-add.module";
-export * from "./organisation/contactrelationship/organisation-contactrelationship-edit.module";
 
 export * from "./party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-add.module";
 export * from "./party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-edit.module";
@@ -39,8 +37,6 @@ import { PeopleOverviewModule } from "./person/people-overview.module";
 import { PersonOverviewModule } from "./person/person-overview.module";
 import { PersonModule } from "./person/person.module";
 
-import { OrganisationContactrelationshipAddModule } from "./organisation/contactrelationship/organisation-contactrelationship-add.module";
-import { OrganisationContactrelationshipEditModule } from "./organisation/contactrelationship/organisation-contactrelationship-edit.module";
 import { OrganisationOverviewModule } from "./organisation/organisation-overview.module";
 import { OrganisationModule } from "./organisation/organisation.module";
 import { OrganisationsOverviewModule } from "./organisation/organisations-overview.module";
@@ -67,7 +63,7 @@ export const Modules = [
   OverviewModule,
   DashboardModule,
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
-  OrganisationContactrelationshipAddModule , OrganisationContactrelationshipEditModule, OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
+  OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
   PartyContactMechanismEmailAddressAddModule, PartyContactMechanismEmailAddressEditModule, PartyContactMechanismAddPostalAddressModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
   PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule, PartyCommunicationEventWorkTaskModule,
   CommunicationEventsOverviewModule,

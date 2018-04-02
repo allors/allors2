@@ -177,7 +177,6 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a [routerLink]="['/organisation/' + organisation.id + '/contact/' + contactRelationship.id ]" mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="activateContact(contactRelationship)" [disabled]="!contactRelationship.ThroughDate">Activate</button>
                     <button mat-menu-item (click)="removeContact(contactRelationship)" [disabled]="!!contactRelationship.ThroughDate">Deactivate</button>
                     <button mat-menu-item (click)="deleteContact(contactRelationship.Contact)" [disabled]="!contactRelationship.Contact.CanExecuteDelete">Delete</button>
@@ -193,7 +192,7 @@
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/organisation/'+ organisation.id +'/contact']">Add new</button>
+        <button mat-button [routerLink]="['/person/organisation/'+ organisation.id]">Add new</button>
       </mat-card-actions>
     </mat-card>
 

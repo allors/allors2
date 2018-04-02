@@ -96,6 +96,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.SalesOrder.ContactPerson }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.BillToCustomer }),
+              new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomer }),
+              new TreeNode({ roleType: m.SalesOrder.BillToEndCustomer }),
               new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
               new TreeNode({ roleType: m.SalesOrder.SalesOrderShipmentState }),
               new TreeNode({ roleType: m.SalesOrder.SalesOrderInvoiceState }),
@@ -124,6 +126,17 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                   }),
                 ],
                 roleType: m.SalesOrder.BillToEndCustomerContactMechanism,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: m.SalesOrder.ShipToEndCustomerAddress,
               }),
             ],
             name: "order",

@@ -25,6 +25,20 @@
                 [routerLink]="['/relations/organisation/' + invoice.BilledFrom.id ]"></a-mat-static>
           </div>
 
+          <div *ngIf="invoice.BillToCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer"
+              display="displayName" label="Bill to Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism"
+              display="displayName" label="Bill to ContactMechanism"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.ShipToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer"
+              display="displayName" label="Ship to Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress"
+              display="displayName" label="Ship to Address"></a-mat-static>
+          </div>
+
           <div class="grid-2_xs-1">
             <a-mat-static class="col link" *ngIf="invoice.ContactPerson" [object]="invoice" [roleType]="m.PurchaseInvoice.ContactPerson"
               display="displayName" [routerLink]="['/relations/person/' + invoice.ContactPerson.id ]"></a-mat-static>
@@ -61,6 +75,10 @@
       <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id]">Edit</button>
+        <button *ngIf="!invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id]">View</button>
+        <button *ngIf="invoice.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
+        <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="invoice.CanExecuteFinish" mat-button type="button" (click)="finish(invoice)">Finish</button>
         <button *ngIf="invoice.CanExecuteCreateSalesInvoice && invoice.PurchaseInvoiceItems.length > 0" mat-button (click)="createInvoice()">Create Sales Invoice</button>
         <!-- <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button> -->
       </mat-card-actions>

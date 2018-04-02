@@ -227,6 +227,8 @@ namespace Allors.Domain
                             .WithBillToEndCustomerContactMechanism(salesOrder.BillToEndCustomerContactMechanism)
                             .WithShipToCustomer(salesOrder.ShipToCustomer)
                             .WithShipToAddress(salesOrder.ShipToAddress)
+                            .WithShipToEndCustomer(salesOrder.ShipToEndCustomer)
+                            .WithShipToEndCustomerAddress(salesOrder.ShipToEndCustomerAddress)
                             .WithInvoiceDate(DateTime.UtcNow)
                             .WithSalesChannel(salesOrder.SalesChannel)
                             .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)

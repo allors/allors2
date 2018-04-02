@@ -85,6 +85,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               }),
               new TreeNode({ roleType: m.SalesInvoice.ContactPerson }),
               new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
+              new TreeNode({ roleType: m.SalesInvoice.ShipToCustomer }),
+              new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomer }),
               new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
               new TreeNode({ roleType: m.SalesInvoice.CreatedBy }),
               new TreeNode({ roleType: m.SalesInvoice.LastModifiedBy }),
@@ -98,7 +100,40 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                     roleType: m.PostalAddress.PostalBoundary,
                   }),
                 ],
+                roleType: m.SalesInvoice.BillToContactMechanism,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: m.SalesInvoice.ShipToAddress,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
                 roleType: m.SalesInvoice.BillToEndCustomerContactMechanism,
+              }),
+              new TreeNode({
+                nodes: [
+                  new TreeNode({
+                    nodes: [
+                      new TreeNode({ roleType: m.PostalBoundary.Country }),
+                    ],
+                    roleType: m.PostalAddress.PostalBoundary,
+                  }),
+                ],
+                roleType: m.SalesInvoice.ShipToEndCustomerAddress,
               }),
             ],
             name: "invoice",

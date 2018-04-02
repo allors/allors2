@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit , Output } from "@angular/core";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Enumeration, Locale, Person, PersonRole } from "../../../../../domain";
+import { Enumeration, Locale, Person } from "../../../../../domain";
 import { PullRequest, Query } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -24,7 +24,6 @@ export class PersonInlineComponent implements OnInit {
   public locales: Locale[];
   public genders: Enumeration[];
   public salutations: Enumeration[];
-  public roles: PersonRole[];
 
   private scope: Scope;
 
@@ -51,11 +50,6 @@ export class PersonInlineComponent implements OnInit {
           name: "salutations",
           objectType: this.m.Salutation,
         }),
-      new Query(
-        {
-          name: "roles",
-          objectType: this.m.PersonRole,
-        }),
     ];
 
     this.scope
@@ -64,7 +58,6 @@ export class PersonInlineComponent implements OnInit {
         this.locales = loaded.collections.locales as Locale[];
         this.genders = loaded.collections.genders as Enumeration[];
         this.salutations = loaded.collections.salutations as Enumeration[];
-        this.roles = loaded.collections.roles as PersonRole[];
 
         this.person = this.scope.session.create("Person") as Person;
       },

@@ -18,20 +18,21 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         <div class="pad">
-          <div class="grid-2_xs-1">
-            <div class="col" *ngIf="organisation">
-              <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
-            </div>
-            <mat-input-container class="col">
-              <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true" />
-            </mat-input-container>
-          </div>
 
           <div class="grid-2_xs-1">
             <a-mat-static class="col" *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
             <mat-form-field class="col" style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
               <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
             </mat-form-field>
+          </div>
+
+          <div class="grid-2_xs-1">
+            <div class="col" *ngIf="organisation">
+              <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
+            </div>
+            <mat-input-container class="col">
+              <input matInput name="contactKind" [(ngModel)]="contactKindsText" [readonly]="true" />
+            </mat-input-container>
           </div>
 
           <div class="grid-2_xs-1">

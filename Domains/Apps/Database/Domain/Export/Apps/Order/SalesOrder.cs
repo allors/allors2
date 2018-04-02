@@ -163,6 +163,11 @@ namespace Allors.Domain
                     this.BillToEndCustomer.BillingAddress : this.BillToEndCustomer.ExistShippingAddress ? this.BillToEndCustomer.ShippingAddress : this.BillToCustomer.GeneralCorrespondence;
             }
 
+            if (!this.ExistShipToEndCustomerAddress && this.ExistShipToEndCustomer)
+            {
+                this.ShipToEndCustomerAddress = this.ShipToEndCustomer.ExistShippingAddress ? this.ShipToEndCustomer.ShippingAddress : this.ShipToCustomer.GeneralCorrespondence;
+            }
+
             if (!this.ExistCurrency)
             {
                 if (this.ExistBillToCustomer &&
@@ -848,6 +853,8 @@ namespace Allors.Domain
                 .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
                 .WithShipToCustomer(this.ShipToCustomer)
                 .WithShipToAddress(this.ShipToAddress)
+                .WithShipToEndCustomer(this.ShipToEndCustomer)
+                .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
                 .WithInvoiceDate(DateTime.UtcNow)

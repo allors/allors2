@@ -38,7 +38,7 @@
       <div class="grid-2_md-1">
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="ShipToAddresses" display="displayName"></a-mat-select>
+            <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="shipToAddresses" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addShipToAddress = !addShipToAddress">
               <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
               <mat-icon *ngIf="addShipToAddress">close</mat-icon>
@@ -111,6 +111,27 @@
           </div>
 
           <party-contactmechanism *ngIf="order.BillToEndCustomer && addBillToEndCustomerContactMechanism" [scope]="scope" (saved)="billToEndCustomerContactMechanismAdded($event)" (cancelled)="billToEndCustomerContactMechanismCancelled()">
+          </party-contactmechanism>
+
+        </div>
+      </div>
+
+      <div class="grid-2_md-1">
+        <a-mat-autocomplete class="col" *ngIf="showOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer" 
+          [filter]="organisationsFilter.create()" display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
+        <!-- <a-mat-autocomplete class="col" *ngIf="showPeople" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [options]="people"
+          [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
+        <div class="col">
+          <div fxLayout fxLayoutGap="1em">
+            <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
+              display="displayName"></a-mat-select>
+            <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
+              <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
+              <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
+            </button>
+          </div>
+
+          <party-contactmechanism *ngIf="order.ShipToEndCustomer && addShipToEndCustomerAddress" [scope]="scope" (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="shipToEndCustomerAddressCancelled()">
           </party-contactmechanism>
 
         </div>

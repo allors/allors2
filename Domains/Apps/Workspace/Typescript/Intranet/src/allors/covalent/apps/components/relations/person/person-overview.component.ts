@@ -11,7 +11,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from "../../../../../domain";
+import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -36,6 +36,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   public currentContactMechanisms: PartyContactMechanism[] = [];
   public inactiveContactMechanisms: PartyContactMechanism[] = [];
   public allContactMechanisms: PartyContactMechanism[] = [];
+  public contactKindsText: string;
 
   public roles: PersonRole[];
   public activeRoles: PersonRole[] = [];
@@ -221,6 +222,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.person = loaded.objects.person as Person;
         const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
+        this.contactKindsText = organisationContactRelationships[0].ContactKinds
+          .map((v: OrganisationContactKind) => v.Description)
+          .reduce((acc: string, cur: string) => acc + ", " + cur);
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
         this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
 

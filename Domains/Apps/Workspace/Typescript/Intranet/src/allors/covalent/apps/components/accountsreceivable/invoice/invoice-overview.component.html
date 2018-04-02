@@ -23,15 +23,39 @@
             <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
             <a-mat-static class="col link" *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder" display="OrderNumber"
               [routerLink]="['/orders/salesOrder/' + invoice.SalesOrder.id ]"></a-mat-static>
-            <a-mat-static class="col link" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" display="displayName" label="Customer"
-              [routerLink]="['/relations/organisation/' + invoice.BillToCustomer.id ]"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.BillToCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer"
+              display="displayName" label="Bill to Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism"
+              display="displayName" label="Bill to ContactMechanism"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.ShipToCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer"
+              display="displayName" label="Ship to Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress"
+              display="displayName" label="Ship to Address"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.BillToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer"
+              display="displayName" label="Bill to End Customer"></a-mat-static>
+              <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism"
+              display="displayName" label="Bill to End Customer ContactMechanism"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.ShipToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer"
+              display="displayName" label="Ship to End Customer"></a-mat-static>
+              <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress"
+              display="displayName" label="Ship to End Customer Address"></a-mat-static>
           </div>
 
           <div class="grid-2_xs-1">
             <a-mat-static class="col link" *ngIf="invoice.ContactPerson" [object]="invoice" [roleType]="m.SalesInvoice.ContactPerson"
               display="displayName" [routerLink]="['/relations/person/' + invoice.ContactPerson.id ]"></a-mat-static>
-            <a-mat-static class="col" *ngIf="invoice.BillToEndCustomerContactMechanism" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism"
-              display="displayName" label="Bill to"></a-mat-static>
           </div>
 
           <div class="grid-1">
@@ -69,7 +93,7 @@
         <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
         <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
-      <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
+        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
       </mat-card-actions>
     </mat-card>
 
@@ -98,8 +122,10 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="!invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]" mat-menu-item>View</a>
+                    <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="!invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]"
+                      mat-menu-item>View</a>
                     <button mat-menu-item (click)="deleteInvoiceItem(invoiceItem)" [disabled]="!invoiceItem.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
@@ -141,9 +167,12 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu x-position="before" #menu="matMenu">
-                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]" mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]"
+                      mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!invoice.CanExecuteDelete">Delete</button>
                   </mat-menu>
                 </span>
