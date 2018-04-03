@@ -139,8 +139,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
-            this.suppliers = this.good.SuppliedBy as Organisation[];
-            this.selectedSuppliers = this.suppliers;
             this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
             this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
             this.varianceReasons = loaded.collections.VarianceReasonQuery as VarianceReason[];
@@ -170,6 +168,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
               this.vendorProduct.Product = this.good;
               this.vendorProduct.InternalOrganisation = internalOrganisation;
             } else {
+              this.suppliers = this.good.SuppliedBy as Organisation[];
+              this.selectedSuppliers = this.suppliers;
               this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
               this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];

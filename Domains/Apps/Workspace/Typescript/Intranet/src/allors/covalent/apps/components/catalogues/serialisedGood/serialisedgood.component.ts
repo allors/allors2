@@ -152,8 +152,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.scope.session.reset();
 
             this.good = loaded.objects.good as Good;
-            this.suppliers = this.good.SuppliedBy as Organisation[];
-            this.selectedSuppliers = this.suppliers;
             this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
             this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
@@ -185,6 +183,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
               this.vendorProduct.InternalOrganisation = internalOrganisation;
 
             } else {
+              this.suppliers = this.good.SuppliedBy as Organisation[];
+              this.selectedSuppliers = this.suppliers;
               this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
               this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
               this.inventoryItem = this.inventoryItems[0];
