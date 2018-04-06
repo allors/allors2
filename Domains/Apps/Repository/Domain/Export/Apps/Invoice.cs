@@ -357,15 +357,5 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         decimal TotalFee { get; set; }
-
-        #region Allors
-        [Id("4A8515AA-6993-4C10-90E7-E4559A1AA28F")]
-        [AssociationId("1E7EEAF7-4E53-4CDC-BE06-0D2AC6945051")]
-        [RoleId("EF6A47C6-5FF5-4A84-AD4A-67A9CC985481")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        Person ContactPerson { get; set; }
     }
 }

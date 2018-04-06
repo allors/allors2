@@ -50,8 +50,6 @@ namespace Allors.Repository
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
 
-        public Person ContactPerson { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public Locale Locale { get; set; }
@@ -141,6 +139,16 @@ namespace Allors.Repository
         public ContactMechanism BilledFromContactMechanism { get; set; }
 
         #region Allors
+        [Id("B7797410-75C3-4BE2-AD1A-5CF6D7438A72")]
+        [AssociationId("77D32952-C469-4B5E-8E9F-949355188E3D")]
+        [RoleId("E16BF028-0D06-4A42-A193-FA1753696A24")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person BilledFromContactPerson { get; set; }
+
+        #region Allors
         [Id("816d66a7-7cab-4ce3-9912-c7cc9d6c294c")]
         [AssociationId("8b3c78de-7281-4f94-aeda-1dc6bd345df3")]
         [RoleId("056822e6-4333-44ae-8479-d05c1b1b2974")]
@@ -173,6 +181,16 @@ namespace Allors.Repository
         public ContactMechanism BillToContactMechanism { get; set; }
 
         #region Allors
+        [Id("F03DD1C5-A2BA-4231-8274-7594E2AF5507")]
+        [AssociationId("5F60DE58-1FBF-4975-B0F3-5E633EC658F4")]
+        [RoleId("FBAF9CBF-8505-4302-B9CD-728CEB8CA90C")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person BillToContactPerson { get; set; }
+
+        #region Allors
         [Id("B51570D0-05F5-45D1-B820-6FA693A60EB9")]
         [AssociationId("CFF27770-62ED-44FD-B3BD-B0ECAC5200CF")]
         [RoleId("316B4B5C-AAEB-4794-8823-9D1F69647AE8")]
@@ -193,6 +211,16 @@ namespace Allors.Repository
         public ContactMechanism BillToEndCustomerContactMechanism { get; set; }
 
         #region Allors
+        [Id("B1DA9A4E-F969-44DC-BFD8-409FE5E33AA9")]
+        [AssociationId("4256B0C4-8C58-4798-AFB6-3F2127B06A87")]
+        [RoleId("14B4572A-BC72-4594-9C6A-35156169061B")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person BillToEndCustomerContactPerson { get; set; }
+
+        #region Allors
         [Id("6AFCE702-9659-480B-A0C0-CC7FBC92E05E")]
         [AssociationId("D9D8EFE4-DF38-48CA-A680-A97E73E4C181")]
         [RoleId("7F6EFCA5-4189-4F48-9269-45FDB88EA108")]
@@ -211,6 +239,16 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress ShipToEndCustomerAddress { get; set; }
+
+        #region Allors
+        [Id("08A314AE-A3DF-4993-AE09-11E6E5A0B316")]
+        [AssociationId("B52DA9AF-0E09-4E13-91DE-0DFB0C9D0BD5")]
+        [RoleId("1C3F445B-1263-45F8-88DF-07F65E222321")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person ShipToEndCustomerContactPerson { get; set; }
 
         #region Allors
         [Id("af0a72c8-003c-44a6-8c6f-086f26542e3d")]
@@ -240,6 +278,16 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress ShipToAddress { get; set; }
+
+        #region Allors
+        [Id("D8127DD5-BD5C-4608-9D69-B2F585A45066")]
+        [AssociationId("C3EFD659-8A91-4D22-8DCD-1B8AFBDC3E89")]
+        [RoleId("2FFC7A31-C54D-4B97-B4E2-45860EF8628D")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person ShipToContactPerson { get; set; }
 
         #region Allors
         [Id("3eb16102-21cc-4b71-a8e2-4f016da4cfb0")]

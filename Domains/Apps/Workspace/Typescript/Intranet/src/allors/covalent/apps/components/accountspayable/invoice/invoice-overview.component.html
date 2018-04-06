@@ -18,7 +18,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         <div class="pad">
-          <div class="grid-4_lg-2_sm-1">
+          <div class="grid-3_lg-2_sm-1">
               <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
               <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
               <a-mat-static class="col link" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" display="PartyName" label="From"
@@ -37,11 +37,6 @@
               display="displayName" label="Ship to Customer"></a-mat-static>
             <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress"
               display="displayName" label="Ship to Address"></a-mat-static>
-          </div>
-
-          <div class="grid-2_xs-1">
-            <a-mat-static class="col link" *ngIf="invoice.ContactPerson" [object]="invoice" [roleType]="m.PurchaseInvoice.ContactPerson"
-              display="displayName" [routerLink]="['/relations/person/' + invoice.ContactPerson.id ]"></a-mat-static>
           </div>
 
           <div class="grid-1">

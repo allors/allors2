@@ -56,7 +56,8 @@ namespace Allors.Domain
             {
                 if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled) ||
                     this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected) ||
-                    this.QuantityOrdered == 0 ||
+                    ((this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem) || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem)) && this.QuantityOrdered == 0) ||
+                    ((!this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem) && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem)) && this.ActualUnitPrice == 0) ||
                     !this.ExistShipToAddress || !this.ExistShipToParty ||
                     (this.ExistCalculatedUnitPrice && this.CalculatedUnitPrice == 0))
                 {

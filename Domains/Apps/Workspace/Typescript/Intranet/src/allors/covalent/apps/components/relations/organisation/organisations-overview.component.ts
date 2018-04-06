@@ -118,7 +118,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
             {
               name: "countries",
               objectType: m.Country,
-              sort: [new Sort({ roleType: m.Country.Name })],
+              sort: [new Sort({ roleType: m.Country.Name, direction: "Asc" })],
             }),
         ];
 

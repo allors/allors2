@@ -53,8 +53,6 @@ namespace Allors.Repository
         public decimal TotalFee { get; set; }
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
 
-        public Person ContactPerson { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string PrintContent { get; set; }
@@ -236,6 +234,15 @@ namespace Allors.Repository
         public ContactMechanism TakenViaContactMechanism { get; set; }
 
         #region Allors
+        [Id("73A7B96E-5DA1-465D-9754-CDB3184DC20E")]
+        [AssociationId("93BFE5E9-7E4A-48DA-8448-926FBD04FF54")]
+        [RoleId("6DEF4049-1FCC-4855-A003-DF975392EEFD")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Person TakenViaContactPerson { get; set; }
+
+        #region Allors
         [Id("7eceb1b6-1395-4655-a558-6d72ad4b380e")]
         [AssociationId("b6e1159c-fcb7-47f1-822b-4ab75e5dac14")]
         [RoleId("ab3ee3c7-dc02-4acf-a34e-6b25783e11fc")]
@@ -244,6 +251,15 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public ContactMechanism BillToContactMechanism { get; set; }
+
+        #region Allors
+        [Id("63AE6DC7-F484-49D8-87D1-6F137232D385")]
+        [AssociationId("534C5310-36DE-4616-AAE1-ECF6093609D9")]
+        [RoleId("B12DB94A-27CB-48FC-B19E-630E59A739EF")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Person BillToContactPerson { get; set; }
 
         #region Allors
         [Id("ccf88515-6441-4d0f-a2e7-8f5ed7c0533e")]
@@ -262,6 +278,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public PostalAddress ShipToAddress { get; set; }
+
+        #region Allors
+        [Id("8C27B92F-FB4C-4FAA-8F1C-3CF80AD746E8")]
+        [AssociationId("50CC1084-F52D-4FE2-AE92-1753147927F3")]
+        [RoleId("84E02756-377F-4270-82BD-97FFF4824ACD")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Person ShipToContactPerson { get; set; }
 
         #region inherited methods
 

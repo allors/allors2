@@ -52,7 +52,8 @@ namespace Allors.Domain
                 .WithBillToCustomer(this.Receiver)
                 .WithComment(this.Comment)
                 .WithDescription(this.Description)
-                .WithContactPerson(this.ContactPerson)
+                .WithShipToContactPerson(this.ContactPerson)
+                .WithBillToContactPerson(this.ContactPerson)
                 .WithInternalComment(this.InternalComment)
                 .WithQuote(this)
                 .Build();

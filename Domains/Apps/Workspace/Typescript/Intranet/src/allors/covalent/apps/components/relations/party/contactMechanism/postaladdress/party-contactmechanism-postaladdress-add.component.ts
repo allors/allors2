@@ -5,7 +5,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../../angular";
 import { Country, Enumeration, Party, PartyContactMechanism, PostalAddress, PostalBoundary } from "../../../../../../../domain";
-import { Fetch, PullRequest, Query, TreeNode } from "../../../../../../../framework";
+import { Fetch, PullRequest, Query, Sort, TreeNode } from "../../../../../../../framework";
 import { MetaDomain } from "../../../../../../../meta";
 
 @Component({
@@ -81,6 +81,7 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
             {
               name: "countries",
               objectType: this.m.Country,
+              sort: [new Sort({ roleType: m.Country.Name, direction: "Asc" })],
             }),
         ];
 

@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { CommunicationEvent, ContactMechanism, Organisation, OrganisationContactRelationship, PartyContactMechanism, Person } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -176,6 +176,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
             {
               name: "countries",
               objectType: m.Country,
+              sort: [new Sort({ roleType: m.Country.Name, direction: "Asc" })],
             }),
           new Query(
             {

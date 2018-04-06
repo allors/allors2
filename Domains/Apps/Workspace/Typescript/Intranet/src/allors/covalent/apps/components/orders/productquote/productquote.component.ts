@@ -151,6 +151,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     organisationContactRelationship.Contact = contact;
 
     this.contacts.push(contact);
+    this.quote.ContactPerson = contact;
   }
 
   public partyContactMechanismCancelled() {
@@ -162,6 +163,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
+    this.quote.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public approve(): void {

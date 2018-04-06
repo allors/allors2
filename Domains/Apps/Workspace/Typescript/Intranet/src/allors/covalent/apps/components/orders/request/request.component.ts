@@ -300,6 +300,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     organisationContactRelationship.Contact = contact;
 
     this.contacts.push(contact);
+    this.request.ContactPerson = contact;
   }
 
   public partyContactMechanismCancelled() {
@@ -311,6 +312,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.request.Originator.AddPartyContactMechanism(partyContactMechanism);
+    this.request.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public ngOnDestroy(): void {

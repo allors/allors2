@@ -50,8 +50,6 @@ namespace Allors.Repository
         public decimal TotalVat { get; set; }
         public decimal TotalFee { get; set; }
 
-        public Person ContactPerson { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
@@ -131,6 +129,16 @@ namespace Allors.Repository
         public Party BilledFrom { get; set; }
 
         #region Allors
+        [Id("9254C511-081D-4E05-98EB-5F4E52A700E3")]
+        [AssociationId("4A9F0B0C-99AB-433A-BC4F-C6CF65188CB7")]
+        [RoleId("5E7F2132-0434-4C27-9A89-B327AAF14D8C")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person BilledFromContactPerson { get; set; }
+
+        #region Allors
         [Id("045918FA-CC14-4616-A2B0-519E2ACEBA31")]
         [AssociationId("5DB9DFF5-4964-4DE6-AEA6-FB6111D35502")]
         [RoleId("2B69921B-A93D-49F7-A950-D65F9EDB2A94")]
@@ -139,6 +147,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         public InternalOrganisation BilledTo { get; set; }
+
+        #region Allors
+        [Id("B75B10EE-6AA5-4C48-BDC0-61FA814B3E19")]
+        [AssociationId("93EA9833-3715-461B-8AB3-821211659185")]
+        [RoleId("2EBDB046-8D94-4970-84BE-0FBD7B8070DA")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person BilledToContactPerson { get; set; }
 
         #region Allors
         [Id("ABB96E7A-F5D1-4173-AEDB-62B217A22495")]
@@ -161,14 +179,14 @@ namespace Allors.Repository
         public ContactMechanism BillToCustomerContactMechanism { get; set; }
 
         #region Allors
-        [Id("F3CF7DEC-452C-4A68-9653-E7BB8987F8A1")]
-        [AssociationId("DDBB0961-232F-427D-9957-CAD860377ACE")]
-        [RoleId("31AB05CD-6611-4E0A-B655-F98F47DEEF16")]
-        [Indexed]
+        [Id("91CF5142-0240-47A6-9423-3EA8F2EA43F4")]
+        [AssociationId("9EDB19E1-8577-411E-BF4F-5DA7BF630030")]
+        [RoleId("B3D5E1F7-5849-40FE-AE4D-6753EED19F9A")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
         [Workspace]
-        public PaymentMethod BillToCustomerPaymentMethod { get; set; }
+        public Person BillToCustomerContactPerson { get; set; }
 
         #region Allors
         [Id("F37F0194-EDF4-49DA-BDB2-AA9C2A601809")]
@@ -191,6 +209,16 @@ namespace Allors.Repository
         public PostalAddress ShipToAddress { get; set; }
 
         #region Allors
+        [Id("5EF823D6-7EED-40C6-9E4A-9106A655B9E1")]
+        [AssociationId("E6CF7038-D008-4CF4-9D7D-1D2E48241991")]
+        [RoleId("69DA77F9-9AF7-4E7A-8477-9E115299A6AE")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person ShipToCustomerContactPerson { get; set; }
+
+        #region Allors
         [Id("0E1BB984-6D42-4473-9BA1-A3EBDEF84A54")]
         [AssociationId("DCBFDD56-D47A-4229-9762-07C35D2CB826")]
         [RoleId("A2BA0164-3E36-494D-96D3-CBEA0C737279")]
@@ -209,6 +237,26 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public PostalAddress ShipToEndCustomerAddress { get; set; }
+
+        #region Allors
+        [Id("02C6EEC2-0DBD-4F63-9FFC-6C107E90E303")]
+        [AssociationId("31D6F0ED-3848-4422-814E-1785877B0597")]
+        [RoleId("9863AA72-FCBD-446A-A162-ACB075025CFB")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Person ShipToEndCustomerContactPerson { get; set; }
+
+        #region Allors
+        [Id("F3CF7DEC-452C-4A68-9653-E7BB8987F8A1")]
+        [AssociationId("DDBB0961-232F-427D-9957-CAD860377ACE")]
+        [RoleId("31AB05CD-6611-4E0A-B655-F98F47DEEF16")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public PaymentMethod BillToCustomerPaymentMethod { get; set; }
 
         #region Allors
         [Id("4cf09eb7-820f-4677-bfc0-92a48d0a938b")]

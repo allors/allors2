@@ -81,16 +81,6 @@ namespace Allors.Repository
         public PurchaseOrderItem[] PurchaseOrderItems { get; set; }
 
         #region Allors
-        [Id("86664C8E-E336-42F3-A65A-4D7B22EF92F7")]
-        [AssociationId("3D87A511-4BA6-4969-B27F-87C7E1E1BAF4")]
-        [RoleId("31C09E4D-7922-47EC-A3E9-7C2E9DF59DB0")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        public Party PreviousTakenViaSupplier { get; set; }
-
-        #region Allors
         [Id("774CEA12-501D-4C7A-885B-A198079CF74E")]
         [AssociationId("498F1CC3-1097-4216-BB18-DD2892CDEF15")]
         [RoleId("6E35415E-33B4-4914-A14A-AF16E641412E")]
@@ -99,6 +89,16 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public Party TakenViaSupplier { get; set; }
+
+        #region Allors
+        [Id("86664C8E-E336-42F3-A65A-4D7B22EF92F7")]
+        [AssociationId("3D87A511-4BA6-4969-B27F-87C7E1E1BAF4")]
+        [RoleId("31C09E4D-7922-47EC-A3E9-7C2E9DF59DB0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        [Indexed]
+        public Party PreviousTakenViaSupplier { get; set; }
 
         #region Allors
         [Id("8AC728F2-F766-47C4-93B7-15B5D5DC2FF6")]
@@ -110,6 +110,15 @@ namespace Allors.Repository
         public ContactMechanism TakenViaContactMechanism { get; set; }
 
         #region Allors
+        [Id("C7B99EF4-7DE8-4214-A598-E6E46608E166")]
+        [AssociationId("3789439A-992A-4947-8EE0-A4E40440F113")]
+        [RoleId("B55B7BCC-386E-47A2-B328-17B6F6A3EF21")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Person TakenViaContactPerson { get; set; }
+
+        #region Allors
         [Id("A368FB1C-8467-40E9-BC33-47BA5AEA9A0B")]
         [AssociationId("155B4626-22C8-4FE8-AC24-E75F91ECF52E")]
         [RoleId("90426B16-51F2-4D93-AEF2-4A109348831A")]
@@ -118,6 +127,15 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         public ContactMechanism BillToContactMechanism { get; set; }
+
+        #region Allors
+        [Id("555F06E3-2C07-4A62-A4D5-E52E64A92362")]
+        [AssociationId("DF0499B7-1BAA-42FB-BECD-F023D8EC43BA")]
+        [RoleId("D431167C-CA76-42BF-A11F-6D8E79EEFDDC")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Person BillToContactPerson { get; set; }
 
         #region Allors
         [Id("69DDEF12-B6AA-4040-991D-CF1D20A0D5EC")]
@@ -136,6 +154,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public PostalAddress ShipToAddress { get; set; }
+
+        #region Allors
+        [Id("88691341-493F-4F23-8329-32AC6FC7682E")]
+        [AssociationId("C689156A-7A51-4838-A790-360DB50F7C69")]
+        [RoleId("3862640B-4ADE-4C52-9FF4-E108FC889736")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Person ShipToContactPerson { get; set; }
 
         #region inherited methods
 

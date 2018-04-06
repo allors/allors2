@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from "../../../../../domain";
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -42,15 +42,21 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public shipToEndCustomerAddresses: ContactMechanism[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
-  public contacts: Person[];
+  public billToContacts: Person[];
+  public billToEndCustomerContacts: Person[];
+  public shipToContacts: Person[];
+  public shipToEndCustomerContacts: Person[];
   public stores: Store[];
-
-  public addShipToAddress: boolean = false;
-  public addContactPerson: boolean = false;
 
   public peopleFilter: Filter;
   public organisationsFilter: Filter;
   public currenciesFilter: Filter;
+
+  public addShipToAddress: boolean = false;
+  public addBillToContactPerson: boolean = false;
+  public addBillToEndCustomerContactPerson: boolean = false;
+  public addShipToContactPerson: boolean = false;
+  public addShipToEndCustomerContactPerson: boolean = false;
 
   public addShipToContactMechanism: boolean;
   public addBillToContactMechanism: boolean;
@@ -60,14 +66,37 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private previousShipToCustomer: Party;
+  private previousShipToEndCustomer: Party;
   private previousBillToCustomer: Party;
+  private previousBillToEndCustomer: Party;
   private fetcher: Fetcher;
 
-  get showOrganisations(): boolean {
+  get showBillToOrganisations(): boolean {
+    return !this.order.BillToCustomer || this.order.BillToCustomer instanceof (Organisation);
+  }
+  get showBillToPeople(): boolean {
+    return !this.order.BillToCustomer || this.order.BillToCustomer instanceof (Person);
+  }
+
+  get showShipToOrganisations(): boolean {
     return !this.order.ShipToCustomer || this.order.ShipToCustomer instanceof (Organisation);
   }
-  get showPeople(): boolean {
+  get showShipToPeople(): boolean {
     return !this.order.ShipToCustomer || this.order.ShipToCustomer instanceof (Person);
+  }
+
+  get showBillToEndCustomerOrganisations(): boolean {
+    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer instanceof (Organisation);
+  }
+  get showBillToEndCustomerPeople(): boolean {
+    return !this.order.BillToEndCustomer || this.order.BillToEndCustomer instanceof (Person);
+  }
+
+  get showShipToEndCustomerOrganisations(): boolean {
+    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer instanceof (Organisation);
+  }
+  get showShipToEndCustomerPeople(): boolean {
+    return !this.order.ShipToEndCustomer || this.order.ShipToEndCustomer instanceof (Person);
   }
 
   constructor(
@@ -136,11 +165,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 include: [
                   new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
                   new TreeNode({ roleType: m.SalesOrder.ShipToAddress }),
+                  new TreeNode({ roleType: m.SalesOrder.ShipToContactPerson }),
                   new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
                   new TreeNode({ roleType: m.SalesOrder.BillToContactMechanism }),
+                  new TreeNode({ roleType: m.SalesOrder.BillToContactPerson }),
                   new TreeNode({ roleType: m.SalesOrder.BillToEndCustomerContactMechanism }),
+                  new TreeNode({ roleType: m.SalesOrder.BillToEndCustomerContactPerson }),
                   new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomer }),
                   new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomerAddress }),
+                  new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomerContactPerson }),
                   new TreeNode({ roleType: m.SalesOrder.Quote }),
                   new TreeNode({
                     nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
@@ -188,7 +221,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         }
 
         this.previousShipToCustomer = this.order.ShipToCustomer;
+        this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
         this.previousBillToCustomer = this.order.BillToCustomer;
+        this.previousBillToEndCustomer = this.order.BillToEndCustomer;
       },
       (error: Error) => {
         this.errorService.message(error);
@@ -197,12 +232,46 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  public personCancelled(): void {
-    this.addContactPerson = false;
+  public billToContactPersonCancelled(): void {
+    this.addBillToContactPerson = false;
   }
 
-  public personAdded(id: string): void {
-    this.addContactPerson = false;
+  public billToContactPersonAdded(id: string): void {
+    this.addBillToContactPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.order.BillToCustomer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.billToContacts.push(contact);
+    this.order.BillToContactPerson = contact;
+  }
+
+  public billToEndCustomerContactPersonCancelled(): void {
+    this.addBillToEndCustomerContactPerson = false;
+  }
+
+  public billToEndCustomerContactPersonAdded(id: string): void {
+    this.addBillToEndCustomerContactPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.order.BillToEndCustomer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.billToEndCustomerContacts.push(contact);
+    this.order.BillToEndCustomerContactPerson = contact;
+  }
+
+  public shipToContactPersonCancelled(): void {
+    this.addShipToContactPerson = false;
+  }
+
+  public shipToContactPersonAdded(id: string): void {
+    this.addShipToContactPerson = false;
 
     const contact: Person = this.scope.session.get(id) as Person;
 
@@ -210,7 +279,25 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     organisationContactRelationship.Organisation = this.order.ShipToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
-    this.contacts.push(contact);
+    this.shipToContacts.push(contact);
+    this.order.ShipToContactPerson = contact;
+  }
+
+  public shipToEndCustomerContactPersonCancelled(): void {
+    this.addShipToEndCustomerContactPerson = false;
+  }
+
+  public shipToEndCustomerContactPersonAdded(id: string): void {
+    this.addShipToEndCustomerContactPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.order.ShipToEndCustomer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.shipToEndCustomerContacts.push(contact);
+    this.order.ShipToEndCustomerContactPerson = contact;
   }
 
   public billToContactMechanismCancelled() {
@@ -222,6 +309,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.order.BillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToEndCustomerContactMechanismCancelled() {
@@ -233,18 +321,19 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.order.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.order.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToAddressCancelled(): void {
     this.addShipToAddress = false;
   }
 
-  public shipToAddressAdded(id: string): void {
+  public shipToAddressAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addShipToAddress = false;
 
-    const partyContactMechanism: PartyContactMechanism = this.scope.session.get(id) as PartyContactMechanism;
     this.shipToAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.order.ShipToAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public shipToEndCustomerAddressCancelled() {
@@ -256,6 +345,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.shipToEndCustomerAddresses.push(partyContactMechanism.ContactMechanism);
     this.order.ShipToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
+    this.order.ShipToEndCustomerAddress = partyContactMechanism.ContactMechanism as PostalAddress;
   }
 
   public approve(): void {
@@ -581,13 +671,18 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
           if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
             this.order.ShipToAddress = null;
-            this.order.ContactPerson = null;
+            this.order.ShipToContactPerson = null;
             this.previousShipToCustomer =  this.order.ShipToCustomer;
+          }
+
+          if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
+            this.order.BillToCustomer = this.order.ShipToCustomer;
+            this.updateBillToCustomer(this.order.ShipToCustomer);
           }
 
           const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
           this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
-          this.contacts = loaded.collections.currentContacts as Person[];
+          this.shipToContacts = loaded.collections.currentContacts as Person[];
         },
         (error: Error) => {
           this.errorService.message(error);
@@ -596,127 +691,165 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       );
     }
 
-    private updateBillToCustomer(party: Party) {
+  private updateBillToCustomer(party: Party) {
 
-      const fetch: Fetch[] = [
-        new Fetch({
-          id: party.id,
-          include: [
-            new TreeNode({
-              nodes: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                  ],
-                  roleType: this.m.PostalAddress.PostalBoundary,
-                }),
-              ],
-              roleType: this.m.PartyContactMechanism.ContactMechanism,
-            }),
-          ],
-          name: "partyContactMechanisms",
-          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-        }),
-      ];
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
 
-      this.scope
-        .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded) => {
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded) => {
 
+        if (this.order.BillToCustomer !== this.previousBillToCustomer) {
+          this.order.BillToContactMechanism = null;
+          this.order.BillToContactPerson = null;
           this.previousBillToCustomer =  this.order.BillToCustomer;
+        }
 
-          if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null &&
-              !(this.order.BillToCustomer instanceof Organisation && this.order.BillToCustomer.IsInternalOrganisation)) {
-            this.order.ShipToCustomer = this.order.BillToCustomer;
-            this.updateShipToCustomer(this.order.ShipToCustomer);
-          }
+        if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
+          this.order.ShipToCustomer = this.order.BillToCustomer;
+          this.updateShipToCustomer(this.order.ShipToCustomer);
+        }
 
-          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-          this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        },
-        (error: Error) => {
-          this.errorService.message(error);
-          this.goBack();
-        },
-      );
-    }
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.billToContacts = loaded.collections.currentContacts as Person[];
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
 
-    private updateBillToEndCustomer(party: Party) {
+  private updateBillToEndCustomer(party: Party) {
 
-      const fetch: Fetch[] = [
-        new Fetch({
-          id: party.id,
-          include: [
-            new TreeNode({
-              nodes: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                  ],
-                  roleType: this.m.PostalAddress.PostalBoundary,
-                }),
-              ],
-              roleType: this.m.PartyContactMechanism.ContactMechanism,
-            }),
-          ],
-          name: "partyContactMechanisms",
-          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-        }),
-      ];
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
 
-      this.scope
-        .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded) => {
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded) => {
 
-          if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
-            this.order.ShipToEndCustomer = this.order.BillToEndCustomer;
-            this.updateShipToEndCustomer(this.order.ShipToCustomer);
-          }
+        if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
+          this.order.BillToEndCustomerContactMechanism = null;
+          this.order.BillToEndCustomerContactPerson = null;
+          this.previousBillToEndCustomer =  this.order.BillToEndCustomer;
+        }
 
-          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-          this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        },
-        (error: Error) => {
-          this.errorService.message(error);
-          this.goBack();
-        },
-      );
-    }
+        if (this.order.BillToEndCustomer !== null && this.order.ShipToEndCustomer === null) {
+          this.order.ShipToEndCustomer = this.order.BillToEndCustomer;
+          this.updateShipToEndCustomer(this.order.ShipToEndCustomer);
+        }
 
-    private updateShipToEndCustomer(party: Party) {
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
 
-      const fetch: Fetch[] = [
-        new Fetch({
-          id: party.id,
-          include: [
-            new TreeNode({
-              nodes: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                  ],
-                  roleType: this.m.PostalAddress.PostalBoundary,
-                }),
-              ],
-              roleType: this.m.PartyContactMechanism.ContactMechanism,
-            }),
-          ],
-          name: "partyContactMechanisms",
-          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-        }),
-      ];
+  private updateShipToEndCustomer(party: Party) {
 
-      this.scope
-        .load("Pull", new PullRequest({ fetch }))
-        .subscribe((loaded) => {
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
 
-          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-          this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
-        },
-        (error: Error) => {
-          this.errorService.message(error);
-          this.goBack();
-        },
-      );
-    }
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded) => {
+
+        if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
+          this.order.ShipToEndCustomerAddress = null;
+          this.order.ShipToEndCustomerContactPerson = null;
+          this.previousShipToEndCustomer =  this.order.ShipToEndCustomer;
+        }
+
+        if (this.order.ShipToEndCustomer !== null && this.order.BillToEndCustomer === null) {
+          this.order.BillToEndCustomer = this.order.ShipToEndCustomer;
+          this.updateBillToEndCustomer(this.order.BillToEndCustomer);
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
 }

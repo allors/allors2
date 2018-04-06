@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from "@ang
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../../../angular";
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from "../../../../../../../domain";
-import { PullRequest, Query } from "../../../../../../../framework";
+import { PullRequest, Query, Sort } from "../../../../../../../framework";
 import { MetaDomain } from "../../../../../../../meta";
 
 @Component({
@@ -39,6 +39,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
         {
           name: "countries",
           objectType: this.m.Country,
+          sort: [new Sort({ roleType: this.m.Country.Name, direction: "Asc" })],
         }),
       new Query(
         {

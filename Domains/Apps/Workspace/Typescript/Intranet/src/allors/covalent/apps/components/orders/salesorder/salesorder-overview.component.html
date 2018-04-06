@@ -43,8 +43,8 @@
           <div *ngIf="order.BillToCustomer" class="grid-2_xs-1">
             <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
               display="displayName" label="Bill to Customer" [routerLink]="['/relations/organisation/' + order.BillToCustomer.id ]"></a-mat-static>
-            <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
-              display="displayName" label="Bill to Customer" [routerLink]="['/relations/person/' + order.BillToCustomer.id ]"></a-mat-static>
+            <!-- <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+              display="displayName" label="Bill to Customer" [routerLink]="['/relations/person/' + order.BillToCustomer.id ]"></a-mat-static> -->
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
           </div>
 
@@ -64,6 +64,9 @@
             <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="order.CustomerReference" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-static>
+          </div>
           <div class="grid-1">
             <a-mat-static class="col" *ngIf="order.Description" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
           </div>
@@ -116,7 +119,7 @@
             <ng-template let-orderItem let-last="last" ngFor [ngForOf]="order.SalesOrderItems">
               <mat-list-item>
                 <h3 *ngIf="orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
-                <h3 *ngIf="!orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.ItemType.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
+                <h3 *ngIf="!orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.InvoiceItemType.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
                 <h4 mat-line>Total ex VAT: {{orderItem.TotalExVat}}</h4>
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">

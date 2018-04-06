@@ -40,6 +40,51 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public int PaymentNetDays
+        {
+            get
+            {
+                if (this.ExistSalesTerms)
+                {
+                    foreach (AgreementTerm term in this.SalesTerms)
+                    {
+                        if (term.TermType.Equals(new InvoiceTermTypes(this.Strategy.Session).PaymentNetDays))
+                        {
+                            if (int.TryParse(term.TermValue, out var netDays))
+                            {
+                                return netDays;
+                            }
+                        }
+                    }
+                }
+
+                if (this.ExistBillToCustomer && this.BillToCustomer.PaymentNetDays() != null)
+                {
+                    return this.BillToCustomer.PaymentNetDays().Value;
+                }
+
+                if (this.ExistStore && this.Store.ExistPaymentNetDays)
+                {
+                    return this.Store.PaymentNetDays;
+                }
+
+                return 0;
+            }
+        }
+
+        public DateTime? DueDate
+        {
+            get
+            {
+                if (this.ExistOrderDate)
+                {
+                    return this.OrderDate.AddDays(this.PaymentNetDays);
+                }
+
+                return null;
+            }
+        }
+
         public OrderItem[] OrderItems => this.SalesOrderItems;
 
         public bool ScheduledManually
@@ -141,9 +186,9 @@ namespace Allors.Domain
                 this.ShipmentMethod = this.ShipToCustomer.DefaultShipmentMethod ?? this.Store.DefaultShipmentMethod;
             }
 
-            if (!this.ExistBillFromContactMechanism)
+            if (!this.ExistTakenByContactMechanism)
             {
-                this.BillFromContactMechanism = this.TakenBy.ExistBillingAddress ? this.TakenBy.BillingAddress : this.TakenBy.GeneralCorrespondence;
+                this.TakenByContactMechanism = this.TakenBy.ExistBillingAddress ? this.TakenBy.BillingAddress : this.TakenBy.GeneralCorrespondence;
             }
 
             if (!this.ExistTakenByContactMechanism)
@@ -846,22 +891,26 @@ namespace Allors.Domain
             var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
                 .WithSalesOrder(this)
                 .WithBilledFrom(this.TakenBy)
-                .WithBilledFromContactMechanism(this.BillFromContactMechanism)
+                .WithBilledFromContactMechanism(this.TakenByContactMechanism)
+                .WithBilledFromContactPerson(this.TakenByContactPerson)
                 .WithBillToCustomer(this.BillToCustomer)
                 .WithBillToContactMechanism(this.BillToContactMechanism)
+                .WithBillToContactPerson(this.BillToContactPerson)
                 .WithBillToEndCustomer(this.BillToEndCustomer)
                 .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithBillToEndCustomerContactPerson(this.BillToEndCustomerContactPerson)
                 .WithShipToCustomer(this.ShipToCustomer)
                 .WithShipToAddress(this.ShipToAddress)
+                .WithShipToContactPerson(this.ShipToContactPerson)
                 .WithShipToEndCustomer(this.ShipToEndCustomer)
                 .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
+                .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
                 .WithDescription(this.Description)
                 .WithStore(this.Store)
                 .WithInvoiceDate(DateTime.UtcNow)
                 .WithSalesChannel(this.SalesChannel)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
                 .WithVatRegime(this.VatRegime)
-                .WithContactPerson(this.ContactPerson)
                 .WithDiscountAdjustment(this.DiscountAdjustment)
                 .WithSurchargeAdjustment(this.SurchargeAdjustment)
                 .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
