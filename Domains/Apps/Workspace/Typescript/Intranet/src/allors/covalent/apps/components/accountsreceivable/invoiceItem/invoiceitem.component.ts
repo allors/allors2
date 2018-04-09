@@ -82,7 +82,6 @@ export class InvoiceItemEditComponent
               new TreeNode({
                 roleType: m.SalesInvoiceItem.SalesInvoiceItemState,
               }),
-              new TreeNode({ roleType: m.SalesInvoiceItem.SalesOrderItem }),
               new TreeNode({
                 nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
                 roleType: m.SalesInvoiceItem.VatRegime,

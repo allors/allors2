@@ -935,6 +935,7 @@ namespace Allors.Domain
                         .WithProduct(orderItem.Product)
                         .WithQuantity(orderItem.QuantityOrdered)
                         .WithComment(orderItem.Comment)
+                        .WithDetails(orderItem.Details)
                         .WithInternalComment(orderItem.InternalComment)
                         .Build();
 

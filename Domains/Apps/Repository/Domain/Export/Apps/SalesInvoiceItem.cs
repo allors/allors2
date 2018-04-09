@@ -173,17 +173,6 @@ namespace Allors.Repository
         public decimal UnitPurchasePrice { get; set; }
 
         #region Allors
-        [Id("5bdae88b-856d-4746-8645-9bded2a4a3bd")]
-        [AssociationId("2b93a791-124c-45ac-8f3c-bf33f2dcfc13")]
-        [RoleId("b303f168-96d8-478a-b42c-6b7594b8db42")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public SalesOrderItem SalesOrderItem { get; set; }
-
-        #region Allors
         [Id("6dd4e8ee-48ed-400d-a129-99a3a651586a")]
         [AssociationId("f99e5e01-943c-4de9-862c-c472d2d873f2")]
         [RoleId("6cb182c2-b481-4e26-869e-609990ea68b3")]
@@ -246,6 +235,15 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal RequiredMarkupPercentage { get; set; }
+
+        #region Allors
+        [Id("09E97D2C-55A5-4D96-8028-2B36FCB90994")]
+        [AssociationId("59EB1A75-3521-4506-A044-CB93554C6C9F")]
+        [RoleId("E15A86AE-6ABA-4D24-8021-BA68A466DAC4")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        public string Details { get; set; }
 
         #region inherited methods
 

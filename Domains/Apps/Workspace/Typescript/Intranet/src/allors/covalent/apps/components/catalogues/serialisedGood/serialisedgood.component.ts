@@ -132,18 +132,28 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(this.m.ProductCategory),
-          new Query(this.m.ProductType),
           new Query(this.m.VatRate),
           new Query(this.m.Ownership),
           new Query(this.m.InventoryItemKind),
           new Query(this.m.SerialisedInventoryItemState),
           new Query(
-            {
-              name: "brands",
-              objectType: this.m.Brand,
-              sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
-            }),
+          {
+            name: "productCategories",
+            objectType: this.m.ProductCategory,
+            sort: [new Sort({ roleType: m.ProductCategory.Name, direction: "Asc" })],
+          }),
+          new Query(
+          {
+            name: "productTypes",
+            objectType: this.m.ProductType,
+            sort: [new Sort({ roleType: m.ProductType.Name, direction: "Asc" })],
+          }),
+          new Query(
+          {
+            name: "brands",
+            objectType: this.m.Brand,
+            sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
+          }),
         ];
 
         return this.scope
@@ -152,8 +162,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.scope.session.reset();
 
             this.good = loaded.objects.good as Good;
-            this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
-            this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
+            this.categories = loaded.collections.productCategories as ProductCategory[];
+            this.productTypes = loaded.collections.productTypes as ProductType[];
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
             this.ownerships = loaded.collections.OwnershipQuery as Ownership[];

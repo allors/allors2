@@ -2,6 +2,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Text;
 
     using Meta;
 
@@ -69,11 +70,6 @@ namespace Allors.Domain
                     derivation.AddDependency(this, paymentApplication);
                 }
             }
-
-            if (this.ExistSalesOrderItem)
-            {
-                derivation.AddDependency(this.SalesOrderItem, this);
-            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
@@ -92,6 +88,11 @@ namespace Allors.Domain
             if (this.ExistInvoiceItemType && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem))
             {
                 this.Quantity = 1;
+            }
+
+            if (derivation.IsCreated(this) && !this.ExistOrderItemBillingsWhereSalesInvoiceItem && this.ExistProduct && this.Product is Good)
+            {
+                this.DeriveDetails((Good)this.Product);
             }
         }
 
@@ -506,24 +507,74 @@ namespace Allors.Domain
 
         public void AppsOnDeriveSalesRep(IDerivation derivation)
         {
-            if (this.SalesOrderItem != null)
+            if (this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer is Organisation customer)
             {
-                this.SalesRep = this.SalesOrderItem.SalesRep;
-            }
-            else
-            {
-                var customer = this.SalesInvoiceWhereSalesInvoiceItem.BillToCustomer as Organisation;
-                if (customer != null)
+                if (this.ExistProduct)
                 {
-                    if (this.ExistProduct)
+                    this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
+                }
+                else
+                {
+                    this.SalesRep = SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
+                }
+            }
+        }
+
+        public void DeriveDetails(Good good)
+        {
+            var builder = new StringBuilder();
+
+            if (good.ExistManufacturedBy)
+            {
+                builder.Append($", manufacturer: {good.ManufacturedBy.PartyName}");
+            }
+
+            foreach (ProductFeature feature in good.StandardFeatures)
+            {
+                if (feature is Brand)
+                {
+                    var brand = (Brand)feature;
+                    builder.Append($", brand: {brand.Name}");
+                }
+                if (feature is Model)
+                {
+                    var model = (Model)feature;
+                    builder.Append($", model: {model.Name}");
+                }
+            }
+
+            if (good.InventoryItemsWhereGood.First is SerialisedInventoryItem serialisedInventoryItem)
+            {
+                builder.Append($", serialNumber: {serialisedInventoryItem.SerialNumber}");
+
+                if (serialisedInventoryItem.ExistManufacturingYear)
+                {
+                    builder.Append($", Manufacturing year: {serialisedInventoryItem.ManufacturingYear}");
+                }
+
+                foreach (SerialisedInventoryItemCharacteristic characteristic in serialisedInventoryItem.SerialisedInventoryItemCharacteristics)
+                {
+                    if (characteristic.ExistValue)
                     {
-                        this.SalesRep = SalesRepRelationships.SalesRep(customer, this.Product.PrimaryProductCategory, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
-                    }
-                    else
-                    {
-                        this.SalesRep = SalesRepRelationships.SalesRep(customer, null, this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate);
+                        var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
+                        if (characteristicType.ExistUnitOfMeasure)
+                        {
+                            builder.Append(
+                                $", {characteristicType.Name}: {characteristic.Value} {characteristicType.UnitOfMeasure.Name}");
+                        }
+                        else
+                        {
+                            builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                        }
                     }
                 }
+            }
+
+            this.Details = builder.ToString();
+
+            if (this.Details.StartsWith(","))
+            {
+                this.Details = this.Details.Substring(2);
             }
         }
     }

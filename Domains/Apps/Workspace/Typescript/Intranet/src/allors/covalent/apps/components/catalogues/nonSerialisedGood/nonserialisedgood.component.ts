@@ -119,19 +119,29 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         ];
 
         const query: Query[] = [
-          new Query(this.m.ProductCategory),
-          new Query(this.m.ProductType),
           new Query(this.m.VarianceReason),
           new Query(this.m.VatRate),
           new Query(this.m.Ownership),
           new Query(this.m.InventoryItemKind),
           new Query(this.m.NonSerialisedInventoryItemState),
           new Query(
-            {
-              name: "brands",
-              objectType: this.m.Brand,
-              sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
-            }),
+          {
+            name: "productCategories",
+            objectType: this.m.ProductCategory,
+            sort: [new Sort({ roleType: m.ProductCategory.Name, direction: "Asc" })],
+          }),
+          new Query(
+          {
+            name: "productTypes",
+            objectType: this.m.ProductType,
+            sort: [new Sort({ roleType: m.ProductType.Name, direction: "Asc" })],
+          }),
+          new Query(
+          {
+            name: "brands",
+            objectType: this.m.Brand,
+            sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
+          }),
         ];
 
         return this.scope
@@ -139,8 +149,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           .switchMap((loaded) => {
 
             this.good = loaded.objects.good as Good;
-            this.categories = loaded.collections.ProductCategoryQuery as ProductCategory[];
-            this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
+            this.categories = loaded.collections.productCategories as ProductCategory[];
+            this.productTypes = loaded.collections.productTypes as ProductType[];
             this.varianceReasons = loaded.collections.VarianceReasonQuery as VarianceReason[];
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
@@ -258,37 +268,40 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
     const suppliersToDelete = this.suppliers;
 
-    this.selectedSuppliers.forEach((supplier: Organisation) => {
-      const index = suppliersToDelete.indexOf(supplier);
-      if (index > -1) {
-          suppliersToDelete.splice(index, 1);
-      }
+    if (this.selectedSuppliers !== undefined) {
+      this.selectedSuppliers.forEach((supplier: Organisation) => {
+        const index = suppliersToDelete.indexOf(supplier);
+        if (index > -1) {
+            suppliersToDelete.splice(index, 1);
+        }
 
-      const now = new Date();
-      const supplierOffering = this.supplierOfferings.find((v) =>
-        v.Supplier === supplier &&
-        v.FromDate <= now &&
-       (v.ThroughDate === null || v.ThroughDate >= now));
+        const now = new Date();
+        const supplierOffering = this.supplierOfferings.find((v) =>
+          v.Supplier === supplier &&
+          v.FromDate <= now &&
+        (v.ThroughDate === null || v.ThroughDate >= now));
 
-      if (supplierOffering === undefined) {
-        this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
-      } else {
-        supplierOffering.ThroughDate = null;
-      }
-    });
+        if (supplierOffering === undefined) {
+          this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
+        } else {
+          supplierOffering.ThroughDate = null;
+        }
+      });
+    }
 
-    suppliersToDelete.forEach((supplier: Organisation) => {
-      const now = new Date();
-      const supplierOffering = this.supplierOfferings.find((v) =>
-        v.Supplier === supplier &&
-        v.FromDate <= now &&
-       (v.ThroughDate === null || v.ThroughDate >= now));
+    if (suppliersToDelete !== undefined) {
+      suppliersToDelete.forEach((supplier: Organisation) => {
+        const now = new Date();
+        const supplierOffering = this.supplierOfferings.find((v) =>
+          v.Supplier === supplier &&
+          v.FromDate <= now &&
+        (v.ThroughDate === null || v.ThroughDate >= now));
 
-      if (supplierOffering !== undefined) {
-        supplierOffering.ThroughDate = new Date();
-      }
-    });
-
+        if (supplierOffering !== undefined) {
+          supplierOffering.ThroughDate = new Date();
+        }
+      });
+    }
     this.scope
       .save()
       .subscribe((saved: Saved) => {

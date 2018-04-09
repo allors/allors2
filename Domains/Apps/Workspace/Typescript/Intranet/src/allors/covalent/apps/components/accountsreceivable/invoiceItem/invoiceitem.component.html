@@ -37,6 +37,9 @@
       </div>
 
       <div class="grid-1">
+        <a-mat-textarea class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Details"></a-mat-textarea>
+      </div>
+      <div class="grid-1">
         <a-mat-static class="col" *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-mat-static>
       </div>
       <div class="grid-1">

@@ -5,6 +5,8 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Globalization;
+    using System.Text;
+
     using Meta;
     using Resources;
 
@@ -173,6 +175,11 @@ namespace Allors.Domain
                 }
 
                 this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+            }
+
+            if (derivation.IsCreated(this) && this.ExistProduct && this.Product is Good)
+            {
+                this.DeriveDetails((Good)this.Product);
             }
 
             this.AppsOnDeriveCurrentObjectState(derivation);
@@ -1128,6 +1135,64 @@ namespace Allors.Domain
             }
 
             this.AppsOnDeriveOrderItemState(derivation);
+        }
+
+        public void DeriveDetails(Good good)
+        {
+            var builder = new StringBuilder();
+
+            if (good.ExistManufacturedBy)
+            {
+                builder.Append($", manufacturer: {good.ManufacturedBy.PartyName}");
+            }
+
+            foreach (ProductFeature feature in good.StandardFeatures)
+            {
+                if (feature is Brand)
+                {
+                    var brand = (Brand)feature;
+                    builder.Append($", brand: {brand.Name}");
+                }
+                if (feature is Model)
+                {
+                    var model = (Model)feature;
+                    builder.Append($", model: {model.Name}");
+                }
+            }
+
+            if (good.InventoryItemsWhereGood.First is SerialisedInventoryItem serialisedInventoryItem)
+            {
+                builder.Append($", serialNumber: {serialisedInventoryItem.SerialNumber}");
+
+                if (serialisedInventoryItem.ExistManufacturingYear)
+                {
+                    builder.Append($", Manufacturing year: {serialisedInventoryItem.ManufacturingYear}");
+                }
+
+                foreach (SerialisedInventoryItemCharacteristic characteristic in serialisedInventoryItem.SerialisedInventoryItemCharacteristics)
+                {
+                    if (characteristic.ExistValue)
+                    {
+                        var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
+                        if (characteristicType.ExistUnitOfMeasure)
+                        {
+                            builder.Append(
+                                $", {characteristicType.Name}: {characteristic.Value} {characteristicType.UnitOfMeasure.Name}");
+                        }
+                        else
+                        {
+                            builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                        }
+                    }
+                }
+            }
+
+            this.Details = builder.ToString();
+
+            if (this.Details.StartsWith(","))
+            {
+                this.Details = this.Details.Substring(2);
+            }
         }
     }
 }

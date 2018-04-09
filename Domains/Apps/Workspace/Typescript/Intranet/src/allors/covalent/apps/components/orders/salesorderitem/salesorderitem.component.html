@@ -58,6 +58,9 @@
       <br/> -->
 
       <div class="grid-1">
+        <a-mat-textarea class="col" [object]="orderItem" [roleType]="m.SalesOrderItem.Details"></a-mat-textarea>
+      </div>
+      <div class="grid-1">
         <a-mat-static class="col" *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
       </div>
       <div class="grid-1">

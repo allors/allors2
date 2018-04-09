@@ -160,10 +160,22 @@ export class GoodsOverviewComponent implements OnDestroy {
             new Query(m.Brand),
             new Query(m.Model),
             new Query(m.InventoryItemKind),
-            new Query(m.ProductCategory),
-            new Query(m.ProductType),
             new Query(m.Organisation),
             new Query(m.Ownership),
+            new Query({
+              name: "productCategories",
+              objectType: m.ProductCategory,
+              sort: [
+                new Sort({ roleType: m.ProductCategory.Name, direction: "Asc" }),
+              ],
+            }),
+            new Query({
+              name: "productTypes",
+              objectType: m.ProductType,
+              sort: [
+                new Sort({ roleType: m.ProductType.Name, direction: "Asc" }),
+              ],
+            }),
             new Query({
               name: "manufacturers",
               objectType: m.Organisation,
@@ -195,12 +207,12 @@ export class GoodsOverviewComponent implements OnDestroy {
                 (v: InventoryItemKind) => v.Name === data.inventoryItemKind,
               );
 
-              this.productCategories = loaded.collections.ProductCategoryQuery as ProductCategory[];
+              this.productCategories = loaded.collections.productCategories as ProductCategory[];
               this.productCategory = this.productCategories.find(
                 (v: ProductCategory) => v.Name === data.productCategory,
               );
 
-              this.productTypes = loaded.collections.ProductTypeQuery as ProductType[];
+              this.productTypes = loaded.collections.productTypes as ProductType[];
               this.productType = this.productTypes.find(
                 (v: ProductType) => v.Name === data.productType,
               );

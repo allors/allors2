@@ -431,7 +431,16 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityRequestsShipping { get; set; }
-        
+
+        #region Allors
+        [Id("E4C442F2-2620-47EF-BE97-E4E352F0A85A")]
+        [AssociationId("10E53BD5-4C72-4632-86D8-E87D33B6E044")]
+        [RoleId("87E5826C-2EB8-4D07-8B87-0B321FEAFEA8")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        public string Details { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }
