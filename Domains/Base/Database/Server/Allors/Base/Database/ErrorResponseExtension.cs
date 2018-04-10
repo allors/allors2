@@ -37,5 +37,20 @@ namespace Allors.Server
                                               });
             }
         }
+
+        public static void AddVersionError(this ErrorResponse @this, IObject obj)
+        {
+            @this.VersionErrors.Add(obj.Id.ToString());
+        }
+
+        public static void AddAccessError(this ErrorResponse @this, IObject obj)
+        {
+            @this.AccessErrors.Add(obj.Id.ToString());
+        }
+
+        public static void AddMissingError(this ErrorResponse @this, string id)
+        {
+            @this.MissingErrors.Add(id);
+        }
     }
 }

@@ -23,11 +23,6 @@
 
 namespace Tests
 {
-    using Allors;
-
-    using Xunit;
-
-    
     public class OrganisationTests : DomainTest
     {
     }

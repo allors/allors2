@@ -22,7 +22,6 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System.Collections.Generic;
 
-    using Allors;
     using Allors.Meta;
 
     internal class Flush

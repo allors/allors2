@@ -18,9 +18,6 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using Allors;
-using Allors.Meta;
-
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;

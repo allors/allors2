@@ -27,8 +27,6 @@ namespace Allors.Services
     using System.Linq.Expressions;
     using System.Reflection;
 
-    using Allors.Domain;
-
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Internal;
     using Microsoft.AspNetCore.Mvc.Razor;

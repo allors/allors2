@@ -20,8 +20,6 @@
 
 namespace Allors.Domain
 {
-    using System;
-
     using Allors.Meta;
 
     public interface IAccessControlList

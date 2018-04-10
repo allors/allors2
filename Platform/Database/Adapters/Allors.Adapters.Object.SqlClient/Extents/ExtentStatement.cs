@@ -22,7 +22,6 @@ using System.Collections.Generic;
 
 namespace Allors.Adapters.Object.SqlClient
 {
-    using System.Collections;
     using Allors.Meta;
 
     internal abstract class ExtentStatement

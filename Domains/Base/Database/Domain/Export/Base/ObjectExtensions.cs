@@ -24,7 +24,6 @@ namespace Allors
 
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Services;
 
     public static partial class ObjectExtensions
     {

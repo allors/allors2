@@ -21,8 +21,6 @@
 
 namespace Allors.Domain
 {
-    using global::System.Collections.Generic;
-
     using Allors;
     using Allors.Meta;
 

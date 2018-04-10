@@ -23,9 +23,6 @@
 
 namespace Tests
 {
-    using Xunit;
-
-    
     public class NamedConstantTest : DomainTest
     {
         // TODO: Create tests

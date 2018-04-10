@@ -19,8 +19,6 @@
 // <summary>Defines the Serialization type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using Allors;
-
 namespace Allors.Adapters
 {
     using System;

@@ -22,7 +22,6 @@ namespace Tests
 {
     using Allors;
     using Allors.Meta;
-    using Allors.Services;
 
     using global::Allors.Domain;
 

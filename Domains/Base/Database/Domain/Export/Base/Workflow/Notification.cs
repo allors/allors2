@@ -20,8 +20,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Services;
-
     public partial class Notification
     {
         public void BaseOnBuild(ObjectOnBuild method)

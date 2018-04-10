@@ -26,7 +26,6 @@ namespace Allors.Domain
 
     using Allors;
     using Allors.Meta;
-    using Allors.Services;
 
     /// <summary>
     /// List of permissions for an object/user combination.

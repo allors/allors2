@@ -21,8 +21,6 @@
 
 namespace Allors.Meta
 {
-    using System;
-
     public sealed partial class ConcreteRoleType
     {
         private readonly RoleType roleType;

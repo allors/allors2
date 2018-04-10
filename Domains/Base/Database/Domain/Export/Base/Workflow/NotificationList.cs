@@ -22,8 +22,6 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    using Allors.Services;
-
     public partial class NotificationList
     {
         public void BaseOnDerive(ObjectOnDerive method)

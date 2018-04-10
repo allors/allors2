@@ -23,8 +23,6 @@ namespace Allors.Domain
 {
     using Allors.Meta;
 
-    using global::System.Text;
-
     /// <summary>
     /// A HomeAddress is a fysical address with a street/number and a place
     /// </summary>

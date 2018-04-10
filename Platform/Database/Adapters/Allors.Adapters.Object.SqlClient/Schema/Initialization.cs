@@ -16,7 +16,6 @@
 
 namespace Allors.Adapters.Object.SqlClient
 {
-    using System;
     using System.Data.SqlClient;
     using System.Text;
 

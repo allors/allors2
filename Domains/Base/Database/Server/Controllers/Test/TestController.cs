@@ -2,7 +2,6 @@ namespace Allors.Server.Controllers
 {
     using System;
 
-    using Allors.Domain;
     using Allors.Services;
 
     using Microsoft.AspNetCore.Mvc;

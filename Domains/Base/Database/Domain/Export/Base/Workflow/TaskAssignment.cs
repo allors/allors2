@@ -20,8 +20,6 @@
 
 namespace Allors.Domain
 {
-    using Allors.Services;
-
     public partial class TaskAssignment
     {
         public void BaseOnPreDerive(ObjectOnPreDerive method)

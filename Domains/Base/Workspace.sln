@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspace.Domain.Tests", "W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelAddIn", "Workspace\CSharp\ExcelAddIn\ExcelAddIn.csproj", "{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\..\Platform\Database\Protocol\Allors.Protocol.csproj", "{DA4974FE-1B8B-4A61-BC22-0F4508806A75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA4974FE-1B8B-4A61-BC22-0F4508806A75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA4974FE-1B8B-4A61-BC22-0F4508806A75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA4974FE-1B8B-4A61-BC22-0F4508806A75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA4974FE-1B8B-4A61-BC22-0F4508806A75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{EC4AF4C3-EC56-491A-A5B3-2D54938D32B1} = {7518A34D-C397-4EDD-832A-0C1CFBE9D155}
 		{B53DBACF-90AD-40CE-924C-C649FAD4B9A0} = {7518A34D-C397-4EDD-832A-0C1CFBE9D155}
 		{5C3A2E0A-0DCE-463D-B45B-A2EEC94E1169} = {7518A34D-C397-4EDD-832A-0C1CFBE9D155}
+		{DA4974FE-1B8B-4A61-BC22-0F4508806A75} = {392F10DA-CC15-4932-B6FA-C6AF27F3896E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {388BFC58-63E5-431B-862E-999223F0B134}

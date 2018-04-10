@@ -20,10 +20,6 @@
 
 namespace Allors.Server
 {
-    using System;
-
-    using Allors.Meta;
-
     public class PullRequestPath
     {
         /// <summary>

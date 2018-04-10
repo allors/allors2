@@ -43,20 +43,5 @@ namespace Allors.Server
         public List<string> MissingErrors { get; set; }
 
         public List<DerivationErrorResponse> DerivationErrors { get; set; }
-
-        public void AddVersionError(IObject obj)
-        {
-            this.VersionErrors.Add(obj.Id.ToString());
-        }
-
-        public void AddAccessError(IObject obj)
-        {
-            this.AccessErrors.Add(obj.Id.ToString());
-        }
-
-        public void AddMissingError(string id)
-        {
-            this.MissingErrors.Add(id);
-        }
     }
 }

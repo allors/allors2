@@ -20,8 +20,6 @@
 
 namespace Allors.Server
 {
-    using Allors.Meta;
-
     public class PullRequestFetch
     {
         /// <summary>

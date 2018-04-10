@@ -21,8 +21,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors;
-
 namespace Allors.Adapters.Object.SqlClient
 {
     using Allors.Meta;

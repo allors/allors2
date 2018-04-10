@@ -21,7 +21,6 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Threading;
 
     using Allors;
 

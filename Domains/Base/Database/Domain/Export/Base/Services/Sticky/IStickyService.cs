@@ -22,8 +22,6 @@ namespace Allors.Services
 {
     using System.Collections.Generic;
 
-    using Allors.Domain;
-
     public interface IStickyService : IStateful
     {
         IDictionary<T, long> Get<T>(string key);

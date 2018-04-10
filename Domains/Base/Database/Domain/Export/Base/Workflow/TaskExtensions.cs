@@ -23,10 +23,6 @@ namespace Allors.Domain
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
-
     public static partial class TaskExtensions
     {
         public static void BaseOnBuild(this Task @this, ObjectOnBuild method)

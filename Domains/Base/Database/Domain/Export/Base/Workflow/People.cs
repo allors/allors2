@@ -21,7 +21,6 @@
 namespace Allors.Domain
 {
     using Allors.Meta;
-    using Allors.Services;
 
     public partial class People
     {
