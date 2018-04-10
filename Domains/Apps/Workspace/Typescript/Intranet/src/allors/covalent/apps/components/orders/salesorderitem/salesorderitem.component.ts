@@ -13,6 +13,7 @@ import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceSe
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { NewGoodDialogComponent } from "../../catalogues";
 
 @Component({
   templateUrl: "./salesorderitem.component.html",
@@ -196,8 +197,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
+        const newid = this.orderItem.id;
         this.scope.session.reset();
-        this.router.navigate(["/orders/salesOrder/" + this.order.id + "/item/" + this.orderItem.id]);
+        this.router.navigate(["/orders/salesOrder/" + this.order.id + "/item/" + newid]);
       },
       (error: Error) => {
         this.errorService.dialog(error);
