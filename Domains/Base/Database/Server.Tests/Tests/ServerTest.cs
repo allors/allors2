@@ -113,7 +113,7 @@ namespace Tests
                            };
 
             var uri = new Uri("TestAuthentication/Token", UriKind.Relative);
-            var response = await this.PostAsJsonAsync(uri, args, RetryCount);
+            var response = await this.PostAsJsonAsync(uri, args);
             var signInResponse = await this.ReadAsAsync<AuthenticationTokenResponse>(response);
             this.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", signInResponse.Token);
         }
@@ -130,22 +130,10 @@ namespace Tests
             return resource;
         }
 
-        protected async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args, int retryCount = 0)
+        protected async Task<HttpResponseMessage> PostAsJsonAsync(Uri uri, object args)
         {
             var json = JsonConvert.SerializeObject(args);
-
-            HttpResponseMessage response = null;
-            for (var i = 0; i <= retryCount; i++)
-            {
-                response = await this.HttpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
-                if (response.IsSuccessStatusCode)
-                {
-                    break;
-                }
-
-                Thread.Sleep((i + 1) * 1000);
-            }
-
+            var response = await this.HttpClient.PostAsync(uri, new StringContent(json, Encoding.UTF8, "application/json"));
             return response;
         }
 

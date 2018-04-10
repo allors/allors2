@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PullRequestTreeNode.cs" company="Allors bvba">
+// <copyright file="PullRequestTreeNodeExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under

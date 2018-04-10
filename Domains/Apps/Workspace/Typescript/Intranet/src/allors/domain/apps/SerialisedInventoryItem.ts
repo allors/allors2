@@ -37,7 +37,7 @@ Object.defineProperty(SerialisedInventoryItem.prototype, "marketValue", {
 
 Object.defineProperty(SerialisedInventoryItem.prototype, "grossBookValue", {
   get(this: SerialisedInventoryItem) {
-    return this.PurchasePrice + this.RefurbishCost + this.TransportCost;
+    return Math.round(this.PurchasePrice + this.RefurbishCost + this.TransportCost);
   },
 });
 

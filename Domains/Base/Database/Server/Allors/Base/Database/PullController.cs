@@ -32,9 +32,9 @@ namespace Allors.Server.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
-    public abstract class PullController : Controller
+    public class PullController : Controller
     {
-        protected PullController(ISessionService sessionService, ILogger<PullController> logger)
+        public PullController(ISessionService sessionService, ILogger<PullController> logger)
         {
             this.Session = sessionService.Session;
             this.Logger = logger;

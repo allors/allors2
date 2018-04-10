@@ -43,7 +43,7 @@ namespace Allors.Server
 
         public PushResponse Build()
         {
-            var saveResponse = new PushResponse();
+            var pushResponse = new PushResponse();
 
             Dictionary<string, IObject> objectByNewId = null;
 
@@ -62,33 +62,46 @@ namespace Allors.Server
             {
                 // bulk load all objects
                 var objectIds = this.pushRequest.Objects.Select(v => v.I).ToArray();
-                this.session.Instantiate(objectIds);
+                var objects = this.session.Instantiate(objectIds);
 
-                foreach (var saveRequestObject in this.pushRequest.Objects)
+                if (objectIds.Length != objects.Length)
                 {
-                    var obj = this.session.Instantiate(saveRequestObject.I);
-
-                    if (!saveRequestObject.V.Equals(obj.Strategy.ObjectVersion.ToString()))
+                    var existingIds = objects.Select(v => v.Id.ToString());
+                    var missingIds = objectIds.Where(v => !existingIds.Contains(v));
+                    foreach (var missingId in missingIds)
                     {
-                        saveResponse.AddVersionError(obj);
+                        pushResponse.AddMissingError(missingId);
                     }
-                    else
+                }
+
+                if (!pushResponse.HasErrors)
+                {
+                    foreach (var pushRequestObject in this.pushRequest.Objects)
                     {
-                        var saveRequestRoles = saveRequestObject.Roles;
-                        this.SaveRequestRoles(saveRequestRoles, obj, saveResponse, objectByNewId);
+                        var obj = this.session.Instantiate(pushRequestObject.I);
+
+                        if (!pushRequestObject.V.Equals(obj.Strategy.ObjectVersion.ToString()))
+                        {
+                            pushResponse.AddVersionError(obj);
+                        }
+                        else
+                        {
+                            var pushRequestRoles = pushRequestObject.Roles;
+                            this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId);
+                        }
                     }
                 }
             }
 
-            if (objectByNewId != null && !saveResponse.HasErrors)
+            if (objectByNewId != null && !pushResponse.HasErrors)
             {
-                foreach (var saveRequestNewObject in this.pushRequest.NewObjects)
+                foreach (var pushRequestNewObject in this.pushRequest.NewObjects)
                 {
-                    var obj = objectByNewId[saveRequestNewObject.NI];
-                    var saveRequestRoles = saveRequestNewObject.Roles;
-                    if (saveRequestRoles != null)
+                    var obj = objectByNewId[pushRequestNewObject.NI];
+                    var pushRequestRoles = pushRequestNewObject.Roles;
+                    if (pushRequestRoles != null)
                     {
-                        this.SaveRequestRoles(saveRequestRoles, obj, saveResponse, objectByNewId);
+                        this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId);
                     }
                 }
 
@@ -107,14 +120,14 @@ namespace Allors.Server
 
             if (validation.HasErrors)
             {
-                saveResponse.AddDerivationErrors(validation);
+                pushResponse.AddDerivationErrors(validation);
             }
 
-            if (!saveResponse.HasErrors)
+            if (!pushResponse.HasErrors)
             {
                 if (objectByNewId != null)
                 {
-                    saveResponse.NewObjects = objectByNewId.Select(dictionaryEntry => new PushResponseNewObject
+                    pushResponse.NewObjects = objectByNewId.Select(dictionaryEntry => new PushResponseNewObject
                     {
                         I = dictionaryEntry.Value.Id.ToString(),
                         NI = dictionaryEntry.Key
@@ -124,7 +137,7 @@ namespace Allors.Server
                 this.session.Commit();
             }
 
-            return saveResponse;
+            return pushResponse;
         }
 
         private static void AddMissingRoles(IObject[] actualRoles, string[] requestedRoleIds, PushResponse pushResponse)
@@ -137,15 +150,15 @@ namespace Allors.Server
             }
         }
 
-        private void SaveRequestRoles(IList<PushRequestRole> saveRequestRoles, IObject obj, PushResponse pushResponse, Dictionary<string, IObject> objectByNewId)
+        private void PushRequestRoles(IList<PushRequestRole> pushRequestRoles, IObject obj, PushResponse pushResponse, Dictionary<string, IObject> objectByNewId)
         {
-            foreach (var saveRequestRole in saveRequestRoles)
+            foreach (var pushRequestRole in pushRequestRoles)
             {
                 var composite = (Composite)obj.Strategy.Class;
                 var roleTypes = composite.WorkspaceRoleTypes;
                 var acl = new AccessControlList(obj, this.user);
 
-                var roleTypeName = saveRequestRole.T;
+                var roleTypeName = pushRequestRole.T;
                 var roleType = roleTypes.FirstOrDefault(v => v.PropertyName.Equals(roleTypeName));
 
                 if (roleType != null)
@@ -155,32 +168,25 @@ namespace Allors.Server
                         if (roleType.ObjectType.IsUnit)
                         {
                             var unitType = (IUnit)roleType.ObjectType;
-                            var role = saveRequestRole.S;
+                            var role = pushRequestRole.S;
                             if (role is string)
                             {
                                 role = Serialization.ReadString((string)role, unitType.UnitTag);
                             }
 
-                            // Json.net deserializes number to long, in stead of int. 
-                            if (role is long)
+                            // Json.net deserializes number to long or double, instead of int. 
+                            if (unitType.IsInteger && !(role is int))
                             {
                                 role = Convert.ToInt32(role);
                             }
-
-                            // Json.net deserializes number to double, in stead of int. 
-                            if (unitType.IsInteger && role is double)
-                            {
-                                role = Convert.ToInt32(role);
-                            }
-
-
+                            
                             obj.Strategy.SetUnitRole(roleType.RelationType, role);
                         }
                         else
                         {
                             if (roleType.IsOne)
                             {
-                                var roleId = (string)saveRequestRole.S;
+                                var roleId = (string)pushRequestRole.S;
                                 if (string.IsNullOrEmpty(roleId))
                                 {
                                     obj.Strategy.RemoveCompositeRole(roleType.RelationType);
@@ -201,9 +207,9 @@ namespace Allors.Server
                             else
                             {
                                 // Add
-                                if (saveRequestRole.A != null)
+                                if (pushRequestRole.A != null)
                                 {
-                                    var roleIds = saveRequestRole.A;
+                                    var roleIds = pushRequestRole.A;
                                     if (roleIds.Length != 0)
                                     {
                                         var roles = this.GetRoles(roleIds, objectByNewId);
@@ -222,9 +228,9 @@ namespace Allors.Server
                                 }
 
                                 // Remove
-                                if (saveRequestRole.R != null)
+                                if (pushRequestRole.R != null)
                                 {
-                                    var roleIds = saveRequestRole.R;
+                                    var roleIds = pushRequestRole.R;
                                     if (roleIds.Length != 0)
                                     {
                                         var roles = this.GetRoles(roleIds, objectByNewId);
