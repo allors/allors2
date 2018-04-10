@@ -74,8 +74,7 @@ namespace Allors.Adapters.Object.SqlClient.Caching
                 return this.CreateCachedObject(version);
             }
 
-            CachedObject cachedObject;
-            if (this.CachedObjectByObjectId.TryGetValue(objectId, out cachedObject))
+            if (this.CachedObjectByObjectId.TryGetValue(objectId, out var cachedObject))
             {
                 if (!cachedObject.LocalCacheVersion.Equals(version))
                 {
@@ -94,8 +93,7 @@ namespace Allors.Adapters.Object.SqlClient.Caching
 
         public IClass GetObjectType(long objectId)
         {
-            IClass objectType;
-            this.ObjectTypeByObjectId.TryGetValue(objectId, out objectType);
+            this.ObjectTypeByObjectId.TryGetValue(objectId, out var objectType);
             return objectType;
         }
 

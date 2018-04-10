@@ -62,22 +62,14 @@ namespace Tests
                 ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
             };
 
-
-           
             var services = new ServiceCollection();
             services.AddAllors(new ServiceConfig
             {
-                Directory = new DirectoryInfo(@"..\..\..\..\Server"),
-                ApplicationName = "Server"
+                Directory = new DirectoryInfo(@"."),
+                ApplicationName = "Server.Tests"
             });
             var serviceProvider = services.BuildServiceProvider();
 
-            var database = new Allors.Adapters.Object.SqlClient.Database(serviceProvider, configuration);
-            database.Init();
-            this.Session = database.CreateSession();
-
-            new Setup(this.Session, null).Apply();
-            this.Session.Commit();
 
             this.HttpClientHandler = new HttpClientHandler();
             this.HttpClient = new HttpClient(this.HttpClientHandler)
@@ -87,6 +79,11 @@ namespace Tests
 
             this.HttpClient.DefaultRequestHeaders.Accept.Clear();
             this.HttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+            var result = this.HttpClient.GetAsync("Test/Setup").Result;
+            var database = new Allors.Adapters.Object.SqlClient.Database(serviceProvider, configuration);
+            this.Session = database.CreateSession();
         }
 
         public IConfigurationRoot Configuration { get; set; }

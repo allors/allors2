@@ -1765,7 +1765,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(internalOrganisation.BillingAddress, order1.BillFromContactMechanism);
+            Assert.Equal(internalOrganisation.BillingAddress, order1.TakenByContactMechanism);
         }
 
         [Fact]

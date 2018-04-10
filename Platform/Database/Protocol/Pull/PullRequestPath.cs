@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AuthenticationTokenResponse.cs" company="Allors bvba">
+// <copyright file="PullRequestPath.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,12 +20,20 @@
 
 namespace Allors.Server
 {
-    public class AuthenticationTokenResponse
+    using System;
+
+    using Allors.Meta;
+
+    public class PullRequestPath
     {
-        public bool Authenticated { get; set; }
+        /// <summary>
+        /// The RoleType.
+        /// </summary>
+        public string Step { get; set; }
 
-        public string UserId { get; set; }
-
-        public string Token { get; set; }
+        /// <summary>
+        /// The TreeNodes
+        /// </summary>
+        public PullRequestPath Next { get; set; }
     }
 }

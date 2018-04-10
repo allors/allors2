@@ -2,7 +2,7 @@
 
 set ASPNETCORE_ENVIRONMENT=Development
 cd database\server
-dotnet watch run --configuration Debug
+dotnet run --configuration Debug
 
 pause
 

@@ -75,7 +75,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                     var connection = connectionFactory.Connections.Last();
 
-                    Assert.Equal(connection.Commands.Count, 0);
+                    Assert.Empty(connection.Commands);
                 }
             }
         }
@@ -100,8 +100,8 @@ namespace Allors.Adapters.Object.SqlClient
                         Assert.Equal(c1.Strategy.Class, C1.Meta.ObjectType);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 2);
-                    Assert.Equal(connection.Executions.Count(), 2);
+                    Assert.Equal(2, connection.Commands.Count);
+                    Assert.Equal(2, connection.Executions.Count());
 
                     session.Rollback();
                     connection.Commands.Clear();
@@ -118,8 +118,8 @@ namespace Allors.Adapters.Object.SqlClient
                         Assert.Equal(c1.Strategy.Class, C1.Meta.ObjectType);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 2);
-                    Assert.Equal(connection.Executions.Count(), 2);
+                    Assert.Equal(2, connection.Commands.Count);
+                    Assert.Equal(2, connection.Executions.Count());
                 }
             }
         }
@@ -144,8 +144,8 @@ namespace Allors.Adapters.Object.SqlClient
                         Assert.Equal(c1.Strategy.Class, C1.Meta.ObjectType);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 2);
-                    Assert.Equal(connection.Executions.Count(), 2);
+                    Assert.Equal(2, connection.Commands.Count);
+                    Assert.Equal(2, connection.Executions.Count());
                 }
                 
                 this.Cache.Invalidate();
@@ -160,8 +160,8 @@ namespace Allors.Adapters.Object.SqlClient
                         Assert.Equal(c1.Strategy.Class, C1.Meta.ObjectType);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 2);
-                    Assert.Equal(connection.Executions.Count(), 2);
+                    Assert.Equal(2, connection.Commands.Count);
+                    Assert.Equal(2, connection.Executions.Count());
                 }
             }
         }
@@ -185,8 +185,8 @@ namespace Allors.Adapters.Object.SqlClient
                         stringBuilder.Append(c1.C1AllorsString);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 3);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(3, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
                 }
 
                 this.Cache.Invalidate();
@@ -202,8 +202,8 @@ namespace Allors.Adapters.Object.SqlClient
                         stringBuilder.Append(c1.C1AllorsString);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 3);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(3, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
                 }
             }
         }
@@ -224,8 +224,8 @@ namespace Allors.Adapters.Object.SqlClient
                     var extent = session.Extent<C1>();
                     session.Prefetch(c1Prefetcher, extent);
 
-                    Assert.Equal(connection.Commands.Count, 3);
-                    Assert.Equal(connection.Executions.Count(), 3);
+                    Assert.Equal(3, connection.Commands.Count);
+                    Assert.Equal(3, connection.Executions.Count());
 
                     var stringBuilder = new StringBuilder();
                     foreach (C1 c1 in extent)
@@ -233,8 +233,8 @@ namespace Allors.Adapters.Object.SqlClient
                         stringBuilder.Append(c1.C1AllorsString);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 3);
-                    Assert.Equal(connection.Executions.Count(), 3);
+                    Assert.Equal(3, connection.Commands.Count);
+                    Assert.Equal(3, connection.Executions.Count());
                 }
 
                 this.Cache.Invalidate();
@@ -251,8 +251,8 @@ namespace Allors.Adapters.Object.SqlClient
                         stringBuilder.Append(c1.C1AllorsString);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 3);
-                    Assert.Equal(connection.Executions.Count(), 3);
+                    Assert.Equal(3, connection.Commands.Count);
+                    Assert.Equal(3, connection.Executions.Count());
                 }
             }
         }
@@ -277,8 +277,8 @@ namespace Allors.Adapters.Object.SqlClient
                     var extent = session.Extent<C1>();
                     session.Prefetch(c1Prefetcher, extent);
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
 
                     var stringBuilder = new StringBuilder();
                     foreach (C1 c1 in extent)
@@ -289,8 +289,8 @@ namespace Allors.Adapters.Object.SqlClient
                         stringBuilder.Append(c2?.C2AllorsString);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
                 }
 
                 this.Cache.Invalidate();
@@ -310,8 +310,8 @@ namespace Allors.Adapters.Object.SqlClient
                         stringBuilder.Append(c2?.C2AllorsString);
                     }
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
                 }
             }
         }
@@ -337,8 +337,8 @@ namespace Allors.Adapters.Object.SqlClient
                     var extent = session.Extent<C1>();
                     session.Prefetch(c1Prefetcher, extent);
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
 
                     var stringBuilder = new StringBuilder();
                     foreach (C1 c1 in extent)
@@ -351,8 +351,8 @@ namespace Allors.Adapters.Object.SqlClient
                         }
                     }
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
 
                     session.Prefetch(c1Prefetcher, extent);
 
@@ -367,8 +367,8 @@ namespace Allors.Adapters.Object.SqlClient
                         }
                     }
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
                 }
 
                 this.Cache.Invalidate();
@@ -389,8 +389,8 @@ namespace Allors.Adapters.Object.SqlClient
                         }
                     }
 
-                    Assert.Equal(connection.Commands.Count, 5);
-                    Assert.Equal(connection.Executions.Count(), 6);
+                    Assert.Equal(5, connection.Commands.Count);
+                    Assert.Equal(6, connection.Executions.Count());
                 }
             }
         }

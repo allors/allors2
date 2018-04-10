@@ -66,9 +66,9 @@ namespace Allors.Adapters
 
                         mark();
 
-                        Assert.Equal(true, values.C1AllorsBoolean);
-                        Assert.Equal(true, values.I1AllorsBoolean);
-                        Assert.Equal(true, values.S1AllorsBoolean);
+                        Assert.True(values.C1AllorsBoolean);
+                        Assert.True(values.I1AllorsBoolean);
+                        Assert.True(values.S1AllorsBoolean);
                     }
 
                     {
@@ -80,9 +80,9 @@ namespace Allors.Adapters
 
                         mark();
 
-                        Assert.Equal(false, values.C1AllorsBoolean);
-                        Assert.Equal(false, values.I1AllorsBoolean);
-                        Assert.Equal(false, values.S1AllorsBoolean);
+                        Assert.False(values.C1AllorsBoolean);
+                        Assert.False(values.I1AllorsBoolean);
+                        Assert.False(values.S1AllorsBoolean);
                     }
 
                     {
@@ -213,7 +213,7 @@ namespace Allors.Adapters
 
                     c1 = (C1)this.Session.Instantiate(c1Id);
 
-                    Assert.Equal(true, c1.C1AllorsBoolean);
+                    Assert.True(c1.C1AllorsBoolean);
                 }
             }
         }
@@ -1140,9 +1140,9 @@ namespace Allors.Adapters
                         Assert.True(values.ExistI1StringLarge);
                         Assert.True(values.ExistS1StringLarge);
 
-                        Assert.True(aLarge.Equals(values.C1StringLarge));
-                        Assert.True(bLarge.Equals(values.I1StringLarge));
-                        Assert.True(cLarge.Equals(values.S1StringLarge));
+                        Assert.Equal(aLarge, values.C1StringLarge);
+                        Assert.Equal(bLarge, values.I1StringLarge);
+                        Assert.Equal(cLarge, values.S1StringLarge);
                     }
 
                     {
@@ -1333,9 +1333,9 @@ namespace Allors.Adapters
                         Assert.False(values.ExistI1AllorsBinary);
                         Assert.False(values.ExistS1AllorsBinary);
 
-                        Assert.Equal(null, values.C1AllorsBinary);
-                        Assert.Equal(null, values.I1AllorsBinary);
-                        Assert.Equal(null, values.S1AllorsBinary);
+                        Assert.Null(values.C1AllorsBinary);
+                        Assert.Null(values.I1AllorsBinary);
+                        Assert.Null(values.S1AllorsBinary);
                     }
 
                     {
@@ -1359,9 +1359,9 @@ namespace Allors.Adapters
                         Assert.False(values.ExistI1AllorsBinary);
                         Assert.False(values.ExistS1AllorsBinary);
 
-                        Assert.Equal(null, values.C1AllorsBinary);
-                        Assert.Equal(null, values.I1AllorsBinary);
-                        Assert.Equal(null, values.S1AllorsBinary);
+                        Assert.Null(values.C1AllorsBinary);
+                        Assert.Null(values.I1AllorsBinary);
+                        Assert.Null(values.S1AllorsBinary);
                     }
 
                     {
@@ -1385,9 +1385,9 @@ namespace Allors.Adapters
                         Assert.False(values.ExistI1AllorsBinary);
                         Assert.False(values.ExistS1AllorsBinary);
 
-                        Assert.Equal(null, values.C1AllorsBinary);
-                        Assert.Equal(null, values.I1AllorsBinary);
-                        Assert.Equal(null, values.S1AllorsBinary);
+                        Assert.Null(values.C1AllorsBinary);
+                        Assert.Null(values.I1AllorsBinary);
+                        Assert.Null(values.S1AllorsBinary);
                     }
 
                     {
@@ -1529,9 +1529,9 @@ namespace Allors.Adapters
                         Assert.False(values.ExistI1AllorsString);
                         Assert.False(values.ExistS1AllorsString);
 
-                        Assert.Equal(null, values.C1AllorsString);
-                        Assert.Equal(null, values.I1AllorsString);
-                        Assert.Equal(null, values.S1AllorsString);
+                        Assert.Null(values.C1AllorsString);
+                        Assert.Null(values.I1AllorsString);
+                        Assert.Null(values.S1AllorsString);
                     }
 
                     {
@@ -1555,9 +1555,9 @@ namespace Allors.Adapters
                         Assert.False(values.ExistI1AllorsString);
                         Assert.False(values.ExistS1AllorsString);
 
-                        Assert.Equal(null, values.C1AllorsString);
-                        Assert.Equal(null, values.I1AllorsString);
-                        Assert.Equal(null, values.S1AllorsString);
+                        Assert.Null(values.C1AllorsString);
+                        Assert.Null(values.I1AllorsString);
+                        Assert.Null(values.S1AllorsString);
                     }
 
                     {
@@ -1581,9 +1581,9 @@ namespace Allors.Adapters
                         Assert.False(values.ExistI1AllorsString);
                         Assert.False(values.ExistS1AllorsString);
 
-                        Assert.Equal(null, values.C1AllorsString);
-                        Assert.Equal(null, values.I1AllorsString);
-                        Assert.Equal(null, values.S1AllorsString);
+                        Assert.Null(values.C1AllorsString);
+                        Assert.Null(values.I1AllorsString);
+                        Assert.Null(values.S1AllorsString);
                     }
 
                     {

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PullRequestPath.cs" company="Allors bvba">
+// <copyright file="PullRequestSort.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -24,28 +24,16 @@ namespace Allors.Server
 
     using Allors.Meta;
 
-    public class PullRequestPath
+    public class PullRequestSort
     {
         /// <summary>
         /// The RoleType.
         /// </summary>
-        public string Step { get; set; }
+        public string RT { get; set; }
 
         /// <summary>
         /// The TreeNodes
         /// </summary>
-        public PullRequestPath Next { get; set; }
-
-        public void Parse(Path path, IMetaPopulation metaPopulation)
-        {
-            var propertyType = (PropertyType)metaPopulation.Find(new Guid(this.Step));
-            path.PropertyType = propertyType;
-
-            if (this.Next != null)
-            {
-                path.Next = new Path();
-                this.Next.Parse(path.Next, metaPopulation);
-            }
-        }
+        public string D { get; set; }
     }
 }

@@ -782,15 +782,15 @@ namespace Allors.Adapters
             }
 
             Assert.Equal(this.c1A.C1AllorsInteger, -1);
-            Assert.Equal(this.c1A.C1AllorsDecimal, 1.1m);
-            Assert.Equal(this.c1A.C1AllorsDouble, 1.1d);
-            Assert.Equal(this.c1A.C1AllorsBoolean, true);
+            Assert.Equal(1.1m, this.c1A.C1AllorsDecimal);
+            Assert.Equal(1.1d, this.c1A.C1AllorsDouble);
+            Assert.True(this.c1A.C1AllorsBoolean);
             Assert.Equal(this.c1A.C1AllorsDateTime, new DateTime(1973, 3, 27, 12, 1, 2, 3, DateTimeKind.Utc));
             Assert.Equal(this.c1A.C1AllorsUnique, new Guid(GuidString));
 
             Assert.Equal(this.c1A.C1AllorsBinary, new byte[0]);
             Assert.Equal(this.c1B.C1AllorsBinary, new byte[] { 0, 1, 2, 3 });
-            Assert.Equal(this.c1C.C1AllorsBinary, null);
+            Assert.Null(this.c1C.C1AllorsBinary);
 
             Assert.Equal("a1", c2ACopy.C1WhereC1C2one2one.C1AllorsString);
             Assert.Equal("a1", c2ACopy.C1WhereC1C2one2many.C1AllorsString);
@@ -800,9 +800,9 @@ namespace Allors.Adapters
             Assert.Equal("c4a", c4ACopy.I34AllorsString);
 
             Assert.Equal(2, c2ACopy.C1sWhereC1C2many2one.Count);
-            Assert.Equal(0, c2BCopy.C1sWhereC1C2many2one.Count);
-            Assert.Equal(1, c2ACopy.C1sWhereC1C2many2many.Count);
-            Assert.Equal(1, c2BCopy.C1sWhereC1C2many2many.Count);
+            Assert.Empty(c2BCopy.C1sWhereC1C2many2one);
+            Assert.Single(c2ACopy.C1sWhereC1C2many2many);
+            Assert.Single(c2BCopy.C1sWhereC1C2many2many);
 
             foreach (S1234 allorsObject in everyObject)
             {

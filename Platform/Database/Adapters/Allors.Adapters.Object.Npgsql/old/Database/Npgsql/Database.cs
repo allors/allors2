@@ -262,7 +262,6 @@ namespace Allors.Adapters.Database.Npgsql
 
         protected override void CreateTable(Sql.ManagementSession session, SchemaTable schemaTable)
         {
-            SchemaColumn identity = null;
             var keys = new List<SchemaColumn>();
 
             var sql = new StringBuilder();

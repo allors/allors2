@@ -83,7 +83,7 @@ namespace Allors.Adapters
 
                 managedCompanies.Filter.AddLike(MetaNamed.Instance.Name, "%ne");
 
-                Assert.Equal(1, managedCompanies.Count);
+                Assert.Single(managedCompanies);
 
                 managedCompanies = john.CompaniesWhereManager;
 
@@ -106,7 +106,7 @@ namespace Allors.Adapters
 
                 janesCompanies.Filter.AddLike(MetaNamed.Instance.Name, "%ne");
 
-                Assert.Equal(1, janesCompanies.Count);
+                Assert.Single(janesCompanies);
 
                 janesCompanies = jane.CompaniesWhereOwner;
 
@@ -149,7 +149,7 @@ namespace Allors.Adapters
 
                 employees.Filter.AddLike(MetaNamed.Instance.Name, "Ja%");
 
-                Assert.Equal(1, employees.Count);
+                Assert.Single(employees);
 
                 employees = acme.Employees;
 
@@ -173,7 +173,7 @@ namespace Allors.Adapters
 
                 acmeOwners.Filter.AddLike(MetaNamed.Instance.Name, "Ja%");
 
-                Assert.Equal(1, acmeOwners.Count);
+                Assert.Single(acmeOwners);
 
                 acmeOwners = acme.Owners;
 

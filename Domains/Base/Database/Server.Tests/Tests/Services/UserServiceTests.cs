@@ -4,8 +4,6 @@ namespace Tests
 
     using Allors.Domain;
 
-    using Newtonsoft.Json;
-
     using Xunit;
 
     [Collection("Server")]

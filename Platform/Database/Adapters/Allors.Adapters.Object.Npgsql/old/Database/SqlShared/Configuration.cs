@@ -25,7 +25,7 @@ namespace Allors.Adapters.Database.Sql
 
     using Allors.Adapters.Database.Caching;
 
-    public abstract class Configuration : Adapters.Database.Configuration
+    public abstract class Configuration : Adapters.Configuration
     {
         protected Configuration()
         {

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PullRequestSort.cs" company="Allors bvba">
+// <copyright file="PullRequestFetch.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,31 +20,28 @@
 
 namespace Allors.Server
 {
-    using System;
-
     using Allors.Meta;
 
-    public class PullRequestSort
+    public class PullRequestFetch
     {
         /// <summary>
-        /// The RoleType.
+        /// The name of the fetch
         /// </summary>
-        public string RT { get; set; }
+        public string Name { get; set; }
+        
+        /// <summary>
+        /// The id of the object
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
-        /// The TreeNodes
+        /// The path
         /// </summary>
-        public string D { get; set; }
+        public PullRequestPath Path { get; set; }
 
-        public Sort Parse(MetaPopulation metaPopulation)
-        {
-            var roleType = (RoleType)metaPopulation.Find(new Guid(this.RT));
-
-            return new Sort
-                       {
-                           RoleType = roleType,
-                           Direction = "DESC".Equals(this.D?.ToUpper()) ? SortDirection.Descending : SortDirection.Ascending
-                       };
-        }
+        /// <summary>
+        /// The additional objects to include from this relations.
+        /// </summary>
+        public PullRequestTreeNode[] Include { get; set; }
     }
 }

@@ -18,8 +18,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors;
-
 namespace Allors.Server
 {
     using System.Collections.Generic;

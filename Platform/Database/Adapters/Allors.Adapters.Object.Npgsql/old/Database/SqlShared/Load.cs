@@ -57,7 +57,8 @@ namespace Allors.Adapters.Database.Sql
                 {
                     if (this.reader.Name.Equals(Serialization.Population))
                     {
-                        Serialization.CheckVersion(this.reader);
+                        // TODO: check version
+                        // Serialization.CheckVersion(this.xml.Population.Version);
 
                         if (!this.reader.IsEmptyElement)
                         {

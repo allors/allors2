@@ -127,6 +127,69 @@ namespace Allors.Adapters
         }
 
 
+        [Fact]
+        public void FailedCommit()
+        {
+            var database = this.CreateDatabase();
+            database.Init();
+
+            long c1Id = 0;
+            long c2Id = 0;
+
+            using (var session = database.CreateSession())
+            {
+                var c1 = C1.Create(session);
+                var c2 = C2.Create(session);
+
+                c1Id = c1.Id;
+                c2Id = c2.Id;
+
+                c1.C1C2one2one = c2;
+
+                session.Commit();
+
+                c1.C1AllorsString = "Session 1";
+                
+                using (var session2 = database.CreateSession())
+                {
+                    var session2C1 = (C1)session2.Instantiate(c1);
+                    session2C1.C1AllorsString = "Session 2";
+
+                    session2C1.C1C2one2one = null;
+
+                    session2.Commit();
+
+                    var session2C2 = (C2)session2.Instantiate(c2);
+                    session2C2.Strategy.Delete();
+
+                    session2.Commit();
+                }
+
+                var triggerCache = c1.C1C2one2one;
+
+                var exceptionThrown = false;
+                try
+                {
+                    session.Commit();
+                }
+                catch(Exception e)
+                {
+                    exceptionThrown = true;
+                }
+
+                Assert.True(exceptionThrown);
+            }
+            
+            using (var session = database.CreateSession())
+            {
+                var c1 = (C1)session.Instantiate(c1Id);
+                var c2 = session.Instantiate(c2Id);
+ 
+                Assert.Null(c1.C1C2one2one);
+            }
+        }
+
+
         protected abstract IDatabase CreateDatabase();
     }
 }

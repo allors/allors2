@@ -61,10 +61,10 @@ namespace Allors.Adapters
                         // To 1 and back
                         // Get
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         // 1-1
                         from.C1C1one2one = to;
@@ -84,10 +84,10 @@ namespace Allors.Adapters
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         // Exist
                         Assert.False(from.ExistC1C1one2one);
@@ -122,10 +122,10 @@ namespace Allors.Adapters
                         // Multiplicity
                         // Same From / Same To
                         // Get
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         from.C1C1one2one = to;
                         from.C1C1one2one = to;
@@ -140,10 +140,10 @@ namespace Allors.Adapters
                         from.RemoveC1C1one2one();
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         // Exist
                         Assert.False(from.ExistC1C1one2one);
@@ -164,19 +164,19 @@ namespace Allors.Adapters
                         from.RemoveC1C1one2one();
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         // Same From / Different To
                         // Get
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
 
                         from.C1C1one2one = to;
                         from.C1C1one2one = to;
@@ -186,15 +186,15 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.C1WhereC1C1one2one);
                         Assert.Equal(to, from.C1C1one2one);
                         Assert.Equal(to, from.C1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
 
                         from.C1C1one2one = toAnother;
                         from.C1C1one2one = toAnother;
 
                         mark();
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
                         Assert.Equal(toAnother, from.C1C1one2one);
                         Assert.Equal(toAnother, from.C1C1one2one);
                         Assert.Equal(from, toAnother.C1WhereC1C1one2one);
@@ -204,12 +204,12 @@ namespace Allors.Adapters
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
 
                         // Exist
                         Assert.False(to.ExistC1WhereC1C1one2one);
@@ -254,14 +254,14 @@ namespace Allors.Adapters
 
                         // Different From / Different To
                         // Get
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
 
                         from.C1C1one2one = to;
                         from.C1C1one2one = to;
@@ -271,10 +271,10 @@ namespace Allors.Adapters
                         Assert.Equal(to, from.C1C1one2one);
                         Assert.Equal(from, to.C1WhereC1C1one2one);
                         Assert.Equal(from, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
 
                         fromAnother.C1C1one2one = toAnother;
 
@@ -292,10 +292,10 @@ namespace Allors.Adapters
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
                         Assert.Equal(toAnother, fromAnother.C1C1one2one);
                         Assert.Equal(toAnother, fromAnother.C1C1one2one);
                         Assert.Equal(fromAnother, toAnother.C1WhereC1C1one2one);
@@ -305,14 +305,14 @@ namespace Allors.Adapters
                         fromAnother.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
-                        Assert.Equal(null, toAnother.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
+                        Assert.Null(toAnother.C1WhereC1C1one2one);
 
                         // Exist
                         Assert.False(from.ExistC1C1one2one);
@@ -378,12 +378,12 @@ namespace Allors.Adapters
 
                         // Different From / Same To
                         // Get
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         from.C1C1one2one = to;
                         from.C1C1one2one = to;
@@ -391,8 +391,8 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(to, from.C1C1one2one);
                         Assert.Equal(to, from.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
                         Assert.Equal(from, to.C1WhereC1C1one2one);
                         Assert.Equal(from, to.C1WhereC1C1one2one);
 
@@ -400,8 +400,8 @@ namespace Allors.Adapters
                         fromAnother.C1C1one2one = to;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
                         Assert.Equal(to, fromAnother.C1C1one2one);
                         Assert.Equal(to, fromAnother.C1C1one2one);
                         Assert.Equal(fromAnother, to.C1WhereC1C1one2one);
@@ -411,19 +411,19 @@ namespace Allors.Adapters
                         fromAnother.RemoveC1C1one2one();
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, fromAnother.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(fromAnother.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         from.C1C1one2one = to;
                         mark();
                         Assert.Equal(to, from.C1C1one2one);
                         fromAnother.C1C1one2one = to;
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
                         Assert.Equal(to, fromAnother.C1C1one2one);
                         fromAnother.RemoveC1C1one2one();
 
@@ -472,15 +472,15 @@ namespace Allors.Adapters
                         // Null 
                         // Set Null
                         // Get
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
 
                         from.C1C1one2one = null;
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
 
                         from.C1C1one2one = to;
                         from.C1C1one2one = to;
@@ -493,19 +493,19 @@ namespace Allors.Adapters
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
 
                         // Get
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
 
                         from.C1C1one2one = null;
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
 
                         from.C1C1one2one = to;
                         from.C1C1one2one = to;
@@ -518,8 +518,8 @@ namespace Allors.Adapters
                         from.C1C1one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
 
                         from = C1.Create(this.Session);
                         fromAnother = C1.Create(this.Session);
@@ -528,10 +528,10 @@ namespace Allors.Adapters
                         toAnother = C1.Create(this.Session);
 
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         // 1-1
                         from.Strategy.SetRole(MetaC1.Instance.C1C1one2one.RelationType, to);
@@ -550,10 +550,10 @@ namespace Allors.Adapters
                         from.Strategy.SetRole(MetaC1.Instance.C1C1one2one.RelationType, null);
                         from.Strategy.SetRole(MetaC1.Instance.C1C1one2one.RelationType, null);
                         mark();
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, from.C1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
-                        Assert.Equal(null, to.C1WhereC1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(from.C1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
+                        Assert.Null(to.C1WhereC1C1one2one);
 
                         // From - Middle - To
                         from = C1.Create(this.Session);
@@ -589,8 +589,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.C1C2one2one);
-                    Assert.Equal(null, to.C1WhereC1C2one2one);
+                    Assert.Null(from.C1C2one2one);
+                    Assert.Null(to.C1WhereC1C2one2one);
 
                     // 1-1
                     from.C1C2one2one = to;
@@ -607,8 +607,8 @@ namespace Allors.Adapters
                     from.C1C2one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.C1C2one2one);
-                    Assert.Equal(null, to.C1WhereC1C2one2one);
+                    Assert.Null(from.C1C2one2one);
+                    Assert.Null(to.C1WhereC1C2one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -626,7 +626,7 @@ namespace Allors.Adapters
                     from.C1C2one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.C1WhereC1C2one2one);
+                    Assert.Null(to.C1WhereC1C2one2one);
                     Assert.Equal(toAnother, from.C1C2one2one);
                     Assert.Equal(from, toAnother.C1WhereC1C2one2one);
 
@@ -645,7 +645,7 @@ namespace Allors.Adapters
                     fromAnother.C1C2one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.C1C2one2one);
+                    Assert.Null(from.C1C2one2one);
                     Assert.Equal(to, fromAnother.C1C2one2one);
                     Assert.Equal(fromAnother, to.C1WhereC1C2one2one);
 
@@ -655,11 +655,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.C1C2one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1C2one2one);
+                    Assert.Null(from.C1C2one2one);
                     from.C1C2one2one = to;
                     from.C1C2one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1C2one2one);
+                    Assert.Null(from.C1C2one2one);
                 }
             }
         }
@@ -681,8 +681,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.C1I1one2one);
-                    Assert.Equal(null, to.C1WhereC1I1one2one);
+                    Assert.Null(from.C1I1one2one);
+                    Assert.Null(to.C1WhereC1I1one2one);
 
                     // 1-1
                     from.C1I1one2one = to;
@@ -699,8 +699,8 @@ namespace Allors.Adapters
                     from.C1I1one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.C1I1one2one);
-                    Assert.Equal(null, to.C1WhereC1I1one2one);
+                    Assert.Null(from.C1I1one2one);
+                    Assert.Null(to.C1WhereC1I1one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -718,7 +718,7 @@ namespace Allors.Adapters
                     from.C1C1one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.C1WhereC1C1one2one);
+                    Assert.Null(to.C1WhereC1C1one2one);
                     Assert.Equal(toAnother, from.C1C1one2one);
                     Assert.Equal(from, toAnother.C1WhereC1C1one2one);
 
@@ -737,7 +737,7 @@ namespace Allors.Adapters
                     fromAnother.C1C1one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.C1C1one2one);
+                    Assert.Null(from.C1C1one2one);
                     Assert.Equal(to, fromAnother.C1C1one2one);
                     Assert.Equal(fromAnother, to.C1WhereC1C1one2one);
 
@@ -747,11 +747,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.C1C1one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1C1one2one);
+                    Assert.Null(from.C1C1one2one);
                     from.C1C1one2one = to;
                     from.C1C1one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1C1one2one);
+                    Assert.Null(from.C1C1one2one);
                 }
             }
         }
@@ -773,8 +773,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.C1I2one2one);
-                    Assert.Equal(null, to.C1WhereC1I2one2one);
+                    Assert.Null(from.C1I2one2one);
+                    Assert.Null(to.C1WhereC1I2one2one);
 
                     // 1-1
                     from.C1I2one2one = to;
@@ -791,8 +791,8 @@ namespace Allors.Adapters
                     from.C1I2one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.C1I2one2one);
-                    Assert.Equal(null, to.C1WhereC1I2one2one);
+                    Assert.Null(from.C1I2one2one);
+                    Assert.Null(to.C1WhereC1I2one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -810,7 +810,7 @@ namespace Allors.Adapters
                     from.C1I2one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.C1WhereC1I2one2one);
+                    Assert.Null(to.C1WhereC1I2one2one);
                     Assert.Equal(toAnother, from.C1I2one2one);
                     Assert.Equal(from, toAnother.C1WhereC1I2one2one);
 
@@ -829,7 +829,7 @@ namespace Allors.Adapters
                     fromAnother.C1I2one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.C1I2one2one);
+                    Assert.Null(from.C1I2one2one);
                     Assert.Equal(to, fromAnother.C1I2one2one);
                     Assert.Equal(fromAnother, to.C1WhereC1I2one2one);
 
@@ -839,11 +839,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.C1I2one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1I2one2one);
+                    Assert.Null(from.C1I2one2one);
                     from.C1I2one2one = to;
                     from.C1I2one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1I2one2one);
+                    Assert.Null(from.C1I2one2one);
                 }
             }
         }
@@ -865,8 +865,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.C3C4one2one);
-                    Assert.Equal(null, to.C3WhereC3C4one2one);
+                    Assert.Null(from.C3C4one2one);
+                    Assert.Null(to.C3WhereC3C4one2one);
 
                     // 1-1
                     from.C3C4one2one = to;
@@ -883,8 +883,8 @@ namespace Allors.Adapters
                     from.C3C4one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.C3C4one2one);
-                    Assert.Equal(null, to.C3WhereC3C4one2one);
+                    Assert.Null(from.C3C4one2one);
+                    Assert.Null(to.C3WhereC3C4one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -902,7 +902,7 @@ namespace Allors.Adapters
                     from.C3C4one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.C3WhereC3C4one2one);
+                    Assert.Null(to.C3WhereC3C4one2one);
                     Assert.Equal(toAnother, from.C3C4one2one);
                     Assert.Equal(from, toAnother.C3WhereC3C4one2one);
 
@@ -923,7 +923,7 @@ namespace Allors.Adapters
                     fromAnother.C3C4one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.C3C4one2one);
+                    Assert.Null(from.C3C4one2one);
                     Assert.Equal(to, fromAnother.C3C4one2one);
                     Assert.Equal(fromAnother, to.C3WhereC3C4one2one);
 
@@ -933,11 +933,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.C3C4one2one = null;
                     mark();
-                    Assert.Equal(null, from.C3C4one2one);
+                    Assert.Null(from.C3C4one2one);
                     from.C3C4one2one = to;
                     from.C3C4one2one = null;
                     mark();
-                    Assert.Equal(null, from.C3C4one2one);
+                    Assert.Null(from.C3C4one2one);
                 }
             }
         }
@@ -963,10 +963,10 @@ namespace Allors.Adapters
                         // To 1 and back
                         // Get
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         // 1-1
                         from.I1I12one2one = to;
@@ -985,10 +985,10 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I12one2one);
@@ -1021,10 +1021,10 @@ namespace Allors.Adapters
                         // Multiplicity
                         // Same From / Same To
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         from.I1I12one2one = to;
                         from.I1I12one2one = to;
@@ -1038,10 +1038,10 @@ namespace Allors.Adapters
                         from.RemoveI1I12one2one();
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I12one2one);
@@ -1061,19 +1061,19 @@ namespace Allors.Adapters
                         from.RemoveI1I12one2one();
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         // Same From / Different To
                         // Get
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
 
                         from.I1I12one2one = to;
 
@@ -1082,14 +1082,14 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         Assert.Equal(to, from.I1I12one2one);
                         Assert.Equal(to, from.I1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
 
                         from.I1I12one2one = toAnother;
 
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         Assert.Equal(toAnother, from.I1I12one2one);
                         Assert.Equal(toAnother, from.I1I12one2one);
                         Assert.Equal(from, toAnother.I1WhereI1I12one2one);
@@ -1098,12 +1098,12 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
 
                         // Exist
                         Assert.False(to.ExistI1WhereI1I12one2one);
@@ -1145,14 +1145,14 @@ namespace Allors.Adapters
 
                         // Different From / Different To
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
 
                         from.I1I12one2one = to;
 
@@ -1161,10 +1161,10 @@ namespace Allors.Adapters
                         Assert.Equal(to, from.I1I12one2one);
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         Assert.Equal(from, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
 
                         fromAnother.I1I12one2one = toAnother;
 
@@ -1181,10 +1181,10 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         Assert.Equal(toAnother, fromAnother.I1I12one2one);
                         Assert.Equal(toAnother, fromAnother.I1I12one2one);
                         Assert.Equal(fromAnother, toAnother.I1WhereI1I12one2one);
@@ -1193,14 +1193,14 @@ namespace Allors.Adapters
                         fromAnother.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I12one2one);
@@ -1262,28 +1262,28 @@ namespace Allors.Adapters
 
                         // Different From / Same To
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         from.I1I12one2one = to;
 
                         mark();
                         Assert.Equal(to, from.I1I12one2one);
                         Assert.Equal(to, from.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         Assert.Equal(from, to.I1WhereI1I12one2one);
 
                         fromAnother.I1I12one2one = to;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         Assert.Equal(to, fromAnother.I1I12one2one);
                         Assert.Equal(to, fromAnother.I1I12one2one);
                         Assert.Equal(fromAnother, to.I1WhereI1I12one2one);
@@ -1292,12 +1292,12 @@ namespace Allors.Adapters
                         fromAnother.RemoveI1I12one2one();
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, fromAnother.I1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I12one2one);
@@ -1340,14 +1340,14 @@ namespace Allors.Adapters
                         // Null 
                         // Set Null
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
 
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
 
                         from.I1I12one2one = to;
 
@@ -1358,18 +1358,18 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
 
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
 
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
 
                         from.I1I12one2one = to;
 
@@ -1380,8 +1380,8 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                     }
 
                     for (var i = 0; i < nrOfRuns; i++)
@@ -1398,13 +1398,13 @@ namespace Allors.Adapters
 
                         // To 1 and back
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
 
                         // 1-1
@@ -1432,13 +1432,13 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
 
                         // Exist
@@ -1488,13 +1488,13 @@ namespace Allors.Adapters
                         // Multiplicity
                         // Same From / Same To
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
 
                         from.I1I12one2one = to;
@@ -1514,13 +1514,13 @@ namespace Allors.Adapters
                         from.RemoveI1I12one2one();
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
 
                         // Exist
@@ -1550,28 +1550,28 @@ namespace Allors.Adapters
                         from.RemoveI1I12one2one();
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
 
                         // Same From / Different To
                         // Get
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
 
                         from.I1I12one2one = to;
@@ -1585,17 +1585,17 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(to, from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
 
                         from.I1I12one2one = toAnother;
                         mark();
 
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
                         Assert.Equal(toAnother, from.I1I12one2one);
                         mark();
@@ -1609,17 +1609,17 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
 
                         // Exist
@@ -1686,21 +1686,21 @@ namespace Allors.Adapters
 
                         // Different From / Different To
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
 
                         from.I1I12one2one = to;
@@ -1714,13 +1714,13 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
 
                         fromAnother.I1I12one2one = toAnother;
@@ -1746,13 +1746,13 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
                         Assert.Equal(toAnother, fromAnother.I1I12one2one);
                         mark();
@@ -1766,21 +1766,21 @@ namespace Allors.Adapters
                         fromAnother.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, toAnother.I1WhereI1I12one2one);
+                        Assert.Null(toAnother.I1WhereI1I12one2one);
                         mark();
 
                         // Exist
@@ -1903,9 +1903,9 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(to, from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
                         Assert.Equal(from, to.I1WhereI1I12one2one);
                         mark();
@@ -1915,9 +1915,9 @@ namespace Allors.Adapters
                         fromAnother.I1I12one2one = to;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
                         Assert.Equal(to, fromAnother.I1I12one2one);
                         mark();
@@ -1931,17 +1931,17 @@ namespace Allors.Adapters
                         fromAnother.RemoveI1I12one2one();
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, fromAnother.I1I12one2one);
+                        Assert.Null(fromAnother.I1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I12one2one);
+                        Assert.Null(to.I1WhereI1I12one2one);
                         mark();
 
                         // Exist
@@ -2009,17 +2009,17 @@ namespace Allors.Adapters
                         // Null 
                         // Set Null
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
 
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
 
                         from.I1I12one2one = to;
@@ -2033,23 +2033,23 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
 
                         // Get
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
 
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
 
                         from.I1I12one2one = to;
@@ -2063,9 +2063,9 @@ namespace Allors.Adapters
                         from.I1I12one2one = null;
                         mark();
 
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
-                        Assert.Equal(null, from.I1I12one2one);
+                        Assert.Null(from.I1I12one2one);
                         mark();
                     }
                 }
@@ -2089,8 +2089,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.I1I1one2one);
-                    Assert.Equal(null, to.I1WhereI1I1one2one);
+                    Assert.Null(from.I1I1one2one);
+                    Assert.Null(to.I1WhereI1I1one2one);
 
                     // 1-1
                     from.I1I1one2one = to;
@@ -2107,8 +2107,8 @@ namespace Allors.Adapters
                     from.I1I1one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.I1I1one2one);
-                    Assert.Equal(null, to.I1WhereI1I1one2one);
+                    Assert.Null(from.I1I1one2one);
+                    Assert.Null(to.I1WhereI1I1one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -2126,7 +2126,7 @@ namespace Allors.Adapters
                     from.C1C1one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.C1WhereC1C1one2one);
+                    Assert.Null(to.C1WhereC1C1one2one);
                     Assert.Equal(toAnother, from.C1C1one2one);
                     Assert.Equal(from, toAnother.C1WhereC1C1one2one);
 
@@ -2145,7 +2145,7 @@ namespace Allors.Adapters
                     fromAnother.C1C1one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.C1C1one2one);
+                    Assert.Null(from.C1C1one2one);
                     Assert.Equal(to, fromAnother.C1C1one2one);
                     Assert.Equal(fromAnother, to.C1WhereC1C1one2one);
 
@@ -2155,11 +2155,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.C1C1one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1C1one2one);
+                    Assert.Null(from.C1C1one2one);
                     from.C1C1one2one = to;
                     from.C1C1one2one = null;
                     mark();
-                    Assert.Equal(null, from.C1C1one2one);
+                    Assert.Null(from.C1C1one2one);
 
                     // From - Middle - To
                     from = C1.Create(this.Session);
@@ -2194,8 +2194,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.I1I2one2one);
-                    Assert.Equal(null, to.I1WhereI1I2one2one);
+                    Assert.Null(from.I1I2one2one);
+                    Assert.Null(to.I1WhereI1I2one2one);
 
                     // 1-1
                     from.I1I2one2one = to;
@@ -2212,8 +2212,8 @@ namespace Allors.Adapters
                     from.I1I2one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.I1I2one2one);
-                    Assert.Equal(null, to.I1WhereI1I2one2one);
+                    Assert.Null(from.I1I2one2one);
+                    Assert.Null(to.I1WhereI1I2one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -2231,7 +2231,7 @@ namespace Allors.Adapters
                     from.I1I2one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.I1WhereI1I2one2one);
+                    Assert.Null(to.I1WhereI1I2one2one);
                     Assert.Equal(toAnother, from.I1I2one2one);
                     Assert.Equal(from, toAnother.I1WhereI1I2one2one);
 
@@ -2250,7 +2250,7 @@ namespace Allors.Adapters
                     fromAnother.I1I2one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.I1I2one2one);
+                    Assert.Null(from.I1I2one2one);
                     Assert.Equal(to, fromAnother.I1I2one2one);
                     Assert.Equal(fromAnother, to.I1WhereI1I2one2one);
 
@@ -2260,11 +2260,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.I1I2one2one = null;
                     mark();
-                    Assert.Equal(null, from.I1I2one2one);
+                    Assert.Null(from.I1I2one2one);
                     from.I1I2one2one = to;
                     from.I1I2one2one = null;
                     mark();
-                    Assert.Equal(null, from.I1I2one2one);
+                    Assert.Null(from.I1I2one2one);
                 }
             }
         }
@@ -2289,10 +2289,10 @@ namespace Allors.Adapters
                         // To 1 and back
                         // Get
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         // 1-1
                         from.I1I34one2one = to;
@@ -2311,10 +2311,10 @@ namespace Allors.Adapters
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I34one2one);
@@ -2347,10 +2347,10 @@ namespace Allors.Adapters
                         // Multiplicity
                         // Same From / Same To
                         // Get
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         from.I1I34one2one = to;
                         from.I1I34one2one = to;
@@ -2364,10 +2364,10 @@ namespace Allors.Adapters
                         from.RemoveI1I34one2one();
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I34one2one);
@@ -2387,19 +2387,19 @@ namespace Allors.Adapters
                         from.RemoveI1I34one2one();
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         // Same From / Different To
                         // Get
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
 
                         from.I1I34one2one = to;
 
@@ -2408,14 +2408,14 @@ namespace Allors.Adapters
                         Assert.Equal(from, to.I1WhereI1I34one2one);
                         Assert.Equal(to, from.I1I34one2one);
                         Assert.Equal(to, from.I1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
 
                         from.I1I34one2one = toAnother;
 
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
                         Assert.Equal(toAnother, from.I1I34one2one);
                         Assert.Equal(toAnother, from.I1I34one2one);
                         Assert.Equal(from, toAnother.I1WhereI1I34one2one);
@@ -2424,12 +2424,12 @@ namespace Allors.Adapters
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
 
                         // Exist
                         Assert.False(to.ExistI1WhereI1I34one2one);
@@ -2471,14 +2471,14 @@ namespace Allors.Adapters
 
                         // Different From / Different To
                         // Get
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
 
                         from.I1I34one2one = to;
 
@@ -2487,10 +2487,10 @@ namespace Allors.Adapters
                         Assert.Equal(to, from.I1I34one2one);
                         Assert.Equal(from, to.I1WhereI1I34one2one);
                         Assert.Equal(from, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
 
                         fromAnother.I1I34one2one = toAnother;
 
@@ -2507,10 +2507,10 @@ namespace Allors.Adapters
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
                         Assert.Equal(toAnother, fromAnother.I1I34one2one);
                         Assert.Equal(toAnother, fromAnother.I1I34one2one);
                         Assert.Equal(fromAnother, toAnother.I1WhereI1I34one2one);
@@ -2519,14 +2519,14 @@ namespace Allors.Adapters
                         fromAnother.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
-                        Assert.Equal(null, toAnother.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
+                        Assert.Null(toAnother.I1WhereI1I34one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I34one2one);
@@ -2588,28 +2588,28 @@ namespace Allors.Adapters
 
                         // Different From / Same To
                         // Get
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         from.I1I34one2one = to;
 
                         mark();
                         Assert.Equal(to, from.I1I34one2one);
                         Assert.Equal(to, from.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
                         Assert.Equal(from, to.I1WhereI1I34one2one);
                         Assert.Equal(from, to.I1WhereI1I34one2one);
 
                         fromAnother.I1I34one2one = to;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
                         Assert.Equal(to, fromAnother.I1I34one2one);
                         Assert.Equal(to, fromAnother.I1I34one2one);
                         Assert.Equal(fromAnother, to.I1WhereI1I34one2one);
@@ -2618,12 +2618,12 @@ namespace Allors.Adapters
                         fromAnother.RemoveI1I34one2one();
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, fromAnother.I1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
-                        Assert.Equal(null, to.I1WhereI1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(fromAnother.I1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
+                        Assert.Null(to.I1WhereI1I34one2one);
 
                         // Exist
                         Assert.False(from.ExistI1I34one2one);
@@ -2666,14 +2666,14 @@ namespace Allors.Adapters
                         // Null 
                         // Set Null
                         // Get
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
 
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
 
                         from.I1I34one2one = to;
 
@@ -2684,18 +2684,18 @@ namespace Allors.Adapters
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
 
                         // Get
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
 
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
 
                         from.I1I34one2one = to;
 
@@ -2706,8 +2706,8 @@ namespace Allors.Adapters
                         from.I1I34one2one = null;
 
                         mark();
-                        Assert.Equal(null, from.I1I34one2one);
-                        Assert.Equal(null, from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
+                        Assert.Null(from.I1I34one2one);
                     }
                 }
             }
@@ -2730,8 +2730,8 @@ namespace Allors.Adapters
 
                     // To 1 and back
                     mark();
-                    Assert.Equal(null, from.I3I4one2one);
-                    Assert.Equal(null, to.I3WhereI3I4one2one);
+                    Assert.Null(from.I3I4one2one);
+                    Assert.Null(to.I3WhereI3I4one2one);
 
                     // 1-1
                     from.I3I4one2one = to;
@@ -2748,8 +2748,8 @@ namespace Allors.Adapters
                     from.I3I4one2one = null;
 
                     mark();
-                    Assert.Equal(null, from.I3I4one2one);
-                    Assert.Equal(null, to.I3WhereI3I4one2one);
+                    Assert.Null(from.I3I4one2one);
+                    Assert.Null(to.I3WhereI3I4one2one);
 
                     // Multiplicity
                     // Same From / Same To
@@ -2767,7 +2767,7 @@ namespace Allors.Adapters
                     from.I3I4one2one = toAnother;
 
                     mark();
-                    Assert.Equal(null, to.I3WhereI3I4one2one);
+                    Assert.Null(to.I3WhereI3I4one2one);
                     Assert.Equal(toAnother, from.I3I4one2one);
                     Assert.Equal(from, toAnother.I3WhereI3I4one2one);
 
@@ -2786,7 +2786,7 @@ namespace Allors.Adapters
                     fromAnother.I3I4one2one = to;
 
                     mark();
-                    Assert.Equal(null, from.I3I4one2one);
+                    Assert.Null(from.I3I4one2one);
                     Assert.Equal(to, fromAnother.I3I4one2one);
                     Assert.Equal(fromAnother, to.I3WhereI3I4one2one);
 
@@ -2796,11 +2796,11 @@ namespace Allors.Adapters
                     // Set Null
                     from.I3I4one2one = null;
                     mark();
-                    Assert.Equal(null, from.I3I4one2one);
+                    Assert.Null(from.I3I4one2one);
                     from.I3I4one2one = to;
                     from.I3I4one2one = null;
                     mark();
-                    Assert.Equal(null, from.I3I4one2one);
+                    Assert.Null(from.I3I4one2one);
                 }
             }
         }

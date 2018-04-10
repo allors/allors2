@@ -18,11 +18,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Server.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Domain;
@@ -33,9 +32,9 @@ namespace Allors.Server.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
-    public class PullController : Controller
+    public abstract class PullController : Controller
     {
-        public PullController(ISessionService sessionService, ILogger<PullController> logger)
+        protected PullController(ISessionService sessionService, ILogger<PullController> logger)
         {
             this.Session = sessionService.Session;
             this.Logger = logger;

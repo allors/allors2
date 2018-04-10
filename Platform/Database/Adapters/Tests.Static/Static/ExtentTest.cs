@@ -89,7 +89,7 @@ namespace Allors.Adapters
                 all.AddGreaterThan(MetaC1.Instance.C1AllorsInteger, 0);
                 all.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.True(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -169,7 +169,7 @@ namespace Allors.Adapters
                 var all = extent.Filter.AddAnd();
                 all.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.True(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -266,7 +266,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, inExtent);
                         }
 
-                        Assert.Equal(0, extent.Count);
+                        Assert.Empty(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, false, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -321,7 +321,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, inExtent);
                         }
 
-                        Assert.Equal(1, extent.Count);
+                        Assert.Single(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, true, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -351,7 +351,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, inExtent);
                         }
 
-                        Assert.Equal(0, extent.Count);
+                        Assert.Empty(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, false, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -406,7 +406,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, inExtent);
                         }
 
-                        Assert.Equal(1, extent.Count);
+                        Assert.Single(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, true, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -438,7 +438,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, inExtent);
                         }
 
-                        Assert.Equal(0, extent.Count);
+                        Assert.Empty(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, false, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -493,7 +493,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, inExtent);
                         }
 
-                        Assert.Equal(1, extent.Count);
+                        Assert.Single(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, true, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -523,7 +523,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, inExtent);
                         }
 
-                        Assert.Equal(0, extent.Count);
+                        Assert.Empty(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, false, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -578,7 +578,7 @@ namespace Allors.Adapters
                             extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, inExtent);
                         }
 
-                        Assert.Equal(1, extent.Count);
+                        Assert.Single(extent);
                         this.AssertC1(extent, false, false, false, false);
                         this.AssertC2(extent, false, true, false, false);
                         this.AssertC3(extent, false, false, false, false);
@@ -837,7 +837,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -876,7 +876,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, true, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -898,7 +898,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -937,7 +937,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, true, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -961,7 +961,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -979,7 +979,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, true, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1000,7 +1000,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1022,7 +1022,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1040,7 +1040,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, true, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1061,7 +1061,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1082,7 +1082,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddContains(MetaC1.Instance.C1sWhereC1C1many2one, this.c1C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.True(extent.Contains(this.c1C));
@@ -1103,7 +1103,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddContains(MetaC2.Instance.C1sWhereC1C2many2one, this.c1C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -1124,7 +1124,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                 extent.Filter.AddContains(MetaC4.Instance.C3sWhereC3C4many2one, this.c3C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -1146,7 +1146,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddContains(MetaI12.Instance.C1sWhereC1I12many2one, this.c1C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -1198,7 +1198,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1237,7 +1237,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, true, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1259,7 +1259,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1298,7 +1298,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, true, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1322,7 +1322,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1WhereC1I12one2many, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1361,7 +1361,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1WhereC1I12one2many, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1383,7 +1383,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1WhereC1I12one2many, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1422,7 +1422,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.C1WhereC1I12one2many, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -1443,7 +1443,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC2.Instance.C1WhereC1C2one2many, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, true, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -1462,7 +1462,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI2.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI2.Instance.I1WhereI1I2one2many, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, true, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -1481,7 +1481,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234WhereS1234one2many, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -1720,7 +1720,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddInstanceof(MetaS1234.Instance.S1234WhereS1234one2many, MetaC1.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.True(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -1980,7 +1980,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1WhereC1C1one2one, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.True(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2001,7 +2001,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC2.Instance.C1WhereC1C2one2one, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2022,7 +2022,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC4.Instance.C3WhereC3C4one2one, this.c3B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2044,7 +2044,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI2.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI2.Instance.I1WhereI1I2one2one, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2066,7 +2066,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234WhereS1234one2one, this.c1C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2560,7 +2560,7 @@ namespace Allors.Adapters
                 extent.Filter.AddGreaterThan(MetaI12.Instance.I12AllorsInteger, 0);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsInteger, 0, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2590,7 +2590,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddContainedIn(MetaC1.Instance.C1C2one2manies, inExtent);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.True(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2620,7 +2620,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2660,7 +2660,7 @@ namespace Allors.Adapters
 
                 var extent = this.Session.Except(topExtent, unionExtent);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.True(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2746,7 +2746,7 @@ namespace Allors.Adapters
 
                 extent = this.Session.Except(firstExtent, secondExtent);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 Assert.False(extent.Contains(this.c1A));
                 Assert.False(extent.Contains(this.c1B));
                 Assert.False(extent.Contains(this.c1C));
@@ -2776,7 +2776,7 @@ namespace Allors.Adapters
 
                 var extent = this.Session.Extent(MetaInterfaceWithoutConcreteClass.Instance.ObjectType);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
             }
         }
 
@@ -2793,7 +2793,7 @@ namespace Allors.Adapters
 
                 extent.Filter.AddEquals(this.c1A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -2801,14 +2801,14 @@ namespace Allors.Adapters
 
                 extent.Filter.AddEquals(this.c1B);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
 
                 // interface
                 extent = this.Session.Extent(MetaI1.Instance.ObjectType);
 
                 extent.Filter.AddEquals(this.c1A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -2816,14 +2816,14 @@ namespace Allors.Adapters
 
                 extent.Filter.AddEquals(this.c1B);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
 
                 // shared interface
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
 
                 extent.Filter.AddEquals(this.c1A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -2831,7 +2831,7 @@ namespace Allors.Adapters
 
                 extent.Filter.AddEquals(this.c1B);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
             }
         }
 
@@ -2918,7 +2918,7 @@ namespace Allors.Adapters
                 var or = extent.Filter.AddOr();
                 or.AddEquals(this.c1A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -2937,7 +2937,7 @@ namespace Allors.Adapters
                 or = extent.Filter.AddOr();
                 or.AddEquals(this.c1A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -2956,7 +2956,7 @@ namespace Allors.Adapters
                 or = extent.Filter.AddOr();
                 or.AddEquals(this.c1A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -3084,7 +3084,7 @@ namespace Allors.Adapters
                 secondExtent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent = this.Session.Except(firstExtent, secondExtent);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -3094,7 +3094,7 @@ namespace Allors.Adapters
                 secondExtent = this.c1C.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent = this.Session.Except(firstExtent, secondExtent);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -3130,7 +3130,7 @@ namespace Allors.Adapters
                 extent.Filter.AddExists(MetaC1.Instance.C1AllorsString);
                 Assert.Equal(3, extent.Count);
                 extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbra");
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
 
                 // TODO: all possible combinations
             }
@@ -3260,7 +3260,7 @@ namespace Allors.Adapters
                 secondExtent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent = this.Session.Intersect(firstExtent, secondExtent);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -3270,7 +3270,7 @@ namespace Allors.Adapters
                 secondExtent = this.c1C.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent = this.Session.Intersect(firstExtent, secondExtent);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -3416,7 +3416,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -3477,7 +3477,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.C1sWhereC1C2many2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -3540,7 +3540,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -3601,7 +3601,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaI12.Instance.C1sWhereC1I12many2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -3643,7 +3643,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC2.Instance.C1sWhereC1C2many2many);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -3653,7 +3653,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaI2.Instance.I1sWhereI1I2many2many);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4027,7 +4027,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4088,7 +4088,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.C1WhereC1C2one2many, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4384,7 +4384,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC2.Instance.C1WhereC1C2one2many);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4394,7 +4394,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaI2.Instance.I1WhereI1I2one2many);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4483,7 +4483,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1WhereC1C1one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4501,7 +4501,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1WhereC1C1one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4521,7 +4521,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.C1WhereC1C2one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4539,7 +4539,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.C1WhereC1C2one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4559,7 +4559,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC4.Instance.C3WhereC3C4one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4577,7 +4577,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC4.Instance.C3WhereC3C4one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4597,7 +4597,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.I12WhereI12C2one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, true, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4615,7 +4615,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC2.Instance.I12WhereI12C2one2one, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -4779,7 +4779,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC1.Instance.C1WhereC1C1one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4788,7 +4788,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC2.Instance.C1WhereC1C2one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4797,7 +4797,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC2.Instance.C1WhereC1C2one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4806,7 +4806,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC4.Instance.C3WhereC3C4one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4816,7 +4816,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI2.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaI2.Instance.I1WhereI1I2one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4893,7 +4893,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC1.Instance.C1WhereC1C1one2one, MetaC1.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4902,7 +4902,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC2.Instance.C1WhereC1C2one2one, MetaC1.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4911,7 +4911,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC4.Instance.C3WhereC3C4one2one, MetaC3.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4943,7 +4943,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC1.Instance.C1WhereC1C1one2one, MetaI1.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4952,7 +4952,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC2.Instance.C1WhereC1C2one2one, MetaI1.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -4961,7 +4961,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC4.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC4.Instance.C3WhereC3C4one2one, MetaI3.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5005,7 +5005,7 @@ namespace Allors.Adapters
                 none.AddGreaterThan(MetaC1.Instance.C1AllorsInteger, 1);
                 none.AddLessThan(MetaC1.Instance.C1AllorsInteger, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5081,7 +5081,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddBetween(MetaC1.Instance.C1AllorsInteger, 1, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5123,7 +5123,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddNot().AddBetween(MetaI12.Instance.I12AllorsInteger, 1, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5165,7 +5165,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddNot().AddBetween(MetaS1234.Instance.S1234AllorsInteger, 1, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5279,7 +5279,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddLessThan(MetaC1.Instance.C1AllorsInteger, 3);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5311,7 +5311,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddNot().AddLessThan(MetaI12.Instance.I12AllorsInteger, 3);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5343,7 +5343,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddNot().AddLessThan(MetaS1234.Instance.S1234AllorsInteger, 3);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5506,7 +5506,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddGreaterThan(MetaC1.Instance.C1AllorsInteger, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5516,7 +5516,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddGreaterThan(MetaC1.Instance.C1AllorsInteger, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5538,7 +5538,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddNot().AddGreaterThan(MetaI12.Instance.I12AllorsInteger, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5570,7 +5570,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddNot().AddGreaterThan(MetaS1234.Instance.S1234AllorsInteger, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5751,7 +5751,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC1.Instance.C1AllorsInteger);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -5871,7 +5871,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -5892,7 +5892,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -5932,7 +5932,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -5953,7 +5953,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -5995,7 +5995,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6016,7 +6016,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6056,7 +6056,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6077,7 +6077,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6201,7 +6201,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6241,7 +6241,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6280,7 +6280,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6321,7 +6321,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6360,7 +6360,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6455,7 +6455,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12many2manies, (IEnumerable<IObject>)inExtent.ToArray());
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6475,7 +6475,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC1.Instance.C1C2many2manies);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -6903,7 +6903,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6920,7 +6920,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6937,7 +6937,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC3.Instance.C3C4one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, true, false, false, false);
@@ -6955,7 +6955,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C1one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6972,7 +6972,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1C2one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -6989,7 +6989,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC3.Instance.C3C4one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, true, false, false, false);
@@ -7027,7 +7027,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddNot().AddContainedIn(MetaC1.Instance.C1I12one2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, true, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -7142,7 +7142,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC1.Instance.C1C2one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7151,7 +7151,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC1.Instance.C1C2one2one);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7238,7 +7238,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC1.Instance.C1C1one2one, MetaC1.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7247,7 +7247,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC1.Instance.C1C2one2one, MetaC2.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7279,7 +7279,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC1.Instance.C1C2one2one, MetaI2.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7298,7 +7298,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddInstanceof(MetaC1.Instance.C1I12one2one, MetaI12.Instance.ObjectType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7370,7 +7370,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7379,7 +7379,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                 extent.Filter.AddNot().AddEquals(MetaC3.Instance.C3AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, false, false);
@@ -7429,7 +7429,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI1.Instance.ObjectType);
                 extent.Filter.AddNot().AddEquals(MetaI1.Instance.I1AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7438,7 +7438,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI3.Instance.ObjectType);
                 extent.Filter.AddNot().AddEquals(MetaI3.Instance.I3AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, false, false);
@@ -7542,7 +7542,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7744,7 +7744,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddExists(MetaC1.Instance.C1AllorsString);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, true, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7851,7 +7851,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7871,7 +7871,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "%ra%");
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7881,7 +7881,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "%bra");
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -7891,7 +7891,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddNot().AddLike(MetaC1.Instance.C1AllorsString, "%cadabra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8128,7 +8128,7 @@ namespace Allors.Adapters
 
                 secondExtent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "I did it again");
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
 
                 // TODO: all possible combinations
             }
@@ -8149,7 +8149,7 @@ namespace Allors.Adapters
                 or.AddAnd();
                 or.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8162,7 +8162,7 @@ namespace Allors.Adapters
                 or.AddOr();
                 or.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8175,7 +8175,7 @@ namespace Allors.Adapters
                 or.AddNot();
                 or.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8188,7 +8188,7 @@ namespace Allors.Adapters
                 and.AddAnd();
                 and.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8201,7 +8201,7 @@ namespace Allors.Adapters
                 and.AddOr();
                 and.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8214,7 +8214,7 @@ namespace Allors.Adapters
                 and.AddNot();
                 and.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8305,7 +8305,7 @@ namespace Allors.Adapters
                 or.AddContainedIn(MetaPerson.Instance.Company, (Extent)parents);
                 or.AddContainedIn(MetaPerson.Instance.Company, (Extent)children);
 
-                Assert.Equal(0, persons.Count);
+                Assert.Empty(persons);
             }
         }
 
@@ -8421,7 +8421,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsInteger, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8451,7 +8451,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsInteger, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8463,7 +8463,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsInteger, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8493,7 +8493,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsInteger, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8577,7 +8577,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsInteger, MetaC1.Instance.C1IntegerLessThan);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, true);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8590,7 +8590,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaI12.Instance.I12AllorsInteger, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8622,7 +8622,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaS1234.Instance.S1234AllorsInteger, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8805,7 +8805,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaC1.Instance.C1AllorsInteger, MetaC1.Instance.C1IntegerGreaterThan);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8838,7 +8838,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaI12.Instance.I12AllorsInteger, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -8870,7 +8870,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaS1234.Instance.S1234AllorsInteger, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9033,7 +9033,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsInteger, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9043,7 +9043,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsInteger, 0, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9063,7 +9063,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsInteger, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9075,7 +9075,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsInteger, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9105,7 +9105,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsInteger, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9117,7 +9117,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsInteger, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9147,7 +9147,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsInteger, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9231,7 +9231,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsInteger, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9241,7 +9241,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9263,7 +9263,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaI12.Instance.I12AllorsInteger, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9295,7 +9295,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaS1234.Instance.S1234AllorsInteger, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9498,7 +9498,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaC1.Instance.C1AllorsInteger, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9529,7 +9529,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaI12.Instance.I12AllorsInteger, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9560,7 +9560,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaS1234.Instance.S1234AllorsInteger, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9719,7 +9719,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsInteger, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9730,7 +9730,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsInteger, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9751,7 +9751,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12AllorsInteger, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9782,7 +9782,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsInteger, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9962,7 +9962,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsDouble, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9972,7 +9972,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsDouble, 0, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -9992,7 +9992,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsDouble, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10004,7 +10004,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsDouble, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10034,7 +10034,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsDouble, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10046,7 +10046,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsDouble, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10076,7 +10076,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsDouble, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10160,7 +10160,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsDouble, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10170,7 +10170,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsDouble, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10192,7 +10192,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaI12.Instance.I12AllorsDouble, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10224,7 +10224,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaS1234.Instance.S1234AllorsDouble, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10427,7 +10427,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaC1.Instance.C1AllorsDouble, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10459,7 +10459,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaI12.Instance.I12AllorsDouble, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10491,7 +10491,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaS1234.Instance.S1234AllorsDouble, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10653,7 +10653,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsDouble, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10663,7 +10663,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsDouble, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10684,7 +10684,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12AllorsDouble, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10715,7 +10715,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsDouble, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -10917,7 +10917,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddBetween(C1.Meta.C1AllorsDateTime, dateTime1, dateTime3);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -10939,7 +10939,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddBetween(C1.Meta.C1AllorsDateTime, dateTime3, dateTime4);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.True(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -10983,7 +10983,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddBetween(C1.Meta.C1AllorsDateTime, dateTime6, dateTime10);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11006,7 +11006,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                     extent.Filter.AddBetween(MetaI12.Instance.I12AllorsDateTime, dateTime1, dateTime3);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11072,7 +11072,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                     extent.Filter.AddBetween(MetaI12.Instance.I12AllorsDateTime, dateTime6, dateTime10);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11095,7 +11095,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                     extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsDateTime, dateTime1, dateTime3);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11161,7 +11161,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                     extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsDateTime, dateTime6, dateTime10);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11279,7 +11279,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddLessThan(C1.Meta.C1AllorsDateTime, dateTime4);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11301,7 +11301,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddLessThan(C1.Meta.C1AllorsDateTime, dateTime5);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.True(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11346,7 +11346,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                     extent.Filter.AddLessThan(MetaI12.Instance.I12AllorsDateTime, dateTime4);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11413,7 +11413,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                     extent.Filter.AddLessThan(MetaS1234.Instance.S1234AllorsDateTime, dateTime4);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11697,7 +11697,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddGreaterThan(C1.Meta.C1AllorsDateTime, dateTime5);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11764,7 +11764,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                     extent.Filter.AddGreaterThan(MetaI12.Instance.I12AllorsDateTime, dateTime5);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -11831,7 +11831,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                     extent.Filter.AddGreaterThan(MetaS1234.Instance.S1234AllorsDateTime, dateTime5);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -12029,7 +12029,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddEquals(C1.Meta.C1AllorsDateTime, dateTime3);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -12051,7 +12051,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(C1.Meta.ObjectType);
                     extent.Filter.AddEquals(C1.Meta.C1AllorsDateTime, dateTime4);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.True(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -12096,7 +12096,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                     extent.Filter.AddEquals(MetaI12.Instance.I12AllorsDateTime, dateTime3);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -12163,7 +12163,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                     extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsDateTime, dateTime3);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     Assert.False(extent.Contains(this.c1A));
                     Assert.False(extent.Contains(this.c1B));
                     Assert.False(extent.Contains(this.c1C));
@@ -12380,7 +12380,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsDecimal, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12390,7 +12390,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsDecimal, 0, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12410,7 +12410,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaC1.Instance.C1AllorsDecimal, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12422,7 +12422,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsDecimal, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12452,7 +12452,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaI12.Instance.I12AllorsDecimal, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12464,7 +12464,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsDecimal, -10, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12494,7 +12494,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddBetween(MetaS1234.Instance.S1234AllorsDecimal, 3, 10);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12578,7 +12578,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsDecimal, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12588,7 +12588,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaC1.Instance.C1AllorsDecimal, 2);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12610,7 +12610,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaI12.Instance.I12AllorsDecimal, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12642,7 +12642,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddLessThan(MetaS1234.Instance.S1234AllorsDecimal, 1);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12845,7 +12845,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaC1.Instance.C1AllorsDecimal, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12877,7 +12877,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaI12.Instance.I12AllorsDecimal, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -12909,7 +12909,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddGreaterThan(MetaS1234.Instance.S1234AllorsDecimal, 2);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13071,7 +13071,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsDecimal, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13081,7 +13081,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsDecimal, 1);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13102,7 +13102,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12AllorsDecimal, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13133,7 +13133,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsDecimal, 0);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13314,7 +13314,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsInteger, Zero2Four.Zero);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13324,7 +13324,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsInteger, Zero2Four.One);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13346,7 +13346,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12AllorsInteger, Zero2Four.Zero);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13378,7 +13378,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsInteger, Zero2Four.Zero);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -13620,7 +13620,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1C1many2manies, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -13699,7 +13699,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1C1many2manies, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -13762,7 +13762,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1I12many2manies, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -13780,7 +13780,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1I12many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, true, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -13801,7 +13801,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1I12many2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, true, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -13823,7 +13823,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1I12many2manies, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -14038,7 +14038,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1C1one2manies, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -14112,7 +14112,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1C1one2manies, inExtent);
 
-                    Assert.Equal(0, extent.Count);
+                    Assert.Empty(extent);
                     this.AssertC1(extent, false, false, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -14184,7 +14184,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.I12C2one2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, true, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -14202,7 +14202,7 @@ namespace Allors.Adapters
                     extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaI12.Instance.I12C2one2manies, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, true, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -14223,7 +14223,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddContains(MetaC1.Instance.C1C2one2manies, this.c2C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, true, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -14233,7 +14233,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddContains(MetaC1.Instance.C1I12one2manies, this.c2C);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, true, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -14243,7 +14243,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddContains(MetaS1234.Instance.S1234one2manies, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -14636,7 +14636,7 @@ namespace Allors.Adapters
                     var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                     extent.Filter.AddContainedIn(MetaC1.Instance.C1C1many2one, inExtent);
 
-                    Assert.Equal(1, extent.Count);
+                    Assert.Single(extent);
                     this.AssertC1(extent, false, true, false, false);
                     this.AssertC2(extent, false, false, false, false);
                     this.AssertC3(extent, false, false, false, false);
@@ -14747,7 +14747,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1C1one2one, this.c1B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -14756,7 +14756,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1C2one2one, this.c2B);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -14766,7 +14766,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12C2one2one, this.c2A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -14776,7 +14776,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234C2one2one, this.c2A);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, true, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15062,7 +15062,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15071,7 +15071,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC3.Instance.C3AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15081,7 +15081,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15090,7 +15090,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaC3.Instance.C3AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, false, false);
@@ -15121,7 +15121,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI1.Instance.I1AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15130,7 +15130,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI3.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI3.Instance.I3AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15140,7 +15140,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI1.Instance.I1AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15149,7 +15149,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI3.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI3.Instance.I3AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, false, false);
@@ -15180,7 +15180,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15189,7 +15189,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI34.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15208,7 +15208,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI12.Instance.I12AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15226,7 +15226,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC2.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, true, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15235,7 +15235,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI23.Instance.I23AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, false, false);
@@ -15253,7 +15253,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC3.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaI34.Instance.I34AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, true, false, false);
@@ -15293,7 +15293,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddEquals(MetaS1234.Instance.S1234AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15561,7 +15561,7 @@ namespace Allors.Adapters
                 var extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15571,7 +15571,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "ᴀbra");
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15591,7 +15591,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaC1.Instance.ObjectType);
                 extent.Filter.AddLike(MetaC1.Instance.C1AllorsString, "notfound");
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15633,7 +15633,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaI12.Instance.ObjectType);
                 extent.Filter.AddLike(MetaI12.Instance.I12AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -15665,7 +15665,7 @@ namespace Allors.Adapters
                 extent = this.Session.Extent(MetaS1234.Instance.ObjectType);
                 extent.Filter.AddLike(MetaS1234.Instance.S1234AllorsString, string.Empty);
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -16078,7 +16078,7 @@ namespace Allors.Adapters
                 secondExtent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent = this.Session.Union(firstExtent, secondExtent);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -16121,7 +16121,7 @@ namespace Allors.Adapters
                 Extent<Person> persons = this.Session.Extent(MetaPerson.Instance.ObjectType);
                 persons.Filter.AddContainedIn(MetaPerson.Instance.Company, (Extent)allCompanies);
 
-                Assert.Equal(0, persons.Count);
+                Assert.Empty(persons);
             }
         }
 
@@ -16446,7 +16446,7 @@ namespace Allors.Adapters
                 // Shortcut
                 var extent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -16457,7 +16457,7 @@ namespace Allors.Adapters
                 extent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent.Filter.AddEquals(MetaC1.Instance.C1AllorsString, "ᴀbracadabra");
 
-                Assert.Equal(0, extent.Count);
+                Assert.Empty(extent);
                 this.AssertC1(extent, false, false, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -16468,7 +16468,7 @@ namespace Allors.Adapters
                 extent = this.c1B.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1one2manies.RelationType);
                 extent.AddSort(MetaC1.Instance.C1AllorsInteger);
 
-                Assert.Equal(1, extent.Count);
+                Assert.Single(extent);
                 this.AssertC1(extent, false, true, false, false);
                 this.AssertC2(extent, false, false, false, false);
                 this.AssertC3(extent, false, false, false, false);
@@ -16496,9 +16496,9 @@ namespace Allors.Adapters
                 c2s.Filter.AddContains(MetaC2.Instance.C3Many2Manies, c3);
 
                 Extent<C1> c1s = this.Session.Extent(MetaC1.Instance.ObjectType);
-                c1s.Filter.AddContainedIn(MetaC1.Instance.C1C2many2one, (Extent)c2s);
+                c1s.Filter.AddContainedIn(MetaC1.Instance.C1C2many2one, c2s);
 
-                Assert.Equal(1, c1s.Count);
+                Assert.Single(c1s);
                 Assert.Equal(c1, c1s[0]);
             }
         }
@@ -16523,9 +16523,9 @@ namespace Allors.Adapters
                 c3s.Filter.AddContains(MetaC3.Instance.C3C4one2manies, c4);
 
                 Extent<C2> c2s = this.Session.Extent(MetaC2.Instance.ObjectType);
-                c2s.Filter.AddContainedIn(MetaC2.Instance.C3Many2One, (Extent)c3s);
+                c2s.Filter.AddContainedIn(MetaC2.Instance.C3Many2One, c3s);
 
-                Assert.Equal(1, c2s.Count);
+                Assert.Single(c2s);
                 Assert.Equal(c2, c2s[0]);
             }
         }
@@ -16550,9 +16550,9 @@ namespace Allors.Adapters
                 c2s.Filter.AddContains(MetaC2.Instance.C3sWhereC3C2many2many, c3);
 
                 Extent<C1> c1s = this.Session.Extent(MetaC1.Instance.ObjectType);
-                c1s.Filter.AddContainedIn(MetaC1.Instance.C1C2many2one, (Extent)c2s);
+                c1s.Filter.AddContainedIn(MetaC1.Instance.C1C2many2one, c2s);
 
-                Assert.Equal(1, c1s.Count);
+                Assert.Single(c1s);
                 Assert.Equal(c1, c1s[0]);
             }
         }

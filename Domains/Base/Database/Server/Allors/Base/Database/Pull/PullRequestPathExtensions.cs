@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AuthenticationTokenRequest.cs" company="Allors bvba">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PullRequestPath.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,10 +20,22 @@
 
 namespace Allors.Server
 {
-    public class AuthenticationTokenRequest
-    {
-        public string UserName { get; set; }
+    using System;
 
-        public string Password { get; set; }
+    using Allors.Meta;
+
+    public static class PullRequestPathExtensions
+    {
+        public static void Parse(this PullRequestPath @this, Path path, IMetaPopulation metaPopulation)
+        {
+            var propertyType = (PropertyType)metaPopulation.Find(new Guid(@this.Step));
+            path.PropertyType = propertyType;
+
+            if (@this.Next != null)
+            {
+                path.Next = new Path();
+                @this.Next.Parse(path.Next, metaPopulation);
+            }
+        }
     }
 }

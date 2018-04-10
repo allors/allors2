@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PullRequestPage.cs" company="Allors bvba">
+// <copyright file="PullRequestQuery.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,32 +20,33 @@
 
 namespace Allors.Server
 {
-    using Allors.Domain.Query;
-
-    public class PullRequestPage
+    public class PullRequestQuery
     {
         /// <summary>
-        /// The RoleType.
+        /// The name of the Query
         /// </summary>
-        public int? S { get; set; }
+        public string N { get; set; }
 
         /// <summary>
-        /// The TreeNodes
+        /// The ObjectType.
         /// </summary>
-        public int? T { get; set; }
+        public string OT { get; set; }
 
-        public Page Parse()
-        {
-            if (this.S.HasValue && this.T.HasValue)
-            {
-                return new Page
-                           {
-                               Skip = this.S.Value,
-                               Take = this.T.Value
-                           };
-            }
+        /// <summary>
+        /// The predicate
+        /// </summary>
+        public PullRequestPredicate P { get; set; }
 
-            return null;
-        }
+        public PullRequestQuery[] UN { get; set; }
+
+        public PullRequestQuery[] IN { get; set; }
+
+        public PullRequestQuery[] EX { get; set; }
+        
+        public PullRequestTreeNode[] I { get; set; }
+
+        public PullRequestSort[] S { get; set; }
+
+        public PullRequestPage PA { get; set; }
     }
 }

@@ -68,36 +68,36 @@ namespace Allors.Adapters
                         mark();
                         var tuttefrut = to1.Strategy.IsDeleted;
                         mark();
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 1-1
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 1-2
                         from2.AddC1C1many2many(to1);
@@ -106,32 +106,32 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 1-3
                         from3.AddC1C1many2many(to1);
@@ -140,20 +140,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(3, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from3));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from3));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from3, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from3, to1.C1sWhereC1C1many2many);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from3.C1C1many2manies[0]);
                         Assert.Equal(to1, from3.C1C1many2manies[0]);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 1-4
                         from4.AddC1C1many2many(to1);
@@ -162,14 +162,14 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(4, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(4, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from3));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from3));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from4));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from4));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from3, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from3, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from4, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from4, to1.C1sWhereC1C1many2many);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
@@ -186,20 +186,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(3, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from3));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from3));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from3, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from3, to1.C1sWhereC1C1many2many);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from3.C1C1many2manies[0]);
                         Assert.Equal(to1, from3.C1C1many2manies[0]);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 1-2
                         from3.RemoveC1C1many2many(to1);
@@ -208,54 +208,54 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
                         Assert.Equal(to1, from2.C1C1many2manies[0]);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 1-1
                         from2.RemoveC1C1many2many(to1);
                         from2.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
                         Assert.Equal(to1, from1.C1C1many2manies[0]);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // 0-0        
                         from1.RemoveC1C1many2many(to1);
                         from1.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from3.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
-                        Assert.Equal(0, from4.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from3.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
+                        Assert.Empty(from4.C1C1many2manies);
 
                         // Exist
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
                         Assert.False(from1.ExistC1C1many2manies);
@@ -272,8 +272,8 @@ namespace Allors.Adapters
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
                         Assert.True(to1.ExistC1sWhereC1C1many2many);
                         Assert.True(to1.ExistC1sWhereC1C1many2many);
                         Assert.True(from1.ExistC1C1many2manies);
@@ -380,8 +380,8 @@ namespace Allors.Adapters
                         from2.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
                         Assert.True(to1.ExistC1sWhereC1C1many2many);
                         Assert.True(to1.ExistC1sWhereC1C1many2many);
                         Assert.True(from1.ExistC1C1many2manies);
@@ -398,8 +398,8 @@ namespace Allors.Adapters
                         from1.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
                         Assert.False(from1.ExistC1C1many2manies);
@@ -413,34 +413,34 @@ namespace Allors.Adapters
 
                         // To 0-4-0
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 1-1
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 1-2
                         from1.AddC1C1many2many(to2);
@@ -449,18 +449,18 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.C1C1many2manies.Count);
                         Assert.Equal(2, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 1-3
                         from1.AddC1C1many2many(to3);
@@ -469,20 +469,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, from1.C1C1many2manies.Count);
                         Assert.Equal(3, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to3));
-                        Assert.True(from1.C1C1many2manies.Contains(to3));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to3, from1.C1C1many2manies);
+                        Assert.Contains(to3, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to3.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to3.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 1-4
                         from1.AddC1C1many2many(to4);
@@ -491,14 +491,14 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(4, from1.C1C1many2manies.Count);
                         Assert.Equal(4, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to3));
-                        Assert.True(from1.C1C1many2manies.Contains(to3));
-                        Assert.True(from1.C1C1many2manies.Contains(to4));
-                        Assert.True(from1.C1C1many2manies.Contains(to4));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to3, from1.C1C1many2manies);
+                        Assert.Contains(to3, from1.C1C1many2manies);
+                        Assert.Contains(to4, from1.C1C1many2manies);
+                        Assert.Contains(to4, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
@@ -515,20 +515,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, from1.C1C1many2manies.Count);
                         Assert.Equal(3, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to3));
-                        Assert.True(from1.C1C1many2manies.Contains(to3));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to3, from1.C1C1many2manies);
+                        Assert.Contains(to3, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to3.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to3.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 1-2
                         from1.RemoveC1C1many2many(to3);
@@ -537,56 +537,56 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.C1C1many2manies.Count);
                         Assert.Equal(2, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to2.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 1-1
                         from1.RemoveC1C1many2many(to2);
                         from1.RemoveC1C1many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
                         Assert.Equal(from1, to1.C1sWhereC1C1many2many[0]);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // 0-0        
                         from1.RemoveC1C1many2many(to1);
                         from1.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to3.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to4.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to3.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
+                        Assert.Empty(to4.C1sWhereC1C1many2many);
 
                         // Exist
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
                         Assert.False(from1.ExistC1C1many2manies);
                         Assert.False(from1.ExistC1C1many2manies);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
@@ -603,8 +603,8 @@ namespace Allors.Adapters
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
                         Assert.True(from1.ExistC1C1many2manies);
                         Assert.True(from1.ExistC1C1many2manies);
                         Assert.True(to1.ExistC1sWhereC1C1many2many);
@@ -711,8 +711,8 @@ namespace Allors.Adapters
                         from1.RemoveC1C1many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
                         Assert.True(from1.ExistC1C1many2manies);
                         Assert.True(from1.ExistC1C1many2manies);
                         Assert.True(to1.ExistC1sWhereC1C1many2many);
@@ -729,8 +729,8 @@ namespace Allors.Adapters
                         from1.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
                         Assert.False(from1.ExistC1C1many2manies);
                         Assert.False(from1.ExistC1C1many2manies);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
@@ -749,23 +749,23 @@ namespace Allors.Adapters
 
                         // Get
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2many(to1);
                         from1.RemoveC1C1many2many(to1);
@@ -773,10 +773,10 @@ namespace Allors.Adapters
                         from2.RemoveC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -805,32 +805,32 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         from1.C1C1many2manies = to1Array;
                         from1.C1C1many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -857,29 +857,29 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.False(from1.C1C1many2manies.Contains(to2));
-                        Assert.False(from1.C1C1many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.DoesNotContain(to2, from1.C1C1many2manies);
+                        Assert.DoesNotContain(to2, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from1.AddC1C1many2many(to2);
                         from1.AddC1C1many2many(to2);
@@ -887,29 +887,29 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.C1C1many2manies.Count);
                         Assert.Equal(2, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to2.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -953,74 +953,74 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from1.C1C1many2manies = to1Array;
                         from1.C1C1many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.False(from1.C1C1many2manies.Contains(to2));
-                        Assert.False(from1.C1C1many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.DoesNotContain(to2, from1.C1C1many2manies);
+                        Assert.DoesNotContain(to2, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from1.C1C1many2manies = to2Array;
                         from1.C1C1many2manies = to2Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.False(from1.C1C1many2manies.Contains(to1));
-                        Assert.False(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.DoesNotContain(to1, from1.C1C1many2manies);
+                        Assert.DoesNotContain(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to2.C1sWhereC1C1many2many);
 
                         from1.C1C1many2manies = to12Array;
 
                         mark();
                         Assert.Equal(2, from1.C1C1many2manies.Count);
                         Assert.Equal(2, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.True(from1.C1C1many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Contains(to2, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to2.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1073,46 +1073,46 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
 
                         from2.AddC1C1many2many(to1);
                         from2.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.True(from2.C1C1many2manies.Contains(to1));
-                        Assert.True(from2.C1C1many2manies.Contains(to1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Contains(to1, from2.C1C1many2manies);
+                        Assert.Contains(to1, from2.C1C1many2manies);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
@@ -1120,12 +1120,12 @@ namespace Allors.Adapters
                         from2.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1171,57 +1171,57 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         from1.C1C1many2manies = to1Array;
                         from1.C1C1many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
 
                         from2.C1C1many2manies = to1Array;
                         from2.C1C1many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.True(from2.C1C1many2manies.Contains(to1));
-                        Assert.True(from2.C1C1many2manies.Contains(to1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Contains(to1, from2.C1C1many2manies);
+                        Assert.Contains(to1, from2.C1C1many2manies);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
                         Assert.Equal(2, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to1.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from2.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1265,52 +1265,52 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from2.AddC1C1many2many(to2);
                         from2.AddC1C1many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.True(from2.C1C1many2manies.Contains(to2));
-                        Assert.True(from2.C1C1many2manies.Contains(to2));
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Contains(to2, from2.C1C1many2manies);
+                        Assert.Contains(to2, from2.C1C1many2manies);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to2.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
@@ -1318,14 +1318,14 @@ namespace Allors.Adapters
                         from2.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1379,52 +1379,52 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistC1sWhereC1C1many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from1.C1C1many2manies = to1Array;
                         from1.C1C1many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         from2.C1C1many2manies = to2Array;
                         from2.C1C1many2manies = to2Array;
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.Equal(1, from2.C1C1many2manies.Count);
-                        Assert.True(from2.C1C1many2manies.Contains(to2));
-                        Assert.True(from2.C1C1many2manies.Contains(to2));
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to2.C1sWhereC1C1many2many.Count);
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from2));
-                        Assert.True(to2.C1sWhereC1C1many2many.Contains(from2));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Single(from2.C1C1many2manies);
+                        Assert.Contains(to2, from2.C1C1many2manies);
+                        Assert.Contains(to2, from2.C1C1many2manies);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Single(to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to2.C1sWhereC1C1many2many);
+                        Assert.Contains(from2, to2.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
@@ -1432,14 +1432,14 @@ namespace Allors.Adapters
                         from2.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, from2.C1C1many2manies.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to2.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(from2.C1C1many2manies);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
+                        Assert.Empty(to2.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1495,39 +1495,39 @@ namespace Allors.Adapters
                         // Null & Empty Array
                         // Add Null
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
-                        from1.AddC1C1many2many((C1)null);
-                        from1.AddC1C1many2many((C1)null);
+                        from1.AddC1C1many2many(null);
+                        from1.AddC1C1many2many(null);
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
-                        from1.AddC1C1many2many((C1)null);
-                        from1.AddC1C1many2many((C1)null);
+                        from1.AddC1C1many2many(null);
+                        from1.AddC1C1many2many(null);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1535,8 +1535,8 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
 
-                        from1.AddC1C1many2many((C1)null);
-                        from1.AddC1C1many2many((C1)null);
+                        from1.AddC1C1many2many(null);
+                        from1.AddC1C1many2many(null);
 
                         mark();
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1546,8 +1546,8 @@ namespace Allors.Adapters
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
-                        from1.AddC1C1many2many((C1)null);
-                        from1.AddC1C1many2many((C1)null);
+                        from1.AddC1C1many2many(null);
+                        from1.AddC1C1many2many(null);
 
                         mark();
                         Assert.True(from1.ExistC1C1many2manies);
@@ -1566,43 +1566,43 @@ namespace Allors.Adapters
 
                         // Delete Null
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
-                        from1.RemoveC1C1many2many((C1)null);
-                        from1.RemoveC1C1many2many((C1)null);
+                        from1.RemoveC1C1many2many(null);
+                        from1.RemoveC1C1many2many(null);
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
-                        from1.RemoveC1C1many2many((C1)null);
-                        from1.RemoveC1C1many2many((C1)null);
+                        from1.RemoveC1C1many2many(null);
+                        from1.RemoveC1C1many2many(null);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.Equal(1, from1.C1C1many2manies.Count);
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.True(from1.C1C1many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(1, to1.C1sWhereC1C1many2many.Count);
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
-                        Assert.True(to1.C1sWhereC1C1many2many.Contains(from1));
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Single(from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Contains(to1, from1.C1C1many2manies);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Single(to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
+                        Assert.Contains(from1, to1.C1sWhereC1C1many2many);
 
                         from1.RemoveC1C1many2manies();
                         from1.RemoveC1C1many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
-                        Assert.Equal(0, to1.C1sWhereC1C1many2many.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
+                        Assert.Empty(to1.C1sWhereC1C1many2many);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1610,8 +1610,8 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
                         Assert.False(to1.ExistC1sWhereC1C1many2many);
 
-                        from1.RemoveC1C1many2many((C1)null);
-                        from1.RemoveC1C1many2many((C1)null);
+                        from1.RemoveC1C1many2many(null);
+                        from1.RemoveC1C1many2many(null);
 
                         mark();
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1621,8 +1621,8 @@ namespace Allors.Adapters
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
-                        from1.RemoveC1C1many2many((C1)null);
-                        from1.RemoveC1C1many2many((C1)null);
+                        from1.RemoveC1C1many2many(null);
+                        from1.RemoveC1C1many2many(null);
 
                         mark();
                         Assert.True(from1.ExistC1C1many2manies);
@@ -1641,15 +1641,15 @@ namespace Allors.Adapters
 
                         // Set Null
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         from1.C1C1many2manies = null;
                         from1.C1C1many2manies = null;
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
@@ -1657,8 +1657,8 @@ namespace Allors.Adapters
                         from1.C1C1many2manies = null;
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1682,15 +1682,15 @@ namespace Allors.Adapters
 
                         // Set Empty Array
                         // Get
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         from1.C1C1many2manies = new C1[0];
                         from1.C1C1many2manies = new C1[0];
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         from1.AddC1C1many2many(to1);
                         from1.AddC1C1many2many(to1);
@@ -1698,8 +1698,8 @@ namespace Allors.Adapters
                         from1.C1C1many2manies = new C1[0];
 
                         mark();
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
-                        Assert.Equal(0, from1.C1C1many2manies.Count);
+                        Assert.Empty(from1.C1C1many2manies);
+                        Assert.Empty(from1.C1C1many2manies);
 
                         // Exist
                         Assert.False(from1.ExistC1C1many2manies);
@@ -1759,7 +1759,7 @@ namespace Allors.Adapters
                         var objects = new HashSet<IObject>(getBigArray);
                         foreach (var bigArrayObject in bigArray)
                         {
-                            Assert.True(objects.Contains(bigArrayObject));
+                            Assert.Contains(bigArrayObject, objects);
                         }
 
                         // Extent.ToArray()
@@ -1769,7 +1769,7 @@ namespace Allors.Adapters
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1many2manies.RelationType).ToArray().Length);
+                        Assert.Single(from1.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1many2manies.RelationType).ToArray());
                         Assert.Equal(to1, from1.Strategy.GetCompositeRoles(MetaC1.Instance.C1C1many2manies.RelationType).ToArray()[0]);
 
                         // Extent<T>.ToArray()
@@ -1779,7 +1779,7 @@ namespace Allors.Adapters
                         from1.AddC1C1many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C1C1many2manies.ToArray().Length);
+                        Assert.Single(from1.C1C1many2manies.ToArray());
                         Assert.Equal(to1, from1.C1C1many2manies.ToArray()[0]);
 
                         // Rollback
@@ -1849,36 +1849,36 @@ namespace Allors.Adapters
                         mark();
                         var tuttefrut = to1.Strategy.IsDeleted;
                         mark();
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 1-1
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 1-2
                         from2.AddI1I12many2many(to1);
@@ -1887,32 +1887,32 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 1-3
                         from3.AddI1I12many2many(to1);
@@ -1921,20 +1921,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(3, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from3));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from3));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from3, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from3, to1.I1sWhereI1I12many2many);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from3.I1I12many2manies[0]);
                         Assert.Equal(to1, from3.I1I12many2manies[0]);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 1-4
                         from4.AddI1I12many2many(to1);
@@ -1943,14 +1943,14 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(4, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(4, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from3));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from3));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from4));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from4));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from3, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from3, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from4, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from4, to1.I1sWhereI1I12many2many);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
@@ -1967,20 +1967,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(3, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from3));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from3));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from3, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from3, to1.I1sWhereI1I12many2many);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from3.I1I12many2manies[0]);
                         Assert.Equal(to1, from3.I1I12many2manies[0]);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 1-2
                         from3.RemoveI1I12many2many(to1);
@@ -1989,54 +1989,54 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
                         Assert.Equal(to1, from2.I1I12many2manies[0]);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 1-1
                         from2.RemoveI1I12many2many(to1);
                         from2.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
                         Assert.Equal(to1, from1.I1I12many2manies[0]);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // 0-0        
                         from1.RemoveI1I12many2many(to1);
                         from1.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from3.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
-                        Assert.Equal(0, from4.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from3.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
+                        Assert.Empty(from4.I1I12many2manies);
 
                         // Exist
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2053,8 +2053,8 @@ namespace Allors.Adapters
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
                         Assert.True(to1.ExistI1sWhereI1I12many2many);
                         Assert.True(to1.ExistI1sWhereI1I12many2many);
                         Assert.True(from1.ExistI1I12many2manies);
@@ -2161,8 +2161,8 @@ namespace Allors.Adapters
                         from2.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
                         Assert.True(to1.ExistI1sWhereI1I12many2many);
                         Assert.True(to1.ExistI1sWhereI1I12many2many);
                         Assert.True(from1.ExistI1I12many2manies);
@@ -2179,8 +2179,8 @@ namespace Allors.Adapters
                         from1.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2194,34 +2194,34 @@ namespace Allors.Adapters
 
                         // To 0-4-0
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 1-1
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 1-2
                         from1.AddI1I12many2many(to2);
@@ -2230,18 +2230,18 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.I1I12many2manies.Count);
                         Assert.Equal(2, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 1-3
                         from1.AddI1I12many2many(to3);
@@ -2250,20 +2250,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, from1.I1I12many2manies.Count);
                         Assert.Equal(3, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to3));
-                        Assert.True(from1.I1I12many2manies.Contains(to3));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to3, from1.I1I12many2manies);
+                        Assert.Contains(to3, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to3.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to3.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 1-4
                         from1.AddI1I12many2many(to4);
@@ -2272,14 +2272,14 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(4, from1.I1I12many2manies.Count);
                         Assert.Equal(4, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to3));
-                        Assert.True(from1.I1I12many2manies.Contains(to3));
-                        Assert.True(from1.I1I12many2manies.Contains(to4));
-                        Assert.True(from1.I1I12many2manies.Contains(to4));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to3, from1.I1I12many2manies);
+                        Assert.Contains(to3, from1.I1I12many2manies);
+                        Assert.Contains(to4, from1.I1I12many2manies);
+                        Assert.Contains(to4, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
@@ -2296,20 +2296,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, from1.I1I12many2manies.Count);
                         Assert.Equal(3, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to3));
-                        Assert.True(from1.I1I12many2manies.Contains(to3));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to3, from1.I1I12many2manies);
+                        Assert.Contains(to3, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to3.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to3.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 1-2
                         from1.RemoveI1I12many2many(to3);
@@ -2318,56 +2318,56 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.I1I12many2manies.Count);
                         Assert.Equal(2, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to2.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 1-1
                         from1.RemoveI1I12many2many(to2);
                         from1.RemoveI1I12many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
                         Assert.Equal(from1, to1.I1sWhereI1I12many2many[0]);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // 0-0        
                         from1.RemoveI1I12many2many(to1);
                         from1.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to3.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to4.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to3.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
+                        Assert.Empty(to4.I1sWhereI1I12many2many);
 
                         // Exist
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
                         Assert.False(from1.ExistI1I12many2manies);
                         Assert.False(from1.ExistI1I12many2manies);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
@@ -2384,8 +2384,8 @@ namespace Allors.Adapters
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
                         Assert.True(from1.ExistI1I12many2manies);
                         Assert.True(from1.ExistI1I12many2manies);
                         Assert.True(to1.ExistI1sWhereI1I12many2many);
@@ -2492,8 +2492,8 @@ namespace Allors.Adapters
                         from1.RemoveI1I12many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
                         Assert.True(from1.ExistI1I12many2manies);
                         Assert.True(from1.ExistI1I12many2manies);
                         Assert.True(to1.ExistI1sWhereI1I12many2many);
@@ -2510,8 +2510,8 @@ namespace Allors.Adapters
                         from1.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
                         Assert.False(from1.ExistI1I12many2manies);
                         Assert.False(from1.ExistI1I12many2manies);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
@@ -2530,23 +2530,23 @@ namespace Allors.Adapters
 
                         // Get
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2many(to1);
                         from1.RemoveI1I12many2many(to1);
@@ -2554,10 +2554,10 @@ namespace Allors.Adapters
                         from2.RemoveI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2586,32 +2586,32 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         from1.I1I12many2manies = to1Array;
                         from1.I1I12many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2638,29 +2638,29 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.False(from1.I1I12many2manies.Contains(to2));
-                        Assert.False(from1.I1I12many2manies.Contains(to2));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.DoesNotContain(to2, from1.I1I12many2manies);
+                        Assert.DoesNotContain(to2, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from1.AddI1I12many2many(to2);
                         from1.AddI1I12many2many(to2);
@@ -2668,29 +2668,29 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.I1I12many2manies.Count);
                         Assert.Equal(2, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to2.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2734,74 +2734,74 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from1.I1I12many2manies = to1Array;
                         from1.I1I12many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.False(from1.I1I12many2manies.Contains(to2));
-                        Assert.False(from1.I1I12many2manies.Contains(to2));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.DoesNotContain(to2, from1.I1I12many2manies);
+                        Assert.DoesNotContain(to2, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from1.I1I12many2manies = to2Array;
                         from1.I1I12many2manies = to2Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.False(from1.I1I12many2manies.Contains(to1));
-                        Assert.False(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.DoesNotContain(to1, from1.I1I12many2manies);
+                        Assert.DoesNotContain(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to2.I1sWhereI1I12many2many);
 
                         from1.I1I12many2manies = to12Array;
 
                         mark();
                         Assert.Equal(2, from1.I1I12many2manies.Count);
                         Assert.Equal(2, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.True(from1.I1I12many2manies.Contains(to2));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Contains(to2, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to2.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2854,46 +2854,46 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
 
                         from2.AddI1I12many2many(to1);
                         from2.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.True(from2.I1I12many2manies.Contains(to1));
-                        Assert.True(from2.I1I12many2manies.Contains(to1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Contains(to1, from2.I1I12many2manies);
+                        Assert.Contains(to1, from2.I1I12many2manies);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
@@ -2901,12 +2901,12 @@ namespace Allors.Adapters
                         from2.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -2952,57 +2952,57 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         from1.I1I12many2manies = to1Array;
                         from1.I1I12many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
 
                         from2.I1I12many2manies = to1Array;
                         from2.I1I12many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.True(from2.I1I12many2manies.Contains(to1));
-                        Assert.True(from2.I1I12many2manies.Contains(to1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Contains(to1, from2.I1I12many2manies);
+                        Assert.Contains(to1, from2.I1I12many2manies);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
                         Assert.Equal(2, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to1.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from2.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3046,52 +3046,52 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from2.AddI1I12many2many(to2);
                         from2.AddI1I12many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.True(from2.I1I12many2manies.Contains(to2));
-                        Assert.True(from2.I1I12many2manies.Contains(to2));
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Contains(to2, from2.I1I12many2manies);
+                        Assert.Contains(to2, from2.I1I12many2manies);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to2.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
@@ -3099,14 +3099,14 @@ namespace Allors.Adapters
                         from2.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3160,52 +3160,52 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistI1sWhereI1I12many2many);
 
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from1.I1I12many2manies = to1Array;
                         from1.I1I12many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         from2.I1I12many2manies = to2Array;
                         from2.I1I12many2manies = to2Array;
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.Equal(1, from2.I1I12many2manies.Count);
-                        Assert.True(from2.I1I12many2manies.Contains(to2));
-                        Assert.True(from2.I1I12many2manies.Contains(to2));
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to2.I1sWhereI1I12many2many.Count);
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from2));
-                        Assert.True(to2.I1sWhereI1I12many2many.Contains(from2));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Single(from2.I1I12many2manies);
+                        Assert.Contains(to2, from2.I1I12many2manies);
+                        Assert.Contains(to2, from2.I1I12many2manies);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Single(to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to2.I1sWhereI1I12many2many);
+                        Assert.Contains(from2, to2.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
@@ -3213,14 +3213,14 @@ namespace Allors.Adapters
                         from2.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, from2.I1I12many2manies.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to2.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(from2.I1I12many2manies);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
+                        Assert.Empty(to2.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3276,39 +3276,39 @@ namespace Allors.Adapters
                         // Null & Empty Array
                         // Add Null
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
-                        from1.AddI1I12many2many((I12)null);
-                        from1.AddI1I12many2many((I12)null);
+                        from1.AddI1I12many2many(null);
+                        from1.AddI1I12many2many(null);
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
-                        from1.AddI1I12many2many((I12)null);
-                        from1.AddI1I12many2many((I12)null);
+                        from1.AddI1I12many2many(null);
+                        from1.AddI1I12many2many(null);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3316,8 +3316,8 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
 
-                        from1.AddI1I12many2many((I12)null);
-                        from1.AddI1I12many2many((I12)null);
+                        from1.AddI1I12many2many(null);
+                        from1.AddI1I12many2many(null);
 
                         mark();
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3327,8 +3327,8 @@ namespace Allors.Adapters
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
-                        from1.AddI1I12many2many((I12)null);
-                        from1.AddI1I12many2many((I12)null);
+                        from1.AddI1I12many2many(null);
+                        from1.AddI1I12many2many(null);
 
                         mark();
                         Assert.True(from1.ExistI1I12many2manies);
@@ -3347,43 +3347,43 @@ namespace Allors.Adapters
 
                         // Delete Null
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
-                        from1.RemoveI1I12many2many((I12)null);
-                        from1.RemoveI1I12many2many((I12)null);
+                        from1.RemoveI1I12many2many(null);
+                        from1.RemoveI1I12many2many(null);
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
-                        from1.RemoveI1I12many2many((I12)null);
-                        from1.RemoveI1I12many2many((I12)null);
+                        from1.RemoveI1I12many2many(null);
+                        from1.RemoveI1I12many2many(null);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.Equal(1, from1.I1I12many2manies.Count);
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.True(from1.I1I12many2manies.Contains(to1));
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(1, to1.I1sWhereI1I12many2many.Count);
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
-                        Assert.True(to1.I1sWhereI1I12many2many.Contains(from1));
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Single(from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Contains(to1, from1.I1I12many2manies);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Single(to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
+                        Assert.Contains(from1, to1.I1sWhereI1I12many2many);
 
                         from1.RemoveI1I12many2manies();
                         from1.RemoveI1I12many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
-                        Assert.Equal(0, to1.I1sWhereI1I12many2many.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
+                        Assert.Empty(to1.I1sWhereI1I12many2many);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3391,8 +3391,8 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
                         Assert.False(to1.ExistI1sWhereI1I12many2many);
 
-                        from1.RemoveI1I12many2many((I12)null);
-                        from1.RemoveI1I12many2many((I12)null);
+                        from1.RemoveI1I12many2many(null);
+                        from1.RemoveI1I12many2many(null);
 
                         mark();
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3402,8 +3402,8 @@ namespace Allors.Adapters
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
-                        from1.RemoveI1I12many2many((I12)null);
-                        from1.RemoveI1I12many2many((I12)null);
+                        from1.RemoveI1I12many2many(null);
+                        from1.RemoveI1I12many2many(null);
 
                         mark();
                         Assert.True(from1.ExistI1I12many2manies);
@@ -3422,15 +3422,15 @@ namespace Allors.Adapters
 
                         // Set Null
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         from1.I1I12many2manies = null;
                         from1.I1I12many2manies = null;
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
@@ -3438,8 +3438,8 @@ namespace Allors.Adapters
                         from1.I1I12many2manies = null;
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3463,15 +3463,15 @@ namespace Allors.Adapters
 
                         // Set Empty Array
                         // Get
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         from1.I1I12many2manies = new C1[0];
                         from1.I1I12many2manies = new C1[0];
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         from1.AddI1I12many2many(to1);
                         from1.AddI1I12many2many(to1);
@@ -3479,8 +3479,8 @@ namespace Allors.Adapters
                         from1.I1I12many2manies = new C1[0];
 
                         mark();
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
-                        Assert.Equal(0, from1.I1I12many2manies.Count);
+                        Assert.Empty(from1.I1I12many2manies);
+                        Assert.Empty(from1.I1I12many2manies);
 
                         // Exist
                         Assert.False(from1.ExistI1I12many2manies);
@@ -3514,7 +3514,7 @@ namespace Allors.Adapters
                         foreach (var bigArrayObject in bigArray)
                         {
                             mark();
-                            Assert.True(objects.Contains(bigArrayObject));
+                            Assert.Contains(bigArrayObject, objects);
                         }
 
                         // Extent.ToArray() I12->C1
@@ -3524,7 +3524,7 @@ namespace Allors.Adapters
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.Strategy.GetCompositeRoles(MetaI1.Instance.I1I12many2manies.RelationType).ToArray().Length);
+                        Assert.Single(from1.Strategy.GetCompositeRoles(MetaI1.Instance.I1I12many2manies.RelationType).ToArray());
                         Assert.Equal(to1, from1.Strategy.GetCompositeRoles(MetaI1.Instance.I1I12many2manies.RelationType).ToArray()[0]);
 
                         // Extent<T>.ToArray() I12->C1
@@ -3534,7 +3534,7 @@ namespace Allors.Adapters
                         from1.AddI1I12many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.ToArray().Length);
+                        Assert.Single(from1.I1I12many2manies.ToArray());
                         Assert.Equal(to1, from1.I1I12many2manies.ToArray()[0]);
 
                         // Extent.ToArray() I12->C2
@@ -3544,7 +3544,7 @@ namespace Allors.Adapters
                         from1.AddI1I12many2many(to3);
 
                         mark();
-                        Assert.Equal(1, from1.Strategy.GetCompositeRoles(MetaI1.Instance.I1I12many2manies.RelationType).ToArray().Length);
+                        Assert.Single(from1.Strategy.GetCompositeRoles(MetaI1.Instance.I1I12many2manies.RelationType).ToArray());
                         Assert.Equal(to3, from1.Strategy.GetCompositeRoles(MetaI1.Instance.I1I12many2manies.RelationType).ToArray()[0]);
 
                         // Extent<T>.ToArray() I12->C2
@@ -3554,7 +3554,7 @@ namespace Allors.Adapters
                         from1.AddI1I12many2many(to3);
 
                         mark();
-                        Assert.Equal(1, from1.I1I12many2manies.ToArray().Length);
+                        Assert.Single(from1.I1I12many2manies.ToArray());
                         Assert.Equal(to3, from1.I1I12many2manies.ToArray()[0]);
                     }
                 }
@@ -3587,36 +3587,36 @@ namespace Allors.Adapters
                         mark();
                         var tuttefrut = to1.Strategy.IsDeleted;
                         mark();
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 1-1
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 1-2
                         from2.AddC3C4many2many(to1);
@@ -3625,32 +3625,32 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 1-3
                         from3.AddC3C4many2many(to1);
@@ -3659,20 +3659,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(3, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from3));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from3));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from3, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from3, to1.C3sWhereC3C4many2many);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from3.C3C4many2manies[0]);
                         Assert.Equal(to1, from3.C3C4many2manies[0]);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 1-4
                         from4.AddC3C4many2many(to1);
@@ -3681,14 +3681,14 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(4, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(4, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from3));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from3));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from4));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from4));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from3, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from3, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from4, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from4, to1.C3sWhereC3C4many2many);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
@@ -3705,20 +3705,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(3, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from3));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from3));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from3, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from3, to1.C3sWhereC3C4many2many);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from3.C3C4many2manies[0]);
                         Assert.Equal(to1, from3.C3C4many2manies[0]);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 1-2
                         from3.RemoveC3C4many2many(to1);
@@ -3727,54 +3727,54 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
                         Assert.Equal(to1, from2.C3C4many2manies[0]);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 1-1
                         from2.RemoveC3C4many2many(to1);
                         from2.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
                         Assert.Equal(to1, from1.C3C4many2manies[0]);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // 0-0        
                         from1.RemoveC3C4many2many(to1);
                         from1.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from3.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
-                        Assert.Equal(0, from4.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from3.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
+                        Assert.Empty(from4.C3C4many2manies);
 
                         // Exist
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
                         Assert.False(from1.ExistC3C4many2manies);
@@ -3791,8 +3791,8 @@ namespace Allors.Adapters
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
                         Assert.True(to1.ExistC3sWhereC3C4many2many);
                         Assert.True(to1.ExistC3sWhereC3C4many2many);
                         Assert.True(from1.ExistC3C4many2manies);
@@ -3899,8 +3899,8 @@ namespace Allors.Adapters
                         from2.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
                         Assert.True(to1.ExistC3sWhereC3C4many2many);
                         Assert.True(to1.ExistC3sWhereC3C4many2many);
                         Assert.True(from1.ExistC3C4many2manies);
@@ -3917,8 +3917,8 @@ namespace Allors.Adapters
                         from1.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
                         Assert.False(from1.ExistC3C4many2manies);
@@ -3932,34 +3932,34 @@ namespace Allors.Adapters
 
                         // To 0-4-0
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 1-1
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 1-2
                         from1.AddC3C4many2many(to2);
@@ -3968,18 +3968,18 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.C3C4many2manies.Count);
                         Assert.Equal(2, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 1-3
                         from1.AddC3C4many2many(to3);
@@ -3988,20 +3988,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, from1.C3C4many2manies.Count);
                         Assert.Equal(3, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to3));
-                        Assert.True(from1.C3C4many2manies.Contains(to3));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to3, from1.C3C4many2manies);
+                        Assert.Contains(to3, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to3.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to3.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 1-4
                         from1.AddC3C4many2many(to4);
@@ -4010,14 +4010,14 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(4, from1.C3C4many2manies.Count);
                         Assert.Equal(4, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to3));
-                        Assert.True(from1.C3C4many2manies.Contains(to3));
-                        Assert.True(from1.C3C4many2manies.Contains(to4));
-                        Assert.True(from1.C3C4many2manies.Contains(to4));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to3, from1.C3C4many2manies);
+                        Assert.Contains(to3, from1.C3C4many2manies);
+                        Assert.Contains(to4, from1.C3C4many2manies);
+                        Assert.Contains(to4, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
@@ -4034,20 +4034,20 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(3, from1.C3C4many2manies.Count);
                         Assert.Equal(3, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to3));
-                        Assert.True(from1.C3C4many2manies.Contains(to3));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to3, from1.C3C4many2manies);
+                        Assert.Contains(to3, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to3.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to3.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 1-2
                         from1.RemoveC3C4many2many(to3);
@@ -4056,57 +4056,57 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.C3C4many2manies.Count);
                         Assert.Equal(2, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to2.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 1-1
                         from1.RemoveC3C4many2many(to2);
                         from1.RemoveC3C4many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
                         Assert.Equal(from1, to1.C3sWhereC3C4many2many[0]);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // 0-0        
                         from1.RemoveC3C4many2many(to1);
                         from1.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to3.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to4.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to3.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
+                        Assert.Empty(to4.C3sWhereC3C4many2many);
 
                         // Exist
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
                         Assert.False(from1.ExistC3C4many2manies);
                         Assert.False(from1.ExistC3C4many2manies);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
@@ -4123,8 +4123,8 @@ namespace Allors.Adapters
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
                         Assert.True(from1.ExistC3C4many2manies);
                         Assert.True(from1.ExistC3C4many2manies);
                         Assert.True(to1.ExistC3sWhereC3C4many2many);
@@ -4231,8 +4231,8 @@ namespace Allors.Adapters
                         from1.RemoveC3C4many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
                         Assert.True(from1.ExistC3C4many2manies);
                         Assert.True(from1.ExistC3C4many2manies);
                         Assert.True(to1.ExistC3sWhereC3C4many2many);
@@ -4249,8 +4249,8 @@ namespace Allors.Adapters
                         from1.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
                         Assert.False(from1.ExistC3C4many2manies);
                         Assert.False(from1.ExistC3C4many2manies);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
@@ -4269,23 +4269,23 @@ namespace Allors.Adapters
 
                         // Get
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2many(to1);
                         from1.RemoveC3C4many2many(to1);
@@ -4293,10 +4293,10 @@ namespace Allors.Adapters
                         from2.RemoveC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4325,32 +4325,32 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         from1.C3C4many2manies = to1Array;
                         from1.C3C4many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4377,29 +4377,29 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.False(from1.C3C4many2manies.Contains(to2));
-                        Assert.False(from1.C3C4many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.DoesNotContain(to2, from1.C3C4many2manies);
+                        Assert.DoesNotContain(to2, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from1.AddC3C4many2many(to2);
                         from1.AddC3C4many2many(to2);
@@ -4407,29 +4407,29 @@ namespace Allors.Adapters
                         mark();
                         Assert.Equal(2, from1.C3C4many2manies.Count);
                         Assert.Equal(2, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to2.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4473,74 +4473,74 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from1.C3C4many2manies = to1Array;
                         from1.C3C4many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.False(from1.C3C4many2manies.Contains(to2));
-                        Assert.False(from1.C3C4many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.DoesNotContain(to2, from1.C3C4many2manies);
+                        Assert.DoesNotContain(to2, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from1.C3C4many2manies = to2Array;
                         from1.C3C4many2manies = to2Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.False(from1.C3C4many2manies.Contains(to1));
-                        Assert.False(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.DoesNotContain(to1, from1.C3C4many2manies);
+                        Assert.DoesNotContain(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to2.C3sWhereC3C4many2many);
 
                         from1.C3C4many2manies = to12Array;
 
                         mark();
                         Assert.Equal(2, from1.C3C4many2manies.Count);
                         Assert.Equal(2, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.True(from1.C3C4many2manies.Contains(to2));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Contains(to2, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to2.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4593,46 +4593,46 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
 
                         from2.AddC3C4many2many(to1);
                         from2.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.True(from2.C3C4many2manies.Contains(to1));
-                        Assert.True(from2.C3C4many2manies.Contains(to1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Contains(to1, from2.C3C4many2manies);
+                        Assert.Contains(to1, from2.C3C4many2manies);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
@@ -4640,12 +4640,12 @@ namespace Allors.Adapters
                         from2.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4691,57 +4691,57 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         from1.C3C4many2manies = to1Array;
                         from1.C3C4many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
 
                         from2.C3C4many2manies = to1Array;
                         from2.C3C4many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.True(from2.C3C4many2manies.Contains(to1));
-                        Assert.True(from2.C3C4many2manies.Contains(to1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Contains(to1, from2.C3C4many2manies);
+                        Assert.Contains(to1, from2.C3C4many2manies);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
                         Assert.Equal(2, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to1.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from2.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4785,52 +4785,52 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from2.AddC3C4many2many(to2);
                         from2.AddC3C4many2many(to2);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.True(from2.C3C4many2manies.Contains(to2));
-                        Assert.True(from2.C3C4many2manies.Contains(to2));
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Contains(to2, from2.C3C4many2manies);
+                        Assert.Contains(to2, from2.C3C4many2manies);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to2.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
@@ -4838,14 +4838,14 @@ namespace Allors.Adapters
                         from2.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -4899,52 +4899,52 @@ namespace Allors.Adapters
                         Assert.False(to2.ExistC3sWhereC3C4many2many);
 
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from1.C3C4many2manies = to1Array;
                         from1.C3C4many2manies = to1Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         from2.C3C4many2manies = to2Array;
                         from2.C3C4many2manies = to2Array;
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.Equal(1, from2.C3C4many2manies.Count);
-                        Assert.True(from2.C3C4many2manies.Contains(to2));
-                        Assert.True(from2.C3C4many2manies.Contains(to2));
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to2.C3sWhereC3C4many2many.Count);
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from2));
-                        Assert.True(to2.C3sWhereC3C4many2many.Contains(from2));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Single(from2.C3C4many2manies);
+                        Assert.Contains(to2, from2.C3C4many2manies);
+                        Assert.Contains(to2, from2.C3C4many2manies);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Single(to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to2.C3sWhereC3C4many2many);
+                        Assert.Contains(from2, to2.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
@@ -4952,14 +4952,14 @@ namespace Allors.Adapters
                         from2.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, from2.C3C4many2manies.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to2.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(from2.C3C4many2manies);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
+                        Assert.Empty(to2.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5015,39 +5015,39 @@ namespace Allors.Adapters
                         // Null & Empty Array
                         // Add Null
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
-                        from1.AddC3C4many2many((C4)null);
-                        from1.AddC3C4many2many((C4)null);
+                        from1.AddC3C4many2many(null);
+                        from1.AddC3C4many2many(null);
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
-                        from1.AddC3C4many2many((C4)null);
-                        from1.AddC3C4many2many((C4)null);
+                        from1.AddC3C4many2many(null);
+                        from1.AddC3C4many2many(null);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5055,8 +5055,8 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
 
-                        from1.AddC3C4many2many((C4)null);
-                        from1.AddC3C4many2many((C4)null);
+                        from1.AddC3C4many2many(null);
+                        from1.AddC3C4many2many(null);
 
                         mark();
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5066,8 +5066,8 @@ namespace Allors.Adapters
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
-                        from1.AddC3C4many2many((C4)null);
-                        from1.AddC3C4many2many((C4)null);
+                        from1.AddC3C4many2many(null);
+                        from1.AddC3C4many2many(null);
 
                         mark();
                         Assert.True(from1.ExistC3C4many2manies);
@@ -5086,43 +5086,43 @@ namespace Allors.Adapters
 
                         // Delete Null
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
-                        from1.RemoveC3C4many2many((C4)null);
-                        from1.RemoveC3C4many2many((C4)null);
+                        from1.RemoveC3C4many2many(null);
+                        from1.RemoveC3C4many2many(null);
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
-                        from1.RemoveC3C4many2many((C4)null);
-                        from1.RemoveC3C4many2many((C4)null);
+                        from1.RemoveC3C4many2many(null);
+                        from1.RemoveC3C4many2many(null);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.Equal(1, from1.C3C4many2manies.Count);
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.True(from1.C3C4many2manies.Contains(to1));
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(1, to1.C3sWhereC3C4many2many.Count);
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
-                        Assert.True(to1.C3sWhereC3C4many2many.Contains(from1));
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Single(from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Contains(to1, from1.C3C4many2manies);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Single(to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
+                        Assert.Contains(from1, to1.C3sWhereC3C4many2many);
 
                         from1.RemoveC3C4many2manies();
                         from1.RemoveC3C4many2manies();
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
-                        Assert.Equal(0, to1.C3sWhereC3C4many2many.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
+                        Assert.Empty(to1.C3sWhereC3C4many2many);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5130,8 +5130,8 @@ namespace Allors.Adapters
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
                         Assert.False(to1.ExistC3sWhereC3C4many2many);
 
-                        from1.RemoveC3C4many2many((C4)null);
-                        from1.RemoveC3C4many2many((C4)null);
+                        from1.RemoveC3C4many2many(null);
+                        from1.RemoveC3C4many2many(null);
 
                         mark();
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5141,8 +5141,8 @@ namespace Allors.Adapters
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
-                        from1.RemoveC3C4many2many((C4)null);
-                        from1.RemoveC3C4many2many((C4)null);
+                        from1.RemoveC3C4many2many(null);
+                        from1.RemoveC3C4many2many(null);
 
                         mark();
                         Assert.True(from1.ExistC3C4many2manies);
@@ -5161,15 +5161,15 @@ namespace Allors.Adapters
 
                         // Set Null
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         from1.C3C4many2manies = null;
                         from1.C3C4many2manies = null;
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
@@ -5177,8 +5177,8 @@ namespace Allors.Adapters
                         from1.C3C4many2manies = null;
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5202,15 +5202,15 @@ namespace Allors.Adapters
 
                         // Set Empty Array
                         // Get
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         from1.C3C4many2manies = new C1[0];
                         from1.C3C4many2manies = new C1[0];
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         from1.AddC3C4many2many(to1);
                         from1.AddC3C4many2many(to1);
@@ -5218,8 +5218,8 @@ namespace Allors.Adapters
                         from1.C3C4many2manies = new C1[0];
 
                         mark();
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
-                        Assert.Equal(0, from1.C3C4many2manies.Count);
+                        Assert.Empty(from1.C3C4many2manies);
+                        Assert.Empty(from1.C3C4many2manies);
 
                         // Exist
                         Assert.False(from1.ExistC3C4many2manies);
@@ -5248,7 +5248,7 @@ namespace Allors.Adapters
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.Strategy.GetCompositeRoles(MetaC3.Instance.C3C4many2manies.RelationType).ToArray().Length);
+                        Assert.Single(from1.Strategy.GetCompositeRoles(MetaC3.Instance.C3C4many2manies.RelationType).ToArray());
                         Assert.Equal(to1, from1.Strategy.GetCompositeRoles(MetaC3.Instance.C3C4many2manies.RelationType).ToArray()[0]);
 
                         // Extent<T>.ToArray()
@@ -5258,7 +5258,7 @@ namespace Allors.Adapters
                         from1.AddC3C4many2many(to1);
 
                         mark();
-                        Assert.Equal(1, from1.C3C4many2manies.ToArray().Length);
+                        Assert.Single(from1.C3C4many2manies.ToArray());
                         Assert.Equal(to1, from1.C3C4many2manies.ToArray()[0]);
 
                         // Very Big Array
@@ -5273,7 +5273,7 @@ namespace Allors.Adapters
                         foreach (var bigArrayObject in bigArray)
                         {
                             mark();
-                            Assert.True(objects.Contains(bigArrayObject));
+                            Assert.Contains(bigArrayObject, objects);
                         }
                     }
                 }

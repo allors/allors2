@@ -18,7 +18,10 @@ namespace Tests
 
             var uri = new Uri(@"Database/Push", UriKind.Relative);
 
-            var pushRequest = new PushRequest { NewObjects = new[] { new PushRequestNewObject{ T = "Build", NI = "-1" }, } };
+            var pushRequest = new PushRequest
+                                  {
+                                      NewObjects = new[] { new PushRequestNewObject { T = "Build", NI = "-1" }, }
+                                  };
             var response = await this.PostAsJsonAsync(uri, pushRequest);
             var pushResponse = await this.ReadAsAsync<PushResponse>(response);
 

@@ -23,6 +23,7 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System;
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.Linq;
 
     using Allors.Meta;
@@ -412,7 +413,8 @@ namespace Allors.Adapters.Object.SqlClient
                     {
                         this.Commands.UpdateVersion();
 
-                        changed = this.State.ModifiedRolesByReference.Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray();
+                        changed = this.State.ModifiedRolesByReference
+                            .Select(dictionaryEntry => dictionaryEntry.Key.ObjectId).ToArray();
                     }
 
                     this.Connection.Commit();
@@ -445,6 +447,11 @@ namespace Allors.Adapters.Object.SqlClient
 
                     this.Prefetcher.ResetCommands();
                     this.Commands.ResetCommands();
+                }
+                catch
+                {
+                    // TODO: Reset cache
+                    throw;
                 }
                 finally
                 {

@@ -322,7 +322,7 @@ namespace Allors.Adapters.Database.Sql
             }
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return "Population[driver=Sql, type=Connected, id=" + this.GetHashCode() + "]";
         }
