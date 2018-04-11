@@ -49,6 +49,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public ownerships: Ownership[];
   public invoiceItems: InvoiceItem[];
   public salesInvoice: SalesInvoice;
+  public internalOrganisations: InternalOrganisation[];
 
   public manufacturersFilter: Filter;
   public suppliersFilter: Filter;
@@ -154,7 +155,14 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             objectType: this.m.Brand,
             sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
           }),
-        ];
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: this.m.Organisation,
+              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [new Sort({ roleType: m.Organisation.Name, direction: "Asc" })],
+            }),
+          ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetch, query }))
@@ -170,6 +178,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.inventoryItemKinds = loaded.collections.InventoryItemKindQuery as InventoryItemKind[];
             this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
             this.locales = loaded.collections.locales as Locale[];
+            this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
             this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
@@ -328,36 +337,40 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
     const suppliersToDelete = this.suppliers;
 
-    this.selectedSuppliers.forEach((supplier: Organisation) => {
-      const index = suppliersToDelete.indexOf(supplier);
-      if (index > -1) {
-          suppliersToDelete.splice(index, 1);
-      }
+    if (this.selectedSuppliers !== undefined) {
+      this.selectedSuppliers.forEach((supplier: Organisation) => {
+        const index = suppliersToDelete.indexOf(supplier);
+        if (index > -1) {
+            suppliersToDelete.splice(index, 1);
+        }
 
-      const now = new Date();
-      const supplierOffering = this.supplierOfferings.find((v) =>
-        v.Supplier === supplier &&
-        v.FromDate <= now &&
-       (v.ThroughDate === null || v.ThroughDate >= now));
+        const now = new Date();
+        const supplierOffering = this.supplierOfferings.find((v) =>
+          v.Supplier === supplier &&
+          v.FromDate <= now &&
+        (v.ThroughDate === null || v.ThroughDate >= now));
 
-      if (supplierOffering === undefined) {
-        this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
-      } else {
-        supplierOffering.ThroughDate = null;
-      }
-    });
+        if (supplierOffering === undefined) {
+          this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
+        } else {
+          supplierOffering.ThroughDate = null;
+        }
+      });
+    }
 
-    suppliersToDelete.forEach((supplier: Organisation) => {
-      const now = new Date();
-      const supplierOffering = this.supplierOfferings.find((v) =>
-        v.Supplier === supplier &&
-        v.FromDate <= now &&
-       (v.ThroughDate === null || v.ThroughDate >= now));
+    if (suppliersToDelete !== undefined) {
+      suppliersToDelete.forEach((supplier: Organisation) => {
+        const now = new Date();
+        const supplierOffering = this.supplierOfferings.find((v) =>
+          v.Supplier === supplier &&
+          v.FromDate <= now &&
+        (v.ThroughDate === null || v.ThroughDate >= now));
 
-      if (supplierOffering !== undefined) {
-        supplierOffering.ThroughDate = new Date();
-      }
-    });
+        if (supplierOffering !== undefined) {
+          supplierOffering.ThroughDate = new Date();
+        }
+      });
+    }
   }
 
   private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {

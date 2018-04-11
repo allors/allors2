@@ -130,12 +130,14 @@ namespace Allors.Repository
         public Ownership Ownership { get; set; }
 
         #region Allors
-        [Id("753F1209-A92C-4BEA-85FE-7B7C42C5C8A3")]
-        [AssociationId("472A51BF-4FC9-4CAC-8118-272D1F2F1D62")]
-        [RoleId("5A330D37-3CDE-4F80-BA51-92A77F4FDDFA")]
+        [Id("A87EA2A1-4683-4DA2-A7DD-536F0A0F259E")]
+        [AssociationId("69F264CA-BF6F-4654-8458-77C1981CD660")]
+        [RoleId("B6B80856-F93F-4873-88A1-C280F2C066C1")]
+        [Indexed]
         #endregion
         [Workspace]
-        public string Owner { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public Organisation Owner { get; set; }
 
         #region Allors
         [Id("E511EE11-FA2E-4F84-8010-EE1453C609F3")]
