@@ -1,8 +1,7 @@
 namespace Tests.Local
 {
-    using Allors.Workspace.Data;
+    using Allors.Server;
     using Xunit;
-
     
     public class WorkspaceTests : LocalTest
     {
@@ -30,8 +29,8 @@ namespace Tests.Local
 
             var required = new PullResponse
                                {
-                                   userSecurityHash = "#",
-                                   objects =
+                                   UserSecurityHash = "#",
+                                   Objects =
                                        new[]
                                            {
                                                 new[] { "1", "1001" },
@@ -42,7 +41,7 @@ namespace Tests.Local
 
             var requireLoad = this.Workspace.Diff(required);
 
-            Assert.Equal(1, requireLoad.objects.Length);
+            Assert.Equal(1, requireLoad.Objects.Length);
         }
 
         [Fact]
@@ -52,8 +51,8 @@ namespace Tests.Local
 
             var required = new PullResponse
                                {
-                                   userSecurityHash = "def",
-                                   objects =
+                                   UserSecurityHash = "def",
+                                   Objects =
                                        new[]
                                            {
                                                 new[] { "1", "1001" },
@@ -64,7 +63,7 @@ namespace Tests.Local
 
             var requireLoad = this.Workspace.Diff(required);
 
-            Assert.Equal(3, requireLoad.objects.Length);
+            Assert.Equal(3, requireLoad.Objects.Length);
         }
     }
 }

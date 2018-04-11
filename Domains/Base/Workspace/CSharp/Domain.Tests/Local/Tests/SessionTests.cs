@@ -3,10 +3,10 @@ namespace Tests.Local
     using System;
     using System.Linq;
 
-    using Allors.Workspace;
-    using Allors.Workspace.Data;
-    using Allors.Workspace.Domain;
     using Allors.Meta;
+    using Allors.Server;
+    using Allors.Workspace;
+    using Allors.Workspace.Domain;
 
     using Xunit;
 
@@ -21,26 +21,26 @@ namespace Tests.Local
             var koen = session.Get(1) as Person;
 
             Assert.Equal("Koen", koen.FirstName);
-            Assert.Equal(null, koen.MiddleName);
+            Assert.Null(koen.MiddleName);
             Assert.Equal("Van Exem", koen.LastName);
             Assert.Equal(DateTime.Parse("1973-03-27T18:00:00Z"), koen.BirthDate);
-            Assert.Equal(true, koen.IsStudent);
+            Assert.True(koen.IsStudent);
 
             var patrick = session.Get(2) as Person;
 
             Assert.Equal("Patrick", patrick.FirstName);
             Assert.Equal("De Boeck", patrick.LastName);
-            Assert.Equal(null, patrick.MiddleName);
-            Assert.Equal(null, patrick.BirthDate);
-            Assert.Equal(false, patrick.IsStudent);
+            Assert.Null(patrick.MiddleName);
+            Assert.Null(patrick.BirthDate);
+            Assert.False(patrick.IsStudent);
 
             var martien = session.Get(3) as Person;
 
             Assert.Equal("Martien", martien.FirstName);
             Assert.Equal("Knippenberg", martien.LastName);
             Assert.Equal("van", martien.MiddleName);
-            Assert.Equal(null, martien.BirthDate);
-            Assert.Equal(null, martien.IsStudent);
+            Assert.Null(martien.BirthDate);
+            Assert.Null(martien.IsStudent);
         }
 
         [Fact]
@@ -83,37 +83,37 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.Equal(2, save.objects.Count);
+            Assert.Equal(2, save.Objects.Length);
 
-            var savedKoen = save.objects.First(v => (v.i == "1"));
+            var savedKoen = save.Objects.First(v => (v.I == "1"));
 
-            Assert.Equal("1001", savedKoen.v);
-            Assert.Equal(2, savedKoen.roles.Length);
+            Assert.Equal("1001", savedKoen.V);
+            Assert.Equal(2, savedKoen.Roles.Length);
 
-            var savedKoenFirstName = savedKoen.roles.First(v => v.t == "FirstName");
-            var savedKoenLastName = savedKoen.roles.First(v => v.t == "LastName");
+            var savedKoenFirstName = savedKoen.Roles.First(v => v.T == "FirstName");
+            var savedKoenLastName = savedKoen.Roles.First(v => v.T == "LastName");
 
-            Assert.Equal("K", savedKoenFirstName.s);
-            Assert.Null(savedKoenFirstName.a);
-            Assert.Null(savedKoenFirstName.r);
-            Assert.Equal("VE", savedKoenLastName.s);
-            Assert.Null(savedKoenLastName.a);
-            Assert.Null(savedKoenLastName.r);
+            Assert.Equal("K", savedKoenFirstName.S);
+            Assert.Null(savedKoenFirstName.A);
+            Assert.Null(savedKoenFirstName.R);
+            Assert.Equal("VE", savedKoenLastName.S);
+            Assert.Null(savedKoenLastName.A);
+            Assert.Null(savedKoenLastName.R);
 
-            var savedMartien = save.objects.First(v => v.i == "3");
+            var savedMartien = save.Objects.First(v => v.I == "3");
 
-            Assert.Equal("1003", savedMartien.v);
-            Assert.Equal(2, savedMartien.roles.Length);
+            Assert.Equal("1003", savedMartien.V);
+            Assert.Equal(2, savedMartien.Roles.Length);
 
-            var savedMartienFirstName = savedMartien.roles.First(v => v.t == "FirstName");
-            var savedMartienMiddleName = savedMartien.roles.First(v => v.t == "MiddleName");
+            var savedMartienFirstName = savedMartien.Roles.First(v => v.T == "FirstName");
+            var savedMartienMiddleName = savedMartien.Roles.First(v => v.T == "MiddleName");
 
-            Assert.Equal("Martinus", savedMartienFirstName.s);
-            Assert.Null(savedMartienFirstName.a);
-            Assert.Null(savedMartienFirstName.r);
-            Assert.Equal("X", savedMartienMiddleName.s);
-            Assert.Null(savedMartienMiddleName.a);
-            Assert.Null(savedMartienMiddleName.r);
+            Assert.Equal("Martinus", savedMartienFirstName.S);
+            Assert.Null(savedMartienFirstName.A);
+            Assert.Null(savedMartienFirstName.R);
+            Assert.Equal("X", savedMartienMiddleName.S);
+            Assert.Null(savedMartienMiddleName.A);
+            Assert.Null(savedMartienMiddleName.R);
         }
 
         [Fact]
@@ -134,9 +134,9 @@ namespace Tests.Local
             Assert.Equal(patrick, ocme.Owner);
             Assert.Equal(martien, icme.Owner);
 
-            Assert.Equal(null, acme.Manager);
-            Assert.Equal(null, ocme.Manager);
-            Assert.Equal(null, icme.Manager);
+            Assert.Null(acme.Manager);
+            Assert.Null(ocme.Manager);
+            Assert.Null(icme.Manager);
         }
 
         [Fact]
@@ -172,17 +172,17 @@ namespace Tests.Local
             Assert.Equal(patrick1, ocme1.Owner);
             Assert.Equal(martien1, icme1.Owner);
 
-            Assert.Equal(null, acme1.Manager);
-            Assert.Equal(null, ocme1.Manager);
-            Assert.Equal(null, icme1.Manager);
+            Assert.Null(acme1.Manager);
+            Assert.Null(ocme1.Manager);
+            Assert.Null(icme1.Manager);
 
             Assert.Equal(martien2, acme2.Owner); //x
-            Assert.Equal(null, ocme2.Owner);
+            Assert.Null(ocme2.Owner);
             Assert.Equal(martien2, icme2.Owner);
 
             Assert.Equal(patrick2, acme2.Manager); //x
-            Assert.Equal(null, ocme2.Manager);
-            Assert.Equal(null, icme2.Manager);
+            Assert.Null(ocme2.Manager);
+            Assert.Null(icme2.Manager);
         }
 
         [Fact]
@@ -206,33 +206,33 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.Equal(2, save.objects.Count);
+            Assert.Equal(2, save.Objects.Length);
 
-            var savedAcme = save.objects.First(v => v.i == "101");
+            var savedAcme = save.Objects.First(v => v.I == "101");
 
-            Assert.Equal("1101", savedAcme.v);
-            Assert.Equal(2, savedAcme.roles.Length);
+            Assert.Equal("1101", savedAcme.V);
+            Assert.Equal(2, savedAcme.Roles.Length);
 
-            var savedAcmeOwner = savedAcme.roles.First(v => v.t == "Owner");
-            var savedAcmeManager = savedAcme.roles.First(v => v.t == "Manager");
+            var savedAcmeOwner = savedAcme.Roles.First(v => v.T == "Owner");
+            var savedAcmeManager = savedAcme.Roles.First(v => v.T == "Manager");
 
-            Assert.Equal("3", savedAcmeOwner.s);
-            Assert.Null(savedAcmeOwner.a);
-            Assert.Null(savedAcmeOwner.r);
-            Assert.Equal("2", savedAcmeManager.s);
-            Assert.Null(savedAcmeManager.a);
-            Assert.Null(savedAcmeManager.r);
+            Assert.Equal("3", savedAcmeOwner.S);
+            Assert.Null(savedAcmeOwner.A);
+            Assert.Null(savedAcmeOwner.R);
+            Assert.Equal("2", savedAcmeManager.S);
+            Assert.Null(savedAcmeManager.A);
+            Assert.Null(savedAcmeManager.R);
 
-            var savedOcme = save.objects.First(v => v.i == "102");
+            var savedOcme = save.Objects.First(v => v.I == "102");
 
-            Assert.Equal("1102", savedOcme.v);
-            Assert.Equal(1, savedOcme.roles.Length);
+            Assert.Equal("1102", savedOcme.V);
+            Assert.Single(savedOcme.Roles);
 
-            var savedOcmeOwner = savedOcme.roles.First(v => v.t == "Owner");
+            var savedOcmeOwner = savedOcme.Roles.First(v => v.T == "Owner");
 
-            Assert.Equal(null, savedOcmeOwner.s);
-            Assert.Null(savedOcmeOwner.a);
-            Assert.Null(savedOcmeOwner.r);
+            Assert.Null(savedOcmeOwner.S);
+            Assert.Null(savedOcmeOwner.A);
+            Assert.Null(savedOcmeOwner.R);
         }
 
         [Fact]
@@ -254,14 +254,14 @@ namespace Tests.Local
             Assert.Contains(martien, acme.Employees);
             Assert.Contains(patrick, acme.Employees);
 
-            Assert.Equal(1, ocme.Employees.Length);
+            Assert.Single(ocme.Employees);
             Assert.Contains(koen, ocme.Employees);
 
-            Assert.Equal(0, icme.Employees.Length);
+            Assert.Empty(icme.Employees);
 
-            Assert.Equal(0, acme.Shareholders.Length);
-            Assert.Equal(0, ocme.Shareholders.Length);
-            Assert.Equal(0, icme.Shareholders.Length);
+            Assert.Empty(acme.Shareholders);
+            Assert.Empty(ocme.Shareholders);
+            Assert.Empty(icme.Shareholders);
         }
 
         [Fact]
@@ -290,21 +290,21 @@ namespace Tests.Local
             var icme2 = session2.Get(103) as Organisation;
 
             acme2.Employees = null;
-            icme2.Employees = new[] {koen2, patrick2, martien2};
+            icme2.Employees = new[] { koen2, patrick2, martien2 };
 
             Assert.Equal(3, acme1.Employees.Length);
             Assert.Contains(koen1, acme1.Employees);
             Assert.Contains(martien1, acme1.Employees);
             Assert.Contains(patrick1, acme1.Employees);
 
-            Assert.Equal(1, ocme1.Employees.Length);
+            Assert.Single(ocme1.Employees);
             Assert.Contains(koen1, ocme1.Employees);
 
-            Assert.Equal(0, icme1.Employees.Count());
+            Assert.Empty(icme1.Employees);
 
-            Assert.Equal(0, acme2.Employees.Count());
+            Assert.Empty(acme2.Employees);
 
-            Assert.Equal(1, ocme2.Employees.Length);
+            Assert.Single(ocme2.Employees);
             Assert.Contains(koen2, ocme2.Employees);
 
             Assert.Equal(3, icme2.Employees.Length);
@@ -329,54 +329,54 @@ namespace Tests.Local
             var icme = session.Get(103) as Organisation;
 
             acme.Employees = null;
-            ocme.Employees = new[] {martien, patrick};
-            icme.Employees = new[] {koen, patrick, martien};
+            ocme.Employees = new[] { martien, patrick };
+            icme.Employees = new[] { koen, patrick, martien };
 
             var save = session.PushRequest();
 
-            Assert.Equal(0, save.newObjects.Count);
-            Assert.Equal(3, save.objects.Count);
+            Assert.Empty(save.NewObjects);
+            Assert.Equal(3, save.Objects.Length);
 
-            var savedAcme = save.objects.First(v => v.i == "101");
+            var savedAcme = save.Objects.First(v => v.I == "101");
 
-            Assert.Equal(savedAcme.v, "1101");
-            Assert.Equal(savedAcme.roles.Length, 1);
+            Assert.Equal("1101", savedAcme.V);
+            Assert.Single(savedAcme.Roles);
 
-            var savedAcmeEmployees = savedAcme.roles.First(v => v.t == "Employees");
+            var savedAcmeEmployees = savedAcme.Roles.First(v => v.T == "Employees");
 
-            Assert.Null(savedAcmeEmployees.s);
-            Assert.Equal(0, savedAcmeEmployees.a.Length);
-            Assert.Contains("1", savedAcmeEmployees.r);
-            Assert.Contains("2", savedAcmeEmployees.r);
-            Assert.Contains("3", savedAcmeEmployees.r);
-            var savedOcme = save.objects.First(v => v.i == "102");
+            Assert.Null(savedAcmeEmployees.S);
+            Assert.Empty(savedAcmeEmployees.A);
+            Assert.Contains("1", savedAcmeEmployees.R);
+            Assert.Contains("2", savedAcmeEmployees.R);
+            Assert.Contains("3", savedAcmeEmployees.R);
+            var savedOcme = save.Objects.First(v => v.I == "102");
 
-            Assert.Equal("1102", savedOcme.v);
-            Assert.Equal(1, savedOcme.roles.Length);
+            Assert.Equal("1102", savedOcme.V);
+            Assert.Single(savedOcme.Roles);
 
-            var savedOcmeEmployees = savedOcme.roles.First(v => v.t == "Employees");
+            var savedOcmeEmployees = savedOcme.Roles.First(v => v.T == "Employees");
 
-            Assert.Null(savedOcmeEmployees.s);
-            Assert.Equal(2, savedOcmeEmployees.a.Length);
-            Assert.Contains("2", savedOcmeEmployees.a);
-            Assert.Contains("3", savedOcmeEmployees.a);
+            Assert.Null(savedOcmeEmployees.S);
+            Assert.Equal(2, savedOcmeEmployees.A.Length);
+            Assert.Contains("2", savedOcmeEmployees.A);
+            Assert.Contains("3", savedOcmeEmployees.A);
 
-            Assert.Equal(1, savedOcmeEmployees.r.Length);
-            Assert.Contains("1", savedOcmeEmployees.r);
+            Assert.Single(savedOcmeEmployees.R);
+            Assert.Contains("1", savedOcmeEmployees.R);
 
-            var savedIcme = save.objects.First(v => v.i == "103");
+            var savedIcme = save.Objects.First(v => v.I == "103");
 
-            Assert.Equal("1103", savedIcme.v);
-            Assert.Equal(1, savedIcme.roles.Length);
+            Assert.Equal("1103", savedIcme.V);
+            Assert.Single(savedIcme.Roles);
 
-            var savedIcmeEmployees = savedIcme.roles.First(v => v.t == "Employees");
+            var savedIcmeEmployees = savedIcme.Roles.First(v => v.T == "Employees");
 
-            Assert.Null(savedIcmeEmployees.s);
-            Assert.Equal(3, savedIcmeEmployees.a.Length);
-            Assert.Contains("1", savedIcmeEmployees.a);
-            Assert.Contains("2", savedIcmeEmployees.a);
-            Assert.Contains("3", savedIcmeEmployees.a);
-            Assert.Null(savedIcmeEmployees.r);
+            Assert.Null(savedIcmeEmployees.S);
+            Assert.Equal(3, savedIcmeEmployees.A.Length);
+            Assert.Contains("1", savedIcmeEmployees.A);
+            Assert.Contains("2", savedIcmeEmployees.A);
+            Assert.Contains("3", savedIcmeEmployees.A);
+            Assert.Null(savedIcmeEmployees.R);
         }
 
         [Fact]
@@ -404,53 +404,53 @@ namespace Tests.Local
 
             var save = session.PushRequest();
 
-            Assert.Equal(3, save.newObjects.Count);
-            Assert.Equal(0, save.objects.Count);
+            Assert.Equal(3, save.NewObjects.Length);
+            Assert.Empty(save.Objects);
             {
-                var savedMathijs = save.newObjects.First(v => v.ni == mathijs.NewId?.ToString());
+                var savedMathijs = save.NewObjects.First(v => v.NI == mathijs.NewId?.ToString());
 
-                Assert.Equal("Person", savedMathijs.t);
-                Assert.Equal(2, savedMathijs.roles.Length);
+                Assert.Equal("Person", savedMathijs.T);
+                Assert.Equal(2, savedMathijs.Roles.Length);
 
-                var savedMathijsFirstName = savedMathijs.roles.First(v => v.t == "FirstName");
-                Assert.Equal("Mathijs", savedMathijsFirstName.s);
+                var savedMathijsFirstName = savedMathijs.Roles.First(v => v.T == "FirstName");
+                Assert.Equal("Mathijs", savedMathijsFirstName.S);
 
-                var savedMathijsLastName = savedMathijs.roles.First(v => v.t == "LastName");
-                Assert.Equal("Verwer", savedMathijsLastName.s);
+                var savedMathijsLastName = savedMathijs.Roles.First(v => v.T == "LastName");
+                Assert.Equal("Verwer", savedMathijsLastName.S);
             }
 
             {
-                var savedAcme2 = save.newObjects.First(v => v.ni == acme2.NewId?.ToString());
+                var savedAcme2 = save.NewObjects.First(v => v.NI == acme2.NewId?.ToString());
 
-                Assert.Equal("Organisation", savedAcme2.t);
-                Assert.Equal(3, savedAcme2.roles.Length);
+                Assert.Equal("Organisation", savedAcme2.T);
+                Assert.Equal(3, savedAcme2.Roles.Length);
 
-                var savedAcme2Manager = savedAcme2.roles.First(v => v.t == "Manager");
+                var savedAcme2Manager = savedAcme2.Roles.First(v => v.T == "Manager");
 
-                Assert.Equal(mathijs.NewId.ToString(), savedAcme2Manager.s);
+                Assert.Equal(mathijs.NewId.ToString(), savedAcme2Manager.S);
 
-                var savedAcme2Employees = savedAcme2.roles.First(v => v.t == "Employees");
+                var savedAcme2Employees = savedAcme2.Roles.First(v => v.T == "Employees");
 
-                Assert.Null(savedAcme2Employees.s);
-                Assert.Contains(mathijs.NewId?.ToString(), savedAcme2Employees.a);
-                Assert.Null(savedAcme2Employees.r);
+                Assert.Null(savedAcme2Employees.S);
+                Assert.Contains(mathijs.NewId?.ToString(), savedAcme2Employees.A);
+                Assert.Null(savedAcme2Employees.R);
             }
 
             {
-                var savedAcme3 = save.newObjects.First(v => v.ni == acme3.NewId?.ToString());
+                var savedAcme3 = save.NewObjects.First(v => v.NI == acme3.NewId?.ToString());
 
-                Assert.Equal("Organisation", savedAcme3.t);
-                Assert.Equal(3, savedAcme3.roles.Length);
+                Assert.Equal("Organisation", savedAcme3.T);
+                Assert.Equal(3, savedAcme3.Roles.Length);
 
-                var savedAcme3Manager = savedAcme3.roles.First(v => v.t == "Manager");
+                var savedAcme3Manager = savedAcme3.Roles.First(v => v.T == "Manager");
 
-                Assert.Equal("3", savedAcme3Manager.s);
+                Assert.Equal("3", savedAcme3Manager.S);
 
-                var savedAcme3Employees = savedAcme3.roles.First(v => v.t == "Employees");
+                var savedAcme3Employees = savedAcme3.Roles.First(v => v.T == "Employees");
 
-                Assert.Null(savedAcme3Employees.s);
-                Assert.Contains("3", savedAcme3Employees.a);
-                Assert.Null(savedAcme3Employees.r);
+                Assert.Null(savedAcme3Employees.S);
+                Assert.Contains("3", savedAcme3Employees.A);
+                Assert.Null(savedAcme3Employees.R);
             }
 
         }
@@ -479,15 +479,15 @@ namespace Tests.Local
 
             //Assert.Null(mathijs.Id);
             Assert.True(mathijs.NewId < 0);
-            Assert.Equal(null, mathijs.FirstName);
-            Assert.Equal(null, mathijs.LastName);
+            Assert.Null(mathijs.FirstName);
+            Assert.Null(mathijs.LastName);
 
             //Assert.Null(acme2.Id);
             Assert.True(acme2.NewId < 0);
-            Assert.Equal(null, acme2.Owner);
-            Assert.Equal(null, acme2.Manager);
+            Assert.Null(acme2.Owner);
+            Assert.Null(acme2.Manager);
 
-            Assert.Equal(0, acme2.Employees.Count());
+            Assert.Empty(acme2.Employees);
         }
 
         [Fact]
@@ -497,7 +497,7 @@ namespace Tests.Local
 
             var session = new Session(this.Workspace);
 
-            var saveResponse = new PushResponse { hasErrors = false };
+            var saveResponse = new PushResponse();
 
             session.PushResponse(saveResponse);
 
@@ -509,8 +509,7 @@ namespace Tests.Local
 
             saveResponse = new PushResponse
                                {
-                                   hasErrors = false,
-                                   newObjects = new[] { new PushResponseNewObject { i = "10000", ni = newId.ToString() } }
+                                   NewObjects = new[] { new PushResponseNewObject { I = "10000", NI = newId.ToString() } }
                                };
 
             session.PushResponse(saveResponse);

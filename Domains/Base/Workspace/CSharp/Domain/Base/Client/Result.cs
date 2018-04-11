@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Data;
+    using Server;
 
     public class Result
     {
@@ -15,13 +15,13 @@
 
         public Result(Session session, PullResponse response)
         {
-            this.Objects = response.namedObjects.ToDictionary(
+            this.Objects = response.NamedObjects.ToDictionary(
                 pair => pair.Key,
                 pair => session.Get(long.Parse(pair.Value)));
-            this.Collections = response.namedCollections.ToDictionary(
+            this.Collections = response.NamedCollections.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value.Select(v => session.Get(long.Parse(v))).ToArray());
-            this.Values = response.namedValues.ToDictionary(
+            this.Values = response.NamedValues.ToDictionary(
                 pair => pair.Key, 
                 pair => pair.Value);
         }

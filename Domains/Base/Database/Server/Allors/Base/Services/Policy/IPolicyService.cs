@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UserService.cs" company="Allors bvba">
+// <copyright file="IPolicyService.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,16 @@
 
 namespace Allors.Services
 {
-    public class UserService : IUserService
+    using Polly;
+
+    public interface IPolicyService
     {
-        public string UserName { get; set; }
+        Policy PullPolicy { get; }
+
+        Policy SyncPolicy { get; }
+         
+        Policy PushPolicy { get; }
+
+        Policy InvokePolicy { get; }
     }
 }

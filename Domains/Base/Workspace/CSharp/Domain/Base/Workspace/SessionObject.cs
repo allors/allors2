@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using Allors.Meta;
+    using Allors.Server;
 
     public interface ISessionObject
     {
@@ -33,9 +34,9 @@
 
         void Remove(RoleType roleType, ISessionObject value);
 
-        Data.PushRequestObject Save();
+        PushRequestObject Save();
 
-        Data.PushRequestNewObject SaveNew();
+        PushRequestNewObject SaveNew();
 
         void Reset();
     }
@@ -261,14 +262,16 @@
             this.Set(roleType, roles);
         }
 
-        public Data.PushRequestObject Save() {
-            if (this.changedRoleByRoleType != null) {
-                var data = new Data.PushRequestObject
-                {
-                    i = this.Id.ToString(),
-                    v = this.Version.ToString(),
-                    roles = this.SaveRoles()
-                };
+        public PushRequestObject Save()
+        {
+            if (this.changedRoleByRoleType != null)
+            {
+                var data = new PushRequestObject
+                               {
+                                   I = this.Id.ToString(),
+                                   V = this.Version.ToString(),
+                                   Roles = this.SaveRoles()
+                               };
 
                 return data;
             }
@@ -276,15 +279,15 @@
             return null;
         }
 
-        public Data.PushRequestNewObject SaveNew() {
-            var data = new Data.PushRequestNewObject
+        public PushRequestNewObject SaveNew() {
+            var data = new PushRequestNewObject
             {
-                ni = this.NewId.ToString(),
-                t = this.ObjectType.Name
+                NI = this.NewId.ToString(),
+                T = this.ObjectType.Name
             };
 
             if (this.changedRoleByRoleType != null) {
-                data.roles = this.SaveRoles();
+                data.Roles = this.SaveRoles();
             }
 
             return data;
@@ -300,27 +303,27 @@
             this.roleByRoleType = new Dictionary<RoleType, object>();
         }
 
-        private Data.PushRequestRole[] SaveRoles()
+        private PushRequestRole[] SaveRoles()
         {
-            var saveRoles = new List<Data.PushRequestRole>();
+            var saveRoles = new List<PushRequestRole>();
 
             foreach (var keyValuePair in this.changedRoleByRoleType)
             {
                 var roleType = keyValuePair.Key;
                 var role = keyValuePair.Value;
 
-                var saveRole = new Data.PushRequestRole { t = roleType.PropertyName };
+                var saveRole = new PushRequestRole { T = roleType.PropertyName };
 
                 if (roleType.ObjectType.IsUnit)
                 {
-                    saveRole.s = role;
+                    saveRole.S = role;
                 }
                 else
                 {
                     if (roleType.IsOne)
                     {
                         var sessionRole = (SessionObject)role;
-                        saveRole.s = sessionRole?.Id.ToString() ?? sessionRole?.NewId?.ToString();
+                        saveRole.S = sessionRole?.Id.ToString() ?? sessionRole?.NewId?.ToString();
                     }
                     else
                     {
@@ -328,14 +331,14 @@
                         var roleIds = sessionRoles.Select(item => item.Id.ToString()).ToArray();
                         if (this.NewId != null)
                         {
-                            saveRole.a = roleIds;
+                            saveRole.A = roleIds;
                         }
                         else
                         {
                             object originalRoleIdsObject;
                             if (!this.WorkspaceObject.Roles.TryGetValue(roleType.PropertyName, out originalRoleIdsObject))
                             {
-                                saveRole.a = roleIds;
+                                saveRole.A = roleIds;
                             }
                             else
                             {
@@ -344,12 +347,12 @@
                                     var originalRoleIds = ((IEnumerable<object>)originalRoleIdsObject)
                                         .Select(v => v.ToString())
                                         .ToArray();
-                                    saveRole.a = roleIds.Except(originalRoleIds).ToArray();
-                                    saveRole.r = originalRoleIds.Except(roleIds).ToArray();
+                                    saveRole.A = roleIds.Except(originalRoleIds).ToArray();
+                                    saveRole.R = originalRoleIds.Except(roleIds).ToArray();
                                 }
                                 else
                                 {
-                                    saveRole.a = roleIds.ToArray();
+                                    saveRole.A = roleIds.ToArray();
                                 }
                             }
                         }

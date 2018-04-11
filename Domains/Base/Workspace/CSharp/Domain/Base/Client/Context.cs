@@ -3,7 +3,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Data;
+    using Server;
 
     public class Context
     {
@@ -41,7 +41,7 @@
         {
             var response = await this.database.Pull(this.name, args);
             var requireLoadIds = this.workspace.Diff(response);
-            if (requireLoadIds.objects.Length > 0)
+            if (requireLoadIds.Objects.Length > 0)
             {
                 var loadResponse = await this.database.Sync(requireLoadIds);
                 this.workspace.Sync(loadResponse);
@@ -55,7 +55,7 @@
         {
             var pullResponse = await this.database.Pull(service, args);
             var requireLoadIds = this.workspace.Diff(pullResponse);
-            if (requireLoadIds.objects.Length > 0)
+            if (requireLoadIds.Objects.Length > 0)
             {
                 var loadResponse = await this.database.Sync(requireLoadIds);
                 this.workspace.Sync(loadResponse);
@@ -69,19 +69,19 @@
         {
             var saveRequest = this.Session.PushRequest();
             var pushResponse = await this.database.Push(saveRequest);
-            if (!pushResponse.hasErrors)
+            if (!pushResponse.HasErrors)
             {
                 this.Session.PushResponse(pushResponse);
 
-                var objects = saveRequest.objects.Select(v => v.i).ToArray();
-                if (pushResponse.newObjects != null)
+                var objects = saveRequest.Objects.Select(v => v.I).ToArray();
+                if (pushResponse.NewObjects != null)
                 {
-                    objects = objects.Union(pushResponse.newObjects.Select(v => v.i)).ToArray();
+                    objects = objects.Union(pushResponse.NewObjects.Select(v => v.I)).ToArray();
                 }
 
                 var requireLoadIds = new SyncRequest
                                          {
-                                             objects = objects
+                                             Objects = objects
                                          };
 
                 var loadResponse = await this.database.Sync(requireLoadIds);
@@ -104,13 +104,13 @@
         
         private void Update(PullResponse response)
         {
-            this.Objects = new Indexer<SessionObject>(response.namedObjects.ToDictionary(
+            this.Objects = new Indexer<SessionObject>(response.NamedObjects.ToDictionary(
                 pair => pair.Key,
                 pair => this.Session.Get(long.Parse(pair.Value))));
-            this.Collections = new Indexer<SessionObject[]>(response.namedCollections.ToDictionary(
+            this.Collections = new Indexer<SessionObject[]>(response.NamedCollections.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value.Select(v => this.Session.Get(long.Parse(v))).ToArray()));
-            this.Values = new Indexer<object>(response.namedValues.ToDictionary(
+            this.Values = new Indexer<object>(response.NamedValues.ToDictionary(
                 pair => pair.Key,
                 pair => pair.Value));
         }

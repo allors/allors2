@@ -23,12 +23,12 @@ namespace Allors.Server
     public class PushResponseNewObject
     {
         /// <summary>
-        /// The id.
+        /// Gets or sets the id
         /// </summary>
         public string I { get; set; }
 
         /// <summary>
-        /// The new id.
+        /// Gets or sets the new id.
         /// </summary>
         public string NI { get; set; }
     }

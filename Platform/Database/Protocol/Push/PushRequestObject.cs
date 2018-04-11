@@ -18,22 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Server
 {
     public class PushRequestObject
     {
         /// <summary>
-        /// The id.
+        /// Gets or sets the id
         /// </summary>
         public string I { get; set; }
 
         /// <summary>
-        /// The version.
+        /// Gets or sets the version
         /// </summary>
         public string V { get; set; }
 
-        public IList<PushRequestRole> Roles { get; set; }
+        public PushRequestRole[] Roles { get; set; }
     }
 }

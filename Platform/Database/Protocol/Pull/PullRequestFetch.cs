@@ -23,22 +23,22 @@ namespace Allors.Server
     public class PullRequestFetch
     {
         /// <summary>
-        /// The name of the fetch
+        /// Gets or sets the name of the fetch
         /// </summary>
         public string Name { get; set; }
         
         /// <summary>
-        /// The id of the object
+        /// Gets or sets the id of the object
         /// </summary>
         public string Id { get; set; }
 
         /// <summary>
-        /// The path
+        /// Gets or sets the path
         /// </summary>
         public PullRequestPath Path { get; set; }
 
         /// <summary>
-        /// The additional objects to include from this relations.
+        /// Gets or sets the additional objects to include from this relations.
         /// </summary>
         public PullRequestTreeNode[] Include { get; set; }
     }

@@ -40,9 +40,6 @@ namespace Allors.Services
     {
         public static void AddAllors(this IServiceCollection services, ServiceConfig config)
         {
-            var rootAssemblies = config.Assemblies ?? new[] { Assembly.GetCallingAssembly() };
-
-            services.AddScoped<ISessionService, SessionService>();
             services.AddAllorsShared();
 
             var serverDirectoryFullName = config.Directory.FullName;
@@ -63,6 +60,7 @@ namespace Allors.Services
                       {
                           previous?.Invoke(context);
 
+                          var rootAssemblies = config.Assemblies ?? new[] { Assembly.GetCallingAssembly() };
                           var assemblies = rootAssemblies
                               .SelectMany(v => v.GetReferencedAssemblies()
                                   .Select(w => MetadataReference.CreateFromFile(Assembly.Load(w).Location)))
@@ -87,18 +85,21 @@ namespace Allors.Services
                 });
 
             services.AddSingleton<IDerivationService>(new DerivationService(config.DerivationConfig));
-
             services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
             services.AddSingleton<DiagnosticSource>(new DiagnosticListener("Microsoft.AspNetCore"));
             services.AddLogging();
             services.AddMvc();
+
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void AddAllorsEmbedded(this IServiceCollection services)
         {
-            services.AddScoped<ISessionService, EmbeddedSessionService>();
             services.AddAllorsShared();
+
             services.AddSingleton<IDerivationService, DerivationService>();
+
+            services.AddScoped<IUserService, EmbeddedUserService>();
         }
 
         private static void AddAllorsShared(this IServiceCollection services)
@@ -114,8 +115,8 @@ namespace Allors.Services
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IPublishingService, PublishingService>();
 
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITemplateService, TemplateService>();  // Required for running Razor in Server mode
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ITemplateService, TemplateService>();  // Scoped is required for running Razor in Server mode
         }
     }
 }

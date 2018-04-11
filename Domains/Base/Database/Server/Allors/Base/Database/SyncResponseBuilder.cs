@@ -28,7 +28,7 @@ namespace Allors.Server
     public class SyncResponseBuilder
     {
         private static readonly object[][] EmptyRoles = { };
-        private static readonly object[][] EmptyMethods = { };
+        private static readonly string[][] EmptyMethods = { };
 
         private readonly ISession session;
         private readonly SyncRequest syncRequest;
@@ -151,7 +151,7 @@ namespace Allors.Server
             return EmptyRoles;
         }
 
-        private object[][] GetMethods(IObject obj)
+        private string[][] GetMethods(IObject obj)
         {
             var composite = (Composite)obj.Strategy.Class;
 
@@ -165,7 +165,7 @@ namespace Allors.Server
                     acl = new AccessControlList(obj, this.user);
                 }
 
-                var methods = new List<object[]>();
+                var methods = new List<string[]>();
                 foreach (var methodType in methodTypes)
                 {
                     var methodName = methodType.Name;
@@ -173,7 +173,7 @@ namespace Allors.Server
                     var canExecute = acl == null || acl.CanExecute(methodType);
                     var access = canExecute ? "x" : string.Empty;
 
-                    methods.Add(new object[] { methodName, access });
+                    methods.Add(new[] { methodName, access });
                 }
 
                 return methods.ToArray();

@@ -23,22 +23,22 @@ namespace Allors.Server
     public class PushRequestRole
     {
         /// <summary>
-        /// The role type.
+        /// Gets or sets the role type.
         /// </summary>
         public string T { get; set; }
 
         /// <summary>
-        /// The set role.
+        /// Gets or sets the set role.
         /// </summary>
         public object S { get; set; }
 
         /// <summary>
-        /// The add roles.
+        /// Gets or sets the add roles.
         /// </summary>
         public string[] A { get; set; }
 
         /// <summary>
-        /// The remove roles.
+        /// Gets or sets the remove roles.
         /// </summary>
         public string[] R { get; set; }
     }

@@ -23,23 +23,23 @@ namespace Allors.Server
     public class SyncResponseObject
     {
         /// <summary>
-        /// The id.
+        /// Gets or sets the id.
         /// </summary>
         public string I { get; set; }
 
         /// <summary>
-        /// The version.
+        /// Gets or sets the version.
         /// </summary>
         public string V { get; set; }
 
         /// <summary>
-        /// The object type.
+        /// Gets or sets the object type.
         /// </summary>
         public string T { get; set; }
 
         public object[][] Roles { get; set; }
 
-        public object[][] Methods { get; set; }
+        public string[][] Methods { get; set; }
 
         public override string ToString()
         {

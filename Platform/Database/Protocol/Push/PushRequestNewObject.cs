@@ -25,15 +25,15 @@ namespace Allors.Server
     public class PushRequestNewObject
     {
         /// <summary>
-        /// The new id.
+        /// Gets or sets the new id.
         /// </summary>
         public string NI { get; set; }
 
         /// <summary>
-        /// The object type.
+        /// Gets or sets the object type.
         /// </summary>
         public string T { get; set; }
 
-        public IList<PushRequestRole> Roles { get; set; }
+        public PushRequestRole[] Roles { get; set; }
     }
 }

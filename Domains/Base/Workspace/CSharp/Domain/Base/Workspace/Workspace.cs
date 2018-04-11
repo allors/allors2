@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Data;
+    using Server;
 
     public class Workspace
     {
@@ -19,11 +19,11 @@
 
         public SyncRequest Diff(PullResponse response)
         {
-            var userSecurityHash = response.userSecurityHash;
+            var userSecurityHash = response.UserSecurityHash;
 
             var requireLoadIds = new SyncRequest
                                      {
-                                         objects = response.objects.Where(v =>
+                                         Objects = response.Objects.Where(v =>
                                                  {
                                                      var id = long.Parse(v[0]);
                                                      var version = long.Parse(v[1]);
@@ -38,7 +38,7 @@
 
         public void Sync(SyncResponse syncResponse)
         {
-            foreach (var objectData in syncResponse.objects)
+            foreach (var objectData in syncResponse.Objects)
             {
                 var workspaceObject = new WorkspaceObject(this, syncResponse, objectData);
                 this.workspaceObjectById[workspaceObject.Id] = workspaceObject;

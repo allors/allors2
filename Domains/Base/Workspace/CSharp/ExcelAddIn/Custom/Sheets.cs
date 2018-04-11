@@ -12,7 +12,7 @@
             worksheet.SetCustomPropertyValue("AllorsType", nameof(PeopleSheet));
 
             var sheet = new PeopleSheet(this, worksheet);
-            this.SheetByWorksheet[worksheet.InnerObject] = sheet;
+            this.SheetByVstoWorksheet[worksheet] = sheet;
             return sheet;
         }
         

@@ -270,6 +270,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj">
+      <Project>{da4974fe-1b8b-4a61-bc22-0f4508806a75}</Project>
+      <Name>Allors.Protocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Framework</Name>

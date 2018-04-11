@@ -8,7 +8,7 @@
 
     using Allors.Workspace;
     using Allors.Workspace.Client;
-    using Allors.Workspace.Data;
+    using Allors.Server;
 
     using Microsoft.Office.Tools;
     using Microsoft.Office.Tools.Excel;
@@ -48,7 +48,7 @@
 
             var saveResponse = await this.Context.Save();
 
-            if (saveResponse.hasErrors)
+            if (saveResponse.HasErrors)
             {
                 saveResponse.Log(this.Context.Session);
                 saveResponse.Show();
@@ -89,7 +89,7 @@
 
             ErrorResponse response = await this.Context.Save();
 
-            if (response.hasErrors)
+            if (response.HasErrors)
             {
                 response.Log(this.Context.Session);
                 response.Show();
@@ -98,7 +98,7 @@
             {
                 response = await this.Sheets.Client.Database.Invoke(method);
 
-                if (response.hasErrors)
+                if (response.HasErrors)
                 {
                     response.Log(this.Context.Session);
                     response.Show();
@@ -110,7 +110,7 @@
         {
             var response = await this.Sheets.Client.Database.Invoke(method);
 
-            if (response.hasErrors)
+            if (response.HasErrors)
             {
                 response.Log(this.Context.Session);
                 response.Show();
@@ -123,7 +123,7 @@
         {
             var response = await this.Sheets.Client.Database.Invoke(service, values);
 
-            if (response.hasErrors)
+            if (response.HasErrors)
             {
                 response.Log(this.Context.Session);
                 response.Show();
@@ -138,7 +138,7 @@
 
             ErrorResponse response = await this.Context.Save();
 
-            if (response.hasErrors)
+            if (response.HasErrors)
             {
                 response.Log(this.Context.Session);
                 response.Show();
@@ -147,7 +147,7 @@
             {
                 response = await this.Sheets.Client.Database.Invoke(method);
 
-                if (response.hasErrors)
+                if (response.HasErrors)
                 {
                     response.Log(this.Context.Session);
                     response.Show();
@@ -163,7 +163,7 @@
 
             ErrorResponse response = await this.Context.Save();
 
-            if (response.hasErrors)
+            if (response.HasErrors)
             {
                 response.Log(this.Context.Session);
                 response.Show();
@@ -172,7 +172,7 @@
             {
                 response = await this.Sheets.Client.Database.Invoke(service, values);
 
-                if (response.hasErrors)
+                if (response.HasErrors)
                 {
                     response.Log(this.Context.Session);
                     response.Show();

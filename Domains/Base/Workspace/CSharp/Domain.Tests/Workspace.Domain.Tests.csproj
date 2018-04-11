@@ -91,6 +91,10 @@
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj">
+      <Project>{DA4974FE-1B8B-4A61-BC22-0F4508806A75}</Project>
+      <Name>Allors.Protocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Framework</Name>

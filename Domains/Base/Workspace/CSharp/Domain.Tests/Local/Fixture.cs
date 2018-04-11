@@ -1,20 +1,20 @@
 ﻿namespace Tests.Local
 {
-    using Allors.Workspace.Data;
+    using Allors.Server;
 
     public class Fixture
     {
         public static SyncResponse loadData = new SyncResponse
         {
-            userSecurityHash = "#",
-            objects = new[]
+            UserSecurityHash = "#",
+            Objects = new[]
             {
                     new SyncResponseObject
                     {
-                        i = "1",
-                        v = "1001",
-                        t = "Person",
-                        roles = new[]
+                        I = "1",
+                        V = "1001",
+                        T = "Person",
+                        Roles = new[]
                                    {
                                         new object[] { "FirstName", "rw", "Koen" },
                                         new object[] { "LastName", "rw", "Van Exem" },
@@ -24,10 +24,10 @@
                     },
                     new SyncResponseObject
                     {
-                        i = "2",
-                        v = "1002",
-                        t = "Person",
-                        roles = new[]
+                        I = "2",
+                        V = "1002",
+                        T = "Person",
+                        Roles = new[]
                                 {
                                     new object[] { "FirstName", "rw", "Patrick" },
                                     new object[] { "LastName", "rw", "De Boeck" },
@@ -36,10 +36,10 @@
                     },
                     new SyncResponseObject
                     {
-                        i = "3",
-                        v = "1003",
-                        t = "Person",
-                        roles = new[] 
+                        I = "3",
+                        V = "1003",
+                        T = "Person",
+                        Roles = new[] 
                         {
                             new object[] { "FirstName", "rw", "Martien" },
                             new object[] { "MiddleName", "rw", "van" },
@@ -48,47 +48,47 @@
                     },
                     new SyncResponseObject
                     {
-                        i = "101",
-                        v = "1101",
-                        t = "Organisation",
-                        roles = new[] 
+                        I = "101",
+                        V = "1101",
+                        T = "Organisation",
+                        Roles = new[] 
                         {
                             new object[] { "Name", "rw", "Acme" },
                             new object[] { "Owner", "rw", "1" },
                             new object[] { "Employees", "rw", new[] { "1", "2", "3" } }
                         },
-                        methods = new[]
+                        Methods = new[]
                         {
                             new[] { "JustDoIt", "x" }
                         }
                     },
                     new SyncResponseObject
                     {
-                        i = "102",
-                        v = "1102",
-                        t = "Organisation",
-                        roles = new[]
+                        I = "102",
+                        V = "1102",
+                        T = "Organisation",
+                        Roles = new[]
                         {
                             new object[] { "Name", "rw", "Ocme" },
                             new object[] { "Owner", "rw", "2" },
                             new object[] { "Employees", "rw", new[] { "1" } }
                         },
-                        methods = new[]
+                        Methods = new[]
                         {
                             new[] { "JustDoIt", string.Empty }
                         }
                     },
                     new SyncResponseObject
                     {
-                        i = "103",
-                        v = "1103",
-                        t = "Organisation",
-                        roles = new[]
+                        I = "103",
+                        V = "1103",
+                        T = "Organisation",
+                        Roles = new[]
                         {
                             new object[] { "Name", "rw", "icme" },
                             new object[] { "Owner", "rw", "3" }
                         },
-                        methods = new[]
+                        Methods = new[]
                         {
                             new[] { "JustDoIt", "" }
                         }

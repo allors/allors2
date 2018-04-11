@@ -58,7 +58,7 @@ namespace Tests
                                       Objects = new[] { new PushRequestObject { 
                                                                                   I = organisationId, 
                                                                                   V = organisationVersion, 
-                                                                                  Roles = new List<PushRequestRole>
+                                                                                  Roles = new[]
                                                                                       {
                                                                                           new PushRequestRole
                                                                                               {

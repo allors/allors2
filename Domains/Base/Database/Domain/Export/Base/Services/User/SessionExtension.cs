@@ -29,13 +29,16 @@ namespace Allors.Domain
         public static User GetUser(this ISession @this)
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
-            return @this.Instantiate(userService.Id) as User;
+            var userName = userService.UserName;
+            var users = new Users(@this);
+            var user = users.GetUser(userName) ?? @this.GetSingleton()?.Guest;
+            return user;
         }
 
         public static void SetUser(this ISession @this, User user)
         {
             var userService = @this.ServiceProvider.GetRequiredService<IUserService>();
-            userService.Id = user?.Id ?? 0;
+            userService.UserName = user?.UserName;
         }
 
     }

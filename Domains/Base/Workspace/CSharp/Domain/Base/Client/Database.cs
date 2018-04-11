@@ -6,11 +6,11 @@
     using System.Text;
     using System.Threading.Tasks;
 
-    using Data;
-
     using Newtonsoft.Json;
 
     using Polly;
+
+    using Server;
 
     public class Database
     {
@@ -66,9 +66,9 @@
         {
             var invokeRequest = new InvokeRequest
                                     {
-                                        i = method.Object.Id.ToString(),
-                                        v = method.Object.Version.ToString(),
-                                        m = method.Name,
+                                        I = method.Object.Id.ToString(),
+                                        V = method.Object.Version.ToString(),
+                                        M = method.Name,
                                     };
 
             var uri = new Uri("Database/Invoke", UriKind.Relative);

@@ -40,6 +40,7 @@
             // Allors
             services.AddAllorsEmbedded();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IPolicyService, PolicyService>();
             
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()

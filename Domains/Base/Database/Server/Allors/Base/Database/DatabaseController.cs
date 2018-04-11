@@ -21,6 +21,7 @@
 namespace Allors.Server
 {
     using System;
+    using System.Data.Common;
 
     using Allors.Domain;
     using Allors.Services;
@@ -29,15 +30,20 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
+    using Polly;
+
     public class DatabaseController : Controller
     {
-        public DatabaseController(ISessionService sessionService, ILogger<DatabaseController> logger)
+        public DatabaseController(IDatabaseService databaseService, IPolicyService policyService, ILogger<DatabaseController> logger)
         {
-            this.Session = sessionService.Session;
+            this.DatabaseService = databaseService;
+            this.PolicyService = policyService;
             this.Logger = logger;
         }
 
-        private ISession Session { get; }
+        private IDatabaseService DatabaseService { get; }
+
+        private IPolicyService PolicyService { get; }
 
         private ILogger<DatabaseController> Logger { get; set; }
 
@@ -48,9 +54,17 @@ namespace Allors.Server
         {
             try
             {
-                var responseBuilder = new SyncResponseBuilder(this.Session, this.Session.GetUser(), syncRequest);
-                var response = responseBuilder.Build();
-                return this.Ok(response);
+                return this.PolicyService.SyncPolicy.Execute(
+                    () =>
+                        {
+                            using (var session = this.DatabaseService.Database.CreateSession())
+                            {
+                                var user = session.GetUser();
+                                var responseBuilder = new SyncResponseBuilder(session, user, syncRequest);
+                                var response = responseBuilder.Build();
+                                return this.Ok(response);
+                            }
+                        });
             }
             catch (Exception e)
             {
@@ -66,9 +80,16 @@ namespace Allors.Server
         {
             try
             {
-                var responseBuilder = new PushResponseBuilder(this.Session, this.Session.GetUser(), pushRequest);
-                var response = responseBuilder.Build();
-                return this.Ok(response);
+                return this.PolicyService.PushPolicy.Execute(
+                    () =>
+                        {
+                            using (var session = this.DatabaseService.Database.CreateSession())
+                            {
+                                var responseBuilder = new PushResponseBuilder(session, session.GetUser(), pushRequest);
+                                var response = responseBuilder.Build();
+                                return this.Ok(response);
+                            }
+                        });
             }
             catch (Exception e)
             {
@@ -84,9 +105,16 @@ namespace Allors.Server
         {
             try
             {
-                var responseBuilder = new InvokeResponseBuilder(this.Session, this.Session.GetUser(), invokeRequest);
-                var response = responseBuilder.Build();
-                return this.Ok(response);
+                return this.PolicyService.InvokePolicy.Execute(
+                    () =>
+                        {
+                            using (var session = this.DatabaseService.Database.CreateSession())
+                            {
+                                var responseBuilder = new InvokeResponseBuilder(session, session.GetUser(), invokeRequest);
+                                var response = responseBuilder.Build();
+                                return this.Ok(response);
+                            }
+                        });
             }
             catch (Exception e)
             {

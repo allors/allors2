@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Allors.Meta;
+    using Allors.Server;
 
     public class WorkspaceObject {
         public Workspace Workspace { get; }
@@ -18,19 +19,19 @@
 
         public Dictionary<string, object> Methods { get; }
 
-        public WorkspaceObject(Workspace workspace, Data.SyncResponse loadResponse, Data.SyncResponseObject loadObject) {
+        public WorkspaceObject(Workspace workspace, SyncResponse loadResponse, SyncResponseObject loadObject) {
             this.Workspace = workspace;
-            this.Id = long.Parse(loadObject.i);
-            this.Version = !string.IsNullOrEmpty(loadObject.v) ? long.Parse(loadObject.v) : 0;
-            this.UserSecurityHash = loadResponse.userSecurityHash;
-            this.ObjectType = (Class)this.Workspace.ObjectFactory.GetObjectTypeForTypeName(loadObject.t);
+            this.Id = long.Parse(loadObject.I);
+            this.Version = !string.IsNullOrEmpty(loadObject.V) ? long.Parse(loadObject.V) : 0;
+            this.UserSecurityHash = loadResponse.UserSecurityHash;
+            this.ObjectType = (Class)this.Workspace.ObjectFactory.GetObjectTypeForTypeName(loadObject.T);
 
             this.Roles = new Dictionary<string, object>();
             this.Methods =new Dictionary<string, object>();
 
-            if (loadObject.roles != null)
+            if (loadObject.Roles != null)
             {
-                foreach (var role in loadObject.roles)
+                foreach (var role in loadObject.Roles)
                 {
                     var name = (string)role[0];
                     var access = (string)role[1];
@@ -48,9 +49,9 @@
                 }
             }
 
-            if (loadObject.methods != null)
+            if (loadObject.Methods != null)
             {
-                foreach (var method in loadObject.methods)
+                foreach (var method in loadObject.Methods)
                 {
                     var name = method[0];
                     var access = method[1];

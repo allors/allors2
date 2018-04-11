@@ -9,7 +9,7 @@
             this.Session = databaseService.Database.CreateSession();
         }
 
-        public Allors.ISession Session { get; private set; }
+        public ISession Session { get; private set; }
 
         public void Dispose()
         {

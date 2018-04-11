@@ -23,17 +23,17 @@ namespace Allors.Server
     public class PullRequestQuery
     {
         /// <summary>
-        /// The name of the Query
+        /// Gets or sets the name of the Query
         /// </summary>
         public string N { get; set; }
 
         /// <summary>
-        /// The ObjectType.
+        /// Gets or sets the ObjectType.
         /// </summary>
         public string OT { get; set; }
 
         /// <summary>
-        /// The predicate
+        /// Gets or sets the predicate
         /// </summary>
         public PullRequestPredicate P { get; set; }
 

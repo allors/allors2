@@ -20,6 +20,7 @@
 
 namespace Allors.Server
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Domain;
@@ -28,29 +29,32 @@ namespace Allors.Server
     {
         public static void AddDerivationErrors(this ErrorResponse @this, IValidation validation)
         {
-            foreach (IDerivationError derivationError in validation.Errors)
+            foreach (var derivationError in validation.Errors)
             {
-                @this.DerivationErrors.Add(new DerivationErrorResponse
-                                              {
-                                                  M = derivationError.Message,  
-                                                  R = derivationError.Relations.Select(x => new string[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray()
-                                              });
+                @this.DerivationErrors = new List<DerivationErrorResponse>(@this.DerivationErrors) 
+                                            { 
+                                                new DerivationErrorResponse
+                                                    {
+                                                        M = derivationError.Message,  
+                                                        R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray()
+                                                    }
+                                            }.ToArray();
             }
         }
 
         public static void AddVersionError(this ErrorResponse @this, IObject obj)
         {
-            @this.VersionErrors.Add(obj.Id.ToString());
+            @this.VersionErrors = new List<string>(@this.VersionErrors){obj.Id.ToString()}.ToArray();
         }
 
         public static void AddAccessError(this ErrorResponse @this, IObject obj)
         {
-            @this.AccessErrors.Add(obj.Id.ToString());
+            @this.AccessErrors = new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray();
         }
 
         public static void AddMissingError(this ErrorResponse @this, string id)
         {
-            @this.MissingErrors.Add(id);
+            @this.MissingErrors = new List<string>(@this.MissingErrors) { id }.ToArray();
         }
     }
 }

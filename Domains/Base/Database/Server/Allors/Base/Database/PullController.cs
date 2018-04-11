@@ -34,13 +34,16 @@ namespace Allors.Server.Controllers
 
     public class PullController : Controller
     {
-        public PullController(ISessionService sessionService, ILogger<PullController> logger)
+        public PullController(IDatabaseService databaseService, IPolicyService policyService, ILogger<PullController> logger)
         {
-            this.Session = sessionService.Session;
+            this.DatabaseService = databaseService;
+            this.PolicyService = policyService;
             this.Logger = logger;
         }
 
-        private ISession Session { get; }
+        private IDatabaseService DatabaseService { get; }
+
+        private IPolicyService PolicyService { get; }
 
         private ILogger<PullController> Logger { get; set; }
 
@@ -50,70 +53,75 @@ namespace Allors.Server.Controllers
         {
             try
             {
-                var response = new PullResponseBuilder(this.Session.GetUser());
-
-                if (req.Q != null)
-                {
-                    var metaPopulation = (MetaPopulation)this.Session.Database.MetaPopulation;
-                    var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
-                    foreach (var query in queries)
-                    {
-                        var validation = query.Validate();
-                        if(validation.HasErrors)
+                return this.PolicyService.InvokePolicy.Execute(
+                    () =>
                         {
-                            var message = validation.ToString();
-                            this.Logger.LogError(message);
-                            return this.StatusCode(400, message);
-                        }
-
-                        var extent = this.Session.Query(query);
-                        if (query.Page != null)
-                        {
-                            var page = query.Page;
-                            var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
-                            response.AddValue(query.Name + "_total", extent.Count);
-                            response.AddCollection(query.Name, paged, query.Include);
-                        }
-                        else
-                        {
-                            response.AddCollection(query.Name, extent.ToArray(), query.Include);
-                        }
-                    }
-                }
-
-                if (req.F != null)
-                {
-                    foreach (var fetch in req.F)
-                    {
-                        fetch.Parse(this.Session, out IObject @object, out Path path, out Tree include);
-
-                        if (path != null && @object != null)
-                        {
-                            var acls = new AccessControlListCache(this.Session.GetUser());
-                            var result = path.Get(@object, acls);
-                            if (result == null) continue;
-                            if (result is IObject)
+                            using (var session = this.DatabaseService.Database.CreateSession())
                             {
-                                response.AddObject(fetch.Name, (IObject) result, include);
-                            }
-                            else
-                            {
-                                IEnumerable<IObject> objects;
-                                if (result is HashSet<object>)
-                                    objects = ((HashSet<object>) result).Cast<IObject>();
-                                else
-                                    objects = ((Extent) result).ToArray();
-                                response.AddCollection(fetch.Name, objects, include);
-                            }
-                        }
-                        else
-                        {
-                            response.AddObject(fetch.Name, @object, include);
-                        }
-                    }
-                }
+                            var response = new PullResponseBuilder(session.GetUser());
 
-                return this.Ok(response.Build());
+                            if (req.Q != null)
+                            {
+                                var metaPopulation = (MetaPopulation)session.Database.MetaPopulation;
+                                var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
+                                foreach (var query in queries)
+                                {
+                                    var validation = query.Validate();
+                                    if (validation.HasErrors)
+                                    {
+                                        var message = validation.ToString();
+                                        this.Logger.LogError(message);
+                                        return this.StatusCode(400, message);
+                                    }
+
+                                    var extent = session.Query(query);
+                                    if (query.Page != null)
+                                    {
+                                        var page = query.Page;
+                                        var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
+                                        response.AddValue(query.Name + "_total", extent.Count);
+                                        response.AddCollection(query.Name, paged, query.Include);
+                                    }
+                                    else
+                                    {
+                                        response.AddCollection(query.Name, extent.ToArray(), query.Include);
+                                    }
+                                }
+                            }
+
+                            if (req.F != null)
+                            {
+                                foreach (var fetch in req.F)
+                                {
+                                    fetch.Parse(session, out IObject @object, out Path path, out Tree include);
+
+                                    if (path != null && @object != null)
+                                    {
+                                        var acls = new AccessControlListCache(session.GetUser());
+                                        var result = path.Get(@object, acls);
+                                        if (result != null)
+                                        {
+                                            if (result is IObject)
+                                            {
+                                                response.AddObject(fetch.Name, (IObject)result, include);
+                                            }
+                                            else
+                                            {
+                                                var objects = (result as HashSet<object>)?.Cast<IObject>() ?? ((Extent)result).ToArray();
+                                                response.AddCollection(fetch.Name, objects, include);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        response.AddObject(fetch.Name, @object, include);
+                                    }
+                                }
+                            }
+
+                            return this.Ok(response.Build());
+                            }
+                        });
             }
             catch (Exception e)
             {

@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using Data;
+    using Server;
     using Allors.Meta;
     
     public class Session
@@ -79,58 +79,39 @@
         {
             var data = new PushRequest
                            {
-                               newObjects = new List<PushRequestNewObject>(),
-                               objects = new List<PushRequestObject>()
+                               NewObjects = this.newSessionObjectById.Select(v => v.Value.SaveNew()).ToArray(),
+                               Objects = this.sessionObjectById.Select(v => v.Value.Save()).Where(v => v != null).ToArray()
                            };
-
-            foreach (var newSessionObject in this.newSessionObjectById.Values)
-            {
-                var objectData = newSessionObject.SaveNew();
-                if (objectData != null)
-                {
-                    data.newObjects.Add(objectData);
-                }
-            }
-
-            foreach (var sessionObject in this.sessionObjectById.Values)
-            {
-                var objectData = sessionObject.Save();
-                if (objectData != null)
-                {
-                    data.objects.Add(objectData);
-                }
-            }
-
             return data;
         }
         
         public void PushResponse(PushResponse pushResponse)
         {
-            if (pushResponse.newObjects != null && pushResponse.newObjects.Length > 0)
+            if (pushResponse.NewObjects != null && pushResponse.NewObjects.Length > 0)
             {
-                foreach (var pushResponseNewObject in pushResponse.newObjects)
+                foreach (var pushResponseNewObject in pushResponse.NewObjects)
                 {
-                    var newId = long.Parse(pushResponseNewObject.ni);
-                    var id = long.Parse(pushResponseNewObject.i);
+                    var newId = long.Parse(pushResponseNewObject.NI);
+                    var id = long.Parse(pushResponseNewObject.I);
 
                     var newSessionObject = this.newSessionObjectById[newId];
 
                     var loadResponse = new SyncResponse
                                            {
-                                               userSecurityHash = "#",
+                                               UserSecurityHash = "#",
                                                // This should trigger a load on next check
-                                               objects =
+                                               Objects =
                                                    new[]
                                                        {
                                                            new SyncResponseObject
                                                                {
-                                                                   i = id.ToString(),
-                                                                   v = "",
-                                                                   t =
+                                                                   I = id.ToString(),
+                                                                   V = "",
+                                                                   T =
                                                                        newSessionObject
                                                                        .ObjectType.Name,
-                                                                   roles = new object[0][],
-                                                                   methods = new string[0][]
+                                                                   Roles = new object[0][],
+                                                                   Methods = new string[0][]
                                                                }
                                                        }
                                            };

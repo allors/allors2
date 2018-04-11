@@ -22,14 +22,8 @@ namespace Allors.Server
 {
     public class PullRequestSort
     {
-        /// <summary>
-        /// The RoleType.
-        /// </summary>
         public string RT { get; set; }
 
-        /// <summary>
-        /// The TreeNodes
-        /// </summary>
         public string D { get; set; }
     }
 }

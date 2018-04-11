@@ -23,12 +23,12 @@ namespace Allors.Server
     public class PullRequestTreeNode
     {
         /// <summary>
-        /// The RoleType.
+        /// Gets or sets the RoleType.
         /// </summary>
         public string RT { get; set; }
 
         /// <summary>
-        /// The TreeNodes
+        /// Gets or sets the child nodes
         /// </summary>
         public PullRequestTreeNode[] N { get; set; }
     }

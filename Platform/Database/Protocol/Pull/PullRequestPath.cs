@@ -22,14 +22,8 @@ namespace Allors.Server
 {
     public class PullRequestPath
     {
-        /// <summary>
-        /// The RoleType.
-        /// </summary>
         public string Step { get; set; }
 
-        /// <summary>
-        /// The TreeNodes
-        /// </summary>
         public PullRequestPath Next { get; set; }
     }
 }

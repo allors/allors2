@@ -51,16 +51,6 @@
     <Compile Include="Base\Client\Indexer.cs" />
     <Compile Include="Base\Client\Result.cs" />
     <Compile Include="Base\Workspace\Config.cs" />
-    <Compile Include="Base\Workspace\Data\ErrorResponse.cs" />
-    <Compile Include="Base\Workspace\Data\InvokeRequest.cs" />
-    <Compile Include="Base\Workspace\Data\InvokeResponse.cs" />
-    <Compile Include="Base\Workspace\Data\PullResponse.cs" />
-    <Compile Include="Base\Workspace\Data\PullResponseDerivationError.cs" />
-    <Compile Include="Base\Workspace\Data\PushRequest.cs" />
-    <Compile Include="Base\Workspace\Data\PushResponse.cs" />
-    <Compile Include="Base\Workspace\Data\PushResponseNewObject.cs" />
-    <Compile Include="Base\Workspace\Data\SyncRequest.cs" />
-    <Compile Include="Base\Workspace\Data\SyncResponse.cs" />
     <Compile Include="Base\Workspace\Method.cs" />
     <Compile Include="Base\Workspace\ObjectFactory.cs" />
     <Compile Include="Base\Workspace\Session.cs" />
@@ -117,6 +107,10 @@
     <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj">
+      <Project>{da4974fe-1b8b-4a61-bc22-0f4508806a75}</Project>
+      <Name>Allors.Protocol</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Platform\Workspace\CSharp\Allors.Framework\Allors.Framework.csproj">
       <Project>{b01846a2-2e2b-4676-be34-f9e14442f80f}</Project>
       <Name>Allors.Framework</Name>

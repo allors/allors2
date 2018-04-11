@@ -30,7 +30,7 @@
                 var sheet = this.Sheets.ActiveSheet;
                 if (sheet != null)
                 {
-                    if (!(await sheet.Save()).hasErrors)
+                    if (!(await sheet.Save()).HasErrors)
                     {
                         await sheet.Refresh();
                     };

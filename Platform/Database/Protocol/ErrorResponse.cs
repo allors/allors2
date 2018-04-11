@@ -24,24 +24,16 @@ namespace Allors.Server
 
     public abstract class ErrorResponse
     {
-        protected ErrorResponse()
-        {
-            this.VersionErrors = new List<string>();
-            this.AccessErrors = new List<string>();
-            this.MissingErrors = new List<string>();
-            this.DerivationErrors = new List<DerivationErrorResponse>();            
-        }
-
-        public bool HasErrors => this.VersionErrors.Count > 0 || this.AccessErrors.Count > 0 || this.MissingErrors.Count > 0 || this.DerivationErrors.Count > 0 || !string.IsNullOrWhiteSpace(this.ErrorMessage);
+        public bool HasErrors => this.VersionErrors?.Length > 0 || this.AccessErrors?.Length > 0 || this.MissingErrors?.Length > 0 || this.DerivationErrors?.Length > 0 || !string.IsNullOrWhiteSpace(this.ErrorMessage);
 
         public string ErrorMessage { get; set; }
 
-        public List<string> VersionErrors { get; set; }
+        public string[] VersionErrors { get; set; }
 
-        public List<string> AccessErrors { get; set; }
+        public string[] AccessErrors { get; set; }
 
-        public List<string> MissingErrors { get; set; }
+        public string[] MissingErrors { get; set; }
 
-        public List<DerivationErrorResponse> DerivationErrors { get; set; }
+        public DerivationErrorResponse[] DerivationErrors { get; set; }
     }
 }

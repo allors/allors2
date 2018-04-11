@@ -5,7 +5,7 @@
     using System.Windows.Forms;
 
     using Allors.Excel;
-    using Allors.Workspace.Data;
+    using Allors.Server;
     using Allors.Workspace.Domain;
 
     using Microsoft.Office.Interop.Excel;
@@ -68,7 +68,7 @@
 
         protected override void OnSaved(ErrorResponse response)
         {
-            if (!response.hasErrors)
+            if (!response.HasErrors)
             {
                 MessageBox.Show(@"Successfully saved");
             }

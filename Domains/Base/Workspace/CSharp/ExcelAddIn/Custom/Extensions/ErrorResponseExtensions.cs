@@ -4,7 +4,7 @@
     using System.Windows.Forms;
 
     using Allors.Workspace;
-    using Allors.Workspace.Data;
+    using Allors.Server;
 
     using NLog;
 
@@ -12,27 +12,27 @@
     {
         public static void Show(this ErrorResponse error)
         {
-            if (error.accessErrors?.Length > 0)
+            if (error.AccessErrors?.Length > 0)
             {
                 MessageBox.Show(@"You do not have the required rights.", @"Access Error");
             }
-            else if (error.versionErrors?.Length > 0 || error.missingErrors?.Length > 0)
+            else if (error.VersionErrors?.Length > 0 || error.MissingErrors?.Length > 0)
             {
                 MessageBox.Show(@"Modifications were detected since last access.", @"Concurrency Error");
             }
-            else if (error.derivationErrors?.Length > 0)
+            else if (error.DerivationErrors?.Length > 0)
             {
                 var message = new StringBuilder();
-                foreach (var derivationError in error.derivationErrors)
+                foreach (var derivationError in error.DerivationErrors)
                 {
-                    message.Append($" - {derivationError.m}\n");
+                    message.Append($" - {derivationError.M}\n");
                 }
 
                 MessageBox.Show(message.ToString(), @"Derivation Errors");
             }
             else
             {
-                MessageBox.Show($@"{error.errorMessage}", @"General Error");
+                MessageBox.Show($@"{error.ErrorMessage}", @"General Error");
             }
         }
 
@@ -40,37 +40,37 @@
         {
             var logger = LogManager.GetCurrentClassLogger();
 
-            if (errorResponse.accessErrors?.Length > 0)
+            if (errorResponse.AccessErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.accessErrors)
+                foreach (var error in errorResponse.AccessErrors)
                 {
                     logger.Error("Access error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.versionErrors?.Length > 0)
+            else if (errorResponse.VersionErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.versionErrors)
+                foreach (var error in errorResponse.VersionErrors)
                 {
                     logger.Error("Version error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.missingErrors?.Length > 0)
+            else if (errorResponse.MissingErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.missingErrors)
+                foreach (var error in errorResponse.MissingErrors)
                 {
                     logger.Error("Missing error: " + Message(session, error));
                 }
             }
-            else if (errorResponse.derivationErrors?.Length > 0)
+            else if (errorResponse.DerivationErrors?.Length > 0)
             {
-                foreach (var error in errorResponse.derivationErrors)
+                foreach (var error in errorResponse.DerivationErrors)
                 {
-                    logger.Error("Derivation error: " + error.m);
+                    logger.Error("Derivation error: " + error.M);
                 }
             }
             else
             {
-                logger.Error($@"{errorResponse.errorMessage}");
+                logger.Error($@"{errorResponse.ErrorMessage}");
             }
         }
 

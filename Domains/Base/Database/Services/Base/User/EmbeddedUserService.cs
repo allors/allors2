@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UserService.cs" company="Allors bvba">
+// <copyright file="EmbeddedUserService.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,15 @@
 
 namespace Allors.Services
 {
-    public class UserService : IUserService
+    using Microsoft.AspNetCore.Http;
+
+    public class EmbeddedUserService : IUserService
     {
+        public EmbeddedUserService(IHttpContextAccessor httpContextAccessor)
+        {
+            this.UserName = httpContextAccessor.HttpContext.User.Identity.Name;
+        }
+
         public string UserName { get; set; }
     }
 }

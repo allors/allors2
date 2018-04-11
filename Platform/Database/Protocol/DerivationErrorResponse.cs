@@ -23,12 +23,12 @@ namespace Allors.Server
     public class DerivationErrorResponse
     {
         /// <summary>
-        /// The error message.
+        /// Gets or sets the error message
         /// </summary>
         public string M { get; set; }
 
         /// <summary>
-        /// The roles.
+        /// Gets or sets the roles
         /// </summary>
         public string[][] R { get; set; }
     }
