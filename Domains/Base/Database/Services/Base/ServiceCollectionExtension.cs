@@ -113,7 +113,7 @@ namespace Allors.Services
             services.AddSingleton<IStateService, StateService>();
             services.AddSingleton<ITimeService, TimeService>();
             services.AddSingleton<IMailService, MailService>();
-            services.AddSingleton<IPublishingService, PublishingService>();
+            services.AddSingleton<IPdfService, PdfService>();
 
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ITemplateService, TemplateService>();  // Scoped is required for running Razor in Server mode
