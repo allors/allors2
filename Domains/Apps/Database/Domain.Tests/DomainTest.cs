@@ -19,13 +19,12 @@
 // <summary>Defines the DomainTest type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-using System.Reflection;
-
 namespace Allors
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
 
     using Allors.Adapters.Memory;
     using Allors.Domain;
@@ -73,7 +72,7 @@ namespace Allors
                 //{
                 //    typeof(Database).GetTypeInfo().Assembly,
                 //    typeof(Person).GetTypeInfo().Assembly,
-                //    typeof(System.Linq.Queryable).Assembly
+                //    typeof(Queryable).Assembly
                 //}
             });
             var serviceProvider = services.BuildServiceProvider();

@@ -40,6 +40,8 @@ namespace Allors.Services
     {
         public static void AddAllors(this IServiceCollection services, ServiceConfig config)
         {
+            var callingAssembly = Assembly.GetCallingAssembly();
+
             services.AddAllorsShared();
 
             var serverDirectoryFullName = config.Directory.FullName;
@@ -60,7 +62,7 @@ namespace Allors.Services
                       {
                           previous?.Invoke(context);
 
-                          var rootAssemblies = config.Assemblies ?? new[] { Assembly.GetCallingAssembly() };
+                          var rootAssemblies = config.Assemblies ?? new[] { callingAssembly };
                           var assemblies = rootAssemblies
                               .SelectMany(v => v.GetReferencedAssemblies()
                                   .Select(w => MetadataReference.CreateFromFile(Assembly.Load(w).Location)))
