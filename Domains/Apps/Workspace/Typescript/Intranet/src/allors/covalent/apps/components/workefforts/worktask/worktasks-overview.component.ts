@@ -18,6 +18,7 @@ import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment
 import { And, ContainedIn, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 interface SearchData {
   name: string;
@@ -31,6 +32,7 @@ interface SearchData {
   templateUrl: "./worktasks-overview.component.html",
 })
 export class WorkTasksOverviewComponent implements OnDestroy {
+  public m: MetaDomain;
 
   public total: number;
 
@@ -53,6 +55,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
   public assignee: Person;
 
   private refresh$: BehaviorSubject<Date>;
+  private fetcher: Fetcher;
   private subscription: Subscription;
   private scope: Scope;
 
@@ -72,8 +75,10 @@ export class WorkTasksOverviewComponent implements OnDestroy {
     private stateService: StateService) {
 
     titleService.setTitle(this.title);
+    this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.m);
 
     this.searchForm = this.formBuilder.group({
       assignee: [""],
@@ -85,40 +90,36 @@ export class WorkTasksOverviewComponent implements OnDestroy {
 
     this.page$ = new BehaviorSubject<number>(50);
 
-    const search$: Observable<SearchData> = this.searchForm.valueChanges
+    const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    type record = [SearchData, number, Date, string];
-
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId]: record, [data, take, date, internalOrganisationId]: record): record => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-        internalOrganisationId,
-      ];
-    }, [] as record);
+    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+        return [
+          data,
+          data !== previousData ? 50 : take,
+          date,
+          internalOrganisationId,
+        ];
+      }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take, date, internalOrganisationId]: record) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .switchMap(([data, take, , internalOrganisationId]) => {
+        const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                roleType: m.InternalOrganisation.ActiveEmployees }),
-            ],
-            name: "internalOrganisation",
-          }),
-        ];
+          this.fetcher.internalOrganisation,
+          ];
 
-        const objectStatesQuery: Query[] = [
+        const query: Query[] = [
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: m.Organisation,
+              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            }),
           new Query(
             {
               name: "workEffortStates",
@@ -132,7 +133,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ query: objectStatesQuery }))
+          .load("Pull", new PullRequest({ fetch, query }))
           .switchMap((loaded) => {
             this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
             this.workEffortState = this.workEffortStates.find((v: WorkEffortState) => v.Name === data.state);

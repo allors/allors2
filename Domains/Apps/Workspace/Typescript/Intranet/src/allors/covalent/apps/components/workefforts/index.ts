@@ -4,6 +4,7 @@ export * from "./workeffort/workefforts-overview.module";
 
 export * from "./worktask/worktask-overview.module";
 export * from "./worktask/worktasks-overview.module";
+export * from "./worktask/worktask-print.module";
 
 export * from "./worktask/worktask.module";
 
@@ -13,6 +14,7 @@ import { WorkEffortsOverviewModule } from "./workeffort/workefforts-overview.mod
 
 import { WorkTaskOverviewModule } from "./worktask/worktask-overview.module";
 import { WorkTasksOverviewModule } from "./worktask/worktasks-overview.module";
+import { WorkTaskPrintModule } from "./worktask/worktask-print.module";
 
 import { WorkTaskEditModule } from "./worktask/worktask.module";
 
@@ -21,6 +23,7 @@ export const Modules = [
   WorkEffortsOverviewModule,
   WorkTasksOverviewModule,
   WorkTaskOverviewModule,
+  WorkTaskPrintModule,
 
   WorkTaskEditModule,
 ];

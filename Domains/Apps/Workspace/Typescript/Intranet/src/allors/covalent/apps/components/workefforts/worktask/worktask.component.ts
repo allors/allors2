@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
@@ -9,6 +10,7 @@ import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
+import { Fetcher } from "../../Fetcher";
 
 @Component({
   templateUrl: "./worktask.component.html",
@@ -33,6 +35,8 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private scope: Scope;
+  private refresh$: BehaviorSubject<Date>;
+  private fetcher: Fetcher;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -41,29 +45,25 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
+    this.refresh$ = new BehaviorSubject<Date>(undefined);
+
     this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.fetcher = new Fetcher(this.stateService, this.m);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.stateService.internalOrganisationId$)
-      .switchMap(([, internalOrganisationId]) => {
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get("id");
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+        const m: MetaDomain = this.m;
 
         const fetch: Fetch[] = [
+          this.fetcher.internalOrganisation,
           new Fetch({
             id,
             name: "worktask",
-          }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                roleType: m.InternalOrganisation.ActiveEmployees }),
-            ],
-            name: "internalOrganisation",
           }),
         ];
 
@@ -102,7 +102,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
             this.priorities = loaded.collections.priorities as Priority[];
             this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
-            const internalOrganisation = loaded.objects.internalOrganisationId as InternalOrganisation;
+            const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.employees = internalOrganisation.ActiveEmployees;
 
             const assignmentsFetch: Fetch[] = [

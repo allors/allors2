@@ -57,7 +57,7 @@
             <div mat-line class="mat-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]">
               {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}</div>
 
-            <div mat-line class="pointer" [routerLink]="['/relations/person/' + workEffortAssignment.Professional.id]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
+            <div mat-line class="pointer" [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
             <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>
             <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line class="mat-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 
@@ -66,7 +66,7 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu x-position="before" #menu="matMenu">
-                <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" mat-menu-item>Edit</a>
+                <a [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]" mat-menu-item>Details</a>
                 <button mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
               </mat-menu>
             </span>
