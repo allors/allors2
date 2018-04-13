@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("553a5280-a768-4ba1-8b5d-304d7c4bb7f1")]
     #endregion
-    public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable
+    public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable, Commentable
     {
         #region ObjectStates
         #region WorkEffortState
@@ -76,6 +76,17 @@ namespace Allors.Repository
         Organisation TakenBy{ get; set; }
 
         #region Allors
+        [Id("E938CD9B-C1E3-4DA6-BB0A-1DF917061A56")]
+        [AssociationId("D8E85B42-A9BC-4915-97D9-C34CAA81B8B3")]
+        [RoleId("8C0BF8BD-DF48-4811-8264-CC13CFE2E299")]
+        #endregion
+        [Workspace]
+        [Derived]
+        [Required]
+        [Size(256)]
+        string WorkEffortNumber { get; set; }
+
+        #region Allors
         [Id("3C1D7BA5-A031-4890-85C8-0119EF754F5D")]
         [AssociationId("C582BA86-6D49-4EB5-B1A1-A3A69FA3E07F")]
         [RoleId("23694E48-CB38-4AB5-8FE2-47FF7B206306")]
@@ -84,6 +95,16 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         Person Owner { get; set; }
+
+        #region Allors
+        [Id("DE8ABB5B-E0CB-4FDA-AF49-D6359E909E31")]
+        [AssociationId("98FA64C0-2CBA-4B4D-8B3F-EBAB68314F2F")]
+        [RoleId("EC156A38-494C-47A4-B199-23ED1F005A2A")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Person ContactPerson { get; set; }
 
         #region Allors
         [Id("97a874e9-10ef-43fb-80d2-10e0974bb3a1")]

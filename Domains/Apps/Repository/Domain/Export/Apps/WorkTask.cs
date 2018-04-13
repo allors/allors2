@@ -16,7 +16,12 @@ namespace Allors.Repository
 
         public Organisation TakenBy { get; set; }
 
+        public string WorkEffortNumber { get; set; }
+
         public Person Owner { get; set; }
+
+        public Person ContactPerson { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public Priority Priority { get; set; }
@@ -59,8 +64,9 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
 
+        public string Comment { get; set; }
         #endregion
-        
+
         #region Allors
         [Id("A1070CB5-3492-408C-959A-1C0785C774A0")]
         [AssociationId("16CCFA38-D34E-47E8-B73C-4E57FEF7A0BC")]
