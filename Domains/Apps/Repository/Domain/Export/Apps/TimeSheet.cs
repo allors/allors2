@@ -22,7 +22,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        public Party Worker { get; set; }
+        public Person Worker { get; set; }
         
         #region Allors
         [Id("7A05E667-4A9F-45DF-BAC9-6A4C9F5CC885")]
