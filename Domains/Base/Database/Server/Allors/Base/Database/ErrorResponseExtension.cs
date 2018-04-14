@@ -31,30 +31,37 @@ namespace Allors.Server
         {
             foreach (var derivationError in validation.Errors)
             {
-                @this.DerivationErrors = new List<DerivationErrorResponse>(@this.DerivationErrors) 
-                                            { 
-                                                new DerivationErrorResponse
-                                                    {
-                                                        M = derivationError.Message,  
-                                                        R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray()
-                                                    }
-                                            }.ToArray();
+                var derivationErrorResponse = new DerivationErrorResponse
+                                                  {
+                                                      M = derivationError.Message,  
+                                                      R = derivationError.Relations.Select(x => new[] { x.Association.Id.ToString(), x.RoleType.Name }).ToArray()
+                                                  };
+
+                @this.DerivationErrors = @this.DerivationErrors != null ? 
+                                             new List<DerivationErrorResponse>(@this.DerivationErrors) { derivationErrorResponse }.ToArray() : 
+                                             new List<DerivationErrorResponse> { derivationErrorResponse }.ToArray();
             }
         }
 
         public static void AddVersionError(this ErrorResponse @this, IObject obj)
         {
-            @this.VersionErrors = new List<string>(@this.VersionErrors){obj.Id.ToString()}.ToArray();
+            @this.VersionErrors = @this.VersionErrors != null ? 
+                                      new List<string>(@this.VersionErrors) { obj.Id.ToString() }.ToArray() : 
+                                      new List<string> { obj.Id.ToString() }.ToArray();
         }
 
         public static void AddAccessError(this ErrorResponse @this, IObject obj)
         {
-            @this.AccessErrors = new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray();
+            @this.AccessErrors = @this.AccessErrors != null ? 
+                                     new List<string>(@this.AccessErrors) { obj.Id.ToString() }.ToArray() : 
+                                     new List<string> { obj.Id.ToString() }.ToArray();
         }
 
         public static void AddMissingError(this ErrorResponse @this, string id)
         {
-            @this.MissingErrors = new List<string>(@this.MissingErrors) { id }.ToArray();
+            @this.MissingErrors = @this.MissingErrors != null ?
+                                      new List<string>(@this.MissingErrors) { id }.ToArray() :
+                                      new List<string> { id }.ToArray();
         }
     }
 }
