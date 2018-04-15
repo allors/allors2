@@ -22,6 +22,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public WorkEffort Assignment { get; set; }
         
         #region Allors
@@ -32,6 +33,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public InventoryItem InventoryItem { get; set; }
         
         #region Allors
@@ -39,6 +41,7 @@ namespace Allors.Repository
         [AssociationId("b4224775-005c-4078-a5b6-2b8a60bc143a")]
         [RoleId("c82f1c25-9c42-4d38-8fae-f8790e2333ef")]
         #endregion
+        [Workspace]
         public int Quantity { get; set; }
         
         #region inherited methods

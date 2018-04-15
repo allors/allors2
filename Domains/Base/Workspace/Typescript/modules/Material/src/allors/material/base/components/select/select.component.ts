@@ -23,7 +23,7 @@ export class SelectComponent extends Field {
     super(parentForm);
   }
 
-  public selected(option: ISessionObject): void {
+  public onModelChange(option: ISessionObject): void {
     this.onSelect.emit(option);
   }
 }
