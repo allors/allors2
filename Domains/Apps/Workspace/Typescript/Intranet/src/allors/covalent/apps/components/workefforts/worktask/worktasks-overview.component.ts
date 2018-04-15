@@ -25,7 +25,6 @@ interface SearchData {
   description: string;
   state: string;
   priority: string;
-  assignee: string;
 }
 
 @Component({
@@ -40,7 +39,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
 
   public searchForm: FormGroup;
 
-  public data: WorkEffortAssignment[];
+  public data: WorkTask[];
 
   public workEffortStates: WorkEffortState[];
   public selectedWorkEffortState: WorkEffortState;
@@ -166,51 +165,28 @@ export class WorkTasksOverviewComponent implements OnDestroy {
               predicates.push(new Equals({ roleType: m.WorkTask.Priority, value: this.priority }));
             }
 
-            const workTasksquery: Query = new Query(
+            const workTasksQuery: Query = new Query(
               {
                 name: "worktasks",
                 objectType: m.WorkTask,
                 predicate,
+                include: [
+                    new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
+                    new TreeNode({ roleType: m.WorkEffort.Priority }),
+                ],
+                page: new Page({ skip: 0, take }),
               });
 
-            const assignmentPredicate: And = new And();
-            const assignmentPredicates: Predicate[] = assignmentPredicate.predicates;
-            assignmentPredicates.push(new ContainedIn({ roleType: m.WorkEffortAssignment.Assignment, query: workTasksquery }));
-
-            if (data.assignee) {
-              assignmentPredicates.push(new Equals({ roleType: m.WorkEffortAssignment.Professional, value: this.assignee }));
-            }
-
-            const assignmentsQuery: Query[] = [
-              new Query(
-                {
-                  include: [
-                    new TreeNode({ roleType: m.WorkEffortAssignment.Professional }),
-                    new TreeNode({
-                      nodes: [
-                        new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                        new TreeNode({ roleType: m.WorkEffort.Priority }),
-                      ],
-                      roleType: m.WorkEffortAssignment.Assignment,
-                    }),
-                  ],
-                  name: "workEffortAssignments",
-                  objectType: m.WorkEffortAssignment,
-                  page: new Page({ skip: 0, take }),
-                  predicate: assignmentPredicate,
-                }),
-            ];
-
             return this.scope
-              .load("Pull", new PullRequest({ query: assignmentsQuery }));
+              .load("Pull", new PullRequest({ query: [workTasksQuery] }));
           });
       })
       .subscribe((loaded) => {
 
         this.scope.session.reset();
 
-        this.data = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
-        this.total = loaded.values.workEffortAssignments_total;
+        this.data = loaded.collections.worktasks as WorkTask[];
+        this.total = loaded.values.worktasks_total;
       },
       (error: any) => {
         this.errorService.message(error);

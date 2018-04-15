@@ -33,12 +33,6 @@
             <mat-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</mat-option>
           </mat-select>
         </mat-input-container>
-        <mat-input-container class="col">
-          <mat-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</mat-option>
-          </mat-select>
-        </mat-input-container>
         <mat-icon matSuffix>search</mat-icon>
       </div>
     </form>
@@ -52,22 +46,22 @@
         <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
           <h3>No work tasks to display.</h3>
         </div>
-        <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="data">
+        <ng-template let-item let-last="last" ngFor [ngForOf]="data">
           <mat-list-item>
-            <div mat-line class="mat-caption pointer" [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]">
-              {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}</div>
+            <div mat-line class="mat-caption pointer" [routerLink]="['/workefforts/worktask/' + item.id ]">
+              {{ item.Name }}</div>
 
-            <div mat-line class="pointer">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
-            <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>
-            <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line class="mat-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
+            <div mat-line class="pointer">State: {{ item.WorkEffortState.Name }}</div>
+            <p mat-line class="mat-caption">{{ item.Description }} </p>
+            <p *ngIf="item.Priority" mat-line class="mat-caption">Priority {{ item.Priority.Name }} </p>
 
             <span>
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu x-position="before" #menu="matMenu">
-                <a [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]" mat-menu-item>Details</a>
-                <button mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
+                <a [routerLink]="['/workefforts/worktask/' + item.id ]" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(item)" [disabled]="!item.CanExecuteDelete">Delete</button>
               </mat-menu>
             </span>
 

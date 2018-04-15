@@ -36,7 +36,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
   public total: number;
 
-  public title: string = "Work Tasks";
+  public title: string = "Work Task Assignements";
 
   public searchForm: FormGroup;
 
