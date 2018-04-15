@@ -76,6 +76,27 @@ namespace Allors.Repository
         Organisation TakenBy{ get; set; }
 
         #region Allors
+        [Id("C814C85A-2C07-4C65-9AEA-C889425C8EE3")]
+        [AssociationId("5586602B-68F0-4409-AAFA-32BA3C20AE07")]
+        [RoleId("5D076AD3-0E19-48CA-A6A2-E825BBE0F3BA")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        Store Store { get; set; }
+
+        #region Allors
+        [Id("5012F30D-1B22-47D7-B3A5-42F023FEE3E1")]
+        [AssociationId("C8AD98B1-551E-40DA-AE5E-2E2B4AED9748")]
+        [RoleId("F9171EC9-1CEF-431F-8640-763DFF84E0F9")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Party Customer{ get; set; }
+
+        #region Allors
         [Id("E938CD9B-C1E3-4DA6-BB0A-1DF917061A56")]
         [AssociationId("D8E85B42-A9BC-4915-97D9-C34CAA81B8B3")]
         [RoleId("8C0BF8BD-DF48-4811-8264-CC13CFE2E299")]

@@ -15,6 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Linq;
+
     using Allors.Meta;
 
     public partial class WorkTask
@@ -26,17 +28,45 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        //public void AppsDelete(DeletableDelete method)
-        //{
-        //    foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
-        //    {
-        //        workEffortStatus.Delete();
-        //    }
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            var derivation = method.Derivation;
 
-        //    foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
-        //    {
-        //        workEffortAssignment.Delete();
-        //    }
-        //}
+            var internalOrganisations = new Organisations(this.strategy.Session).Extent()
+                .Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+
+            if (!this.ExistTakenBy && internalOrganisations.Count() == 1)
+            {
+                this.TakenBy = internalOrganisations.First();
+            }
+
+            if (!this.ExistStore && this.ExistTakenBy)
+            {
+                var store = new Stores(this.strategy.Session).Extent()
+                    .FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+                if (store != null)
+                {
+                    this.Store = store;
+                }
+            }
+
+            if (!this.ExistWorkEffortNumber && this.ExistStore)
+            {
+                this.WorkEffortNumber = this.Store.DeriveNextWorkEffortNumber();
+            }
+        }
+
+        //public void AppsDelete(DeletableDelete method)
+            //{
+            //    foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
+            //    {
+            //        workEffortStatus.Delete();
+            //    }
+
+            //    foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
+            //    {
+            //        workEffortAssignment.Delete();
+            //    }
+            //}
+        }
     }
-}

@@ -16,6 +16,10 @@ namespace Allors.Repository
 
         public Organisation TakenBy { get; set; }
 
+        public Store Store { get; set; }
+
+        public Party Customer { get; set; }
+
         public string WorkEffortNumber { get; set; }
 
         public Person Owner { get; set; }

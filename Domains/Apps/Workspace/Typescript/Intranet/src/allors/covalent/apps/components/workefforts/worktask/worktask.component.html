@@ -11,6 +11,12 @@
       <a-mat-textarea class="col" [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
     </div>
 
+    <div class="grid-2_xs-1">
+      <a-mat-autocomplete class="col" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="organisationsFilter.create()"
+        (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
+      <a-mat-select class="col" [object]="workTask" [roleType]="m.WorkTask.TaskSubject" [options]="workTaskSubjects" display="LicensePlate" label="Subject"></a-mat-select>
+    </div>
+
     <div class="grid-1">
       <mat-input-container class="col">
         <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
