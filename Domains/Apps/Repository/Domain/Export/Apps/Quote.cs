@@ -124,7 +124,6 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
-        [Required]
         [Workspace]
         ContactMechanism FullfillContactMechanism { get; set; }
 
