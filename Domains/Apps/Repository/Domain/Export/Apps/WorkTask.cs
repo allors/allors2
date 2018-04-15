@@ -20,6 +20,8 @@ namespace Allors.Repository
 
         public Party Customer { get; set; }
 
+        public ContactMechanism FullfillContactMechanism { get; set; }
+
         public string WorkEffortNumber { get; set; }
 
         public Person Owner { get; set; }
@@ -67,6 +69,8 @@ namespace Allors.Repository
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
+
+        public string PrintContent { get; set; }
 
         public string Comment { get; set; }
         #endregion

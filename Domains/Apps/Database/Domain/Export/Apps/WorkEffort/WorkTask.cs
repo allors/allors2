@@ -18,6 +18,9 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Meta;
+    using Allors.Services;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class WorkTask
     {
@@ -54,19 +57,29 @@ namespace Allors.Domain
             {
                 this.WorkEffortNumber = this.Store.DeriveNextWorkEffortNumber();
             }
+
+            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+
+            var model = new PrintWorkTask()
+                            {
+                                WorkTask = this
+                            };
+
+            this.PrintContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
+
         }
 
         //public void AppsDelete(DeletableDelete method)
-            //{
-            //    foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
-            //    {
-            //        workEffortStatus.Delete();
-            //    }
+        //{
+        //    foreach (WorkEffortStatus workEffortStatus in this.WorkEffortStatuses)
+        //    {
+        //        workEffortStatus.Delete();
+        //    }
 
-            //    foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
-            //    {
-            //        workEffortAssignment.Delete();
-            //    }
-            //}
-        }
+        //    foreach (WorkEffortAssignment workEffortAssignment in this.WorkEffortAssignmentsWhereAssignment)
+        //    {
+        //        workEffortAssignment.Delete();
+        //    }
+        //}
+    }
     }

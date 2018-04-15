@@ -54,10 +54,10 @@
         </div>
         <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="data">
           <mat-list-item>
-            <div mat-line class="mat-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]">
+            <div mat-line class="mat-caption pointer" [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]">
               {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}</div>
 
-            <div mat-line class="pointer" [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
+            <div mat-line class="pointer">Assigned to: {{ workEffortAssignment.Professional.displayName }} </div>
             <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>
             <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line class="mat-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 

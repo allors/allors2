@@ -18,16 +18,44 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         <div class="pad">
-          <div class="grid-4_lg-2_sm-1">
+          <div class="grid-3_lg-2_sm-1">
             <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
+            <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.WorkEffortNumber"></a-mat-static>
+            <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.WorkEffortState" display="Name" label="Status"></a-mat-static>
           </div>
-        </div>
+
+          <div *ngIf="task.Customer" class="grid">
+            <a-mat-static class="col" [object]="task" [roleType]="m.WorkTask.TaskSubject" display="LicensePlate"></a-mat-static>
+            <!-- <a-mat-static class="col link" [object]="task" [roleType]="m.WorkTask.Ass"
+              display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static> -->
+          </div>
+
+          <div *ngIf="task.Customer" class="grid">
+            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
+              display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
+            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
+              display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static>
+          </div>
+
+          <div *ngIf="task.FullfillContactMechanism" class="grid">
+            <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.FullfillContactMechanism" display="displayName" label="Address"></a-mat-static>
+          </div>
+
+          <div *ngIf="task.ContactPerson" class="grid">
+            <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
+          </div>
+
+          <div class="grid-2_sm-1">
+            <p class="col mat-caption tc-grey-500"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
+            <p class="col mat-caption tc-grey-500"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
+          </div>
+        </div> 
       </mat-card-content>
 
       <mat-divider></mat-divider>
       <mat-card-actions>
-        <button *ngIf="task.canWrite" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
-        <button *ngIf="!task.canWrite" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
+        <button *ngIf="task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
+        <button *ngIf="!task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
         <button mat-button [routerLink]="['/printworktask/' + task.id ]">Print</button>
         <button *ngIf="task.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
       </mat-card-actions>

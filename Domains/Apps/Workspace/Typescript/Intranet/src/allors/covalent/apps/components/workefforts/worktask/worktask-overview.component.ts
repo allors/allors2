@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { WorkEffort } from "../../../../../domain";
+import { WorkEffort, WorkTask } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
@@ -22,7 +22,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   public title: string = "Task Overview";
-  public task: WorkEffort;
+  public task: WorkTask;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -53,9 +53,13 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
         const fetch: Fetch[] = [
           new Fetch({
             id,
-            // include: [
-            //   new TreeNode({ roleType: m.Party.Locale }),
-            // ],
+            include: [
+              new TreeNode({ roleType: m.WorkTask.WorkEffortState }),
+              new TreeNode({ roleType: m.WorkTask.TaskSubject }),
+              new TreeNode({ roleType: m.WorkTask.Customer }),
+              new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
+              new TreeNode({ roleType: m.WorkTask.ContactPerson }),
+            ],
             name: "task",
           }),
         ];
@@ -68,7 +72,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
         })
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.task = loaded.objects.task as WorkEffort;
+        this.task = loaded.objects.task as WorkTask;
       },
       (error: any) => {
         this.errorService.message(error);

@@ -11,13 +11,44 @@
       <a-mat-textarea class="col" [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div class="grid-3_md-1">
       <a-mat-autocomplete class="col" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="organisationsFilter.create()"
         (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
-      <a-mat-select class="col" [object]="workTask" [roleType]="m.WorkTask.TaskSubject" [options]="workTaskSubjects" display="LicensePlate" label="Subject"></a-mat-select>
+      <div class="col">
+        <div fxLayout fxLayoutGap="1em">
+          <a-mat-select fxFlex [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms"
+            display="displayName"></a-mat-select>
+          <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactMechanism = !addContactMechanism">
+            <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
+            <mat-icon *ngIf="addContactMechanism">close</mat-icon>
+          </button>
+        </div>
+        <party-contactmechanism *ngIf="workTask.Customer && addContactMechanism" [scope]="scope" (saved)="contactMechanismAdded($event)"
+          (cancelled)="contactMechanismCancelled()">
+        </party-contactmechanism>
+      </div>
+      <div class="col">
+        <div fxLayout fxLayoutGap="1em">
+          <a-mat-select class="col" [object]="workTask" [roleType]="m.WorkTask.ContactPerson" [options]="contacts" display="displayName"
+            label="Contact Person"></a-mat-select>
+          <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactPerson = !addContactPerson">
+            <mat-icon *ngIf="!addContactPerson">add</mat-icon>
+            <mat-icon *ngIf="addContactPerson">close</mat-icon>
+          </button>
+        </div>
+        <mat-tab-group dynamicHeight="true" *ngIf="workTask.Customer && addContactPerson">
+          <mat-tab label="Person">
+            <div class="pad tabInlineComponent">
+              <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event)">
+              </person-inline>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
     </div>
 
-    <div class="grid-1">
+    <div class="grid-2_xs-1">
+      <a-mat-select class="col" [object]="workTask" [roleType]="m.WorkTask.TaskSubject" [options]="workTaskSubjects" display="LicensePlate" label="Subject"></a-mat-select>
       <mat-input-container class="col">
         <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
           <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>

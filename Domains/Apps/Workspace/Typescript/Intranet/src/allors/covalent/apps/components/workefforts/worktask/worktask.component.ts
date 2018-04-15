@@ -20,8 +20,12 @@ import {
   WorkspaceService
 } from "../../../../../angular";
 import {
+  ContactMechanism,
   InternalOrganisation,
+  Organisation,
+  OrganisationContactRelationship,
   Party,
+  PartyContactMechanism,
   Person,
   Priority,
   Singleton,
@@ -63,9 +67,13 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   public existingAssignees: Person[] = [];
   public organisationsFilter: Filter;
   public workTaskSubjects: WorkTaskSubject[];
+  public contactMechanisms: ContactMechanism[];
+  public contacts: Person[];
+  public addContactPerson: boolean = false;
+  public addContactMechanism: boolean;
+  public scope: Scope;
 
   private subscription: Subscription;
-  private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
@@ -101,7 +109,11 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           this.fetcher.internalOrganisation,
           new Fetch({
             id,
-            include: [new TreeNode({ roleType: m.WorkTask.TaskSubject })],
+            include: [
+              new TreeNode({ roleType: m.WorkTask.TaskSubject }),
+              new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
+              new TreeNode({ roleType: m.WorkTask.ContactPerson }),
+            ],
             name: "worktask"
           })
         ];
@@ -132,15 +144,14 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             if (addMode) {
               this.subTitle = "add a new work task";
               this.workTask = this.scope.session.create("WorkTask") as WorkTask;
+            } else {
+              this.updateTaskSubject(this.workTask.Customer)
             }
 
-            this.workEffortStates = loaded.collections
-              .workEffortStates as WorkEffortState[];
+            this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
             this.priorities = loaded.collections.priorities as Priority[];
-            this.workEffortPurposes = loaded.collections
-              .workEffortPurposes as WorkEffortPurpose[];
-            const internalOrganisation: InternalOrganisation = loaded.objects
-              .internalOrganisation as InternalOrganisation;
+            this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
+            const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.employees = internalOrganisation.ActiveEmployees;
 
             const assignmentsFetch: Fetch[] = [
@@ -153,6 +164,10 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
               })
             ];
 
+            if (this.workTask.Customer) {
+              this.updateCustomer(this.workTask.Customer);
+            }
+    
             if (addMode) {
               return this.scope.load("Pull", new PullRequest({}));
             } else {
@@ -184,6 +199,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   public customerSelected(customer: Party) {
+    this.updateCustomer(customer);
     this.updateTaskSubject(customer);
   }
 
@@ -201,6 +217,74 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       .load("Pull", new PullRequest({ fetch }))
       .subscribe((loaded) => {
         this.workTaskSubjects = loaded.collections.workTaskSubjects as WorkTaskSubject[];
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
+
+  public contactPersonAdded(id: string): void {
+    this.addContactPerson = false;
+
+    const contact: Person = this.scope.session.get(id) as Person;
+
+    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.contacts.push(contact);
+    this.workTask.ContactPerson = contact;
+  }
+
+  public contactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addContactMechanism = false;
+
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.workTask.Customer.AddPartyContactMechanism(partyContactMechanism);
+    this.workTask.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
+  }
+
+  public contactMechanismCancelled() {
+    this.addContactMechanism = false;
+  }
+
+  private updateCustomer(party: Party) {
+
+    const fetch: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetch }))
+      .subscribe((loaded) => {
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);
