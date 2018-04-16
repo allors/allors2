@@ -10,7 +10,7 @@ const ANGULAR_MODULES: any[] = [
 ];
 
 import {
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatExpansionModule,
+  MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatExpansionModule,
   MatIconModule, MatInputModule, MatListModule, MatMenuModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule, MatSlideToggleModule,
@@ -18,7 +18,7 @@ import {
 } from "@angular/material";
 
 const MATERIAL_MODULES: any[] = [
-  MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatExpansionModule,
+  MatAutocompleteModule, MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatExpansionModule,
   MatIconModule, MatInputModule, MatListModule, MatMenuModule,
   MatNativeDateModule, MatRadioModule, MatSelectModule,
   MatSidenavModule, MatSliderModule, MatSlideToggleModule,
