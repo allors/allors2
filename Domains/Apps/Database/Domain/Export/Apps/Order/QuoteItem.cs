@@ -82,5 +82,20 @@ namespace Allors.Domain
         {
             this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Cancelled;
         }
+
+        public void AppsReject(QuoteItemReject method)
+        {
+            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Rejected;
+        }
+
+        public void AppsOrder(QuoteItemOrder method)
+        {
+            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Ordered;
+        }
+
+        public void AppsSubmit(QuoteItemSubmit method)
+        {
+            this.QuoteItemState = new QuoteItemStates(this.Strategy.Session).Submitted;
+        }
     }
 }

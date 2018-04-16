@@ -240,15 +240,22 @@ namespace Allors.Repository
         public void Cancel() { }
 
         #region Allors
+        [Id("BE5F50FE-4524-486C-8D3D-66AB32B27C7B")]
+        #endregion
+        [Workspace]
+        public void Reject() { }
+
+        #region Allors
+        [Id("4388A6A1-43C7-4B15-AB36-C587D2997A34")]
+        #endregion
+        [Workspace]
+        public void Order() { }
+
+        #region Allors
         [Id("C6494A74-92B0-4C9F-9931-8D5C97647DCA")]
         #endregion
         [Workspace]
         public void Submit() { }
 
-        #region Allors
-        [Id("BE5F50FE-4524-486C-8D3D-66AB32B27C7B")]
-        #endregion
-        [Workspace]
-        public void Reject() { }
     }
 }

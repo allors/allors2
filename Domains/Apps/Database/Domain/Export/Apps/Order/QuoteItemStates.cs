@@ -45,7 +45,7 @@ namespace Allors.Domain
             
             new QuoteItemStateBuilder(this.Session)
                 .WithUniqueId(DraftId)
-                .WithName("Anonymous")
+                .WithName("Draft")
                 .Build();
 
             new QuoteItemStateBuilder(this.Session)
