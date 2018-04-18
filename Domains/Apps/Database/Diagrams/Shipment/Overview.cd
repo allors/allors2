@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.Shipment" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <AssociationLine Name="ShipmentItems" Type="Allors.Domain.ShipmentItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.438" Y="4.579" />
+        <Point X="7.438" Y="4.954" />
+        <Point X="13.531" Y="4.954" />
+        <Point X="13.531" Y="4.57" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="BillToParty" Type="Allors.Domain.Party" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="3.812" />
+        <Point X="1.733" Y="3.812" />
+        <Point X="1.733" Y="1.829" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Carrier" Type="Allors.Domain.Carrier" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="4.5" />
+        <Point X="5.875" Y="4.5" />
+        <Point X="5.875" Y="5.41" />
+        <Point X="4" Y="5.41" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ShipFromParty" Type="Allors.Domain.Party" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="3.688" />
+        <Point X="2.312" Y="3.688" />
+        <Point X="2.312" Y="1.829" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.128" Y="0.089" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="ShipmentMethod" Type="Allors.Domain.ShipmentMethod" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.25" Y="4.375" />
+        <Point X="5.625" Y="4.375" />
+        <Point X="5.625" Y="4.312" />
+        <Point X="2.75" Y="4.312" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ShipmentPackages" Type="Allors.Domain.ShipmentPackage" FixedToPoint="true">
+      <Path>
+        <Point X="7.75" Y="4.25" />
+        <Point X="8.75" Y="4.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Store" Type="Allors.Domain.Store" FixedToPoint="true">
+      <Path>
+        <Point X="7.062" Y="4.579" />
+        <Point X="7.062" Y="6.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>CAgAAoCAAAAEEAAAAAAQAYAAAkAQQCACAgSAIUAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipmentItems" />
+      <Property Name="BillToParty" />
+      <Property Name="BillToContactMechanism" />
+      <Property Name="Carrier" />
+      <Property Name="ShipFromAddress" />
+      <Property Name="ShipFromParty" />
+      <Property Name="ShipmentMethod" />
+      <Property Name="ShipmentPackages" />
+      <Property Name="Store" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.ShipmentItem" Collapsed="true">
+    <Position X="13.25" Y="3.75" Width="1.5" />
+    <AssociationLine Name="InvoiceItems" Type="Allors.Domain.InvoiceItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.75" Y="4" />
+        <Point X="15.125" Y="4" />
+        <Point X="15.125" Y="3.938" />
+        <Point X="17" Y="3.938" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Good" Type="Allors.Domain.Good" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.75" Y="4.25" />
+        <Point X="15.125" Y="4.25" />
+        <Point X="15.125" Y="4.375" />
+        <Point X="17" Y="4.375" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Part" Type="Allors.Domain.Part" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.75" Y="4.5" />
+        <Point X="16.18" Y="4.5" />
+        <Point X="16.18" Y="5.562" />
+        <Point X="17" Y="5.562" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="InResponseToShipmentItems" Type="Allors.Domain.ShipmentItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.938" Y="3.75" />
+        <Point X="13.938" Y="3.5" />
+        <Point X="14.24" Y="3.5" />
+        <Point X="14.24" Y="3.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.119" Y="0.362" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAACAIAAAAQAAAAABIAAAAACAAAAgAAAAAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InvoiceItems" />
+      <Property Name="Good" />
+      <Property Name="Part" />
+      <Property Name="InResponseToShipmentItems" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.InvoiceItem" Collapsed="true">
+    <Position X="17" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAcAggAAAAAAAAAABAAAAAQABAgAAoAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Good" Collapsed="true">
+    <Position X="17" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAQAAAAAAgCCBAAABABEAAAEAAAAhEAAAAAAAhBA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Part" Collapsed="true">
+    <Position X="17" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIQAAAAAAAAAAAAAAQASAQAEAAACCEAACAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Party" Collapsed="true">
+    <Position X="1.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYAIGAABVAAQAoAQIJgmAACgoAgUAAAACAIFBANAgEI=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ContactMechanism" Collapsed="true">
+    <Position X="9" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Carrier" Collapsed="true">
+    <Position X="2.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.PostalAddress" Collapsed="true">
+    <Position X="9" Y="2.25" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.ContactMechanism" FixedFromPoint="true">
+      <Path>
+        <Point X="9.75" Y="1.82" />
+        <Point X="9.75" Y="2.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAJIAAEAAAAABIAAAAARAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ShipmentMethod" Collapsed="true">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ShipmentPackage" Collapsed="true">
+    <Position X="8.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAQAAAAAgAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PackagingContents" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Store" Collapsed="true">
+    <Position X="6.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAkCAAQUAChASCgAAgAAQAhBkAAGKAAAIAAEAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.OrderShipment" Collapsed="true">
+    <Position X="15.25" Y="1.5" Width="1.5" />
+    <AssociationLine Name="ShipmentItem" Type="Allors.Domain.ShipmentItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.969" Y="2.191" />
+        <Point X="15.969" Y="3.812" />
+        <Point X="14.75" Y="3.812" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAggAAAAAAAAAAAAAAAAAAAAAggAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipmentItem" />
+      <Property Name="SalesOrderItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.SalesOrderItem" Collapsed="true">
+    <Position X="17.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAxGFAkAIQABACIAQEwAAYCKEMApAApAAAKAAAAE4AE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ItemIssuance" Collapsed="true">
+    <Position X="14.5" Y="9" Width="1.5" />
+    <AssociationLine Name="ShipmentItem" Type="Allors.Domain.ShipmentItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.688" Y="9" />
+        <Point X="15.688" Y="8.625" />
+        <Point X="14.312" Y="8.625" />
+        <Point X="14.312" Y="4.57" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAACAAAAAAAAAAAAAAACAAAAAAAQAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipmentItem" />
+      <Property Name="PickListItem" />
+      <Property Name="InventoryItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PickListItem" Collapsed="true">
+    <Position X="17" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAgAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.PickList" Collapsed="true">
+    <Position X="18.25" Y="6.25" Width="1.5" />
+    <AssociationLine Name="PickListItems" Type="Allors.Domain.PickListItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.25" Y="7.086" />
+        <Point X="18.031" Y="7.086" />
+        <Point X="18.031" Y="9" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="Picker" Type="Allors.Domain.Person" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.75" Y="6.938" />
+        <Point X="20.125" Y="6.938" />
+        <Point X="20.125" Y="7.475" />
+        <Point X="21" Y="7.475" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ShipToParty" Type="Allors.Domain.Party" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.375" Y="6.25" />
+        <Point X="19.375" Y="0.75" />
+        <Point X="3.125" Y="0.75" />
+        <Point X="3.125" Y="0.938" />
+        <Point X="2.75" Y="0.938" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAAAAAgAQAAAAAAAAAAAgIAAAABCAAgAAAAgCQAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="PickListItems" />
+      <Property Name="PickListState" />
+      <Property Name="Picker" />
+      <Property Name="ShipToParty" />
+      <Property Name="Store" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PickListState" Collapsed="true">
+    <Position X="21" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Person" Collapsed="true">
+    <Position X="21" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggEiAJgAAAEiKABAQAAYEACAAAAiAAAAgAACAAAg=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
+    <Position X="12" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAQAAEAAAAAAAgAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Facility" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PackagingContent" Collapsed="true">
+    <Position X="10.75" Y="3.75" Width="1.5" />
+    <AssociationLine Name="ShipmentItem" Type="Allors.Domain.ShipmentItem" FixedFromPoint="true">
+      <Path>
+        <Point X="12.25" Y="4.25" />
+        <Point X="13.25" Y="4.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ShipmentItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.ShipmentReceipt" Collapsed="true">
+    <Position X="12" Y="5.75" Width="1.5" />
+    <AssociationLine Name="ShipmentItem" Type="Allors.Domain.ShipmentItem" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="13.5" Y="6.096" />
+        <Point X="13.875" Y="6.096" />
+        <Point X="13.875" Y="4.57" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.192" Y="0.591" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAACACAAAAAAAAIAAAAAACAgAACAAAAAAAgAQAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InventoryItem" />
+      <Property Name="ShipmentItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.NonSerialisedInventoryItem" Collapsed="true">
+    <Position X="12" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAACAAACAAAAAACEAAAAAAAgkAAAAAAAAABA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Facility" Collapsed="true">
+    <Position X="9" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACAAAAgAAAAAAAAAAQAAAAAACABAAAAAEAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.CustomerReturn" Collapsed="true">
+    <Position X="0.5" Y="11" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Shipment" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="4.579" />
+        <Point X="6.5" Y="9.914" />
+        <Point X="1.25" Y="9.914" />
+        <Point X="1.25" Y="11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAIAAgAAAAAAAAAAAAAAAAAABAAAAgAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.CustomerShipment" Collapsed="true">
+    <Position X="2.25" Y="11" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Shipment" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="4.579" />
+        <Point X="6.5" Y="9.933" />
+        <Point X="3" Y="9.933" />
+        <Point X="3" Y="11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAADAAgAAAAAAAIAAAAAAAAAAAAAgAgAEAAAAAEAAAg=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.DropShipment" Collapsed="true">
+    <Position X="4" Y="11" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Shipment" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.562" Y="4.579" />
+        <Point X="6.562" Y="9.93" />
+        <Point X="4.75" Y="9.93" />
+        <Point X="4.75" Y="11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAhAAAAAAAAAAIAAAAACAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.PurchaseReturn" Collapsed="true">
+    <Position X="6.25" Y="11" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Shipment" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="4.579" />
+        <Point X="6.5" Y="10.625" />
+        <Point X="7" Y="10.625" />
+        <Point X="7" Y="11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAACAABAAAAAAIAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.PurchaseShipment" Collapsed="true">
+    <Position X="8.5" Y="11" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Shipment" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.5" Y="4.579" />
+        <Point X="6.5" Y="9.97" />
+        <Point X="8.5" Y="9.97" />
+        <Point X="8.5" Y="10.625" />
+        <Point X="9.25" Y="10.625" />
+        <Point X="9.25" Y="11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAIAAgAAAAAgAAABAAAAAAAACAEAEgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Transfer" Collapsed="true">
+    <Position X="10.75" Y="11" Width="1.5" />
+    <InheritanceLine Type="Allors.Domain.Shipment" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.562" Y="4.579" />
+        <Point X="6.562" Y="9.993" />
+        <Point X="11.5" Y="9.993" />
+        <Point X="11.5" Y="11" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAACAAAAAAAAAAgABAAAAAAAAAg=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
