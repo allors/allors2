@@ -1,44 +1,30 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumerationTests.cs" company="Allors bvba">
-//   Copyright 2002-2016 Allors bvba.
-// 
+// <copyright file="MetaLocalisedText.cs" company="Allors bvba">
+//   Copyright 2002-2017 Allors bvba.
+//
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
 //   b) the Allors License
-// 
+//
 // The GPL License is included in the file gpl.txt.
 // The Allors License is an addendum to your contract.
-// 
+//
 // Allors Applications is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Tests
+namespace Allors.Meta
 {
-    using Allors;
-    using Allors.Domain;
-
-    using Xunit;
-
-    
-    public class EnumerationTests : DomainTest
+    public partial class MetaLocalisedText
     {
-        [Fact]
-        public void GivenLocalisedTextThenNameIsDerived()
+        internal override void BaseExtend()
         {
-            var defaultLocale = this.Session.GetSingleton().DefaultLocale;
-
-            var gender = new GenderBuilder(this.Session)
-                .WithName("LGBT")
-                .Build();
-
-            this.Session.Derive(true);
-            Assert.Equal("LGBT", gender.Name);
+            this.Locale.IsRequiredOverride = true;
         }
     }
 }
