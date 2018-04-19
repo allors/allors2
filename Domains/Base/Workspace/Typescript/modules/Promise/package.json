@@ -5,9 +5,9 @@
   "repository": "https://github.com/Allors/allors2",
   "license": "LGPL-3.0",
   "scripts": {
-    "link": "lnk ../../../../../Platform/Workspace/Typescript/src/allors/framework src/allors",
-    "test": "mocha --compilers ts:ts-node/register ./test/**/*.spec.ts",
-    "tc:test": "mocha --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
+    "postinstall": "node ./postinstall.js",
+    "test": "_mocha --compilers ts:ts-node/register ./test/**/*.spec.ts",
+    "tc:test": "_mocha --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
     "axios": "^0.16.2"

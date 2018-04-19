@@ -1,7 +1,9 @@
-﻿namespace Allors.Console
+﻿using System.IO;
+
+namespace Allors.Console
 {
     using System.Data;
-    using System.IO;
+    using System.Linq;
 
     using Allors.Adapters.Object.SqlClient;
     using Allors.Domain;
@@ -30,21 +32,29 @@
         protected string DataPath => this.Configuration["dataPath"];
 
         public abstract void Execute();
-        
+
         protected IDatabase CreateDatabase(IsolationLevel isolationLevel = IsolationLevel.Snapshot)
         {
             var configuration = new Configuration
+                                    {
+                                        ConnectionString = this.Configuration["allors"],
+                                        ObjectFactory = this.ObjectFactory,
+                                        IsolationLevel = isolationLevel,
+                                        CommandTimeout = 0
+                                    };
+            
+            var directoryInfo = new DirectoryInfo(".");
+            while (directoryInfo != null && directoryInfo.GetDirectories("Server").Length == 0)
             {
-                ConnectionString = this.Configuration["allors"],
-                ObjectFactory = this.ObjectFactory,
-                IsolationLevel = isolationLevel,
-                CommandTimeout = 0
-            };
+                directoryInfo = directoryInfo.Parent;
+            }
+
+            directoryInfo = directoryInfo?.GetDirectories("Server").FirstOrDefault();
 
             var services = new ServiceCollection();
             services.AddAllors(new ServiceConfig
             {
-                Directory = new DirectoryInfo(@"..\Server"),
+                Directory = directoryInfo,
                 ApplicationName = "Server"
             });
             var serviceProvider = services.BuildServiceProvider();

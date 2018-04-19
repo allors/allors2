@@ -9,7 +9,7 @@ import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
 import { assert } from "chai";
 import "mocha";
 
-describe("People",
+describe("Database",
     () => {
         let scope: Scope;
 
@@ -29,8 +29,6 @@ describe("People",
                     const loaded: Loaded = await scope.load("People");
                     const people = loaded.collections.people as Person[];
                     assert.equal(7, people.length);
-
-                    // people.forEach((v) => console.log(v.FullName));
                 });
         });
 });

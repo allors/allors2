@@ -130,6 +130,7 @@ namespace Allors.Adapters
                     populationElement.SetAttribute("version", "a");
                     xml = xmlDocument.OuterXml;
 
+                    var exception = false;
                     try
                     {
                         using (var stringReader = new StringReader(xml))
@@ -139,16 +140,18 @@ namespace Allors.Adapters
                                 this.Population.Load(reader);
                             }
                         }
-
-                        Assert.True(false); // Fail
                     }
-                    catch (ArgumentException)
+                    catch (Exception)
                     {
+                        exception = true;
                     }
+
+                    Assert.True(exception);
 
                     populationElement.SetAttribute("version", string.Empty);
                     xml = xmlDocument.OuterXml;
 
+                    var exceptionThrown = false;
                     try
                     {
                         using (var stringReader = new StringReader(xml))
@@ -158,12 +161,17 @@ namespace Allors.Adapters
                                 this.Population.Load(reader);
                             }
                         }
-
-                        Assert.True(false); // Fail
                     }
                     catch (ArgumentException)
                     {
+                        exceptionThrown = true;
                     }
+                    catch (InvalidOperationException)
+                    {
+                        exceptionThrown = true;
+                    }
+
+                    Assert.True(exceptionThrown);    
                 }
             }
         }
