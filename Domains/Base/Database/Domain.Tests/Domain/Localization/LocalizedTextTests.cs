@@ -25,7 +25,6 @@ namespace Tests
 
     using Xunit;
 
-    
     public class LocalisedTextTests : DomainTest
     {
         [Fact]
