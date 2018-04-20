@@ -47,7 +47,7 @@ export class SessionObject implements INewSessionObject {
     public newId: string;
 
     private changedRoleByRoleTypeName: { [id: string]: any; };
-    private roleByRoleTypeName: { [id: string]: any; } = {};
+    private roleByRoleTypeName: { [id: string]: any; };
 
     get isNew(): boolean {
         return this.newId ? true : false;
@@ -270,6 +270,10 @@ export class SessionObject implements INewSessionObject {
                     }
                 });
         }
+    }
+
+    protected init(){
+        this.roleByRoleTypeName = {};
     }
 
     private assertExists() {

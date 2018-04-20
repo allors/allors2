@@ -174,9 +174,11 @@ exclusiveRoleType(roleType) ::= <<
                 {
                     id: "$roleType.IdAsNumberString$",
                     name: "$roleType.PropertyName$",
+                    singular: "$roleType.SingularName$",
                     objectType: "$roleType.ObjectType.Name$",
                     isUnit: $boolean(roleType.ObjectType.IsUnit)$,
                     isOne: $boolean(roleType.IsOne)$,
+                    isDerived: $boolean(roleType.RelationType.IsDerived)$,
                     isRequired: $boolean(roleType.IsRequired)$,
                 }
 >>

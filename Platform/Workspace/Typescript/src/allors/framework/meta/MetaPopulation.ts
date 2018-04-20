@@ -76,8 +76,10 @@ export class MetaPopulation {
           const metaRoleType = new ExclusiveRoleType();
           metaRoleType.id = dataRoleType.id;
           metaRoleType.name = dataRoleType.name;
+          metaRoleType.singular = dataRoleType.singular;
           metaRoleType.objectType = objectType;
           metaRoleType.isOne = dataRoleType.isOne;
+          metaRoleType.isDerived = dataRoleType.isDerived;
           metaRoleType.isRequired = dataRoleType.isRequired;
           metaObjectType.exclusiveRoleTypes.push(metaRoleType);
           this.metaObjectById[metaRoleType.id] = metaRoleType;

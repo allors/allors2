@@ -5,8 +5,10 @@ import { RoleType } from "./RoleType";
 export class ExclusiveRoleType implements RoleType {
     public id: string;
     public name: string;
+    public singular: string;
     public objectType: ObjectType;
     public isOne: boolean;
+    public isDerived: boolean;
     public isRequired: boolean;
 
     get isMany(): boolean { return !this.isOne; }

@@ -18,9 +18,102 @@ export interface IWorkspace {
 
 export class Workspace implements IWorkspace {
 
+    public constructorByName: { [name: string]: typeof SessionObject };
+
+    public prototypeByName: { [name: string]: any };
+
     private workspaceObjectById: { [id: string]: WorkspaceObject; } = {};
 
-    constructor(public metaPopulation: MetaPopulation, public constructorByName: { [name: string]: typeof SessionObject }) {
+    constructor(public metaPopulation: MetaPopulation) {
+
+        this.prototypeByName = {};
+        this.constructorByName = {};
+
+        Object.keys(this.metaPopulation.objectTypeByName)
+            .forEach(
+                (objectTypeName) => {
+                    const objectType = this.metaPopulation.objectTypeByName[objectTypeName];
+                    if (objectType.isClass) {
+
+                        function DynamicClass() {
+
+                            const prototype1 = Object.getPrototypeOf(this);
+                            const prototype2 = Object.getPrototypeOf(prototype1);
+
+                            prototype2.init.call(this);
+                        }
+
+                        DynamicClass.prototype = Object.create(SessionObject.prototype);
+                        DynamicClass.prototype.constructor = DynamicClass;
+                        const prototype = DynamicClass.prototype;
+
+                        this.prototypeByName[objectTypeName] = prototype;
+                        this.constructorByName[objectTypeName] = DynamicClass as any;
+
+                        Object.keys(objectType.roleTypeByName)
+                            .forEach((roleTypeName) => {
+                                const roleType = objectType.roleTypeByName[roleTypeName];
+
+                                Object.defineProperty(prototype, "CanRead" + roleTypeName, {
+                                    get(this: SessionObject) {
+                                        return this.canRead(roleTypeName);
+                                    },
+                                });
+
+                                if (roleType.isDerived) {
+                                    Object.defineProperty(prototype, roleTypeName, {
+                                        get(this: SessionObject) {
+                                            return this.get(roleTypeName);
+                                        },
+                                    });
+                                } else {
+                                    Object.defineProperty(prototype, "CanWrite" + roleTypeName, {
+                                        get(this: SessionObject) {
+                                            return this.canRead(roleTypeName);
+                                        },
+                                    });
+
+                                    Object.defineProperty(prototype, roleTypeName, {
+                                        get(this: SessionObject) {
+                                            return this.get(roleTypeName);
+                                        },
+
+                                        set(this: SessionObject, value) {
+                                            this.set(roleTypeName, value);
+                                        },
+                                    });
+
+                                    if (roleType.isMany) {
+
+                                        prototype["Add" + roleType.singular] = function (this: SessionObject, value) {
+                                            return this.add(roleTypeName, value);
+                                        };
+
+                                        prototype["Remove" + roleType.singular] = function (this: SessionObject, value) {
+                                            return this.remove(roleTypeName, value);
+                                        };
+                                    }
+                                }
+                            });
+
+                        Object.keys(objectType.methodTypeByName)
+                            .forEach((methodTypeName) => {
+                                const methodType = objectType.methodTypeByName[methodTypeName];
+
+                                Object.defineProperty(prototype, "CanExecute" + methodTypeName, {
+                                    get(this: SessionObject) {
+                                        return this.canExecute(methodTypeName);
+                                    },
+                                });
+
+                                Object.defineProperty(prototype, methodTypeName, {
+                                    get(this: SessionObject) {
+                                        return this.method(methodTypeName);
+                                    },
+                                });
+                            });
+                    }
+                });
     }
 
     public diff(response: PullResponse): SyncRequest {

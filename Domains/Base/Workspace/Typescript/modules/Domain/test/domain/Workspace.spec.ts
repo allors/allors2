@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import "mocha";
 
-import { constructorByName, Organisation, Person } from "../../src/allors/domain";
+import { Organisation, Person, domain } from "../../src/allors/domain";
 import { MetaPopulation, PullResponse, PushResponse, ResponseType, Session, Workspace } from "../../src/allors/framework";
 import { data, MetaDomain } from "../../src/allors/meta";
 
@@ -15,7 +15,8 @@ describe("Workspace",
 
         beforeEach(() => {
             metaPopulation = new MetaPopulation(data);
-            workspace = new Workspace(metaPopulation, constructorByName);
+            workspace = new Workspace(metaPopulation);
+            domain.apply(workspace);
         });
 
         it("should have its relations set when synced", () => {

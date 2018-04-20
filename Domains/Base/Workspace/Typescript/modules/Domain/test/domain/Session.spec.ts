@@ -1,9 +1,7 @@
 import { assert } from "chai";
-
-import { constructorByName, Organisation, Person, Media } from "../../src/allors/domain";
-import { MetaPopulation, PushResponse, ResponseType, Session, Workspace } from "../../src/allors/framework";
+import { domain, Media, Organisation, Person } from "../../src/allors/domain";
+import { MetaPopulation, PushResponse, ResponseType, Session, Workspace, SessionObject } from "../../src/allors/framework";
 import { data, MetaDomain } from "../../src/allors/meta";
-
 import { syncResponse } from "./fixture";
 
 describe("Session",
@@ -13,7 +11,8 @@ describe("Session",
 
         beforeEach(() => {
             metaPopulation = new MetaPopulation(data);
-            workspace = new Workspace(metaPopulation, constructorByName);
+            workspace = new Workspace(metaPopulation);
+            domain.apply(workspace);
         });
 
         describe("delete",

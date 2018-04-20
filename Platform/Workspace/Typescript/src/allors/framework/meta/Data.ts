@@ -25,11 +25,13 @@ export interface Class {
 }
 
 export interface RoleType {
-    name: string;
     id: string;
+    name: string;
+    singular: string;
     objectType: string;
     isUnit: boolean;
     isOne: boolean;
+    isDerived: boolean;
     isRequired: boolean;
 }
 
