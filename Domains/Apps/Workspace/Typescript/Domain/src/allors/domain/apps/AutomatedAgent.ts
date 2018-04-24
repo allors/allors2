@@ -1,3 +1,4 @@
+import { domain } from "../domain";
 import { AutomatedAgent } from "../generated/AutomatedAgent.g";
 
 declare module "../generated/AutomatedAgent.g" {
@@ -7,12 +8,17 @@ declare module "../generated/AutomatedAgent.g" {
     }
 }
 
-Object.defineProperty(AutomatedAgent.prototype, "displayName", {
-  get(this: AutomatedAgent): string {
-    if (this.UserName) {
-        return this.UserName;
-    }
+domain.extend((workspace) => {
 
-    return "N/A";
-  },
+    const obj: AutomatedAgent = workspace.prototypeByName["AutomatedAgent"];
+
+    Object.defineProperty(obj, "displayName", {
+        get(this: AutomatedAgent): string {
+            if (this.UserName) {
+                return this.UserName;
+            }
+
+            return "N/A";
+        },
+    });
 });

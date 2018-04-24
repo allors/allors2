@@ -152,7 +152,7 @@ export class GoodsOverviewComponent implements OnDestroy {
 
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
-          const fetch: Fetch[] = [
+          const fetches: Fetch[] = [
             this.fetcher.internalOrganisation,
           ];
 
@@ -187,7 +187,7 @@ export class GoodsOverviewComponent implements OnDestroy {
           ];
 
           return this.scope
-            .load("Pull", new PullRequest({ fetch, query: searchQuery }))
+            .load("Pull", new PullRequest({ fetches, queries: searchQuery }))
             .switchMap((loaded) => {
               const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
               this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
@@ -395,7 +395,7 @@ export class GoodsOverviewComponent implements OnDestroy {
 
               return this.scope.load(
                 "Pull",
-                new PullRequest({ query: goodsQuery }),
+                new PullRequest({ queries: goodsQuery }),
               );
             });
       })

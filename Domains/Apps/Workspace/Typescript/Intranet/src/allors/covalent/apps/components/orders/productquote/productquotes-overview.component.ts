@@ -108,7 +108,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.ProductQuote.Description, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const queries: Query[] = [new Query(
           {
             include: [
               new TreeNode({ roleType: m.ProductQuote.Receiver }),
@@ -121,7 +121,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
             sort: [new Sort({ roleType: m.ProductQuote.QuoteNumber, direction: "Desc" })],
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
 
       })
       .subscribe((loaded) => {

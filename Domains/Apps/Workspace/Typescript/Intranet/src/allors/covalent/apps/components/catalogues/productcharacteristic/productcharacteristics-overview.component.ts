@@ -83,7 +83,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const queries: Query[] = [new Query(
           {
             include: [
               new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.LocalisedNames }),
@@ -95,7 +95,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
             sort: [new Sort({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, direction: "Asc" })],
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
 
       })
       .subscribe((loaded) => {

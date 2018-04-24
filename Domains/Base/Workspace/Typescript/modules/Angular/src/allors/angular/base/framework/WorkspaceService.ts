@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { constructorByName } from "../../../domain";
+import { domain } from "../../../domain";
 import { MetaPopulation, Workspace } from "../../../framework";
 import { data } from "../../../meta";
 import { DatabaseService } from "./DatabaseService";
@@ -12,7 +12,8 @@ export class WorkspaceService {
 
   constructor(public databaseService: DatabaseService) {
     this.metaPopulation = new MetaPopulation(data);
-    this.workspace = new Workspace(this.metaPopulation, constructorByName);
+    this.workspace = new Workspace(this.metaPopulation);
+    domain.apply(this.workspace);
   }
 
   public createScope(): Scope {

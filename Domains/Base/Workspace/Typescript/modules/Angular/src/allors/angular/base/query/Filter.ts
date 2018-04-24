@@ -50,7 +50,7 @@ export class Filter {
         });
       });
 
-      const query: Query[] = [
+      const queries: Query[] = [
         new Query({
           name: "results",
           objectType: this.options.objectType,
@@ -61,7 +61,7 @@ export class Filter {
       ];
 
       return this.options.scope
-        .load("Pull", new PullRequest({ query }))
+        .load("Pull", new PullRequest({ queries }))
         .map((loaded: Loaded) => loaded.collections.results);
     };
   }

@@ -76,7 +76,7 @@ export class PersonComponent implements OnInit, OnDestroy {
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.internalOrganisation,
           new Fetch({
             id,
@@ -96,7 +96,7 @@ export class PersonComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(m.Locale),
           new Query(m.GenderType),
           new Query(m.Salutation),
@@ -124,7 +124,7 @@ export class PersonComponent implements OnInit, OnDestroy {
           employmentPredicates.push(not2);
           not2.predicate = new Exists({ roleType: m.Employment.ThroughDate });
 
-          query.push(new Query(
+          queries.push(new Query(
             {
               name: "customerRelationships",
               objectType: m.CustomerRelationship,
@@ -132,7 +132,7 @@ export class PersonComponent implements OnInit, OnDestroy {
             }),
           );
 
-          query.push(new Query(
+          queries.push(new Query(
             {
               name: "employments",
               objectType: m.Employment,
@@ -142,7 +142,7 @@ export class PersonComponent implements OnInit, OnDestroy {
         }
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }))
+          .load("Pull", new PullRequest({ fetches, queries }))
           .switchMap((loaded) => {
             this.scope.session.reset();
 
@@ -196,7 +196,7 @@ export class PersonComponent implements OnInit, OnDestroy {
                   }),
               );
             }
-            return this.scope.load("Pull", new PullRequest({ query: organisationQuery }));
+            return this.scope.load("Pull", new PullRequest({ queries: organisationQuery }));
           });
       })
       .subscribe((loaded) => {

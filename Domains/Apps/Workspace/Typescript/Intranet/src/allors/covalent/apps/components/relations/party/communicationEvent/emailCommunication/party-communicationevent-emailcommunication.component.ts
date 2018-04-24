@@ -63,7 +63,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -101,7 +101,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "purposes",
@@ -115,7 +115,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 
@@ -139,7 +139,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
         for (const employee of this.employees) {
           const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
           for (const contactMechanism of employeeContactMechanisms) {
-            if (contactMechanism instanceof (EmailAddress)) {
+            if (contactMechanism.objectType.name === "EmailAddress") {
               this.ownEmailAddresses.push(contactMechanism);
             }
           }

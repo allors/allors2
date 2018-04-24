@@ -109,7 +109,7 @@ export class RequestsOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.Request.Description, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const queries: Query[] = [new Query(
           {
             include: [
               new TreeNode({ roleType: m.Request.Originator }),
@@ -122,7 +122,7 @@ export class RequestsOverviewComponent implements OnDestroy {
             sort: [new Sort({ roleType: m.Request.RequestNumber, direction: "Desc" })],
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
 
       })
       .subscribe((loaded) => {

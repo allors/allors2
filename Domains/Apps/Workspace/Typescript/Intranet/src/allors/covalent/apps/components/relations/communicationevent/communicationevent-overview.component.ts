@@ -35,19 +35,19 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   get isEmail(): boolean {
-    return this.communicationEventPrefetch instanceof (EmailCommunication);
+    return this.communicationEventPrefetch.objectType.name === "EmailCommunication";
   }
 
   get isMeeting(): boolean {
-    return this.communicationEventPrefetch instanceof (FaceToFaceCommunication);
+    return this.communicationEventPrefetch.objectType.name === "FaceToFaceCommunication";
   }
 
   get isPhone(): boolean {
-    return this.communicationEventPrefetch instanceof (PhoneCommunication);
+    return this.communicationEventPrefetch.objectType.name === "PhoneCommunication";
   }
 
   get isLetter(): boolean {
-    return this.communicationEventPrefetch instanceof (LetterCorrespondence);
+    return this.communicationEventPrefetch.objectType.name === "LetterCorrespondence";
   }
 
   constructor(
@@ -74,7 +74,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id: roleId,
             name: "communicationEventPrefetch",
@@ -86,7 +86,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }))
+          .load("Pull", new PullRequest({ fetches }))
           .switchMap((loaded) => {
             this.communicationEventPrefetch = loaded.objects.communicationEventPrefetch as CommunicationEvent;
             this.party = loaded.objects.party as Party;
@@ -188,19 +188,19 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             ];
 
             if (this.isEmail) {
-              return this.scope.load("Pull", new PullRequest({ fetch: fetchEmail }));
+              return this.scope.load("Pull", new PullRequest({ fetches: fetchEmail }));
             }
 
             if (this.isMeeting) {
-              return this.scope.load("Pull", new PullRequest({ fetch: fetchMeeting }));
+              return this.scope.load("Pull", new PullRequest({ fetches: fetchMeeting }));
             }
 
             if (this.isLetter) {
-              return this.scope.load("Pull", new PullRequest({ fetch: fetchLetter }));
+              return this.scope.load("Pull", new PullRequest({ fetches: fetchLetter }));
             }
 
             if (this.isPhone) {
-              return this.scope.load("Pull", new PullRequest({ fetch: fetchPhone }));
+              return this.scope.load("Pull", new PullRequest({ fetches: fetchPhone }));
             }
           });
       })

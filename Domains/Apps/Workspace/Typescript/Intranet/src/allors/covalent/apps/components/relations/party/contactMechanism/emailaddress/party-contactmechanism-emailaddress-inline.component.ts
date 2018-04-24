@@ -33,14 +33,14 @@ export class PartyContactMechanismEmailAddressInlineComponent
   }
 
   public ngOnInit(): void {
-    const query: Query[] = [
+    const queries: Query[] = [
       new Query({
         name: "contactMechanismPurposes",
         objectType: this.m.ContactMechanismPurpose,
       }),
     ];
 
-    this.scope.load("Pull", new PullRequest({ query })).subscribe(
+    this.scope.load("Pull", new PullRequest({ queries })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 

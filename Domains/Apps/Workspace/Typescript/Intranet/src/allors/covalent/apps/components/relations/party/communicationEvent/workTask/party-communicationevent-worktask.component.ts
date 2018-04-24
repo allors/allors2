@@ -62,7 +62,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [new TreeNode({ roleType: this.m.CommunicationEvent.CommunicationEventState })],
@@ -82,7 +82,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "workEffortStates",
@@ -106,7 +106,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.subTitle = "edit work task";

@@ -54,7 +54,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   get PartyIsOrganisation(): boolean {
-    return this.party instanceof (Organisation);
+    return this.party.objectType.name === "Organisation";
   }
 
   public ngOnInit(): void {
@@ -67,7 +67,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -110,7 +110,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "purposes",
@@ -119,7 +119,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 
@@ -133,7 +133,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
         if (!this.communicationEvent) {
           this.communicationEvent = this.scope.session.create("FaceToFaceCommunication") as FaceToFaceCommunication;
-          if (this.party instanceof Person) {
+          if (this.party.objectType.name === "Person") {
             this.communicationEvent.AddParticipant(this.party);
           }
         }

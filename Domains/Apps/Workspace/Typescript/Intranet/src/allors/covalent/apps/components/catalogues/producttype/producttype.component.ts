@@ -42,7 +42,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             name: "productType",
             id,
@@ -52,7 +52,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
             name: "characteristics",
@@ -62,7 +62,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
          ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 

@@ -54,7 +54,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
   }
 
   get PartyIsOrganisation(): boolean {
-    return this.party instanceof (Organisation);
+    return this.party.objectType.name === "Organisation";
   }
 
   public ngOnInit(): void {
@@ -67,7 +67,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -141,7 +141,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "purposes",
@@ -150,7 +150,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 
@@ -170,7 +170,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
         for (const employee of this.employees) {
           const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
           for (const contactMechanism of employeeContactMechanisms) {
-            if (contactMechanism instanceof (PostalAddress)) {
+            if (contactMechanism.objectType.name === "PostalAddress") {
               this.postalAddresses.push(contactMechanism);
             }
           }
@@ -178,7 +178,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
 
         const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         for (const contactMechanism of contactMechanisms) {
-          if (contactMechanism instanceof (PostalAddress)) {
+          if (contactMechanism.objectType.name === "PostalAddress") {
             this.postalAddresses.push(contactMechanism);
           }
         }

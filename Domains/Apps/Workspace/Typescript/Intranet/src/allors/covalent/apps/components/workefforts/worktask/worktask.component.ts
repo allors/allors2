@@ -105,7 +105,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.internalOrganisation,
           new Fetch({
             id,
@@ -118,7 +118,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           })
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query({
             name: "workEffortStates",
             objectType: this.m.WorkEffortState
@@ -134,7 +134,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }))
+          .load("Pull", new PullRequest({ fetches, queries }))
           .switchMap(loaded => {
             this.subTitle = "edit work task";
             this.workTask = loaded.objects.worktask as WorkTask;
@@ -173,7 +173,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             } else {
               return this.scope.load(
                 "Pull",
-                new PullRequest({ fetch: assignmentsFetch })
+                new PullRequest({ fetches: assignmentsFetch })
               );
             }
           });
@@ -205,7 +205,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   private updateTaskSubject(customer: Party): void {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch({
         id: customer.id,
         name: "workTaskSubjects",
@@ -214,7 +214,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ fetch }))
+      .load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
         this.workTaskSubjects = loaded.collections.workTaskSubjects as WorkTaskSubject[];
       },
@@ -252,7 +252,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   private updateCustomer(party: Party) {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch({
         id: party.id,
         include: [
@@ -279,7 +279,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ fetch }))
+      .load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
 
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];

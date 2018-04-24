@@ -68,7 +68,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -108,10 +108,10 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         });
 
         if (id != null) {
-          fetch.push(salesOrderFetch);
+          fetches.push(salesOrderFetch);
         }
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "goods",
@@ -120,7 +120,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
@@ -210,13 +210,13 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public gotoOrder(): void {
 
-    const fetch: Fetch[] = [new Fetch({
+    const fetches: Fetch[] = [new Fetch({
       id: this.quote.id,
       name: "order",
       path: new Path({ step: this.m.ProductQuote.SalesOrderWhereQuote }),
     })];
 
-    this.scope.load("Pull", new PullRequest({ fetch }))
+    this.scope.load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
         const order = loaded.objects.order as SalesOrder;
         this.router.navigate(["/orders/salesOrder/" + order.id]);

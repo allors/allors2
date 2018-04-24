@@ -31,7 +31,7 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
   }
 
   public ngOnInit(): void {
-    const query: Query[] = [
+    const queries: Query[] = [
       new Query(
         {
           name: "contactMechanismPurposes",
@@ -39,7 +39,7 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
         }),
     ];
 
-    this.scope.load("Pull", new PullRequest({ query })).subscribe(
+    this.scope.load("Pull", new PullRequest({ queries })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.partyContactMechanism = this.scope.session.create("PartyContactMechanism") as PartyContactMechanism;

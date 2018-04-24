@@ -57,17 +57,17 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   get showBillToOrganisations(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer instanceof (Organisation);
+    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === "Organisation";
   }
   get showBillToPeople(): boolean {
-    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer instanceof (Person);
+    return !this.invoice.BillToCustomer || this.invoice.BillToCustomer.objectType.name === "Person";
   }
 
   get showShipToEndCustomerOrganisations(): boolean {
-    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer instanceof (Organisation);
+    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === "Organisation";
   }
   get showShipToEndCustomerPeople(): boolean {
-    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer instanceof (Person);
+    return !this.invoice.ShipToEndCustomer || this.invoice.ShipToEndCustomer.objectType.name === "Person";
   }
 
   constructor(
@@ -107,14 +107,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ query: rolesQuery }))
+          .load("Pull", new PullRequest({ queries: rolesQuery }))
           .switchMap((loaded) => {
             this.scope.session.reset();
             this.vatRates = loaded.collections.VatRateQuery as VatRate[];
             this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
 
-            const fetch: Fetch[] = [
+            const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,
               new Fetch({
                 id,
@@ -139,7 +139,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               }),
             ];
 
-            return this.scope.load("Pull", new PullRequest({ fetch }));
+            return this.scope.load("Pull", new PullRequest({ fetches }));
           });
       })
       .subscribe((loaded) => {
@@ -385,7 +385,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
   private updateBilledFrom(party: Party): void {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch({
         id: party.id,
         name: "currentContacts",
@@ -394,7 +394,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ fetch }))
+      .load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
 
         if (this.invoice.BilledFrom !== this.previousBilledFrom) {
@@ -413,7 +413,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch({
         id: party.id,
         include: [
@@ -440,7 +440,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ fetch }))
+      .load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
 
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
@@ -467,7 +467,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch({
         id: party.id,
         include: [
@@ -494,7 +494,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ fetch }))
+      .load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {

@@ -61,7 +61,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         const itemId: string = this.route.snapshot.paramMap.get("itemId");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             name: "requestForQuote",
@@ -73,7 +73,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "goods",
@@ -88,7 +88,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
@@ -191,7 +191,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   private refreshInventory(product: Product): void {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch({
         id: product.id,
         name: "inventoryItem",
@@ -200,13 +200,13 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-        .load("Pull", new PullRequest({ fetch }))
+        .load("Pull", new PullRequest({ fetches }))
         .subscribe((loaded) => {
           this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0] instanceof SerialisedInventoryItem) {
+          if (this.inventoryItems[0].objectType.name === "SerialisedInventoryItem") {
             this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
           }
-          if (this.inventoryItems[0] instanceof NonSerialisedInventoryItem) {
+          if (this.inventoryItems[0].objectType.name === "NonSerialisedInventoryItem") {
             this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
           }
         },

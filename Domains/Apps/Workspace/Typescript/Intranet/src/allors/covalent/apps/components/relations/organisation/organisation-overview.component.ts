@@ -139,7 +139,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.internalOrganisation,
           new Fetch({
             id,
@@ -204,12 +204,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(this.m.OrganisationRole),
           ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
@@ -429,7 +429,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public isPhone(contactMechanism: ContactMechanism): boolean {
-    if (contactMechanism instanceof TelecommunicationsNumber) {
+    if (contactMechanism.objectType.name === "TelecommunicationsNumber") {
       const phoneCommunication: TelecommunicationsNumber = contactMechanism as TelecommunicationsNumber;
       return phoneCommunication.ContactMechanismType && phoneCommunication.ContactMechanismType.Name === "Phone";
     }

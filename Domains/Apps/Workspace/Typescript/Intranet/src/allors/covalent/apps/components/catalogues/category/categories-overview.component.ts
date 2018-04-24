@@ -91,7 +91,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const queries: Query[] = [new Query(
           {
             include: [
               new TreeNode({ roleType: m.ProductCategory.CategoryImage }),
@@ -104,7 +104,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
             predicate,
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
 
       })
       .subscribe((loaded) => {

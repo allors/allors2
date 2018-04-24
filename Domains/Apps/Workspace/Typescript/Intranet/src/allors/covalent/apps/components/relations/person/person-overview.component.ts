@@ -92,7 +92,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.internalOrganisation,
           new Fetch({
             id,
@@ -208,12 +208,12 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(this.m.PersonRole),
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();

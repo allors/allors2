@@ -101,7 +101,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
         ];
 
         return this.scope
-        .load("Pull", new PullRequest({ query: internalOrganisationsQuery }))
+        .load("Pull", new PullRequest({ queries: internalOrganisationsQuery }))
         .switchMap((internalOrganisationsLoaded: Loaded) => {
           this.internalOrganisations = internalOrganisationsLoaded.collections.internalOrganisations as InternalOrganisation[];
           this.billToInternalOrganisation = this.internalOrganisations.find(
@@ -143,7 +143,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
             predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
           }
 
-          const query: Query[] = [new Query(
+          const queries: Query[] = [new Query(
             {
               include: [
                 new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
@@ -156,7 +156,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
               sort: [new Sort({ roleType: m.SalesInvoice.InvoiceNumber, direction: "Desc" })],
             })];
 
-          return this.scope.load("Pull", new PullRequest({ query }));
+          return this.scope.load("Pull", new PullRequest({ queries }));
         });
       })
       .subscribe((loaded) => {

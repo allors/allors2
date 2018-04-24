@@ -64,7 +64,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -105,11 +105,11 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
         });
 
         if (id != null) {
-          fetch.push(quoteFetch);
+          fetches.push(quoteFetch);
         }
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }));
+          .load("Pull", new PullRequest({ fetches }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
@@ -147,13 +147,13 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public gotoQuote(): void {
 
-    const fetch: Fetch[] = [new Fetch({
+    const fetches: Fetch[] = [new Fetch({
       id: this.request.id,
       name: "quote",
       path: new Path({ step: this.m.RequestForQuote.QuoteWhereRequest }),
     })];
 
-    this.scope.load("Pull", new PullRequest({ fetch }))
+    this.scope.load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
         const quote = loaded.objects.quote as ProductQuote;
         this.router.navigate(["/orders/productQuote/" + quote.id]);

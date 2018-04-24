@@ -67,7 +67,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -120,7 +120,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "goods",
@@ -129,7 +129,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
@@ -274,13 +274,13 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public gotoInvoice(): void {
 
-      const fetch: Fetch[] = [new Fetch({
+      const fetches: Fetch[] = [new Fetch({
         id: this.invoice.id,
         name: "invoice",
         path: new Path({ step: this.m.PurchaseInvoice.SalesInvoiceWherePurchaseInvoice }),
       })];
 
-      this.scope.load("Pull", new PullRequest({ fetch }))
+      this.scope.load("Pull", new PullRequest({ fetches }))
         .subscribe((loaded) => {
           const invoice = loaded.objects.invoice as SalesInvoice;
           this.router.navigate(["/accountsreceivable/invoice/" + invoice.id]);

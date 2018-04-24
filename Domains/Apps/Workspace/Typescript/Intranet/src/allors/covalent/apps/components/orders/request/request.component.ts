@@ -45,10 +45,10 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   get showOrganisations(): boolean {
-    return !this.request.Originator || this.request.Originator instanceof (Organisation);
+    return !this.request.Originator || this.request.Originator.objectType.name === "Organisation";
   }
   get showPeople(): boolean {
-    return !this.request.Originator || this.request.Originator instanceof (Person);
+    return !this.request.Originator || this.request.Originator.objectType.name === "Person";
   }
 
   constructor(
@@ -87,12 +87,12 @@ export class RequestEditComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ query: rolesQuery }))
+          .load("Pull", new PullRequest({ queries: rolesQuery }))
           .switchMap((loaded) => {
             this.scope.session.reset();
             this.currencies = loaded.collections.CurrencyQuery as Currency[];
 
-            const fetch: Fetch[] = [
+            const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,
               new Fetch({
                 id,
@@ -115,7 +115,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
               }),
             ];
 
-            return this.scope.load("Pull", new PullRequest({ fetch }));
+            return this.scope.load("Pull", new PullRequest({ fetches }));
           });
       })
       .subscribe((loaded) => {
@@ -349,7 +349,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
   private update(party: Party): void {
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id: party.id,
             include: [
@@ -376,7 +376,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
         ];
 
         this.scope
-          .load("Pull", new PullRequest({ fetch }))
+          .load("Pull", new PullRequest({ fetches }))
           .subscribe((loaded) => {
 
             if (this.request.Originator !== this.previousOriginator) {

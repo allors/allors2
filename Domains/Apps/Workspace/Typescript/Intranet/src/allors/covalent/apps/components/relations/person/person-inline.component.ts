@@ -34,7 +34,7 @@ export class PersonInlineComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const query: Query[] = [
+    const queries: Query[] = [
       new Query(
         {
           name: "locales",
@@ -53,7 +53,7 @@ export class PersonInlineComponent implements OnInit {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ query }))
+      .load("Pull", new PullRequest({ queries }))
       .subscribe((loaded) => {
         this.locales = loaded.collections.locales as Locale[];
         this.genders = loaded.collections.genders as Enumeration[];

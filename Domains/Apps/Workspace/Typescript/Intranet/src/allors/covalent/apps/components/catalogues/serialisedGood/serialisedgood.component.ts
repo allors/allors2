@@ -86,7 +86,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.locales,
           this.fetcher.internalOrganisation,
           new Fetch({
@@ -132,7 +132,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(this.m.VatRate),
           new Query(this.m.Ownership),
           new Query(this.m.InventoryItemKind),
@@ -165,7 +165,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
           ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }))
+          .load("Pull", new PullRequest({ fetches, queries }))
           .switchMap((loaded) => {
             this.scope.session.reset();
 
@@ -209,11 +209,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
               this.inventoryItem = this.inventoryItems[0];
 
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-                 if (feature instanceof (Brand)) {
+                 if (feature.objectType.name === "Brand") {
                    this.selectedBrand = feature;
                    this.brandSelected(this.selectedBrand);
                  }
-                 if (feature instanceof (Model)) {
+                 if (feature.objectType.name === "Model") {
                   this.selectedModel = feature;
                 }
              });
@@ -241,7 +241,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 }),
             ];
 
-            return this.scope.load("Pull", new PullRequest({ query: query2, fetch: fetch2 }));
+            return this.scope.load("Pull", new PullRequest({ fetches: fetch2, queries: query2}));
           });
       })
       .subscribe((loaded) => {
@@ -299,7 +299,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const fetch: Fetch[] = [
+    const fetches: Fetch[] = [
       new Fetch(
         {
           id: brand.id,
@@ -309,7 +309,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-      .load("Pull", new PullRequest({ fetch }))
+      .load("Pull", new PullRequest({ fetches }))
       .subscribe((loaded) => {
 
         const selectedbrand = loaded.objects.selectedbrand as Brand;

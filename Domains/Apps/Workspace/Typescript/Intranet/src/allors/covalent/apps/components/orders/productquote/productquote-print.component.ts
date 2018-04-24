@@ -44,7 +44,7 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             name: "quote",
@@ -52,7 +52,7 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }));
+          .load("Pull", new PullRequest({ fetches }));
       })
       .subscribe((loaded) => {
         this.quote = loaded.objects.quote as ProductQuote;

@@ -44,7 +44,7 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             name: "invoice",
@@ -52,7 +52,7 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }));
+          .load("Pull", new PullRequest({ fetches }));
       })
       .subscribe((loaded) => {
         this.invoice = loaded.objects.invoice as SalesInvoice;

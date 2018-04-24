@@ -83,7 +83,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.ProductType.Name, value: like }));
         }
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
           {
             name: "productTypes",
@@ -97,7 +97,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
           }),
         ];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
 
       })
       .subscribe((loaded) => {

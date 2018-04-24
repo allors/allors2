@@ -34,7 +34,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
   }
 
   public ngOnInit(): void {
-    const query: Query[] = [
+    const queries: Query[] = [
       new Query(
         {
           name: "countries",
@@ -49,7 +49,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
       ];
 
     this.scope
-      .load("Pull", new PullRequest({ query }))
+      .load("Pull", new PullRequest({ queries }))
       .subscribe((loaded) => {
         this.countries = loaded.collections.countries as Country[];
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];

@@ -72,7 +72,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -164,17 +164,17 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         });
 
         if (id != null) {
-          fetch.push(salesInvoiceFetch);
+          fetches.push(salesInvoiceFetch);
         }
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(m.Good),
           new Query(m.BillingProcess),
           new Query(m.SerialisedInventoryItemState),
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
@@ -367,13 +367,13 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
   public gotoInvoice(): void {
 
-      const fetch: Fetch[] = [new Fetch({
+      const fetches: Fetch[] = [new Fetch({
         id: this.order.id,
         name: "invoices",
         path: new Path({ step: this.m.SalesOrder.SalesInvoicesWhereSalesOrder }),
       })];
 
-      this.scope.load("Pull", new PullRequest({ fetch }))
+      this.scope.load("Pull", new PullRequest({ fetches }))
         .subscribe((loaded) => {
           const invoices = loaded.collections.invoices as SalesInvoice[];
           if (invoices.length === 1) {

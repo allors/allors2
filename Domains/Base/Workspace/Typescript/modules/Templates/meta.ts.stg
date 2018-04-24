@@ -66,6 +66,7 @@ $meta.WorkspaceComposites:{composite|$metaComposite(composite)$}; separator="\n\
 metaComposite(composite) ::= <<
 export interface Meta$composite.SingularName$ extends ObjectTyped {
 $composite.WorkspaceRoleTypes:{role|    $role.Name$: RoleType;}; separator="\n"$
+$composite.WorkspaceAssociationTypes:{association|    $association.PropertyName$: AssociationType;}; separator="\n"$
 }
 >>
 
@@ -125,16 +126,16 @@ $meta.WorkspaceComposites:{composite|$includeComposite(composite)$}; separator="
 
 includeComposite(composite) ::= <<
 export interface Include$composite.SingularName$ {
-$composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Include$role.ObjectType.Name$;}; separator="\n"$
+$composite.WorkspaceExclusiveCompositeRoleTypes:{role|    $role.Name$?: Include$role.ObjectType.Name$;}; separator="\n"$
 
-$composite.WorkspaceSubtypes:{subtype|$includeSubtype(subtype)$}$
-
+$composite.WorkspaceSupertypes:{supertype|$includeHierarchy(supertype)$}$
+$composite.WorkspaceSubtypes:{subtype|$includeHierarchy(subtype)$}$
 }
 >>
 
-includeSubtype(subtype) ::= <<
+includeHierarchy(type) ::= <<
 
-$subtype.WorkspaceExclusiveCompositeRoleTypes:{role|    $role.ObjectType.Name$_$role.Name$?: Include$role.ObjectType.Name$;}; separator="\n"$
+$type.WorkspaceExclusiveCompositeRoleTypes:{role|    $type.Name$_$role.Name$?: Include$role.ObjectType.Name$;}; separator="\n"$
 
 >>
 
@@ -161,7 +162,7 @@ $composite.WorkspaceSubtypes:{subtype|$pathSubtype(subtype)$}$
 
 pathSubtype(subtype) ::= <<
 
-$subtype.WorkspaceExclusiveCompositeRoleTypes:{role|    $role.ObjectType.Name$_$role.Name$?: Path$role.ObjectType.Name$;}; separator="\n"$
+$subtype.WorkspaceExclusiveCompositeRoleTypes:{role|    $subtype.Name$_$role.Name$?: Path$role.ObjectType.Name$;}; separator="\n"$
 
 $subtype.WorkspaceExclusiveAssociationTypes:{association|    $subtype.Name$_$association.PropertyName$?: Path$association.ObjectType.Name$;}; separator="\n"$
 

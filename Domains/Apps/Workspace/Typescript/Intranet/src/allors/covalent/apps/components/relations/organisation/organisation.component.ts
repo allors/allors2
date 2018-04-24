@@ -71,7 +71,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
         const id: string = this.route.snapshot.paramMap.get("id");
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.internalOrganisation,
           new Fetch({
             name: "organisation",
@@ -79,7 +79,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(this.m.Locale),
           new Query(this.m.OrganisationRole),
           new Query(this.m.CustomOrganisationClassification),
@@ -105,7 +105,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           customerRelationshipPredicates.push(not2);
           not2.predicate = new Exists({ roleType: m.SupplierRelationship.ThroughDate });
 
-          query.push(new Query(
+          queries.push(new Query(
             {
               name: "customerRelationships",
               objectType: m.CustomerRelationship,
@@ -113,7 +113,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
             }),
           );
 
-          query.push(new Query(
+          queries.push(new Query(
             {
               name: "supplierRelationships",
               objectType: m.SupplierRelationship,
@@ -123,7 +123,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
         }
 
         return this.scope
-        .load("Pull", new PullRequest({ fetch, query }));
+        .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 

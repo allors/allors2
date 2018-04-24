@@ -53,7 +53,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
         const termId: string = this.route.snapshot.paramMap.get("termId");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             name: "salesInvoice",
@@ -67,7 +67,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query({
             name: "invoiceTermTypes",
             objectType: m.InvoiceTermType,
@@ -75,7 +75,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 

@@ -1,3 +1,4 @@
+import { domain } from "../domain";
 import { EmailAddress } from "../generated/EmailAddress.g";
 
 declare module "../generated/EmailAddress.g" {
@@ -6,12 +7,18 @@ declare module "../generated/EmailAddress.g" {
   }
 }
 
-Object.defineProperty(EmailAddress.prototype, "displayName", {
-  get(this: EmailAddress) {
-    if (this.ElectronicAddressString) {
-        return this.ElectronicAddressString;
-    }
+domain.extend((workspace) => {
 
-    return "N/A";
-  },
+  const obj: EmailAddress = workspace.prototypeByName["EmailAddress"];
+
+  Object.defineProperty(obj, "displayName", {
+    get(this: EmailAddress) {
+      if (this.ElectronicAddressString) {
+        return this.ElectronicAddressString;
+      }
+
+      return "N/A";
+    },
+  });
+
 });

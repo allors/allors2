@@ -92,7 +92,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.Catalogue.Name, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const queries: Query[] = [new Query(
           {
             name: "catalogues",
             objectType: m.Catalogue,
@@ -104,7 +104,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
             ],
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
     })
       .subscribe((loaded) => {
         this.data = loaded.collections.catalogues as Catalogue[];

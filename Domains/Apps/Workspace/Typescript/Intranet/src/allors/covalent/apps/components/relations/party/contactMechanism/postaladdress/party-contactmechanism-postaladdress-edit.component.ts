@@ -43,7 +43,7 @@ export class PartyContactMechanismPostalAddressEditComponent implements OnInit, 
         const roleId: string = this.route.snapshot.paramMap.get("roleId");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             name: "partyContactMechanism",
             id: roleId,
@@ -64,7 +64,7 @@ export class PartyContactMechanismPostalAddressEditComponent implements OnInit, 
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "contactMechanismPurposes",
@@ -79,7 +79,7 @@ export class PartyContactMechanismPostalAddressEditComponent implements OnInit, 
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 

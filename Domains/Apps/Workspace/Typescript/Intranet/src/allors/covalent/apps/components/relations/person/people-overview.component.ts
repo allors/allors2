@@ -96,7 +96,7 @@ export class PeopleOverviewComponent implements OnDestroy {
           predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
         }
 
-        const query: Query[] = [new Query(
+        const queries: Query[] = [new Query(
           {
             name: "people",
             objectType: m.Person,
@@ -110,7 +110,7 @@ export class PeopleOverviewComponent implements OnDestroy {
             sort: [new Sort({ roleType: m.Person.FirstName })],
           })];
 
-        return this.scope.load("Pull", new PullRequest({ query }));
+        return this.scope.load("Pull", new PullRequest({ queries }));
 
       })
       .subscribe((loaded) => {

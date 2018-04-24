@@ -123,7 +123,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ query: organisationRolesQuery }))
+          .load("Pull", new PullRequest({ queries: organisationRolesQuery }))
           .switchMap((loaded) => {
             this.roles = loaded.collections.organisationRoles as OrganisationRole[];
             this.role = this.roles.find((v: OrganisationRole) => v.Name === data.role);
@@ -214,7 +214,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
               predicates.push(new Like({ roleType: m.Organisation.Name, value: like }));
             }
 
-            const query: Query[] = [new Query(
+            const queries: Query[] = [new Query(
               {
                 name: "organisations",
                 objectType: m.Organisation,
@@ -240,7 +240,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
               })];
 
             return this.scope
-              .load("Pull", new PullRequest({ query }));
+              .load("Pull", new PullRequest({ queries }));
           });
       })
       .subscribe((loaded) => {

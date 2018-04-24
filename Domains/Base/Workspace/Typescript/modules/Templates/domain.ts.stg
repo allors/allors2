@@ -128,7 +128,7 @@ $endif$
 classMethodType() ::= <<
     CanExecute$methodType.Name$(): boolean;
     
-    $methodType.Name$(): Method;
+    $methodType.Name$: Method;
 >>
 
 objectType_Name(objectType) ::= <%

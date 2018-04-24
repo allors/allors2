@@ -1,3 +1,4 @@
+import { domain } from "../domain";
 import { WebAddress } from "../generated/WebAddress.g";
 
 declare module "../generated/WebAddress.g" {
@@ -6,12 +7,18 @@ declare module "../generated/WebAddress.g" {
   }
 }
 
-Object.defineProperty(WebAddress.prototype, "displayName", {
-  get(this: WebAddress) {
-    if (this.ElectronicAddressString) {
-        return this.ElectronicAddressString;
-    }
+domain.extend((workspace) => {
 
-    return "N/A";
-  },
+  const obj: WebAddress = workspace.prototypeByName["WebAddress"];
+
+  Object.defineProperty(obj, "displayName", {
+    get(this: WebAddress) {
+      if (this.ElectronicAddressString) {
+        return this.ElectronicAddressString;
+      }
+
+      return "N/A";
+    },
+  });
+
 });

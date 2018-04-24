@@ -65,7 +65,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.categories,
           this.fetcher.locales,
           this.fetcher.internalOrganisation,
@@ -86,9 +86,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [ new Query(this.m.CatScope) ];
+        const queries: Query[] = [ new Query(this.m.CatScope) ];
 
-        return this.scope.load("Pull", new PullRequest({ fetch, query }));
+        return this.scope.load("Pull", new PullRequest({ fetches, queries }));
         })
       .subscribe((loaded) => {
 

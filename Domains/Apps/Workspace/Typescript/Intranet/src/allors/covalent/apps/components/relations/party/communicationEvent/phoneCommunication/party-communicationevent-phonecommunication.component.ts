@@ -54,7 +54,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   get PartyIsOrganisation(): boolean {
-    return this.party instanceof (Organisation);
+    return this.party.objectType.name === "Organisation";
   }
 
   public ngOnInit(): void {
@@ -67,7 +67,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -110,7 +110,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "purposes",
@@ -119,7 +119,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded) => {
 
@@ -137,7 +137,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
         const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         for (const contactMechanism of contactMechanisms) {
-          if (contactMechanism instanceof (TelecommunicationsNumber)) {
+          if (contactMechanism.objectType.name === "TelecommunicationsNumber") {
             this.phonenumbers.push(contactMechanism);
           }
         }

@@ -1,3 +1,4 @@
+import { domain } from "../domain";
 import { SerialisedInventoryItem } from "../generated/SerialisedInventoryItem.g";
 
 declare module "../generated/SerialisedInventoryItem.g" {
@@ -11,38 +12,44 @@ declare module "../generated/SerialisedInventoryItem.g" {
   }
 }
 
-Object.defineProperty(SerialisedInventoryItem.prototype, "age", {
-  get(this: SerialisedInventoryItem) {
-    return new Date().getFullYear() - this.ManufacturingYear;
-  },
-});
+domain.extend((workspace) => {
 
-Object.defineProperty(SerialisedInventoryItem.prototype, "yearsToGo", {
-  get(this: SerialisedInventoryItem) {
-    return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
-  },
-});
+  const obj: SerialisedInventoryItem = workspace.prototypeByName["SerialisedInventoryItem"];
 
-Object.defineProperty(SerialisedInventoryItem.prototype, "goingConcern", {
-  get(this: SerialisedInventoryItem) {
-    return Math.round((this.ReplacementValue * this.yearsToGo) / this.LifeTime);
-  },
-});
+  Object.defineProperty(obj, "age", {
+    get(this: SerialisedInventoryItem) {
+      return new Date().getFullYear() - this.ManufacturingYear;
+    },
+  });
 
-Object.defineProperty(SerialisedInventoryItem.prototype, "marketValue", {
-  get(this: SerialisedInventoryItem) {
-    return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
-  },
-});
+  Object.defineProperty(obj, "yearsToGo", {
+    get(this: SerialisedInventoryItem) {
+      return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
+    },
+  });
 
-Object.defineProperty(SerialisedInventoryItem.prototype, "grossBookValue", {
-  get(this: SerialisedInventoryItem) {
-    return Math.round(this.PurchasePrice + this.RefurbishCost + this.TransportCost);
-  },
-});
+  Object.defineProperty(obj, "goingConcern", {
+    get(this: SerialisedInventoryItem) {
+      return Math.round((this.ReplacementValue * this.yearsToGo) / this.LifeTime);
+    },
+  });
 
-Object.defineProperty(SerialisedInventoryItem.prototype, "expectedPosa", {
-  get(this: SerialisedInventoryItem) {
-    return this.ExpectedSalesPrice - this.grossBookValue;
-  },
+  Object.defineProperty(obj, "marketValue", {
+    get(this: SerialisedInventoryItem) {
+      return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
+    },
+  });
+
+  Object.defineProperty(obj, "grossBookValue", {
+    get(this: SerialisedInventoryItem) {
+      return Math.round(this.PurchasePrice + this.RefurbishCost + this.TransportCost);
+    },
+  });
+
+  Object.defineProperty(obj, "expectedPosa", {
+    get(this: SerialisedInventoryItem) {
+      return this.ExpectedSalesPrice - this.grossBookValue;
+    },
+  });
+
 });

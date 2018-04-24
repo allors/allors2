@@ -33,7 +33,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
   }
 
   public ngOnInit(): void {
-    const query: Query[] = [
+    const queries: Query[] = [
       new Query(
         {
           name: "contactMechanismPurposes",
@@ -47,7 +47,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
       ];
 
     this.scope
-      .load("Pull", new PullRequest({ query }))
+      .load("Pull", new PullRequest({ queries }))
       .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];

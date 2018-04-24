@@ -109,11 +109,11 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
       .switchMap(([data, take, , internalOrganisationId]) => {
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           this.fetcher.internalOrganisation,
           ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "internalOrganisations",
@@ -133,7 +133,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }))
+          .load("Pull", new PullRequest({ fetches, queries }))
           .switchMap((loaded) => {
             this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
             this.workEffortState = this.workEffortStates.find((v: WorkEffortState) => v.Name === data.state);
@@ -202,7 +202,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
             ];
 
             return this.scope
-              .load("Pull", new PullRequest({ query: assignmentsQuery }));
+              .load("Pull", new PullRequest({ queries: assignmentsQuery }));
           });
       })
       .subscribe((loaded) => {
