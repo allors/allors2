@@ -137,7 +137,7 @@ $meta.WorkspaceComposites:{composite|$associations(composite)$}; separator="\n"$
 $meta.WorkspaceComposites:{composite|$inheritedassociations(composite)$}; separator="\n"$
 
 			// Defined Methods
-$meta.WorkspaceComposites:{composite|$definedMethods(composite)$}; separator="\n"$
+$meta.WorkspaceComposites:{composite|$exclusiveMethods(composite)$}; separator="\n"$
 
 			// Inherited Methods
 $meta.WorkspaceComposites:{composite|$inheritedMethods(composite)$}; separator="\n"$
@@ -179,19 +179,19 @@ $if(property.RoleType.Scale)$		relationType.RoleType.Scale = $property.RoleType.
 	}
 >>
 
-inheritedRoles(interface) ::= <<$interface.WorkspaceInheritedRoles:{roleType|$inheritedRole(property=roleType.RelationType)$}; separator="\n"$>>
+inheritedRoles(interface) ::= <<$interface.WorkspaceInheritedRoleTypes:{roleType|$inheritedRole(property=roleType.RelationType)$}; separator="\n"$>>
 inheritedRole(property) ::= <<            Meta$interface.SingularName$.Instance.$property.RoleType.Name$ = Meta$property.AssociationType.ObjectType.SingularName$.Instance.$property.RoleType.Name$;>>
 
-implementedRoles(class) ::= <<$class.WorkspaceInheritedRoles:{roleType|$implementedRole(property=roleType.RelationType)$}; separator="\n"$>>
+implementedRoles(class) ::= <<$class.WorkspaceInheritedRoleTypes:{roleType|$implementedRole(property=roleType.RelationType)$}; separator="\n"$>>
 implementedRole(property) ::= <<            Meta$class.SingularName$.Instance.$property.RoleType.Name$ = Meta$class.SingularName$.Instance.Class.ConcreteRoleTypeByRoleType[Meta$property.AssociationType.ObjectType.SingularName$.Instance.$property.RoleType.Name$];>>
 
 associations(composite) ::= <<$composite.WorkspaceExclusiveAssociationTypes:{associationType|$association(property=associationType.RelationType)$}; separator="\n"$>>
 association(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.Name$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
 
-inheritedassociations(composite) ::= <<$composite.WorkspaceInheritedAssociations:{associationType|$inheritedassociation(property=associationType.RelationType)$}; separator="\n"$>>
+inheritedassociations(composite) ::= <<$composite.WorkspaceInheritedAssociationTypes:{associationType|$inheritedassociation(property=associationType.RelationType)$}; separator="\n"$>>
 inheritedassociation(property) ::= <<            Meta$composite.SingularName$.Instance.$property.AssociationType.Name$ = Meta$property.AssociationType.SingularName$.Instance.$property.RoleType.Name$.AssociationType;>>
 
-definedMethods(composite) ::= <<$composite.WorkspaceDefinedMethods:{method|$definedMethod(method)$}; separator="\n"$>>
+exclusiveMethods(composite) ::= <<$composite.WorkspaceExclusiveMethods:{method|$definedMethod(method)$}; separator="\n"$>>
 definedMethod(method) ::= <<
 			{
 				var method = new MethodType(this.metaPopulation, new System.Guid("$method.Id$"));
@@ -275,7 +275,7 @@ interface(interface) ::= <<
 		public override Interface Interface { get; }
 
 		// Defined Methods
-$interface.DefinedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+$interface.ExclusiveMethodTypes:{method|         public MethodType $method.Name$;}; separator="\n"$
 
 		// Inherited Methods
 $interface.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
@@ -315,7 +315,7 @@ class(class) ::= <<
 		public override Class Class { get; }
 
 		// Defined Methods
-$class.DefinedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$
+$class.ExclusiveMethodTypes:{method|         public MethodType $method.Name$;}; separator="\n"$
 
 		// Inherited Methods
 $class.InheritedMethods:{method|         public MethodType $method.Name$;}; separator="\n"$

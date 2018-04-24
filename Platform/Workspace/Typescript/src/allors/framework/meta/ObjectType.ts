@@ -4,6 +4,7 @@ import { ConcreteRoleType } from "./ConcreteRoleType";
 import { ExclusiveMethodType } from "./ExclusiveMethodType";
 import { ExclusiveRoleType } from "./ExclusiveRoleType";
 import { MetaObject } from "./MetaObject";
+import { MetaPopulation } from "./MetaPopulation";
 import { MethodType } from "./MethodType";
 import { RoleType } from "./RoleType";
 
@@ -24,11 +25,14 @@ export class ObjectType implements MetaObject {
   public exclusiveRoleTypes: ExclusiveRoleType[] = [];
   public concreteRoleTypes: ConcreteRoleType[] = [];
 
-  public associationTypes: AssociationType[] = [];
+  public associationTypeByName: { [name: string]: AssociationType; } = {};
 
   public methodTypeByName: { [name: string]: MethodType; } = {};
   public exclusiveMethodTypes: ExclusiveMethodType[] = [];
   public concreteMethodTypes: ConcreteMethodType[] = [];
+
+  constructor(public metaPopulation: MetaPopulation) {
+  }
 
   get isUnit(): boolean {
     return this.kind === Kind.unit;
@@ -69,9 +73,9 @@ export class ObjectType implements MetaObject {
         }
       });
 
-      v.associationTypes.forEach((associationType) => {
-        if (this.associationTypes.indexOf(associationType) < 0) {
-          this.associationTypes.push(associationType);
+      Object.keys(v.associationTypeByName).forEach((name) => {
+        if (this.associationTypeByName[name]) {
+          this.associationTypeByName[name] = v.associationTypeByName[name];
         }
       });
     });

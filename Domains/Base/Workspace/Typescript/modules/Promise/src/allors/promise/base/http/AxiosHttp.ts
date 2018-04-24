@@ -7,11 +7,11 @@ import { Http } from "./Http";
 import { HttpResponse } from "./HttpResponse";
 
 export class AxiosHttp implements Http {
-    private axiosInstance: AxiosInstance;
-    private token: string;
+    public axios: AxiosInstance;
+    public token: string;
 
     constructor(baseURL: string) {
-        this.axiosInstance = axios.create({
+        this.axios = axios.create({
             baseURL,
             // httpAgent: new http.Agent({ keepAlive: true }),
             // httpsAgent: new https.Agent({ keepAlive: true }),
@@ -24,7 +24,7 @@ export class AxiosHttp implements Http {
     public login(url: string, userName: string, password: string = null): Promise<boolean> {
         return new Promise((resolve, reject) => {
             const data = { Username: userName, Password: password };
-            this.axiosInstance.post(url, data)
+            this.axios.post(url, data)
                 .then((v) => {
 
                     const result: AuthenticationResponse = v.data;
@@ -48,7 +48,7 @@ export class AxiosHttp implements Http {
                 headers: { Authorization: `Bearer ${this.token}` },
             };
 
-            this.axiosInstance.post(url, data, config)
+            this.axios.post(url, data, config)
                 .then((v) => {
                     const httpResponse = { data: v.data };
                     resolve(httpResponse);

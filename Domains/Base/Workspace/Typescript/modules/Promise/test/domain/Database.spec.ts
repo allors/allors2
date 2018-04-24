@@ -1,5 +1,4 @@
-import { Person } from "../../src/allors/domain";
-import { constructorByName } from "../../src/allors/domain";
+import { domain, Person } from "../../src/allors/domain";
 import { MetaPopulation, Session, Workspace } from "../../src/allors/framework";
 import { data } from "../../src/allors/meta";
 import { Database, Loaded, Scope } from "../../src/allors/promise";
@@ -15,7 +14,8 @@ describe("Database",
 
         beforeEach(async () => {
             const metaPopulation = new MetaPopulation(data);
-            const workspace = new Workspace(metaPopulation, constructorByName);
+            const workspace = new Workspace(metaPopulation);
+            domain.apply(workspace);
 
             const http = new AxiosHttp("http://localhost:5000/");
             await http.login("TestAuthentication/Token", "administrator");

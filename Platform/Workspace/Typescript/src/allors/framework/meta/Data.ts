@@ -43,6 +43,7 @@ export interface ConcreteRoleType {
 export interface AssociationType {
     name: string;
     id: string;
+    objectType: string;
 }
 
 export interface MethodType {

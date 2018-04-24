@@ -40,6 +40,7 @@ export class FetchComponent implements OnInit, OnDestroy {
 
     const id = this.route.snapshot.paramMap.get("id");
 
+    // tslint:disable:object-literal-sort-keys
     const fetch = [new Fetch(
       {
         name: "organisation",
@@ -49,20 +50,20 @@ export class FetchComponent implements OnInit, OnDestroy {
             roleType: m.Organisation.Owner,
           })],
       }),
-      new Fetch({
-        name: "organisations",
-        id,
-        path: new Path({
-          step: m.Organisation.Owner,
-          next: new Path({
-            step: m.Person.OrganisationsWhereOwner,
-          }),
+    new Fetch({
+      name: "organisations",
+      id,
+      path: new Path({
+        step: m.Organisation.Owner,
+        next: new Path({
+          step: m.Person.OrganisationsWhereOwner,
         }),
-        include: [new TreeNode(
-          {
-            roleType: m.Organisation.Owner,
-          })],
-      })];
+      }),
+      include: [new TreeNode(
+        {
+          roleType: m.Organisation.Owner,
+        })],
+    })];
 
     this.scope.session.reset();
     this.subscription = this.scope
@@ -73,9 +74,9 @@ export class FetchComponent implements OnInit, OnDestroy {
         this.organisation = loaded.objects.organisation as Organisation;
         this.organisations = loaded.collections.organisations as Organisation[];
       },
-      (error) => {
-        alert(error);
-      });
+        (error) => {
+          alert(error);
+        });
   }
 
   public ngOnDestroy(): void {

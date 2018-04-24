@@ -32,7 +32,7 @@ export class MetaPopulation {
     // Units
     ["Binary", "Boolean", "DateTime", "Decimal", "Float", "Integer", "String", "Unique"]
       .forEach((name) => {
-        const metaUnit = new ObjectType();
+        const metaUnit = new ObjectType(this);
         metaUnit.id = idByTypeName[name];
         metaUnit.name = name;
         metaUnit.kind = Kind.unit;
@@ -42,7 +42,7 @@ export class MetaPopulation {
 
     // Interfaces
     data.interfaces.forEach((dataInterface) => {
-      const metaInterface = new ObjectType();
+      const metaInterface = new ObjectType(this);
       metaInterface.id = dataInterface.id;
       metaInterface.name = dataInterface.name;
       metaInterface.kind = Kind.interface;
@@ -52,7 +52,7 @@ export class MetaPopulation {
 
     // Classes
     data.classes.forEach((dataClass) => {
-      const metaClass = new ObjectType();
+      const metaClass = new ObjectType(this);
       metaClass.id = dataClass.id;
       metaClass.name = dataClass.name;
       metaClass.kind = Kind.class;
@@ -73,7 +73,7 @@ export class MetaPopulation {
       if (dataObjectType.exclusiveRoleTypes) {
         dataObjectType.exclusiveRoleTypes.forEach((dataRoleType) => {
           const objectType = this.objectTypeByName[dataRoleType.objectType];
-          const metaRoleType = new ExclusiveRoleType();
+          const metaRoleType = new ExclusiveRoleType(this);
           metaRoleType.id = dataRoleType.id;
           metaRoleType.name = dataRoleType.name;
           metaRoleType.singular = dataRoleType.singular;
@@ -88,17 +88,19 @@ export class MetaPopulation {
 
       if (dataObjectType.associationTypes) {
         dataObjectType.associationTypes.forEach((dataAssociationType) => {
-          const metaAssociationType = new AssociationType();
+          const objectType = this.objectTypeByName[dataAssociationType.objectType];
+          const metaAssociationType = new AssociationType(this);
           metaAssociationType.id = dataAssociationType.id;
           metaAssociationType.name = dataAssociationType.name;
-          metaObjectType.associationTypes.push(metaAssociationType);
+          metaAssociationType.objectType = objectType;
+          metaObjectType.associationTypeByName[metaAssociationType.name] = metaAssociationType;
           this.metaObjectById[metaAssociationType.id] = metaAssociationType;
         });
       }
 
       if (dataObjectType.exclusiveMethodTypes) {
         dataObjectType.exclusiveMethodTypes.forEach((dataMethodType) => {
-          const metaMethodType: ExclusiveMethodType = new ExclusiveMethodType();
+          const metaMethodType: ExclusiveMethodType = new ExclusiveMethodType(this);
           metaMethodType.id = dataMethodType.id;
           metaMethodType.name = dataMethodType.name;
           metaObjectType.exclusiveMethodTypes.push(metaMethodType);
@@ -117,7 +119,7 @@ export class MetaPopulation {
       if (dataClass.concreteRoleTypes) {
         dataClass.concreteRoleTypes.forEach((dataRoleType) => {
           const metaRoleType: RoleType = this.metaObjectById[dataRoleType.id] as RoleType;
-          const metaConcreteRoleType: ConcreteRoleType = new ConcreteRoleType();
+          const metaConcreteRoleType: ConcreteRoleType = new ConcreteRoleType(this);
           metaConcreteRoleType.roleType = metaRoleType;
           metaConcreteRoleType.isRequired = dataRoleType.isRequired;
           metaObjectType.concreteRoleTypes.push(metaConcreteRoleType);
@@ -127,7 +129,7 @@ export class MetaPopulation {
       if (dataClass.concreteMethodTypes) {
         dataClass.concreteMethodTypes.forEach((dataMethodType) => {
           const metaMethodType: MethodType = this.metaObjectById[dataMethodType.id] as MethodType;
-          const metaConcreteMethodType: ConcreteMethodType = new ConcreteMethodType();
+          const metaConcreteMethodType: ConcreteMethodType = new ConcreteMethodType(this);
           metaConcreteMethodType.methodType = metaMethodType;
           metaObjectType.concreteMethodTypes.push(metaConcreteMethodType);
         });
@@ -154,8 +156,8 @@ export class MetaPopulation {
             metaObjectType[roleTypeName] = roleType;
           });
 
-        objectType.associationTypes.forEach((associationType) => {
-          metaObjectType[associationType.name] = associationType;
+        Object.keys(objectType.associationTypeByName).forEach((name) => {
+          metaObjectType[name] = objectType.associationTypeByName[name];
         });
       });
   }

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Allors.Server.PullRequest">
-    <Position X="3.25" Y="4.25" Width="1.5" />
+    <Position X="3.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAgAAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequest.cs</FileName>
+      <FileName>Pull\PullRequest.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Q" />
@@ -12,10 +12,10 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Server.PullRequestFetch">
-    <Position X="0.75" Y="3" Width="1.5" />
+    <Position X="0.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAiAAAAAAAAAAIAAAAACAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequestFetch.cs</FileName>
+      <HashCode>AAACAAAAAAAAAAIAAAAACAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pull\PullRequestFetch.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Path" />
@@ -25,15 +25,15 @@
   <Class Name="Allors.Server.PullRequestPage">
     <Position X="9" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEAAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequestPage.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEAAA=</HashCode>
+      <FileName>Pull\PullRequestPage.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Server.PullRequestPath">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequestPath.cs</FileName>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Pull\PullRequestPath.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Next" />
@@ -42,8 +42,8 @@
   <Class Name="Allors.Server.PullRequestPredicate">
     <Position X="6" Y="5.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>iiAgACAAAAAAAAAAgAAQAAAAAAAAACAAAAAAEAnxkiE=</HashCode>
-      <FileName>export\Base\Pull\PullRequestPredicate.cs</FileName>
+      <HashCode>igAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAjwEgE=</HashCode>
+      <FileName>Pull\PullRequestPredicate.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="P" />
@@ -54,8 +54,8 @@
   <Class Name="Allors.Server.PullRequestQuery">
     <Position X="6" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgCgAAAAAAAAgAAAAAAAAAAAAACIAAAAAAAAADDAAAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequestQuery.cs</FileName>
+      <HashCode>AgCAAAAAAAAAgAAAAAAAAAAAAACIAAAAAAAAADDAAAA=</HashCode>
+      <FileName>Pull\PullRequestQuery.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="P" />
@@ -70,15 +70,15 @@
   <Class Name="Allors.Server.PullRequestSort">
     <Position X="9" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAEAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequestSort.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAEAA=</HashCode>
+      <FileName>Pull\PullRequestSort.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Server.PullRequestTreeNode">
     <Position X="3.25" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAA=</HashCode>
-      <FileName>export\Base\Pull\PullRequestTreeNode.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAA=</HashCode>
+      <FileName>Pull\PullRequestTreeNode.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="N" />
@@ -88,7 +88,7 @@
     <Position X="12" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAIAAAAAAAAAAgAAAEAAAAAAAQAAIA=</HashCode>
-      <FileName>export\Base\Pull\PullResponse.cs</FileName>
+      <FileName>Pull\PullResponse.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

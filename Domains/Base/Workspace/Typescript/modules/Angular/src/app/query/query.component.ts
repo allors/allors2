@@ -36,6 +36,7 @@ export class QueryComponent implements OnInit, OnDestroy {
 
     const m = this.workspaceService.metaPopulation.metaDomain;
 
+    // tslint:disable:object-literal-sort-keys
     const query = new Query(
       {
         name: "organisations",
@@ -69,9 +70,9 @@ export class QueryComponent implements OnInit, OnDestroy {
         this.organisations = loaded.collections.organisations as Organisation[];
         this.organisationCount = loaded.values.organisations_count;
       },
-      (error) => {
-        alert(error);
-      });
+        (error) => {
+          alert(error);
+        });
   }
 
   public ngOnDestroy(): void {

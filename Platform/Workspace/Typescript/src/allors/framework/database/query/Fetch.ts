@@ -1,25 +1,58 @@
-﻿import { Path } from "./Path";
+﻿import { ObjectType } from "../../meta/ObjectType";
+import { Path } from "./Path";
 import { TreeNode } from "./TreeNode";
 
 export class Fetch {
-    public name: string;
+  public name: string;
 
-    public id: string;
+  public id: string;
 
-    public path: Path;
+  public path: Path | any;
 
-    public include: TreeNode[];
+  public include: TreeNode[] | any;
 
-    constructor(fields?: Partial<Fetch>) {
-       Object.assign(this, fields);
+  public objectType: ObjectType;
+
+  constructor(fields?: Partial<Fetch>) {
+    Object.assign(this, fields);
+  }
+
+  public toJSON(): any {
+
+    let include = this.include;
+    if (this.include && !(this.include instanceof Array)) {
+      include = Object.keys(this.include)
+        .map((roleName) => {
+          const treeNode = new TreeNode();
+          treeNode.parse(this.include, this.objectType, roleName);
+          return treeNode;
+        });
     }
 
-    public toJSON(): any {
-      return {
-        id: this.id,
-        include: this.include,
-        name: this.name,
-        path: this.path,
-      };
+    let path = this.path;
+    if (this.path && !this.path.step) {
+      path = Object.keys(this.path)
+        .map((roleName) => {
+          const rolePath = new Path();
+          rolePath.parse(this.path, this.objectType, roleName);
+          return rolePath;
+        })[0];
     }
+
+    let name = this.name;
+    if (!this.name) {
+      if (path) {
+        name = (path as Path).step.name;
+      } else {
+        name = this.objectType.name;
+      }
+    }
+
+    return {
+      id: this.id,
+      include,
+      name,
+      path,
+    };
+  }
 }

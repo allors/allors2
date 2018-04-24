@@ -93,12 +93,34 @@ namespace Allors.Meta
         public override bool ExistClass => true;
 
         public override Class ExclusiveSubclass => this;
+        
+        public override Type ClrType => this.clrType;
+
+        public IEnumerable<ConcreteRoleType> WorkspaceConcreteRoleTypes
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.ConcreteRoleTypes.Where(m => m.RoleType.Workspace);
+            }
+        }
+
+        public IEnumerable<ConcreteMethodType> WorkspaceConcreteMethodTypes
+        {
+            get
+            {
+                this.MetaPopulation.Derive();
+                return this.ConcreteMethodTypes.Where(m => m.MethodType.Workspace);
+            }
+        }
+
+        public override IEnumerable<Composite> WorkspaceSubtypes => this.Workspace ? Composite.EmptyArray : new[] { this };
 
         public override bool IsAssignableFrom(IComposite objectType)
         {
             return this.Equals(objectType);
         }
-
+       
         public void DeriveConcreteRoleTypes(HashSet<RoleType> sharedRoleTypes)
         {
             sharedRoleTypes.Clear();
@@ -151,29 +173,9 @@ namespace Allors.Meta
             this.concreteMethodTypes = this.concreteMethodTypeByMethodType.Values.ToArray();
         }
 
-        public override Type ClrType => this.clrType;
-
         internal void Bind(Dictionary<string, Type> typeByTypeName)
         {
             this.clrType = typeByTypeName[this.Name];
-        }
-
-        public IEnumerable<ConcreteRoleType> WorkspaceConcreteRoleTypes
-        {
-            get
-            {
-                this.MetaPopulation.Derive();
-                return this.ConcreteRoleTypes.Where(m => m.RoleType.Workspace);
-            }
-        }
-
-        public IEnumerable<ConcreteMethodType> WorkspaceConcreteMethodTypes
-        {
-            get
-            {
-                this.MetaPopulation.Derive();
-                return this.ConcreteMethodTypes.Where(m => m.MethodType.Workspace);
-            }
         }
     }
 }

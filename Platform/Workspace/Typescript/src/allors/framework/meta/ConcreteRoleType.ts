@@ -1,5 +1,6 @@
 import { ExclusiveRoleType } from "./ExclusiveRoleType";
 import { MetaObject } from "./MetaObject";
+import { MetaPopulation } from "./MetaPopulation";
 import { ObjectType } from "./ObjectType";
 import { RoleType } from "./RoleType";
 
@@ -10,6 +11,9 @@ export class ConcreteRoleType implements RoleType {
 
     // proxy
     public roleType: ExclusiveRoleType;
+
+    constructor(public metaPopulation: MetaPopulation) {
+    }
 
     public get id(): string { return this.roleType.id; }
 

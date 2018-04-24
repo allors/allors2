@@ -17,11 +17,11 @@ export class Query {
 
   public except: Query[];
 
-  public include: TreeNode[];
-
   public sort: Sort[];
 
   public page: Page;
+
+  public include: TreeNode[];
 
   constructor(fields?: Partial<Query> | ObjectTyped | ObjectType) {
     if ((fields as ObjectType).id || (fields as ObjectTyped).ObjectType) {

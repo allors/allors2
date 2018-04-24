@@ -75,13 +75,7 @@ namespace Allors.Meta
 
         #endregion
 
-        IEnumerable<IClass> IInterface.Subclasses 
-        {
-            get
-            {
-                return this.Subclasses;
-            }
-        }
+        IEnumerable<IClass> IInterface.Subclasses => this.Subclasses;
 
         /// <summary>
         /// Gets the subclasses.
@@ -96,21 +90,9 @@ namespace Allors.Meta
             }
         }
 
-        public override IEnumerable<Class> Classes
-        {
-            get
-            {
-                return this.Subclasses;
-            }
-        }
+        public override IEnumerable<Class> Classes => this.Subclasses;
 
-        IEnumerable<IComposite> IInterface.Subtypes
-        {
-            get
-            {
-                return this.Subtypes;
-            }
-        }
+        IEnumerable<IComposite> IInterface.Subtypes => this.Subtypes;
 
         /// <summary>
         /// Gets the sub types.
@@ -134,7 +116,14 @@ namespace Allors.Meta
             }
         }
 
-        #region Contains
+        public override IEnumerable<Composite> WorkspaceSubtypes => this.Subtypes.Where(v => v.Workspace).ToArray();
+
+        public override Type ClrType => this.clrType;
+
+        internal void Bind(Dictionary<string, Type> typeByTypeName)
+        {
+            this.clrType = typeByTypeName[this.Name];
+        }
 
         /// <summary>
         /// Contains this concrete class.
@@ -150,8 +139,6 @@ namespace Allors.Meta
             this.MetaPopulation.Derive();
             return this.Equals(objectType) || this.derivedSubtypes.Contains(objectType);
         }
-
-        #endregion
 
         /// <summary>
         /// Derive direct sub type derivations.
@@ -224,19 +211,6 @@ namespace Allors.Meta
                     }
                 }
             }
-        }
-
-        public override Type ClrType
-        {
-            get
-            {
-                return this.clrType;
-            }
-        }
-
-        internal void Bind(Dictionary<string, Type> typeByTypeName)
-        {
-            this.clrType = typeByTypeName[this.Name];
         }
     }
 }

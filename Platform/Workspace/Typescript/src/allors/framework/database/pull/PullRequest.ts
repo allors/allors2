@@ -2,18 +2,19 @@
 import { Query } from "../query/Query";
 
 export class PullRequest {
-    public query: Query[];
 
-    public fetch: Fetch[];
+  public fetches: Fetch[];
 
-    constructor(fields?: Partial<PullRequest>) {
-       Object.assign(this, fields);
-    }
+  public queries: Query[];
 
-    public toJSON() {
-      return {
-        f: this.fetch,
-        q: this.query,
-      };
-    }
+  constructor(fields?: Partial<PullRequest>) {
+    Object.assign(this, fields);
+  }
+
+  public toJSON() {
+    return {
+      f: this.fetches,
+      q: this.queries,
+    };
+  }
 }
