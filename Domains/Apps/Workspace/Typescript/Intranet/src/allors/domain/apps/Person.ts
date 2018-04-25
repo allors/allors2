@@ -1,3 +1,4 @@
+import { domain } from "../domain";
 import { Person } from "../generated/Person.g";
 
 declare module "../generated/Person.g" {
@@ -6,37 +7,43 @@ declare module "../generated/Person.g" {
     }
 }
 
-Object.defineProperty(Person.prototype, "displayName", {
-  get(this: Person): string {
-    if (this.FirstName || this.LastName) {
-        let name = null;
-        if (this.FirstName) {
-            name = this.FirstName;
-        }
+domain.extend((workspace) => {
 
-        if (this.MiddleName) {
-            if (name !=  null) {
-                name += " " + this.MiddleName;
-            } else {
-                name = this.MiddleName;
+    const obj: Person = workspace.prototypeByName["Person"];
+
+    Object.defineProperty(obj, "displayName", {
+        get(this: Person): string {
+            if (this.FirstName || this.LastName) {
+                let name = null;
+                if (this.FirstName) {
+                    name = this.FirstName;
+                }
+
+                if (this.MiddleName) {
+                    if (name != null) {
+                        name += " " + this.MiddleName;
+                    } else {
+                        name = this.MiddleName;
+                    }
+                }
+
+                if (this.LastName) {
+                    if (name != null) {
+                        name += " " + this.LastName;
+                    } else {
+                        name = this.LastName;
+                    }
+                }
+
+                return name;
             }
-        }
 
-        if (this.LastName) {
-            if (name !=  null) {
-                name += " " + this.LastName;
-            } else {
-                name = this.LastName;
+            if (this.UserName) {
+                return this.UserName;
             }
-        }
 
-        return name;
-    }
+            return "N/A";
+        },
+    });
 
-    if (this.UserName) {
-        return this.UserName;
-    }
-
-    return "N/A";
-  },
 });

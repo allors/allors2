@@ -12,7 +12,7 @@
                 "--colors",
                 "--recursive",
                 "--inspect-brk",
-                "${workspaceFolder}/test/**/Path.spec.ts",
+                "${workspaceFolder}/test/**/Query.spec.ts",
                 "--require", "ts-node/register"
             ],
             "stopOnEntry": false,

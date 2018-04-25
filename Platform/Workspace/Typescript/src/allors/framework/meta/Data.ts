@@ -5,8 +5,9 @@
 }
 
 export interface Interface {
-    name: string;
     id: string;
+    name: string;
+    plural: string;
     interfaces?: string[];
     exclusiveRoleTypes?: RoleType[];
     associationTypes?: AssociationType[];
@@ -14,8 +15,9 @@ export interface Interface {
 }
 
 export interface Class {
-    name: string;
     id: string;
+    name: string;
+    plural: string;
     interfaces?: string[];
     exclusiveRoleTypes?: RoleType[];
     concreteRoleTypes?: ConcreteRoleType[];

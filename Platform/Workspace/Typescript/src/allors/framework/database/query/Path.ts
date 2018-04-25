@@ -38,7 +38,7 @@ export class Path {
     }
 
     if (!this.step) {
-      throw new Error("Unknown role: " + stepName);
+      throw new Error("Unknown role or association: " + stepName);
     }
 
     const childJson = json[stepName];

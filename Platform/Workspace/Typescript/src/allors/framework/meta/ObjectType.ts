@@ -17,6 +17,7 @@ export enum Kind {
 export class ObjectType implements MetaObject {
   public id: string;
   public name: string;
+  public plural: string;
   public kind: Kind;
 
   public interfaceByName: { [name: string]: ObjectType; } = {};

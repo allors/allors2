@@ -21,7 +21,7 @@ export class Query {
 
   public page: Page;
 
-  public include: TreeNode[];
+  public include: TreeNode[] | any;
 
   constructor(fields?: Partial<Query> | ObjectTyped | ObjectType) {
     if ((fields as ObjectType).id || (fields as ObjectTyped).ObjectType) {
@@ -29,24 +29,33 @@ export class Query {
     } else {
       Object.assign(this, fields);
     }
-
-    if (!this.name) {
-      const objectTypeName = (this.objectType as ObjectTyped).ObjectType ? (this.objectType as ObjectTyped).ObjectType.name : (this.objectType as ObjectType).name;
-      this.name = objectTypeName + "Query";
-    }
   }
 
   public toJSON(): any {
-    function isObjectTyped(objectType: ObjectType | ObjectTyped): objectType is ObjectTyped {
-      return (objectType as ObjectTyped).ObjectType !== undefined;
+    const objectTyped = this.objectType as ObjectTyped;
+    const objectType = objectTyped.ObjectType ? objectTyped.ObjectType : this.objectType as ObjectType;
+
+    let include = this.include;
+    if (this.include && !(this.include instanceof Array)) {
+      include = Object.keys(this.include)
+        .map((roleName) => {
+          const treeNode = new TreeNode();
+          treeNode.parse(this.include, objectType, roleName);
+          return treeNode;
+        });
+    }
+
+    let name = this.name;
+    if (!this.name) {
+      name = objectType.plural;
     }
 
     return {
       ex: this.except,
-      i: this.include,
+      i: include,
       in: this.intersect,
-      n: this.name,
-      ot: isObjectTyped(this.objectType) ? this.objectType.ObjectType.id : this.objectType.id,
+      n: name,
+      ot: objectType.id,
       p: this.predicate,
       pa: this.page,
       s: this.sort,

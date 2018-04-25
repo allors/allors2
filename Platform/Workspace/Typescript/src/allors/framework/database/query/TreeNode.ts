@@ -19,14 +19,32 @@ export class TreeNode {
   public parse(json: any, objectType: ObjectType, roleTypeName: string) {
     this.roleType = objectType.roleTypeByName[roleTypeName];
 
+    if (!this.roleType) {
+      const metaPopulation = objectType.metaPopulation;
+      const [subTypeName, subStepName] = roleTypeName.split("_");
+
+      const subType = metaPopulation.objectTypeByName[subTypeName];
+      if (subType) {
+        this.roleType = subType.roleTypeByName[subStepName];
+      }
+    }
+
+    if (!this.roleType) {
+      throw new Error("Unknown role: " + roleTypeName);
+    }
+
     const childJson = json[roleTypeName];
     if (childJson) {
-      Object.keys(childJson)
+      const nodes = Object.keys(childJson)
         .map((childRoleName) => {
           const childTreeNode = new TreeNode();
           childTreeNode.parse(childJson, this.roleType.objectType, childRoleName);
           return childTreeNode;
         });
+
+      if (nodes && nodes.length) {
+        this.nodes = nodes;
+      }
     }
   }
 }

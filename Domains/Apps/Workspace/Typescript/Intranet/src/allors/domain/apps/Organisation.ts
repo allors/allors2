@@ -1,3 +1,4 @@
+import { domain } from "../domain";
 import { Organisation } from "../generated/Organisation.g";
 
 declare module "../generated/Organisation.g" {
@@ -7,13 +8,19 @@ declare module "../generated/Organisation.g" {
     }
 }
 
-Object.defineProperty(Organisation.prototype, "displayName", {
-  get(this: Organisation): string {
+domain.extend((workspace) => {
 
-    if (this.Name) {
-        return this.Name;
-    }
+    const obj: Organisation = workspace.prototypeByName["Organisation"];
 
-    return "N/A";
-  },
+    Object.defineProperty(obj, "displayName", {
+        get(this: Organisation): string {
+
+            if (this.Name) {
+                return this.Name;
+            }
+
+            return "N/A";
+        },
+    });
+
 });

@@ -1,14 +1,11 @@
 import { domain, Organisation, Person } from "../../src/allors/domain";
 import { Fetch, MetaPopulation, PullRequest, Session, Workspace } from "../../src/allors/framework";
 import { data, FetchFactory, FetchPerson, IncludeLanguage, IncludePerson } from "../../src/allors/meta";
-import { Database, Loaded, Scope } from "../../src/allors/promise";
-
-import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
 
 import { assert } from "chai";
 import "mocha";
 
-describe("Path",
+describe("Fetch",
     () => {
         let metaPopulation: MetaPopulation;
 
@@ -18,7 +15,7 @@ describe("Path",
             domain.apply(workspace);
         });
 
-        describe("with empty step",
+        describe("with empty step path",
             () => {
                 it("should serialize to correct json", () => {
 
@@ -36,7 +33,7 @@ describe("Path",
                 });
             });
 
-        describe("with one role",
+        describe("with one role path",
             () => {
                 it("should serialize to correct json", () => {
 
@@ -56,7 +53,7 @@ describe("Path",
                 });
             });
 
-        describe("with two roles",
+        describe("with two roles path",
             () => {
                 it("should serialize to correct json", () => {
 
@@ -85,7 +82,7 @@ describe("Path",
                 });
             });
 
-        describe("with a subclass role",
+        describe("with a subclass role path",
             () => {
                 it("should serialize to correct json", () => {
 
@@ -94,18 +91,18 @@ describe("Path",
                     const fetch = factory.User({
                         id: "0",
                         path: {
-                            Organisation_CycleOne: {},
+                            Person_CycleOne: {},
                         },
                     });
 
                     const json = JSON.stringify(fetch);
                     const path = JSON.parse(json).path;
 
-                    assert.deepEqual(path, { step: "9033ae7383f645299f8184fd9d35d597" });
+                    assert.deepEqual(path, { step: "79ffeed6e06a42f4b12fd7f7c98b6499" });
                 });
             });
 
-        describe("with a non exsiting role",
+        describe("with a non exsiting role path",
             () => {
                 it("should throw exception", () => {
 
@@ -124,7 +121,7 @@ describe("Path",
                 });
             });
 
-        describe("with one association",
+        describe("with one association path",
             () => {
                 it("should serialize to correct json", () => {
 
@@ -143,7 +140,7 @@ describe("Path",
                     assert.deepEqual(path, { step: "dec66a7b56f54010a2e737e25124bc77" });
                 });
             });
-        describe("with one subclass association",
+        describe("with one subclass association path",
             () => {
                 it("should serialize to correct json", () => {
 

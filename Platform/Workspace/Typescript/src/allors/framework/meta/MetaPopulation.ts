@@ -35,6 +35,7 @@ export class MetaPopulation {
         const metaUnit = new ObjectType(this);
         metaUnit.id = idByTypeName[name];
         metaUnit.name = name;
+        metaUnit.plural = name === "Binary" ? "Binaries" : name + "s";
         metaUnit.kind = Kind.unit;
         this.objectTypeByName[metaUnit.name] = metaUnit;
         this.metaObjectById[metaUnit.id] = metaUnit;
@@ -45,6 +46,7 @@ export class MetaPopulation {
       const metaInterface = new ObjectType(this);
       metaInterface.id = dataInterface.id;
       metaInterface.name = dataInterface.name;
+      metaInterface.plural = dataInterface.plural;
       metaInterface.kind = Kind.interface;
       this.objectTypeByName[metaInterface.name] = metaInterface;
       this.metaObjectById[metaInterface.id] = metaInterface;
@@ -55,6 +57,7 @@ export class MetaPopulation {
       const metaClass = new ObjectType(this);
       metaClass.id = dataClass.id;
       metaClass.name = dataClass.name;
+      metaClass.plural = dataClass.plural;
       metaClass.kind = Kind.class;
       this.objectTypeByName[metaClass.name] = metaClass;
       this.metaObjectById[metaClass.id] = metaClass;
