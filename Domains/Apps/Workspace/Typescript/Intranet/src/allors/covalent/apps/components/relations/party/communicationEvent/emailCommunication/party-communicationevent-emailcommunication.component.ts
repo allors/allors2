@@ -140,7 +140,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
           for (const contactMechanism of employeeContactMechanisms) {
             if (contactMechanism.objectType.name === "EmailAddress") {
-              this.ownEmailAddresses.push(contactMechanism);
+              this.ownEmailAddresses.push(contactMechanism as EmailAddress);
             }
           }
         }

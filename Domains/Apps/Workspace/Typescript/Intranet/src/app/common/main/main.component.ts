@@ -40,14 +40,14 @@ export class MainComponent {
     this.subscription = this.stateService.internalOrganisationId$
      .switchMap((internalOrganisationId) => {
 
-      const fetch: Fetch[] = [
+      const fetches = [
         new Fetch({
           id: internalOrganisationId,
           name: "internalOrganisation",
         }),
       ];
 
-      const query: Query[] = [
+      const queries = [
         new Query(
           {
             name: "internalOrganisations",
@@ -57,7 +57,7 @@ export class MainComponent {
       ];
 
       return this.scope
-        .load("Pull", new PullRequest({ fetch, query }));
+        .load("Pull", new PullRequest({ fetches, queries }));
     })
     .subscribe((loaded: Loaded) => {
       this.scope.session.reset();

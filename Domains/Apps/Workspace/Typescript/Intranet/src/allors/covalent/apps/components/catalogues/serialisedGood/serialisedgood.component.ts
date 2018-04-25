@@ -210,11 +210,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
               this.good.StandardFeatures.forEach((feature: ProductFeature) => {
                  if (feature.objectType.name === "Brand") {
-                   this.selectedBrand = feature;
+                   this.selectedBrand = feature as Brand;
                    this.brandSelected(this.selectedBrand);
                  }
                  if (feature.objectType.name === "Model") {
-                  this.selectedModel = feature;
+                  this.selectedModel = feature as Model;
                 }
              });
             }

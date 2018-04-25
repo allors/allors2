@@ -21,7 +21,7 @@ export class ConfigService {
     const scope = this.workspaceService.createScope();
 
     const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
-    const query = [
+    const queries = [
         new Query({
         name: "internalOrganisations",
         objectType: m.Organisation,
@@ -29,7 +29,7 @@ export class ConfigService {
     ];
 
     return scope
-        .load("Pull", new PullRequest({ query }))
+        .load("Pull", new PullRequest({ queries }))
         .do((loaded) => {
             const organisations = loaded.collections.internalOrganisations as Organisation[];
             // TODO: Select a default
