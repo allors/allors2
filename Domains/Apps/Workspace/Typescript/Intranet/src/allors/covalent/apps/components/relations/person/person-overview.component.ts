@@ -232,7 +232,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
 
-        this.roles = loaded.collections.PersonRoleQuery as PersonRole[];
+        this.roles = loaded.collections.PersonRoles as PersonRole[];
         this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "B29444EF-0950-4D6F-AB3E-9C6DC44C050F");
         this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "DB06A3E1-6146-4C18-A60D-DD10E19F7243");
         this.contactRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === "FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E");

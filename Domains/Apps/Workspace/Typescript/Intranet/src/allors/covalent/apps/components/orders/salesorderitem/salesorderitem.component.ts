@@ -117,11 +117,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
-        this.goods = loaded.collections.GoodQuery as Good[];
-        this.vatRates = loaded.collections.VatRateQuery as VatRate[];
-        this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
-        this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
-        this.invoiceItemTypes = loaded.collections.InvoiceItemTypeQuery as InvoiceItemType[];
+        this.goods = loaded.collections.Goods as Good[];
+        this.vatRates = loaded.collections.VatRates as VatRate[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === "0D07F778-2735-44CB-8354-FB887ADA42AD");
 
         if (!this.orderItem) {

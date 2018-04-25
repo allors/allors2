@@ -178,11 +178,11 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.goods = loaded.collections.GoodQuery as Good[];
+        this.goods = loaded.collections.Goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
-        this.billingProcesses = loaded.collections.BillingProcessQuery as BillingProcess[];
+        this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.billingProcesses = loaded.collections.BillingProcesses as BillingProcess[];
         this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === "AB01CCC2-6480-4FC0-B20E-265AFD41FAE2");
 
         if (this.order) {

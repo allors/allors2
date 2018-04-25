@@ -159,11 +159,11 @@ export class PersonComponent implements OnInit, OnDestroy {
               this.person = this.scope.session.create("Person") as Person;
             }
 
-            this.locales = loaded.collections.LocaleQuery as Locale[];
-            this.genders = loaded.collections.GenderTypeQuery as Enumeration[];
-            this.salutations = loaded.collections.SalutationQuery as Enumeration[];
-            this.roles = loaded.collections.PersonRoleQuery as PersonRole[];
-            this.organisationContactKinds = loaded.collections.OrganisationContactKindQuery as OrganisationContactKind[];
+            this.locales = loaded.collections.Locales as Locale[];
+            this.genders = loaded.collections.GenderTypes as Enumeration[];
+            this.salutations = loaded.collections.Salutations as Enumeration[];
+            this.roles = loaded.collections.PersonRoles as PersonRole[];
+            this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 
             if (loaded.collections.organisationContactRelationships !== undefined) {
               this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;

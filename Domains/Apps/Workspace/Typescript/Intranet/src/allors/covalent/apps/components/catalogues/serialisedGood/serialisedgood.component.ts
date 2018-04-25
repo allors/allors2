@@ -94,9 +94,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Good.Photos }),
-              new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Good.ProductCategories }),
+              new TreeNode({ roleType: m.Product.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
+              new TreeNode({ roleType: m.Product.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
+              new TreeNode({ roleType: m.Product.ProductCategories }),
               new TreeNode({ roleType: m.Good.InventoryItemKind }),
               new TreeNode({ roleType: m.Good.SuppliedBy }),
               new TreeNode({ roleType: m.Good.ManufacturedBy }),
@@ -123,12 +123,12 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
           new Fetch({
             id,
             name: "invoiceItems",
-            path: new Path({ step: this.m.Good.InvoiceItemsWhereProduct }),
+            path: new Path({ step: this.m.Product.InvoiceItemsWhereProduct }),
           }),
           new Fetch({
             id,
             name: "supplierOfferings",
-            path: new Path({ step: this.m.Good.SupplierOfferingsWhereProduct }),
+            path: new Path({ step: this.m.Product.SupplierOfferingsWhereProduct }),
           }),
         ];
 
@@ -172,11 +172,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.good = loaded.objects.good as Good;
             this.categories = loaded.collections.productCategories as ProductCategory[];
             this.productTypes = loaded.collections.productTypes as ProductType[];
-            this.vatRates = loaded.collections.VatRateQuery as VatRate[];
+            this.vatRates = loaded.collections.VatRates as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
-            this.ownerships = loaded.collections.OwnershipQuery as Ownership[];
-            this.inventoryItemKinds = loaded.collections.InventoryItemKindQuery as InventoryItemKind[];
-            this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStateQuery as SerialisedInventoryItemState[];
+            this.ownerships = loaded.collections.Ownerships as Ownership[];
+            this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
+            this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
             this.locales = loaded.collections.locales as Locale[];
             this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;

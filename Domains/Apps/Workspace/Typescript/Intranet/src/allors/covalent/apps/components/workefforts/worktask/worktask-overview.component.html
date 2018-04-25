@@ -25,12 +25,6 @@
           </div>
 
           <div *ngIf="task.Customer" class="grid">
-            <a-mat-static class="col" [object]="task" [roleType]="m.WorkTask.TaskSubject" display="LicensePlate"></a-mat-static>
-            <!-- <a-mat-static class="col link" [object]="task" [roleType]="m.WorkTask.Ass"
-              display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static> -->
-          </div>
-
-          <div *ngIf="task.Customer" class="grid">
             <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
             <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"

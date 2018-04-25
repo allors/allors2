@@ -98,7 +98,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.category = loaded.objects.category as ProductCategory;
         this.categories = loaded.collections.categories as ProductCategory[];
-        this.catScopes = loaded.collections.CatScopeQuery as CatScope[];
+        this.catScopes = loaded.collections.CatScopes as CatScope[];
         this.locales = loaded.collections.locales as Locale[];
 
         if (!this.category) {

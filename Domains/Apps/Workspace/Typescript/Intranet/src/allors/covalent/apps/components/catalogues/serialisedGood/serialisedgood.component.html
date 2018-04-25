@@ -41,7 +41,8 @@
             </mat-select>
           </mat-input-container>
         <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
-        </div>
+        <a-mat-input class="col" [object]="good" [roleType]="m.Good.HsCode"></a-mat-input>
+      </div>
 
         <td-expansion-panel *ngIf="locales" label="Translations">
           <div *ngFor="let locale of locales; let i = index">

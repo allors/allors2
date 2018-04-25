@@ -110,9 +110,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           .load("Pull", new PullRequest({ queries: rolesQuery }))
           .switchMap((loaded) => {
             this.scope.session.reset();
-            this.vatRates = loaded.collections.VatRateQuery as VatRate[];
-            this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
-            this.currencies = loaded.collections.CurrencyQuery as Currency[];
+            this.vatRates = loaded.collections.VatRates as VatRate[];
+            this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+            this.currencies = loaded.collections.Currencies as Currency[];
 
             const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,

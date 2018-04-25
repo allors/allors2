@@ -226,7 +226,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
         this.inactiveContactMechanisms = this.organisation.InactivePartyContactMechanisms as PartyContactMechanism[];
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
 
-        this.roles = loaded.collections.OrganisationRoleQuery as OrganisationRole[];
+        this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "8B5E0CEE-4C98-42F1-8F18-3638FBA943A0");
         this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "8C6D629B-1E27-4520-AA8C-E8ADF93A5095");
         this.manufacturerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === "32E74BEF-2D79-4427-8902-B093AFA81661");

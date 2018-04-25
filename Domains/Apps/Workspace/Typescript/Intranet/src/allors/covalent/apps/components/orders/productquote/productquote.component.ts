@@ -90,7 +90,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           .load("Pull", new PullRequest({ queries: rolesQuery }))
           .switchMap((loaded) => {
             this.scope.session.reset();
-            this.currencies = loaded.collections.CurrencyQuery as Currency[];
+            this.currencies = loaded.collections.Currencies as Currency[];
 
             const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,

@@ -234,6 +234,15 @@ namespace Allors.Repository
         public Media[] Photos { get; set; }
 
         #region Allors
+        [Id("DCDC68FD-B69B-4320-8224-0B304EBDD62C")]
+        [AssociationId("B99B9347-1EAD-4761-9E9E-093FE9D6D485")]
+        [RoleId("2BC21680-B7A8-47B7-97BD-66A883FC3AB7")]
+        #endregion
+        [Workspace]
+        [Size(10)]
+        public string HsCode { get; set; }
+
+        #region Allors
         [Id("19449147-C4FB-4FB9-94AB-32B200DD519A")]
         [AssociationId("B6DA1EA1-8A1E-42D3-91AE-EA13C74BFC9A")]
         [RoleId("FB868E3C-D846-4FD8-B5B9-651EF7471C22")]

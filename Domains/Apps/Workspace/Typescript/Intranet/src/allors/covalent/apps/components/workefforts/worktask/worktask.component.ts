@@ -32,8 +32,7 @@ import {
   WorkEffortAssignment,
   WorkEffortPurpose,
   WorkEffortState,
-  WorkTask,
-  WorkTaskSubject
+  WorkTask
 } from "../../../../../domain";
 import {
   Fetch,
@@ -66,7 +65,6 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   public assignees: Person[] = [];
   public existingAssignees: Person[] = [];
   public organisationsFilter: Filter;
-  public workTaskSubjects: WorkTaskSubject[];
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
   public addContactPerson: boolean = false;
@@ -110,9 +108,8 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           new Fetch({
             id,
             include: [
-              new TreeNode({ roleType: m.WorkTask.TaskSubject }),
               new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
-              new TreeNode({ roleType: m.WorkTask.ContactPerson }),
+              new TreeNode({ roleType: m.WorkTask.ContactPerson })
             ],
             name: "worktask"
           })
@@ -144,14 +141,15 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             if (addMode) {
               this.subTitle = "add a new work task";
               this.workTask = this.scope.session.create("WorkTask") as WorkTask;
-            } else {
-              this.updateTaskSubject(this.workTask.Customer)
             }
 
-            this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
+            this.workEffortStates = loaded.collections
+              .workEffortStates as WorkEffortState[];
             this.priorities = loaded.collections.priorities as Priority[];
-            this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
-            const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+            this.workEffortPurposes = loaded.collections
+              .workEffortPurposes as WorkEffortPurpose[];
+            const internalOrganisation: InternalOrganisation = loaded.objects
+              .internalOrganisation as InternalOrganisation;
             this.employees = internalOrganisation.ActiveEmployees;
 
             const assignmentsFetch: Fetch[] = [
@@ -167,7 +165,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             if (this.workTask.Customer) {
               this.updateCustomer(this.workTask.Customer);
             }
-    
+
             if (addMode) {
               return this.scope.load("Pull", new PullRequest({}));
             } else {
@@ -200,29 +198,6 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   public customerSelected(customer: Party) {
     this.updateCustomer(customer);
-    this.updateTaskSubject(customer);
-  }
-
-  private updateTaskSubject(customer: Party): void {
-
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: customer.id,
-        name: "workTaskSubjects",
-        path: new Path({ step: this.m.Party.WorkTaskSubjectsWhereOwner }),
-      }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetches }))
-      .subscribe((loaded) => {
-        this.workTaskSubjects = loaded.collections.workTaskSubjects as WorkTaskSubject[];
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
   }
 
   public contactPersonAdded(id: string): void {
@@ -230,67 +205,30 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
     const contact: Person = this.scope.session.get(id) as Person;
 
-    const organisationContactRelationship = this.scope.session.create("OrganisationContactRelationship") as OrganisationContactRelationship;
-    organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;
+    const organisationContactRelationship = this.scope.session.create(
+      "OrganisationContactRelationship"
+    ) as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.workTask
+      .Customer as Organisation;
     organisationContactRelationship.Contact = contact;
 
     this.contacts.push(contact);
     this.workTask.ContactPerson = contact;
   }
 
-  public contactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+  public contactMechanismAdded(
+    partyContactMechanism: PartyContactMechanism
+  ): void {
     this.addContactMechanism = false;
 
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.workTask.Customer.AddPartyContactMechanism(partyContactMechanism);
-    this.workTask.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
+    this.workTask.FullfillContactMechanism =
+      partyContactMechanism.ContactMechanism;
   }
 
   public contactMechanismCancelled() {
     this.addContactMechanism = false;
-  }
-
-  private updateCustomer(party: Party) {
-
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: "partyContactMechanisms",
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: "currentContacts",
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetches }))
-      .subscribe((loaded) => {
-
-        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        this.contacts = loaded.collections.currentContacts as Person[];
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
   }
 
   public ngOnDestroy(): void {
@@ -323,5 +261,48 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
+  }
+
+  private updateCustomer(party: Party) {
+    const fetches: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country })
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary
+              })
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism
+          })
+        ],
+        name: "partyContactMechanisms",
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms })
+      }),
+      new Fetch({
+        id: party.id,
+        name: "currentContacts",
+        path: new Path({ step: this.m.Party.CurrentContacts })
+      })
+    ];
+
+    this.scope.load("Pull", new PullRequest({ fetches })).subscribe(
+      loaded => {
+        const partyContactMechanisms: PartyContactMechanism[] = loaded
+          .collections.partyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map(
+          (v: PartyContactMechanism) => v.ContactMechanism
+        );
+        this.contacts = loaded.collections.currentContacts as Person[];
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      }
+    );
   }
 }

@@ -152,10 +152,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           .load("Pull", new PullRequest({ queries }))
           .switchMap((loaded) => {
             this.scope.session.reset();
-            this.vatRates = loaded.collections.VatRateQuery as VatRate[];
-            this.vatRegimes = loaded.collections.VatRegimeQuery as VatRegime[];
+            this.vatRates = loaded.collections.VatRates as VatRate[];
+            this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
             this.stores = loaded.collections.stores as Store[];
-            this.currencies = loaded.collections.CurrencyQuery as Currency[];
+            this.currencies = loaded.collections.Currencies as Currency[];
             this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
             const fetches: Fetch[] = [

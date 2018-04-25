@@ -192,17 +192,17 @@ export class GoodsOverviewComponent implements OnDestroy {
               const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
               this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
-              this.brands = loaded.collections.BrandQuery as Brand[];
+              this.brands = loaded.collections.Brands as Brand[];
               this.brand = this.brands.find(
                 (v: Brand) => v.Name === data.brand,
               );
 
-              this.models = loaded.collections.ModelQuery as Model[];
+              this.models = loaded.collections.Models as Model[];
               this.model = this.models.find(
                 (v: Model) => v.Name === data.model,
               );
 
-              this.inventoryItemKinds = loaded.collections.InventoryItemKindQuery as InventoryItemKind[];
+              this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
               this.inventoryItemKind = this.inventoryItemKinds.find(
                 (v: InventoryItemKind) => v.Name === data.inventoryItemKind,
               );
@@ -217,7 +217,7 @@ export class GoodsOverviewComponent implements OnDestroy {
                 (v: ProductType) => v.Name === data.productType,
               );
 
-              this.ownerships = loaded.collections.OwnershipQuery as Ownership[];
+              this.ownerships = loaded.collections.Ownerships as Ownership[];
               this.ownership = this.ownerships.find(
                 (v: Ownership) => v.Name === data.ownership,
               );
@@ -372,7 +372,7 @@ export class GoodsOverviewComponent implements OnDestroy {
               });
 
               const VendorProductscontainedIn: ContainedIn = new ContainedIn({
-                associationType: m.Good.VendorProductsWhereProduct,
+                associationType: m.Product.VendorProductsWhereProduct,
                 query: vendorProductQuery,
               });
 

@@ -55,7 +55,6 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
             id,
             include: [
               new TreeNode({ roleType: m.WorkTask.WorkEffortState }),
-              new TreeNode({ roleType: m.WorkTask.TaskSubject }),
               new TreeNode({ roleType: m.WorkTask.Customer }),
               new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
               new TreeNode({ roleType: m.WorkTask.ContactPerson }),
