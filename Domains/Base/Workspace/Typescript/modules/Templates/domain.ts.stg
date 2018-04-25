@@ -62,6 +62,12 @@ $objectType.workspaceMethodTypes:{methodType|$interfaceMethodType()$}; separator
 >>
 
 interfaceRoleType() ::= <<
+		CanRead$roleType.PropertyName$: boolean;
+
+$if(!roleType.RelationType.IsDerived)$
+		CanWrite$roleType.PropertyName$: boolean;
+$endif$
+
 $if(roleType.ObjectType.IsUnit)$
         $roleType.PropertyName$ : $objectType_Name(roleType.ObjectType)$;
 $else$
