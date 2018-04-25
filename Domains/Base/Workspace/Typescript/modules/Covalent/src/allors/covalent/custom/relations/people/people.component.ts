@@ -58,7 +58,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const query: Query[] = [new Query(
+    const queries = [new Query(
       {
         name: "people",
         objectType: this.m.Person,
@@ -67,7 +67,7 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     this.scope.session.reset();
 
     this.subscription = this.scope
-      .load("Pull", new PullRequest({ query }))
+      .load("Pull", new PullRequest({ queries }))
       .subscribe((loaded: Loaded) => {
         this.data = loaded.collections.people as Person[];
       },

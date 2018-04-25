@@ -60,14 +60,14 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const id: string = this.route.snapshot.paramMap.get("id");
 
-        const fetch: Fetch[] = [
+        const fetches = [
           new Fetch({
-            name: "organisation",
             id,
+            name: "organisation",
           }),
         ];
 
-        const query: Query[] = [
+        const queries = [
           new Query(
             {
               name: "people",
@@ -76,7 +76,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded: Loaded) => {
 

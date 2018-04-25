@@ -44,7 +44,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
         const id: string = this.route.snapshot.paramMap.get("id");
 
-        const fetch: Fetch[] = [
+        const fetches: Fetch[] = [
           new Fetch({
             id,
             include: [
@@ -55,7 +55,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
           }),
         ];
 
-        const query: Query[] = [
+        const queries: Query[] = [
           new Query(
             {
               name: "locales",
@@ -66,7 +66,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch, query }));
+          .load("Pull", new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded: Loaded) => {
 

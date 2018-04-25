@@ -46,7 +46,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches = [
           new Fetch({
             id,
             include: [
@@ -60,7 +60,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }));
+          .load("Pull", new PullRequest({ fetches }));
       })
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.organisation as Organisation;

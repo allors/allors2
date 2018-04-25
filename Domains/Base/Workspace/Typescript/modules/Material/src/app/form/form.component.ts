@@ -47,13 +47,13 @@ export class FormComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const query = new Query({
+    const queries = [new Query({
       name: "organisations",
       objectType: this.m.Organisation as ObjectTyped,
-    });
+    })];
 
     this.scope
-      .load("Pull", new PullRequest({ query: [query] }))
+      .load("Pull", new PullRequest({ queries }))
       .subscribe((loaded) => {
         this.organisation = (loaded.collections.organisations as Organisation[])[0];
       },

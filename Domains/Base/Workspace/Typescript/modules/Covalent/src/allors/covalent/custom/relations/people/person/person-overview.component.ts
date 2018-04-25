@@ -44,7 +44,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
-        const fetch: Fetch[] = [
+        const fetches = [
           new Fetch({
             id,
             include: [
@@ -57,7 +57,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         this.scope.session.reset();
 
         return this.scope
-          .load("Pull", new PullRequest({ fetch }));
+          .load("Pull", new PullRequest({ fetches }));
       })
       .subscribe((loaded: Loaded) => {
         this.person = loaded.objects.person as Person;

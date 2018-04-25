@@ -35,13 +35,15 @@ export class Workspace implements IWorkspace {
                     const objectType = this.metaPopulation.objectTypeByName[objectTypeName];
                     if (objectType.isClass) {
 
-                        function DynamicClass() {
+                        const DynamicClass = (() => {
+                            return function() {
 
                             const prototype1 = Object.getPrototypeOf(this);
                             const prototype2 = Object.getPrototypeOf(prototype1);
 
                             prototype2.init.call(this);
-                        }
+                            };
+                        })();
 
                         DynamicClass.prototype = Object.create(SessionObject.prototype);
                         DynamicClass.prototype.constructor = DynamicClass;

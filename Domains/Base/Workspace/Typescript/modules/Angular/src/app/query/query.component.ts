@@ -37,7 +37,7 @@ export class QueryComponent implements OnInit, OnDestroy {
     const m = this.workspaceService.metaPopulation.metaDomain;
 
     // tslint:disable:object-literal-sort-keys
-    const query = new Query(
+    const queries = [new Query(
       {
         name: "organisations",
         objectType: m.Organisation,
@@ -59,13 +59,11 @@ export class QueryComponent implements OnInit, OnDestroy {
           skip: this.skip || 0,
           take: this.take || 10,
         }),
-      });
+      })];
 
     this.scope.session.reset();
     this.subscription = this.scope
-      .load("Pull", new PullRequest({
-        query: [query],
-      }))
+      .load("Pull", new PullRequest({queries}))
       .subscribe((loaded: Loaded) => {
         this.organisations = loaded.collections.organisations as Organisation[];
         this.organisationCount = loaded.values.organisations_count;

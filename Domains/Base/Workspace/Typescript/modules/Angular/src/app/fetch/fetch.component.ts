@@ -41,7 +41,7 @@ export class FetchComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get("id");
 
     // tslint:disable:object-literal-sort-keys
-    const fetch = [new Fetch(
+    const fetches = [new Fetch(
       {
         name: "organisation",
         id,
@@ -68,7 +68,7 @@ export class FetchComponent implements OnInit, OnDestroy {
     this.scope.session.reset();
     this.subscription = this.scope
       .load("Pull", new PullRequest({
-        fetch,
+        fetches,
       }))
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.organisation as Organisation;

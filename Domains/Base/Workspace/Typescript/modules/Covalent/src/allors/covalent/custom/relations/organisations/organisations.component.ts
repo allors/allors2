@@ -6,8 +6,8 @@ import { Observable, Subject, Subscription } from "rxjs/Rx";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../angular";
 import { Organisation } from "../../../../domain";
-import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from "../../../../framework";
 import { MetaDomain } from "../../../../meta";
+import { Query, TreeNode, PullRequest } from "../../../../framework";
 
 @Component({
   templateUrl: "./organisations.component.html",
@@ -56,7 +56,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const query: Query[] = [new Query(
+    const queries = [new Query(
       {
         include: [
           new TreeNode({ roleType: this.m.Organisation.Owner }),
@@ -69,7 +69,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     this.scope.session.reset();
 
     this.subscription = this.scope
-      .load("Pull", new PullRequest({ query }))
+      .load("Pull", new PullRequest({ queries }))
       .subscribe((loaded: Loaded) => {
         this.data = loaded.collections.organisations as Organisation[];
       },
