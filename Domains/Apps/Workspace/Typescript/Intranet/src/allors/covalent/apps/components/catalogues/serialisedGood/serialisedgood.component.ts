@@ -141,7 +141,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
           new Fetch({
             id,
             name: "invoiceItems",
-            path: new Path({ step: this.m.Product.InvoiceItemsWhereProduct }),
+            path: new Path({ step: this.m.Good.InvoiceItemsWhereProduct }),
           }),
           new Fetch({
             id,

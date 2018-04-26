@@ -307,6 +307,13 @@ namespace Allors.Domain
             };
 
             this.PrintContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
+
+            var pdfService = this.strategy.Session.ServiceProvider.GetRequiredService<IPdfService>();
+
+            var mediaData = pdfService.FromHtmlToPdf(this.PrintContent).Result;
+            var media = new MediaBuilder(this.strategy.Session).WithInData(mediaData).Build();
+
+            // TODO: hold media on a Relation 
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
