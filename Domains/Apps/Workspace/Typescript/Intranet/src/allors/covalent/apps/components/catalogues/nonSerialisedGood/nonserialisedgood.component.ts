@@ -48,12 +48,13 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public vatRates: VatRate[];
   public vendorProduct: VendorProduct;
   public actualQuantityOnHand: number;
-
+  public addBrand: boolean = false;
+  public addModel: boolean = false;
   public manufacturersFilter: Filter;
   public suppliersFilter: Filter;
+  public scope: Scope;
 
   private subscription: Subscription;
-  private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
 
   private fetcher: Fetcher;
@@ -114,7 +115,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           new Fetch({
             id,
             name: "supplierOfferings",
-            path: new Path({ step: this.m.Good.SupplierOfferingsWhereProduct }),
+            path: new Path({ step: this.m.Product.SupplierOfferingsWhereProduct }),
           }),
         ];
 
@@ -221,6 +222,44 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
     );
   }
 
+  public brandAdded(brand: Brand): void {
+    this.brands.push(brand);
+    this.selectedBrand = brand;
+    this.models = [];
+    this.selectedModel = undefined;
+  }
+
+  public modelAdded(model: Model): void {
+    this.selectedBrand.AddModel(model);
+    this.models = this.selectedBrand.Models.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.selectedModel = model;
+  }
+
+  public brandSelected(brand: Brand): void {
+
+    const fetches: Fetch[] = [
+      new Fetch(
+        {
+          id: brand.id,
+          include: [new TreeNode({ roleType: this.m.Brand.Models })],
+          name: "selectedbrand",
+        }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetches }))
+      .subscribe((loaded) => {
+
+        const selectedBrand = loaded.objects.selectedbrand as Brand;
+        this.models = selectedBrand.Models.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
+
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -314,31 +353,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public brandSelected(brand: Brand): void {
-
-    const fetches: Fetch[] = [
-      new Fetch(
-        {
-          id: brand.id,
-          include: [new TreeNode({ roleType: this.m.Brand.Models })],
-          name: "selectedbrand",
-        }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetches }))
-      .subscribe((loaded) => {
-
-        const selectedbrand = loaded.objects.selectedbrand as Brand;
-        this.models = selectedbrand.Models;
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
   }
 
   private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {

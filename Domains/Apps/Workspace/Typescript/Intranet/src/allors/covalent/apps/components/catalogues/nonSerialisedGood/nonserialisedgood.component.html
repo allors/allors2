@@ -21,23 +21,59 @@
           <a-mat-static class="col" [object]="good" [roleType]="m.Good.AvailableToPromise"></a-mat-static>
           <a-mat-static class="col" [object]="good" [roleType]="m.Good.QuantityCommittedOut"></a-mat-static>
           <a-mat-static class="col" [object]="good" [roleType]="m.Good.QuantityExpectedIn"></a-mat-static>
-          <mat-form-field class="col">
-            <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="col">
-            <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
-            </mat-select>
-          </mat-form-field>
+        </div>
+
+        <div class="grid-2_md-1">
+          <div class="col">
+            <div fxLayout fxLayoutGap="1em">
+              <mat-form-field class="col">
+                <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab color="accent" type="button" (click)="addBrand = !addBrand">
+                <mat-icon *ngIf="!addBrand">add</mat-icon>
+                <mat-icon *ngIf="addBrand">close</mat-icon>
+              </button>
+            </div>
+            <mat-tab-group dynamicHeight="true" *ngIf="addBrand">
+              <mat-tab label="Brand">
+                <div class="pad tabInlineComponent">
+                  <brand-inline [scope]="scope" (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <div class="col">
+            <div fxLayout fxLayoutGap="1em">
+              <mat-form-field class="col">
+                <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab color="accent" type="button" (click)="addModel = !addModel">
+                <mat-icon *ngIf="!addModel">add</mat-icon>
+                <mat-icon *ngIf="addModel">close</mat-icon>
+              </button>
+            </div>
+            <mat-tab-group dynamicHeight="true" *ngIf="addModel">
+              <mat-tab label="Model">
+                <div class="pad tabInlineComponent">
+                  <model-inline [scope]="scope" (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+
+        <div class="grid-2_md-1 pad-top">
           <mat-input-container class="col">
-              <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-                <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
-              </mat-select>
-            </mat-input-container>
+            <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+              <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+            </mat-select>
+          </mat-input-container>
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
           <a-mat-datepicker class="col" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
         </div>

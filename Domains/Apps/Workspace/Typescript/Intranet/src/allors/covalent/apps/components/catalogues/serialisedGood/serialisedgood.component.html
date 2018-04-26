@@ -17,20 +17,56 @@
         <div class="grid-2_md-1">
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
           <a-mat-datepicker class="col" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
-          <mat-form-field class="col">
-            <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="col">
-            <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
-            </mat-select>
-          </mat-form-field>
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
           <a-mat-select class="col" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+        </div>
+
+        <div class="grid-2_md-1">
+          <div class="col">
+            <div fxLayout fxLayoutGap="1em">
+              <mat-form-field class="col">
+                <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let brand of brands" [value]="brand"> {{ brand.Name }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab color="accent" type="button" (click)="addBrand = !addBrand">
+                <mat-icon *ngIf="!addBrand">add</mat-icon>
+                <mat-icon *ngIf="addBrand">close</mat-icon>
+              </button>
+            </div>
+            <mat-tab-group dynamicHeight="true" *ngIf="addBrand">
+              <mat-tab label="Brand">
+                <div class="pad tabInlineComponent">
+                  <brand-inline [scope]="scope" (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+          <div class="col">
+            <div fxLayout fxLayoutGap="1em">
+              <mat-form-field class="col">
+                <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab color="accent" type="button" (click)="addModel = !addModel">
+                <mat-icon *ngIf="!addModel">add</mat-icon>
+                <mat-icon *ngIf="addModel">close</mat-icon>
+              </button>
+            </div>
+            <mat-tab-group dynamicHeight="true" *ngIf="addModel">
+              <mat-tab label="Model">
+                <div class="pad tabInlineComponent">
+                  <model-inline [scope]="scope" (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+
+        <div class="grid-2_md-1">
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
             display="Name"></a-mat-select>
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [options]="internalOrganisations"
@@ -40,9 +76,9 @@
               <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
             </mat-select>
           </mat-input-container>
-        <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
-        <a-mat-input class="col" [object]="good" [roleType]="m.Good.HsCode"></a-mat-input>
-      </div>
+          <a-mat-select class="col" [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
+          <a-mat-input class="col" [object]="good" [roleType]="m.Good.HsCode"></a-mat-input>
+        </div>
 
         <td-expansion-panel *ngIf="locales" label="Translations">
           <div *ngFor="let locale of locales; let i = index">
@@ -111,10 +147,12 @@
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.RefurbishCost"></a-mat-input>
           <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.TransportCost"></a-mat-input>
           <mat-input-container class="col">
-            <input type="number" fxFlex matInput [(ngModel)]="inventoryItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value" readonly>
+            <input type="number" fxFlex matInput [(ngModel)]="inventoryItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value"
+              readonly>
           </mat-input-container>
           <mat-input-container class="col">
-            <input type="number" fxFlex matInput [(ngModel)]="inventoryItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa" readonly>
+            <input type="number" fxFlex matInput [(ngModel)]="inventoryItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa"
+              readonly>
           </mat-input-container>
         </div>
       </mat-tab>

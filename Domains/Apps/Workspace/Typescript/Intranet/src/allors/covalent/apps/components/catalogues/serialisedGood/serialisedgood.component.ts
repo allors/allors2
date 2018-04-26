@@ -13,7 +13,7 @@ import { forEach } from "@angular/router/src/utils/collection";
 import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, SupplierOffering, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
-import { MetaDomain } from "../../../../../meta";
+import { FetchFactory, MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 import { Fetcher } from "../../Fetcher";
 
@@ -50,12 +50,13 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public invoiceItems: InvoiceItem[];
   public salesInvoice: SalesInvoice;
   public internalOrganisations: InternalOrganisation[];
-
   public manufacturersFilter: Filter;
   public suppliersFilter: Filter;
+  public addBrand: boolean = false;
+  public addModel: boolean = false;
+  public scope: Scope;
 
   private subscription: Subscription;
-  private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
 
   private fetcher: Fetcher;
@@ -86,6 +87,23 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
         const id: string = this.route.snapshot.paramMap.get("id");
         const m: MetaDomain = this.m;
 
+        // const fetch = new FetchFactory(this.workspaceService.metaPopulation);
+        // const query = new QueryFactory(this.workspaceService.metaPopulation);
+
+        // const fetches: Fetch[] = [
+        //   this.fetcher.locales,
+        //   this.fetcher.internalOrganisation,
+        //   fetch.Good({
+        //     id,
+        //     include: {
+        //       PrimaryPhoto: {},
+        //       Photos: {},
+        //       Product_LocalisedNames: {
+        //         Localised_Locale: {}
+        //       },
+        //     },
+        //   }),
+
         const fetches: Fetch[] = [
           this.fetcher.locales,
           this.fetcher.internalOrganisation,
@@ -94,9 +112,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Good.Photos }),
-              new TreeNode({ roleType: m.Product.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Product.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Product.ProductCategories }),
+              new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
+              new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
+              new TreeNode({ roleType: m.Good.ProductCategories }),
               new TreeNode({ roleType: m.Good.InventoryItemKind }),
               new TreeNode({ roleType: m.Good.SuppliedBy }),
               new TreeNode({ roleType: m.Good.ManufacturedBy }),
@@ -255,6 +273,44 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     );
   }
 
+  public brandAdded(brand: Brand): void {
+    this.brands.push(brand);
+    this.selectedBrand = brand;
+    this.models = [];
+    this.selectedModel = undefined;
+  }
+
+  public modelAdded(model: Model): void {
+    this.selectedBrand.AddModel(model);
+    this.models = this.selectedBrand.Models.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.selectedModel = model;
+  }
+
+  public brandSelected(brand: Brand): void {
+
+    const fetches: Fetch[] = [
+      new Fetch(
+        {
+          id: brand.id,
+          include: [new TreeNode({ roleType: this.m.Brand.Models })],
+          name: "selectedbrand",
+        }),
+    ];
+
+    this.scope
+      .load("Pull", new PullRequest({ fetches }))
+      .subscribe((loaded) => {
+
+        const selectedBrand = loaded.objects.selectedbrand as Brand;
+        this.models = selectedBrand.Models.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+      },
+      (error: Error) => {
+        this.errorService.message(error);
+        this.goBack();
+      },
+    );
+  }
+
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -295,31 +351,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public brandSelected(brand: Brand): void {
-
-    const fetches: Fetch[] = [
-      new Fetch(
-        {
-          id: brand.id,
-          include: [new TreeNode({ roleType: this.m.Brand.Models })],
-          name: "selectedbrand",
-        }),
-    ];
-
-    this.scope
-      .load("Pull", new PullRequest({ fetches }))
-      .subscribe((loaded) => {
-
-        const selectedbrand = loaded.objects.selectedbrand as Brand;
-        this.models = selectedbrand.Models;
-      },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
-    );
   }
 
   private onSave() {
