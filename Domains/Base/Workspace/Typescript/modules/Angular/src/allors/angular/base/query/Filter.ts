@@ -2,14 +2,14 @@
 
 import "rxjs/add/observable/empty";
 
-import { And, Exists, ISessionObject, Like, Not, ObjectType, ObjectTyped, Or, PullRequest, Query, RoleType, Sort } from "../../../framework";
+import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Query, RoleType, Sort } from "../../../framework";
 
 import { Loaded } from "../framework/responses/Loaded";
 import { Scope } from "../framework/Scope";
 
 export interface FilterOptions {
   scope: Scope;
-  objectType: ObjectType | ObjectTyped;
+  objectType: ObjectType | MetaObjectType;
   roleTypes: RoleType[];
   existRoletypes?: RoleType[];
   notExistRoletypes?: RoleType[];
