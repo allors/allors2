@@ -24,7 +24,7 @@ export class Query {
   public include: TreeNode[] | any;
 
   constructor(fields?: Partial<Query> | MetaObjectType | ObjectType) {
-    if ((fields as ObjectType).id || (fields as MetaObjectType).objectType) {
+    if ((fields as MetaObjectType)._objectType) {
       this.objectType = fields as any;
     } else {
       Object.assign(this, fields);
@@ -32,8 +32,8 @@ export class Query {
   }
 
   public toJSON(): any {
-    const objectTyped = this.objectType as MetaObjectType;
-    const objectType = objectTyped.objectType ? objectTyped.objectType : this.objectType as ObjectType;
+    const metaObjectType = this.objectType as MetaObjectType;
+    const objectType = metaObjectType._objectType ? metaObjectType._objectType : this.objectType as ObjectType;
 
     let include = this.include;
     if (this.include && !(this.include instanceof Array)) {

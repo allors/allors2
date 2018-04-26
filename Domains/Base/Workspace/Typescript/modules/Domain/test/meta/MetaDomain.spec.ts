@@ -34,7 +34,7 @@ describe("MetaDomain",
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
                     const metaObjectType: MetaObjectType = metaDomain[v.name];
-                    assert.isDefined(metaObjectType.objectType);
+                    assert.isDefined(metaObjectType._objectType);
                 });
             });
 
@@ -42,7 +42,7 @@ describe("MetaDomain",
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
                     const metaObjectType: MetaObjectType = metaDomain[v.name];
-                    const objectType = metaObjectType.objectType;
+                    const objectType = metaObjectType._objectType;
 
                     const roleTypes = Object.keys(objectType.roleTypeByName).map((w) => objectType.roleTypeByName[w]);
 
@@ -57,7 +57,7 @@ describe("MetaDomain",
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
                     const metaObjectType: MetaObjectType = metaDomain[v.name];
-                    const objectType = metaObjectType.objectType;
+                    const objectType = metaObjectType._objectType;
 
                     const associationTypes = Object.keys(objectType.associationTypeByName).map((w) => objectType.associationTypeByName[w]);
 
