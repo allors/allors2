@@ -56,10 +56,10 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.quote = loaded.objects.quote as ProductQuote;
-        const printContent = this.quote.PrintContent;
+        const htmlContent = this.quote.HtmlContent;
 
         const wrapper = document.createElement("div");
-        wrapper.innerHTML = printContent;
+        wrapper.innerHTML = htmlContent;
         this.body = wrapper.querySelector("#dataContainer").innerHTML;
       },
       (error: any) => {

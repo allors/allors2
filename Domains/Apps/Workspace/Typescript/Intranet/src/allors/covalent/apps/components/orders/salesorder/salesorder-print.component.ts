@@ -56,10 +56,10 @@ export class SalesOrderPrintComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.order = loaded.objects.order as SalesOrder;
-        const printContent = this.order.PrintContent;
+        const htmlContent = this.order.HtmlContent;
 
         const wrapper = document.createElement("div");
-        wrapper.innerHTML = printContent;
+        wrapper.innerHTML = htmlContent;
         this.body = wrapper.querySelector("#dataContainer").innerHTML;
       },
       (error: any) => {

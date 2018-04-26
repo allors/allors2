@@ -56,10 +56,10 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.invoice = loaded.objects.invoice as SalesInvoice;
-        const printContent = this.invoice.PrintContent;
+        const htmlContent = this.invoice.HtmlContent;
 
         const wrapper = document.createElement("div");
-        wrapper.innerHTML = printContent;
+        wrapper.innerHTML = htmlContent;
         this.body = wrapper.querySelector("#dataContainer").innerHTML;
       },
       (error: any) => {

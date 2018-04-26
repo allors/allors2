@@ -273,7 +273,7 @@ namespace Allors.Domain
                 SalesInvoice = this
             };
 
-            this.PrintContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
+            this.HtmlContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)

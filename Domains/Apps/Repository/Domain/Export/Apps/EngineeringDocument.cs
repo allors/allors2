@@ -18,7 +18,9 @@ namespace Allors.Repository
 
         public string DocumentLocation { get; set; }
 
-        public string PrintContent { get; set; }
+        public string HtmlContent { get; set; }
+
+        public Media PdfContent { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

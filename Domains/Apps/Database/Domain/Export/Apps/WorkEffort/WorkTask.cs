@@ -65,7 +65,7 @@ namespace Allors.Domain
                                 WorkTask = this
                             };
 
-            this.PrintContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
+            this.HtmlContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
 
         }
 

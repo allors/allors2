@@ -42,7 +42,7 @@ namespace Allors.Domain
                                 ProductQuote = this
                             };
 
-            this.PrintContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;
+            this.HtmlContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;
         }
 
         private SalesOrder OrderThis()

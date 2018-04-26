@@ -8,7 +8,13 @@ export class MediaService {
 
   constructor(private databaseConfig: DatabaseConfig) {}
 
-  public url(media: Media): string {
-    return `${this.databaseConfig.url}Media/Download/${media.UniqueId}?revision=${media.Revision}`;
+  public url(media: Media, fileName?: string): string {
+    const addOn = fileName ? "/" + fileName : null;
+    return `${this.databaseConfig.url}Media/Download/${media.UniqueId}${addOn}?revision=${media.Revision}`;
+  }
+
+  public display(media: Media, fileName?: string): void {
+    const newWindow = window.open();
+    newWindow.location.href = this.url(media, fileName);
   }
 }

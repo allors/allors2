@@ -306,12 +306,13 @@ namespace Allors.Domain
                 SalesOrder = this
             };
 
-            this.PrintContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
+            this.HtmlContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
 
             var pdfService = this.strategy.Session.ServiceProvider.GetRequiredService<IPdfService>();
 
-            var mediaData = pdfService.FromHtmlToPdf(this.PrintContent).Result;
+            var mediaData = pdfService.FromHtmlToPdf(this.HtmlContent).Result;
             var media = new MediaBuilder(this.strategy.Session).WithInData(mediaData).Build();
+            this.PdfContent = media;
 
             // TODO: hold media on a Relation 
         }

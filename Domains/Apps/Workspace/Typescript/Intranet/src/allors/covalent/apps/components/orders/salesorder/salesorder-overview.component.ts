@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -42,7 +42,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     public dialogService: TdDialogService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    public mediaService: MediaService,
+    private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
@@ -93,6 +95,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                 ],
                 roleType: m.SalesOrder.SalesTerms,
               }),
+              new TreeNode({ roleType: m.SalesOrder.PdfContent }),
               new TreeNode({ roleType: m.SalesOrder.BillToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.BillToContactPerson }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
@@ -194,6 +197,10 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  public printPdf() {
+    this.mediaService.display(this.order.PdfContent, "test.pdf");
   }
 
   public ngOnDestroy(): void {

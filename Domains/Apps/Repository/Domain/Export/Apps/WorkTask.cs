@@ -70,7 +70,9 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
 
-        public string PrintContent { get; set; }
+        public string HtmlContent { get; set; }
+
+        public Media PdfContent { get; set; }
 
         public string Comment { get; set; }
         #endregion
