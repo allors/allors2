@@ -22,7 +22,7 @@ describe("Query",
 
                     const factory = new QueryFactory(metaPopulation);
 
-                    const query = factory.Organisation({
+                    const query = factory.Organisations({
                         include: {},
                     });
 
@@ -40,7 +40,7 @@ describe("Query",
 
                     const factory = new QueryFactory(metaPopulation);
 
-                    const query = factory.Organisation({
+                    const query = factory.Organisations({
                         include: {
                             Employees: {},
                         },

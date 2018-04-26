@@ -1,4 +1,4 @@
-﻿import { ObjectType, ObjectTyped } from "../../meta";
+﻿import { ObjectType, MetaObjectType } from "../../meta";
 import { Page } from "./Page";
 import { Predicate } from "./Predicate";
 import { Sort } from "./Sort";
@@ -7,7 +7,7 @@ import { TreeNode } from "./TreeNode";
 export class Query {
   public name: string;
 
-  public objectType: ObjectType | ObjectTyped;
+  public objectType: ObjectType | MetaObjectType;
 
   public predicate: Predicate;
 
@@ -23,8 +23,8 @@ export class Query {
 
   public include: TreeNode[] | any;
 
-  constructor(fields?: Partial<Query> | ObjectTyped | ObjectType) {
-    if ((fields as ObjectType).id || (fields as ObjectTyped).ObjectType) {
+  constructor(fields?: Partial<Query> | MetaObjectType | ObjectType) {
+    if ((fields as ObjectType).id || (fields as MetaObjectType).objectType) {
       this.objectType = fields as any;
     } else {
       Object.assign(this, fields);
@@ -32,8 +32,8 @@ export class Query {
   }
 
   public toJSON(): any {
-    const objectTyped = this.objectType as ObjectTyped;
-    const objectType = objectTyped.ObjectType ? objectTyped.ObjectType : this.objectType as ObjectType;
+    const objectTyped = this.objectType as MetaObjectType;
+    const objectType = objectTyped.objectType ? objectTyped.objectType : this.objectType as ObjectType;
 
     let include = this.include;
     if (this.include && !(this.include instanceof Array)) {

@@ -11,7 +11,7 @@
         "--colors",
         "--compilers", "ts:ts-node/register",
         "--preserve-symlinks",
-        "${workspaceRoot}/test/**/*.spec.ts"
+        "${workspaceRoot}/test/**/MetaDomain.spec.ts"
       ],
       "protocol": "inspector",
       "sourceMaps": true
