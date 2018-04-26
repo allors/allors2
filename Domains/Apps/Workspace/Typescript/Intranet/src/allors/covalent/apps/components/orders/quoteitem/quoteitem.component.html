@@ -33,6 +33,9 @@
         <a-mat-static class="col" *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
       </div>
       <div class="grid-1">
+        <a-mat-textarea class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Details"></a-mat-textarea>
+      </div>
+      <div class="grid-1">
         <a-mat-textarea class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-mat-textarea>
       </div>
       <div class="grid-1">

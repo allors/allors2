@@ -95,7 +95,6 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                 ],
                 roleType: m.SalesOrder.SalesTerms,
               }),
-              new TreeNode({ roleType: m.SalesOrder.PdfContent }),
               new TreeNode({ roleType: m.SalesOrder.BillToCustomer }),
               new TreeNode({ roleType: m.SalesOrder.BillToContactPerson }),
               new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
@@ -197,10 +196,6 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.goBack();
       },
     );
-  }
-
-  public printPdf() {
-    this.mediaService.display(this.order.PdfContent, "test.pdf");
   }
 
   public ngOnDestroy(): void {

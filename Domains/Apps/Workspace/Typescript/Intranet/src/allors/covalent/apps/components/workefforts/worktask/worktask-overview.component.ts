@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { WorkEffort, WorkTask } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -34,8 +34,9 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private dialogService: TdDialogService,
     private snackBar: MatSnackBar,
-
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    public mediaService: MediaService,
+    private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

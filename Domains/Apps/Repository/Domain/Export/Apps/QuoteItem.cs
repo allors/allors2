@@ -216,6 +216,15 @@ namespace Allors.Repository
         [Workspace]
         public RequestItem RequestItem { get; set; }
 
+        #region Allors
+        [Id("F8746889-097A-4C4E-BB55-511F0A8E3B41")]
+        [AssociationId("9704CE4F-2FC9-4F11-A612-90A65D2E93C4")]
+        [RoleId("F5A70A81-ADBE-4BFB-A3E0-045E1F7EB4E2")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        public string Details { get; set; }
+
         #region inherited methods
 
 

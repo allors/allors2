@@ -7,7 +7,7 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -34,6 +34,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     public dialogService: TdDialogService,
     private snackBar: MatSnackBar,
     public media: TdMediaService,
+    public mediaService: MediaService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);

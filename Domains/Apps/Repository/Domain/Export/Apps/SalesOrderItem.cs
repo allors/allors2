@@ -542,7 +542,6 @@ namespace Allors.Repository
         [Workspace]
         public string Details { get; set; }
 
-
         #region inherited methods
 
 

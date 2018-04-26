@@ -42,6 +42,12 @@ namespace Allors.Domain
             {
                 derivation.AddDependency(this.QuoteWhereQuoteItem, this);
             }
+
+            if (derivation.IsCreated(this) && this.ExistProduct && this.Product is Good)
+            {
+                var good = (Good)this.Product;
+                this.Details = good.DeriveDetails();
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

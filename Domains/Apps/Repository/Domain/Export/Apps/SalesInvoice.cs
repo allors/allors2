@@ -56,8 +56,6 @@ namespace Allors.Repository
         public string Comment { get; set; }
         public string HtmlContent { get; set; }
 
-        public Media PdfContent { get; set; }
-
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }

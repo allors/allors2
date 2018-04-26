@@ -18,8 +18,6 @@ namespace Allors.Repository
 
     public string HtmlContent { get; set; }
 
-      public Media PdfContent { get; set; }
-
       public Permission[] DeniedPermissions { get; set; }
 
     public SecurityToken[] SecurityTokens { get; set; }

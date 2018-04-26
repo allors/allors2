@@ -16,15 +16,5 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string HtmlContent { get; set; }
-
-        #region Allors
-        [Id("5B7BAB41-E61A-47DD-AAE6-03FC2EAD97CF")]
-        [AssociationId("8F2D29FE-4480-40F4-AF83-5DC30CA626F1")]
-        [RoleId("C3B5E2DC-97C3-4BBA-99B7-5F20273A65D0")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToOne)]
-        [Workspace]
-        Media PdfContent { get; set; }
     }
 }

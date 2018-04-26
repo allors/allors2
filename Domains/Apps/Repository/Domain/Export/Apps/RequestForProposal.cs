@@ -51,8 +51,6 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
         public string HtmlContent { get; set; }
 
-        public Media PdfContent { get; set; }
-
         #endregion
 
         #region Versioning

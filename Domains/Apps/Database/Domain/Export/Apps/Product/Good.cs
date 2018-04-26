@@ -18,6 +18,7 @@ namespace Allors.Domain
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     using Meta;
 
@@ -265,6 +266,66 @@ namespace Allors.Domain
                     inventoryItem.Delete();
                 }
             }
+        }
+
+        public string DeriveDetails()
+        {
+            var builder = new StringBuilder();
+
+            if (this.ExistManufacturedBy)
+            {
+                builder.Append($", manufacturer: {this.ManufacturedBy.PartyName}");
+            }
+
+            foreach (ProductFeature feature in this.StandardFeatures)
+            {
+                if (feature is Brand)
+                {
+                    var brand = (Brand)feature;
+                    builder.Append($", brand: {brand.Name}");
+                }
+                if (feature is Model)
+                {
+                    var model = (Model)feature;
+                    builder.Append($", model: {model.Name}");
+                }
+            }
+
+            if (this.InventoryItemsWhereGood.First is SerialisedInventoryItem serialisedInventoryItem)
+            {
+                builder.Append($", serialNumber: {serialisedInventoryItem.SerialNumber}");
+
+                if (serialisedInventoryItem.ExistManufacturingYear)
+                {
+                    builder.Append($", Manufacturing year: {serialisedInventoryItem.ManufacturingYear}");
+                }
+
+                foreach (SerialisedInventoryItemCharacteristic characteristic in serialisedInventoryItem.SerialisedInventoryItemCharacteristics)
+                {
+                    if (characteristic.ExistValue)
+                    {
+                        var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
+                        if (characteristicType.ExistUnitOfMeasure)
+                        {
+                            builder.Append(
+                                $", {characteristicType.Name}: {characteristic.Value} {characteristicType.UnitOfMeasure.Name}");
+                        }
+                        else
+                        {
+                            builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                        }
+                    }
+                }
+            }
+
+            var details = builder.ToString();
+
+            if (details.StartsWith(","))
+            {
+                details = details.Substring(2);
+            }
+
+            return details;
         }
     }
 }

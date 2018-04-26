@@ -10,7 +10,7 @@ export class MediaService {
 
   public url(media: Media, fileName?: string): string {
     const addOn = fileName ? "/" + fileName : null;
-    return `${this.databaseConfig.url}Media/Download/${media.UniqueId}${addOn}?revision=${media.Revision}`;
+    return `${this.databaseConfig.url}Media/${media.UniqueId}${addOn}?revision=${media.Revision}`;
   }
 
   public display(media: Media, fileName?: string): void {

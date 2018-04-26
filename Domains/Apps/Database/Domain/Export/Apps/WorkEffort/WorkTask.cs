@@ -66,7 +66,6 @@ namespace Allors.Domain
                             };
 
             this.HtmlContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
-
         }
 
         //public void AppsDelete(DeletableDelete method)
