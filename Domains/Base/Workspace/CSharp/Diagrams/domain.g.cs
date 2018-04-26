@@ -1,9 +1,20 @@
 namespace Allors.Domain
 {
-				public interface I1 
+				public interface I1 : I12, S1 
 				{
 								global::System.String I1AllorsString {set;}
 
+				}
+				public interface I12 
+				{
+								global::System.String Name {set;}
+
+				}
+				public interface I2 : I12 
+				{
+				}
+				public interface S1 
+				{
 				}
 				public interface Deletable 
 				{
@@ -93,6 +104,11 @@ namespace Allors.Domain
 
 
 								C1 C1C1One2One {set;}
+
+				}
+				public interface C2 : I2 
+				{
+								S1 S1One2One {set;}
 
 				}
 				public interface Dependent : Deletable 

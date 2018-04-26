@@ -460,6 +460,8 @@ namespace Allors.Domain
 
 						global::System.Byte[] C2AllorsBinary {set;}
 
+						S1 S1One2One {set;}
+
 		}
 		public interface ClassWithoutRoles  : Object 
 		{

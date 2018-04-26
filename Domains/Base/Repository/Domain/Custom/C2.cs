@@ -342,6 +342,15 @@ namespace Allors.Repository
         #endregion
         public byte[] C2AllorsBinary { get; set; }
 
+        #region Allors
+        [Id("8695D9F6-AE00-4001-9990-851260F3ABE7")]
+        [AssociationId("267F5530-584E-40F1-9A90-DF5CBD33ECB8")]
+        [RoleId("5345AADA-A434-42D0-930E-1DA112711C52")]
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        #endregion
+        [Workspace]
+        public S1 S1One2One { get; set; }
 
         #region inherited methods
 

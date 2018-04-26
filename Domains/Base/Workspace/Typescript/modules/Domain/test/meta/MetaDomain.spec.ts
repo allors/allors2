@@ -67,4 +67,19 @@ describe("MetaDomain",
                     });
                 });
             });
+
+        it("hierarchy should be defined for roles",
+            () => {
+                assert.isDefined(metaDomain.C1.Name);
+                assert.isDefined(metaDomain.I1.Name);
+                assert.isDefined(metaDomain.I12.Name);
+            });
+
+        it("hierarchy should be defined for associations",
+            () => {
+                assert.isDefined(metaDomain.C1.C2WhereS1One2One);
+                assert.isDefined(metaDomain.I1.C2WhereS1One2One);
+                assert.isDefined(metaDomain.S1.C2WhereS1One2One);
+            });
+
     });

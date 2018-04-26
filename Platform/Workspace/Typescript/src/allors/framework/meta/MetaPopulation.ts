@@ -113,8 +113,13 @@ export class MetaPopulation {
       }
     });
 
-    data.interfaces.forEach((dataInterface) => {
-      const metaInterface = this.objectTypeByName[dataInterface.name];
+    dataObjectTypes.forEach((dataObjectType: Interface | Class) => {
+      const metaObjectType = this.objectTypeByName[dataObjectType.name];
+
+      Object.keys(metaObjectType.interfaceByName).map((v) => metaObjectType.interfaceByName[v])
+        .forEach((metaInterface) => {
+          Object.assign(metaObjectType.associationTypeByName, metaInterface.associationTypeByName);
+        });
     });
 
     data.classes.forEach((dataClass) => {
