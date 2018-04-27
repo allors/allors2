@@ -6,14 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\Server\Allors\Base\Identity\Protocol\**\*.cs" />
+    <Compile Include="..\Server\Export\Base\Identity\Protocol\**\*.cs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Server\AllorsContext\**" />
-    <EmbeddedResource Remove="Server\AllorsContext\**" />
-    <None Remove="Server\AllorsContext\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.0.2" />

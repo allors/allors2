@@ -354,10 +354,10 @@ line2")
 
             this.Session.Derive();
 
-            var orderContent = order.PrintContent;
+            var orderContent = order.HtmlContent;
             File.WriteAllText(@"c:\temp\order.html", orderContent);
 
-            var invoiceContent = invoice.PrintContent;
+            var invoiceContent = invoice.HtmlContent;
             File.WriteAllText(@"c:\temp\invoice.html", invoiceContent);
         }
 
