@@ -15,10 +15,8 @@
       </div>
 
       <div class="grid-2_xs-1">
-        <a-mat-autocomplete class="col" [object]="request" [roleType]="m.Request.Originator" [filter]="organisationsFilter.create()"
+        <a-mat-autocomplete class="col" [object]="request" [roleType]="m.Request.Originator" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
-        <!-- <a-mat-autocomplete class="col" [object]="request" [roleType]="m.Request.Originator" [filter]="peopleFilter.create()"
-          display="displayName" (onChange)="originatorSelected($event)" label="Requesting private person"></a-mat-autocomplete> -->
       </div>
 
       <div class="grid-2_md-1">

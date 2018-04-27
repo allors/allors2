@@ -9,11 +9,12 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { NewGoodDialogComponent } from "../../catalogues";
+import { StateService } from "../../../services/StateService";
 
 @Component({
   templateUrl: "./salesorderitem.component.html",
@@ -39,11 +40,10 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
 
-  public goodsFilter: Filter;
+  public scope: Scope;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -52,15 +52,13 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public stateService: StateService,
+    public media: TdMediaService,
+    private changeDetectorRef: ChangeDetectorRef) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.goodsFilter = new Filter({
-      scope: this.scope,
-      objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {
@@ -106,7 +104,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           new Query(m.VatRegime),
           new Query(m.InvoiceItemType),
           new Query(m.SerialisedInventoryItemState),
-          ];
+        ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetches, queries }));
@@ -149,10 +147,10 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           }
         }
       },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
     );
   }
 
@@ -187,9 +185,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(["/orders/salesOrder/" + this.order.id]);
       },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
   }
 
   public update(): void {
@@ -201,9 +199,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.scope.session.reset();
         this.router.navigate(["/orders/salesOrder/" + this.order.id + "/item/" + newid]);
       },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
   }
 
   public refresh(): void {
@@ -221,9 +219,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
+          (error: Error) => {
+            this.errorService.dialog(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
@@ -237,9 +235,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 cancelFn();
               },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
+                (error: Error) => {
+                  this.errorService.dialog(error);
+                });
           } else {
             cancelFn();
           }
@@ -256,9 +254,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open("Successfully reejcted.", "close", { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
+          (error: Error) => {
+            this.errorService.dialog(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
@@ -272,9 +270,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 rejectFn();
               },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
+                (error: Error) => {
+                  this.errorService.dialog(error);
+                });
           } else {
             rejectFn();
           }
@@ -297,21 +295,21 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     ];
 
     this.scope
-        .load("Pull", new PullRequest({ fetches }))
-        .subscribe((loaded) => {
-          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0].objectType.name === "SerialisedInventoryItem") {
-            this.orderItem.QuantityOrdered = 1;
-            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-          }
-          if (this.inventoryItems[0].objectType.name === "NonSerialisedInventoryItem") {
-            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-          }
-        },
+      .load("Pull", new PullRequest({ fetches }))
+      .subscribe((loaded) => {
+        this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+        if (this.inventoryItems[0].objectType.name === "SerialisedInventoryItem") {
+          this.orderItem.QuantityOrdered = 1;
+          this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+        }
+        if (this.inventoryItems[0].objectType.name === "NonSerialisedInventoryItem") {
+          this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+        }
+      },
         (error: Error) => {
           this.errorService.message(error);
           this.goBack();
         },
-      );
+    );
   }
 }

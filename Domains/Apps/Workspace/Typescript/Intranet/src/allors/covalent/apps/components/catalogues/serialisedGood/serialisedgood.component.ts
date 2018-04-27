@@ -10,7 +10,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { isType } from "@angular/core/src/type";
 import { forEach } from "@angular/router/src/utils/collection";
-import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, SupplierOffering, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { FetchFactory, MetaDomain } from "../../../../../meta";
@@ -50,8 +50,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public invoiceItems: InvoiceItem[];
   public salesInvoice: SalesInvoice;
   public internalOrganisations: InternalOrganisation[];
-  public manufacturersFilter: Filter;
-  public suppliersFilter: Filter;
   public addBrand: boolean = false;
   public addModel: boolean = false;
   public scope: Scope;
@@ -72,8 +70,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
-    this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.fetcher = new Fetcher(this.stateService, this.m);

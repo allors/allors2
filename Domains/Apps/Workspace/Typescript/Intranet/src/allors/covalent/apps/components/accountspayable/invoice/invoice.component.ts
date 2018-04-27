@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseOrder, VatRate, VatRegime } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -31,10 +31,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public currencies: Currency[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
-
-  public peopleFilter: Filter;
-  public organisationsFilter: Filter;
-  public currenciesFilter: Filter;
 
   public billedFromContacts: Person[];
   public billToContactMechanisms: ContactMechanism[];
@@ -77,16 +73,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
-    public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef,
-    private stateService: StateService) {
+    public media: TdMediaService,
+    public stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
-
-    this.peopleFilter = new Filter({ scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
-    this.organisationsFilter = new Filter({ scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
-    this.currenciesFilter = new Filter({scope: this.scope, objectType: this.m.Currency, roleTypes: [this.m.Currency.Name]});
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.m);
@@ -170,10 +162,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         this.previousBillToCustomer = this.invoice.BillToCustomer;
       },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
     );
   }
 
@@ -259,9 +251,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open("Successfully cancelled.", "close", { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
+          (error: Error) => {
+            this.errorService.dialog(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
@@ -275,9 +267,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 cancelFn();
               },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
+                (error: Error) => {
+                  this.errorService.dialog(error);
+                });
           } else {
             cancelFn();
           }
@@ -294,9 +286,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open("Successfully approved.", "close", { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.dialog(error);
-        });
+          (error: Error) => {
+            this.errorService.dialog(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
@@ -310,9 +302,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 approveFn();
               },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
+                (error: Error) => {
+                  this.errorService.dialog(error);
+                });
           } else {
             approveFn();
           }
@@ -333,9 +325,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               this.snackBar.open("Successfully finished.", "close", { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.dialog(error);
-            });
+              (error: Error) => {
+                this.errorService.dialog(error);
+              });
         }
       });
   }
@@ -353,9 +345,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(["/accountspayable/invoice/" + this.invoice.id]);
       },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
+        (error: Error) => {
+          this.errorService.dialog(error);
+        });
   }
 
   public billedFromSelected(party: Party) {
@@ -399,15 +391,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         if (this.invoice.BilledFrom !== this.previousBilledFrom) {
           this.invoice.BilledFromContactPerson = null;
-          this.previousBilledFrom =  this.invoice.BilledFrom;
+          this.previousBilledFrom = this.invoice.BilledFrom;
         }
 
         this.billedFromContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
     );
   }
 
@@ -446,7 +438,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
           this.invoice.BillToCustomerContactMechanism = null;
           this.invoice.BillToCustomerContactPerson = null;
-          this.previousBillToCustomer =  this.invoice.BillToCustomer;
+          this.previousBillToCustomer = this.invoice.BillToCustomer;
         }
 
         if (this.invoice.BillToCustomer !== null && this.invoice.ShipToEndCustomer === null) {
@@ -458,10 +450,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
     );
   }
 
@@ -500,7 +492,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
           this.invoice.ShipToEndCustomerAddress = null;
           this.invoice.ShipToEndCustomerContactPerson = null;
-          this.previousShipToEndCustomer =  this.invoice.ShipToEndCustomer;
+          this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         }
 
         if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToCustomer === null) {
@@ -512,10 +504,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === "PostalAddress").map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.message(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.message(error);
+          this.goBack();
+        },
     );
   }
 }

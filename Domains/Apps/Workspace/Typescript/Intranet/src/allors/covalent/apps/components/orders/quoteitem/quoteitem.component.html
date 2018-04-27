@@ -13,7 +13,7 @@
       </div>
 
       <div class="grid-1">
-        <a-mat-autocomplete class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name" [filter]="goodsFilter.create()"
+        <a-mat-autocomplete class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name" [filter]="stateService.goodsFilter.create(scope)"
           (onChange)="goodSelected($event)"></a-mat-autocomplete>
       </div>
       <div class="grid_md-2_xs-1">

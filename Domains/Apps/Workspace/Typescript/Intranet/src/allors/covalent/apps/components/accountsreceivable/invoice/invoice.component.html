@@ -16,10 +16,8 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="organisationsFilter.create()"
+      <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [filter]="stateService.customersFilter.create(scope)"
         display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
-      <!-- <a-mat-autocomplete class="col" *ngIf="showBillToPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [options]="people"
-        [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
       <div class="col">
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="billToContactMechanisms"
@@ -54,10 +52,8 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="organisationsFilter.create()"
+      <a-mat-autocomplete class="col" *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="state.customersFilter.create(scope)"
         display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
-      <!-- <a-mat-autocomplete class="col" *ngIf="showShipToPeople" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [options]="people"
-        [filter]="peopleFilter.create()" display="displayName" (onChange)="shipToCustomerSelected($event)" label="Ship to private  person "></a-mat-autocomplete> -->
       <div class="col">
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToAddresses" display="displayName"></a-mat-select>
@@ -97,10 +93,8 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showBillToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" [filter]="organisationsFilter.create()"
+      <a-mat-autocomplete class="col" *ngIf="showBillToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" [filter]="state.customersFilter.create(scope)"
         display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
-      <!-- <a-mat-autocomplete class="col" *ngIf="showBillToEndCustomerPeople" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" [options]="people"
-        [filter]="peopleFilter.create()" display="displayName" (onChange)="billToCustomerSelected($event)" label="Bill to private person "></a-mat-autocomplete> -->
       <div class="col">
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" [options]="billToEndCustomerContactMechanisms"
@@ -137,10 +131,8 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [filter]="organisationsFilter.create()"
+      <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [filter]="state.customersFilter.create(scope)"
         display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
-      <!-- <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerPeople" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [options]="people"
-        [filter]="peopleFilter.create()" display="displayName" (onChange)="shipToEndCustomerSelected($event)" label="Ship to private person "></a-mat-autocomplete> -->
       <div class="col">
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"

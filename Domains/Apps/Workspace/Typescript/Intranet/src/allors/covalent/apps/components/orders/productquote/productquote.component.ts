@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -34,10 +34,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   public addContactPerson: boolean = false;
   public addContactMechanism: boolean = false;
 
-  public peopleFilter: Filter;
-  public organisationsFilter: Filter;
-  public currenciesFilter: Filter;
-
   public scope: Scope;
 
   private refresh$: BehaviorSubject<Date>;
@@ -61,17 +57,13 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.fetcher = new Fetcher(this.stateService, this.m);
-
-    this.peopleFilter = new Filter({scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
-    this.organisationsFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
-    this.currenciesFilter = new Filter({scope: this.scope, objectType: this.m.Currency, roleTypes: [this.m.Currency.Name]});
   }
 
   public ngOnInit(): void {

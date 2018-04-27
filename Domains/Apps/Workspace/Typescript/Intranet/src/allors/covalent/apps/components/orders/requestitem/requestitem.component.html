@@ -13,7 +13,7 @@
 
       <div class="grid-2_xs-1">
         <a-mat-autocomplete class="col" [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name"
-          [filter]="goodsFilter.create()" (onChange)="goodSelected($event)"></a-mat-autocomplete>
+          [filter]="stateService.goodsFilter.create(scope)" (onChange)="goodSelected($event)"></a-mat-autocomplete>
         <a-mat-datepicker class="col" [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
       </div>
 

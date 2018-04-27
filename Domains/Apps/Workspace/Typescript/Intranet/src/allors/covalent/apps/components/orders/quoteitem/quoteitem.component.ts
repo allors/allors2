@@ -9,10 +9,11 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 @Component({
   templateUrl: "./quoteitem.component.html",
@@ -32,7 +33,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   public goods: Good[];
   public unitsOfMeasure: UnitOfMeasure[];
 
-  public goodsFilter: Filter;
+  public goodsFilter: FilterFactory;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -45,12 +46,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
-    public media: TdMediaService, private changeDetectorRef: ChangeDetectorRef) {
+    public media: TdMediaService,
+    public stateService: StateService,
+    private changeDetectorRef: ChangeDetectorRef,
+  ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.goodsFilter = new Filter({scope: this.scope, objectType: this.m.Good, roleTypes: [this.m.Good.Name]});
   }
 
   public ngOnInit(): void {

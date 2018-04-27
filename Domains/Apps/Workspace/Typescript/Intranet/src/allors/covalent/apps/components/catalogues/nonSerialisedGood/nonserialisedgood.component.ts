@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Filter, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -50,8 +50,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public actualQuantityOnHand: number;
   public addBrand: boolean = false;
   public addModel: boolean = false;
-  public manufacturersFilter: Filter;
-  public suppliersFilter: Filter;
   public scope: Scope;
 
   private subscription: Subscription;
@@ -65,14 +63,11 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.manufacturersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
-    this.suppliersFilter = new Filter({scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
     this.fetcher = new Fetcher(this.stateService, this.m);
   }
 

@@ -8,10 +8,11 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
-import { ErrorService, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
+import { StateService } from "../../../services/StateService";
 
 @Component({
   templateUrl: "./invoiceitem.component.html",
@@ -34,8 +35,6 @@ export class InvoiceItemEditComponent
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
 
-  public goodsFilter: Filter;
-
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
@@ -48,16 +47,12 @@ export class InvoiceItemEditComponent
     private snackBar: MatSnackBar,
     private dialogService: TdDialogService,
     public media: TdMediaService,
+    public stateService: StateService,
     private changeDetectorRef: ChangeDetectorRef,
   ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.goodsFilter = new Filter({
-      scope: this.scope,
-      objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name],
-    });
   }
 
   public ngOnInit(): void {

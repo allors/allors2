@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   OnDestroy,
-  OnInit
+  OnInit,
 } from "@angular/core";
 import { ActivatedRoute, UrlSegment } from "@angular/router";
 
@@ -13,11 +13,11 @@ import { Subscription } from "rxjs/Subscription";
 
 import {
   ErrorService,
-  Filter,
+  FilterFactory,
   Loaded,
   Saved,
   Scope,
-  WorkspaceService
+  WorkspaceService,
 } from "../../../../../angular";
 import {
   ContactMechanism,
@@ -32,21 +32,21 @@ import {
   WorkEffortAssignment,
   WorkEffortPurpose,
   WorkEffortState,
-  WorkTask
+  WorkTask,
 } from "../../../../../domain";
 import {
   Fetch,
   Path,
   PullRequest,
   Query,
-  TreeNode
+  TreeNode,
 } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 import { Fetcher } from "../../Fetcher";
 
 @Component({
-  templateUrl: "./worktask.component.html"
+  templateUrl: "./worktask.component.html",
 })
 export class WorkTaskEditComponent implements OnInit, OnDestroy {
   public title: string = "Work Task";
@@ -64,7 +64,6 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   public workEffortAssignments: WorkEffortAssignment[];
   public assignees: Person[] = [];
   public existingAssignees: Person[] = [];
-  public organisationsFilter: Filter;
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
   public addContactPerson: boolean = false;
@@ -79,25 +78,20 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private stateService: StateService
+    public stateService: StateService,
   ) {
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.fetcher = new Fetcher(this.stateService, this.m);
-    this.organisationsFilter = new Filter({
-      scope: this.scope,
-      objectType: this.m.Organisation,
-      roleTypes: [this.m.Organisation.Name]
-    });
   }
 
   public ngOnInit(): void {
     this.subscription = Observable.combineLatest(
       this.route.url,
       this.refresh$,
-      this.stateService.internalOrganisationId$
+      this.stateService.internalOrganisationId$,
     )
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
         const id: string = this.route.snapshot.paramMap.get("id");
@@ -109,30 +103,30 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             id,
             include: [
               new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
-              new TreeNode({ roleType: m.WorkTask.ContactPerson })
+              new TreeNode({ roleType: m.WorkTask.ContactPerson }),
             ],
-            name: "worktask"
-          })
+            name: "worktask",
+          }),
         ];
 
         const queries: Query[] = [
           new Query({
             name: "workEffortStates",
-            objectType: this.m.WorkEffortState
+            objectType: this.m.WorkEffortState,
           }),
           new Query({
             name: "priorities",
-            objectType: this.m.Priority
+            objectType: this.m.Priority,
           }),
           new Query({
             name: "workEffortPurposes",
-            objectType: this.m.WorkEffortPurpose
-          })
+            objectType: this.m.WorkEffortPurpose,
+          }),
         ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetches, queries }))
-          .switchMap(loaded => {
+          .switchMap((loaded) => {
             this.subTitle = "edit work task";
             this.workTask = loaded.objects.worktask as WorkTask;
 
@@ -157,9 +151,9 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
                 id,
                 name: "workEffortAssignments",
                 path: new Path({
-                  step: m.WorkEffort.WorkEffortAssignmentsWhereAssignment
-                })
-              })
+                  step: m.WorkEffort.WorkEffortAssignmentsWhereAssignment,
+                }),
+              }),
             ];
 
             if (this.workTask.Customer) {
@@ -171,19 +165,19 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             } else {
               return this.scope.load(
                 "Pull",
-                new PullRequest({ fetches: assignmentsFetch })
+                new PullRequest({ fetches: assignmentsFetch }),
               );
             }
           });
       })
       .subscribe(
-        loaded => {
+        (loaded) => {
           this.workEffortAssignments = loaded.collections
             .workEffortAssignments as WorkEffortAssignment[];
 
           if (this.workEffortAssignments) {
             this.assignees = this.workEffortAssignments.map(
-              (v: WorkEffortAssignment) => v.Professional
+              (v: WorkEffortAssignment) => v.Professional,
             );
           }
 
@@ -192,8 +186,8 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         (error: any) => {
           this.errorService.message(error);
           this.goBack();
-        }
-      );
+        },
+    );
   }
 
   public customerSelected(customer: Party) {
@@ -206,7 +200,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     const contact: Person = this.scope.session.get(id) as Person;
 
     const organisationContactRelationship = this.scope.session.create(
-      "OrganisationContactRelationship"
+      "OrganisationContactRelationship",
     ) as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.workTask
       .Customer as Organisation;
@@ -217,7 +211,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   public contactMechanismAdded(
-    partyContactMechanism: PartyContactMechanism
+    partyContactMechanism: PartyContactMechanism,
   ): void {
     this.addContactMechanism = false;
 
@@ -242,7 +236,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       this.assignees.forEach((assignee: Person) => {
         if (this.existingAssignees.indexOf(assignee) < 0) {
           const workEffortAssignment: WorkEffortAssignment = this.scope.session.create(
-            "WorkEffortAssignment"
+            "WorkEffortAssignment",
           ) as WorkEffortAssignment;
           workEffortAssignment.Assignment = this.workTask;
           workEffortAssignment.Professional = assignee;
@@ -255,7 +249,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       },
       (error: Error) => {
         this.errorService.dialog(error);
-      }
+      },
     );
   }
 
@@ -274,35 +268,35 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
                 nodes: [
                   new TreeNode({ roleType: this.m.PostalBoundary.Country })
                 ],
-                roleType: this.m.PostalAddress.PostalBoundary
-              })
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
             ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism
-          })
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
         ],
         name: "partyContactMechanisms",
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms })
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
       }),
       new Fetch({
         id: party.id,
         name: "currentContacts",
-        path: new Path({ step: this.m.Party.CurrentContacts })
-      })
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
     ];
 
     this.scope.load("Pull", new PullRequest({ fetches })).subscribe(
-      loaded => {
+      (loaded) => {
         const partyContactMechanisms: PartyContactMechanism[] = loaded
           .collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map(
-          (v: PartyContactMechanism) => v.ContactMechanism
+          (v: PartyContactMechanism) => v.ContactMechanism,
         );
         this.contacts = loaded.collections.currentContacts as Person[];
       },
       (error: Error) => {
         this.errorService.message(error);
         this.goBack();
-      }
+      },
     );
   }
 }

@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -32,10 +32,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public currencies: Currency[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
-
-  public peopleFilter: Filter;
-  public organisationsFilter: Filter;
-  public currenciesFilter: Filter;
 
   public billToContactMechanisms: ContactMechanism[];
   public billToContacts: Person[];
@@ -101,14 +97,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     private dialogService: TdDialogService,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
-
-    this.peopleFilter = new Filter({ scope: this.scope, objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
-    this.organisationsFilter = new Filter({ scope: this.scope, objectType: this.m.Organisation, roleTypes: [this.m.Organisation.Name]});
-    this.currenciesFilter = new Filter({scope: this.scope, objectType: this.m.Currency, roleTypes: [this.m.Currency.Name]});
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.m);

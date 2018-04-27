@@ -12,7 +12,7 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="organisationsFilter.create()"
+      <a-mat-autocomplete class="col" [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(scope)"
         (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
       <div class="col">
         <div fxLayout fxLayoutGap="1em">

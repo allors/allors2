@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Field, Filter, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
+import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from "../../../../../../angular";
 import { InvoiceTermType, SalesInvoice, SalesTerm } from "../../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../../framework";
 import { MetaDomain } from "../../../../../../meta";

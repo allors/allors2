@@ -8,17 +8,17 @@ import { Loaded } from "../framework/responses/Loaded";
 import { Scope } from "../framework/Scope";
 
 export interface FilterOptions {
-  scope: Scope;
   objectType: ObjectType | MetaObjectType;
   roleTypes: RoleType[];
   existRoletypes?: RoleType[];
   notExistRoletypes?: RoleType[];
+  post?: (and: And) => void;
 }
 
-export class Filter {
-  constructor(private options: FilterOptions ) { }
+export class FilterFactory {
+  constructor(private options: FilterOptions) { }
 
-  public create(): ((search: string) => Observable<ISessionObject[]>) {
+  public create(scope: Scope): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
       if (!search.trim) {
         return Observable.empty<ISessionObject[]>();
@@ -50,17 +50,20 @@ export class Filter {
         });
       });
 
-      const queries: Query[] = [
+      if (this.options.post) {
+        this.options.post(and);
+      }
+
+      const queries = [
         new Query({
           name: "results",
           objectType: this.options.objectType,
           predicate: and,
-          sort: this.options.roleTypes.map(
-            (roleType: RoleType) => new Sort({ roleType })),
-          }),
+          sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
+        }),
       ];
 
-      return this.options.scope
+      return scope
         .load("Pull", new PullRequest({ queries }))
         .map((loaded: Loaded) => loaded.collections.results);
     };
