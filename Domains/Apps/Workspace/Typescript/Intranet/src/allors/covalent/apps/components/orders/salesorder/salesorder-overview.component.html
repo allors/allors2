@@ -94,7 +94,8 @@
       <mat-card-actions>
         <button *ngIf="order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">Edit</button>
         <button *ngIf="!order.CanWriteSalesOrderItems" mat-button [routerLink]="['/salesOrder/' + order.id]">View</button>
-        <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Print</button>
+        <button mat-button [routerLink]="['/printsalesorder/' + order.id ]">Preview</button>
+        <button mat-button (click)="print()">Print</button>
         <button *ngIf="order.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
         <button *ngIf="order.CanExecuteApprove" mat-button (click)="approve()">Approve</button>
         <button *ngIf="order.CanExecuteReject" mat-button (click)="reject()">Reject</button>

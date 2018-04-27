@@ -23,38 +23,48 @@ namespace Allors.Services
     using System;
     using System.IO;
     using System.Threading.Tasks;
-    using PuppeteerSharp;
+
+    using DinkToPdf;
+    using DinkToPdf.Contracts;
 
     public class PdfService : IPdfService, IDisposable
     {
-        private Browser browser;
+        private readonly IConverter converter;
+        private readonly GlobalSettings globalSettings;
+
+        public PdfService(IConverter converter)
+        {
+            this.converter = converter;
+
+            this.globalSettings = new GlobalSettings
+                                      {
+                                          ColorMode = ColorMode.Color,
+                                          Orientation = Orientation.Portrait,
+                                          PaperSize = PaperKind.A4,
+                                      };
+        }
 
         public async Task<byte[]> FromHtmlToPdf(string content)
         {
-            if (this.browser == null)
+            var doc = new HtmlToPdfDocument()
             {
-                var launchOptions = new LaunchOptions
-                                        {
-                                            Headless = true
-                                        };
+                GlobalSettings = this.globalSettings,
+                Objects = 
+                    {
+                        new ObjectSettings 
+                            {
+                                PagesCount = true,
+                                HtmlContent = content,
+                                WebSettings = { DefaultEncoding = "utf-8" },
+                            }
+                    }
+            };
 
-                await Downloader.CreateDefault().DownloadRevisionAsync(Downloader.DefaultRevision);
-                this.browser = await Puppeteer.LaunchAsync(launchOptions, Downloader.DefaultRevision);
-            }        
-            
-            var page = await this.browser.NewPageAsync();
-            await page.SetContentAsync(content);
-            var stream = await page.PdfStreamAsync();
-            using (var memoryStream = new MemoryStream())
-            {
-                await stream.CopyToAsync(memoryStream);
-                return memoryStream.ToArray();
-            }
+            return this.converter.Convert(doc);
         }
 
         public void Dispose()
         {
-            this.browser?.Dispose();
         }
     }
 }

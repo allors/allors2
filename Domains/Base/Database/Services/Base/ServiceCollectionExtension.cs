@@ -27,6 +27,9 @@ namespace Allors.Services
     using System.Linq.Expressions;
     using System.Reflection;
 
+    using DinkToPdf;
+    using DinkToPdf.Contracts;
+
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Hosting.Internal;
     using Microsoft.AspNetCore.Mvc.Razor;
@@ -116,6 +119,7 @@ namespace Allors.Services
             services.AddSingleton<ITimeService, TimeService>();
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IPdfService, PdfService>();
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ITemplateService, TemplateService>();  // Scoped is required for running Razor in Server mode

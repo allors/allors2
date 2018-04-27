@@ -1,19 +1,20 @@
 import { HttpClient } from "@angular/common/http";
 import { Inject, Injectable } from "@angular/core";
 import { Media } from "../../../domain";
+import { ISessionObject } from "../../../framework";
 import { DatabaseConfig } from "../framework/DatabaseConfig";
 
 @Injectable()
-export class MediaService {
+export class PdfService {
 
   constructor(private databaseConfig: DatabaseConfig) {}
 
-  public url(media: Media): string {
-    return `${this.databaseConfig.url}Media/Download/${media.UniqueId}?revision=${media.Revision}`;
+  public url(obj: ISessionObject): string {
+    return `${this.databaseConfig.url}Pdf/Download/${obj.id}`;
   }
 
-  public display(media: Media): void {
+  public display(obj: ISessionObject): void {
     const newWindow = window.open();
-    newWindow.location.href = this.url(media);
+    newWindow.location.href = this.url(obj);
   }
 }

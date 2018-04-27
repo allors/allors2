@@ -15,7 +15,7 @@
 
 	<ItemGroup>
     
-		<Compile Include="..\..\..\Base\Database\Server\Allors\Base\**\*.cs" />
+		<Compile Include="..\..\..\Base\Database\Server\Export\**\*.cs" />
   
 	</ItemGroup> 
 

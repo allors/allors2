@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -44,6 +44,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public media: TdMediaService,
     public mediaService: MediaService,
+    public pdfService: PdfService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = this.workspaceService.createScope();
@@ -206,6 +207,10 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
+  }
+
+  public print() {
+    this.pdfService.display(this.order);
   }
 
   public approve(): void {
