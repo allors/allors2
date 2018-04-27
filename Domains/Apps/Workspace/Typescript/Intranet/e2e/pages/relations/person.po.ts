@@ -16,7 +16,7 @@ export class PersonPage extends BasePage {
     await browser.waitForAngular();
   }
 
-  get FirstName(): WebElementPromise {
-    return browser.findElement(by.css("input[placeholder='First Name']"));
+  get Name(): WebElementPromise {
+    return browser.findElement(by.css("input[placeholder='Name']"));
   }
 }

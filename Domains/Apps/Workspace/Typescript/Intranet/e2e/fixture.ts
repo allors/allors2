@@ -1,8 +1,7 @@
 import Axios from "axios";
 
-import { Person } from "../src/allors/domain";
-import { constructorByName } from "../src/allors/domain";
-import { MetaPopulation, ObjectType, ObjectTyped, PullRequest, Query, Session, Workspace } from "../src/allors/framework";
+import { Person, domain } from "../src/allors/domain";
+import { MetaPopulation, ObjectType, MetaObjectType, PullRequest, Query, Session, Workspace } from "../src/allors/framework";
 import { data, MetaDomain } from "../src/allors/meta";
 import { Database, Loaded, Scope } from "../src/allors/promise";
 import { AxiosHttp } from "../src/allors/promise/base/http/AxiosHttp";
@@ -26,7 +25,9 @@ export class Fixture {
 
   public constructor() {
     const metaPopulation = new MetaPopulation(data);
-    this.workspace = new Workspace(metaPopulation, constructorByName);
+    this.workspace = new Workspace(metaPopulation);
+    domain.apply(this.workspace);
+
     this.objectTypeByName = this.workspace.metaPopulation.objectTypeByName;
     this.objectTypes = Object.keys(this.objectTypeByName).map((key) => this.objectTypeByName[key]);
     this.classes = this.objectTypes.filter((objectType) => objectType.isClass);
@@ -51,14 +52,14 @@ export class Fixture {
   public async load(classes: ObjectType[] = null): Promise<Population> {
 
     try {
-      const query: Query[] = (classes || this.classes)
+      const queries = (classes || this.classes)
       .map((objectType) => new Query(
       {
         name: objectType.name,
         objectType,
       }));
 
-      const loaded = await this.scope.load("Pull", new PullRequest({ query }));
+      const loaded = await this.scope.load("Pull", new PullRequest({ queries }));
 
       const objectsByObjectType: Map<ObjectType, any[]> = new Map();
 

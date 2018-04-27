@@ -17,6 +17,8 @@ namespace Allors.Domain
 {
     using System;
 
+    using Allors.Meta;
+
     public partial class ContactMechanismPurposes
     {
         private static readonly Guid HeadQuartersId = new Guid("065AF4A2-44E0-4bc5-8E09-3D3A6091F841");
@@ -80,6 +82,11 @@ namespace Allors.Domain
         public ContactMechanismPurpose MobilePhoneNumber => this.Cache[MobilePhoneNumberId];
 
         private UniquelyIdentifiableSticky<ContactMechanismPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ContactMechanismPurpose>(this.Session));
+
+        protected override void AppsPrepare(Setup setup)
+        {
+            setup.AddDependency(this.ObjectType, M.Locale.ObjectType);
+        }
 
         protected override void AppsSetup(Setup setup)
         {

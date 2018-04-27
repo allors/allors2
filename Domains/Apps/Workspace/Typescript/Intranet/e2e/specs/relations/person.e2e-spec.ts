@@ -21,17 +21,7 @@ describe("/person", () => {
     await fixture.setup();
     page = new PersonPage();
 
-    population = await fixture.load([m.Person.ObjectType]);
-  });
-
-  it("should have title", async () => {
-    const people: Person[] = population.get(m.Person);
-    const administrator = people.find((v) => v.UserName === "Administrator");
-
-    await page.navigateTo(administrator.id);
-
-    const title = await page.title;
-    expect(title).toEqual("Person");
+    population = await fixture.load([m.Person._objectType]);
   });
 
   it("should allow update", async () => {
@@ -40,12 +30,15 @@ describe("/person", () => {
 
     await page.navigateTo(administrator.id);
 
-    await page.FirstName.clear();
-    await page.FirstName.sendKeys("Conan");
+    const title = await page.title;
+    expect(title).toEqual("Person");
+
+    await page.Name.clear();
+    await page.Name.sendKeys("Conan");
 
     await page.save();
 
-    await fixture.load([m.Person.ObjectType]);
+    await fixture.load([m.Person._objectType]);
 
     fixture.scope.session.reset();
 

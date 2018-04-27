@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Database\Server\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Database\Services\Services.csproj", "{66702AD7-6717-466C-8770-F95B8F2369E6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workspace", "Workspace", "{B4709E73-373C-4DA1-B440-08E4D64DD5D9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Allors.Protocol", "..\..\Platform\Database\Protocol\Allors.Protocol.csproj", "{F2BAC514-0836-425A-8392-6839BDB8E051}"
 EndProject
 Global

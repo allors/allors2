@@ -55,8 +55,6 @@ export const routes: Routes = [
         children: [
           { path: "", component: relations.OrganisationComponent },
           { path: ":id", component: relations.OrganisationComponent },
-          { path: ":id/contact", component: relations.OrganisationContactrelationshipAddComponent },
-          { path: ":id/contact/:roleId", component: relations.OrganisationContactrelationshipEditComponent },
         ],
       },
       {
