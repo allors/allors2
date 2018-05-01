@@ -50,7 +50,8 @@
       <mat-card-actions>
         <button *ngIf="task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
         <button *ngIf="!task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
-        <button mat-button [routerLink]="['/printworktask/' + task.id ]">Print</button>
+        <button mat-button [routerLink]="['/printworktask/' + task.id ]">Preview</button>
+        <button mat-button (click)="print()">Print</button>
         <button *ngIf="task.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
       </mat-card-actions>
     </mat-card>

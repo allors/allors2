@@ -11,7 +11,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from "../../../../../angular";
 import { InternalOrganisation, ProductQuote } from "../../../../../domain";
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -50,6 +50,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
     public dialogService: TdDialogService,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef,
+    public pdfService: PdfService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
@@ -132,6 +133,10 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
         this.errorService.message(error);
         this.goBack();
       });
+  }
+
+  public print(quote: ProductQuote) {
+    this.pdfService.display(quote);
   }
 
   public goBack(): void {

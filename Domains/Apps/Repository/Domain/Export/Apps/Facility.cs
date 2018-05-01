@@ -57,6 +57,7 @@ namespace Allors.Repository
         [AssociationId("d29a1df5-e08f-4f7c-876c-a1ab737206a5")]
         [RoleId("5dd1abff-5a4c-4d30-8c69-1bcc83e5460e")]
         #endregion
+        [Workspace]
         [Size(256)]
         public string Description { get; set; }
 
@@ -67,6 +68,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
+        [Workspace]
         public ContactMechanism[] FacilityContactMechanisms { get; set; }
 
         #region Allors
@@ -76,6 +78,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(256)]
+        [Workspace]
         public string Name { get; set; }
 
         #region Allors
@@ -86,6 +89,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Indexed]
+        [Workspace]
         public InternalOrganisation Owner { get; set; }
 
         #region inherited methods

@@ -15,9 +15,11 @@
       </div>
 
       <div class="grid-2_xs-1" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
+        <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Facility" [options]="facilities"
+          display="Name" (onSelect)="facilitySelected($event)"></a-mat-select>
         <a-mat-autocomplete class="col" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType"
           [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)"
-          [filter]="stateService.goodsFilter.create(scope)"></a-mat-autocomplete>
+          [filter]="goodsFacilityFilter.create(scope)" [disabled]= "!invoiceItem.Facility"></a-mat-autocomplete>
         <a-mat-select class="col" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes"
           display="Name"></a-mat-select>
       </div>

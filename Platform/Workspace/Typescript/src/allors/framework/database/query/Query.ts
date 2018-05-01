@@ -1,4 +1,4 @@
-﻿import { ObjectType, MetaObjectType } from "../../meta";
+﻿import { MetaObjectType, ObjectType } from "../../meta";
 import { Page } from "./Page";
 import { Predicate } from "./Predicate";
 import { Sort } from "./Sort";

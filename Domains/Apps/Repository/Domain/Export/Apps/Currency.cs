@@ -6,6 +6,11 @@ namespace Allors.Repository
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
+
+        public string Abbreviation { get; set; }
+
+        public LocalisedText[] LocalisedAbbreviations { get; set; }
+
         public string Description { get; set; }
         public UnitOfMeasureConversion[] UnitOfMeasureConversions { get; set; }
 

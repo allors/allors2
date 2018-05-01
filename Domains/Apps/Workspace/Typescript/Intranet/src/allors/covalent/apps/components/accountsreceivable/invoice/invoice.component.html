@@ -52,7 +52,7 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="state.customersFilter.create(scope)"
+      <a-mat-autocomplete class="col" *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="stateService.customersFilter.create(scope)"
         display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
       <div class="col">
         <div fxLayout fxLayoutGap="1em">
@@ -93,7 +93,7 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showBillToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" [filter]="state.customersFilter.create(scope)"
+      <a-mat-autocomplete class="col" *ngIf="showBillToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" [filter]="stateService.customersFilter.create(scope)"
         display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
       <div class="col">
         <div fxLayout fxLayoutGap="1em">
@@ -131,7 +131,7 @@
     </div>
 
     <div class="grid-3_md-1">
-      <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [filter]="state.customersFilter.create(scope)"
+      <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [filter]="stateService.customersFilter.create(scope)"
         display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
       <div class="col">
         <div fxLayout fxLayoutGap="1em">

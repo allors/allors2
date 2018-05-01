@@ -61,7 +61,8 @@
             </button>
             <mat-menu x-position="before" #menu="matMenu">
               <a [routerLink]="['/accountsreceivable/invoice/' + invoice.id ]" mat-menu-item>Details</a>
-              <a [routerLink]="['/printinvoice/' + invoice.id ]" mat-menu-item>Print</a>
+              <a [routerLink]="['/printinvoice/' + invoice.id ]" mat-menu-item>Preview</a>
+              <button mat-menu-item (click)="print(invoice)">Print</button>
             </mat-menu>
           </span>
 

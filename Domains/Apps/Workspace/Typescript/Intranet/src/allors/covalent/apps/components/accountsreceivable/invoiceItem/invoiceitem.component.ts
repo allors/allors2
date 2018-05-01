@@ -9,8 +9,8 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from "../../../../../domain";
+import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
 
@@ -34,6 +34,8 @@ export class InvoiceItemEditComponent
   public goods: Good[];
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
+  public facilities: Facility[];
+  public goodsFacilityFilter: FilterFactory;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -53,7 +55,19 @@ export class InvoiceItemEditComponent
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-  }
+    this.goodsFacilityFilter = new FilterFactory({
+      objectType: this.m.Good,
+      roleTypes: [this.m.Good.Name],
+      post: (predicate: And) => {
+          const query = new Query({
+              objectType: this.m.VendorProduct,
+              predicate: new Equals({ roleType: this.m.VendorProduct.InternalOrganisation, value: this.stateService.internalOrganisationId }),
+          });
+
+          predicate.predicates.push(new ContainedIn({ associationType: this.m.Product.VendorProductsWhereProduct, query }));
+      },
+    });
+}
 
   public ngOnInit(): void {
 
@@ -76,6 +90,10 @@ export class InvoiceItemEditComponent
             include: [
               new TreeNode({
                 roleType: m.SalesInvoiceItem.SalesInvoiceItemState,
+              }),
+              new TreeNode({
+                nodes: [new TreeNode({ roleType: m.Facility.Owner })],
+                roleType: m.SalesInvoiceItem.Facility,
               }),
               new TreeNode({
                 nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
@@ -103,6 +121,11 @@ export class InvoiceItemEditComponent
             name: "vatRegimes",
             objectType: m.VatRegime,
           }),
+          new Query({
+            include: [ new TreeNode({ roleType: m.Facility.Owner }) ],
+            name: "facilities",
+            objectType: m.Facility,
+          }),
         ];
 
         return this.scope.load("Pull", new PullRequest({ fetches, queries }));
@@ -116,6 +139,7 @@ export class InvoiceItemEditComponent
           this.goods = loaded.collections.goods as Good[];
           this.vatRates = loaded.collections.vatRates as VatRate[];
           this.vatRegimes = loaded.collections.vatRegimes as VatRegime[];
+          this.facilities = loaded.collections.facilities as Facility[];
           this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
           this.productItemType = this.invoiceItemTypes.find(
             (v: InvoiceItemType) =>
@@ -175,6 +199,22 @@ export class InvoiceItemEditComponent
         this.goBack();
       },
     );
+  }
+
+  public facilitySelected(facility: Facility): void {
+
+    this.goodsFacilityFilter = new FilterFactory({
+      objectType: this.m.Good,
+      roleTypes: [this.m.Good.Name],
+      post: (predicate: And) => {
+          const query = new Query({
+              objectType: this.m.VendorProduct,
+              predicate: new Equals({ roleType: this.m.VendorProduct.InternalOrganisation, value: facility.Owner }),
+          });
+
+          predicate.predicates.push(new ContainedIn({ associationType: this.m.Product.VendorProductsWhereProduct, query }));
+      },
+    });
   }
 
   public save(): void {

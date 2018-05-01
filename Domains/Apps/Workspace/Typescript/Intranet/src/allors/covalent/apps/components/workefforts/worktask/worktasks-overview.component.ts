@@ -13,7 +13,7 @@ import "rxjs/add/operator/startWith";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService } from "../../../../../angular";
 import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from "../../../../../domain";
 import { And, ContainedIn, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -71,6 +71,7 @@ export class WorkTasksOverviewComponent implements OnDestroy {
     private snackBarService: MatSnackBar,
     public media: TdMediaService,
     private changeDetectorRef: ChangeDetectorRef,
+    public pdfService: PdfService,
     private stateService: StateService) {
 
     titleService.setTitle(this.title);
@@ -196,6 +197,10 @@ export class WorkTasksOverviewComponent implements OnDestroy {
 
   public more(): void {
     this.page$.next(this.data.length + 50);
+  }
+
+  public print(worktask: WorkTask) {
+    this.pdfService.display(worktask);
   }
 
   public goBack(): void {

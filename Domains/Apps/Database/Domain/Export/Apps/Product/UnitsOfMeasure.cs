@@ -178,196 +178,196 @@ namespace Allors.Domain
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("millimeter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("millimeter").WithLocale(dutchLocale).Build())
-                .WithSymbol("mm")
+                .WithAbbreviation("mm")
                 .WithUniqueId(MillimeterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("centimeter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("centimeter").WithLocale(dutchLocale).Build())
-                .WithSymbol("cm")
+                .WithAbbreviation("cm")
                 .WithUniqueId(CentimeterId)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
-                .WithSymbol("m")
+                .WithAbbreviation("m")
                 .WithUniqueId(MeterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilometer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer").WithLocale(dutchLocale).Build())
-                .WithSymbol("km")
+                .WithAbbreviation("km")
                 .WithUniqueId(KilometerId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("milligram")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milligram").WithLocale(dutchLocale).Build())
-                .WithSymbol("mg")
+                .WithAbbreviation("mg")
                 .WithUniqueId(MilligramId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("gram")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gram").WithLocale(dutchLocale).Build())
-                .WithSymbol("g")
+                .WithAbbreviation("g")
                 .WithUniqueId(GramId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilogram")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram").WithLocale(dutchLocale).Build())
-                .WithSymbol("kg")
+                .WithAbbreviation("kg")
                 .WithUniqueId(KilogramId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("metric ton")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ton").WithLocale(dutchLocale).Build())
-                .WithSymbol("t")
+                .WithAbbreviation("t")
                 .WithUniqueId(KilogramId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("degree Celsius")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("graden Celsius").WithLocale(dutchLocale).Build())
-                .WithSymbol("°C")
+                .WithAbbreviation("°C")
                 .WithUniqueId(DegreeCelsiusId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("square meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante meter").WithLocale(dutchLocale).Build())
-                .WithSymbol("m²")
+                .WithAbbreviation("m²")
                 .WithUniqueId(SquareMeterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("hectare")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("hectare").WithLocale(dutchLocale).Build())
-                .WithSymbol("ha")
+                .WithAbbreviation("ha")
                 .WithUniqueId(HectareId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("square kilometer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante kilometer").WithLocale(dutchLocale).Build())
-                .WithSymbol("km²")
+                .WithAbbreviation("km²")
                 .WithUniqueId(SquareKilometerId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("milliliter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milliliter").WithLocale(dutchLocale).Build())
-                .WithSymbol("ml")
+                .WithAbbreviation("ml")
                 .WithUniqueId(MilliLiterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("Cubic centimeter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke centimeter").WithLocale(dutchLocale).Build())
-                .WithSymbol("cm³")
+                .WithAbbreviation("cm³")
                 .WithUniqueId(CubicCentimeterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("liter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("liter").WithLocale(dutchLocale).Build())
-                .WithSymbol("L")
+                .WithAbbreviation("L")
                 .WithUniqueId(LiterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("Cubic meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke meter").WithLocale(dutchLocale).Build())
-                .WithSymbol("m³")
+                .WithAbbreviation("m³")
                 .WithUniqueId(CubicMeterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("meter per second")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter per seconde").WithLocale(dutchLocale).Build())
-                .WithSymbol("m/s")
+                .WithAbbreviation("m/s")
                 .WithUniqueId(MeterPerSecondId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilometer per hour")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer per uur").WithLocale(dutchLocale).Build())
-                .WithSymbol("km/h")
+                .WithAbbreviation("km/h")
                 .WithUniqueId(KilometerPerHourId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilogram per cubic meter")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram per kubieke meter").WithLocale(dutchLocale).Build())
-                .WithSymbol("kg/m³")
+                .WithAbbreviation("kg/m³")
                 .WithUniqueId(KilogramPerCubicMeterId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("newton")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("newton").WithLocale(dutchLocale).Build())
-                .WithSymbol("N")
+                .WithAbbreviation("N")
                 .WithUniqueId(NewtonId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilopascal")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilopascal").WithLocale(dutchLocale).Build())
-                .WithSymbol("kPa")
+                .WithAbbreviation("kPa")
                 .WithUniqueId(KiloPascalId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("watt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("watt").WithLocale(dutchLocale).Build())
-                .WithSymbol("W")
+                .WithAbbreviation("W")
                 .WithUniqueId(WattId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilowatt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt").WithLocale(dutchLocale).Build())
-                .WithSymbol("kW")
+                .WithAbbreviation("kW")
                 .WithUniqueId(KiloWattId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilojoule")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilojoule").WithLocale(dutchLocale).Build())
-                .WithSymbol("kJ")
+                .WithAbbreviation("kJ")
                 .WithUniqueId(KiloJouleId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("megajoule")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("megajoule").WithLocale(dutchLocale).Build())
-                .WithSymbol("MJ")
+                .WithAbbreviation("MJ")
                 .WithUniqueId(MegaJouleId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("kilowatt hour")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt uur").WithLocale(dutchLocale).Build())
-                .WithSymbol("kW·h")
+                .WithAbbreviation("kW·h")
                 .WithUniqueId(KiloWattHourId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("ampere")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ampere").WithLocale(dutchLocale).Build())
-                .WithSymbol("A")
+                .WithAbbreviation("A")
                 .WithUniqueId(KiloWattHourId)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("volt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("volt").WithLocale(dutchLocale).Build())
-                .WithSymbol("V")
+                .WithAbbreviation("V")
                 .WithUniqueId(KiloWattHourId)
                 .Build();
         }

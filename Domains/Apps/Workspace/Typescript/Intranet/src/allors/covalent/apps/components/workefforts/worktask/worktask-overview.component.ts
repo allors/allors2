@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { WorkEffort, WorkTask } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -36,6 +36,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public media: TdMediaService,
     public mediaService: MediaService,
+    public pdfService: PdfService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = this.workspaceService.createScope();
@@ -90,6 +91,10 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
       (error: Error) => {
         this.errorService.dialog(error);
       });
+  }
+
+  public print() {
+    this.pdfService.display(this.task);
   }
 
   public ngOnDestroy(): void {

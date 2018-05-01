@@ -22,6 +22,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
+  public scope: Scope;
   public title: string = "Edit Quote Item";
   public subTitle: string;
   public quote: ProductQuote;
@@ -37,7 +38,6 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
     private workspaceService: WorkspaceService,

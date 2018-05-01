@@ -307,8 +307,11 @@ namespace Allors.Domain
                         var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
                         if (characteristicType.ExistUnitOfMeasure)
                         {
+                            var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                          ? characteristicType.UnitOfMeasure.Abbreviation
+                                          : characteristicType.UnitOfMeasure.Name;
                             builder.Append(
-                                $", {characteristicType.Name}: {characteristic.Value} {characteristicType.UnitOfMeasure.Name}");
+                                $", {characteristicType.Name}: {characteristic.Value} {uom}");
                         }
                         else
                         {

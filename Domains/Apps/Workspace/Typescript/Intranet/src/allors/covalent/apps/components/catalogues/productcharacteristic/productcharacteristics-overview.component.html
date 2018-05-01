@@ -28,7 +28,8 @@
       <ng-template let-characteristic let-last="last" ngFor [ngForOf]="data">
           <mat-list-item>
 
-            <h3 mat-line [routerLink]="'/productCharacteristic/' + [characteristic.id]"> {{characteristic.Name}}</h3>
+            <h3 *ngIf="characteristic.UnitOfMeasure" mat-line [routerLink]="'/productCharacteristic/' + [characteristic.id]"> {{characteristic.Name}} ({{characteristic.UnitOfMeasure.Name}})</h3>
+            <h3 *ngIf="!characteristic.UnitOfMeasure" mat-line [routerLink]="'/productCharacteristic/' + [characteristic.id]"> {{characteristic.Name}}</h3>
 
             <span>
                 <button mat-icon-button [mat-menu-trigger-for]="menu">

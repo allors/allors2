@@ -87,6 +87,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
           {
             include: [
               new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.LocalisedNames }),
+              new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure }),
             ],
             name: "productCharacteristics",
             objectType: m.SerialisedInventoryItemCharacteristicType,

@@ -88,7 +88,8 @@
         <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
         <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
-        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Print</button>
+        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Preview</button>
+        <button mat-button (click)="print()">Print</button>
       </mat-card-actions>
     </mat-card>
 

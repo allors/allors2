@@ -9,7 +9,7 @@ import { Subscription } from "rxjs/Subscription";
 
 import "rxjs/add/observable/combineLatest";
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, MediaService } from "../../../../../angular";
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from "../../../../../angular";
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from "../../../../../domain";
 import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -39,6 +39,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public media: TdMediaService,
     public mediaService: MediaService,
+    public pdfService: PdfService,
     private changeDetectorRef: ChangeDetectorRef) {
 
     this.scope = this.workspaceService.createScope();
@@ -135,6 +136,10 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         this.goBack();
       },
     );
+  }
+
+  public print() {
+    this.pdfService.display(this.quote);
   }
 
   public ngOnDestroy(): void {

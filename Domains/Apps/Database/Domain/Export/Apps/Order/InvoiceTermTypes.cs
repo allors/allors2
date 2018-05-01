@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     public partial class InvoiceTermTypes
     {
-        private static readonly Guid PaymentNetDaysId = new Guid("23AB7C88-C7B0-4a8e-916E-02DFD3CD261A");
+        private static readonly Guid PaymentNetDaysId = new Guid("23AB7C88-C7B0-4A8E-916E-02DFD3CD261A");
         private static readonly Guid LateFeeId = new Guid("4D8E9C5E-F4F6-4e62-8009-D247D4C60753");
         private static readonly Guid CollectionAgencyPenaltyId = new Guid("56C719DE-1B5D-4c2a-8AE3-F205F9852C79");
         private static readonly Guid PayFullBeforeTransportId = new Guid("B4C38969-9507-4D44-A644-CF8CA6ADB79A");

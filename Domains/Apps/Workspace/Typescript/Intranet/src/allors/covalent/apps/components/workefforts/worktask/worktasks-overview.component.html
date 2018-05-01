@@ -61,6 +61,8 @@
               </button>
               <mat-menu x-position="before" #menu="matMenu">
                 <a [routerLink]="['/workefforts/worktask/' + item.id ]" mat-menu-item>Details</a>
+                <a [routerLink]="['/printworktask/' + item.id ]" mat-menu-item>Preview</a>
+                <button mat-menu-item (click)="print(item)">Print</button>
                 <button mat-menu-item (click)="delete(item)" [disabled]="!item.CanExecuteDelete">Delete</button>
               </mat-menu>
             </span>
