@@ -106,17 +106,17 @@ tr.top table tr td.title {
   bottom: 10px;
 }
 
-.footer p {
-    margin: 3px;
-    font-size: 8px;
-    line-height: 10px;
-    text-align: left;
-    font-weight: normal;
-}
+  .footer p {
+      margin: 3px;
+      font-size: 8px;
+      line-height: 10px;
+      text-align: left;
+      font-weight: normal;
+  }
 
 @media print {
-  @page {
-      size: auto; /* auto is the initial value */
-      margin: 0; /* this affects the margin in the printer settings */
-  }
+    @page {
+        size: auto; /* auto is the initial value */
+        margin: 0; /* this affects the margin in the printer settings */
+    }
 }

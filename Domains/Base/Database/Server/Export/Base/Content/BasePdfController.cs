@@ -38,9 +38,9 @@ namespace Allors.Server
 
         protected IPdfService PdfService { get; }
 
-        protected async Task<ActionResult> Pdf(string html, string fileName)
+        protected async Task<ActionResult> Pdf(string html, string fileName, string header = null, string footer = null)
         {
-            var pdf = await this.PdfService.FromHtmlToPdf(html);
+            var pdf = await this.PdfService.FromHtmlToPdf(html, header, footer);
             return this.File(pdf, "application/pdf", fileName);
         }
     }
