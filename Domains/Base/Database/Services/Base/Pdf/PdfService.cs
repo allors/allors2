@@ -53,13 +53,13 @@ namespace Allors.Services
             {
                 if (!string.IsNullOrEmpty(header))
                 {
-                    headerUrl = System.IO.Path.GetTempPath() + "/" + Guid.NewGuid() + ".html";
+                    headerUrl = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".html");
                     File.WriteAllText(headerUrl, header);
                 }
 
                 if (!string.IsNullOrEmpty(footer))
                 {
-                    footerUrl = System.IO.Path.GetTempPath() + "/" + Guid.NewGuid() + ".html";
+                    footerUrl = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".html");
                     File.WriteAllText(footerUrl, footer);
                 }
 
