@@ -21,7 +21,6 @@
 namespace Allors.Services
 {
     using System;
-    using System.IO;
     using System.Threading.Tasks;
 
     using DinkToPdf;
@@ -55,7 +54,7 @@ namespace Allors.Services
                             {
                                 PagesCount = true,
                                 HtmlContent = content,
-                                WebSettings = { DefaultEncoding = "utf-8" },
+                                WebSettings = { DefaultEncoding = "utf-8", PrintMediaType = true },
                             }
                     }
             };
