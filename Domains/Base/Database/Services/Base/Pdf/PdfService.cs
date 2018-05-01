@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CacheService.cs" company="Allors bvba">
+// <copyright file="PdfService.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -21,6 +21,7 @@
 namespace Allors.Services
 {
     using System;
+    using System.IO;
     using System.Threading.Tasks;
 
     using DinkToPdf;
@@ -36,30 +37,86 @@ namespace Allors.Services
             this.converter = converter;
 
             this.globalSettings = new GlobalSettings
-                                      {
-                                          ColorMode = ColorMode.Color,
-                                          Orientation = Orientation.Portrait,
-                                          PaperSize = PaperKind.A4,
-                                      };
+            {
+                ColorMode = ColorMode.Color,
+                Orientation = Orientation.Portrait,
+                PaperSize = PaperKind.A4,
+            };
         }
 
-        public async Task<byte[]> FromHtmlToPdf(string content)
+        public async Task<byte[]> FromHtmlToPdf(string content, string header = null, string footer = null)
         {
-            var doc = new HtmlToPdfDocument()
-            {
-                GlobalSettings = this.globalSettings,
-                Objects = 
-                    {
-                        new ObjectSettings 
-                            {
-                                PagesCount = true,
-                                HtmlContent = content,
-                                WebSettings = { DefaultEncoding = "utf-8", PrintMediaType = true },
-                            }
-                    }
-            };
+            string headerUrl = null;
+            string footerUrl = null;
 
-            return this.converter.Convert(doc);
+            try
+            {
+                if (!string.IsNullOrEmpty(header))
+                {
+                    headerUrl = System.IO.Path.GetTempPath() + "/" + Guid.NewGuid() + ".html";
+                    File.WriteAllText(headerUrl, header);
+                }
+
+                if (!string.IsNullOrEmpty(footer))
+                {
+                    footerUrl = System.IO.Path.GetTempPath() + "/" + Guid.NewGuid() + ".html";
+                    File.WriteAllText(footerUrl, footer);
+                }
+
+                var doc = new HtmlToPdfDocument()
+                              {
+                                  GlobalSettings = this.globalSettings,
+                                  Objects =
+                                      {
+                                          new ObjectSettings
+                                              {
+                                                  PagesCount = true,
+                                                  HtmlContent = content,
+                                                  HeaderSettings = !string.IsNullOrEmpty(headerUrl)
+                                                          ? new
+                                                            HeaderSettings
+                                                                {
+                                                                    HtmUrl = headerUrl
+                                                                }
+                                                          : null,
+                                                  FooterSettings = !string.IsNullOrEmpty(footerUrl)
+                                                          ? new
+                                                            FooterSettings
+                                                                {
+                                                                    HtmUrl = footerUrl,
+                                                                }
+                                                          : null,
+                                                  WebSettings =
+                                                      {
+                                                          DefaultEncoding = "utf-8",
+                                                          PrintMediaType = true
+                                                      },
+                                              }
+                                      }
+                              };
+
+                return this.converter.Convert(doc);
+            }
+            finally
+            {
+                try
+                {
+                    if (headerUrl != null)
+                    {
+                        File.Delete(headerUrl);
+                    }
+                }
+                catch{}
+
+                try
+                {
+                    if (footerUrl != null)
+                    {
+                        File.Delete(footerUrl);
+                    }
+                }
+                catch{}
+            }
         }
 
         public void Dispose()

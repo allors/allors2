@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TemplateTests.cs" company="Allors bvba">
+// <copyright file="PdfTests.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -44,16 +44,18 @@ namespace Tests
 </head>
 
 <body>
-Hallo Walter!
+    <div>
+        Hello Walter.
+    </div>
 </body>
 <html>";
 
             var pdfService = this.Session.ServiceProvider.GetRequiredService<IPdfService>();
             
             byte[] pdf = null;
-            for (var i = 0; i < 1000; i++)
+            for (var i = 0; i < 1; i++)
             {
-                pdf = await pdfService.FromHtmlToPdf(Html);
+                pdf = await pdfService.FromHtmlToPdf(Html, @"<div>header</div>", @"<div>footer</div>");
                 Console.WriteLine(i);
             }
 

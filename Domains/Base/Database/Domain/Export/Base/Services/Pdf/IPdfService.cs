@@ -24,6 +24,6 @@ namespace Allors.Services
 
     public interface IPdfService
     {
-        Task<byte[]> FromHtmlToPdf(string content);
+        Task<byte[]> FromHtmlToPdf(string content, string header = null, string footer = null);
     }
 }
