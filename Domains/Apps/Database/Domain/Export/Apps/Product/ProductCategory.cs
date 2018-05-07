@@ -95,7 +95,7 @@ namespace Allors.Domain
 
             if (!this.ExistCategoryImage)
             {
-                this.CategoryImage = this.strategy.Session.GetSingleton().NoImageAvailableImage;
+                this.CategoryImage = this.strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
             }
 
             foreach (ProductCategory productCategory in this.ProductCategoriesWhereSuperJacent)

@@ -24,6 +24,7 @@ namespace Allors.Domain
             base.AppsPrepare(setup);
 
             setup.AddDependency(this.ObjectType, M.ContactMechanismPurpose);
+            setup.AddDependency(this.ObjectType, M.Settings);
         }
 
         public static void AppsOnDeriveRevenues(ISession session)

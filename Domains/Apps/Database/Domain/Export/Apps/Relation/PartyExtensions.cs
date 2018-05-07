@@ -166,7 +166,7 @@ namespace Allors.Domain
 
             if (!party.ExistPreferredCurrency)
             {
-                party.PreferredCurrency = session.GetSingleton().PreferredCurrency;
+                party.PreferredCurrency = session.GetSingleton().Settings.PreferredCurrency;
             }
         }
 

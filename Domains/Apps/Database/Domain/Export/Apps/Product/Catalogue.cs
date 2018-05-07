@@ -48,7 +48,7 @@ namespace Allors.Domain
 
             if (!this.ExistCatalogueImage)
             {
-                this.CatalogueImage = this.strategy.Session.GetSingleton().NoImageAvailableImage;
+                this.CatalogueImage = this.strategy.Session.GetSingleton().Settings.NoImageAvailableImage;
             }
         }
     }

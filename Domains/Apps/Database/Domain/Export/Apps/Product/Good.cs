@@ -274,7 +274,7 @@ namespace Allors.Domain
 
             if (this.ExistManufacturedBy)
             {
-                builder.Append($", manufacturer: {this.ManufacturedBy.PartyName}");
+                builder.Append($", Manufacturer: {this.ManufacturedBy.PartyName}");
             }
 
             foreach (ProductFeature feature in this.StandardFeatures)
@@ -282,22 +282,22 @@ namespace Allors.Domain
                 if (feature is Brand)
                 {
                     var brand = (Brand)feature;
-                    builder.Append($", brand: {brand.Name}");
+                    builder.Append($", Brand: {brand.Name}");
                 }
                 if (feature is Model)
                 {
                     var model = (Model)feature;
-                    builder.Append($", model: {model.Name}");
+                    builder.Append($", Model: {model.Name}");
                 }
             }
 
             if (this.InventoryItemsWhereGood.First is SerialisedInventoryItem serialisedInventoryItem)
             {
-                builder.Append($", serialNumber: {serialisedInventoryItem.SerialNumber}");
+                builder.Append($", SN: {serialisedInventoryItem.SerialNumber}");
 
                 if (serialisedInventoryItem.ExistManufacturingYear)
                 {
-                    builder.Append($", Manufacturing year: {serialisedInventoryItem.ManufacturingYear}");
+                    builder.Append($", YOM: {serialisedInventoryItem.ManufacturingYear}");
                 }
 
                 foreach (SerialisedInventoryItemCharacteristic characteristic in serialisedInventoryItem.SerialisedInventoryItemCharacteristics)
