@@ -49,10 +49,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   public ownerships: Ownership[];
   public invoiceItems: InvoiceItem[];
   public salesInvoice: SalesInvoice;
-  public internalOrganisations: InternalOrganisation[];
+  public organisations: Organisation[];
   public addBrand: boolean = false;
   public addModel: boolean = false;
   public scope: Scope;
+  public organisationFilter: FilterFactory;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
@@ -71,6 +72,10 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.organisationFilter = new FilterFactory({
+      objectType: this.m.Organisation,
+      roleTypes: [this.m.Organisation.Name],
+    });
 
     this.fetcher = new Fetcher(this.stateService, this.m);
   }
@@ -169,14 +174,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             objectType: this.m.Brand,
             sort: [new Sort({ roleType: m.Brand.Name, direction: "Asc" })],
           }),
-          new Query(
-            {
-              name: "internalOrganisations",
-              objectType: this.m.Organisation,
-              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: [new Sort({ roleType: m.Organisation.Name, direction: "Asc" })],
-            }),
-          ];
+        ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetches, queries }))
@@ -192,7 +190,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
             this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
             this.locales = loaded.collections.locales as Locale[];
-            this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
             this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];

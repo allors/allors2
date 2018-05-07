@@ -69,8 +69,8 @@
         <div class="grid-2_md-1">
           <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
             display="Name"></a-mat-select>
-          <a-mat-select class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [options]="internalOrganisations"
-            display="Name"></a-mat-select>
+          <a-mat-autocomplete class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [filter]="organisationFilter.create(scope)"
+            display="Name"></a-mat-autocomplete>
           <mat-input-container class="col">
             <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
               <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>

@@ -1,18 +1,20 @@
 <mat-toolbar>
   <div layout="row" layout-align="start center" flex>
     <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" style="display: none">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
     <span>{{title}}</span>
     <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
   </div>
 </mat-toolbar>
 
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-    <div class="grid-8_xs-1">
+      <div class="grid-8_xs-1">
         <mat-input-container class="col">
           <input matInput placeholder="Name" formControlName="name">
         </mat-input-container>
@@ -22,15 +24,17 @@
         <mat-input-container class="col">
           <input matInput placeholder="Keyword" formControlName="keyword">
         </mat-input-container>
+      </div>
+      <div class="grid-8_xs-1">
         <mat-input-container class="col">
-          <input matInput placeholder="Owner" formControlName="owner">
-          <mat-icon matSuffix>search</mat-icon>
+          <mat-select formControlName="owner" name="owner" [(ngModel)]="selectedOwner" placeholder="Owner">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let owner of owners" [value]="owner.Name">{{ owner.Name }}</mat-option>
+          </mat-select>
         </mat-input-container>
-        </div>
-        <div class="grid-8_xs-1">
         <mat-input-container class="col">
-          <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership" >
-          <mat-option>None</mat-option>
+          <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership" placeholder="Ownership">
+            <mat-option>None</mat-option>
             <mat-option *ngFor="let ownership of ownerships" [value]="ownership.Name">{{ ownership.Name }}</mat-option>
           </mat-select>
         </mat-input-container>
@@ -77,7 +81,7 @@
           </mat-select>
         </mat-input-container>
       </div>
-      </form>
+    </form>
   </div>
 
   <mat-divider></mat-divider>
@@ -91,7 +95,7 @@
         <mat-list-item>
 
           <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
-          <img *ngIf="good.PrimaryPhoto" mat-list-avatar [src]="mediaService.url(good.PrimaryPhoto)"/>
+          <img *ngIf="good.PrimaryPhoto" mat-list-avatar [src]="mediaService.url(good.PrimaryPhoto)" />
 
           <h3 *ngIf="serialisedGood(good)" mat-line [routerLink]="'/serialisedGood/' + [good.id]"> {{good.Name}}</h3>
           <h3 *ngIf="!serialisedGood(good)" mat-line [routerLink]="'/nonSerialisedGood/' + [good.id]"> {{good.Name}}</h3>
@@ -99,15 +103,15 @@
           <p mat-line class="mat-caption">Primary category: {{ good.PrimaryProductCategory?.Name }} </p>
 
           <span>
-                <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu x-position="before" #menu="matMenu">
-                <a *ngIf="serialisedGood(good)" [routerLink]="'/serialisedGood/' + [good.id]" mat-menu-item>Edit</a>
-                <a *ngIf="!serialisedGood(good)" [routerLink]="'/nonSerialisedGood/' + [good.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="delete(good)">Delete</button>
-                </mat-menu>
-              </span>
+            <button mat-icon-button [mat-menu-trigger-for]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu x-position="before" #menu="matMenu">
+              <a *ngIf="serialisedGood(good)" [routerLink]="'/serialisedGood/' + [good.id]" mat-menu-item>Edit</a>
+              <a *ngIf="!serialisedGood(good)" [routerLink]="'/nonSerialisedGood/' + [good.id]" mat-menu-item>Edit</a>
+              <button mat-menu-item (click)="delete(good)">Delete</button>
+            </mat-menu>
+          </span>
 
         </mat-list-item>
         <mat-divider *ngIf="!last" mat-inset></mat-divider>

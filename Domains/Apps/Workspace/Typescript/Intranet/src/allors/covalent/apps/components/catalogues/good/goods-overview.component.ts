@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
-import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
+import { ErrorService, FilterFactory, Invoked, Loaded, MediaService, Scope, WorkspaceService } from "../../../../../angular";
 import { Brand, Good, InternalOrganisation, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from "../../../../../domain";
 import { And, ContainedIn, Contains, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
@@ -80,6 +80,10 @@ export class GoodsOverviewComponent implements OnDestroy {
   public suppliers: Organisation[];
   public selectedSupplier: Organisation;
   public supplier: Organisation;
+
+  public owners: Organisation[];
+  public selectedOwner: Organisation;
+  public owner: Organisation;
 
   public manufacturers: Organisation[];
   public selectedManufacturer: Organisation;
@@ -160,8 +164,14 @@ export class GoodsOverviewComponent implements OnDestroy {
             new Query(m.Brand),
             new Query(m.Model),
             new Query(m.InventoryItemKind),
-            new Query(m.Organisation),
             new Query(m.Ownership),
+            new Query({
+              name: "organisations",
+              objectType: m.Organisation,
+              sort: [
+                new Sort({ roleType: m.ProductType.Name, direction: "Asc" }),
+              ],
+            }),
             new Query({
               name: "productCategories",
               objectType: m.ProductCategory,
@@ -230,6 +240,11 @@ export class GoodsOverviewComponent implements OnDestroy {
               this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
               this.supplier = this.suppliers.find(
                 (v: Organisation) => v.Name === data.supplier,
+              );
+
+              this.owners = loaded.collections.organisations as Organisation[];
+              this.owner = this.owners.find(
+                (v: Organisation) => v.Name === data.owner,
               );
 
               const goodsPredicate: And = new And();
@@ -325,21 +340,20 @@ export class GoodsOverviewComponent implements OnDestroy {
                 const inventoryPredicates: Predicate[] =
                   inventoryPredicate.predicates;
 
-                if (data.owner) {
-                  const like: string = data.owner.replace("*", "%") + "%";
-                  inventoryPredicates.push(
-                    new Like({
-                      roleType: m.SerialisedInventoryItem.Owner,
-                      value: like,
+                if (data.ownership) {
+                    inventoryPredicates.push(
+                    new Equals({
+                      roleType: m.SerialisedInventoryItem.Ownership,
+                      value: this.ownership,
                     }),
                   );
                 }
 
-                if (data.ownership) {
+                if (data.owner) {
                   inventoryPredicates.push(
                     new Equals({
-                      roleType: m.SerialisedInventoryItem.Ownership,
-                      value: this.ownership,
+                      roleType: m.SerialisedInventoryItem.Owner,
+                      value: this.owner,
                     }),
                   );
                 }
