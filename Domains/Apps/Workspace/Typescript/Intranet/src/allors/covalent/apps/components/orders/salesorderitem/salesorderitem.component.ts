@@ -13,8 +13,8 @@ import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, Work
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from "../../../../../domain";
 import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
-import { NewGoodDialogComponent } from "../../catalogues";
 import { StateService } from "../../../services/StateService";
+import { NewGoodDialogComponent } from "../../catalogues";
 
 @Component({
   templateUrl: "./salesorderitem.component.html",

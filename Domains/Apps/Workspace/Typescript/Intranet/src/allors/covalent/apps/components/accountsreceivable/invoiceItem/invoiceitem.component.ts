@@ -203,18 +203,20 @@ export class InvoiceItemEditComponent
 
   public facilitySelected(facility: Facility): void {
 
-    this.goodsFacilityFilter = new FilterFactory({
-      objectType: this.m.Good,
-      roleTypes: [this.m.Good.Name],
-      post: (predicate: And) => {
-          const query = new Query({
-              objectType: this.m.VendorProduct,
-              predicate: new Equals({ roleType: this.m.VendorProduct.InternalOrganisation, value: facility.Owner }),
-          });
+    if (facility !== undefined) {
+      this.goodsFacilityFilter = new FilterFactory({
+        objectType: this.m.Good,
+        roleTypes: [this.m.Good.Name],
+        post: (predicate: And) => {
+            const query = new Query({
+                objectType: this.m.VendorProduct,
+                predicate: new Equals({ roleType: this.m.VendorProduct.InternalOrganisation, value: facility.Owner }),
+            });
 
-          predicate.predicates.push(new ContainedIn({ associationType: this.m.Product.VendorProductsWhereProduct, query }));
-      },
-    });
+            predicate.predicates.push(new ContainedIn({ associationType: this.m.Product.VendorProductsWhereProduct, query }));
+        },
+      });
+    }
   }
 
   public save(): void {
