@@ -1,0 +1,43 @@
+namespace Allors.Repository
+{
+    using System;
+
+    using Attributes;
+
+    #region Allors
+    [Id("E39AC111-E740-4C62-AE6B-FBDB790A3A25")]
+    #endregion
+    public partial class DayOfWeek : Enumeration
+    {
+        #region inherited properties
+
+        public Permission[] DeniedPermissions { get; set; }
+
+        public SecurityToken[] SecurityTokens { get; set; }
+
+        public Guid UniqueId { get; set; }
+
+        public string Name { get; set; }
+
+        public LocalisedText[] LocalisedNames { get; set; }
+
+        public bool IsActive { get; set; }
+        #endregion
+
+        #region inherited methods
+
+
+        public void OnBuild(){}
+
+        public void OnPostBuild(){}
+
+        public void OnPreDerive(){}
+
+        public void OnDerive(){}
+
+        public void OnPostDerive(){}
+
+
+        #endregion
+    }
+}

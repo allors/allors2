@@ -506,5 +506,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void WriteOff() { }
+
+        #region Allors
+        [Id("99F56814-6F90-4A6A-996B-84DDE7956544")]
+        #endregion
+        [Workspace]
+        public void Copy() { }
     }
 }

@@ -220,6 +220,17 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       });
   }
 
+  public copy(): void {
+    this.scope.invoke(this.invoice.Copy)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open("Successfully copied.", "close", { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.dialog(error);
+      });
+  }
+
   public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
     this.dialogService
       .openConfirm({ message: "Are you sure you want to delete this item?" })

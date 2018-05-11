@@ -936,7 +936,9 @@ namespace Allors.Domain
                         .WithQuantity(orderItem.QuantityOrdered)
                         .WithComment(orderItem.Comment)
                         .WithDetails(orderItem.Details)
+                        .WithDescription(orderItem.Description)
                         .WithInternalComment(orderItem.InternalComment)
+                        .WithMessage(orderItem.Message)
                         .Build();
 
                     salesInvoice.AddSalesInvoiceItem(invoiceItem);
@@ -952,7 +954,7 @@ namespace Allors.Domain
 
             foreach (SalesTerm salesTerm in this.SalesTerms)
             {
-                if (salesTerm.GetType().Namespace == typeof(IncoTerm).Name)
+                if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
                 {
                     salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
                                                 .WithTermType(salesTerm.TermType)
@@ -961,7 +963,7 @@ namespace Allors.Domain
                                                 .Build());
                 }
 
-                if (salesTerm.GetType().Namespace == typeof(InvoiceTerm).Name)
+                if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
                 {
                     salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
                         .WithTermType(salesTerm.TermType)
@@ -970,7 +972,7 @@ namespace Allors.Domain
                         .Build());
                 }
 
-                if (salesTerm.GetType().Namespace == typeof(OrderTerm).Name)
+                if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
                 {
                     salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
                         .WithTermType(salesTerm.TermType)
