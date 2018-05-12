@@ -32,7 +32,6 @@ describe("Person",
             },
         );
 
-
         describe("displayName",
             () => {
                 let person: Person;
