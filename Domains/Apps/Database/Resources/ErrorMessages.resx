@@ -219,4 +219,13 @@
   <data name="SalesOrderItemQuantityToShipNowNotAvailable" xml:space="preserve">
     <value>The requested quantity to ship immediately is not available</value>
   </data>
+  <data name="FrequencyNotSupported" xml:space="preserve">
+    <value>Selected frequency is not supported</value>
+  </data>
+  <data name="EndDateBeforeStartDate" xml:space="preserve">
+    <value>End date is before start date</value>
+  </data>
+  <data name="DateDayOfWeek" xml:space="preserve">
+    <value>Selected date does not match weekday</value>
+  </data>
 </root>

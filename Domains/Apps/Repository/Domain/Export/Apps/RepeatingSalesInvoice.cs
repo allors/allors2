@@ -33,6 +33,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         public TimeFrequency Frequency { get; set; }
 
@@ -51,6 +52,7 @@ namespace Allors.Repository
         [AssociationId("D5B36209-44E7-4889-8386-79FFB9A72E63")]
         [RoleId("4D0A25E5-CCCC-4499-B77C-627DF7219830")]
         #endregion
+        [Required]
         [Workspace]
         public DateTime NextExecutionDate { get; set; }
 
@@ -59,6 +61,7 @@ namespace Allors.Repository
         [AssociationId("E0AC38F4-B8FD-42C1-A9C7-16AE9CB73C0C")]
         [RoleId("8562C190-A41B-43F8-898C-C1061BEF5CD5")]
         #endregion
+        [Derived]
         [Workspace]
         public DateTime PreviousExecutionDate { get; set; }
 

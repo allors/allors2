@@ -10,7 +10,6 @@
 
 namespace Resources {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -20,7 +19,7 @@ namespace Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ErrorMessages {
@@ -40,7 +39,7 @@ namespace Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.ErrorMessages", typeof(ErrorMessages).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Resources.ErrorMessages", typeof(ErrorMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -134,11 +133,29 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to End date must be later then start date.
+        ///   Looks up a localized string similar to Selected date does not match weekday.
+        /// </summary>
+        public static string DateDayOfWeek {
+            get {
+                return ResourceManager.GetString("DateDayOfWeek", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End date is before start date.
         /// </summary>
         public static string EndDateBeforeStartDate {
             get {
                 return ResourceManager.GetString("EndDateBeforeStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected frequency is not supported.
+        /// </summary>
+        public static string FrequencyNotSupported {
+            get {
+                return ResourceManager.GetString("FrequencyNotSupported", resourceCulture);
             }
         }
         

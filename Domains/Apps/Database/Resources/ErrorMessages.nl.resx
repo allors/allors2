@@ -141,6 +141,15 @@
   <data name="CostUnitNotAllowed" xml:space="preserve">
     <value>Kostendrager niet in lijst van toegestane kostendragers</value>
   </data>
+  <data name="DateDayOfWeek" xml:space="preserve">
+    <value>Gekozen datum komt niet overeen met gekozen weekdag</value>
+  </data>
+  <data name="EndDateBeforeStartDate" xml:space="preserve">
+    <value>Einddatum is voor startdatum</value>
+  </data>
+  <data name="FrequencyNotSupported" xml:space="preserve">
+    <value>Frequentie wordt niet ondersteund</value>
+  </data>
   <data name="GeneralLedgerAccountNotBalanceAccount" xml:space="preserve">
     <value>Grootboek rekening moet balans rekening zijn.</value>
   </data>

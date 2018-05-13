@@ -393,6 +393,128 @@ namespace Allors.Domain
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Cancelled;
         }
 
+        public SalesInvoice AppsCopy(SalesInvoiceCopy method)
+        {
+            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithSalesOrder(this.SalesOrder)
+                .WithPurchaseInvoice(this.PurchaseInvoice)
+                .WithBilledFrom(this.BilledFrom)
+                .WithBilledFromContactMechanism(this.BilledFromContactMechanism)
+                .WithBilledFromContactPerson(this.BilledFromContactPerson)
+                .WithBillToCustomer(this.BillToCustomer)
+                .WithBillToContactMechanism(this.BillToContactMechanism)
+                .WithBillToContactPerson(this.BillToContactPerson)
+                .WithBillToEndCustomer(this.BillToEndCustomer)
+                .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithBillToEndCustomerContactPerson(this.BillToEndCustomerContactPerson)
+                .WithShipToCustomer(this.ShipToCustomer)
+                .WithShipToAddress(this.ShipToAddress)
+                .WithShipToContactPerson(this.ShipToContactPerson)
+                .WithShipToEndCustomer(this.ShipToEndCustomer)
+                .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
+                .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
+                .WithDescription(this.Description)
+                .WithStore(this.Store)
+                .WithInvoiceDate(DateTime.UtcNow)
+                .WithSalesChannel(this.SalesChannel)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                .WithVatRegime(this.VatRegime)
+                .WithDiscountAdjustment(this.DiscountAdjustment)
+                .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                .WithFee(this.Fee)
+                .WithCustomerReference(this.CustomerReference)
+                .WithPaymentMethod(this.PaymentMethod)
+                .WithComment(this.Comment)
+                .WithInternalComment(this.InternalComment)
+                .WithMessage(this.Message)
+                .WithBillingAccount(this.BillingAccount)
+                .Build();
+
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                    .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
+                    .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice)
+                    .WithProduct(salesInvoiceItem.Product)
+                    .WithProductFeature(salesInvoiceItem.ProductFeature)
+                    .WithQuantity(salesInvoiceItem.Quantity)
+                    .WithDescription(salesInvoiceItem.Description)
+                    .WithSerializedInventoryItem(salesInvoiceItem.SerializedInventoryItem)
+                    .WithComment(salesInvoiceItem.Comment)
+                    .WithDetails(salesInvoiceItem.Details)
+                    .WithInternalComment(salesInvoiceItem.InternalComment)
+                    .WithMessage(salesInvoiceItem.Message)
+                    .WithSalesRep(salesInvoiceItem.SalesRep)
+                    .WithFacility(salesInvoiceItem.Facility)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                foreach (SalesTerm salesTerm in salesInvoiceItem.SalesTerms)
+                {
+                    if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
+                    {
+                        salesInvoiceItem.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                            .WithTermType(salesTerm.TermType)
+                            .WithTermValue(salesTerm.TermValue)
+                            .WithDescription(salesTerm.Description)
+                            .Build());
+                    }
+
+                    if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
+                    {
+                        salesInvoiceItem.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                            .WithTermType(salesTerm.TermType)
+                            .WithTermValue(salesTerm.TermValue)
+                            .WithDescription(salesTerm.Description)
+                            .Build());
+                    }
+
+                    if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
+                    {
+                        salesInvoiceItem.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                            .WithTermType(salesTerm.TermType)
+                            .WithTermValue(salesTerm.TermValue)
+                            .WithDescription(salesTerm.Description)
+                            .Build());
+                    }
+                }
+            }
+
+            foreach (SalesTerm salesTerm in this.SalesTerms)
+            {
+                if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
+                {
+                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                                                .WithTermType(salesTerm.TermType)
+                                                .WithTermValue(salesTerm.TermValue)
+                                                .WithDescription(salesTerm.Description)
+                                                .Build());
+                }
+
+                if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
+                {
+                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                        .WithTermType(salesTerm.TermType)
+                        .WithTermValue(salesTerm.TermValue)
+                        .WithDescription(salesTerm.Description)
+                        .Build());
+                }
+
+                if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
+                {
+                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                        .WithTermType(salesTerm.TermType)
+                        .WithTermValue(salesTerm.TermValue)
+                        .WithDescription(salesTerm.Description)
+                        .Build());
+                }
+            }
+
+            return salesInvoice;
+        }
+
         public void AppsOnDeriveLocale(IDerivation derivation)
         {
             if (this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
@@ -700,126 +822,6 @@ namespace Allors.Domain
                 {
                     var salesChannelRevenue = SalesChannelRevenues.AppsFindOrCreateAsDependable(this.Strategy.Session, this);
                     salesChannelRevenue.OnDerive(x => x.WithDerivation(derivation));
-                }
-            }
-        }
-
-        private void AppsCopy(SalesInvoiceCopy method)
-        {
-            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
-                .WithSalesOrder(this.SalesOrder)
-                .WithPurchaseInvoice(this.PurchaseInvoice)
-                .WithBilledFrom(this.BilledFrom)
-                .WithBilledFromContactMechanism(this.BilledFromContactMechanism)
-                .WithBilledFromContactPerson(this.BilledFromContactPerson)
-                .WithBillToCustomer(this.BillToCustomer)
-                .WithBillToContactMechanism(this.BillToContactMechanism)
-                .WithBillToContactPerson(this.BillToContactPerson)
-                .WithBillToEndCustomer(this.BillToEndCustomer)
-                .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
-                .WithBillToEndCustomerContactPerson(this.BillToEndCustomerContactPerson)
-                .WithShipToCustomer(this.ShipToCustomer)
-                .WithShipToAddress(this.ShipToAddress)
-                .WithShipToContactPerson(this.ShipToContactPerson)
-                .WithShipToEndCustomer(this.ShipToEndCustomer)
-                .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
-                .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
-                .WithDescription(this.Description)
-                .WithStore(this.Store)
-                .WithInvoiceDate(DateTime.UtcNow)
-                .WithSalesChannel(this.SalesChannel)
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
-                .WithVatRegime(this.VatRegime)
-                .WithDiscountAdjustment(this.DiscountAdjustment)
-                .WithSurchargeAdjustment(this.SurchargeAdjustment)
-                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
-                .WithFee(this.Fee)
-                .WithCustomerReference(this.CustomerReference)
-                .WithPaymentMethod(this.PaymentMethod)
-                .WithComment(this.Comment)
-                .WithInternalComment(this.InternalComment)
-                .WithMessage(this.Message)
-                .WithBillingAccount(this.BillingAccount)
-                .Build();
-
-            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
-            {
-                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                    .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
-                    .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice)
-                    .WithProduct(salesInvoiceItem.Product)
-                    .WithProductFeature(salesInvoiceItem.ProductFeature)
-                    .WithQuantity(salesInvoiceItem.Quantity)
-                    .WithDescription(salesInvoiceItem.Description)
-                    .WithSerializedInventoryItem(salesInvoiceItem.SerializedInventoryItem)
-                    .WithComment(salesInvoiceItem.Comment)
-                    .WithDetails(salesInvoiceItem.Details)
-                    .WithInternalComment(salesInvoiceItem.InternalComment)
-                    .WithMessage(salesInvoiceItem.Message)
-                    .WithSalesRep(salesInvoiceItem.SalesRep)
-                    .WithFacility(salesInvoiceItem.Facility)
-                    .Build();
-
-                salesInvoice.AddSalesInvoiceItem(invoiceItem);
-
-                foreach (SalesTerm salesTerm in salesInvoiceItem.SalesTerms)
-                {
-                    if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
-                    {
-                        salesInvoiceItem.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
-                            .WithTermType(salesTerm.TermType)
-                            .WithTermValue(salesTerm.TermValue)
-                            .WithDescription(salesTerm.Description)
-                            .Build());
-                    }
-
-                    if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
-                    {
-                        salesInvoiceItem.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
-                            .WithTermType(salesTerm.TermType)
-                            .WithTermValue(salesTerm.TermValue)
-                            .WithDescription(salesTerm.Description)
-                            .Build());
-                    }
-
-                    if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
-                    {
-                        salesInvoiceItem.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
-                            .WithTermType(salesTerm.TermType)
-                            .WithTermValue(salesTerm.TermValue)
-                            .WithDescription(salesTerm.Description)
-                            .Build());
-                    }
-                }
-            }
-
-            foreach (SalesTerm salesTerm in this.SalesTerms)
-            {
-                if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
-                {
-                    salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
-                                                .WithTermType(salesTerm.TermType)
-                                                .WithTermValue(salesTerm.TermValue)
-                                                .WithDescription(salesTerm.Description)
-                                                .Build());
-                }
-
-                if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
-                {
-                    salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
-                        .WithTermType(salesTerm.TermType)
-                        .WithTermValue(salesTerm.TermValue)
-                        .WithDescription(salesTerm.Description)
-                        .Build());
-                }
-
-                if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
-                {
-                    salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
-                        .WithTermType(salesTerm.TermType)
-                        .WithTermValue(salesTerm.TermValue)
-                        .WithDescription(salesTerm.Description)
-                        .Build());
                 }
             }
         }
