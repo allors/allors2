@@ -8,8 +8,8 @@ import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Good, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from "../../../../../domain";
-import { Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
+import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from "../../../../../domain";
+import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 
 @Component({
@@ -21,6 +21,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   public title: string = "Sales Invoice Overview";
   public order: SalesOrder;
   public invoice: SalesInvoice;
+  public repeatingInvoices: RepeatingSalesInvoice[];
+  public repeatingInvoice: RepeatingSalesInvoice;
   public goods: Good[] = [];
 
   private subscription: Subscription;
@@ -149,13 +151,27 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
           }),
         ];
 
+        const predicate: And = new And();
+        const predicates: Predicate[] = predicate.predicates;
+        predicates.push(new Equals({ roleType: m.RepeatingSalesInvoice.Source, value: id }));
+
         const queries: Query[] = [
           new Query(
             {
               name: "goods",
               objectType: m.Good,
             }),
-        ];
+          new Query(
+            {
+              name: "repeatingInvoices",
+              include: [
+                new TreeNode({ roleType: this.m.RepeatingSalesInvoice.Frequency }),
+                new TreeNode({ roleType: this.m.RepeatingSalesInvoice.DayOfWeek }),
+              ],
+              objectType: m.RepeatingSalesInvoice,
+              predicate,
+            }),
+          ];
 
         return this.scope
           .load("Pull", new PullRequest({ fetches, queries }));
@@ -165,6 +181,12 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.invoice = loaded.objects.invoice as SalesInvoice;
+        this.repeatingInvoices = loaded.collections.repeatingInvoices as RepeatingSalesInvoice[];
+        if (this.repeatingInvoices.length > 0) {
+          this.repeatingInvoice = this.repeatingInvoices[0];
+        } else {
+          this.repeatingInvoice = undefined;
+        }
       },
       (error: any) => {
         this.errorService.message(error);

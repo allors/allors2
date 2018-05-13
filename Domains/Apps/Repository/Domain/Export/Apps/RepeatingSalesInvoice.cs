@@ -71,7 +71,7 @@ namespace Allors.Repository
         [RoleId("15629AEF-7979-48BB-8FFD-AFB5FCE1A0F9")]
         #endregion
         [Workspace]
-        public DateTime LastExecutionDate { get; set; }
+        public DateTime FinalExecutionDate { get; set; }
 
         #region Allors
         [Id("B32E3E20-5F2D-476A-B11D-19C996436649")]

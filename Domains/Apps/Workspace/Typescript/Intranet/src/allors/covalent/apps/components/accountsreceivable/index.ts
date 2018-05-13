@@ -10,6 +10,7 @@ export * from "./invoiceitem/invoiceitem.module";
 export * from "./salesterms/incoterm/incoterm.module";
 export * from "./salesterms/invoiceterm/invoiceterm.module";
 export * from "./salesterms/orderterm/orderterm.module";
+export * from "./repeatinginvoice/repeatinginvoice.module";
 
 import { OverviewModule } from "./overview.module";
 
@@ -22,6 +23,7 @@ import { InvoiceModule } from "./invoice/invoice.module";
 import { InvoicesOverviewModule } from "./invoice/invoices-overview.module";
 import { InvoiceItemEditComponent } from "./invoiceitem/invoiceitem.component";
 import { InvoiceItemEditModule } from "./invoiceitem/invoiceitem.module";
+import { RepeatingInvoiceEditModule } from "./repeatinginvoice/repeatinginvoice.module";
 import { IncoTermEditModule } from "./salesterms/incoterm/incoterm.module";
 import { InvoiceTermEditModule } from "./salesterms/invoiceterm/invoiceterm.module";
 import { OrderTermEditModule } from "./salesterms/orderterm/orderterm.module";
@@ -39,4 +41,5 @@ export const modules = [
   InvoiceItemEditModule,
   InvoiceTermEditModule,
   OrderTermEditModule,
+  RepeatingInvoiceEditModule,
 ];

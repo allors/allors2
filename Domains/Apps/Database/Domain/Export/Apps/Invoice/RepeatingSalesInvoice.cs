@@ -73,7 +73,7 @@ namespace Allors.Domain
 
         private void Repeat(DateTime now, DateTime nextDate)
         {
-            if (!this.ExistLastExecutionDate || nextDate <= this.LastExecutionDate.Value.Date)
+            if (!this.ExistFinalExecutionDate || nextDate <= this.FinalExecutionDate.Value.Date)
             {
                 this.NextExecutionDate = nextDate.Date;
             }
