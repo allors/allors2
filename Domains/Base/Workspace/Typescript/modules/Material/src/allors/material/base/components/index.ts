@@ -9,3 +9,5 @@ export * from "./slider/slider.module";
 export * from "./slidetoggle/slidetoggle.module";
 export * from "./static/static.module";
 export * from "./textarea/textarea.module";
+
+export * from "./datepicker/MomentUtcDateAdapter";
