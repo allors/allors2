@@ -191,9 +191,7 @@ export class InvoiceItemEditComponent
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        const newid = this.invoiceItem.id;
-        this.scope.session.reset();
-        this.router.navigate(["/accountspayable/invoice/" + this.invoice.id + "/item/" + newid]);
+        this.refresh();
       },
       (error: Error) => {
         this.errorService.dialog(error);

@@ -195,9 +195,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        const newid = this.orderItem.id;
-        this.scope.session.reset();
-        this.router.navigate(["/orders/salesOrder/" + this.order.id + "/item/" + newid]);
+        this.refresh();
       },
         (error: Error) => {
           this.errorService.dialog(error);
