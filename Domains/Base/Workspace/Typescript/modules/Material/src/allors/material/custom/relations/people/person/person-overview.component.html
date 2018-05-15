@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+  </div>
+</mat-toolbar>
+
+<mat-card body *ngIf="person">
+  <mat-card-content>
+
+    <div layout="row" class="push-top">
+      <a-mat-static [object]="person" [roleType]="m.Person.FirstName"></a-mat-static>
+      <a-mat-static [object]="person" [roleType]="m.Person.MiddleName"></a-mat-static>
+      <a-mat-static [object]="person" [roleType]="m.Person.LastName"></a-mat-static>
+    </div>
+
+    <div layout="row" class="push-top">
+      <a-mat-static [object]="person" [roleType]="m.Person.Photo" display="UniqueId"></a-mat-static>
+    </div>
+
+  </mat-card-content>
+
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button [routerLink]="[ '../edit']">Edit</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,6 @@
+<mat-nav-list>
+  <a *ngFor="let item of routes" mat-list-item [routerLink]="item.route" routerLinkActive="active-link"><mat-icon>{{item.icon}}</mat-icon>{{item.title}}</a>
+</mat-nav-list>
+
+<router-outlet></router-outlet>
+

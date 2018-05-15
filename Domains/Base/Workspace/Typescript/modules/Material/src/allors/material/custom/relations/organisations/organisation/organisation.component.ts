@@ -1,18 +1,18 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from "@angular/core";
-import { Validators } from "@angular/forms";
-import { Title } from "@angular/platform-browser";
-import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
-import { TdDialogService, TdMediaService } from "@covalent/core";
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subject, Subscription } from "rxjs/Rx";
+import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { Enumeration, Locale, Organisation, Person } from "../../../../../domain";
-import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse, Query, RoleType, Sort, TreeNode } from "../../../../../framework";
-import { MetaDomain } from "../../../../../meta";
+import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { Enumeration, Locale, Organisation, Person } from '../../../../../domain';
+import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse,
+         Query, RoleType, Sort, TreeNode } from '../../../../../framework';
+import { MetaDomain } from '../../../../../meta';
 
 @Component({
-  templateUrl: "./organisation.component.html",
+  templateUrl: './organisation.component.html',
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -37,11 +37,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     private titleService: Title,
     private router: Router,
     private route: ActivatedRoute,
-    private media: TdMediaService,
-    private dialogService: TdDialogService,
   ) {
 
-    this.title = "Organisation";
+    this.title = 'Organisation';
     this.titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
@@ -53,30 +51,30 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit(): void {
     const route$: Observable<UrlSegment[]> = this.route.url;
-    const combined$: Observable<[UrlSegment[], Date]> = Observable.combineLatest(route$, this.refresh$);
+    const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
 
     this.subscription = combined$
         .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get("id");
+        const id: string = this.route.snapshot.paramMap.get('id');
 
         const fetches = [
           new Fetch({
             id,
-            name: "organisation",
+            name: 'organisation',
           }),
         ];
 
         const queries = [
           new Query(
             {
-              name: "people",
+              name: 'people',
               objectType: this.m.Person,
             }),
         ];
 
         return this.scope
-          .load("Pull", new PullRequest({ fetches, queries }));
+          .load('Pull', new PullRequest({ fetches, queries }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -84,7 +82,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.organisation = loaded.objects.organisation as Organisation;
         if (!this.organisation) {
-          this.organisation = this.scope.session.create("Organisation") as Organisation;
+          this.organisation = this.scope.session.create('Organisation') as Organisation;
         }
 
         this.people = loaded.collections.people as Person[];
@@ -97,7 +95,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngAfterViewInit(): void {
-    this.media.broadcast();
   }
 
   public ngOnDestroy(): void {

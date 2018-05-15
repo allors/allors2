@@ -1,25 +1,23 @@
-import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material';
 
-import { StaticComponent } from './static.component';
-export { StaticComponent } from './static.component';
+import { ChipsComponent } from './chips.component';
+export { ChipsComponent } from './chips.component';
 
 @NgModule({
   declarations: [
-    StaticComponent,
+    ChipsComponent,
   ],
   exports: [
-    StaticComponent,
+    ChipsComponent,
   ],
   imports: [
-    FormsModule,
     CommonModule,
+    FormsModule,
     MatInputModule,
   ],
 })
-export class StaticModule {
-}
+export class ChipsModule {}

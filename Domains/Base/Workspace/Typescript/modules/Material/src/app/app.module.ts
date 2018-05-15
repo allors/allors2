@@ -12,8 +12,9 @@ import { environment } from '../environments/environment';
 import { AuthorizationService } from './auth/authorization.service';
 import { LoginComponent } from './auth/login.component';
 
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { FormComponent } from './form/form.component';
+import { MainComponent } from './main/main.component';
+
+import * as relations from '../allors/material/custom/relations';
 
 import {
   MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
@@ -32,11 +33,13 @@ const MATERIAL_MODULES: any[] = [
 ];
 
 import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-   DatabaseConfig, DatabaseService, WorkspaceService } from '../allors/angular';
+   DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService } from '../allors/angular';
 
 import { AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
-         RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule, MomentUtcDateAdapter } from '../allors/material';
+         RadioGroupModule, SelectModule, SliderModule, SlideToggleModule,
+         StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService } from '../allors/material';
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
+import { DefaultLoggingService } from './app.logging.service';
 
 const BASE_MATERIAL_MODULES: any[] = [
   AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, LocalisedTextModule,
@@ -48,8 +51,7 @@ const BASE_MATERIAL_MODULES: any[] = [
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent,
-    FormComponent,
+    MainComponent,
   ],
   imports: [
     MATERIAL_MODULES,
@@ -60,6 +62,8 @@ const BASE_MATERIAL_MODULES: any[] = [
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+
+    relations.Modules,
   ],
   providers: [
     { provide: DatabaseConfig, useValue: { url: environment.url } },
@@ -68,6 +72,8 @@ const BASE_MATERIAL_MODULES: any[] = [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
+    { provide: LoggingService, useClass: DefaultLoggingService },
+    { provide: ErrorService, useClass: DefaultErrorService },
     DatabaseService,
     WorkspaceService,
     AuthenticationService,
