@@ -1,11 +1,11 @@
-﻿import { Observable } from "rxjs/Observable";
+﻿import { Observable } from 'rxjs/Observable';
 
-import "rxjs/add/observable/empty";
+import 'rxjs/add/observable/empty';
 
-import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Query, RoleType, Sort } from "../../../framework";
+import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Query, RoleType, Sort } from '../../../framework';
 
-import { Loaded } from "../framework/responses/Loaded";
-import { Scope } from "../framework/Scope";
+import { Loaded } from '../framework/responses/Loaded';
+import { Scope } from '../framework/Scope';
 
 export interface FilterOptions {
   objectType: ObjectType | MetaObjectType;
@@ -21,10 +21,10 @@ export class FilterFactory {
   public create(scope: Scope): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
       if (!search.trim) {
-        return Observable.empty<ISessionObject[]>();
+        return Observable.empty();
       }
 
-      const terms: string[] = search.trim().split(" ");
+      const terms: string[] = search.trim().split(' ');
 
       const and: And = new And();
 
@@ -46,7 +46,7 @@ export class FilterFactory {
         const or: Or = new Or();
         and.predicates.push(or);
         this.options.roleTypes.forEach((roleType: RoleType) => {
-          or.predicates.push(new Like({ roleType, value: term + "%" }));
+          or.predicates.push(new Like({ roleType, value: term + '%' }));
         });
       });
 
@@ -56,7 +56,7 @@ export class FilterFactory {
 
       const queries = [
         new Query({
-          name: "results",
+          name: 'results',
           objectType: this.options.objectType,
           predicate: and,
           sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
@@ -64,7 +64,7 @@ export class FilterFactory {
       ];
 
       return scope
-        .load("Pull", new PullRequest({ queries }))
+        .load('Pull', new PullRequest({ queries }))
         .map((loaded: Loaded) => loaded.collections.results);
     };
   }

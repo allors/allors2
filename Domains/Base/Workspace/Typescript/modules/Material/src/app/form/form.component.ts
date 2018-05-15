@@ -1,15 +1,15 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subscription } from "rxjs/Rx";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 
-import { Organisation } from "../../allors/domain";
-import { ObjectTyped, PullRequest, Query } from "../../allors/framework";
-import { MetaDomain } from "../../allors/meta";
+import { Organisation } from '../../allors/domain';
+import { PullRequest, Query, MetaObjectType } from '../../allors/framework';
+import { MetaDomain } from '../../allors/meta';
 
-import { Scope, WorkspaceService } from "../../allors/angular";
+import { Scope, WorkspaceService } from '../../allors/angular';
 
 @Component({
-  selector: "app-form",
-  templateUrl: "./form.component.html",
+  selector: 'app-form',
+  templateUrl: './form.component.html',
 })
 export class FormComponent implements OnInit, OnDestroy {
 
@@ -36,7 +36,7 @@ export class FormComponent implements OnInit, OnDestroy {
 
   public save(): void {
     this.scope.save().subscribe(() => {
-      alert("saved");
+      alert('saved');
     });
   }
 
@@ -48,12 +48,12 @@ export class FormComponent implements OnInit, OnDestroy {
     }
 
     const queries = [new Query({
-      name: "organisations",
-      objectType: this.m.Organisation as ObjectTyped,
+      name: 'organisations',
+      objectType: this.m.Organisation as MetaObjectType,
     })];
 
     this.scope
-      .load("Pull", new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ queries }))
       .subscribe((loaded) => {
         this.organisation = (loaded.collections.organisations as Organisation[])[0];
       },
