@@ -1,17 +1,4 @@
-<mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button mat-icon-button>
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
-</mat-toolbar>
-
-<mat-card>
+<mat-card *ngIf="data">
   <mat-card-content>
     <mat-list class="will-load">
       <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
@@ -20,9 +7,8 @@
       <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
         <mat-list-item>
 
-          <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>organisation</mat-icon>
-          <img *ngIf="organisation.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}"
-          />
+          <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>business_center</mat-icon>
+          <img *ngIf="organisation.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}" />
 
           <h3 mat-line>{{organisation.Name}}</h3>
           <p mat-line> {{organisation.Owner?.UserName}} </p>
@@ -31,8 +17,8 @@
           <span flex></span>
 
           <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.Created | date }} </div>
-            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastAccess | date }} </div>
+            <div class="mat-caption"> {{ organisation.Created | date }} </div>
+            <div class="mat-caption" flex-gt-xs="50"> {{ organisation.LastAccess | date }} </div>
           </span>
 
           <span>

@@ -1,14 +1,3 @@
-<mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button mat-icon-button>
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
-  </div>
-</mat-toolbar>
-
 <mat-card>
   <form #form="ngForm" *ngIf="person" (submit)="save()">
     <mat-card-content class="push-bottom-none">
@@ -17,9 +6,9 @@
         <a-mat-input [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
         <a-mat-input [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
         <a-mat-input [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
-        <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
-      <!--   <a-td-image [object]="person" [roleType]="m.Person.Photo"></a-td-image>
-        <a-td-images [object]="person" [roleType]="m.Person.Pictures"></a-td-images> -->
+<!--         <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+ -->        <a-mat-file [object]="person" [roleType]="m.Person.Photo"></a-mat-file>
+<!--         <a-mat-files [object]="person" [roleType]="m.Person.Pictures"></a-mat-files> -->
       </div>
 
     </mat-card-content>

@@ -1,23 +1,23 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from "@angular/core";
-import { FormControl, NgForm } from "@angular/forms";
+import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { FormControl, NgForm } from '@angular/forms';
 
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 
-import "rxjs/add/operator/concat";
-import "rxjs/add/operator/debounceTime";
-import "rxjs/add/operator/distinctUntilChanged";
+import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
 
-import { Field } from "../../../../angular";
-import { ISessionObject } from "../../../../framework";
+import { Field } from '../../../../angular';
+import { ISessionObject } from '../../../../framework';
 
-import { MatAutocompleteTrigger } from "@angular/material";
+import { MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
-  selector: "a-mat-autocomplete",
-  templateUrl: "./autocomplete.component.html",
+  selector: 'a-mat-autocomplete',
+  templateUrl: './autocomplete.component.html',
 })
 export class AutocompleteComponent extends Field implements OnInit {
-  @Input() public display: string = "display";
+  @Input() public display: string = 'display';
 
   @Input() public debounceTime: number = 400;
 
@@ -79,7 +79,7 @@ export class AutocompleteComponent extends Field implements OnInit {
   public displayFn(): (val: ISessionObject) => string {
     return (val: ISessionObject) => {
       if (val) {
-        return val ? val[this.display] : "";
+        return val ? val[this.display] : '';
       }
     };
   }
@@ -87,6 +87,8 @@ export class AutocompleteComponent extends Field implements OnInit {
   public selected(option: ISessionObject): void {
     this.model = option;
     this.onChange.emit(option);
+
+    this.searchControl.reset();
   }
 
   public focusout(event: any): void {
@@ -107,5 +109,7 @@ export class AutocompleteComponent extends Field implements OnInit {
         }
       }
     }
+
+    this.searchControl.reset();
   }
 }

@@ -2,6 +2,8 @@ export * from './autocomplete/autocomplete.module';
 export * from './checkbox/checkbox.module';
 export * from './chips/chips.module';
 export * from './datepicker/datepicker.module';
+export * from './file/file.module';
+export * from './files/files.module';
 export * from './input/input.module';
 export * from './localisedtext/localisedtext.module';
 export * from './radiogroup/radiogroup.module';

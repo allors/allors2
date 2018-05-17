@@ -1,5 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, QueryList, ViewChildren } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {
+  AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output,
+  QueryList, ViewChildren, ViewChild, ElementRef
+} from '@angular/core';
+import { NgForm, NgModel, FormControl, FormGroup } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -12,91 +16,101 @@ import 'rxjs/add/operator/do';
 import { ISessionObject } from '../../../../framework';
 
 import { Field } from '../../../../angular';
+import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
-  selector: 'a-td-chips',
+  selector: 'a-mat-chips',
   templateUrl: './chips.component.html',
 })
 export class ChipsComponent extends Field implements OnInit, OnDestroy {
 
-  @Input()
-  public display = 'display';
+  @Input() public display = 'display';
 
-  @Input()
-  public debounceTime = 400;
+  @Input() public debounceTime = 400;
 
-  @Input()
-  public options: ISessionObject[];
+  @Input() public options: ISessionObject[];
 
-  @Input()
-  public filter: ((search: string) => Observable<ISessionObject[]>);
+  @Input() public filter: ((search: string) => Observable<ISessionObject[]>);
 
-  @Output()
-  public onChange: EventEmitter<Field> = new EventEmitter();
+  @Output() public onChange: EventEmitter<ISessionObject> = new EventEmitter();
 
-  public filteredOptions: ISessionObject[];
+  public filteredOptions: Observable<ISessionObject[]>;
 
-  public subject: Subject<string>;
-  public subscription: Subscription;
+  public searchControl: FormControl = new FormControl();
+  @ViewChild('searchInput') searchInput: ElementRef;
+
+  @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
   }
 
   public ngOnInit(): void {
-    this.subject = new Subject<string>();
-
     if (this.filter) {
-      this.subscription = this.subject
-        .debounceTime(this.debounceTime)
-        .distinctUntilChanged()
-        .switchMap((search: string) => {
-          return this.filter(search);
-        })
-        .do((options: ISessionObject[]) => {
-          this.filteredOptions = options.filter((v: any) => this.model.indexOf(v) < 0);
-        })
-        .subscribe();
+      this.filteredOptions = Observable.of(new Array<ISessionObject>()).concat(
+        this.searchControl.valueChanges
+          .debounceTime(this.debounceTime)
+          .distinctUntilChanged()
+          .switchMap((search: string) => {
+            return this.filter(search);
+          }),
+      );
     } else {
-      this.subscription = this.subject
-        .debounceTime(this.debounceTime)
-        .distinctUntilChanged()
-        .map((search: string) => {
-          const lowerCaseSearch: string = search.trim().toLowerCase();
-          return this.options
-            .filter((v: ISessionObject) => {
-              const optionDisplay: string = v[this.display] ? v[this.display].toString().toLowerCase() : undefined;
-              if (optionDisplay) {
-                return optionDisplay.indexOf(lowerCaseSearch) !== -1;
-              }
-            })
-            .sort((a: ISessionObject, b: ISessionObject) => a[this.display] !== b[this.display]
-            ? a[this.display] < b[this.display] ? -1 : 1 : 0);
-        })
-        .do((options: ISessionObject[]) => {
-          this.filteredOptions = options;
-        })
-        .subscribe();
+      this.filteredOptions = Observable.of(new Array<ISessionObject>()).concat(
+        this.searchControl.valueChanges
+          .debounceTime(this.debounceTime)
+          .distinctUntilChanged()
+          .map((search: string) => {
+            if (search) {
+              const lowerCaseSearch: string = search.trim ? search.trim().toLowerCase() : '';
+              return this.options
+                .filter((v: ISessionObject) => {
+                  const optionDisplay: string = v[this.display]
+                    ? v[this.display].toString().toLowerCase()
+                    : undefined;
+                  if (optionDisplay) {
+                    return optionDisplay.indexOf(lowerCaseSearch) !== -1;
+                  }
+                })
+                .sort(
+                  (a: ISessionObject, b: ISessionObject) =>
+                    a[this.display] !== b[this.display]
+                      ? a[this.display] < b[this.display] ? -1 : 1
+                      : 0,
+              );
+            }
+          }),
+      );
     }
   }
 
-  public ngOnDestroy(): void {
-    super.ngOnDestroy();
+  public displayFn(): (val: ISessionObject) => string {
+    return (val: ISessionObject) => {
+      if (val) {
+        return val ? val[this.display] : '';
+      }
+    };
+  }
 
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+  public selected(option: ISessionObject): void {
+    this.add(option);
+    this.onChange.emit(option);
+
+    this.searchControl.reset();
+    this.searchInput.nativeElement.value = '';
+  }
+
+  public focusout(event: any): void {
+    if (this.searchControl.value && this.trigger.autocomplete.options.length === 1) {
+      const option = this.trigger.autocomplete.options.first.value;
+      this.add(option);
+      this.onChange.emit(option);
+
+    } else {
+      this.onChange.emit(undefined);
     }
-  }
 
-  public add(object: ISessionObject): void {
-    this.onChange.emit(this);
-  }
-
-  public remove(object: ISessionObject): void {
-    this.onChange.emit(this);
-  }
-
-  public inputChange(search: string): void {
-    this.subject.next(search);
+    this.searchControl.reset();
+    this.searchInput.nativeElement.value = '';
   }
 }

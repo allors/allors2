@@ -1,0 +1,26 @@
+<!-- <div layout="row">
+
+    <mat-form-field multiple (fileDrop)="addFiles($event)" (click)="fileInput.inputElement.click()"
+        (keyup.enter)="fileInput.inputElement.click()" (keyup.delete)="deleteAll()" (keyup.backspace)="deleteAll()" flex>
+        <input matInput [placeholder]="label" [value]="fieldValue" [disabled]="disabled" readonly/>
+    </mat-form-field>
+
+    <button mat-icon-button *ngIf="model.length > 0" (click)="deleteAll()" (keyup.enter)="deleteAll()">
+        <mat-icon>cancel</mat-icon>
+    </button>
+
+    <input matInput type="file" #fileInput multiple class="push-left-sm push-right-sm" [(ngModel)]="files" (select)="addFiles($event)" [accept]="accept" [disabled]="disabled">
+        <mat-icon>folder</mat-icon>
+        <span class="text-upper">Browse...</span>
+</div>
+
+<div layout="row">
+    <mat-card *ngFor="let media of medias">
+        <img mat-card-md-image [src]="src(media)">
+        <mat-card-actions>
+            <button mat-button (click)="delete(media)">DELETE</button>
+        </mat-card-actions>
+    </mat-card>
+</div> -->
+
+<div>Files</div>

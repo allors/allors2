@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
          MatMenuModule, MatToolbarModule } from '@angular/material';
 
-import { StaticModule, ChipsModule } from '../../../../material';
+import { StaticModule, ChipsModule, SelectModule } from '../../../../material';
 
 import { OrganisationsComponent } from './organisations.component';
 export { OrganisationsComponent } from './organisations.component';
@@ -29,6 +29,7 @@ export { OrganisationsComponent } from './organisations.component';
     MatToolbarModule,
     ChipsModule,
     StaticModule,
+    SelectModule,
   ],
 })
 export class OrganisationsModule {}

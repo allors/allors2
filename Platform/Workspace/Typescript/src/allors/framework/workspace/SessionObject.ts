@@ -1,12 +1,12 @@
-﻿import { ObjectType } from "../meta";
+﻿import { ObjectType } from '../meta';
 
-import { PushRequestNewObject } from "./../database/push/PushRequestNewObject";
-import { PushRequestObject } from "./../database/push/PushRequestObject";
-import { PushRequestRole } from "./../database/push/PushRequestRole";
+import { PushRequestNewObject } from './../database/push/PushRequestNewObject';
+import { PushRequestObject } from './../database/push/PushRequestObject';
+import { PushRequestRole } from './../database/push/PushRequestRole';
 
-import { Method } from "./Method";
-import { ISession } from "./Session";
-import { IWorkspaceObject } from "./WorkspaceObject";
+import { Method } from './Method';
+import { ISession } from './Session';
+import { IWorkspaceObject } from './WorkspaceObject';
 
 export interface ISessionObject {
     id: string;
@@ -133,7 +133,7 @@ export class SessionObject implements INewSessionObject {
                             }) : [];
                         }
                     } catch (e) {
-                        let stringValue = "N/A";
+                        let stringValue = 'N/A';
                         try {
                             stringValue = this.toString();
                         } catch (e2) {
@@ -272,13 +272,13 @@ export class SessionObject implements INewSessionObject {
         }
     }
 
-    protected init(){
+    protected init() {
         this.roleByRoleTypeName = {};
     }
 
     private assertExists() {
         if (!this.roleByRoleTypeName) {
-            throw new Error("Object doesn't exist anymore.");
+            throw new Error('Object doesn\'t exist anymore.');
         }
     }
 

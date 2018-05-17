@@ -91,6 +91,18 @@ export abstract class Field implements AfterViewInit, OnDestroy {
     return !this.canWrite || !!this.assignedDisabled;
   }
 
+  public add(value: ISessionObject) {
+    if (this.ExistObject) {
+      this.object.add(this.roleType.name, value);
+    }
+  }
+
+  public remove(value: ISessionObject) {
+    if (this.ExistObject) {
+      this.object.remove(this.roleType.name, value);
+    }
+  }
+
   public ngAfterViewInit(): void {
     if (!!this.parentForm) {
       this.controls.forEach((control: NgModel) => {

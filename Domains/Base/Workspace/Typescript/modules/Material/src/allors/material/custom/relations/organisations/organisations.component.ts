@@ -28,6 +28,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     private router: Router) {
 
       this.title = 'Organisations';
+      this.titleService.setTitle(this.title);
       this.scope = this.workspaceService.createScope();
       this.m = this.workspaceService.metaPopulation.metaDomain;
     }

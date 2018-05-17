@@ -5,21 +5,25 @@ import { AuthorizationService } from './auth/authorization.service';
 
 import { LoginComponent } from './auth/login.component';
 import { MainComponent } from './main/main.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 import * as relations from '../allors/material/custom/relations';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: '/relations', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
+    path: '',
+    component: MainComponent,
     canActivate: [AuthorizationService],
     children: [
       {
+        path: 'dashboard', component: DashboardComponent,
+      },
+      {
+        path: 'relations',
         children: [
           {
-            component: relations.DashboardComponent,
-            path: '',
-          }, {
             children: [
               { path: '', component: relations.OrganisationsComponent },
               { path: 'add', component: relations.OrganisationComponent },
@@ -37,12 +41,8 @@ const routes: Routes = [
             path: 'people',
           },
         ],
-        component: relations.RelationsComponent,
-        path: 'relations',
       },
     ],
-    component: MainComponent,
-    path: '',
   },
 ];
 

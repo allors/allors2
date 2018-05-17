@@ -1,14 +1,3 @@
-<mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
-    <button mat-icon-button>
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
-  </div>
-</mat-toolbar>
-
 <mat-card>
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
     <mat-card-content class="push-bottom-none">
@@ -19,7 +8,9 @@
         <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
         <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
         
-        <a-td-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [filter]="peopleFilter.create()" display="UserName" hint="All current employees"></a-td-chips>
+        <a-mat-select [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
+
+        <a-mat-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
 
         <h3>Output</h3>
         <div class="push-top">{{organisation?.Owner?.UserName}}</div>

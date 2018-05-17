@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { MatInputModule } from '@angular/material';
+import { MatAutocompleteModule, MatChipsModule, MatIconModule, MatInputModule } from '@angular/material';
 
 import { ChipsComponent } from './chips.component';
 export { ChipsComponent } from './chips.component';
@@ -17,6 +17,10 @@ export { ChipsComponent } from './chips.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatIconModule,
     MatInputModule,
   ],
 })

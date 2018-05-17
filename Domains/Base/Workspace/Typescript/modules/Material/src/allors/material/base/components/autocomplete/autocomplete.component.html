@@ -1,7 +1,16 @@
 
 <mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
-  <input [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly"
-    [matAutocomplete]="autocomplete" (focusout)="focusout($event)">
+  <input 
+    [formControl]="searchControl" 
+    type="text" 
+    autocomplete="off" 
+    matInput 
+    [placeholder]="label" 
+    [required]="required" 
+    [disabled]="disabled" 
+    [readonly]="readonly"
+    [matAutocomplete]="autocomplete" 
+    (focusout)="focusout($event)">
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </mat-form-field>
 
