@@ -21,12 +21,12 @@
             <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
           </mat-select>
         </mat-input-container>
-        <!-- <mat-input-container class="col">
+        <mat-input-container class="col">
           <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
           </mat-select>
-        </mat-input-container> -->
+        </mat-input-container>
         <mat-input-container class="col">
           <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
             <mat-option>None</mat-option>

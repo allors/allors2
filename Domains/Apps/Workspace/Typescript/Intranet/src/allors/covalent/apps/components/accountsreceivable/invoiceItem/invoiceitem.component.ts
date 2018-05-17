@@ -220,6 +220,7 @@ export class InvoiceItemEditComponent
   }
 
   public save(): void {
+    const isNew = this.invoiceItem.isNew;
     this.scope.save().subscribe(
       (saved: Saved) => {
         this.router.navigate(["/accountsreceivable/invoice/" + this.invoice.id]);
@@ -231,11 +232,16 @@ export class InvoiceItemEditComponent
   }
 
   public update(): void {
+    const isNew = this.invoiceItem.isNew;
 
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.refresh();
+        if (isNew) {
+          this.router.navigate(["/salesinvoice/" + this.invoice.id + "/item/" + this.invoiceItem.id]);
+        } else {
+          this.refresh();
+        }
       },
       (error: Error) => {
         this.errorService.dialog(error);

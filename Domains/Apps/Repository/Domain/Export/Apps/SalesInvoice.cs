@@ -474,6 +474,15 @@ namespace Allors.Repository
         [Workspace]
         public Store Store { get; set; }
 
+        #region Allors
+        [Id("968409E5-9FA6-4085-9707-6ECF38A08272")]
+        [AssociationId("6751C1AE-5EE4-41A9-AB1E-D61CA45DA56B")]
+        [RoleId("F08C7F44-6ACC-4402-AB46-931410A6B0AB")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        public bool IsRepeatingInvoice { get; set; }
+
         #region inherited methods
 
 
@@ -512,5 +521,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Copy() { }
+
+        #region Allors
+        [Id("1D9B28F2-1439-41F8-A556-59BDEFB4683E")]
+        #endregion
+        [Workspace]
+        public void Credit() { }
     }
 }

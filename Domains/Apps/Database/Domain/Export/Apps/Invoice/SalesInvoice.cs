@@ -196,7 +196,7 @@ namespace Allors.Domain
 
             if (!this.ExistInvoiceNumber && this.ExistStore)
             {
-                this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
+                this.InvoiceNumber = this.Store.DeriveNextTemporaryInvoiceNumber();
             }
 
             if (!this.ExistBilledFromContactMechanism)
@@ -237,6 +237,8 @@ namespace Allors.Domain
                         this.Strategy.Session.GetSingleton().DefaultLocale.Country.Currency;
                 }
             }
+
+            this.IsRepeatingInvoice = this.ExistRepeatingSalesInvoiceWhereSource && (!this.RepeatingSalesInvoiceWhereSource.ExistFinalExecutionDate || this.RepeatingSalesInvoiceWhereSource.FinalExecutionDate.Value.Date >= this.strategy.Session.Now().Date);
 
             this.AppsOnDeriveInvoiceItems(derivation);
 
@@ -336,7 +338,10 @@ namespace Allors.Domain
 
         public void AppsSend(SalesInvoiceSend method)
         {
+            this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
+
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Sent;
+
             if (this.BillToCustomer is Organisation organisation && organisation.IsInternalOrganisation)
             {
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)

@@ -187,11 +187,16 @@ export class InvoiceItemEditComponent
   }
 
   public update(): void {
+    const isNew = this.invoiceItem.isNew;
 
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.refresh();
+        if (isNew) {
+          this.router.navigate(["/purchaseinvoice/" + this.invoice.id + "/item/" + this.invoiceItem.id]);
+        } else {
+          this.refresh();
+        }
       },
       (error: Error) => {
         this.errorService.dialog(error);

@@ -19,7 +19,6 @@ namespace Allors.Domain
 {
     using System;
     using Meta;
-    using Resources;
 
     public partial class Store
     {
@@ -53,6 +52,11 @@ namespace Allors.Domain
             }
 
             return string.Concat(this.SalesInvoiceNumberPrefix, salesInvoiceNumber).Replace("{year}", year.ToString());
+        }
+
+        public string DeriveNextTemporaryInvoiceNumber()
+        {
+            return this.SalesInvoiceTemporaryCounter.NextValue().ToString();
         }
 
         // TODO: Cascading delete
@@ -103,6 +107,11 @@ namespace Allors.Domain
             if (!this.ExistBillingProcess)
             {
                 this.BillingProcess = new BillingProcesses(this.strategy.Session).BillingForShipmentItems;
+            }
+
+            if (!this.ExistSalesInvoiceTemporaryCounter)
+            {
+                this.SalesInvoiceTemporaryCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
         }
 

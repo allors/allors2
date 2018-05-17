@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from "../../../../../angular";
-import { InternalOrganisation, SalesOrder } from "../../../../../domain";
+import { InternalOrganisation, SalesOrder, SalesOrderState } from "../../../../../domain";
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -22,6 +22,7 @@ interface SearchData {
   company: string;
   reference: string;
   orderNumber: string;
+  state: string;
 }
 
 @Component({
@@ -39,6 +40,10 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
   public internalOrganisations: InternalOrganisation[];
   public selectedInternalOrganisation: InternalOrganisation;
   public billToInternalOrganisation: InternalOrganisation;
+
+  public orderStates: SalesOrderState[];
+  public selectedOrderState: SalesOrderState;
+  public orderState: SalesOrderState;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -66,6 +71,7 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
       company: [""],
       orderNumber: [""],
       reference: [""],
+      state: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -93,6 +99,11 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
         const internalOrganisationsQuery: Query[] = [
           new Query(
             {
+              name: "orderStates",
+              objectType: m.SalesOrderState,
+            }),
+          new Query(
+            {
               name: "internalOrganisations",
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
@@ -101,8 +112,11 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
 
         return this.scope
         .load("Pull", new PullRequest({ queries: internalOrganisationsQuery }))
-        .switchMap((internalOrganisationsLoaded: Loaded) => {
-          this.internalOrganisations = internalOrganisationsLoaded.collections.internalOrganisations as InternalOrganisation[];
+        .switchMap((loaded: Loaded) => {
+          this.orderStates = loaded.collections.orderStates as SalesOrderState[];
+          this.orderState = this.orderStates.find((v: SalesOrderState) => v.Name === data.state);
+
+          this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
           this.billToInternalOrganisation = this.internalOrganisations.find(
             (v) => v.PartyName === data.internalOrganisation,
           );
@@ -140,6 +154,10 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
           if (data.reference) {
             const like: string = data.reference.replace("*", "%") + "%";
             predicates.push(new Like({ roleType: m.SalesOrder.CustomerReference, value: like }));
+          }
+
+          if (data.state) {
+            predicates.push(new Equals({ roleType: m.SalesOrder.SalesOrderState, value: this.orderState }));
           }
 
           const queries: Query[] = [new Query(

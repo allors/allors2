@@ -19,18 +19,17 @@
           <input matInput placeholder="Organisation" formControlName="company">
         </mat-input-container>
         <mat-input-container class="col">
-          <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation"
-            placeholder="To Internal Organisation">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
-          </mat-select>
-        </mat-input-container>
-        <mat-input-container class="col">
           <input matInput placeholder="Number" formControlName="orderNumber">
         </mat-input-container>
         <mat-input-container class="col">
           <input matInput placeholder="Customer Reference" formControlName="reference">
           <mat-icon matSuffix>search</mat-icon>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="state" name="state" [(ngModel)]="selectedOrderState" placeholder="State">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let objectState of orderStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+          </mat-select>
         </mat-input-container>
       </div>
     </form>

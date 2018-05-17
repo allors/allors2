@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from "../../../../../angular";
-import { InternalOrganisation, ProductQuote } from "../../../../../domain";
+import { InternalOrganisation, ProductQuote, QuoteState } from "../../../../../domain";
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -21,6 +21,7 @@ interface SearchData {
   company: string;
   description: string;
   quoteNumber: string;
+  state: string;
 }
 
 @Component({
@@ -34,6 +35,13 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
   public data: ProductQuote[];
   public filtered: ProductQuote[];
   public total: number;
+
+  public internalOrganisations: InternalOrganisation[];
+  public selectedInternalOrganisation: InternalOrganisation;
+
+  public quoteStates: QuoteState[];
+  public selectedQuoteState: QuoteState;
+  public quoteState: QuoteState;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -60,6 +68,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
       company: [""],
       description: [""],
       quoteNumber: [""],
+      state: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -79,21 +88,44 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
         ];
       }, [] as [SearchData, number, Date, InternalOrganisation]);
 
+    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+        const internalOrganisationsQuery: Query[] = [
+          new Query(
+            {
+              name: "quoteStates",
+              objectType: m.QuoteState,
+            }),
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: m.Organisation,
+              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            }),
+        ];
 
-        predicates.push(new Equals({ roleType: m.ProductQuote.Issuer, value: internalOrganisationId }));
+        return this.scope
+        .load("Pull", new PullRequest({ queries: internalOrganisationsQuery }))
+        .switchMap((loaded: Loaded) => {
+          this.quoteStates = loaded.collections.quoteStates as QuoteState[];
+          this.quoteState = this.quoteStates.find((v: QuoteState) => v.Name === data.state);
 
-        if (data.quoteNumber) {
+          this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.predicates;
+
+          predicates.push(new Equals({ roleType: m.ProductQuote.Issuer, value: internalOrganisationId }));
+
+          if (data.quoteNumber) {
           const like: string = "%" + data.quoteNumber + "%";
           predicates.push(new Like({ roleType: m.ProductQuote.QuoteNumber, value: like }));
         }
 
-        if (data.company) {
+          if (data.company) {
           const partyQuery: Query = new Query({
             objectType: m.Party, predicate: new Like({
               roleType: m.Party.PartyName, value: data.company.replace("*", "%") + "%",
@@ -104,12 +136,16 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
           predicates.push(containedIn);
         }
 
-        if (data.description) {
+          if (data.description) {
           const like: string = data.description.replace("*", "%") + "%";
           predicates.push(new Like({ roleType: m.ProductQuote.Description, value: like }));
         }
 
-        const queries: Query[] = [new Query(
+          if (data.state) {
+          predicates.push(new Equals({ roleType: m.ProductQuote.QuoteState, value: this.quoteState }));
+        }
+
+          const queries: Query[] = [new Query(
           {
             include: [
               new TreeNode({ roleType: m.ProductQuote.Receiver }),
@@ -122,12 +158,12 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
             sort: [new Sort({ roleType: m.ProductQuote.QuoteNumber, direction: "Desc" })],
           })];
 
-        return this.scope.load("Pull", new PullRequest({ queries }));
-
+          return this.scope.load("Pull", new PullRequest({ queries }));
+        });
       })
       .subscribe((loaded) => {
         this.data = loaded.collections.quotes as ProductQuote[];
-        this.total = loaded.values.quotes_total;
+        this.total = loaded.values.invoices_total;
       },
       (error: any) => {
         this.errorService.message(error);

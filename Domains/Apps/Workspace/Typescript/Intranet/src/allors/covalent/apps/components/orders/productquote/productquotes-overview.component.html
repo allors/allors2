@@ -22,6 +22,12 @@
         <input matInput placeholder="Description" formControlName="description">
         <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
+      <mat-input-container class="col">
+        <mat-select formControlName="state" name="state" [(ngModel)]="selectedQuoteState" placeholder="State">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let objectState of quoteStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+        </mat-select>
+      </mat-input-container>
     </form>
   </div>
 

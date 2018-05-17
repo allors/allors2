@@ -69,15 +69,6 @@ namespace Allors.Repository
         public string OutgoingShipmentNumberPrefix { get; set; }
 
         #region Allors
-        [Id("3e378f04-0d14-4b03-b8e2-b58da3039184")]
-        [AssociationId("b4f8b63a-d4c6-4a40-a603-84c4225f02ed")]
-        [RoleId("3a00ec26-a46e-4262-aed0-56cb25abf2b1")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        public string SalesInvoiceNumberPrefix { get; set; }
-
-        #region Allors
         [Id("4927a65d-a9d3-4fad-afce-1ec8679d3a55")]
         [AssociationId("e2dc511c-86b0-46fe-b5cf-680dfe012f47")]
         [RoleId("f18df944-920c-474a-ac8e-2e10b460c522")]
@@ -159,6 +150,15 @@ namespace Allors.Repository
         public Carrier DefaultCarrier { get; set; }
 
         #region Allors
+        [Id("3e378f04-0d14-4b03-b8e2-b58da3039184")]
+        [AssociationId("b4f8b63a-d4c6-4a40-a603-84c4225f02ed")]
+        [RoleId("3a00ec26-a46e-4262-aed0-56cb25abf2b1")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string SalesInvoiceNumberPrefix { get; set; }
+
+        #region Allors
         [Id("8a3d0121-e5f9-4bc9-a829-340e1b4b5402")]
         [AssociationId("d92f46c9-07aa-4be9-b0ab-36d66b24ae5e")]
         [RoleId("7d03bd42-e0fa-4053-bf9c-c45b06fcff97")]
@@ -166,6 +166,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public Counter SalesInvoiceCounter { get; set; }
+
+        #region Allors
+        [Id("3CBCF813-7FD4-4C69-98C8-CFC260234477")]
+        [AssociationId("92F3D9D3-39C9-4482-B66C-4D328F61B47B")]
+        [RoleId("A79C364B-9CA8-4659-9ADE-FBBDECA0E2AB")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Counter SalesInvoiceTemporaryCounter { get; set; }
 
         #region Allors
         [Id("954d4e3c-f188-45f4-98b8-ece14ac7dabd")]

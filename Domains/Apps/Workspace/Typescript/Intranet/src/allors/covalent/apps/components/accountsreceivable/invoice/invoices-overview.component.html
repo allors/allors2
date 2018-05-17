@@ -28,6 +28,13 @@
             <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
           </mat-select>
         </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="state" name="state" [(ngModel)]="selectedSalesInvoiceState" placeholder="State">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let objectState of salesInvoiceStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-checkbox formControlName="repeating">Repeating</mat-checkbox>
         <mat-icon matSuffix>search</mat-icon>
       </div>
     </form>

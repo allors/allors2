@@ -38,6 +38,7 @@ export const modules = [
   InvoiceOverviewModule,
   InvoicesOverviewModule,
   InvoicePrintModule,
+  InvoicePrintModule,
   InvoiceItemEditModule,
   InvoiceTermEditModule,
   OrderTermEditModule,

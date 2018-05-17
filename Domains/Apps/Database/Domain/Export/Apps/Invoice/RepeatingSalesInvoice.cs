@@ -24,6 +24,15 @@ namespace Allors.Domain
 
     public partial class RepeatingSalesInvoice
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            if (this.ExistSource)
+            {
+                derivation.AddDependency(this.Source, this);
+            }
+        }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {

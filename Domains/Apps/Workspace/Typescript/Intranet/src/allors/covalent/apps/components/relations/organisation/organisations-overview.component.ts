@@ -193,9 +193,11 @@ export class OrganisationsOverviewComponent implements OnDestroy {
             const predicate: And = new And();
             const predicates: Predicate[] = predicate.predicates;
 
-            // if (data.role) {
-            //   predicates.push(new Contains({ roleType: m.Organisation.OrganisationRoles, object: this.role }));
-            // }
+            if (data.role) {
+              if (this.role.UniqueId.toUpperCase() === "32E74BEF-2D79-4427-8902-B093AFA81661" ) {
+                predicates.push(new Equals({ roleType: m.Organisation.IsManufacturer, value: true }));
+              }
+            }
 
             if (data.classification) {
               predicates.push(new Contains({ roleType: m.Organisation.OrganisationClassifications, object: this.classification }));

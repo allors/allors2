@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from "../../../../../angular";
-import { InternalOrganisation, SalesInvoice } from "../../../../../domain";
+import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from "../../../../../domain";
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -22,6 +22,9 @@ interface SearchData {
   company: string;
   reference: string;
   invoiceNumber: string;
+  repeating: boolean;
+  state: string;
+  product: string;
 }
 
 @Component({
@@ -39,6 +42,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   public internalOrganisations: InternalOrganisation[];
   public selectedInternalOrganisation: InternalOrganisation;
   public billToInternalOrganisation: InternalOrganisation;
+
+  public salesInvoiceStates: SalesInvoiceState[];
+  public selectedSalesInvoiceState: SalesInvoiceState;
+  public salesInvoiceState: SalesInvoiceState;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -68,6 +75,9 @@ export class InvoicesOverviewComponent implements OnDestroy {
       company: [""],
       invoiceNumber: [""],
       reference: [""],
+      repeating: [""],
+      state: [""],
+      product: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -95,6 +105,11 @@ export class InvoicesOverviewComponent implements OnDestroy {
         const internalOrganisationsQuery: Query[] = [
           new Query(
             {
+              name: "salesinvoiceStates",
+              objectType: m.SalesInvoiceState,
+            }),
+          new Query(
+            {
               name: "internalOrganisations",
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
@@ -103,8 +118,11 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
         return this.scope
         .load("Pull", new PullRequest({ queries: internalOrganisationsQuery }))
-        .switchMap((internalOrganisationsLoaded: Loaded) => {
-          this.internalOrganisations = internalOrganisationsLoaded.collections.internalOrganisations as InternalOrganisation[];
+        .switchMap((loaded: Loaded) => {
+          this.salesInvoiceStates = loaded.collections.salesinvoiceStates as SalesInvoiceState[];
+          this.salesInvoiceState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.Name === data.state);
+
+          this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
           this.billToInternalOrganisation = this.internalOrganisations.find(
             (v) => v.PartyName === data.internalOrganisation,
           );
@@ -130,6 +148,18 @@ export class InvoicesOverviewComponent implements OnDestroy {
             predicates.push(containedIn);
           }
 
+          if (data.product) {
+            const productQuery: Query = new Query({
+              objectType: m.Good,
+              predicate: new Like({
+                roleType: m.Good.Name, value: data.company.replace("*", "%") + "%",
+              }),
+            });
+
+            const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesInvoiceItem.Product, query: productQuery });
+            predicates.push(containedIn);
+          }
+
           if (data.internalOrganisation) {
             predicates.push(
               new Equals({
@@ -142,6 +172,14 @@ export class InvoicesOverviewComponent implements OnDestroy {
           if (data.reference) {
             const like: string = data.reference.replace("*", "%") + "%";
             predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
+          }
+
+          if (data.repeating) {
+            predicates.push(new Equals({ roleType: m.SalesInvoice.IsRepeatingInvoice, value: true }));
+          }
+
+          if (data.state) {
+            predicates.push(new Equals({ roleType: m.SalesInvoice.SalesInvoiceState, value: this.salesInvoiceState }));
           }
 
           const queries: Query[] = [new Query(
