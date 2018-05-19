@@ -134,18 +134,6 @@ export class CategoryComponent implements OnInit, OnDestroy {
       });
   }
 
-  public update(): void {
-
-    this.scope
-      .save()
-      .subscribe((saved: Saved) => {
-        this.refresh();
-      },
-      (error: Error) => {
-        this.errorService.dialog(error);
-      });
-  }
-
   public refresh(): void {
     this.refresh$.next(new Date());
   }

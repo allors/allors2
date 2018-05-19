@@ -110,6 +110,14 @@ namespace Allors.Repository
         public string SerialNumber { get; set; }
 
         #region Allors
+        [Id("263ABCB6-8B16-4BC5-9713-B01F4E6A5D28")]
+        [AssociationId("20954D01-363D-454F-A0FE-C5FCDD209F52")]
+        [RoleId("BCDD7339-7184-4A40-A1D7-7498FEDC37F6")]
+        #endregion
+        [Workspace]
+        public string Location { get; set; }
+
+        #region Allors
         [Id("91D1A28D-AE04-4445-B4AC-2053559DCFB7")]
         [AssociationId("2FBE6AA9-9E34-4A9A-9972-88E729AAEFBC")]
         [RoleId("6FE84CF4-959C-48AE-9923-C91D77E1C439")]

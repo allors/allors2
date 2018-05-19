@@ -24,8 +24,6 @@
         <mat-input-container class="col">
           <input matInput placeholder="Keyword" formControlName="keyword">
         </mat-input-container>
-      </div>
-      <div class="grid-8_xs-1">
         <mat-input-container class="col">
           <mat-select formControlName="owner" name="owner" [(ngModel)]="selectedOwner" placeholder="Owner">
             <mat-option>None</mat-option>
@@ -78,6 +76,12 @@
           <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier" placeholder="Supplier">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let supplier of suppliers" [value]="supplier.Name">{{ supplier.Name }}</mat-option>
+          </mat-select>
+        </mat-input-container>
+        <mat-input-container class="col">
+          <mat-select formControlName="state" name="state" [(ngModel)]="selectedSerialisedInventoryItemState" placeholder="State">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let objectState of serialisedInventoryItemStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
           </mat-select>
         </mat-input-container>
       </div>

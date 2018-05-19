@@ -12,7 +12,7 @@ import "rxjs/add/observable/combineLatest";
 import { TdDialogService, TdMediaService } from "@covalent/core";
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from "../../../../../angular";
-import { InternalOrganisation, PurchaseInvoice } from "../../../../../domain";
+import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from "../../../../../domain";
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -21,6 +21,7 @@ interface SearchData {
   company: string;
   reference: string;
   invoiceNumber: string;
+  state: string;
 }
 
 @Component({
@@ -34,6 +35,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   public data: PurchaseInvoice[];
   public filtered: PurchaseInvoice[];
   public total: number;
+
+  public purchaseInvoiceStates: PurchaseInvoiceState[];
+  public selectedPurchaseInvoiceState: PurchaseInvoiceState;
+  public purchaseInvoiceState: PurchaseInvoiceState;
 
   public internalOrganisations: InternalOrganisation[];
   public selectedInternalOrganisation: InternalOrganisation;
@@ -66,6 +71,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
       internalOrganisation: [""],
       invoiceNumber: [""],
       reference: [""],
+      state: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -93,6 +99,11 @@ export class InvoicesOverviewComponent implements OnDestroy {
         const internalOrganisationsQuery: Query[] = [
           new Query(
             {
+              name: "purchaseinvoiceStates",
+              objectType: m.PurchaseInvoiceState,
+            }),
+          new Query(
+            {
               name: "internalOrganisations",
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
@@ -101,8 +112,11 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
         return this.scope
         .load("Pull", new PullRequest({ queries: internalOrganisationsQuery }))
-        .switchMap((internalOrganisationsLoaded: Loaded) => {
-          this.internalOrganisations = internalOrganisationsLoaded.collections.internalOrganisations as InternalOrganisation[];
+        .switchMap((loaded: Loaded) => {
+          this.purchaseInvoiceStates = loaded.collections.purchaseinvoiceStates as PurchaseInvoiceState[];
+          this.purchaseInvoiceState = this.purchaseInvoiceStates.find((v: PurchaseInvoiceState) => v.Name === data.state);
+
+          this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
           this.billedFromInternalOrganisation = this.internalOrganisations.find(
             (v) => v.PartyName === data.internalOrganisation,
           );
@@ -142,14 +156,14 @@ export class InvoicesOverviewComponent implements OnDestroy {
             predicates.push(new Like({ roleType: m.PurchaseInvoice.CustomerReference, value: like }));
           }
 
-          if (data.reference) {
-            const like: string = data.reference.replace("*", "%") + "%";
-            predicates.push(new Like({ roleType: m.PurchaseInvoice.CustomerReference, value: like }));
+          if (data.state) {
+            predicates.push(new Equals({ roleType: m.PurchaseInvoice.PurchaseInvoiceState, value: this.purchaseInvoiceState }));
           }
 
           const queries: Query[] = [new Query(
           {
             include: [
+              new TreeNode({ roleType: m.PurchaseInvoice.BilledFrom }),
               new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomer }),
               new TreeNode({ roleType: m.PurchaseInvoice.PurchaseInvoiceState }),
             ],

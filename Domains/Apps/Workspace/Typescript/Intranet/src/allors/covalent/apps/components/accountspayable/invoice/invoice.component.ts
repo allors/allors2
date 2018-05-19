@@ -10,7 +10,7 @@ import { Subscription } from "rxjs/Subscription";
 import "rxjs/add/observable/combineLatest";
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from "../../../../../angular";
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseOrder, VatRate, VatRegime } from "../../../../../domain";
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from "../../../../../domain";
 import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from "../../../../../framework";
 import { MetaDomain } from "../../../../../meta";
 import { StateService } from "../../../services/StateService";
@@ -31,6 +31,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   public currencies: Currency[];
   public vatRates: VatRate[];
   public vatRegimes: VatRegime[];
+  public purchaseInvoiceTypes: PurchaseInvoiceType[];
 
   public billedFromContacts: Person[];
   public billToContactMechanisms: ContactMechanism[];
@@ -96,6 +97,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           new Query(m.Currency),
           new Query(m.VatRate),
           new Query(m.VatRegime),
+          new Query(m.PurchaseInvoiceType),
         ];
 
         return this.scope
@@ -105,6 +107,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             this.vatRates = loaded.collections.VatRates as VatRate[];
             this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
             this.currencies = loaded.collections.Currencies as Currency[];
+            this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
 
             const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,
@@ -141,7 +144,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
         if (!this.invoice) {
           this.invoice = this.scope.session.create("PurchaseInvoice") as PurchaseInvoice;
-          this.invoice.BilledFrom = internalOrganisation;
+          this.invoice.BilledTo = internalOrganisation;
+          this.title = "Add Purchase Invoice";
+        } else {
+          this.title = "Purchase Invoice from: " + this.invoice.BilledFrom.PartyName;
         }
 
         if (this.invoice.BilledFrom) {
@@ -155,8 +161,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.ShipToEndCustomer) {
           this.updateShipToEndCustomer(this.invoice.ShipToEndCustomer);
         }
-
-        this.title = "Purchase Invoice from " + this.invoice.BilledFrom.PartyName;
 
         this.previousBilledFrom = this.invoice.BilledFrom;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;

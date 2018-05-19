@@ -10,4 +10,5 @@ export abstract class StateService {
 
     public goodsFilter: FilterFactory;
     public customersFilter: FilterFactory;
+    public organisationsFilter: FilterFactory;
 }

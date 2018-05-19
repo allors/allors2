@@ -30,9 +30,15 @@
       </mat-input-container>
       <mat-input-container class="col">
         <input matInput placeholder="Customer Reference" formControlName="reference">
+      </mat-input-container>
+      <mat-input-container class="col">
+        <mat-select formControlName="state" name="state" [(ngModel)]="selectedPurchaseInvoiceState" placeholder="State">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let objectState of purchaseInvoiceStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+        </mat-select>
         <mat-icon matSuffix>search</mat-icon>
       </mat-input-container>
-      </div>
+    </div>
     </form>
   </div>
 
@@ -46,7 +52,8 @@
       <ng-template let-invoice let-last="last" ngFor [ngForOf]="data">
         <mat-list-item>
 
-          <h3 [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line> {{invoice.BillToCustomer.displayName}}</h3>
+          <h3 [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line> From: {{invoice.BilledFrom.displayName}}</h3>
+          <h3 *ngIf="invoice.BillToCustomer" [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line>To: {{invoice.BillToCustomer.displayName}}</h3>
           <h4 mat-line>number: {{invoice.InvoiceNumber }} reference: {{invoice.CustomerReference}} ({{invoice.PurchaseInvoiceState.Name}})</h4>
           <h4 mat-line>{{invoice.Description}}</h4>
           <p mat-line hide-gt-md class="mat-caption"> last modified: {{ invoice.LastModifiedDate | timeAgo }} </p>

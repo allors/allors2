@@ -47,6 +47,11 @@ export class DefaultStateService extends StateService {
                 predicate.predicates.push(new ContainedIn({ associationType: m.Party.CustomerRelationshipsWhereCustomer, query }));
             },
         });
+
+        this.organisationsFilter = new FilterFactory({
+            objectType: m.Organisation,
+            roleTypes: [m.Organisation.PartyName],
+        });
     }
 
     public get singletonId(): string {

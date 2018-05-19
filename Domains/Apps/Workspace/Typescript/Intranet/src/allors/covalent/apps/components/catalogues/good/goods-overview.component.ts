@@ -28,7 +28,7 @@ interface SearchData {
   productType: string;
   brand: string;
   model: string;
-  status: string;
+  state: string;
   ownership: string;
   inventoryItemKind: string;
   supplier: string;
@@ -65,9 +65,9 @@ export class GoodsOverviewComponent implements OnDestroy {
   public selectedModel: Model;
   public model: Model;
 
-  public objectStates: SerialisedInventoryItemState[];
-  public selectedObjectState: Model;
-  public objectState: Model;
+  public serialisedInventoryItemStates: SerialisedInventoryItemState[];
+  public selectedSerialisedInventoryItemState: SerialisedInventoryItemState;
+  public serialisedInventoryItemState: SerialisedInventoryItemState;
 
   public ownerships: Ownership[];
   public selectedOwnership: Ownership;
@@ -132,6 +132,7 @@ export class GoodsOverviewComponent implements OnDestroy {
       productCategory: [""],
       productType: [""],
       supplier: [""],
+      state: [""],
     });
 
     this.page$ = new BehaviorSubject<number>(50);
@@ -165,6 +166,7 @@ export class GoodsOverviewComponent implements OnDestroy {
             new Query(m.Model),
             new Query(m.InventoryItemKind),
             new Query(m.Ownership),
+            new Query(m.SerialisedInventoryItemState),
             new Query({
               name: "organisations",
               objectType: m.Organisation,
@@ -199,6 +201,11 @@ export class GoodsOverviewComponent implements OnDestroy {
           return this.scope
             .load("Pull", new PullRequest({ fetches, queries: searchQuery }))
             .switchMap((loaded) => {
+              this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+              this.serialisedInventoryItemState = this.serialisedInventoryItemStates.find(
+                (v: SerialisedInventoryItemState) => v.Name === data.state,
+              );
+
               const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
               this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
@@ -335,7 +342,7 @@ export class GoodsOverviewComponent implements OnDestroy {
                 );
               }
 
-              if (data.owner || data.ownership) {
+              if (data.owner || data.ownership || data.state) {
                 const inventoryPredicate: And = new And();
                 const inventoryPredicates: Predicate[] =
                   inventoryPredicate.predicates;
@@ -354,6 +361,15 @@ export class GoodsOverviewComponent implements OnDestroy {
                     new Equals({
                       roleType: m.SerialisedInventoryItem.Owner,
                       value: this.owner,
+                    }),
+                  );
+                }
+
+                if (data.state) {
+                  inventoryPredicates.push(
+                    new Equals({
+                      roleType: m.SerialisedInventoryItem.SerialisedInventoryItemState,
+                      value: this.serialisedInventoryItemState,
                     }),
                   );
                 }

@@ -15,7 +15,7 @@
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseOrder"></a-mat-static>
         </div>
       </div>
-  
+
       <div class="grid-2_md-1">
         <a-mat-autocomplete class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(scope)"
           display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
@@ -39,9 +39,13 @@
         </div>
       </div>
 
+      <div class="grid-2_md-1">
+        <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes" display="Name"></a-mat-select>
+      </div>
+
       <div class="grid-3_md-1">
-        <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" [filter]="state.organisationsFilter.create(scope)"
-          display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
+        <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" [filter]="stateService.organisationsFilter.create(scope)"
+          display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to End Customer"></a-mat-autocomplete>
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" [options]="billToContactMechanisms"
@@ -52,7 +56,7 @@
             </button>
           </div>
           <party-contactmechanism *ngIf="invoice.BillToCustomer && addBillToContactMechanism" [scope]="scope" (saved)="billToContactMechanismAdded($event)"
-            (cancelled)="billToContactMechanismCancelled()">
+            (cancelled)="billToContactMechanismCancelled()" label="Bill to End Customer ContactMechanism">
           </party-contactmechanism>
         </div>
         <div class="col">
@@ -76,13 +80,13 @@
       </div>
 
       <div class="grid-3_md-1">
-        <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" [filter]="state.organisationsFilter.create(scope)"
+        <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" [filter]="stateService.organisationsFilter.create(scope)"
           display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
          <div class="col">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
+            <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
               display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
+            <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWritePurchaseInvoiceItems" type="button"
               (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
               <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
               <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
@@ -94,9 +98,9 @@
         </div>
         <div class="col">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts" display="displayName"
+            <a-mat-select class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts" display="displayName"
               label="Schipping Contact Person"></a-mat-select>
-            <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button" (click)="addShipToEndCustomerContactPerson = !addshipToEndCustomerContactPerson">
+            <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWritePurchaseInvoiceItems" type="button" (click)="addShipToEndCustomerContactPerson = !addshipToEndCustomerContactPerson">
               <mat-icon *ngIf="!addShipToEndCustomerContactPerson">add</mat-icon>
               <mat-icon *ngIf="addShipToEndCustomerContactPerson">close</mat-icon>
             </button>

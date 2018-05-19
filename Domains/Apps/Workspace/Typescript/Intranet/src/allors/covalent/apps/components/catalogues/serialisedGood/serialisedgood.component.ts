@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar, MatTabChangeEvent } from "@angular/material";
-import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { ActivatedRoute, Router, UrlSegment } from "@angular/router";
 
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
@@ -63,6 +63,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
@@ -325,13 +326,18 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
+    const isNew = this.good.isNew;
 
     this.onSave();
 
     this.scope
       .save()
       .subscribe((saved: Saved) => {
-        this.refresh();
+        if (isNew) {
+          this.router.navigate(["/serialisedGood/" + this.good.id]);
+        } else {
+          this.refresh();
+        }
       },
       (error: Error) => {
         this.errorService.dialog(error);
