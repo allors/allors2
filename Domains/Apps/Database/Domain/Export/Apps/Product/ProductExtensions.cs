@@ -18,18 +18,51 @@ using System.Linq;
 
 namespace Allors.Domain
 {
+    using System;
+
     public static partial class ProductExtensions
     {
         public static void AppsOnDerive(this Product @this, ObjectOnDerive method)
         {
-            var internalOrganisations = new Organisations(@this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
+            var session = @this.Strategy.Session;
+            var internalOrganisations = new Organisations(session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
+                
             if (!@this.ExistVendorProductsWhereProduct && internalOrganisations.Count() == 1)
             {
-                new VendorProductBuilder(@this.Strategy.Session)
+                new VendorProductBuilder(session)
                     .WithProduct(@this)
                     .WithInternalOrganisation(internalOrganisations.First())
                     .Build();
+            }
+
+            VendorProduct activeVendorProduct = null;
+            foreach (VendorProduct vendorProduct in @this.VendorProductsWhereProduct)
+            {
+                if (vendorProduct.FromDate <= DateTime.UtcNow &&
+                    (!vendorProduct.ExistThroughDate || vendorProduct.ThroughDate >= DateTime.UtcNow))
+                {
+                    activeVendorProduct = vendorProduct;
+                    break;
+                }
+            }
+
+            if (@this.GetType() == typeof(Good))
+            {
+                var good = (Good)@this;
+                if (good.InventoryItemKind.Equals(new InventoryItemKinds(session).Serialised))
+                {
+                    var inventoryItem = (SerialisedInventoryItem)good.InventoryItemsWhereGood[0];
+                    if (inventoryItem.ExistOwner && inventoryItem.Owner.IsInternalOrganisation &&
+                        activeVendorProduct != null && !object.Equals(activeVendorProduct.InternalOrganisation, inventoryItem.Owner))
+                    {
+                        activeVendorProduct.ThroughDate = DateTime.UtcNow;
+
+                        new VendorProductBuilder(session)
+                            .WithProduct(@this)
+                            .WithInternalOrganisation(inventoryItem.Owner)
+                            .Build();
+                    }
+                }
             }
         }
 
