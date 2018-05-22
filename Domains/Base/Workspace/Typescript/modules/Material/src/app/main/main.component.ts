@@ -16,8 +16,22 @@ export class MainComponent {
     {
       title: 'Relations', icon: 'share',
       children: [
-        { title: 'Organisations', icon: 'business_center', link: '/relations/organisations' },
-        { title: 'People', icon: 'people', link: '/relations/people' }
+        { title: 'Organisations', link: '/relations/organisations' },
+        { title: 'People', link: '/relations/people' }
+      ]
+    },
+    {
+      title: 'Relations 2', icon: 'people',
+      children: [
+        { title: 'Organisations',  link: '/relations/organisations' },
+        { title: 'People', link: '/relations/people' }
+      ]
+    },
+    {
+      title: 'Relations 3', icon: 'business',
+      children: [
+        { title: 'Organisations', link: '/relations/organisations' },
+        { title: 'People', link: '/relations/people' }
       ]
     }
   ];

@@ -1,0 +1,16 @@
+@mixin a-mat-sidemenu-theme($theme) {
+
+  $primary: map-get($theme, primary);
+  $warn: map-get($theme, warn);
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+
+  .collapsed {
+    background-color: mat-color($primary, default);
+  }
+
+  .expanded {
+    background-color: mat-color($primary, darker);
+  }
+}
+
