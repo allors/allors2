@@ -1,7 +1,7 @@
-import { MetaObject } from "./MetaObject";
-import { MetaPopulation } from "./MetaPopulation";
-import { ObjectType } from "./ObjectType";
-import { RoleType } from "./RoleType";
+import { MetaObject } from './MetaObject';
+import { MetaPopulation } from './MetaPopulation';
+import { ObjectType } from './ObjectType';
+import { RoleType } from './RoleType';
 
 export class ExclusiveRoleType implements RoleType {
     public id: string;

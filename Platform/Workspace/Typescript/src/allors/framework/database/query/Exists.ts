@@ -1,5 +1,5 @@
-﻿import { AssociationType, RoleType } from "../../meta";
-import { Predicate } from "./Predicate";
+import { AssociationType, RoleType } from '../../meta';
+import { Predicate } from './Predicate';
 
 export class Exists implements Predicate {
   public associationType: AssociationType;
@@ -11,7 +11,7 @@ export class Exists implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "Exists",
+      _T: 'Exists',
       at: this.associationType ? this.associationType.id : undefined,
       rt: this.roleType.id ? this.roleType.id : undefined,
     };

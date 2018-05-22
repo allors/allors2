@@ -8,6 +8,7 @@ export * from './input/input.module';
 export * from './localisedtext/localisedtext.module';
 export * from './radiogroup/radiogroup.module';
 export * from './select/select.module';
+export * from './sidemenu/sidemenu.module';
 export * from './slider/slider.module';
 export * from './slidetoggle/slidetoggle.module';
 export * from './static/static.module';

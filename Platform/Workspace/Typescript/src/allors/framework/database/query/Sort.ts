@@ -1,9 +1,9 @@
-﻿import { RoleType } from "../../meta";
+import { RoleType } from '../../meta';
 
 export class Sort {
 
     public roleType: RoleType;
-    public direction?: "Asc" | "Desc" = "Asc";
+    public direction?: 'Asc' | 'Desc' = 'Asc';
 
     constructor(fields?: Partial<Sort>) {
        Object.assign(this, fields);

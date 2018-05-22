@@ -1,4 +1,4 @@
-﻿import { ObjectType, RoleType } from "../../meta";
+import { ObjectType, RoleType } from '../../meta';
 
 export class TreeNode {
 
@@ -21,7 +21,7 @@ export class TreeNode {
 
     if (!this.roleType) {
       const metaPopulation = objectType.metaPopulation;
-      const [subTypeName, subStepName] = roleTypeName.split("_");
+      const [subTypeName, subStepName] = roleTypeName.split('_');
 
       const subType = metaPopulation.objectTypeByName[subTypeName];
       if (subType) {
@@ -30,7 +30,7 @@ export class TreeNode {
     }
 
     if (!this.roleType) {
-      throw new Error("Unknown role: " + roleTypeName);
+      throw new Error('Unknown role: ' + roleTypeName);
     }
 
     const childJson = json[roleTypeName];

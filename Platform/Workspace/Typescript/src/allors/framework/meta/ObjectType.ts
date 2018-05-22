@@ -1,12 +1,12 @@
-import { AssociationType } from "./AssociationType";
-import { ConcreteMethodType } from "./ConcreteMethodType";
-import { ConcreteRoleType } from "./ConcreteRoleType";
-import { ExclusiveMethodType } from "./ExclusiveMethodType";
-import { ExclusiveRoleType } from "./ExclusiveRoleType";
-import { MetaObject } from "./MetaObject";
-import { MetaPopulation } from "./MetaPopulation";
-import { MethodType } from "./MethodType";
-import { RoleType } from "./RoleType";
+import { AssociationType } from './AssociationType';
+import { ConcreteMethodType } from './ConcreteMethodType';
+import { ConcreteRoleType } from './ConcreteRoleType';
+import { ExclusiveMethodType } from './ExclusiveMethodType';
+import { ExclusiveRoleType } from './ExclusiveRoleType';
+import { MetaObject } from './MetaObject';
+import { MetaPopulation } from './MetaPopulation';
+import { MethodType } from './MethodType';
+import { RoleType } from './RoleType';
 
 export enum Kind {
   unit,

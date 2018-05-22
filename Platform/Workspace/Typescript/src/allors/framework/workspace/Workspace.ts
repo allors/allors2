@@ -1,12 +1,12 @@
-﻿import { ObjectType } from "../meta";
-import { MetaPopulation } from "../meta";
+import { ObjectType } from '../meta';
+import { MetaPopulation } from '../meta';
 
-import { PullResponse } from "./../database/pull/PullResponse";
-import { SyncRequest } from "./../database/sync/SyncRequest";
-import { SyncResponse } from "./../database/sync/SyncResponse";
+import { PullResponse } from './../database/pull/PullResponse';
+import { SyncRequest } from './../database/sync/SyncRequest';
+import { SyncResponse } from './../database/sync/SyncResponse';
 
-import { SessionObject } from "./SessionObject";
-import { WorkspaceObject } from "./WorkspaceObject";
+import { SessionObject } from './SessionObject';
+import { WorkspaceObject } from './WorkspaceObject';
 
 export interface IWorkspace {
     metaPopulation: MetaPopulation;
@@ -56,7 +56,7 @@ export class Workspace implements IWorkspace {
                             .forEach((roleTypeName) => {
                                 const roleType = objectType.roleTypeByName[roleTypeName];
 
-                                Object.defineProperty(prototype, "CanRead" + roleTypeName, {
+                                Object.defineProperty(prototype, 'CanRead' + roleTypeName, {
                                     get(this: SessionObject) {
                                         return this.canRead(roleTypeName);
                                     },
@@ -69,7 +69,7 @@ export class Workspace implements IWorkspace {
                                         },
                                     });
                                 } else {
-                                    Object.defineProperty(prototype, "CanWrite" + roleTypeName, {
+                                    Object.defineProperty(prototype, 'CanWrite' + roleTypeName, {
                                         get(this: SessionObject) {
                                             return this.canRead(roleTypeName);
                                         },
@@ -87,11 +87,11 @@ export class Workspace implements IWorkspace {
 
                                     if (roleType.isMany) {
 
-                                        prototype["Add" + roleType.singular] = function (this: SessionObject, value) {
+                                        prototype['Add' + roleType.singular] = function (this: SessionObject, value) {
                                             return this.add(roleTypeName, value);
                                         };
 
-                                        prototype["Remove" + roleType.singular] = function (this: SessionObject, value) {
+                                        prototype['Remove' + roleType.singular] = function (this: SessionObject, value) {
                                             return this.remove(roleTypeName, value);
                                         };
                                     }
@@ -102,7 +102,7 @@ export class Workspace implements IWorkspace {
                             .forEach((methodTypeName) => {
                                 const methodType = objectType.methodTypeByName[methodTypeName];
 
-                                Object.defineProperty(prototype, "CanExecute" + methodTypeName, {
+                                Object.defineProperty(prototype, 'CanExecute' + methodTypeName, {
                                     get(this: SessionObject) {
                                         return this.canExecute(methodTypeName);
                                     },

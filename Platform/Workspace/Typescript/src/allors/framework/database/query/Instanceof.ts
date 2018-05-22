@@ -1,6 +1,6 @@
-﻿import { AssociationType, ObjectType, RoleType } from "../../meta";
+import { AssociationType, ObjectType, RoleType } from '../../meta';
 
-import { Predicate } from "./Predicate";
+import { Predicate } from './Predicate';
 
 export class Instanceof implements Predicate {
   public associationType: AssociationType;
@@ -13,7 +13,7 @@ export class Instanceof implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "Instanceof",
+      _T: 'Instanceof',
       at: this.associationType ? this.associationType.id : undefined,
       ot: this.objectType.id,
       rt: this.roleType.id ? this.roleType.id : undefined,

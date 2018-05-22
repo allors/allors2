@@ -1,21 +1,20 @@
-<div>
-    <a (click)="fileInput.click()" mat-button>
-        <mat-icon>library_add</mat-icon>
-        <span>Select</span>
-    </a>
+<div fxFlex fxLayout="row">
+    <mat-form-field fxFlex="auto">
+        <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
+    </mat-form-field>
 
-    <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+    <button mat-icon-button fxFlex="none" type="button" (click)="fileInput.click()">
+        <mat-icon>add_to_photos</mat-icon>
+    </button>
 </div>
 
-<div fxLayout="row" fxLayoutAlign="start stretch">
-    <mat-card fxFlex="0 0">
-        <img mat-card-md-image [src]="src">
-        <mat-card-actions>
+<input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+
+<div *ngIf="model" fxFlex fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="2rem" style="margin-bottom: 1rem;">
+    <mat-card fxFlex="0 0 6rem" fxLayout="column">
+        <img mat-card-image fxFlex="auto" [src]="src">
+        <mat-card-actions fxFlex="none">
             <a mat-button (click)="delete()">DELETE</a>
         </mat-card-actions>
     </mat-card>
-
-    <!--   <button mat-icon-button *ngIf="model" (click)="delete()" (keyup.enter)="delete()">
-        <mat-icon>cancel</mat-icon>
-    </button> -->
 </div>

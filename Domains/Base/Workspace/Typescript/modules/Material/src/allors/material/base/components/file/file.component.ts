@@ -7,38 +7,12 @@ import { ISession, ISessionObject } from '../../../../framework';
 
 @Component({
   selector: 'a-mat-file',
-  styleUrls: ['./file.component.scss'],
   templateUrl: './file.component.html',
 })
 export class FileComponent extends Field {
   @Output() public onChange: EventEmitter<Field> = new EventEmitter<Field>();
 
   @Input() public accept = 'image/*';
-
-  public onFileInput(event) {
-
-    event.stopPropagation();
-
-    const files = event.srcElement.files;
-    const file  = files[0];
-
-    if (this.ExistObject) {
-      if (!this.model) {
-        const session: ISession = this.object.session;
-        this.model = session.create('Media');
-      }
-    }
-
-    const reader: FileReader = new FileReader();
-    const load: () => void = () => {
-      this.media.FileName = file.name;
-      this.media.InDataUri = reader.result;
-      this.onChange.emit(this);
-    };
-
-    reader.addEventListener('load', load, false);
-    reader.readAsDataURL(file);
-  }
 
   constructor(@Optional() parentForm: NgForm, private mediaService: MediaService) {
     super(parentForm);
@@ -64,5 +38,28 @@ export class FileComponent extends Field {
 
   public delete(): void {
     this.model = undefined;
+  }
+
+  public onFileInput(event) {
+
+    const files = event.srcElement.files;
+    const file  = files[0];
+
+    if (this.ExistObject) {
+      if (!this.model) {
+        const session: ISession = this.object.session;
+        this.model = session.create('Media');
+      }
+    }
+
+    const reader: FileReader = new FileReader();
+    const load: () => void = () => {
+      this.media.FileName = file.name;
+      this.media.InDataUri = reader.result;
+      this.onChange.emit(this);
+    };
+
+    reader.addEventListener('load', load, false);
+    reader.readAsDataURL(file);
   }
 }

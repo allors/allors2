@@ -1,14 +1,14 @@
-﻿import { PushRequest } from "./../database/push/PushRequest";
-import { PushRequestNewObject } from "./../database/push/PushRequestNewObject";
-import { PushRequestObject } from "./../database/push/PushRequestObject";
-import { PushResponse } from "./../database/push/PushResponse";
-import { PushResponseNewObject } from "./../database/push/PushResponseNewObject";
-import { ResponseType } from "./../database/ResponseType";
-import { SyncResponse } from "./../database/sync/SyncResponse";
+import { PushRequest } from './../database/push/PushRequest';
+import { PushRequestNewObject } from './../database/push/PushRequestNewObject';
+import { PushRequestObject } from './../database/push/PushRequestObject';
+import { PushResponse } from './../database/push/PushResponse';
+import { PushResponseNewObject } from './../database/push/PushResponseNewObject';
+import { ResponseType } from './../database/ResponseType';
+import { SyncResponse } from './../database/sync/SyncResponse';
 
-import { INewSessionObject, ISessionObject, SessionObject } from "./SessionObject";
-import { IWorkspace } from "./Workspace";
-import { WorkspaceObject } from "./WorkspaceObject";
+import { INewSessionObject, ISessionObject, SessionObject } from './SessionObject';
+import { IWorkspace } from './Workspace';
+import { WorkspaceObject } from './WorkspaceObject';
 
 export interface ISession {
   hasChanges: boolean;
@@ -27,7 +27,7 @@ export interface ISession {
 }
 
 export class Session implements ISession {
-  private static idCounter: number = 0;
+  private static idCounter = 0;
 
   public hasChanges: boolean;
 
@@ -83,7 +83,7 @@ export class Session implements ISession {
 
   public delete(object: ISessionObject): void {
     if (!object.isNew) {
-      throw new Error("Existing objects can not be deleted");
+      throw new Error('Existing objects can not be deleted');
     }
 
     const newSessionObject = object as SessionObject;
@@ -173,11 +173,11 @@ export class Session implements ISession {
               methods: [],
               roles: [],
               t: newSessionObject.objectType.name,
-              v: "",
+              v: '',
             },
           ],
           responseType: ResponseType.Sync,
-          userSecurityHash: "#", // This should trigger a load on next check
+          userSecurityHash: '#', // This should trigger a load on next check
         };
 
         delete this.newSessionObjectById[newId];
@@ -192,7 +192,7 @@ export class Session implements ISession {
     }
 
     if (Object.getOwnPropertyNames(this.newSessionObjectById).length !== 0) {
-      throw new Error("Not all new objects received ids");
+      throw new Error('Not all new objects received ids');
     }
   }
 }

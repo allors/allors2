@@ -1,4 +1,4 @@
-﻿import { PushRequestRole } from "./PushRequestRole";
+import { PushRequestRole } from './PushRequestRole';
 
 export class PushRequestNewObject {
     public ni: string;

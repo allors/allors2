@@ -1,6 +1,6 @@
-﻿import { ObjectType } from "../../meta";
+import { ObjectType } from '../../meta';
 
-import { Predicate } from "./Predicate";
+import { Predicate } from './Predicate';
 
 export class Not implements Predicate {
   public predicate: Predicate;
@@ -11,7 +11,7 @@ export class Not implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "Not",
+      _T: 'Not',
       p: this.predicate,
     };
   }

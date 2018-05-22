@@ -1,0 +1,12 @@
+<div *ngFor="let item of items" >
+    <a mat-list-item fxLayout="row" (click)="item.open=!item.open">
+      <mat-icon mat-list-icon>{{item.icon}}</mat-icon> {{item.title}}
+    </a>
+    <mat-list *ngIf="item.open">
+      <ng-template let-item let-last="last" ngFor [ngForOf]="item.children">
+        <a style="padding-left: 1rem" mat-list-item [routerLink]="item.link" routerLinkActive="active-link">
+          <mat-icon mat-list-icon>{{item.icon}}</mat-icon> {{item.title}}
+        </a>
+      </ng-template>
+    </mat-list>
+  </div>

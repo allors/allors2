@@ -1,11 +1,11 @@
-import { Component, Optional } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, Optional } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { Field } from "../../../../angular";
+import { Field } from '../../../../angular';
 
 @Component({
-  selector: "a-mat-slide-toggle",
-  templateUrl: "./slidetoggle.component.html",
+  selector: 'a-mat-slide-toggle',
+  templateUrl: './slidetoggle.component.html',
 })
 export class SlideToggleComponent extends Field {
 

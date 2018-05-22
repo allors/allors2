@@ -1,6 +1,7 @@
-<mat-form-field style="width: 100%;">
-  <mat-chip-list #chipList>
+<mat-form-field fxFlex fxFill>
+  <mat-chip-list fxLayout="row" #chipList>
     <mat-chip
+      fxFlex="none"
       *ngFor="let item of model"
       [selectable]="!readonly"
       [removable]="!readonly"

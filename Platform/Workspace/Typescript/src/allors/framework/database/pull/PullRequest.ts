@@ -1,5 +1,5 @@
-﻿import { Fetch } from "../query/Fetch";
-import { Query } from "../query/Query";
+import { Fetch } from '../query/Fetch';
+import { Query } from '../query/Query';
 
 export class PullRequest {
 

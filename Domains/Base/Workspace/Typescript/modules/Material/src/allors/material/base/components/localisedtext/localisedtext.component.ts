@@ -1,12 +1,12 @@
-import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { Field } from "../../../../angular";
-import { Locale, LocalisedText } from "../../../../domain";
+import { Field } from '../../../../angular';
+import { Locale, LocalisedText } from '../../../../domain';
 
 @Component({
-  selector: "a-mat-localised-text",
-  templateUrl: "./localisedtext.component.html",
+  selector: 'a-mat-localised-text',
+  templateUrl: './localisedtext.component.html',
 })
 export class LocalisedTextComponent extends Field {
 
@@ -31,7 +31,7 @@ export class LocalisedTextComponent extends Field {
 
   set localisedText(value: string) {
     if (!this.localisedObject) {
-      const localisedText: LocalisedText = this.object.session.create("LocalisedText") as LocalisedText;
+      const localisedText: LocalisedText = this.object.session.create('LocalisedText') as LocalisedText;
       localisedText.Locale = this.locale;
       this.object.add(this.roleType.name, localisedText);
     }
@@ -40,18 +40,18 @@ export class LocalisedTextComponent extends Field {
   }
 
   get localisedName(): string {
-    return this.name + "_" + this.locale.Name;
+    return this.name + '_' + this.locale.Name;
   }
 
   get localisedLabel(): string {
     let name = this.roleType.name;
-    const localised = "Localised";
+    const localised = 'Localised';
     if (name.indexOf(localised) === 0) {
       name = name.slice(localised.length);
       name = name.slice(0, name.length - 1);
     }
 
     const label = this.assignedLabel ? this.assignedLabel : this.humanize(name);
-    return label + " (" + this.locale.Language.Name + ")";
+    return label + ' (' + this.locale.Language.Name + ')';
   }
 }

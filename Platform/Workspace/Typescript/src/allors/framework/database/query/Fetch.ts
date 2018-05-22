@@ -1,6 +1,6 @@
-﻿import { ObjectType } from "../../meta/ObjectType";
-import { Path } from "./Path";
-import { TreeNode } from "./TreeNode";
+import { ObjectType } from '../../meta/ObjectType';
+import { Path } from './Path';
+import { TreeNode } from './TreeNode';
 
 export class Fetch {
   public name: string;

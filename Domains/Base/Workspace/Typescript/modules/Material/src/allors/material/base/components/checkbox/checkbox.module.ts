@@ -1,12 +1,13 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { MatCheckboxModule, MatInputModule } from "@angular/material";
+import { MatCheckboxModule, MatInputModule } from '@angular/material';
 
-import { CheckboxComponent } from "./checkbox.component";
-export { CheckboxComponent } from "./checkbox.component";
+import { CheckboxComponent } from './checkbox.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+export { CheckboxComponent } from './checkbox.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ export { CheckboxComponent } from "./checkbox.component";
     CheckboxComponent,
   ],
   imports: [
+    FlexLayoutModule,
     FormsModule,
     CommonModule,
     MatInputModule,

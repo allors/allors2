@@ -1,8 +1,8 @@
-﻿import { AssociationType, RoleType } from "../../meta";
+import { AssociationType, RoleType } from '../../meta';
 
-import { ISessionObject } from "./../../workspace/SessionObject";
-import { Predicate } from "./Predicate";
-import { Query } from "./Query";
+import { ISessionObject } from './../../workspace/SessionObject';
+import { Predicate } from './Predicate';
+import { Query } from './Query';
 
 export class ContainedIn implements Predicate {
   public associationType: AssociationType;
@@ -16,7 +16,7 @@ export class ContainedIn implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "ContainedIn",
+      _T: 'ContainedIn',
       at: this.associationType ? this.associationType.id : undefined,
       rt: this.roleType ? this.roleType.id : undefined,
       q: this.query,

@@ -1,11 +1,11 @@
-import { Component , Input, Optional } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component , Input, Optional } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { Field } from "../../../../angular";
+import { Field } from '../../../../angular';
 
 @Component({
-  selector: "a-mat-slider",
-  templateUrl: "./slider.component.html",
+  selector: 'a-mat-slider',
+  templateUrl: './slider.component.html',
 })
 export class SliderComponent extends Field {
 
@@ -25,13 +25,13 @@ export class SliderComponent extends Field {
   public thumbLabel: boolean;
 
   @Input()
-  public tickInterval: "auto" | number;
+  public tickInterval: 'auto' | number;
 
   @Input()
   public vertical: boolean;
 
   @Input()
-  public color: "primary" | "accent" | "warn" = "accent";
+  public color: 'primary' | 'accent' | 'warn' = 'accent';
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);

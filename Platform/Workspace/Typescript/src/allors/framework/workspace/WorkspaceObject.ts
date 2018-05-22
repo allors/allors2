@@ -1,8 +1,8 @@
-﻿import { ObjectType } from "../meta";
+import { ObjectType } from '../meta';
 
-import { SyncResponse, SyncResponseObject } from "../database/sync/SyncResponse";
+import { SyncResponse, SyncResponseObject } from '../database/sync/SyncResponse';
 
-import { IWorkspace } from "./Workspace";
+import { IWorkspace } from './Workspace';
 
 export interface IWorkspaceObject {
     id: string;
@@ -44,8 +44,8 @@ export class WorkspaceObject implements IWorkspaceObject {
         if (loadObject.roles) {
             loadObject.roles.forEach((role) => {
                 const [name, access] = role;
-                const canRead = access.indexOf("r") !== -1;
-                const canWrite = access.indexOf("w") !== -1;
+                const canRead = access.indexOf('r') !== -1;
+                const canWrite = access.indexOf('w') !== -1;
 
                 this.roles[`CanRead${name}`] = canRead;
                 this.roles[`CanWrite${name}`] = canWrite;
@@ -54,7 +54,7 @@ export class WorkspaceObject implements IWorkspaceObject {
                     const roleType = objectType.roleTypeByName[name];
                     let value = role[2];
 
-                    if (value && roleType.objectType.isUnit && roleType.objectType.name === "DateTime") {
+                    if (value && roleType.objectType.isUnit && roleType.objectType.name === 'DateTime') {
                         value = new Date(value as string);
                     }
                     this.roles[name] = value;
@@ -66,7 +66,7 @@ export class WorkspaceObject implements IWorkspaceObject {
         if (loadObject.methods) {
             loadObject.methods.forEach((method) => {
                 const [name, access] = method;
-                const canExecute = access.indexOf("x") !== -1;
+                const canExecute = access.indexOf('x') !== -1;
 
                 this.methods[`CanExecute${name}`] = canExecute;
             });

@@ -1,5 +1,5 @@
-﻿import { ObjectType } from "../../meta";
-import { Predicate } from "./Predicate";
+import { ObjectType } from '../../meta';
+import { Predicate } from './Predicate';
 
 export class And implements Predicate {
   public predicates: Predicate[];
@@ -11,7 +11,7 @@ export class And implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "And",
+      _T: 'And',
       ps: this.predicates,
     };
   }

@@ -1,6 +1,6 @@
-import { MetaObject } from "./MetaObject";
-import { MetaPopulation } from "./MetaPopulation";
-import { MethodType } from "./MethodType";
+import { MetaObject } from './MetaObject';
+import { MetaPopulation } from './MetaPopulation';
+import { MethodType } from './MethodType';
 
 export class ExclusiveMethodType implements MethodType {
     public id: string;

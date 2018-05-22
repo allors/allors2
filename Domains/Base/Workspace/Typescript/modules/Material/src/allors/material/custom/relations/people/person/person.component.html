@@ -2,13 +2,16 @@
   <form #form="ngForm" *ngIf="person" (submit)="save()">
     <mat-card-content class="push-bottom-none">
 
-      <div>
-        <a-mat-input [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-        <a-mat-input [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-        <a-mat-input [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
-<!--         <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
- -->        <a-mat-file [object]="person" [roleType]="m.Person.Photo"></a-mat-file>
-<!--         <a-mat-files [object]="person" [roleType]="m.Person.Pictures"></a-mat-files> -->
+      <div fxLayout="column">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
+          <a-mat-input fxFlex [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+          <a-mat-input fxFlex [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+          <a-mat-input fxFlex [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+        </div>
+
+        <a-mat-file fxFlex [object]="person" [roleType]="m.Person.Photo"></a-mat-file>
+        <a-mat-files fxFlex [object]="person" [roleType]="m.Person.Pictures"></a-mat-files>
+
       </div>
 
     </mat-card-content>

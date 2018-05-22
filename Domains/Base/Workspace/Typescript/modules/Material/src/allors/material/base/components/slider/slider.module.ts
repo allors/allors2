@@ -1,12 +1,13 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { MatInputModule, MatSliderModule } from "@angular/material";
+import { MatInputModule, MatSliderModule } from '@angular/material';
 
-import { SliderComponent } from "./slider.component";
-export { SliderComponent } from "./slider.component";
+import { SliderComponent } from './slider.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+export { SliderComponent } from './slider.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ export { SliderComponent } from "./slider.component";
     SliderComponent,
   ],
   imports: [
+    FlexLayoutModule,
     FormsModule,
     CommonModule,
     MatInputModule,

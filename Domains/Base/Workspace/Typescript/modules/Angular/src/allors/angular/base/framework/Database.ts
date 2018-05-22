@@ -1,12 +1,12 @@
-﻿import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 
-import { Observable } from "rxjs/Observable";
-import { Observer } from "rxjs/Observer";
+import { Observable } from 'rxjs/Observable';
+import { Observer } from 'rxjs/Observer';
 
-import "rxjs/add/operator/map";
+import 'rxjs/add/operator/map';
 
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from "../../../framework";
-import { Method } from "../../../framework";
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from '../../../framework';
+import { Method } from '../../../framework';
 
 export class Database {
 
@@ -14,7 +14,7 @@ export class Database {
   }
 
   public pull(name: string, params?: any): Observable<PullResponse> {
-    const serviceName: string = this.fullyQualifiedUrl(name + "/Pull");
+    const serviceName: string = this.fullyQualifiedUrl(name + '/Pull');
 
     return this.http
       .post<PullResponse>(serviceName, params)
@@ -26,7 +26,7 @@ export class Database {
 
   public sync(syncRequest: SyncRequest): Observable<SyncResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl("Database/Sync");
+    const serviceName: string = this.fullyQualifiedUrl('Database/Sync');
     return this.http
       .post<SyncResponse>(serviceName, syncRequest)
       .map((syncResponse) => {
@@ -37,7 +37,7 @@ export class Database {
 
   public push(pushRequest: PushRequest): Observable<PushResponse> {
 
-    const serviceName: string = this.fullyQualifiedUrl("Database/Push");
+    const serviceName: string = this.fullyQualifiedUrl('Database/Push');
     return this.http
       .post<PushResponse>(serviceName, pushRequest)
       .map((pushResponse) => {
@@ -69,7 +69,7 @@ export class Database {
       v: method.object.version,
     };
 
-    const serviceName: string = this.fullyQualifiedUrl("Database/Invoke");
+    const serviceName: string = this.fullyQualifiedUrl('Database/Invoke');
     return this.http
       .post<InvokeResponse>(serviceName, invokeRequest)
       .map((invokeResponse) => {
@@ -84,7 +84,7 @@ export class Database {
   }
 
   private invokeService(methodOrService: string, args?: any): Observable<InvokeResponse> {
-    const service: string = this.fullyQualifiedUrl(methodOrService + "/Pull");
+    const service: string = this.fullyQualifiedUrl(methodOrService + '/Pull');
     return this.http
       .post<InvokeResponse>(service, args)
       .map((invokeResponse) => {

@@ -1,8 +1,8 @@
-﻿import { MetaObjectType, ObjectType } from "../../meta";
-import { Page } from "./Page";
-import { Predicate } from "./Predicate";
-import { Sort } from "./Sort";
-import { TreeNode } from "./TreeNode";
+import { MetaObjectType, ObjectType } from '../../meta';
+import { Page } from './Page';
+import { Predicate } from './Predicate';
+import { Sort } from './Sort';
+import { TreeNode } from './TreeNode';
 
 export class Query {
   public name: string;

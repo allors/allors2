@@ -50,16 +50,16 @@ export class FilesComponent extends Field {
     this.object.remove(this.roleType.name, media);
   }
 
-  public addFiles(fileOrFiles: File | FileList): void {
-    const file = fileOrFiles as File;
-    const fileList = fileOrFiles as FileList;
+  public onFileInput(event) {
+
+    const fileList = event.srcElement.files;
 
     if (fileList.length && fileList.item) {
       for (let i = 0; i < fileList.length; i++) {
         this.addFile(fileList.item(i));
       }
     } else {
-      this.addFile(file);
+      this.addFile(fileList);
     }
   }
 

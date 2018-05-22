@@ -1,4 +1,4 @@
-﻿import { AssociationType, ObjectType, RoleType } from "../../meta";
+import { AssociationType, ObjectType, RoleType } from '../../meta';
 
 export class Path {
   public step: AssociationType | RoleType;
@@ -25,7 +25,7 @@ export class Path {
 
     if (!this.step) {
       const metaPopulation = objectType.metaPopulation;
-      const [subTypeName, subStepName] = stepName.split("_");
+      const [subTypeName, subStepName] = stepName.split('_');
 
       const subType = metaPopulation.objectTypeByName[subTypeName];
       if (subType) {
@@ -38,7 +38,7 @@ export class Path {
     }
 
     if (!this.step) {
-      throw new Error("Unknown role or association: " + stepName);
+      throw new Error('Unknown role or association: ' + stepName);
     }
 
     const childJson = json[stepName];

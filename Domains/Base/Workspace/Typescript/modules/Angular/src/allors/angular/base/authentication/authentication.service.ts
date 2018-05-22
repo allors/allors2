@@ -1,17 +1,17 @@
-import { HttpClient } from "@angular/common/http";
-import { Inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
-import "rxjs/add/operator/catch";
-import "rxjs/add/operator/map";
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
-import { AuthenticationConfig } from "./authentication.config";
-import { AuthenticationTokenRequest } from "./AuthenticationTokenRequest";
-import { AuthenticationTokenResponse } from "./AuthenticationTokenResponse";
+import { AuthenticationConfig } from './authentication.config';
+import { AuthenticationTokenRequest } from './AuthenticationTokenRequest';
+import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
 
 @Injectable()
 export class AuthenticationService {
-  private tokenName = "ALLORS_JWT";
+  private tokenName = 'ALLORS_JWT';
 
   public get token(): string {
     return sessionStorage.getItem(this.tokenName);
@@ -44,7 +44,7 @@ export class AuthenticationService {
           ? error.message
           : error.status
             ? `${error.status} - ${error.statusText}`
-            : "Server error";
+            : 'Server error';
         return Observable.throw(errMsg);
       });
   }

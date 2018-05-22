@@ -1,4 +1,4 @@
-﻿import { SessionObject } from "./SessionObject";
+import { SessionObject } from './SessionObject';
 
 export class Method {
     constructor(

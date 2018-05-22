@@ -1,11 +1,11 @@
-import { Component , Input, Optional } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component , Input, Optional } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { Field } from "../../../../angular";
+import { Field } from '../../../../angular';
 
 @Component({
-  selector: "a-mat-static",
-  templateUrl: "./static.component.html",
+  selector: 'a-mat-static',
+  templateUrl: './static.component.html',
 })
 export class StaticComponent extends Field {
   @Input()
@@ -25,7 +25,7 @@ export class StaticComponent extends Field {
           if (roles && roles.length > 0) {
             return roles
               .map((v: any) => v[this.display])
-              .reduce((acc: string, cur: string) => acc + ", " + cur);
+              .reduce((acc: string, cur: string) => acc + ', ' + cur);
           }
         }
       }

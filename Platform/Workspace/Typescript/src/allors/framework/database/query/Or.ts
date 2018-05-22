@@ -1,6 +1,6 @@
-﻿import { ObjectType } from "../../meta";
+import { ObjectType } from '../../meta';
 
-import { Predicate } from "./Predicate";
+import { Predicate } from './Predicate';
 
 export class Or implements Predicate {
   public predicates: Predicate[];
@@ -12,7 +12,7 @@ export class Or implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "Or",
+      _T: 'Or',
       ps: this.predicates,
     };
   }

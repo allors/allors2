@@ -1,12 +1,13 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { MatInputModule, MatSlideToggleModule } from "@angular/material";
+import { MatInputModule, MatSlideToggleModule } from '@angular/material';
 
-import { SlideToggleComponent } from "./slidetoggle.component";
-export { SlideToggleComponent } from "./slidetoggle.component";
+import { SlideToggleComponent } from './slidetoggle.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+export { SlideToggleComponent } from './slidetoggle.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ export { SlideToggleComponent } from "./slidetoggle.component";
     SlideToggleComponent,
   ],
   imports: [
+    FlexLayoutModule,
     FormsModule,
     CommonModule,
     MatInputModule,

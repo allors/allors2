@@ -2,15 +2,15 @@
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
     <mat-card-content class="push-bottom-none">
 
-      <div>
-        <a-mat-input class="push-top" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+      <div fxLayout="column">
+        <a-mat-input fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
         
-        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
-        <a-mat-autocomplete class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+        <a-mat-autocomplete fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
+        <a-mat-autocomplete fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
         
-        <a-mat-select [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
+        <a-mat-select fxFlex [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
 
-        <a-mat-chips class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
+        <a-mat-chips fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
 
         <h3>Output</h3>
         <div class="push-top">{{organisation?.Owner?.UserName}}</div>

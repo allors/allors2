@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 
 import { StaticComponent } from './static.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 export { StaticComponent } from './static.component';
 
 @NgModule({
@@ -16,6 +17,7 @@ export { StaticComponent } from './static.component';
     StaticComponent,
   ],
   imports: [
+    FlexLayoutModule,
     FormsModule,
     CommonModule,
     MatInputModule,

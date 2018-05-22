@@ -1,14 +1,14 @@
-import { AssociationType } from "./AssociationType";
-import { ConcreteMethodType } from "./ConcreteMethodType";
-import { ConcreteRoleType } from "./ConcreteRoleType";
-import { Class, Data, Interface } from "./Data";
-import { ExclusiveMethodType } from "./ExclusiveMethodType";
-import { ExclusiveRoleType } from "./ExclusiveRoleType";
-import { MetaObject } from "./MetaObject";
-import { MetaObjectType } from "./MetaObjectType";
-import { MethodType } from "./MethodType";
-import { Kind, ObjectType } from "./ObjectType";
-import { RoleType } from "./RoleType";
+import { AssociationType } from './AssociationType';
+import { ConcreteMethodType } from './ConcreteMethodType';
+import { ConcreteRoleType } from './ConcreteRoleType';
+import { Class, Data, Interface } from './Data';
+import { ExclusiveMethodType } from './ExclusiveMethodType';
+import { ExclusiveRoleType } from './ExclusiveRoleType';
+import { MetaObject } from './MetaObject';
+import { MetaObjectType } from './MetaObjectType';
+import { MethodType } from './MethodType';
+import { Kind, ObjectType } from './ObjectType';
+import { RoleType } from './RoleType';
 
 export class MetaPopulation {
   public readonly objectTypeByName: { [name: string]: ObjectType; } = {};
@@ -20,23 +20,23 @@ export class MetaPopulation {
   constructor(data: Data) {
 
     const idByTypeName = {
-      Binary: "c28e515bcae84d6b95bf062aec8042fc",
-      Boolean: "b5ee6cea4E2b498ea5dd24671d896477",
-      DateTime: "c4c0934361d3418cade2fe6fd588f128",
-      Decimal: "da866d8e2c4041a8ae5b5f6dae0b89c8",
-      Float: "ffcabd07f35f4083bef6f6c47970ca5d",
-      Integer: "ccd6f13426de4103bff9a37ec3e997a3",
-      String: "ad7f5ddcbedb4aaa97acd6693a009ba9",
-      Unique: "6dc0a1a888a44614adb492dd3d017c0e",
+      Binary: 'c28e515bcae84d6b95bf062aec8042fc',
+      Boolean: 'b5ee6cea4E2b498ea5dd24671d896477',
+      DateTime: 'c4c0934361d3418cade2fe6fd588f128',
+      Decimal: 'da866d8e2c4041a8ae5b5f6dae0b89c8',
+      Float: 'ffcabd07f35f4083bef6f6c47970ca5d',
+      Integer: 'ccd6f13426de4103bff9a37ec3e997a3',
+      String: 'ad7f5ddcbedb4aaa97acd6693a009ba9',
+      Unique: '6dc0a1a888a44614adb492dd3d017c0e',
     };
 
     // Units
-    ["Binary", "Boolean", "DateTime", "Decimal", "Float", "Integer", "String", "Unique"]
+    ['Binary', 'Boolean', 'DateTime', 'Decimal', 'Float', 'Integer', 'String', 'Unique']
       .forEach((name) => {
         const metaUnit = new ObjectType(this);
         metaUnit.id = idByTypeName[name];
         metaUnit.name = name;
-        metaUnit.plural = name === "Binary" ? "Binaries" : name + "s";
+        metaUnit.plural = name === 'Binary' ? 'Binaries' : name + 's';
         metaUnit.kind = Kind.unit;
         this.objectTypeByName[metaUnit.name] = metaUnit;
         this.metaObjectById[metaUnit.id] = metaUnit;

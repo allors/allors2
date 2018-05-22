@@ -1,11 +1,11 @@
-import { ActivatedRoute, NavigationEnd, Route, Router } from "@angular/router";
+import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
 
 export class MenuItem {
   public route: Route;
   public parent: MenuItem;
   public children: MenuItem[];
 
-  public type: "module" | "page";
+  public type: 'module' | 'page';
   public title: string;
   public icon?: string;
 
@@ -20,11 +20,11 @@ export class MenuItem {
   }
 
   get isModule(): boolean {
-    return this.type === "module";
+    return this.type === 'module';
   }
 
   get isPage(): boolean {
-    return this.type === "page";
+    return this.type === 'page';
   }
 
   constructor(menuItemByRoute: Map<Route, MenuItem>, modules: MenuItem[], pagesByModule: Map<MenuItem, MenuItem[]>, route: Route, parent?: MenuItem, module?: MenuItem) {
@@ -40,7 +40,7 @@ export class MenuItem {
     if (!parent) {
       this.link = route.path;
     } else {
-      this.link = route.path ? parent.link + "/" + route.path : parent.link;
+      this.link = route.path ? parent.link + '/' + route.path : parent.link;
     }
 
     if (this.isModule) {

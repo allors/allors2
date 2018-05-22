@@ -11,7 +11,7 @@ import { Field } from '../../../../angular';
 })
 export class SelectComponent extends Field {
   @Input()
-  public display: string = 'display';
+  public display = 'display';
 
   @Input()
   public options: ISessionObject[];

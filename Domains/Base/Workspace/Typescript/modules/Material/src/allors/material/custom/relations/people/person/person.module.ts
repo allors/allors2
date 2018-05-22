@@ -7,6 +7,7 @@ import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, M
 import { AutoCompleteModule, ChipsModule, FileModule, FilesModule, InputModule, SelectModule, StaticModule } from '../../../../../material';
 
 import { PersonComponent } from './person.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 export { PersonComponent } from './person.component';
 
 @NgModule({
@@ -29,6 +30,7 @@ export { PersonComponent } from './person.component';
     ChipsModule,
     FileModule,
     FilesModule,
+    FlexLayoutModule,
     InputModule,
     SelectModule,
     StaticModule,

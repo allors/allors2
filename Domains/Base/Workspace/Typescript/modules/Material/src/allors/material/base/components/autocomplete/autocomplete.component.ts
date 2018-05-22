@@ -17,9 +17,9 @@ import { MatAutocompleteTrigger } from '@angular/material';
   templateUrl: './autocomplete.component.html',
 })
 export class AutocompleteComponent extends Field implements OnInit {
-  @Input() public display: string = 'display';
+  @Input() public display = 'display';
 
-  @Input() public debounceTime: number = 400;
+  @Input() public debounceTime = 400;
 
   @Input() public options: ISessionObject[];
 

@@ -3,21 +3,16 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {FlexLayoutModule} from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { CdkAccordionModule, CdkAccordionItem } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { environment } from '../environments/environment';
-
 import { AuthorizationService } from './auth/authorization.service';
 import { LoginComponent } from './auth/login.component';
-
 import { MainComponent } from './main/main.component';
-
 import * as relations from '../allors/material/custom/relations';
-
-import {CdkAccordionModule, CdkAccordionItem} from '@angular/cdk/accordion';
 
 const CDK_MODULES: any[] = [
   CdkAccordionModule
@@ -39,19 +34,23 @@ const MATERIAL_MODULES: any[] = [
   MatSnackBarModule, MatTabsModule, MatToolbarModule, MatTooltipModule,
 ];
 
-import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-   DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService } from '../allors/angular';
+import {
+  AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService
+} from '../allors/angular';
 
-import { AutoCompleteModule, CheckboxModule, DatepickerModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
-         RadioGroupModule, SelectModule, SliderModule, SlideToggleModule,
-         StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService } from '../allors/material';
+import {
+  AutoCompleteModule, CheckboxModule, DatepickerModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
+  RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule,
+  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService
+} from '../allors/material';
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DefaultLoggingService } from './app.logging.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const BASE_MATERIAL_MODULES: any[] = [
   AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, FileModule, FilesModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
+  RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
 @NgModule({
@@ -79,7 +78,7 @@ const BASE_MATERIAL_MODULES: any[] = [
   ],
   providers: [
     { provide: DatabaseConfig, useValue: { url: environment.url } },
-    { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl} },
+    { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl } },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },

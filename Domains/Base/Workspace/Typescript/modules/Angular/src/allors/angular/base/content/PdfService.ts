@@ -1,8 +1,8 @@
-import { HttpClient } from "@angular/common/http";
-import { Inject, Injectable } from "@angular/core";
-import { Media } from "../../../domain";
-import { ISessionObject } from "../../../framework";
-import { DatabaseConfig } from "../framework/DatabaseConfig";
+import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { Media } from '../../../domain';
+import { ISessionObject } from '../../../framework';
+import { DatabaseConfig } from '../framework/DatabaseConfig';
 
 @Injectable()
 export class PdfService {

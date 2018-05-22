@@ -1,12 +1,13 @@
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { MatInputModule } from "@angular/material";
+import { MatInputModule } from '@angular/material';
 
-import { TextareaComponent } from "./textarea.component";
-export { TextareaComponent } from "./textarea.component";
+import { TextareaComponent } from './textarea.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+export { TextareaComponent } from './textarea.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ export { TextareaComponent } from "./textarea.component";
     TextareaComponent,
   ],
   imports: [
+    FlexLayoutModule,
     FormsModule,
     CommonModule,
     MatInputModule,

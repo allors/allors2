@@ -1,2 +1,2 @@
-﻿export { MediaService } from "./MediaService";
-export { PdfService } from "./PdfService";
+export { MediaService } from './MediaService';
+export { PdfService } from './PdfService';

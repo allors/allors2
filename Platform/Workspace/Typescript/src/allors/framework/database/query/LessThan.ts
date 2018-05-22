@@ -1,6 +1,6 @@
-﻿import { RoleType } from "../../meta";
+import { RoleType } from '../../meta';
 
-import { Predicate } from "./Predicate";
+import { Predicate } from './Predicate';
 
 export class LessThan implements Predicate {
   public roleType: RoleType;
@@ -12,7 +12,7 @@ export class LessThan implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "LessThan",
+      _T: 'LessThan',
       rt: this.roleType.id,
       v: this.value,
     };

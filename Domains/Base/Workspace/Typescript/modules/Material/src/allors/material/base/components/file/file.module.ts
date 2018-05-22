@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule } from '@angular/material';
 
 import { FileComponent } from './file.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 export { FileComponent } from './file.component';
 
 @NgModule({
@@ -16,6 +17,7 @@ export { FileComponent } from './file.component';
   ],
   imports: [
     CommonModule,
+    FlexLayoutModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,

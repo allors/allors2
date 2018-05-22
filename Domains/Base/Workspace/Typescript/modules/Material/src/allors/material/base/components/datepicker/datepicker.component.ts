@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, Input, Optional, QueryList, ViewChildren } from "@angular/core";
-import { NgForm, NgModel } from "@angular/forms";
+import { AfterViewInit, Component, Input, Optional, QueryList, ViewChildren } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
 
-import { Field } from "../../../../angular";
+import { Field } from '../../../../angular';
 
 @Component({
-  selector: "a-mat-datepicker",
-  templateUrl: "./datepicker.component.html",
+  selector: 'a-mat-datepicker',
+  templateUrl: './datepicker.component.html',
 })
 export class DatepickerComponent extends Field {
 

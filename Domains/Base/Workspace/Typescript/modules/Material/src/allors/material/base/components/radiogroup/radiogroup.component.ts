@@ -1,7 +1,7 @@
-import { Component , Input, Optional } from "@angular/core";
-import { NgForm } from "@angular/forms";
+import { Component, Input, Optional } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { Field } from "../../../../angular";
+import { Field } from '../../../../angular';
 
 export interface RadioGroupOption {
   label?: string;
@@ -9,8 +9,8 @@ export interface RadioGroupOption {
 }
 
 @Component({
-  selector: "a-mat-radio-group",
-  templateUrl: "./radiogroup.component.html",
+  selector: 'a-mat-radio-group',
+  templateUrl: './radiogroup.component.html',
 })
 export class RadioGroupComponent extends Field {
   @Input()
@@ -20,7 +20,7 @@ export class RadioGroupComponent extends Field {
     super(parentForm);
   }
 
-  get keys(): string[]{
+  get keys(): string[] {
     return Object.keys(this.options);
   }
 

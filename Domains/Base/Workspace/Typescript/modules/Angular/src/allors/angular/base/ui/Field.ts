@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from "@angular/core";
-import { NgForm, NgModel } from "@angular/forms";
-import { ISessionObject, RoleType } from "../../../framework";
+import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import { NgForm, NgModel } from '@angular/forms';
+import { ISessionObject, RoleType } from '../../../framework';
 
 export abstract class Field implements AfterViewInit, OnDestroy {
 
   private static counter = 0;
 
-  @Input("name")
+  @Input('name')
   public assignedName: string;
 
   @Input()
@@ -15,13 +15,13 @@ export abstract class Field implements AfterViewInit, OnDestroy {
   @Input()
   public roleType: RoleType;
 
-  @Input("disabled")
+  @Input('disabled')
   public assignedDisabled: boolean;
 
-  @Input("required")
+  @Input('required')
   public assignedRequired: boolean;
 
-  @Input("label")
+  @Input('label')
   public assignedLabel: string;
 
   @Input()
@@ -66,17 +66,17 @@ export abstract class Field implements AfterViewInit, OnDestroy {
   }
 
   get textType(): string {
-    if (this.roleType.objectType.name === "Integer" ||
-      this.roleType.objectType.name === "Decimal" ||
-      this.roleType.objectType.name === "Float") {
-      return "number";
+    if (this.roleType.objectType.name === 'Integer' ||
+      this.roleType.objectType.name === 'Decimal' ||
+      this.roleType.objectType.name === 'Float') {
+      return 'number';
     }
 
-    return "text";
+    return 'text';
   }
 
   get name(): string {
-    return this.assignedName ? this.assignedName : this.roleType.name + "_" + this.id;
+    return this.assignedName ? this.assignedName : this.roleType.name + '_' + this.id;
   }
 
   get label(): string {
@@ -120,8 +120,8 @@ export abstract class Field implements AfterViewInit, OnDestroy {
   }
 
   protected humanize(input: string): string {
-    return input ? input.replace(/([a-z\d])([A-Z])/g, "$1 $2")
-      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, "$1 $2")
+    return input ? input.replace(/([a-z\d])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
       : undefined;
   }
 }

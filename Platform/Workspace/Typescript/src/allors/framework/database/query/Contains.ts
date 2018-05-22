@@ -1,8 +1,8 @@
-﻿import { AssociationType, RoleType } from "../../meta";
+import { AssociationType, RoleType } from '../../meta';
 
-import { ISessionObject } from "./../../workspace/SessionObject";
-import { Predicate } from "./Predicate";
-import { Query } from "./Query";
+import { ISessionObject } from './../../workspace/SessionObject';
+import { Predicate } from './Predicate';
+import { Query } from './Query';
 
 export class Contains implements Predicate {
   public associationType: AssociationType;
@@ -15,7 +15,7 @@ export class Contains implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: "Contains",
+      _T: 'Contains',
       at: this.associationType ? this.associationType.id : undefined,
       o: this.object ? (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object : undefined,
       rt: this.roleType.id ? this.roleType.id : undefined,

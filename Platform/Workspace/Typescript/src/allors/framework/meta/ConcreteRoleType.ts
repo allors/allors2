@@ -1,8 +1,8 @@
-import { ExclusiveRoleType } from "./ExclusiveRoleType";
-import { MetaObject } from "./MetaObject";
-import { MetaPopulation } from "./MetaPopulation";
-import { ObjectType } from "./ObjectType";
-import { RoleType } from "./RoleType";
+import { ExclusiveRoleType } from './ExclusiveRoleType';
+import { MetaObject } from './MetaObject';
+import { MetaPopulation } from './MetaPopulation';
+import { ObjectType } from './ObjectType';
+import { RoleType } from './RoleType';
 
 export class ConcreteRoleType implements RoleType {
 

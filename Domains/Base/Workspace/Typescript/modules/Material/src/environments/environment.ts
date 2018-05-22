@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  authenticationUrl: "TestAuthentication/Token",
+  authenticationUrl: 'TestAuthentication/Token',
   production: false,
-  url: "http://localhost:5000/",
+  url: 'http://localhost:5000/',
 };
