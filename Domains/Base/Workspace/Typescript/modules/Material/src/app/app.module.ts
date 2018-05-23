@@ -40,16 +40,17 @@ import {
 } from '../allors/angular';
 
 import {
-  AutoCompleteModule, CheckboxModule, DatepickerModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
+  AutoCompleteModule, CheckboxModule, DatepickerModule, ErrorDialogModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
   RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule,
-  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService
+  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService, ErrorDialogComponent,
 } from '../allors/material';
+
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DefaultLoggingService } from './app.logging.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const BASE_MATERIAL_MODULES: any[] = [
-  AutoCompleteModule, CheckboxModule, DatepickerModule, InputModule, FileModule, FilesModule, LocalisedTextModule,
+  AutoCompleteModule, CheckboxModule, DatepickerModule, ErrorDialogModule, InputModule, FileModule, FilesModule, LocalisedTextModule,
   RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 

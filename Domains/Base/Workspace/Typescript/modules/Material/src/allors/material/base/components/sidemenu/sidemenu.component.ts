@@ -1,4 +1,4 @@
-import { Input, Component, OnInit } from '@angular/core';
+import { Input, Component } from '@angular/core';
 import { SideMenuItem } from './sidemenuitem';
 
 @Component({
@@ -7,11 +7,12 @@ import { SideMenuItem } from './sidemenuitem';
   styleUrls: ['sidemenu.component.scss'],
   templateUrl: './sidemenu.component.html',
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent {
 
   @Input()
   public items: SideMenuItem[];
 
-  ngOnInit(): void {
+  public hasChildren(item: SideMenuItem): boolean {
+    return item.children && item.children.length > 0;
   }
 }

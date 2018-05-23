@@ -76,7 +76,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
         this.locales = loaded.collections.locales as Locale[];
       },
       (error: any) => {
-        this.errorService.message(error);
+        this.errorService.handle(error);
         this.goBack();
       },
     );
@@ -99,7 +99,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
       (error: Error) => {
-        this.errorService.dialog(error);
+        this.errorService.handle(error);
       });
   }
 

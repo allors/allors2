@@ -1,26 +1,26 @@
 import { Component, Inject, Injectable, Input } from '@angular/core';
-import { MatDialogRef, MatSnackBar } from '@angular/material';
+import { MatDialogRef, MatSnackBar, MatDialog } from '@angular/material';
 
 import { ErrorService, LoggingService } from '../../../../angular';
 import { DerivationError, Response, ResponseError } from '../../../../framework';
 
-// import { errorDialog } from './errorDialog';
+import { ErrorDialogComponent } from '../../components/errordialog/errordialog.module';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class DefaultErrorService extends ErrorService {
-  constructor(private loggingService: LoggingService, private snackBar: MatSnackBar) {
+  constructor(private loggingService: LoggingService, private dialog: MatDialog) {
     super();
   }
 
-  public message(error: Error): void {
-    const message: string = (error as any)._body || error.message;
-    this.loggingService.error(message);
-    this.snackBar.open(message, 'close', { duration: 5000 });
-  }
+  public handle(error: Error): Observable<any> {
 
-  public dialog(error: Error): MatDialogRef<any> {
-    // return errorDialog(this.dialogService, error);
-    console.error(error);
-    return null;
+    this.loggingService.error(error);
+
+    const dialogRef = this.dialog.open(ErrorDialogComponent, {
+      data: { error }
+    });
+
+    return dialogRef.afterClosed();
   }
 }

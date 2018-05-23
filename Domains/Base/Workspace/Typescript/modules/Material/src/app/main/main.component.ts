@@ -14,6 +14,9 @@ export class MainComponent {
 
   sideMenuItems: SideMenuItem[] = [
     {
+      title: 'Home', icon: 'home', link: '/dashboard',
+    },
+    {
       title: 'Relations', icon: 'share',
       children: [
         { title: 'Organisations', link: '/relations/organisations' },

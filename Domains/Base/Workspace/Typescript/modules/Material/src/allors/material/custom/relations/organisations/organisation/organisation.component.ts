@@ -88,7 +88,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
         this.people = loaded.collections.people as Person[];
       },
       (error: any) => {
-        this.errorService.message(error);
+        this.errorService.handle(error);
         this.goBack();
       },
     );
@@ -114,7 +114,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
       this.refresh();
     },
     (error: Error) => {
-      this.errorService.dialog(error);
+      this.errorService.handle(error);
     });
   }
 
@@ -126,7 +126,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
         this.goBack();
       },
       (error: Error) => {
-        this.errorService.dialog(error);
+        this.errorService.handle(error);
       });
   }
 

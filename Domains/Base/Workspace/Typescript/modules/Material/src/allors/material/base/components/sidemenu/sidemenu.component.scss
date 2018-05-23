@@ -10,7 +10,15 @@
   // }
 
   .expanded {
-    background-color: mat-color($background, card);
+    background-color: mat-color($background, dialog);
+  }
+
+  .expander {
+    transform: scale(0.75);
+  }
+
+  .active {
+    background-color: mat-color($primary);
   }
 }
 

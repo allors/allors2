@@ -64,7 +64,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
         this.organisation = loaded.objects.organisation as Organisation;
       },
       (error: any) => {
-        this.errorService.message(error);
+        this.errorService.handle(error);
         this.goBack();
       },
     );

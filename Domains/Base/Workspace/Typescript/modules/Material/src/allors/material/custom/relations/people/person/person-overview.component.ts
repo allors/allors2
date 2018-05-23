@@ -61,7 +61,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
         this.person = loaded.objects.person as Person;
       },
       (error: any) => {
-        this.errorService.message(error);
+        this.errorService.handle(error);
         this.goBack();
       },
     );
