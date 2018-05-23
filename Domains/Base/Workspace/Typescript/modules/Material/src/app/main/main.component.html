@@ -1,14 +1,14 @@
 <mat-sidenav-container class="sidenav-container">
 
     <mat-sidenav
-    style="width: 18rem"
+      style="width: 18rem;"
       #drawer
-      class="sidenav"
+      class="sidenav side-theme"
       fixedInViewport="true"
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="!(isHandset$ | async)">
-      <mat-toolbar color="primary">Allors Material</mat-toolbar>
+      <mat-toolbar>Allors Material</mat-toolbar>
       <a-mat-sidemenu [items]="sideMenuItems"></a-mat-sidemenu>
     </mat-sidenav>
 
@@ -19,7 +19,8 @@
           aria-label="Toggle sidenav"
           mat-icon-button
           (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async">
+          *ngIf="isHandset$ | async"
+          >
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
         <span>{{title}}</span>

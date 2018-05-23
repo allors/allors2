@@ -10,7 +10,7 @@
       <mat-icon *ngIf="!item.open">expand_more</mat-icon>
     </mat-list-item>
 
-    <div *ngIf="item.open" style="margin-left: 0">
+    <div *ngIf="item.open">
       <mat-list-item *ngFor="let child of item.children" class="expanded">
         <mat-icon mat-list-icon>{{child.icon}}</mat-icon>
         <a matLine href="#">{{child.title}}</a>

@@ -10,4 +10,15 @@ $custom-app-warn:    mat-palette($mat-red);
 $custom-app-theme: mat-light-theme($custom-app-primary, $custom-app-accent, $custom-app-warn);
 
 @include angular-material-theme($custom-app-theme);
-@include a-mat-sidemenu-theme($custom-app-theme);
+
+$custom-side-theme: mat-dark-theme($custom-app-primary, $custom-app-accent, $custom-app-warn);
+
+@include a-mat-sidemenu-theme($custom-side-theme);
+
+.side-theme {
+  
+    @include angular-material-theme($custom-side-theme);
+    // hack: see https://github.com/angular/material2/issues/4344
+    $background: map-get($custom-side-theme, background);
+    background-color: mat-color($background, background);
+}

@@ -5,12 +5,12 @@
   $background: map-get($theme, background);
   $foreground: map-get($theme, foreground);
 
-  .collapsed {
-    background-color: mat-color($primary, default);
-  }
+  // .collapsed {
+  //   background-color: mat-color($primary, default);
+  // }
 
   .expanded {
-    background-color: mat-color($primary, darker);
+    background-color: mat-color($background, card);
   }
 }
 
