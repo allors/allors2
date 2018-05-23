@@ -1,7 +1,7 @@
-import { domain } from "../domain";
-import { AutomatedAgent } from "../generated/AutomatedAgent.g";
+import { domain } from '../domain';
+import { AutomatedAgent } from '../generated/AutomatedAgent.g';
 
-declare module "../generated/AutomatedAgent.g" {
+declare module '../generated/AutomatedAgent.g' {
     interface AutomatedAgent {
         displayName: string;
 
@@ -10,15 +10,15 @@ declare module "../generated/AutomatedAgent.g" {
 
 domain.extend((workspace) => {
 
-    const obj: AutomatedAgent = workspace.prototypeByName["AutomatedAgent"];
+    const obj: AutomatedAgent = workspace.prototypeByName['AutomatedAgent'];
 
-    Object.defineProperty(obj, "displayName", {
+    Object.defineProperty(obj, 'displayName', {
         get(this: AutomatedAgent): string {
             if (this.UserName) {
                 return this.UserName;
             }
 
-            return "N/A";
+            return 'N/A';
         },
     });
 });

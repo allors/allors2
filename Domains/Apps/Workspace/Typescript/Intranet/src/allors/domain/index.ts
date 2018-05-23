@@ -1,5 +1,5 @@
-export * from "./generated";
+export * from './generated';
 
-import "./apps";
+import './apps';
 
-export { domain } from "./domain";
+export { domain } from './domain';

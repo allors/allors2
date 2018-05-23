@@ -1,6 +1,6 @@
-export * from "./Database";
-export * from "./Scope";
+export * from './Database';
+export * from './Scope';
 
-export * from "./responses/Loaded";
-export * from "./responses/Saved";
-export * from "./responses/Invoked";
+export * from './responses/Loaded';
+export * from './responses/Saved';
+export * from './responses/Invoked';

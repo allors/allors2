@@ -1,0 +1,214 @@
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button>
+      <mat-icon>settings</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>
+
+<div body *ngIf="invoice" layout-gt-md="row">
+  <div flex-gt-xs="50">
+    <mat-card>
+      <mat-card-title>Sales Invoice</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+        <div class="pad">
+          <div class="grid-4_lg-2_sm-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
+            <a-mat-static class="col link" *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder" display="OrderNumber"
+              [routerLink]="['/orders/salesOrder/' + invoice.SalesOrder.id ]"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.BillToCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to ContactMechanism"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.ShipToCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" display="displayName" label="Ship to Address"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.BillToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" display="displayName" label="Bill to End Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" display="displayName"
+              label="Bill to End Customer ContactMechanism"></a-mat-static>
+          </div>
+
+          <div *ngIf="invoice.ShipToEndCustomer" class="grid-2_xs-1">
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" display="displayName" label="Ship to End Customer"></a-mat-static>
+            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" display="displayName" label="Ship to End Customer Address"></a-mat-static>
+          </div>
+
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="invoice.Description" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.SalesInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
+          </div>
+          <div class="grid-1">
+            <a-mat-static class="col" *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
+          </div>
+          <div class="grid-1">
+            <a-mat-textarea class="col" *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"
+              label="Invoice Internal Comment"></a-mat-textarea>
+          </div>
+
+          <div layout="grid-2_sm-1">
+            <p class="mat-caption tc-grey-500"> created: {{ invoice.CreationDate | date}} by {{ invoice.CreatedBy.displayName}}</p>
+            <p class="mat-caption tc-grey-500"> last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy.displayName}}</p>
+          </div>
+        </div>
+
+      </mat-card-content>
+
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id]">Edit</button>
+        <button *ngIf="!invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id]">View</button>
+        <button *ngIf="invoice.CanExecuteSend" mat-button type="button" (click)="send()">Send</button>
+        <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
+        <button *ngIf="invoice.CanExecuteCopy" mat-button type="button" (click)="copy()">Copy</button>
+        <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Preview</button>
+        <button mat-button (click)="print()">Print</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Invoice Items</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+
+        <mat-list class="will-load">
+          <div class="mat-padding" *ngIf="invoice.SalesInvoiceItems.length === 0" layout="row" layout-align="center center">
+            <h3>No Items to display.</h3>
+          </div>
+
+          <ng-template let-invoiceItem let-last="last" ngFor [ngForOf]="invoice.SalesInvoiceItems">
+            <mat-list-item>
+              <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
+              <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
+
+              <h3 *ngIf="!invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.InvoiceItemType.Name}}</h3>
+              <h3 *ngIf="!invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.InvoiceItemType.Name}}</h3>
+
+              <h4 mat-line>Total ex VAT: {{invoiceItem.TotalExVat}}</h4>
+
+              <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu x-position="before" #menu="matMenu">
+                  <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="!invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]"
+                    mat-menu-item>View</a>
+                  <button mat-menu-item (click)="deleteInvoiceItem(invoiceItem)" [disabled]="!invoiceItem.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </span>
+            </mat-list-item>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          </ng-template>
+        </mat-list>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="invoice.CanWriteSalesInvoiceItems" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/item']">+ Add</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div flex-gt-xs="50">
+    <mat-card>
+      <mat-card-title>Invoice Terms</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+
+        <mat-list class="will-load">
+          <div *ngIf="invoice.SalesTerms.length === 0" layout="row" layout-align="center center">
+            <h3>No terms to display.</h3>
+          </div>
+
+          <ng-template let-salesTerm let-last="last" ngFor [ngForOf]="invoice.SalesTerms">
+            <mat-list-item>
+              <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+              <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+              <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+              <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+              <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
+              <h3 *ngIf="salesTerm?.objectType.name == 'OrderTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
+
+              <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu x-position="before" #menu="matMenu">
+                  <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="salesTerm?.objectType.name == 'OrderTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/orderterm/' + salesTerm.id ]"
+                    mat-menu-item>Edit</a>
+                  <button mat-menu-item (click)="deleteSalesTerm(salesTerm)" [disabled]="!invoice.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </span>
+            </mat-list-item>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          </ng-template>
+        </mat-list>
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/incoterm']">+ Incoterm</button>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/invoiceterm']">+ Invoice term</button>
+        <button *ngIf="invoice.CanWriteSalesTerms" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/orderterm']">+ Order term</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-title>Repeating Invoice</mat-card-title>
+      <mat-divider></mat-divider>
+      <mat-card-content>
+
+        <div *ngIf="!repeatingInvoice" layout="row" layout-align="center center">
+          <h3>This is not a repeating invoice.</h3>
+        </div>
+
+        <div *ngIf="repeatingInvoice" class="grid-3_xs-1 pad-top">
+          <a-mat-static class="col" [object]="repeatingInvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" display="Name"></a-mat-static>
+          <a-mat-static class="col" [object]="repeatingInvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" display="Name"></a-mat-static>
+          <mat-form-field class="col">
+            <input disabled=true matInput placeholder="Last Execution" [value]="repeatingInvoice.FinalExecutionDate?.toDateString()">
+          </mat-form-field>
+        </div>
+        <div *ngIf="repeatingInvoice" class="grid-2_xs-1 pad-top">
+          <mat-form-field class="col">
+            <input disabled=true matInput placeholder="Next Execution" [value]="repeatingInvoice.NextExecutionDate.toDateString()">
+          </mat-form-field>
+          <mat-form-field class="col">
+            <input disabled=true matInput placeholder="Previous Execution" [value]="repeatingInvoice.PreviousExecutionDate?.toDateString()">
+          </mat-form-field>
+        </div>
+
+      </mat-card-content>
+      <mat-divider></mat-divider>
+      <mat-card-actions>
+        <button *ngIf="!repeatingInvoice" mat-button [routerLink]="['/salesinvoice/' + invoice.id +'/repeat']">+ Add</button>
+        <button *ngIf="repeatingInvoice" mat-button [routerLink]="['/salesinvoice/' + invoice.id + '/repeat/' + repeatingInvoice.id]">Edit</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

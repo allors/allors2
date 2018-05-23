@@ -1,4 +1,4 @@
-import { Workspace } from "../framework";
+import { Workspace } from '../framework';
 
 class Domain {
 
@@ -11,7 +11,7 @@ class Domain {
     public apply(workspace: Workspace) {
         this.extensions.forEach((v) => {
             v(workspace);
-        })
+        });
     }
 }
 

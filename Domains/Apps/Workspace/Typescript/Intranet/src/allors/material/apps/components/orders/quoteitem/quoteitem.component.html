@@ -1,0 +1,56 @@
+
+  <form #form="ngForm" *ngIf="quoteItem" (submit)="save()">
+
+    <div class="pad">
+      <div class="grid-2_md-1" *ngIf="!quoteItem.isNew">
+        <div class="col">
+          <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.QuoteItemState" display="Name" label="Status"></a-mat-static>
+          <div class="grid">
+            <button *ngIf="quoteItem.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+            <button *ngIf="quoteItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-1">
+        <a-mat-autocomplete class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name" [filter]="stateService.goodsFilter.create(scope)"
+          (onChange)="goodSelected($event)"></a-mat-autocomplete>
+      </div>
+      <div class="grid_md-2_xs-1">
+        <a-mat-input class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
+        <a-mat-select class="col" [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
+        <a-mat-input class="col" [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>
+        <a-mat-static class="col" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+        <a-mat-static class="col" [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-static>
+      </div>
+
+      <div class="grid-2_sm-1">
+        <a-mat-datepicker class="col" [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-mat-datepicker>
+        <a-mat-datepicker class="col" [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-mat-datepicker>
+      </div>
+
+      <div class="grid-1">
+        <a-mat-static class="col" *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
+      </div>
+      <div class="grid-1">
+        <a-mat-textarea class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Details"></a-mat-textarea>
+      </div>
+      <div class="grid-1">
+        <a-mat-textarea class="col" [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-mat-textarea>
+      </div>
+      <div class="grid-1">
+        <a-mat-static class="col" *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-static>
+      </div>
+      <div class="grid-1">
+        <a-mat-textarea class="col" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"></a-mat-textarea>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button *ngIf="quoteItem.CanWriteQuantity" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button *ngIf="quoteItem.CanWriteQuantity" mat-button (click)="goBack()" type="button">CANCEL</button>
+      <button *ngIf="!quoteItem.CanWriteQuantity" mat-button (click)="goBack()" type="button">DONE</button>
+    </mat-card-actions>
+  </form>

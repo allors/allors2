@@ -1,14 +1,14 @@
-﻿import {
+import {
   InvokeResponse, ISession, ISessionObject, Method, PullResponse,
   PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
   SyncResponse, Workspace,
-} from "../../framework";
+} from '../../framework';
 
-import { Database } from "./Database";
+import { Database } from './Database';
 
-import { Invoked } from "./responses/Invoked";
-import { Loaded } from "./responses/Loaded";
-import { Saved } from "./responses/Saved";
+import { Invoked } from './responses/Invoked';
+import { Loaded } from './responses/Loaded';
+import { Saved } from './responses/Saved';
 
 export class Scope {
   public session: ISession;

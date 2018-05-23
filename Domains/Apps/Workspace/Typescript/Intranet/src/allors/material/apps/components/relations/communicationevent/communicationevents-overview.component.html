@@ -1,0 +1,108 @@
+<mat-toolbar>
+  <div layout="row" layout-align="start center" flex>
+    <button mat-icon-button >
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+    <span>{{title}}</span>
+    <span flex></span>
+    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+  </div>
+</mat-toolbar>
+
+<mat-card *ngIf="communicationEventStates">
+  <div class="pad-top-xs pad-left pad-right">
+    <form novalidate [formGroup]="searchForm">
+      <div class="grid-8_xs-1">
+        <mat-form-field class="col">
+          <input matInput placeholder="Subject" formControlName="subject">
+        </mat-form-field>
+        <mat-form-field class="col">
+          <mat-select formControlName="state" name="state" [(ngModel)]="selectedCommunicationEventState" placeholder="State">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let objectState of communicationEventStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col">
+          <mat-select formControlName="purpose" name="purpose" [(ngModel)]="selectedPurpose" placeholder="Purpose">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let purpose of purposes" [value]="purpose.Name">{{ purpose.Name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col">
+          <mat-select formControlName="involved" name="involved" [(ngModel)]="selectedInvolved" placeholder="Person Involved">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let person of people" [value]="person.displayName">{{ person.displayName }}</mat-option>
+          </mat-select>
+          <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+    
+      <mat-list class="will-load">
+        <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+          <h3>No communication events to display.</h3>
+        </div>
+        <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="data">
+          <mat-list-item>
+                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer"
+                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
+                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
+
+                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer"
+                [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
+                  Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
+
+                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer"
+                [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
+                  Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
+
+                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer"
+                [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
+                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
+
+                <p mat-line class="mat-caption">State: {{ communicationEvent.CommunicationEventState.Name }} </p>
+                <p mat-line class="mat-caption">Subject: {{ communicationEvent.Subject }} </p>
+                <p mat-line class="mat-caption">Involved:
+                  <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
+                </p>
+
+                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date}} </div>
+                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
+                  </span>
+
+                 <span>
+                    <button mat-icon-button [mat-menu-trigger-for]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu x-position="before" #menu="matMenu">
+                         <button mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">Details</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
+                        <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                        <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="delete(communicationEvent)">Delete</button>
+                        <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancel(communicationEvent)">Cancel</button>
+                        <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="close(communicationEvent)">Close</button>
+                        <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopen(communicationEvent)">Reopen</button>
+                    </mat-menu>
+                  </span>
+
+          </mat-list-item>
+          <mat-divider *ngIf="!last" mat-inset></mat-divider>
+        </ng-template>
+      </mat-list>
+
+  </mat-card-content>
+</mat-card>
+
+<mat-card body *ngIf="this.data && this.data.length !== total">
+  <mat-card-content>
+    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+  </mat-card-content>
+</mat-card>

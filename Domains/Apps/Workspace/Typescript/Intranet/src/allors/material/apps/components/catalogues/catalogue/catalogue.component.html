@@ -1,0 +1,42 @@
+<form #form="ngForm" *ngIf="catalogue" (submit)="save()">
+
+  <div class="pad-md">
+    <div class="grid-2_md-1">
+      <a-mat-file class="col" [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-mat-file>
+      <a-mat-select class="col" [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
+    </div>
+
+    <div class="grid-2_md-1">
+      <a-mat-input class="col" [object]="catalogue" [roleType]="m.Catalogue.Name"></a-mat-input>
+      <a-mat-input class="col" [object]="catalogue" [roleType]="m.Catalogue.Description"></a-mat-input>
+    </div>
+
+    <div class="grid-2_xs-1">
+      <a-mat-select class="col" [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+    </div>
+
+    <mat-expansion-panel *ngIf="locales">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+            Translations
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <div *ngFor="let locale of locales; let i = index">
+        <mat-divider *ngIf="i > 0"></mat-divider>
+        <div class="grid-2_md-1 pad">
+          <a-mat-localised-text class="col" [object]="catalogue" [roleType]="m.Catalogue.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+          <a-mat-localised-text class="col" [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-actions>
+    <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    <button mat-button (click)="goBack()" type="button">CANCEL</button>
+  </mat-card-actions>
+
+</form>

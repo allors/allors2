@@ -1,10 +1,10 @@
-﻿import axios from "axios";
-import { AxiosInstance, AxiosRequestConfig } from "axios";
+import axios from 'axios';
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 // import * as http from "http";
 // import * as https from "http";
-import { AuthenticationResponse } from "./AuthenticationResponse";
-import { Http } from "./Http";
-import { HttpResponse } from "./HttpResponse";
+import { AuthenticationResponse } from './AuthenticationResponse';
+import { Http } from './Http';
+import { HttpResponse } from './HttpResponse';
 
 export class AxiosHttp implements Http {
     public axios: AxiosInstance;

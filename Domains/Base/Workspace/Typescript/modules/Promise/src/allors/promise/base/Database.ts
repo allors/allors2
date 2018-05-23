@@ -1,8 +1,8 @@
-﻿import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from "../../framework";
-import { Method } from "../../framework";
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from '../../framework';
+import { Method } from '../../framework';
 
-import { Http } from "./http/Http";
-import { HttpResponse } from "./http/HttpResponse";
+import { Http } from './http/Http';
+import { HttpResponse } from './http/HttpResponse';
 
 export class Database {
 

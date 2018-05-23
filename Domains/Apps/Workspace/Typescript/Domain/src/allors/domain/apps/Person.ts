@@ -1,7 +1,7 @@
-import { domain } from "../domain";
-import { Person } from "../generated/Person.g";
+import { domain } from '../domain';
+import { Person } from '../generated/Person.g';
 
-declare module "../generated/Person.g" {
+declare module '../generated/Person.g' {
     interface Person {
         displayName;
     }
@@ -9,9 +9,9 @@ declare module "../generated/Person.g" {
 
 domain.extend((workspace) => {
 
-    const obj: Person = workspace.prototypeByName["Person"];
+    const obj: Person = workspace.prototypeByName['Person'];
 
-    Object.defineProperty(obj, "displayName", {
+    Object.defineProperty(obj, 'displayName', {
         get(this: Person): string {
             if (this.FirstName || this.LastName) {
                 let name = null;
@@ -21,7 +21,7 @@ domain.extend((workspace) => {
 
                 if (this.MiddleName) {
                     if (name != null) {
-                        name += " " + this.MiddleName;
+                        name += ' ' + this.MiddleName;
                     } else {
                         name = this.MiddleName;
                     }
@@ -29,7 +29,7 @@ domain.extend((workspace) => {
 
                 if (this.LastName) {
                     if (name != null) {
-                        name += " " + this.LastName;
+                        name += ' ' + this.LastName;
                     } else {
                         name = this.LastName;
                     }
@@ -42,7 +42,7 @@ domain.extend((workspace) => {
                 return this.UserName;
             }
 
-            return "N/A";
+            return 'N/A';
         },
     });
 

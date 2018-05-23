@@ -1,7 +1,7 @@
-import { domain } from "../domain";
-import { EmailAddress } from "../generated/EmailAddress.g";
+import { domain } from '../domain';
+import { EmailAddress } from '../generated/EmailAddress.g';
 
-declare module "../generated/EmailAddress.g" {
+declare module '../generated/EmailAddress.g' {
   interface EmailAddress {
     displayName;
   }
@@ -9,15 +9,15 @@ declare module "../generated/EmailAddress.g" {
 
 domain.extend((workspace) => {
 
-  const obj: EmailAddress = workspace.prototypeByName["EmailAddress"];
+  const obj: EmailAddress = workspace.prototypeByName['EmailAddress'];
 
-  Object.defineProperty(obj, "displayName", {
+  Object.defineProperty(obj, 'displayName', {
     get(this: EmailAddress) {
       if (this.ElectronicAddressString) {
         return this.ElectronicAddressString;
       }
 
-      return "N/A";
+      return 'N/A';
     },
   });
 

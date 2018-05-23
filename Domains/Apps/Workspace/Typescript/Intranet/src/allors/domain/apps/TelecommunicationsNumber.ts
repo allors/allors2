@@ -1,7 +1,7 @@
-import { domain } from "../domain";
-import { TelecommunicationsNumber } from "../generated/TelecommunicationsNumber.g";
+import { domain } from '../domain';
+import { TelecommunicationsNumber } from '../generated/TelecommunicationsNumber.g';
 
-declare module "../generated/TelecommunicationsNumber.g" {
+declare module '../generated/TelecommunicationsNumber.g' {
   interface TelecommunicationsNumber {
     displayName;
   }
@@ -9,14 +9,14 @@ declare module "../generated/TelecommunicationsNumber.g" {
 
 domain.extend((workspace) => {
 
-  const obj: TelecommunicationsNumber = workspace.prototypeByName["TelecommunicationsNumber"];
+  const obj: TelecommunicationsNumber = workspace.prototypeByName['TelecommunicationsNumber'];
 
-  Object.defineProperty(obj, "displayName", {
+  Object.defineProperty(obj, 'displayName', {
     get(this: TelecommunicationsNumber) {
-      let numberString: string = "";
+      let numberString = '';
       if (this.CountryCode || this.AreaCode) {
         if (this.CountryCode && this.AreaCode) {
-          numberString = this.CountryCode + " " + this.AreaCode;
+          numberString = this.CountryCode + ' ' + this.AreaCode;
         } else if (this.CountryCode) {
           numberString = this.CountryCode;
         } else {
@@ -24,10 +24,10 @@ domain.extend((workspace) => {
         }
       }
 
-      if (numberString === "" && this.ContactNumber) {
+      if (numberString === '' && this.ContactNumber) {
         return numberString = this.ContactNumber;
       } else {
-        return numberString += " " + this.ContactNumber;
+        return numberString += ' ' + this.ContactNumber;
       }
     },
   });

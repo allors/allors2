@@ -1,4 +1,4 @@
-﻿import { ISession, ISessionObject, PushResponse } from "../../../framework";
+import { ISession, ISessionObject, PushResponse } from '../../../framework';
 
 export class Saved {
     constructor(public session: ISession, public response: PushResponse) {
