@@ -19,41 +19,41 @@
       <mat-card-content>
         <div class="pad">
           <div class="grid-3_lg-2_sm-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
             <a-mat-static class="col link" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" display="PartyName" label="From"
               [routerLink]="['/relations/organisation/' + invoice.BilledFrom.id ]"></a-mat-static>
           </div>
 
           <div *ngIf="invoice.BillToCustomer" class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" display="displayName"
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" display="displayName"
               label="Bill to ContactMechanism"></a-mat-static>
           </div>
 
           <div *ngIf="invoice.ShipToEndCustomer" class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" display="displayName"
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" display="displayName"
               label="Ship to Address"></a-mat-static>
           </div>
 
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
+            <a-mat-static  *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="invoice.Description" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-static>
+            <a-mat-static  *ngIf="invoice.Description" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-static>
+            <a-mat-static  *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-textarea class="col" *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
+            <a-mat-textarea  *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
+            <a-mat-static  *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-textarea class="col" *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"
+            <a-mat-textarea  *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"
               label="Invoice Internal Comment"></a-mat-textarea>
           </div>
 

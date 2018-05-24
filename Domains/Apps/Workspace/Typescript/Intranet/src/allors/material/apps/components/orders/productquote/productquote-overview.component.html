@@ -19,8 +19,8 @@
       <mat-card-content>
         <div class="pad">
           <div class="grid-4_lg-2_sm-1">
-            <a-mat-static class="col" [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
-            <a-mat-static class="col" [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
+            <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
             <a-mat-static class="col link" *ngIf="quote.Request" [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber"
               [routerLink]="['/orders/request/' + quote.Request.id]"></a-mat-static>
             <a-mat-static class="col link" *ngIf="salesOrder" [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]"></a-mat-static>
@@ -36,40 +36,40 @@
           </div>
 
           <div class="grid">
-            <a-mat-static class="col" *ngIf="quote.FullfillContactMechanism" [object]="quote" [roleType]="m.Quote.FullfillContactMechanism"
+            <a-mat-static  *ngIf="quote.FullfillContactMechanism" [object]="quote" [roleType]="m.Quote.FullfillContactMechanism"
               display="displayName" label="Reply to"></a-mat-static>
           </div>
 
           <div class="grid-4_lg-2_sm-1">
-            <mat-form-field class="col" *ngIf="quote.IssueDate">
+            <mat-form-field  *ngIf="quote.IssueDate">
               <input matInput placeholder="Issue date" [value]="quote.IssueDate.toDateString()">
             </mat-form-field>
-            <mat-form-field class="col" *ngIf="quote.ValidFromDate">
+            <mat-form-field  *ngIf="quote.ValidFromDate">
               <input matInput placeholder="Valid From" [value]="quote.ValidFromDate.toDateString()">
             </mat-form-field>
-            <mat-form-field class="col" *ngIf="quote.ValidThroughDate">
+            <mat-form-field  *ngIf="quote.ValidThroughDate">
               <input matInput placeholder="Valid Trough" [value]="quote.ValidThroughDate.toDateString()">
             </mat-form-field>
           </div>
 
           <div class="grid-4_sm-1">
-            <a-mat-static class="col" [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
+            <a-mat-static  [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
           </div>
 
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="quote.Description" [object]="quote" [roleType]="m.Quote.Description" y></a-mat-static>
+            <a-mat-static  *ngIf="quote.Description" [object]="quote" [roleType]="m.Quote.Description" y></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
+            <a-mat-static  *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-textarea class="col" *ngIf="quote.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-textarea>
+            <a-mat-textarea  *ngIf="quote.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-textarea>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+            <a-mat-static  *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-textarea class="col" *ngIf="quote.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+            <a-mat-textarea  *ngIf="quote.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
           </div>
 
           <div class="grid-2_sm-1">

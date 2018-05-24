@@ -2,7 +2,7 @@
   <form #form="ngForm" class="pad" *ngIf="communicationEvent" (submit)="save(form)" novalidate>
 
     <div class="grid-2_md-1" *ngIf="!communicationEvent.isNew">
-      <div class="col">
+      <div >
         <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="communicationEvent.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
         <button *ngIf="communicationEvent.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
@@ -11,9 +11,9 @@
     </div>
 
     <div class="grid-2_md-1">
-      <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes"
+      <a-mat-select  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes"
         display="Name"></a-mat-select>
-      <div class="col">
+      <div >
         <div fxLayout fxLayoutGap="1em">
           <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
             display="displayName"></a-mat-chips>
@@ -34,16 +34,16 @@
     </div>
 
     <div class="grid-1">
-      <a-mat-input class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-input>
-      <a-mat-input class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-input>
-      <a-mat-textarea class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-mat-textarea>
+      <a-mat-input  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-input>
+      <a-mat-input  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-input>
+      <a-mat-textarea  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-mat-textarea>
     </div>
 
     <div class="grid-2_xs-1">
-      <a-mat-datepicker class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-      <a-mat-datepicker class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
-      <a-mat-datepicker class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
-      <a-mat-datepicker class="col" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
+      <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
+      <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
+      <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
+      <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
     </div>
 
     <mat-divider></mat-divider>

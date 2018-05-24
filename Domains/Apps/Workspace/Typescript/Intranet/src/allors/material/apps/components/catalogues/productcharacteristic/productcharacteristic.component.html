@@ -2,8 +2,8 @@
 
   <div class="pad">
     <div class="grid">
-      <a-mat-input class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name"></a-mat-input>
-      <a-mat-select class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure"
+      <a-mat-input  [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name"></a-mat-input>
+      <a-mat-select  [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure"
         [options]="allUoms" display="Name"></a-mat-select>
     </div>
 
@@ -17,7 +17,7 @@
       <div *ngFor="let locale of locales; let i = index">
         <mat-divider *ngIf="i > 0"></mat-divider>
         <div class="pad">
-          <a-mat-localised-text class="col" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.LocalisedNames"
+          <a-mat-localised-text  [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.LocalisedNames"
             [locale]="locale"></a-mat-localised-text>
         </div>
       </div>

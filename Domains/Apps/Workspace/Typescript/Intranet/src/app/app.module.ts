@@ -47,8 +47,8 @@ import {
 
 import {
   AutoCompleteModule, CheckboxModule, DatepickerModule, ErrorDialogModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule,
-  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService, ErrorDialogComponent,
+  RadioGroupModule, SelectModule, SideMenuModule, SideNavToggleModule, SliderModule, SlideToggleModule,
+  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService, ErrorDialogComponent, SideNavService,
 } from '../allors/material';
 
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
@@ -59,7 +59,7 @@ import { StateService } from '../allors/material/apps/services/StateService';
 
 const BASE_MATERIAL_MODULES: any[] = [
   AutoCompleteModule, CheckboxModule, DatepickerModule, ErrorDialogModule, InputModule, FileModule, FilesModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
+  RadioGroupModule, SelectModule, SideMenuModule, SideNavToggleModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
 @NgModule({
@@ -106,6 +106,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     AuthorizationService,
     MediaService, 
     MenuService,
+    SideNavService,
     Title,
     PdfService,
   ],

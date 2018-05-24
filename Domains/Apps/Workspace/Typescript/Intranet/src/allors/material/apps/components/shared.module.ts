@@ -27,12 +27,12 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AutoCompleteModule, CheckboxModule, ChipsModule, DatepickerModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule
+  RadioGroupModule, SelectModule, SideNavToggleModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule
 } from '../../../material';
 
 const BASE_MATERIAL_MODULES: any[] = [
   AutoCompleteModule, CheckboxModule, ChipsModule, DatepickerModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
+  RadioGroupModule, SelectModule, SideNavToggleModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
 ];
 
 @NgModule({

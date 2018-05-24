@@ -14,26 +14,26 @@
 <mat-card *ngIf="workEffortStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <div class="grid-8_xs-1">
-        <mat-form-field class="col">
+      <div >
+        <mat-form-field >
           <input matInput placeholder="Name" formControlName="name">
         </mat-form-field>
-        <mat-form-field class="col">
+        <mat-form-field >
           <input matInput placeholder="Description" formControlName="description">
         </mat-form-field>
-        <mat-form-field class="col">
+        <mat-form-field >
           <mat-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState" placeholder="State">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let objectState of workEffortStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="col">
+        <mat-form-field >
           <mat-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority" placeholder="Priority">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let priority of priorities" [value]="priority.Name">{{ priority.Name }}</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field class="col">
+        <mat-form-field >
           <mat-select formControlName="assignee" name="assignee" [(ngModel)]="selectedAssignee" placeholder="Assignee">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let assignee of assignees" [value]="assignee.displayName">{{ assignee.displayName }}</mat-option>

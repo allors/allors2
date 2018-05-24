@@ -2,8 +2,8 @@
   <form class="pad" #form="ngForm" *ngIf="person" (submit)="save()">
 
     <div class="grid-2_md-1">
-      <a-mat-file class="col" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-file>
-      <mat-form-field class="col">
+      <a-mat-file  [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-file>
+      <mat-form-field >
         <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
           <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
         </mat-select>
@@ -11,34 +11,34 @@
     </div>
 
     <div class="grid-4_md-2_xs-1">
-      <a-mat-select class="col" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
-      <a-mat-input class="col" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-      <a-mat-input class="col" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-      <a-mat-input class="col" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+      <a-mat-select  [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
+      <a-mat-input  [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+      <a-mat-input  [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+      <a-mat-input  [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
     </div>
 
     <div class="grid-2_xs-1">
-      <a-mat-input class="col" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
-      <a-mat-select class="col" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
-      <a-mat-select class="col" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+      <a-mat-input  [object]="person" [roleType]="m.Person.Function"></a-mat-input>
+      <a-mat-select  [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
+      <a-mat-select  [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
     </div>
 
     <div class="grid-2_md-1">
-      <a-mat-select class="col" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
+      <a-mat-select  [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
         [options]="organisationContactKinds" display="Description" multiple="true"></a-mat-select>
-      <mat-form-field *ngIf="!organisationContactRelationship && !organisation" class="col">
+      <mat-form-field *ngIf="!organisationContactRelationship && !organisation" >
         <mat-select name="role" [(ngModel)]="organisation" placeholder="Organisations">
           <mat-option *ngFor="let organisation of organisations" [value]="organisation">{{ organisation.Name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field *ngIf="(!organisationContactRelationship && organisation) || (organisationContactRelationship && !person.IsNew)"
-        class="col">
+        >
         <input matInput type="type" [ngModel]="organisation.Name" name="Organisation" placeholder="Organisation" readonly="true">
       </mat-form-field>
     </div>
 
     <div class="grid">
-      <a-mat-textarea class="col" [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
+      <a-mat-textarea  [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
     </div>
 
     <mat-divider></mat-divider>

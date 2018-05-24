@@ -1,44 +1,45 @@
 <div fxLayout="column" style="height: 100vh; min-height: 100vh">
   <mat-toolbar fxFlex>
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
     <span>{{title}}</span>
   </mat-toolbar>
 
-  <div fxFlex fxFill style="overflow: scroll; padding: 20px;">
+  <div fxFlex fxFill style="overflow: auto; padding: 20px;">
     <mat-card>
       <form novalidate [formGroup]="searchForm">
-        <div class="grid-8_xs-1">
-          <mat-form-field class="col">
+        <div >
+          <mat-form-field >
             <input matInput placeholder="Name" formControlName="name">
           </mat-form-field>
-          <mat-form-field class="col">
+          <mat-form-field >
             <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="col">
+          <mat-form-field >
             <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="col">
+          <mat-form-field >
             <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field class="col">
+          <mat-form-field >
             <input matInput placeholder="First Name" formControlName="contactFirstName">
           </mat-form-field>
-          <mat-form-field class="col">
+          <mat-form-field >
             <input matInput placeholder="Last Name" formControlName="contactLastName">
             <mat-icon matSuffix>search</mat-icon>
           </mat-form-field>
         </div>
       </form>
     </mat-card>
-    
+
     <mat-card>
       <mat-list>
         <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">

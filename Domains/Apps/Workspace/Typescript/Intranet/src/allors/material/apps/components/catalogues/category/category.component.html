@@ -2,18 +2,18 @@
 
   <div class="pad-md">
     <div class="grid-2_md-1">
-      <a-mat-input class="col" [object]="category" [roleType]="m.ProductCategory.Name"></a-mat-input>
-      <a-mat-input class="col" [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-input>
+      <a-mat-input  [object]="category" [roleType]="m.ProductCategory.Name"></a-mat-input>
+      <a-mat-input  [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-input>
     </div>
 
     <div class="grid-2_md-1">
-      <a-mat-file class="col" [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
-      <a-mat-select class="col" [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name"
+      <a-mat-file  [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
+      <a-mat-select  [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name"
         label="Scope"></a-mat-select>
     </div>
 
     <div class="grid-2_xs-1">
-      <a-mat-select class="col" [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
+      <a-mat-select  [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
     </div>
 
     <mat-expansion-panel *ngIf="locales">
@@ -26,8 +26,8 @@
       <div *ngFor="let locale of locales; let i = index">
         <mat-divider *ngIf="i > 0"></mat-divider>
         <div class="grid-2_md-1 pad">
-          <a-mat-localised-text class="col" [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locale]="locale"></a-mat-localised-text>
-          <a-mat-localised-text class="col" [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
+          <a-mat-localised-text  [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+          <a-mat-localised-text  [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
         </div>
       </div>
     </mat-expansion-panel>

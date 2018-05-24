@@ -1,26 +1,27 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
-import { SideMenuItem } from '../../allors/material';
+import { SideMenuItem, SideNavService } from '../../allors/material';
 import { MenuService } from '../../allors/angular';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   styleUrls: ["main.component.scss"],
   templateUrl: './main.component.html'
 })
-export class MainComponent {
+export class MainComponent implements OnDestroy {
 
   sideMenuItems: SideMenuItem[] = [];
 
-  isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
+  private toggleSubscription;
+  @ViewChild('drawer') private sidenav: MatSidenav;
 
-  constructor(private breakpointObserver: BreakpointObserver, private titleService: Title, private menuService: MenuService) {
+  private handsetSubscription: Subscription;
+
+  constructor(private breakpointObserver: BreakpointObserver, private titleService: Title, private menuService: MenuService, private sideNavService: SideNavService) {
     menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,
@@ -32,9 +33,32 @@ export class MainComponent {
           };
         }),
       }
-      
+
       this.sideMenuItems.push(sideMenuItem);
     });
+
+    this.toggleSubscription = sideNavService.toggle$.subscribe(() => {
+      if (this.sidenav) {
+        this.sidenav.toggle();
+      }
+    })
+
+    this.handsetSubscription = this.breakpointObserver.observe(Breakpoints.Handset)
+      .pipe(
+        map(result => result.matches)
+      ).subscribe((result) => {
+        if(this.sidenav){
+          if(result){
+            this.sidenav.close();
+          } else{
+            this.sidenav.open();
+          }
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.handsetSubscription.unsubscribe;
   }
 
   get title(): string {

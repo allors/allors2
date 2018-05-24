@@ -2,10 +2,10 @@
   <form #form="ngForm" class="pad" *ngIf="productType" (submit)="save()">
 
     <div class="grid">
-      <a-mat-input class="col" [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
+      <a-mat-input  [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
     </div>
     <div class="grid">
-      <a-mat-select class="col" [object]="productType" [roleType]="m.ProductType.SerialisedInventoryItemCharacteristicTypes" [options]="characteristics"
+      <a-mat-select  [object]="productType" [roleType]="m.ProductType.SerialisedInventoryItemCharacteristicTypes" [options]="characteristics"
         display="Name"></a-mat-select>
     </div>
 

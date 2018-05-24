@@ -14,24 +14,24 @@
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <div class="grid-8_xs-1">
-        <mat-form-field class="col">
+      <div >
+        <mat-form-field >
         <input matInput placeholder="Supplier" formControlName="supplier">
       </mat-form-field>
-      <mat-form-field class="col">
+      <mat-form-field >
         <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation"
           placeholder="From Internal Organisation">
           <mat-option>None</mat-option>
           <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field class="col">
+      <mat-form-field >
         <input matInput placeholder="Number" formControlName="invoiceNumber">
       </mat-form-field>
-      <mat-form-field class="col">
+      <mat-form-field >
         <input matInput placeholder="Customer Reference" formControlName="reference">
       </mat-form-field>
-      <mat-form-field class="col">
+      <mat-form-field >
         <mat-select formControlName="state" name="state" [(ngModel)]="selectedPurchaseInvoiceState" placeholder="State">
           <mat-option>None</mat-option>
           <mat-option *ngFor="let objectState of purchaseInvoiceStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>

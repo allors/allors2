@@ -1,21 +1,21 @@
 <div class="grid">
-    <a-mat-select class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
+    <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name"></a-mat-select>
 </div>
 <div class="grid-1">
-    <a-mat-input class="col" [object]="postalAddress" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
-    <a-mat-input class="col" [object]="postalAddress" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-mat-input>
-    <a-mat-input class="col" [object]="postalAddress" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-mat-input>
+    <a-mat-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address1" label="Address line 1"></a-mat-input>
+    <a-mat-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address2" label="Address line 2"></a-mat-input>
+    <a-mat-input  [object]="postalAddress" [roleType]="m.PostalAddress.Address3" label="Address line 3"></a-mat-input>
 </div>
 <div class="grid-3_xs-1">
-    <a-mat-input class="col" [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City"></a-mat-input>
-    <a-mat-input class="col" [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code"></a-mat-input>
-    <a-mat-select class="col" [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
+    <a-mat-input  [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City"></a-mat-input>
+    <a-mat-input  [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code"></a-mat-input>
+    <a-mat-select  [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
         display="Name"></a-mat-select>
 </div>
 <div class="grid-2_xs-1">
-    <a-mat-slide-toggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
-    <a-mat-slide-toggle class="col" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
+    <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
+    <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
         label="Non Solicitation"></a-mat-slide-toggle>
 </div>
 

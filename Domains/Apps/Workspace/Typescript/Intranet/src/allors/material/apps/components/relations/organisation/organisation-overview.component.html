@@ -20,23 +20,23 @@
       <mat-card-content>
         <div class="pad">
           <div class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
-            <mat-form-field class="col">
+            <a-mat-static  [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
+            <mat-form-field >
               <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true" />
             </mat-form-field>
           </div>
 
           <div class="grid-2_xs-1">
-            <a-mat-static class="col" *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
+            <a-mat-static  *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
               display="Name" label="Classification"></a-mat-static>
-            <a-mat-static class="col" *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
+            <a-mat-static  *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
               display="Name" label="Industry"></a-mat-static>
-            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
-            <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.TaxNumber" display="VAT number"></a-mat-static>
+            <a-mat-static  [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
+            <a-mat-static  [object]="organisation" [roleType]="m.Organisation.TaxNumber" display="VAT number"></a-mat-static>
           </div>
 
           <div class="grid">
-            <a-mat-static class="col" *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
+            <a-mat-static  *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
           </div>
 
           <div class="grid">
@@ -124,7 +124,7 @@
     <mat-card>
       <mat-card-title>
         <div class="grid-right">
-          <div class="col" style="padding-bottom: 0px">Contact persons</div>
+          <div  style="padding-bottom: 0px">Contact persons</div>
           <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
@@ -198,7 +198,7 @@
     <mat-card>
       <mat-card-title>
         <div class="grid-right">
-          <div class="col" style="padding-bottom: 0px">Contact Info</div>
+          <div  style="padding-bottom: 0px">Contact Info</div>
           <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactMechanismsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>

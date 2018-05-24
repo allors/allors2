@@ -19,50 +19,50 @@
       <mat-card-content>
         <div class="pad">
           <div class="grid-4_lg-2_sm-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
             <a-mat-static class="col link" *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder" display="OrderNumber"
               [routerLink]="['/orders/salesOrder/' + invoice.SalesOrder.id ]"></a-mat-static>
           </div>
 
           <div *ngIf="invoice.BillToCustomer" class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to ContactMechanism"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to ContactMechanism"></a-mat-static>
           </div>
 
           <div *ngIf="invoice.ShipToCustomer" class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" display="displayName" label="Ship to Address"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
           <div *ngIf="invoice.BillToEndCustomer" class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" display="displayName" label="Bill to End Customer"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" display="displayName"
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" display="displayName" label="Bill to End Customer"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" display="displayName"
               label="Bill to End Customer ContactMechanism"></a-mat-static>
           </div>
 
           <div *ngIf="invoice.ShipToEndCustomer" class="grid-2_xs-1">
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" display="displayName" label="Ship to End Customer"></a-mat-static>
-            <a-mat-static class="col" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" display="displayName" label="Ship to End Customer Address"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" display="displayName" label="Ship to End Customer"></a-mat-static>
+            <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" display="displayName" label="Ship to End Customer Address"></a-mat-static>
           </div>
 
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
+            <a-mat-static  *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="invoice.Description" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-static>
+            <a-mat-static  *ngIf="invoice.Description" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
+            <a-mat-static  *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-textarea class="col" *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.SalesInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
+            <a-mat-textarea  *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.SalesInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
           </div>
           <div class="grid-1">
-            <a-mat-static class="col" *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
+            <a-mat-static  *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
           </div>
           <div class="grid-1">
-            <a-mat-textarea class="col" *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"
+            <a-mat-textarea  *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"
               label="Invoice Internal Comment"></a-mat-textarea>
           </div>
 
@@ -188,17 +188,17 @@
         </div>
 
         <div *ngIf="repeatingInvoice" class="grid-3_xs-1 pad-top">
-          <a-mat-static class="col" [object]="repeatingInvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" display="Name"></a-mat-static>
-          <a-mat-static class="col" [object]="repeatingInvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" display="Name"></a-mat-static>
-          <mat-form-field class="col">
+          <a-mat-static  [object]="repeatingInvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" display="Name"></a-mat-static>
+          <a-mat-static  [object]="repeatingInvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" display="Name"></a-mat-static>
+          <mat-form-field >
             <input disabled=true matInput placeholder="Last Execution" [value]="repeatingInvoice.FinalExecutionDate?.toDateString()">
           </mat-form-field>
         </div>
         <div *ngIf="repeatingInvoice" class="grid-2_xs-1 pad-top">
-          <mat-form-field class="col">
+          <mat-form-field >
             <input disabled=true matInput placeholder="Next Execution" [value]="repeatingInvoice.NextExecutionDate.toDateString()">
           </mat-form-field>
-          <mat-form-field class="col">
+          <mat-form-field >
             <input disabled=true matInput placeholder="Previous Execution" [value]="repeatingInvoice.PreviousExecutionDate?.toDateString()">
           </mat-form-field>
         </div>
