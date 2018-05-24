@@ -15,6 +15,7 @@ import { Country, CustomOrganisationClassification, InternalOrganisation, Organi
 import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 interface SearchData {
   name: string;
@@ -86,14 +87,14 @@ export class OrganisationsOverviewComponent implements OnDestroy {
       .startWith({});
 
     const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-        internalOrganisationId,
-      ];
-    }, [] as [SearchData, number, Date, InternalOrganisation]);
+      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+        return [
+          data,
+          data !== previousData ? 50 : take,
+          date,
+          internalOrganisationId,
+        ];
+      }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
@@ -190,7 +191,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
             const predicates: Predicate[] = predicate.predicates;
 
             if (data.role) {
-              if (this.role.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661' ) {
+              if (this.role.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661') {
                 predicates.push(new Equals({ roleType: m.Organisation.IsManufacturer, value: true }));
               }
             }
@@ -247,10 +248,10 @@ export class OrganisationsOverviewComponent implements OnDestroy {
         this.data = loaded.collections.organisations as Organisation[];
         this.total = loaded.values.organisations_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public more(): void {
@@ -273,21 +274,25 @@ export class OrganisationsOverviewComponent implements OnDestroy {
 
   public delete(organisation: Organisation): void {
     // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(organisation.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
-        }
-      }); */
+    /*  this.dialogService
+       .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
+       .afterClosed()
+       .subscribe((confirm: boolean) => {
+         if (confirm) {
+           this.scope.invoke(organisation.Delete)
+             .subscribe((invoked: Invoked) => {
+               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+               this.refresh();
+             },
+             (error: Error) => {
+               this.errorService.handle(error);
+             });
+         }
+       }); */
+  }
+
+  public search(data: string) {
+    this.searchForm.patchValue({ name: data });
   }
 
   public onView(organisation: Organisation): void {

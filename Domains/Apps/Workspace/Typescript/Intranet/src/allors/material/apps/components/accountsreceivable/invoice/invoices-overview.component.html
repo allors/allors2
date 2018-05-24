@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
+  <div  layout-align="start center" flex>
     <button mat-icon-button>
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -44,7 +44,7 @@
 
 
   <mat-list class="will-load">
-    <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+    <div  *ngIf="data && data.length === 0"  >
       <h3>No sales invoices to display.</h3>
     </div>
     <ng-template let-invoice let-last="last" ngFor [ngForOf]="data">

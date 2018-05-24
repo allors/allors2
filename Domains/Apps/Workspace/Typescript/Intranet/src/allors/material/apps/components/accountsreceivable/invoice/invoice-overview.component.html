@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
+  <div  layout-align="start center" flex>
     <button mat-icon-button>
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -93,7 +93,7 @@
       <mat-card-content>
 
         <mat-list class="will-load">
-          <div class="mat-padding" *ngIf="invoice.SalesInvoiceItems.length === 0" layout="row" layout-align="center center">
+          <div  *ngIf="invoice.SalesInvoiceItems.length === 0"  >
             <h3>No Items to display.</h3>
           </div>
 
@@ -138,7 +138,7 @@
       <mat-card-content>
 
         <mat-list class="will-load">
-          <div *ngIf="invoice.SalesTerms.length === 0" layout="row" layout-align="center center">
+          <div *ngIf="invoice.SalesTerms.length === 0"  >
             <h3>No terms to display.</h3>
           </div>
 
@@ -183,7 +183,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <div *ngIf="!repeatingInvoice" layout="row" layout-align="center center">
+        <div *ngIf="!repeatingInvoice"  >
           <h3>This is not a repeating invoice.</h3>
         </div>
 

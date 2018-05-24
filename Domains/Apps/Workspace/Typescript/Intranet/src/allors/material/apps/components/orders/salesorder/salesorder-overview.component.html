@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <div layout="row" layout-align="start center" flex>
+  <div  layout-align="start center" flex>
     <button mat-icon-button >
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -113,7 +113,7 @@
       <mat-card-content>
         
           <mat-list class="will-load">
-            <div class="mat-padding" *ngIf="order.SalesOrderItems.length === 0" layout="row" layout-align="center center">
+            <div  *ngIf="order.SalesOrderItems.length === 0"  >
               <h3>No Items to display.</h3>
             </div>
 
@@ -155,7 +155,7 @@
       <mat-card-content>
         
           <mat-list class="will-load">
-            <div *ngIf="order.SalesTerms.length === 0" layout="row" layout-align="center center">
+            <div *ngIf="order.SalesTerms.length === 0"  >
               <h3>No terms to display.</h3>
             </div>
 
