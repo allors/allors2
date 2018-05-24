@@ -1,5 +1,5 @@
 <mat-nav-list>
-  <div fxLayout="Column" *ngFor="let item of items">
+  <div fxLayout="column" *ngFor="let item of items">
 
     <mat-list-item *ngIf="!hasChildren(item)" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
       <mat-icon mat-list-icon>{{item.icon}}</mat-icon>

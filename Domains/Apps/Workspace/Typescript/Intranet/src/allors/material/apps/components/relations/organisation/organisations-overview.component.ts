@@ -10,8 +10,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-
-
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
 import { Country, CustomOrganisationClassification, InternalOrganisation, Organisation, OrganisationRole } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';

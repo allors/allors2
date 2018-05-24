@@ -1,89 +1,98 @@
-<mat-card>
-  <div class="pad-top-xs pad-left pad-right">
-    <form novalidate [formGroup]="searchForm">
-      <div class="grid-8_xs-1">
-        <mat-form-field class="col">
-          <input matInput placeholder="Name" formControlName="name">
-        </mat-form-field>
-        <mat-form-field class="col">
-          <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="col">
-          <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="col">
-          <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
-            <mat-option>None</mat-option>
-            <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="col">
-          <input matInput placeholder="First Name" formControlName="contactFirstName">
-        </mat-form-field>
-        <mat-form-field class="col">
-          <input matInput placeholder="Last Name" formControlName="contactLastName">
-          <mat-icon matSuffix>search</mat-icon>
-        </mat-form-field>
-      </div>
-    </form>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
+  <mat-toolbar fxFlex>
+    <span>{{title}}</span>
+  </mat-toolbar>
+
+  <div fxFlex fxFill style="overflow: scroll; padding: 20px;">
+    <mat-card>
+      <form novalidate [formGroup]="searchForm">
+        <div class="grid-8_xs-1">
+          <mat-form-field class="col">
+            <input matInput placeholder="Name" formControlName="name">
+          </mat-form-field>
+          <mat-form-field class="col">
+            <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col">
+            <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col">
+            <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col">
+            <input matInput placeholder="First Name" formControlName="contactFirstName">
+          </mat-form-field>
+          <mat-form-field class="col">
+            <input matInput placeholder="Last Name" formControlName="contactLastName">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </div>
+      </form>
+    </mat-card>
+    
+    <mat-card>
+      <mat-list>
+        <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
+          <h3>No organisations to display.</h3>
+        </div>
+        <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
+          <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          <mat-list-item>
+
+            <mat-icon *ngIf="!organisation.LogoImage" mat-list-avatar>insert_photo</mat-icon>
+            <img *ngIf="organisation.LogoImage" mat-list-avatar [src]="mediaService.url(organisation.LogoImage)" />
+
+            <h3 mat-line [routerLink]="['/relations/organisation/' + organisation.id]"> {{organisation.PartyName}} </h3>
+
+            <p *ngIf="organisation.OrganisationClassifications.length > 0" mat-line> {{organisation.OrganisationClassifications[0].Name}}</p>
+            <p *ngIf="organisation.GeneralCorrespondence" mat-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}</p>
+            <p *ngIf="organisation.GeneralCorrespondence" mat-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}}
+              {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>
+            <p *ngIf="organisation.GeneralPhoneNumber" mat-line> {{organisation.GeneralPhoneNumber.CountryCode}} {{organisation.GeneralPhoneNumber.AreaCode}} {{organisation.GeneralPhoneNumber.ContactNumber}}
+              <p mat-line hide-gt-md class="mat-caption"> last modified: {{ organisation.LastModifiedDate | date : shortDate }} </p>
+
+              <span flex></span>
+
+              <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.CreationDate | date }} </div>
+                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastModifiedDate | date : shortDate }} </div>
+              </span>
+
+              <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu x-position="before" #menu="matMenu">
+                  <a [routerLink]="['/relations/organisation/' + organisation.id]" mat-menu-item>Details</a>
+                  <button mat-menu-item (click)="delete(organisation)" [disabled]="!organisation.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </span>
+
+          </mat-list-item>
+        </ng-template>
+      </mat-list>
+
+    </mat-card>
+
+    <mat-card *ngIf="this.data && this.data.length !== total">
+      <mat-card-content>
+        <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <mat-divider></mat-divider>
-
-  <mat-list class="will-load">
-    <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-      <h3>No organisations to display.</h3>
-    </div>
-    <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
-      <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      <mat-list-item>
-
-        <mat-icon *ngIf="!organisation.LogoImage" mat-list-avatar>insert_photo</mat-icon>
-        <img *ngIf="organisation.LogoImage" mat-list-avatar [src]="mediaService.url(organisation.LogoImage)" />
-
-        <h3 mat-line [routerLink]="['/relations/organisation/' + organisation.id]"> {{organisation.PartyName}} </h3>
-
-        <p *ngIf="organisation.OrganisationClassifications.length > 0" mat-line> {{organisation.OrganisationClassifications[0].Name}}</p>
-        <p *ngIf="organisation.GeneralCorrespondence" mat-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}</p>
-        <p *ngIf="organisation.GeneralCorrespondence" mat-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}}
-          {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>
-        <p *ngIf="organisation.GeneralPhoneNumber" mat-line> {{organisation.GeneralPhoneNumber.CountryCode}} {{organisation.GeneralPhoneNumber.AreaCode}} {{organisation.GeneralPhoneNumber.ContactNumber}}
-          <p mat-line hide-gt-md class="mat-caption"> last modified: {{ organisation.LastModifiedDate | date : shortDate }} </p>
-
-          <span flex></span>
-
-          <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.CreationDate | date }} </div>
-            <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastModifiedDate | date : shortDate }} </div>
-          </span>
-
-          <span>
-            <button mat-icon-button [mat-menu-trigger-for]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu x-position="before" #menu="matMenu">
-              <a [routerLink]="['/relations/organisation/' + organisation.id]" mat-menu-item>Details</a>
-              <button mat-menu-item (click)="delete(organisation)" [disabled]="!organisation.CanExecuteDelete">Delete</button>
-            </mat-menu>
-          </span>
-
-      </mat-list-item>
-    </ng-template>
-  </mat-list>
-</mat-card>
-
-<mat-card body *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
-
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/organisation']">
-  <mat-icon>add</mat-icon>
-</a>
+  <mat-toolbar fxFlex>
+    <a mat-icon-button [routerLink]="['/organisation']">
+      <mat-icon>add</mat-icon> Add
+    </a>
+  </mat-toolbar>
+</div>

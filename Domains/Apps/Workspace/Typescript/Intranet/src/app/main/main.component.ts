@@ -8,7 +8,7 @@ import { SideMenuItem } from '../../allors/material';
 import { MenuService } from '../../allors/angular';
 
 @Component({
-  styleUrls: ['./main.component.scss'],
+  styleUrls: ["main.component.scss"],
   templateUrl: './main.component.html'
 })
 export class MainComponent {
