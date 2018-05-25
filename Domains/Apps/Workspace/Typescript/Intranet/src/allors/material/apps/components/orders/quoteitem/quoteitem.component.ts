@@ -151,10 +151,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -168,7 +167,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           } else {
             submitFn();
           }
-        }); */
+        }); 
     } else {
       submitFn();
     }
@@ -187,10 +186,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -204,7 +202,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }

@@ -16,6 +16,7 @@ import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../an
 import { SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -45,8 +46,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -124,14 +124,13 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
   }
 
   public delete(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this characteristic?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this characteristic?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
         }
-      }); */
+      }); 
   }
 
   public onView(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {

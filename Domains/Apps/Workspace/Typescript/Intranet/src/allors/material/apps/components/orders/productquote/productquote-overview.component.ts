@@ -13,6 +13,7 @@ import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, 
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './productquote-overview.component.html',
@@ -38,7 +39,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
     public pdfService: PdfService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
@@ -196,10 +197,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteQuoteItem(quoteItem: QuoteItem): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this item?' })
-      .afterClosed()
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(quoteItem.Delete)
@@ -211,7 +210,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public gotoOrder(): void {

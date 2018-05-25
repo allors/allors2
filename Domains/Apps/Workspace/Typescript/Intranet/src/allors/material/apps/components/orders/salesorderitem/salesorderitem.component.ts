@@ -14,6 +14,7 @@ import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } f
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { NewGoodDialogComponent } from '../../catalogues';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './salesorderitem.component.html',
@@ -51,7 +52,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public stateService: StateService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
@@ -225,10 +226,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -242,7 +242,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }
@@ -261,10 +261,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -278,7 +277,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); */
+        }); 
     } else {
       rejectFn();
     }

@@ -10,6 +10,7 @@ import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '.
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoice-overview.component.html',
@@ -32,7 +33,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private router: Router,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
@@ -51,9 +52,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public ngOnInit(): void {
@@ -134,10 +135,10 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.order = loaded.objects.order as PurchaseOrder;
         this.invoice = loaded.objects.invoice as PurchaseInvoice;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -158,16 +159,15 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -175,13 +175,13 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 cancelFn();
               },
-              (error: Error) => {
-                this.errorService.dialog(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
-        }); */
+        });
     } else {
       cancelFn();
     }
@@ -194,16 +194,15 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -212,53 +211,49 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                 approveFn();
               },
               (error: Error) => {
-                this.errorService.dialog(error);
+                this.errorService.handle(error);
               });
           } else {
             approveFn();
           }
-        }); */
+        });
     } else {
       approveFn();
     }
   }
 
   public finish(invoice: PurchaseInvoice): void {
-      // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to finish this invoice?' })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(invoice.Finish)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.dialog(error);
-            });
-        }
-      }); */
+      this.dialogService
+       .confirm({ message: 'Are you sure you want to finish this invoice?' })
+       .subscribe((confirm: boolean) => {
+         if (confirm) {
+           this.scope.invoke(invoice.Finish)
+             .subscribe((invoked: Invoked) => {
+               this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
+               this.refresh();
+             },
+             (error: Error) => {
+               this.errorService.handle(error);
+             });
+         }
+       }); 
   }
 
   public deleteInvoiceItem(invoiceItem: PurchaseInvoiceItem): void {
-      // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this item?' })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(invoiceItem.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.dialog(error);
-            });
-        }
-      }); */
+      this.dialogService
+       .confirm({ message: 'Are you sure you want to delete this item?' })
+       .subscribe((confirm: boolean) => {
+         if (confirm) {
+           this.scope.invoke(invoiceItem.Delete)
+             .subscribe((invoked: Invoked) => {
+               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+               this.refresh();
+             },
+             (error: Error) => {
+               this.errorService.handle(error);
+             });
+         }
+       }); 
   }
 
   public createInvoice(): void {
@@ -268,27 +263,27 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Sales Invoice successfully created.', 'close', { duration: 5000 });
         this.gotoInvoice();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public gotoInvoice(): void {
 
-      const fetches: Fetch[] = [new Fetch({
-        id: this.invoice.id,
-        name: 'invoice',
-        path: new Path({ step: this.m.PurchaseInvoice.SalesInvoiceWherePurchaseInvoice }),
-      })];
+    const fetches: Fetch[] = [new Fetch({
+      id: this.invoice.id,
+      name: 'invoice',
+      path: new Path({ step: this.m.PurchaseInvoice.SalesInvoiceWherePurchaseInvoice }),
+    })];
 
-      this.scope.load('Pull', new PullRequest({ fetches }))
-        .subscribe((loaded) => {
-          const invoice = loaded.objects.invoice as SalesInvoice;
-          this.router.navigate(['/accountsreceivable/invoice/' + invoice.id]);
-        },
+    this.scope.load('Pull', new PullRequest({ fetches }))
+      .subscribe((loaded) => {
+        const invoice = loaded.objects.invoice as SalesInvoice;
+        this.router.navigate(['/accountsreceivable/invoice/' + invoice.id]);
+      },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         });
-    }
+  }
 }

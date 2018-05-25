@@ -7,6 +7,7 @@ import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../.
 import { Country, Enumeration, Party, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../../domain';
 import { Fetch, PullRequest, Query, Sort, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
+import { DialogService } from '../../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './party-contactmechanism-postaladdress.html',
@@ -32,7 +33,7 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

@@ -236,10 +236,8 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   }
 
   public delete(worktask: WorkTask): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this work task?' })
-      .afterClosed()
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(worktask.Delete)
@@ -251,7 +249,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public onView(person: Person): void {

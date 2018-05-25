@@ -169,10 +169,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -186,7 +185,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           } else {
             submitFn();
           }
-        }); */
+        }); 
     } else {
       submitFn();
     }
@@ -205,10 +204,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -222,7 +220,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); */
+        }); 
     } else {
       rejectFn();
     }
@@ -241,10 +239,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -258,7 +255,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); */
+        }); 
     } else {
       rejectFn();
     }

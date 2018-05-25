@@ -447,10 +447,8 @@ export class GoodsOverviewComponent implements OnDestroy {
   }
 
   public delete(good: Good): void {
-    // TODO:
-    /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this product?' })
-      .afterClosed()
+      this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this product?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(good.Delete)
@@ -462,7 +460,7 @@ export class GoodsOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public addGood(): void {

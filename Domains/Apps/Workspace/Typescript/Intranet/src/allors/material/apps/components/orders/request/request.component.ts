@@ -149,10 +149,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -166,7 +165,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           } else {
             submitFn();
           }
-        }); */
+        }); 
     } else {
       submitFn();
     }
@@ -185,10 +184,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -202,7 +200,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }
@@ -221,10 +219,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -238,7 +235,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           } else {
             holdFn();
           }
-        }); */
+        }); 
     } else {
       holdFn();
     }
@@ -257,10 +254,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -274,7 +270,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); */
+        }); 
     } else {
       rejectFn();
     }

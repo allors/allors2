@@ -133,10 +133,9 @@ export class CategoriesOverviewComponent implements OnDestroy {
   }
 
   public delete(category: ProductCategory): void {
-    // TODO:
-    /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this category?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this category?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(category.Delete)
             .subscribe((invoked: Invoked) => {
@@ -147,7 +146,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      });
   }
 
   public onView(category: ProductCategory): void {

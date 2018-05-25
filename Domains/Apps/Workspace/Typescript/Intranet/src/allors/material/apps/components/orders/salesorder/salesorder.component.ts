@@ -136,7 +136,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
               objectType: this.m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
             }),
-          ];
+        ];
 
         return this.scope
           .load('Pull', new PullRequest({ queries }))
@@ -183,10 +183,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
         if (!this.order) {
           this.order = this.scope.session.create('SalesOrder') as SalesOrder;
-          this.order.TakenBy =  internalOrganisation;
+          this.order.TakenBy = internalOrganisation;
 
           if (this.stores.length === 1) {
-            this.order.Store =  this.stores[0];
+            this.order.Store = this.stores[0];
           }
 
           this.title = 'Add Sales Order';
@@ -195,7 +195,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         }
 
         if (this.order.ShipToCustomer) {
-            this.updateShipToCustomer(this.order.ShipToCustomer);
+          this.updateShipToCustomer(this.order.ShipToCustomer);
         }
 
         if (this.order.BillToCustomer) {
@@ -215,10 +215,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         this.previousBillToCustomer = this.order.BillToCustomer;
         this.previousBillToEndCustomer = this.order.BillToEndCustomer;
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -345,16 +345,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -362,13 +361,13 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 submitFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             submitFn();
           }
-        }); */
+        });
     } else {
       submitFn();
     }
@@ -381,16 +380,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -404,7 +402,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }
@@ -417,16 +415,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -440,7 +437,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); */
+        }); 
     } else {
       rejectFn();
     }
@@ -453,16 +450,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -476,7 +472,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             holdFn();
           }
-        }); */
+        }); 
     } else {
       holdFn();
     }
@@ -489,16 +485,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -512,7 +507,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             continueFn();
           }
-        }); */
+        }); 
     } else {
       continueFn();
     }
@@ -525,16 +520,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -548,7 +542,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             confirmFn();
           }
-        }); */
+        }); 
     } else {
       confirmFn();
     }
@@ -561,16 +555,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -584,7 +577,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             finishFn();
           }
-        }); */
+        }); 
     } else {
       finishFn();
     }
@@ -603,9 +596,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public shipToCustomerSelected(party: Party) {
@@ -615,16 +608,16 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public billToCustomerSelected(party: Party) {
-      this.updateBillToCustomer(party);
+    this.updateBillToCustomer(party);
   }
 
   public billToEndCustomerSelected(party: Party) {
-      this.updateBillToEndCustomer(party);
+    this.updateBillToEndCustomer(party);
   }
 
   public shipToEndCustomerSelected(party: Party) {
     this.updateShipToEndCustomer(party);
-}
+  }
 
   public refresh(): void {
     this.refresh$.next(new Date());
@@ -636,57 +629,57 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private updateShipToCustomer(party: Party): void {
 
-      const fetches: Fetch[] = [
-        new Fetch({
-          id: party.id,
-          include: [
-            new TreeNode({
-              nodes: [
-                new TreeNode({
-                  nodes: [
-                    new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                  ],
-                  roleType: this.m.PostalAddress.PostalBoundary,
-                }),
-              ],
-              roleType: this.m.PartyContactMechanism.ContactMechanism,
-            }),
-          ],
-          name: 'partyContactMechanisms',
-          path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-        }),
-        new Fetch({
-          id: party.id,
-          name: 'currentContacts',
-          path: new Path({ step: this.m.Party.CurrentContacts }),
-        }),
-      ];
+    const fetches: Fetch[] = [
+      new Fetch({
+        id: party.id,
+        include: [
+          new TreeNode({
+            nodes: [
+              new TreeNode({
+                nodes: [
+                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
+                ],
+                roleType: this.m.PostalAddress.PostalBoundary,
+              }),
+            ],
+            roleType: this.m.PartyContactMechanism.ContactMechanism,
+          }),
+        ],
+        name: 'partyContactMechanisms',
+        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+      }),
+      new Fetch({
+        id: party.id,
+        name: 'currentContacts',
+        path: new Path({ step: this.m.Party.CurrentContacts }),
+      }),
+    ];
 
-      this.scope
-        .load('Pull', new PullRequest({ fetches }))
-        .subscribe((loaded) => {
+    this.scope
+      .load('Pull', new PullRequest({ fetches }))
+      .subscribe((loaded) => {
 
-          if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
-            this.order.ShipToAddress = null;
-            this.order.ShipToContactPerson = null;
-            this.previousShipToCustomer =  this.order.ShipToCustomer;
-          }
+        if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
+          this.order.ShipToAddress = null;
+          this.order.ShipToContactPerson = null;
+          this.previousShipToCustomer = this.order.ShipToCustomer;
+        }
 
-          if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
-            this.order.BillToCustomer = this.order.ShipToCustomer;
-            this.updateBillToCustomer(this.order.ShipToCustomer);
-          }
+        if (this.order.ShipToCustomer !== null && this.order.BillToCustomer === null) {
+          this.order.BillToCustomer = this.order.ShipToCustomer;
+          this.updateBillToCustomer(this.order.ShipToCustomer);
+        }
 
-          const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-          this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
-          this.shipToContacts = loaded.collections.currentContacts as Person[];
-        },
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.shipToContacts = loaded.collections.currentContacts as Person[];
+      },
         (error: Error) => {
           this.errorService.handle(error);
           this.goBack();
         },
-      );
-    }
+    );
+  }
 
   private updateBillToCustomer(party: Party) {
 
@@ -723,7 +716,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         if (this.order.BillToCustomer !== this.previousBillToCustomer) {
           this.order.BillToContactMechanism = null;
           this.order.BillToContactPerson = null;
-          this.previousBillToCustomer =  this.order.BillToCustomer;
+          this.previousBillToCustomer = this.order.BillToCustomer;
         }
 
         if (this.order.BillToCustomer !== null && this.order.ShipToCustomer === null) {
@@ -735,10 +728,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -777,7 +770,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
           this.order.BillToEndCustomerContactMechanism = null;
           this.order.BillToEndCustomerContactPerson = null;
-          this.previousBillToEndCustomer =  this.order.BillToEndCustomer;
+          this.previousBillToEndCustomer = this.order.BillToEndCustomer;
         }
 
         if (this.order.BillToEndCustomer !== null && this.order.ShipToEndCustomer === null) {
@@ -789,10 +782,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -831,7 +824,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
           this.order.ShipToEndCustomerAddress = null;
           this.order.ShipToEndCustomerContactPerson = null;
-          this.previousShipToEndCustomer =  this.order.ShipToEndCustomer;
+          this.previousShipToEndCustomer = this.order.ShipToEndCustomer;
         }
 
         if (this.order.ShipToEndCustomer !== null && this.order.BillToEndCustomer === null) {
@@ -843,10 +836,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 }

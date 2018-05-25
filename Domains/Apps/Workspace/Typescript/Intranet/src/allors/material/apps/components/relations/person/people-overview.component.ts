@@ -142,10 +142,8 @@ export class PeopleOverviewComponent implements OnDestroy {
   }
 
   public delete(person: Person): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this person?' })
-      .afterClosed()
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this person?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(person.Delete)
@@ -157,7 +155,7 @@ export class PeopleOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      });
   }
 
   public onView(person: Person): void {

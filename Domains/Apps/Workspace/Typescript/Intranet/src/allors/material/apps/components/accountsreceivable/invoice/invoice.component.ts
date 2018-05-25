@@ -200,10 +200,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.previousBillToCustomer = this.invoice.BillToCustomer;
         this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -284,7 +284,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     this.billToContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToContactMechanism =  partyContactMechanism.ContactMechanism;
+    this.invoice.BillToContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public billToEndCustomerContactMechanismCancelled() {
@@ -296,7 +296,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
     this.billToEndCustomerContactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.invoice.BillToEndCustomer.AddPartyContactMechanism(partyContactMechanism);
-    this.invoice.BillToEndCustomerContactMechanism =  partyContactMechanism.ContactMechanism;
+    this.invoice.BillToEndCustomerContactMechanism = partyContactMechanism.ContactMechanism;
   }
 
   public shipToAddressCancelled() {
@@ -330,16 +330,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-/*       this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -347,14 +346,14 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 sendFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             sendFn();
           }
         });
- */    } else {
+    } else {
       sendFn();
     }
   }
@@ -366,30 +365,29 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                cancelFn();
-              },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-          } else {
-            cancelFn();
-          }
-        }); */
+        this.dialogService
+         .confirm({ message: 'Save changes?' })
+         .subscribe((confirm: boolean) => {
+           if (confirm) {
+             this.scope
+               .save()
+               .subscribe((saved: Saved) => {
+                 this.scope.session.reset();
+                 cancelFn();
+               },
+               (error: Error) => {
+                 this.errorService.handle(error);
+               });
+           } else {
+             cancelFn();
+           }
+         });
     } else {
       cancelFn();
     }
@@ -402,30 +400,29 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                writeOffFn();
-              },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-          } else {
-            writeOffFn();
-          }
-        }); */
+        this.dialogService
+         .confirm({ message: 'Save changes?' })
+         .subscribe((confirm: boolean) => {
+           if (confirm) {
+             this.scope
+               .save()
+               .subscribe((saved: Saved) => {
+                 this.scope.session.reset();
+                 writeOffFn();
+               },
+               (error: Error) => {
+                 this.errorService.handle(error);
+               });
+           } else {
+             writeOffFn();
+           }
+         }); 
     } else {
       writeOffFn();
     }
@@ -444,9 +441,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public billToCustomerSelected(party: Party) {
@@ -516,7 +513,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
           this.invoice.ShipToAddress = null;
           this.invoice.ShipToContactPerson = null;
-          this.previousShipToCustomer =  this.invoice.ShipToCustomer;
+          this.previousShipToCustomer = this.invoice.ShipToCustomer;
         }
 
         if (this.invoice.ShipToCustomer !== null && this.invoice.BillToCustomer === null) {
@@ -528,10 +525,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.shipToAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -570,7 +567,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
           this.invoice.BillToContactMechanism = null;
           this.invoice.BillToContactPerson = null;
-          this.previousBillToCustomer =  this.invoice.BillToCustomer;
+          this.previousBillToCustomer = this.invoice.BillToCustomer;
         }
 
         if (this.invoice.BillToCustomer !== null && this.invoice.ShipToCustomer === null) {
@@ -582,10 +579,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -624,7 +621,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
           this.invoice.BillToEndCustomerContactMechanism = null;
           this.invoice.BillToEndCustomerContactPerson = null;
-          this.previousBillToEndCustomer =  this.invoice.BillToEndCustomer;
+          this.previousBillToEndCustomer = this.invoice.BillToEndCustomer;
         }
 
         if (this.invoice.BillToEndCustomer !== null && this.invoice.ShipToEndCustomer === null) {
@@ -636,10 +633,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.billToEndCustomerContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -678,7 +675,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
           this.invoice.ShipToEndCustomerAddress = null;
           this.invoice.ShipToEndCustomerContactPerson = null;
-          this.previousShipToEndCustomer =  this.invoice.ShipToEndCustomer;
+          this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         }
 
         if (this.invoice.ShipToEndCustomer !== null && this.invoice.BillToEndCustomer === null) {
@@ -690,10 +687,10 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 }

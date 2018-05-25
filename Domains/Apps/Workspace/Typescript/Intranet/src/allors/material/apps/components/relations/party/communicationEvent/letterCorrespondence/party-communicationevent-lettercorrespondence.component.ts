@@ -14,6 +14,7 @@ import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Lett
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
+import { DialogService } from '../../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './party-communicationevent-lettercorrespondence.component.html',
@@ -43,6 +44,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private dialogService: DialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
@@ -261,10 +263,9 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -278,7 +279,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
           } else {
             cancelFn();
           }
-        }); */
+        });
     } else {
       cancelFn();
     }
@@ -297,10 +298,9 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -314,7 +314,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
           } else {
             cancelFn();
           }
-        }); */
+        });
     } else {
       cancelFn();
     }
@@ -333,10 +333,9 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -350,7 +349,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }

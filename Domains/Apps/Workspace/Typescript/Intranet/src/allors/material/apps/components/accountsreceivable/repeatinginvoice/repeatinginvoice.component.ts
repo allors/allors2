@@ -13,6 +13,7 @@ import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceServ
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './repeatinginvoice.component.html',
@@ -38,8 +39,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();

@@ -13,6 +13,7 @@ import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../..
 import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './communicationevent-overview.component.html',
@@ -54,10 +55,8 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    
     private snackBar: MatSnackBar,
-
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
@@ -243,10 +242,8 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteWorkEffort(worktask: WorkTask): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this work task?' })
-      .afterClosed()
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(worktask.Delete)
@@ -258,7 +255,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public ngOnDestroy(): void {

@@ -13,6 +13,7 @@ import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceServ
 import { OrderTermType, SalesInvoice, SalesTerm } from '../../../../../../domain';
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
+import { DialogService } from '../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './orderterm.component.html',
@@ -37,8 +38,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();

@@ -16,6 +16,7 @@ import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../..
 import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from '../../../../../domain';
 import { And, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   subject: string;
@@ -63,7 +64,7 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private snackBarService: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
@@ -199,10 +200,9 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
   }
 
   public cancel(communicationEvent: CommunicationEvent): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to cancel this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to cancel this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
@@ -213,14 +213,13 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public close(communicationEvent: CommunicationEvent): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to close this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to close this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
@@ -231,14 +230,13 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public reopen(communicationEvent: CommunicationEvent): void {
-    // TODO:
-  /*   this.dialogService
-      .openConfirm({ message: 'Are you sure you want to reopen this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to reopen this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
@@ -249,14 +247,12 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public delete(communicationEvent: CommunicationEvent): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this communication event?' })
-      .afterClosed()
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this communication event?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Delete)
@@ -268,7 +264,7 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public checkType(obj: any): string {

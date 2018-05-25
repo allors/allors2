@@ -16,6 +16,7 @@ import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../an
 import { Person } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   firstName: string;
@@ -51,7 +52,7 @@ export class PeopleExportComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private snackBarService: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();

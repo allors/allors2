@@ -14,6 +14,7 @@ import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuo
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './requestitem.component.html',
@@ -42,10 +43,8 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
-    
     public stateService: StateService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
@@ -147,10 +146,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -164,7 +162,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }

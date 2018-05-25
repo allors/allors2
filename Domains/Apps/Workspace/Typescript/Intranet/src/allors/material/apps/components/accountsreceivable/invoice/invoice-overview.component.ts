@@ -11,6 +11,7 @@ import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, 
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoice-overview.component.html',
@@ -36,7 +37,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
     public pdfService: PdfService,
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
@@ -252,10 +253,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
-    // TODO:
-    /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this item?' })
-      .afterClosed()
+      this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(invoiceItem.Delete)
@@ -267,14 +266,12 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 
   public deleteSalesTerm(salesTerm: SalesTerm): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this order term?' })
-      .afterClosed()
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this order term?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(salesTerm.Delete)
@@ -286,6 +283,6 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      }); 
   }
 }

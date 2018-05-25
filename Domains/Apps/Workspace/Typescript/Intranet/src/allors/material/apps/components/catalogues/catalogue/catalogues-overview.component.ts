@@ -132,10 +132,9 @@ export class CataloguesOverviewComponent implements OnDestroy {
   }
 
   public delete(catalogue: Catalogue): void {
-    // TODO:
-    /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this catalogue?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this catalogue?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(catalogue.Delete)
             .subscribe((invoked: Invoked) => {
@@ -146,7 +145,7 @@ export class CataloguesOverviewComponent implements OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      });
   }
 
   public onView(catalogue: Catalogue): void {

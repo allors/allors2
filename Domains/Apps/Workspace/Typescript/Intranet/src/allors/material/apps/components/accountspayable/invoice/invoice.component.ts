@@ -259,10 +259,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -276,7 +275,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); */
+        });
     } else {
       cancelFn();
     }
@@ -295,10 +294,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -312,17 +310,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           } else {
             approveFn();
           }
-        }); */
+        });
     } else {
       approveFn();
     }
   }
 
   public finish(invoice: PurchaseInvoice): void {
-    // TODO:
-    /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to finish this invoice?' })
-      .afterClosed()
+      this.dialogService
+      .confirm({ message: 'Are you sure you want to finish this invoice?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(invoice.Finish)
@@ -334,7 +330,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 this.errorService.handle(error);
               });
         }
-      }); */
+      }); 
   }
 
   public ngOnDestroy(): void {

@@ -254,14 +254,14 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
         if (this.activeRoles.length > 0) {
           this.rolesText = this.activeRoles
-          .map((v: PersonRole) => v.Name)
-          .reduce((acc: string, cur: string) => acc + ', ' + cur);
+            .map((v: PersonRole) => v.Name)
+            .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -273,9 +273,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.scope.session.reset();
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
@@ -286,70 +286,66 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.scope.session.reset();
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public deleteContactMechanism(contactMechanism: ContactMechanism): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
-      }); */
+      });
   }
 
   public cancelCommunication(communicationEvent: CommunicationEvent): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to cancel this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to cancel this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
-      }); */
+      });
   }
 
   public closeCommunication(communicationEvent: CommunicationEvent): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to close this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to close this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
-      }); */
+      });
   }
 
   public reopenCommunication(communicationEvent: CommunicationEvent): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to reopen this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to reopen this?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
@@ -360,44 +356,41 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); */
+      });
   }
 
   public deleteCommunication(communicationEvent: CommunicationEvent): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this?' })
-      .afterClosed().subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(communicationEvent.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
-        }
-      }); */
+      this.dialogService
+       .confirm({ message: 'Are you sure you want to delete this?' })
+       .subscribe((confirm: boolean) => {
+         if (confirm) {
+           this.scope.invoke(communicationEvent.Delete)
+             .subscribe((invoked: Invoked) => {
+               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+               this.refresh();
+             },
+             (error: Error) => {
+               this.errorService.handle(error);
+             });
+         }
+       }); 
   }
 
   public delete(workEffort: WorkEffort): void {
-    // TODO:
-   /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this work effort?' })
-      .afterClosed()
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(workEffort.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
-        }
-      }); */
+      this.dialogService
+       .confirm({ message: 'Are you sure you want to delete this work effort?' })
+       .subscribe((confirm: boolean) => {
+         if (confirm) {
+           this.scope.invoke(workEffort.Delete)
+             .subscribe((invoked: Invoked) => {
+               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+               this.refresh();
+             },
+             (error: Error) => {
+               this.errorService.handle(error);
+             });
+         }
+       }); 
   }
 
   public ngOnDestroy(): void {

@@ -220,10 +220,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteRequestItem(requestItem: RequestItem): void {
-    // TODO:
-    /*  this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this item?' })
-      .afterClosed()
+      this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           this.scope.invoke(requestItem.Delete)
@@ -235,6 +233,6 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-    }); */
+    }); 
   }
 }

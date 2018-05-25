@@ -16,6 +16,7 @@ import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../an
 import { ProductType } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -45,8 +46,7 @@ export class ProductTypesOverviewComponent implements OnDestroy {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    
-    private changeDetectorRef: ChangeDetectorRef) {
+    private dialogService: DialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -125,14 +125,13 @@ export class ProductTypesOverviewComponent implements OnDestroy {
   }
 
   public delete(productType: ProductType): void {
-    // TODO:
-    /* this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this product type?' })
-      .afterClosed().subscribe((confirm: boolean) => {
+     this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this product type?' })
+      .subscribe((confirm: boolean) => {
         if (confirm) {
           // TODO: Logical, physical or workflow delete
         }
-      }); */
+      }); 
   }
 
   public onView(productType: ProductType): void {

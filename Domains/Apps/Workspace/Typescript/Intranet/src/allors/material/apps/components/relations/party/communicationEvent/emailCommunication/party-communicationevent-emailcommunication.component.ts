@@ -13,6 +13,7 @@ import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommuni
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
+import { DialogService } from '../../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './party-communicationevent-emailcommunication.component.html',
@@ -42,9 +43,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private dialogService: DialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
@@ -170,10 +171,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-         .openConfirm({ message: 'Save changes?' })
-         .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+         .confirm({ message: 'Save changes?' })
+         .subscribe((confirm: boolean) => {
            if (confirm) {
              this.scope
                .save()
@@ -187,7 +187,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
            } else {
              cancelFn();
            }
-         }); */
+         });
     } else {
       cancelFn();
     }
@@ -206,10 +206,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-         .openConfirm({ message: 'Save changes?' })
-         .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+         .confirm({ message: 'Save changes?' })
+         .subscribe((confirm: boolean) => {
            if (confirm) {
              this.scope
                .save()
@@ -223,7 +222,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
            } else {
              cancelFn();
            }
-         }); */
+         }); 
     } else {
       cancelFn();
     }
@@ -242,10 +241,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /* this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -259,7 +257,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }

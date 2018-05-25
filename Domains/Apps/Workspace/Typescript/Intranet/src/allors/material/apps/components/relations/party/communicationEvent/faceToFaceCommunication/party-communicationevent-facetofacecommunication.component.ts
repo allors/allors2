@@ -14,6 +14,7 @@ import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisatio
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
+import { DialogService } from '../../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './party-communicationevent-facetofacecommunication.component.html',
@@ -42,6 +43,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private dialogService: DialogService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     
@@ -189,10 +191,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -206,7 +207,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }
@@ -225,10 +226,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-      /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+        this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -242,7 +242,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           } else {
             cancelFn();
           }
-        }); */
+        }); 
     } else {
       cancelFn();
     }
@@ -261,10 +261,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     };
 
     if (this.scope.session.hasChanges) {
-      // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
+       this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
@@ -278,7 +277,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           } else {
             cancelFn();
           }
-        }); */
+        });
     } else {
       cancelFn();
     }
