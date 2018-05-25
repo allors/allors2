@@ -2,6 +2,7 @@ export * from './autocomplete/autocomplete.module';
 export * from './checkbox/checkbox.module';
 export * from './chips/chips.module';
 export * from './datepicker/datepicker.module';
+export * from './dialog/dialog.module';
 export * from './errordialog/errordialog.module';
 export * from './file/file.module';
 export * from './files/files.module';

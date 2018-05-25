@@ -10,13 +10,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-
-
 import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { InternalOrganisation, Person } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   firstName: string;
@@ -48,7 +47,7 @@ export class PeopleOverviewComponent implements OnDestroy {
     private router: Router,
     private snackBarService: MatSnackBar,
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     titleService.setTitle(this.title);

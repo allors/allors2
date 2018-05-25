@@ -19,6 +19,7 @@ import { And, ContainedIn, Equals, Fetch, Like, Page, Predicate, PullRequest, Qu
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -69,7 +70,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private snackBarService: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     titleService.setTitle(this.title);

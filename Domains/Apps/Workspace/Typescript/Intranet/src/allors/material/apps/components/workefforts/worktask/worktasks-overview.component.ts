@@ -11,14 +11,13 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 
-
-
 import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -67,10 +66,8 @@ export class WorkTasksOverviewComponent implements OnDestroy {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    
     private snackBarService: MatSnackBar,
-    
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     public pdfService: PdfService,
     private stateService: StateService) {
 

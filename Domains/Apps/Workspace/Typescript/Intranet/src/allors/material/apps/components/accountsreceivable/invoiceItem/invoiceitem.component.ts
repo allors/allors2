@@ -2,7 +2,6 @@ import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -13,6 +12,7 @@ import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryI
 import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoiceitem.component.html',
@@ -47,8 +47,7 @@ export class InvoiceItemEditComponent
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     public stateService: StateService,
     
   ) {

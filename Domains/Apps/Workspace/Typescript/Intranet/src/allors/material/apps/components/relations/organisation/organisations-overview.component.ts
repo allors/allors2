@@ -16,6 +16,7 @@ import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRe
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -55,14 +56,14 @@ export class OrganisationsOverviewComponent implements OnDestroy {
   private page$: BehaviorSubject<number>;
 
   constructor(
+    public mediaService: MediaService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Organisations');
@@ -273,22 +274,22 @@ export class OrganisationsOverviewComponent implements OnDestroy {
   }
 
   public delete(organisation: Organisation): void {
-    // TODO:
-    /*  this.dialogService
-       .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
-       .afterClosed()
-       .subscribe((confirm: boolean) => {
-         if (confirm) {
-           this.scope.invoke(organisation.Delete)
-             .subscribe((invoked: Invoked) => {
-               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-               this.refresh();
-             },
-             (error: Error) => {
-               this.errorService.handle(error);
-             });
-         }
-       }); */
+
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this organisation?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(organisation.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+                this.refresh();
+              });
+        }
+      });
   }
 
   public search(data: string) {

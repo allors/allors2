@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './workefforts-overview.component.html',
@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 export class WorkEffortsOverviewComponent {
   public title = 'Relations Dashboard';
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private titleService: Title) {
+  constructor(private dialogService: DialogService, private titleService: Title) {
       this.titleService.setTitle(this.title);
   }
 }

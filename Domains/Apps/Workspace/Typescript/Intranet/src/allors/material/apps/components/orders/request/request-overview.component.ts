@@ -3,7 +3,6 @@ import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { Router } from '@angular/router';
 
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,6 +15,7 @@ import { Equals, Fetch, Path, PullRequest, TreeNode } from '../../../../../frame
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './request-overview.component.html',
@@ -43,7 +43,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
     
     private snackBar: MatSnackBar,
     
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

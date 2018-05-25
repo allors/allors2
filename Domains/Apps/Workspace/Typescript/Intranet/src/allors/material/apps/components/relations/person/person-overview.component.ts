@@ -16,6 +16,7 @@ import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framew
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './person-overview.component.html',
@@ -57,7 +58,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private titleService: Title,
     private stateService: StateService) {
 

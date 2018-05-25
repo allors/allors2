@@ -10,13 +10,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-
-
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
 import { InternalOrganisation, ProductCategory } from '../../../../../domain';
 import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -45,10 +44,8 @@ export class CategoriesOverviewComponent implements OnDestroy {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    
-    
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Categories');

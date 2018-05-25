@@ -12,43 +12,57 @@
       <form novalidate [formGroup]="searchForm">
 
         <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
-            <input matInput autocomplete="off" placeholder="Search by Name" formControlName="name">
+          <mat-form-field fxFle fxFill *ngIf="!advancedSearch" appearance="outline">
+            <mat-label>Search by Name</mat-label>
+            <input matInput autocomplete="off" formControlName="name">
             <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
               <mat-icon>expand_more</mat-icon>
             </a>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" appearance="outline">
-            <input matInput fxFlex="1 2 calc(15em)" placeholder="Search by Name" formControlName="name">
+          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+            <mat-label>Search by Name</mat-label>
+            <input matInput formControlName="name">
           </mat-form-field>
+
           <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
-            <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry" placeholder="Country">
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
+
           <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
-            <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole" placeholder="Role">
+            <mat-label>Role</mat-label>
+            <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
+
           <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
-            <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification" placeholder="Classification">
+            <mat-label>Classification</mat-label>
+            <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification">
               <mat-option>None</mat-option>
               <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
+
           <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
-            <input matInput placeholder="First Name" formControlName="contactFirstName">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="contactFirstName">
           </mat-form-field>
+
           <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
-            <input matInput placeholder="Last Name" formControlName="contactLastName">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="contactLastName">
           </mat-form-field>
 
           <div fxFlex="none" *ngIf="advancedSearch">
-              <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search"><mat-icon>close</mat-icon></a>
+            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+              <mat-icon>close</mat-icon>
+            </a>
           </div>
 
         </mat-card-content>

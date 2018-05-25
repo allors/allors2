@@ -9,13 +9,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-
-
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { DialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   company: string;
@@ -58,7 +57,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
     private router: Router,
     
     
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Purchase Invoices');

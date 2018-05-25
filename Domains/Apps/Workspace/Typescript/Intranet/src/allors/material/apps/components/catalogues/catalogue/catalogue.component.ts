@@ -2,7 +2,6 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,6 +15,8 @@ import { Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../.
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { DialogService } from '../../../../base/services/dialog';
+    
 
 @Component({
   templateUrl: './catalogue.component.html',
@@ -46,8 +47,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

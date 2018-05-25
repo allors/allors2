@@ -10,14 +10,13 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-
-
 import { ErrorService, FilterFactory, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
 import { Brand, Good, InternalOrganisation, InventoryItemKind, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { DialogService } from '../../../../base/services/dialog';
 
 import { NewGoodDialogComponent } from '../../catalogues/good/newgood-dialog.module';
 
@@ -104,10 +103,8 @@ export class GoodsOverviewComponent implements OnDestroy {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private router: Router,
-    
-    
     public mediaService: MediaService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Products');

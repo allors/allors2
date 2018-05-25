@@ -14,6 +14,7 @@ import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote,
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
+import { DialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './quoteitem.component.html',
@@ -46,7 +47,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public stateService: StateService,
-    private changeDetectorRef: ChangeDetectorRef,
+    private dialogService: DialogService,
   ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
