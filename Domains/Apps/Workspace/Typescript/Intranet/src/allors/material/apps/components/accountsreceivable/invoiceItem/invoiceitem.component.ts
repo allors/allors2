@@ -12,7 +12,7 @@ import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryI
 import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoiceitem.component.html',
@@ -47,7 +47,7 @@ export class InvoiceItemEditComponent
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService,
     
   ) {

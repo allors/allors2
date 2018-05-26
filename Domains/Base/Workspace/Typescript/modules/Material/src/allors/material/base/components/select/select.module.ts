@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatSelectModule } from '@angular/material';
 
-import { SelectComponent } from './select.component';
+import { AllorsMaterialSelectComponent } from './select.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { SelectComponent } from './select.component';
+export { AllorsMaterialSelectComponent } from './select.component';
 
 @NgModule({
   declarations: [
-    SelectComponent,
+    AllorsMaterialSelectComponent,
   ],
   exports: [
-    SelectComponent,
+    AllorsMaterialSelectComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -23,5 +23,5 @@ export { SelectComponent } from './select.component';
     MatSelectModule,
   ],
 })
-export class SelectModule {
+export class AllorsMaterialSelectModule {
 }

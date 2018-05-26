@@ -16,7 +16,7 @@ import { MatAutocompleteTrigger } from '@angular/material';
   selector: 'a-mat-autocomplete',
   templateUrl: './autocomplete.component.html',
 })
-export class AutocompleteComponent extends Field implements OnInit {
+export class AllorsMaterialAutocompleteComponent extends Field implements OnInit {
   @Input() public display = 'display';
 
   @Input() public debounceTime = 400;

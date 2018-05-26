@@ -4,16 +4,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatAutocompleteModule, MatChipsModule, MatIconModule, MatInputModule } from '@angular/material';
 
-import { ChipsComponent } from './chips.component';
+import { AllorsMaterialChipsComponent } from './chips.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { ChipsComponent } from './chips.component';
+export { AllorsMaterialChipsComponent } from './chips.component';
 
 @NgModule({
   declarations: [
-    ChipsComponent,
+    AllorsMaterialChipsComponent,
   ],
   exports: [
-    ChipsComponent,
+    AllorsMaterialChipsComponent,
   ],
   imports: [
     CommonModule,
@@ -26,4 +26,4 @@ export { ChipsComponent } from './chips.component';
     MatInputModule,
   ],
 })
-export class ChipsModule {}
+export class AllorsMaterialChipsModule {}

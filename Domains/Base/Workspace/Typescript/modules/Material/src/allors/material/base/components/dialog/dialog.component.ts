@@ -6,7 +6,7 @@ import { DialogData } from '../../services/dialog/dialog.data';
 @Component({
   templateUrl: 'dialog.component.html',
 })
-export class DialogComponent {
+export class AllorsMaterialDialogComponent {
 
   public alert: boolean;
   public confirmation: boolean;
@@ -18,7 +18,7 @@ export class DialogComponent {
   public placeholder: string;
   public value: string;
 
-  constructor(public dialogRef: MatDialogRef<DialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+  constructor(public dialogRef: MatDialogRef<AllorsMaterialDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
 
     this.alert = data.alert;
     this.confirmation = data.confirmation;

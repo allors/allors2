@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule, MatSlideToggleModule } from '@angular/material';
 
-import { SlideToggleComponent } from './slidetoggle.component';
+import { AllorsMaterialSlideToggleComponent } from './slidetoggle.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { SlideToggleComponent } from './slidetoggle.component';
+export { AllorsMaterialSlideToggleComponent } from './slidetoggle.component';
 
 @NgModule({
   declarations: [
-    SlideToggleComponent,
+    AllorsMaterialSlideToggleComponent,
   ],
   exports: [
-    SlideToggleComponent,
+    AllorsMaterialSlideToggleComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -24,5 +24,5 @@ export { SlideToggleComponent } from './slidetoggle.component';
     MatSlideToggleModule,
   ],
 })
-export class SlideToggleModule {
+export class AllorsMaterialSlideToggleModule {
 }

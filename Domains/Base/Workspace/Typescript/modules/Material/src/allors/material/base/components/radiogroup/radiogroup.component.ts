@@ -12,7 +12,7 @@ export interface RadioGroupOption {
   selector: 'a-mat-radio-group',
   templateUrl: './radiogroup.component.html',
 })
-export class RadioGroupComponent extends Field {
+export class AllorsMaterialRadioGroupComponent extends Field {
   @Input()
   public options: RadioGroupOption[];
 

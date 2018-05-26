@@ -48,16 +48,16 @@
 
           <span flex></span>
 
-          <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ request.CreationDate | date }} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ request.LastModifiedDate | date : shortDate }} </div>
+          <span      >
+                <div  > {{ request.CreationDate | date }} </div>
+                <div  > {{ request.LastModifiedDate | date : shortDate }} </div>
           </span>
 
           <span>
             <button mat-icon-button [mat-menu-trigger-for]="menu">
             <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu x-position="before" #menu="matMenu">
+            <mat-menu #menu="matMenu">
             <a [routerLink]="['/orders/request/' + request.id ]" mat-menu-item>Details</a>
             <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
             </mat-menu>

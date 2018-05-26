@@ -12,7 +12,7 @@
 </mat-toolbar>
 
 <div body *ngIf="quote">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card>
       <mat-card-title>Product Quote</mat-card-title>
       <mat-divider></mat-divider>
@@ -108,7 +108,7 @@
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu x-position="before" #menu="matMenu">
+                <mat-menu #menu="matMenu">
                   <a *ngIf="quote.CanWriteQuoteItems && quoteItem.CanWriteQuantity" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]"
                     mat-menu-item>Edit</a>
                   <a *ngIf="!quote.CanWriteQuoteItems || !quoteItem.CanWriteQuantity" [routerLink]="['/productQuote/' + quote.id + '/item/' + quoteItem.id ]"
@@ -129,6 +129,6 @@
     </mat-card>
   </div>
 
-  <div flex-gt-xs="50">
+  <div >
   </div>
 </div>

@@ -47,16 +47,16 @@
 
           <span flex></span>
 
-          <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ quote.CreationDate | date }} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ quote.LastModifiedDate | date : shortDate }} </div>
+          <span      >
+                <div  > {{ quote.CreationDate | date }} </div>
+                <div  > {{ quote.LastModifiedDate | date : shortDate }} </div>
               </span>
 
           <span>
           <button mat-icon-button [mat-menu-trigger-for]="menu">
           <mat-icon>more_vert</mat-icon>
           </button>
-          <mat-menu x-position="before" #menu="matMenu">
+          <mat-menu #menu="matMenu">
           <a [routerLink]="['/orders/productQuote/' + quote.id ]" mat-menu-item>Details</a>
           <a [routerLink]="['/printproductquote/' + quote.id ]" mat-menu-item>Preview</a>
           <button mat-menu-item (click)="print(quote)">Print</button>

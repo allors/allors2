@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 @Injectable()
-export class SideNavService {
+export class AllorsMaterialSideNavService {
   private toggleSource = new Subject<void>();
   public toggle$ = this.toggleSource.asObservable();
 

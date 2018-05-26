@@ -16,7 +16,7 @@ import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRe
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -63,7 +63,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Organisations');
@@ -255,14 +255,6 @@ export class OrganisationsOverviewComponent implements OnDestroy {
         });
   }
 
-  public more(): void {
-    this.page$.next(this.data.length + 50);
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -292,8 +284,12 @@ export class OrganisationsOverviewComponent implements OnDestroy {
       });
   }
 
-  public search(data: string) {
-    this.searchForm.patchValue({ name: data });
+  public more(): void {
+    this.page$.next(this.data.length + 50);
+  }
+
+  public goBack(): void {
+    window.history.back();
   }
 
   public onView(organisation: Organisation): void {

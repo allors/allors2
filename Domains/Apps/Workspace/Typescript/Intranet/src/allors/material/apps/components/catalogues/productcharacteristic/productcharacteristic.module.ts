@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { InlineModule } from '../../inline.module';
-import { SharedModule } from '../../shared.module';
+
+
 
 import { ProductCharacteristicComponent } from './productcharacteristic.component';
+import { FormsModule } from '@angular/forms';
 export { ProductCharacteristicComponent } from './productcharacteristic.component';
 
 @NgModule({
@@ -13,12 +14,12 @@ export { ProductCharacteristicComponent } from './productcharacteristic.componen
   exports: [
     ProductCharacteristicComponent,
 
-    InlineModule,
-    SharedModule,
+    
+    
   ],
   imports: [
-    InlineModule,
-    SharedModule,
+    FormsModule
+    
   ],
 })
 export class ProductCharacteristicModule {}

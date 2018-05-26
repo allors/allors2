@@ -5,16 +5,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 
-import { AutocompleteComponent } from './autocomplete.component';
+import { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { AutocompleteComponent } from './autocomplete.component';
+export { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
 
 @NgModule({
   declarations: [
-    AutocompleteComponent,
+    AllorsMaterialAutocompleteComponent,
   ],
   exports: [
-    AutocompleteComponent,
+    AllorsMaterialAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -25,5 +25,5 @@ export { AutocompleteComponent } from './autocomplete.component';
     ReactiveFormsModule,
   ],
 })
-export class AutoCompleteModule {
+export class AllorsMaterialAutoCompleteModule {
 }

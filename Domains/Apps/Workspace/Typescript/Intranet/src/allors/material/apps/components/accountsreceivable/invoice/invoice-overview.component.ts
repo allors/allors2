@@ -11,7 +11,7 @@ import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, 
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoice-overview.component.html',
@@ -37,7 +37,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
     public pdfService: PdfService,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 

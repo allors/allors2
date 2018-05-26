@@ -35,7 +35,7 @@
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu x-position="before" #menu="matMenu">
+                <mat-menu #menu="matMenu">
                 <a [routerLink]="['/productType/' + productType.id]" mat-menu-item>Edit</a>
                 <button mat-menu-item (click)="delete(productType)">Delete</button>
                 </mat-menu>

@@ -15,7 +15,7 @@ import { InternalOrganisation, Person } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   firstName: string;
@@ -47,7 +47,7 @@ export class PeopleOverviewComponent implements OnDestroy {
     private router: Router,
     private snackBarService: MatSnackBar,
     public mediaService: MediaService,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     titleService.setTitle(this.title);

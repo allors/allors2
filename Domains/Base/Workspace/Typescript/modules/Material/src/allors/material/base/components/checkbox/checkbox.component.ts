@@ -7,7 +7,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-checkbox',
   templateUrl: './checkbox.component.html',
 })
-export class CheckboxComponent extends Field {
+export class AllorsMaterialCheckboxComponent extends Field {
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);

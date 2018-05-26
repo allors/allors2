@@ -22,7 +22,7 @@ import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocompleteTrigger
   selector: 'a-mat-chips',
   templateUrl: './chips.component.html',
 })
-export class ChipsComponent extends Field implements OnInit, OnDestroy {
+export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDestroy {
 
   @Input() public display = 'display';
 

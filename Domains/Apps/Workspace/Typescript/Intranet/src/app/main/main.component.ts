@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
-import { SideMenuItem, SideNavService } from '../../allors/material';
+import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
 import { MenuService } from '../../allors/angular';
 import { MatSidenav } from '@angular/material';
 
@@ -21,7 +21,7 @@ export class MainComponent implements OnDestroy {
 
   private handsetSubscription: Subscription;
 
-  constructor(private breakpointObserver: BreakpointObserver, private titleService: Title, private menuService: MenuService, private sideNavService: SideNavService) {
+  constructor(private breakpointObserver: BreakpointObserver, private titleService: Title, private menuService: MenuService, private sideNavService: AllorsMaterialSideNavService) {
     menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,

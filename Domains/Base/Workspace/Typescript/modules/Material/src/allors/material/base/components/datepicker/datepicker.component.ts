@@ -7,7 +7,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-datepicker',
   templateUrl: './datepicker.component.html',
 })
-export class DatepickerComponent extends Field {
+export class AllorsMaterialDatepickerComponent extends Field {
 
   @Input()
   public useTime: boolean;

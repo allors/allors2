@@ -12,7 +12,7 @@
 </mat-toolbar>
 
 <div body *ngIf="organisation" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
 
     <mat-card>
       <mat-card-title>Organisation</mat-card-title>
@@ -81,16 +81,16 @@
                   <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
                 </p>
 
-                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date}} </div>
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
+                <span      >
+                  <div  > started: {{ communicationEvent.ActualStart | date}} </div>
+                  <div  > ended: {{ communicationEvent.ActualEnd | date }} </div>
                 </span>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-                  <mat-menu x-position="before" #menu="matMenu">
+                  <mat-menu #menu="matMenu">
                     <button mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
                     <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
                     <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + organisation.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
@@ -120,7 +120,7 @@
 
   </div>
 
-  <div flex-gt-xs="50">
+  <div >
     <mat-card>
       <mat-card-title>
         <div class="grid-right">
@@ -168,15 +168,15 @@
 
                 <span flex></span>
 
-                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> created: {{ contactRelationship.Contact.CreationDate | date }} </div>
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> modified: {{ contactRelationship.Contact.LastModifiedDate | date : shortDate }} </div>
+                <span      >
+                  <div  > created: {{ contactRelationship.Contact.CreationDate | date }} </div>
+                  <div  > modified: {{ contactRelationship.Contact.LastModifiedDate | date : shortDate }} </div>
                 </span>
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-                  <mat-menu x-position="before" #menu="matMenu">
+                  <mat-menu #menu="matMenu">
                     <button mat-menu-item (click)="activateContact(contactRelationship)" [disabled]="!contactRelationship.ThroughDate">Activate</button>
                     <button mat-menu-item (click)="removeContact(contactRelationship)" [disabled]="!!contactRelationship.ThroughDate">Deactivate</button>
                     <button mat-menu-item (click)="deleteContact(contactRelationship.Contact)" [disabled]="!contactRelationship.Contact.CanExecuteDelete">Delete</button>
@@ -238,16 +238,16 @@
 
               <span flex></span>
 
-              <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> created: {{ partyContactMechanism.CreationDate | date }} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </div>
+              <span      >
+                <div  > created: {{ partyContactMechanism.CreationDate | date }} </div>
+                <div  > modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </div>
               </span>
 
               <span>
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu x-position="before" #menu="matMenu">
+                <mat-menu #menu="matMenu">
                   <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]"
                     mat-menu-item>Edit</a>
                   <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]"

@@ -7,7 +7,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-input',
   templateUrl: './input.component.html',
 })
-export class InputComponent extends Field {
+export class AllorsMaterialInputComponent extends Field {
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);

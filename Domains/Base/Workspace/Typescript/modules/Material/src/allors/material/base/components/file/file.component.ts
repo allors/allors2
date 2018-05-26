@@ -9,7 +9,7 @@ import { ISession, ISessionObject } from '../../../../framework';
   selector: 'a-mat-file',
   templateUrl: './file.component.html',
 })
-export class FileComponent extends Field {
+export class AllorsMaterialFileComponent extends Field {
   @Output() public onChange: EventEmitter<Field> = new EventEmitter<Field>();
 
   @Input() public accept = 'image/*';

@@ -12,7 +12,7 @@
 </mat-toolbar>
 
 <div body *ngIf="order" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card>
       <mat-card-title>Sales Order</mat-card-title>
       <mat-divider></mat-divider>
@@ -126,7 +126,7 @@
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-                  <mat-menu x-position="before" #menu="matMenu">
+                  <mat-menu #menu="matMenu">
                     <a *ngIf="order.CanWriteSalesOrderItems && orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]"
                       mat-menu-item>Edit</a>
                     <a *ngIf="!order.CanWriteSalesOrderItems || !orderItem.CanWriteQuantityOrdered" [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]"
@@ -148,7 +148,7 @@
     </mat-card>
   </div>
 
-  <div flex-gt-xs="50">
+  <div >
     <mat-card>
       <mat-card-title>Order Terms</mat-card-title>
       <mat-divider></mat-divider>
@@ -172,7 +172,7 @@
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-                  <mat-menu x-position="before" #menu="matMenu">
+                  <mat-menu #menu="matMenu">
                     <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]"
                       mat-menu-item>Edit</a>
                     <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]"

@@ -7,7 +7,7 @@ import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../.
 import { ProductType, SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
 import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './producttype.component.html',
@@ -30,7 +30,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

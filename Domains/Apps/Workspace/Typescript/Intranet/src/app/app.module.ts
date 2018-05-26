@@ -46,21 +46,21 @@ import {
 } from '../allors/angular';
 
 import {
-  AutoCompleteModule, CheckboxModule, DatepickerModule, DialogModule, ErrorDialogModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SideMenuModule, SideNavToggleModule, SliderModule, SlideToggleModule,
-  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService, ErrorDialogComponent, SideNavService, DialogService,
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialDialogModule, AllorsMaterialErrorDialogModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialInputModule, AllorsMaterialLocalisedTextModule,
+  AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule,
+  AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, MomentUtcDateAdapter, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent, AllorsMaterialSideNavService, AllorsMaterialDialogService,
 } from '../allors/material';
+
+const ALLORS_MATERIAL_MODULES: any[] = [
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialDialogModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule,
+  AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
+];
 
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { DefaultLoggingService } from './app.logging.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DefaultStateService } from '../allors/material/apps/services/DefaultStateService';
 import { StateService } from '../allors/material/apps/services/StateService';
-
-const BASE_MATERIAL_MODULES: any[] = [
-  AutoCompleteModule, CheckboxModule, DatepickerModule, DialogModule, ErrorDialogModule, InputModule, FileModule, FilesModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SideMenuModule, SideNavToggleModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
-];
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -73,7 +73,7 @@ const BASE_MATERIAL_MODULES: any[] = [
   imports: [
     CDK_MODULES,
     MATERIAL_MODULES,
-    BASE_MATERIAL_MODULES,
+    ALLORS_MATERIAL_MODULES,
     FlexLayoutModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -99,15 +99,15 @@ const BASE_MATERIAL_MODULES: any[] = [
     { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl } },
     { provide: StateService, useClass: DefaultStateService },
     { provide: LoggingService, useClass: DefaultLoggingService },
-    { provide: ErrorService, useClass: DefaultErrorService },
+    { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
     DatabaseService,
     WorkspaceService,
     AuthenticationService,
     AuthorizationService,
     MediaService, 
     MenuService,
-    SideNavService,
-    DialogService,
+    AllorsMaterialSideNavService,
+    AllorsMaterialDialogService,
     Title,
     PdfService,
   ],

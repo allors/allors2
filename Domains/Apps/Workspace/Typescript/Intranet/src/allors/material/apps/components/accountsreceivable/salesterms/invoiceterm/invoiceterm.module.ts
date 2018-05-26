@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { InlineModule } from '../../../inline.module';
-import { SharedModule } from '../../../shared.module';
+
+
 
 import { InvoiceTermEditComponent } from './invoiceterm.component';
+import { FormsModule } from '@angular/forms';
 export { InvoiceTermEditComponent } from './invoiceterm.component';
 
 @NgModule({
@@ -12,13 +13,9 @@ export { InvoiceTermEditComponent } from './invoiceterm.component';
   ],
   exports: [
     InvoiceTermEditComponent,
-
-    InlineModule,
-    SharedModule,
   ],
   imports: [
-    InlineModule,
-    SharedModule,
+    FormsModule
   ],
 })
 export class InvoiceTermEditModule {}

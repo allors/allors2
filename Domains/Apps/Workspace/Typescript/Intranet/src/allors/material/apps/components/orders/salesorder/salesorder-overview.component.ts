@@ -13,7 +13,7 @@ import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, 
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './salesorder-overview.component.html',
@@ -44,7 +44,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
     public pdfService: PdfService,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

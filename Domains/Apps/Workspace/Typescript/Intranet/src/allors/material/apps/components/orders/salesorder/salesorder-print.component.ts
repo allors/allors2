@@ -10,7 +10,7 @@ import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../an
 import { SalesOrder } from '../../../../../domain';
 import { Fetch, PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   encapsulation: ViewEncapsulation.Native,
@@ -31,7 +31,7 @@ export class SalesOrderPrintComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

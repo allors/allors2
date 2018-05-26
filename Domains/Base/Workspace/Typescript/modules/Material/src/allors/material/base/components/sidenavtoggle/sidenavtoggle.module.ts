@@ -5,15 +5,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatAutocompleteModule, MatInputModule, MatIconModule, MatListModule, MatButtonModule } from '@angular/material';
 
-import { SideNavToggleComponent } from './sidenavtoggle.component';
-export { SideNavToggleComponent } from './sidenavtoggle.component';
+import { AllorsMaterialSideNavToggleComponent } from './sidenavtoggle.component';
+export { AllorsMaterialSideNavToggleComponent } from './sidenavtoggle.component';
 
 @NgModule({
   declarations: [
-    SideNavToggleComponent,
+    AllorsMaterialSideNavToggleComponent,
   ],
   exports: [
-    SideNavToggleComponent,
+    AllorsMaterialSideNavToggleComponent,
   ],
   imports: [
     CommonModule,
@@ -21,5 +21,5 @@ export { SideNavToggleComponent } from './sidenavtoggle.component';
     MatButtonModule,
   ],
 })
-export class SideNavToggleModule {
+export class AllorsMaterialSideNavToggleModule {
 }

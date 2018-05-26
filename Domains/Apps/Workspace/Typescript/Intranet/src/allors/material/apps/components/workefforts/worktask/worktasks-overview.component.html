@@ -59,7 +59,7 @@
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-              <mat-menu x-position="before" #menu="matMenu">
+              <mat-menu #menu="matMenu">
                 <a [routerLink]="['/workefforts/worktask/' + item.id ]" mat-menu-item>Details</a>
                 <a [routerLink]="['/printworktask/' + item.id ]" mat-menu-item>Preview</a>
                 <button mat-menu-item (click)="print(item)">Print</button>

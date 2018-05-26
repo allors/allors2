@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material';
 
-import { LocalisedTextComponent } from './localisedtext.component';
+import { AllorsMaterialLocalisedTextComponent } from './localisedtext.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { LocalisedTextComponent } from './localisedtext.component';
+export { AllorsMaterialLocalisedTextComponent } from './localisedtext.component';
 
 @NgModule({
   declarations: [
-    LocalisedTextComponent,
+    AllorsMaterialLocalisedTextComponent,
   ],
   exports: [
-    LocalisedTextComponent,
+    AllorsMaterialLocalisedTextComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -23,5 +23,5 @@ export { LocalisedTextComponent } from './localisedtext.component';
     MatInputModule,
   ],
 })
-export class LocalisedTextModule {
+export class AllorsMaterialLocalisedTextModule {
 }

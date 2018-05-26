@@ -12,7 +12,7 @@ import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, S
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './person.component.html',
@@ -56,7 +56,7 @@ export class PersonComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private titleService: Title,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

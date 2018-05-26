@@ -5,12 +5,12 @@ import { ResponseError, Response, DerivationError } from '../../../../framework'
 @Component({
   templateUrl: 'errordialog.component.html',
 })
-export class ErrorDialogComponent {
+export class AllorsMaterialErrorDialogComponent {
 
   public title;
   public message;
 
-  constructor(public dialogRef: MatDialogRef<ErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(public dialogRef: MatDialogRef<AllorsMaterialErrorDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {
 
     const error = data.error;
 

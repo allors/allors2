@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatCheckboxModule, MatInputModule } from '@angular/material';
 
-import { CheckboxComponent } from './checkbox.component';
+import { AllorsMaterialCheckboxComponent } from './checkbox.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { CheckboxComponent } from './checkbox.component';
+export { AllorsMaterialCheckboxComponent } from './checkbox.component';
 
 @NgModule({
   declarations: [
-    CheckboxComponent,
+    AllorsMaterialCheckboxComponent,
   ],
   exports: [
-    CheckboxComponent,
+    AllorsMaterialCheckboxComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -24,5 +24,5 @@ export { CheckboxComponent } from './checkbox.component';
     MatCheckboxModule,
   ],
 })
-export class CheckboxModule {
+export class AllorsMaterialCheckboxModule {
 }

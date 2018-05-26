@@ -9,7 +9,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-select',
   templateUrl: './select.component.html',
 })
-export class SelectComponent extends Field {
+export class AllorsMaterialSelectComponent extends Field {
   @Input()
   public display = 'display';
 

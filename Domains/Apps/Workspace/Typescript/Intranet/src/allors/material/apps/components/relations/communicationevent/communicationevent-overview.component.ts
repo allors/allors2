@@ -13,7 +13,7 @@ import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../..
 import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './communicationevent-overview.component.html',
@@ -56,7 +56,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

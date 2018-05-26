@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared.module';
+
 
 import { WorkTasksOverviewComponent } from './worktasks-overview.component';
+import { FormsModule } from '@angular/forms';
 export { WorkTasksOverviewComponent } from './worktasks-overview.component';
 
 @NgModule({
@@ -10,10 +11,10 @@ export { WorkTasksOverviewComponent } from './worktasks-overview.component';
   ],
   exports: [
     WorkTasksOverviewComponent,
-    SharedModule,
+    
   ],
   imports: [
-    SharedModule,
+    FormsModule
   ],
 })
 export class WorkTasksOverviewModule {}

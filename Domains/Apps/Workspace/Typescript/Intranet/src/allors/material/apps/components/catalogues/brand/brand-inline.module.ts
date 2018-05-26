@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared.module';
+
 
 import { InlineBrandComponent } from './brand-inline.component';
+import { FormsModule } from '@angular/forms';
 export { InlineBrandComponent } from './brand-inline.component';
 
 @NgModule({
@@ -10,10 +11,10 @@ export { InlineBrandComponent } from './brand-inline.component';
   ],
   exports: [
     InlineBrandComponent,
-    SharedModule,
+    
   ],
   imports: [
-    SharedModule,
+    FormsModule
   ],
 })
 export class BrandInlineModule {}

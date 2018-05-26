@@ -16,7 +16,7 @@ import { And, ContainedIn, Contains, Equals, Fetch, Like, Page, Predicate, PullR
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 import { NewGoodDialogComponent } from '../../catalogues/good/newgood-dialog.module';
 
@@ -104,7 +104,7 @@ export class GoodsOverviewComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     public mediaService: MediaService,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Products');

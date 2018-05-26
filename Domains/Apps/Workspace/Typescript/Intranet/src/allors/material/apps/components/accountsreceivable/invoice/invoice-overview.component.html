@@ -12,7 +12,7 @@
 </mat-toolbar>
 
 <div body *ngIf="invoice" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card>
       <mat-card-title>Sales Invoice</mat-card-title>
       <mat-divider></mat-divider>
@@ -67,8 +67,8 @@
           </div>
 
           <div layout="grid-2_sm-1">
-            <p class="mat-caption tc-grey-500"> created: {{ invoice.CreationDate | date}} by {{ invoice.CreatedBy.displayName}}</p>
-            <p class="mat-caption tc-grey-500"> last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy.displayName}}</p>
+            <p > created: {{ invoice.CreationDate | date}} by {{ invoice.CreatedBy.displayName}}</p>
+            <p > last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy.displayName}}</p>
           </div>
         </div>
 
@@ -111,7 +111,7 @@
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu x-position="before" #menu="matMenu">
+                <mat-menu #menu="matMenu">
                   <a *ngIf="invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]"
                     mat-menu-item>Edit</a>
                   <a *ngIf="!invoice.CanWriteSalesInvoiceItems" [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]"
@@ -131,7 +131,7 @@
     </mat-card>
   </div>
 
-  <div flex-gt-xs="50">
+  <div >
     <mat-card>
       <mat-card-title>Invoice Terms</mat-card-title>
       <mat-divider></mat-divider>
@@ -155,7 +155,7 @@
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu x-position="before" #menu="matMenu">
+                <mat-menu #menu="matMenu">
                   <a *ngIf="salesTerm?.objectType.name == 'IncoTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]"
                     mat-menu-item>Edit</a>
                   <a *ngIf="salesTerm?.objectType.name == 'InvoiceTerm'" [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]"

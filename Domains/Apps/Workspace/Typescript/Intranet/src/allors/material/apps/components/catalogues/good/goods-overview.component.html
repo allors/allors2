@@ -110,7 +110,7 @@
             <button mat-icon-button [mat-menu-trigger-for]="menu">
               <mat-icon>more_vert</mat-icon>
             </button>
-            <mat-menu x-position="before" #menu="matMenu">
+            <mat-menu #menu="matMenu">
               <a *ngIf="serialisedGood(good)" [routerLink]="'/serialisedGood/' + [good.id]" mat-menu-item>Edit</a>
               <a *ngIf="!serialisedGood(good)" [routerLink]="'/nonSerialisedGood/' + [good.id]" mat-menu-item>Edit</a>
               <button mat-menu-item (click)="delete(good)">Delete</button>

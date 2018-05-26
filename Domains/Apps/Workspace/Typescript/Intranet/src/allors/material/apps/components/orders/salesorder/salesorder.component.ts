@@ -14,7 +14,7 @@ import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } fro
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   styles: [`
@@ -101,7 +101,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

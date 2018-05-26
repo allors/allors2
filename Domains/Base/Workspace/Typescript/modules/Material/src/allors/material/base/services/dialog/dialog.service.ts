@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DialogConfig } from './dialog.config';
-import { DialogComponent } from '../../components/dialog/dialog.module';
+import { AllorsMaterialDialogComponent } from '../../components/dialog/dialog.module';
 import { DialogData } from './dialog.data';
 
 @Injectable()
-export class DialogService {
+export class AllorsMaterialDialogService {
 
   constructor(private dialog: MatDialog) {
   }
@@ -20,7 +20,7 @@ export class DialogService {
 
     data.config.title = data.config.title || "Alert";
 
-    const dialogRef = this.dialog.open(DialogComponent, { data });
+    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
     return dialogRef.afterClosed();
   }
 
@@ -33,7 +33,7 @@ export class DialogService {
 
     data.config.title = data.config.title || "Confirm";
 
-    const dialogRef = this.dialog.open(DialogComponent, { data });
+    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
     return dialogRef.afterClosed();
   }
 
@@ -46,7 +46,7 @@ export class DialogService {
 
     data.config.title = data.config.title || "Prompt";
 
-    const dialogRef = this.dialog.open(DialogComponent, { data });
+    const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
     return dialogRef.afterClosed();
   }
 

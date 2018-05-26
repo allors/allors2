@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule, MatRadioModule } from '@angular/material';
 
-import { RadioGroupComponent } from './radiogroup.component';
+import { AllorsMaterialRadioGroupComponent } from './radiogroup.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { RadioGroupComponent } from './radiogroup.component';
+export { AllorsMaterialRadioGroupComponent } from './radiogroup.component';
 
 @NgModule({
   declarations: [
-    RadioGroupComponent,
+    AllorsMaterialRadioGroupComponent,
   ],
   exports: [
-    RadioGroupComponent,
+    AllorsMaterialRadioGroupComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -24,5 +24,5 @@ export { RadioGroupComponent } from './radiogroup.component';
     MatRadioModule,
   ],
 })
-export class RadioGroupModule {
+export class AllorsMaterialRadioGroupModule {
 }

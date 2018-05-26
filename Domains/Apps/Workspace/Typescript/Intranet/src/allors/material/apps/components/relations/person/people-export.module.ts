@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared.module';
-
 import { PeopleExportComponent } from './people-export.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule, MatCardModule, MatListModule, MatFormFieldModule } from '@angular/material';
 export { PeopleExportComponent } from './people-export.component';
 
 @NgModule({
@@ -10,10 +10,14 @@ export { PeopleExportComponent } from './people-export.component';
   ],
   exports: [
     PeopleExportComponent,
-    SharedModule,
   ],
   imports: [
-    SharedModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatListModule
   ],
 })
 export class PeopleExportModule {}

@@ -9,10 +9,11 @@
   <div fxFlex fxFill style="overflow: auto; padding: 20px;">
 
     <mat-card>
+
       <form novalidate [formGroup]="searchForm">
 
         <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFle fxFill *ngIf="!advancedSearch" appearance="outline">
+          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput autocomplete="off" formControlName="name">
             <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
@@ -55,8 +56,8 @@
           </mat-form-field>
 
           <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
-              <mat-label>Last Name</mat-label>
-              <input matInput formControlName="contactLastName">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="contactLastName">
           </mat-form-field>
 
           <div fxFlex="none" *ngIf="advancedSearch">
@@ -75,6 +76,8 @@
         <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
           <mat-list-item>
 
+            <a-mat-avatar></a-mat-avatar>
+
             <mat-icon *ngIf="!organisation.LogoImage" mat-list-avatar>insert_photo</mat-icon>
             <img *ngIf="organisation.LogoImage" mat-list-avatar [src]="mediaService.url(organisation.LogoImage)" />
 
@@ -89,16 +92,16 @@
 
               <span flex></span>
 
-              <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.CreationDate | date }} </div>
-                <div class="mat-caption tc-grey-500" flex-gt-xs="50"> {{ organisation.LastModifiedDate | date : shortDate }} </div>
+              <span>
+                <div> {{ organisation.CreationDate | date }} </div>
+                <div> {{ organisation.LastModifiedDate | date : shortDate }} </div>
               </span>
 
               <span>
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
-                <mat-menu x-position="before" #menu="matMenu">
+                <mat-menu #menu="matMenu">
                   <a [routerLink]="['/relations/organisation/' + organisation.id]" mat-menu-item>Details</a>
                   <button mat-menu-item (click)="delete(organisation)" [disabled]="!organisation.CanExecuteDelete">Delete</button>
                 </mat-menu>

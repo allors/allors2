@@ -71,16 +71,16 @@
                   <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
                 </p>
 
-                <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> started: {{ communicationEvent.ActualStart | date}} </div>
-                  <div class="mat-caption tc-grey-500" flex-gt-xs="50"> ended: {{ communicationEvent.ActualEnd | date }} </div>
+                <span      >
+                  <div  > started: {{ communicationEvent.ActualStart | date}} </div>
+                  <div  > ended: {{ communicationEvent.ActualEnd | date }} </div>
                   </span>
 
                  <span>
                     <button mat-icon-button [mat-menu-trigger-for]="menu">
                       <mat-icon>more_vert</mat-icon>
                     </button>
-                    <mat-menu x-position="before" #menu="matMenu">
+                    <mat-menu #menu="matMenu">
                          <button mat-menu-item [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">Details</button>
                         <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
                         <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>

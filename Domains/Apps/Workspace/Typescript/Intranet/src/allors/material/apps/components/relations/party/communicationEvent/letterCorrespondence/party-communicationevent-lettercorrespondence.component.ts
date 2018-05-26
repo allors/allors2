@@ -14,7 +14,7 @@ import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Lett
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
-import { DialogService } from '../../../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './party-communicationevent-lettercorrespondence.component.html',
@@ -44,7 +44,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {

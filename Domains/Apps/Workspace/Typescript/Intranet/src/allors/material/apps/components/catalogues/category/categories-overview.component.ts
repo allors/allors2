@@ -15,7 +15,7 @@ import { InternalOrganisation, ProductCategory } from '../../../../../domain';
 import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -45,7 +45,7 @@ export class CategoriesOverviewComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     public mediaService: MediaService,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.titleService.setTitle('Categories');

@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { InlineModule } from '../../inline.module';
-import { SharedModule } from '../../shared.module';
+
+
 
 import { NonSerialisedGoodComponent } from './nonserialisedgood.component';
+import { FormsModule } from '@angular/forms';
 export { NonSerialisedGoodComponent } from './nonserialisedgood.component';
 
 @NgModule({
@@ -13,12 +14,12 @@ export { NonSerialisedGoodComponent } from './nonserialisedgood.component';
   exports: [
     NonSerialisedGoodComponent,
 
-    InlineModule,
-    SharedModule,
+    
+    
   ],
   imports: [
-    InlineModule,
-    SharedModule,
+    FormsModule
+    
   ],
 })
 export class NonSerialisedGoodModule {}

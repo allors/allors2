@@ -23,5 +23,5 @@ export { TextareaComponent } from './textarea.component';
     MatInputModule,
   ],
 })
-export class TextAreaModule {
+export class AllorsMaterialTextAreaModule {
 }

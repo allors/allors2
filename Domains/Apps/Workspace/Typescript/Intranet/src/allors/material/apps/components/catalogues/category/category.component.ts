@@ -14,7 +14,7 @@ import { Equals, Fetch, PullRequest, Query, Sort, TreeNode } from '../../../../.
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './category.component.html',
@@ -44,7 +44,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

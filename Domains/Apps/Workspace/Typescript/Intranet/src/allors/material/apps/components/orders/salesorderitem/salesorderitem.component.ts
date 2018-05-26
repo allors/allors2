@@ -14,7 +14,7 @@ import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } f
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { NewGoodDialogComponent } from '../../catalogues';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './salesorderitem.component.html',
@@ -52,7 +52,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public stateService: StateService,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();

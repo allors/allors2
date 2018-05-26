@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared.module';
+
 
 import { InlineModelComponent } from './model-inline.component';
+import { FormsModule } from '@angular/forms';
 export { InlineModelComponent } from './model-inline.component';
 
 @NgModule({
@@ -10,10 +11,10 @@ export { InlineModelComponent } from './model-inline.component';
   ],
   exports: [
     InlineModelComponent,
-    SharedModule,
+    
   ],
   imports: [
-    SharedModule,
+    FormsModule
   ],
 })
 export class ModelInlineModule {}

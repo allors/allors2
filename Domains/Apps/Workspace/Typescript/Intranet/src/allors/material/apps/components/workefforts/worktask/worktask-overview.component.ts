@@ -13,7 +13,7 @@ import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, 
 import { WorkEffort, WorkTask } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './worktask-overview.component.html',
@@ -38,7 +38,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
     
     public mediaService: MediaService,
     public pdfService: PdfService,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

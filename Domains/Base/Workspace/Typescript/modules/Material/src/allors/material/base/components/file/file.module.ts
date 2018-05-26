@@ -4,16 +4,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule } from '@angular/material';
 
-import { FileComponent } from './file.component';
+import { AllorsMaterialFileComponent } from './file.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { FileComponent } from './file.component';
+export { AllorsMaterialFileComponent } from './file.component';
 
 @NgModule({
   declarations: [
-    FileComponent,
+    AllorsMaterialFileComponent,
   ],
   exports: [
-    FileComponent,
+    AllorsMaterialFileComponent,
   ],
   imports: [
     CommonModule,
@@ -25,4 +25,4 @@ export { FileComponent } from './file.component';
     MatInputModule,
   ],
 })
-export class FileModule {}
+export class AllorsMaterialFileModule {}

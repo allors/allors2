@@ -8,7 +8,7 @@ import { Locale, LocalisedText } from '../../../../domain';
   selector: 'a-mat-localised-text',
   templateUrl: './localisedtext.component.html',
 })
-export class LocalisedTextComponent extends Field {
+export class AllorsMaterialLocalisedTextComponent extends Field {
 
   @Input()
   public locale: Locale;

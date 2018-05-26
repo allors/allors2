@@ -1,6 +1,6 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -8,12 +8,12 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Singleton } from '../../../../../../../domain';
+import { ErrorService, Scope, WorkspaceService } from '../../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
-import { DialogService } from '../../../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './party-communicationevent-emailcommunication.component.html',
@@ -43,7 +43,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
@@ -56,7 +56,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   public ngOnInit(): void {
 
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+      .switchMap(([,, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const roleId: string = this.route.snapshot.paramMap.get('roleId');
@@ -161,10 +161,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   public cancel(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Cancel)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
+        .subscribe(() => {
+            this.refresh();
+            this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+          },
           (error: Error) => {
             this.errorService.handle(error);
           });
@@ -177,10 +177,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
            if (confirm) {
              this.scope
                .save()
-               .subscribe((saved: Saved) => {
-                 this.scope.session.reset();
-                 cancelFn();
-               },
+               .subscribe(() => {
+                   this.scope.session.reset();
+                   cancelFn();
+                 },
                (error: Error) => {
                  this.errorService.handle(error);
                });
@@ -196,10 +196,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   public close(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Close)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
-        },
+        .subscribe(() => {
+            this.refresh();
+            this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+          },
           (error: Error) => {
             this.errorService.handle(error);
           });
@@ -212,10 +212,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
            if (confirm) {
              this.scope
                .save()
-               .subscribe((saved: Saved) => {
-                 this.scope.session.reset();
-                 cancelFn();
-               },
+               .subscribe(() => {
+                   this.scope.session.reset();
+                   cancelFn();
+                 },
                (error: Error) => {
                  this.errorService.handle(error);
                });
@@ -231,10 +231,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   public reopen(): void {
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Reopen)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-        },
+        .subscribe(() => {
+            this.refresh();
+            this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+          },
           (error: Error) => {
             this.errorService.handle(error);
           });
@@ -247,10 +247,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           if (confirm) {
             this.scope
               .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                cancelFn();
-              },
+              .subscribe(() => {
+                  this.scope.session.reset();
+                  cancelFn();
+                },
                 (error: Error) => {
                   this.errorService.handle(error);
                 });
@@ -267,9 +267,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
 
     this.scope
       .save()
-      .subscribe((saved: Saved) => {
-        this.goBack();
-      },
+      .subscribe(() => {
+          this.goBack();
+        },
         (error: Error) => {
           this.errorService.handle(error);
         });

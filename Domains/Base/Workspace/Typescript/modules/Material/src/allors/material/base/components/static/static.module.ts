@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material';
 
-import { StaticComponent } from './static.component';
+import { AllorsMaterialStaticComponent } from './static.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { StaticComponent } from './static.component';
+export { AllorsMaterialStaticComponent } from './static.component';
 
 @NgModule({
   declarations: [
-    StaticComponent,
+    AllorsMaterialStaticComponent,
   ],
   exports: [
-    StaticComponent,
+    AllorsMaterialStaticComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -23,5 +23,5 @@ export { StaticComponent } from './static.component';
     MatInputModule,
   ],
 })
-export class StaticModule {
+export class AllorsMaterialStaticModule {
 }

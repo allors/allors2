@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { InlineModule } from '../../inline.module';
-import { SharedModule } from '../../shared.module';
+
+
 
 import { InvoiceComponent } from './invoice.component';
+import { FormsModule } from '@angular/forms';
 export { InvoiceComponent } from './invoice.component';
 
 @NgModule({
@@ -13,12 +14,12 @@ export { InvoiceComponent } from './invoice.component';
   exports: [
     InvoiceComponent,
 
-    InlineModule,
-    SharedModule,
+    
+    
   ],
   imports: [
-    InlineModule,
-    SharedModule,
+    FormsModule
+    
   ],
 })
 export class InvoiceModule {}

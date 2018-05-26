@@ -14,7 +14,7 @@ import { InternalOrganisation, Request, RequestState } from '../../../../../doma
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   requestNumber: string;
@@ -55,7 +55,7 @@ export class RequestsOverviewComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private titleService: Title,
     private router: Router,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

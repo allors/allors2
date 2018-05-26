@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule, MatSliderModule } from '@angular/material';
 
-import { SliderComponent } from './slider.component';
+import { AllorsMaterialSliderComponent } from './slider.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { SliderComponent } from './slider.component';
+export { AllorsMaterialSliderComponent } from './slider.component';
 
 @NgModule({
   declarations: [
-    SliderComponent,
+    AllorsMaterialSliderComponent,
   ],
   exports: [
-    SliderComponent,
+    AllorsMaterialSliderComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -24,5 +24,5 @@ export { SliderComponent } from './slider.component';
     MatSliderModule,
   ],
 })
-export class SliderModule {
+export class AllorsMaterialSliderModule {
 }

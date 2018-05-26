@@ -7,7 +7,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-slide-toggle',
   templateUrl: './slidetoggle.component.html',
 })
-export class SlideToggleComponent extends Field {
+export class AllorsMaterialSlideToggleComponent extends Field {
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);

@@ -65,7 +65,7 @@
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-              <mat-menu x-position="before" #menu="matMenu">
+              <mat-menu #menu="matMenu">
                 <a [routerLink]="['/workefforts/worktask/' + workEffortAssignment.Assignment.id ]" mat-menu-item>Details</a>
                 <button mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
               </mat-menu>

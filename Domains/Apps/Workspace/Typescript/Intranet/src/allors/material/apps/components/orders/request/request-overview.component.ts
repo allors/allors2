@@ -15,7 +15,7 @@ import { Equals, Fetch, Path, PullRequest, TreeNode } from '../../../../../frame
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './request-overview.component.html',
@@ -43,7 +43,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
     
     private snackBar: MatSnackBar,
     
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

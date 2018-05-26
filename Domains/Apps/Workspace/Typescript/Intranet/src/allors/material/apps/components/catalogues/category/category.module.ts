@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
-import { InlineModule } from '../../inline.module';
-import { SharedModule } from '../../shared.module';
+
+
 
 import { CategoryComponent } from './category.component';
+import { FormsModule } from '@angular/forms';
 export { CategoryComponent } from './category.component';
 
 @NgModule({
@@ -13,12 +14,12 @@ export { CategoryComponent } from './category.component';
   exports: [
     CategoryComponent,
 
-    InlineModule,
-    SharedModule,
+    
+    
   ],
   imports: [
-    InlineModule,
-    SharedModule,
+    FormsModule
+    
   ],
 })
 export class CategoryModule {}

@@ -15,7 +15,7 @@ import { Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../.
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
     
 
 @Component({
@@ -47,7 +47,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

@@ -7,7 +7,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-static',
   templateUrl: './static.component.html',
 })
-export class StaticComponent extends Field {
+export class AllorsMaterialStaticComponent extends Field {
   @Input()
   public display: string;
 

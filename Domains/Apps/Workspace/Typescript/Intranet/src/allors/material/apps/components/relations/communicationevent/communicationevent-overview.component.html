@@ -12,7 +12,7 @@
 </mat-toolbar>
 
 <div body *ngIf="isEmail" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
@@ -66,7 +66,7 @@
 </div>
 
 <div body *ngIf="isLetter" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
@@ -121,7 +121,7 @@
 </div>
 
 <div body *ngIf="isMeeting" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>Meeting</mat-card-title>
       <mat-divider></mat-divider>
@@ -171,7 +171,7 @@
 </div>
 
 <div body *ngIf="isPhone" layout-gt-md="row">
-  <div flex-gt-xs="50">
+  <div >
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
@@ -245,18 +245,18 @@
             <p mat-line class="mat-caption">{{ workEffort.Description }} </p>
             <p *ngIf="workEffort.Priority" mat-line class="mat-caption">Priority {{ workEffort.Priority.Name }} </p>
 
-            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Start: {{ workEffort.ScheduledStart | date}} </div>
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Sched. Compl.: {{ workEffort.ScheduledCompletion | date }} </div>
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Start: {{ workEffort.ActualStart | date}} </div>
-              <div class="mat-caption tc-grey-500" flex-gt-xs="50"> Act. Compl.: {{ workEffort.ActualCompletion | date }} </div>
+            <span      >
+              <div  > Sched. Start: {{ workEffort.ScheduledStart | date}} </div>
+              <div  > Sched. Compl.: {{ workEffort.ScheduledCompletion | date }} </div>
+              <div  > Act. Start: {{ workEffort.ActualStart | date}} </div>
+              <div  > Act. Compl.: {{ workEffort.ActualCompletion | date }} </div>
             </span>
 
             <span>
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-              <mat-menu x-position="before" #menu="matMenu">
+              <mat-menu #menu="matMenu">
                 <a [routerLink]="['/worktask/' + workEffort.id]" mat-menu-item>Edit</a>
                 <button mat-menu-item (click)="deleteWorkEffort(workEffort)" [disabled]="!workEffort.CanExecuteDelete">Delete</button>
               </mat-menu>

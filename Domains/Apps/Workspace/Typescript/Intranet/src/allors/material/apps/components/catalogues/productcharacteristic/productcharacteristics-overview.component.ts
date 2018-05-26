@@ -16,7 +16,7 @@ import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../an
 import { SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   name: string;
@@ -46,7 +46,7 @@ export class ProductCharacteristicsOverviewComponent implements OnDestroy {
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);

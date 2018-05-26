@@ -7,7 +7,7 @@ import { SideMenuItem } from './sidemenuitem';
   styleUrls: ['sidemenu.component.scss'],
   templateUrl: './sidemenu.component.html',
 })
-export class SideMenuComponent {
+export class AllorsMaterialSideMenuComponent {
 
   @Input()
   public items: SideMenuItem[];

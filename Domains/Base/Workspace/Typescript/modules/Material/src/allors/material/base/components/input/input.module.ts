@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatInputModule } from '@angular/material';
 
-import { InputComponent } from './input.component';
+import { AllorsMaterialInputComponent } from './input.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { InputComponent } from './input.component';
+export { AllorsMaterialInputComponent } from './input.component';
 
 @NgModule({
   declarations: [
-    InputComponent,
+    AllorsMaterialInputComponent,
   ],
   exports: [
-    InputComponent,
+    AllorsMaterialInputComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -23,5 +23,5 @@ export { InputComponent } from './input.component';
     MatInputModule,
   ],
 })
-export class InputModule {
+export class AllorsMaterialInputModule {
 }

@@ -10,7 +10,7 @@ import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '.
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoice-overview.component.html',
@@ -33,7 +33,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 

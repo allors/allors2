@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared.module';
+
 
 import { WorkEffortsOverviewComponent } from './workefforts-overview.component';
 export { WorkEffortsOverviewComponent } from './workefforts-overview.component';
@@ -10,10 +10,10 @@ export { WorkEffortsOverviewComponent } from './workefforts-overview.component';
   ],
   exports: [
     WorkEffortsOverviewComponent,
-    SharedModule,
+    
   ],
   imports: [
-    SharedModule,
+    
   ],
 })
 export class WorkEffortsOverviewModule {}

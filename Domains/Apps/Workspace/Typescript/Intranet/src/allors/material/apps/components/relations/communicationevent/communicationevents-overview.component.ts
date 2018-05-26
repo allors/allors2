@@ -16,7 +16,7 @@ import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../..
 import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from '../../../../../domain';
 import { And, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
   subject: string;
@@ -64,7 +64,7 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private snackBarService: MatSnackBar,
-    private dialogService: DialogService) {
+    private dialogService: AllorsMaterialDialogService) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();

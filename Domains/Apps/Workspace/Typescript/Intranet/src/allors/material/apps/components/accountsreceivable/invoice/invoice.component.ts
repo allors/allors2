@@ -15,7 +15,7 @@ import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { DialogService } from '../../../../base/services/dialog';
+import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoice.component.html',
@@ -95,7 +95,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: DialogService,
+    private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();

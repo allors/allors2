@@ -103,7 +103,7 @@
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
-                  <mat-menu x-position="before" #menu="matMenu">
+                  <mat-menu #menu="matMenu">
                     <a *ngIf="request.CanWriteRequestItems && requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
                     <a *ngIf="!request.CanWriteRequestItems || !requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>View</a>
                     <button [disabled]="!requestItem.CanExecuteCancel" mat-menu-item (click)="cancelRequestItem(requestItem)">Cancel</button>
@@ -122,6 +122,6 @@
     </mat-card>
   </div>
 
-  <div flex-gt-xs="50">
+  <div >
   </div>
 </div>

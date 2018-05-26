@@ -5,18 +5,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatAutocompleteModule, MatInputModule, MatIconModule, MatListModule } from '@angular/material';
 
-import { SideMenuComponent } from './sidemenu.component';
+import { AllorsMaterialSideMenuComponent } from './sidemenu.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
-export { SideMenuComponent } from './sidemenu.component';
+export { AllorsMaterialSideMenuComponent } from './sidemenu.component';
 export { SideMenuItem } from './sidemenuitem';
 
 @NgModule({
   declarations: [
-    SideMenuComponent,
+    AllorsMaterialSideMenuComponent,
   ],
   exports: [
-    SideMenuComponent,
+    AllorsMaterialSideMenuComponent,
   ],
   imports: [
     CommonModule,
@@ -30,5 +30,5 @@ export { SideMenuItem } from './sidemenuitem';
     RouterModule,
   ],
 })
-export class SideMenuModule {
+export class AllorsMaterialSideMenuModule {
 }

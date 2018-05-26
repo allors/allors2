@@ -5,16 +5,16 @@ import { FormsModule } from '@angular/forms';
 
 import { MatDatepickerModule, MatIconModule, MatInputModule } from '@angular/material';
 
-import { DatepickerComponent } from './datepicker.component';
+import { AllorsMaterialDatepickerComponent } from './datepicker.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-export { DatepickerComponent } from './datepicker.component';
+export { AllorsMaterialDatepickerComponent } from './datepicker.component';
 
 @NgModule({
   declarations: [
-    DatepickerComponent,
+    AllorsMaterialDatepickerComponent,
   ],
   exports: [
-    DatepickerComponent,
+    AllorsMaterialDatepickerComponent,
   ],
   imports: [
     FlexLayoutModule,
@@ -25,5 +25,5 @@ export { DatepickerComponent } from './datepicker.component';
     MatDatepickerModule,
   ],
 })
-export class DatepickerModule {
+export class AllorsMaterialDatepickerModule {
 }

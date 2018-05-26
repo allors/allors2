@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '../../shared.module';
+
 
 import { InvoiceOverviewComponent } from './invoice-overview.component';
+import { FormsModule } from '@angular/forms';
 export { InvoiceOverviewComponent } from './invoice-overview.component';
 
 @NgModule({
@@ -10,10 +11,10 @@ export { InvoiceOverviewComponent } from './invoice-overview.component';
   ],
   exports: [
     InvoiceOverviewComponent,
-    SharedModule,
+    
   ],
   imports: [
-    SharedModule,
+    FormsModule,
   ],
 })
 export class InvoiceOverviewModule {}

@@ -7,7 +7,7 @@ import { Field } from '../../../../angular';
   selector: 'a-mat-slider',
   templateUrl: './slider.component.html',
 })
-export class SliderComponent extends Field {
+export class AllorsMaterialSliderComponent extends Field {
 
   @Input()
   public invert: boolean;
