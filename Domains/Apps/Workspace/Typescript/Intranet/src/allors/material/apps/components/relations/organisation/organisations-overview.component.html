@@ -6,9 +6,9 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill style="overflow: auto; padding: 20px;">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <mat-card>
+    <mat-card fxFlex fxLayout="column">
 
       <form novalidate [formGroup]="searchForm">
 
@@ -69,63 +69,34 @@
         </mat-card-content>
       </form>
 
-      <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
-
-        <ng-container matColumnDef="logo">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row">
-            <a-mat-avatar [object]="row.logo"></a-mat-avatar>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="name">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
-          <td mat-cell *matCellDef="let row"> {{ row.name }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="classification">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> classification </th>
-          <td mat-cell *matCellDef="let row"> {{ row.classification }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="phone">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Phone </th>
-          <td mat-cell *matCellDef="let row"> {{ row.phone }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="address">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Address </th>
-          <td mat-cell *matCellDef="let row"> {{ row.address }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="country">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef> Country </th>
-          <td mat-cell *matCellDef="let row"> {{ row.country }} </td>
-        </ng-container>
-
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-icon-button [mat-menu-trigger-for]="menu">
+      <ngx-datatable fxFlex class="material" [scrollbarV]="true" [rows]="rows" [columns]="columns" [headerHeight]="50" [rowHeight]="50">
+        <ngx-datatable-column name="logo">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+              <a-mat-avatar [object]="row.logo"></a-mat-avatar>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="name"></ngx-datatable-column>
+        <ngx-datatable-column name="classification"></ngx-datatable-column>
+        <ngx-datatable-column name="phone"></ngx-datatable-column>
+        <ngx-datatable-column name="address"></ngx-datatable-column>
+        <ngx-datatable-column name="country"></ngx-datatable-column>
+        <ngx-datatable-column name="actions">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <button style="margin: 0" mat-icon-button [mat-menu-trigger-for]="menu" style="margin-top: -0.9rem;">
               <mat-icon>more_vert</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
               <a [routerLink]="['/relations/organisation/' + row.organisation.id]" mat-menu-item>Details</a>
               <button mat-menu-item (click)="delete(row.organisation)" [disabled]="!row.organisation.CanExecuteDelete">Delete</button>
             </mat-menu>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
 
     </mat-card>
   </div>
 
   <mat-toolbar fxFlex fxLayout="row">
-    <mat-paginator style="background: none" [pageSizeOptions]="[10, 25, 100, -1]"></mat-paginator>
 
     <div fxFlex></div>
 

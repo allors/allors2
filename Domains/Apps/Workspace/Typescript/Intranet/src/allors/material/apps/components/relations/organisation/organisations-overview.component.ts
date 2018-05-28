@@ -41,14 +41,14 @@ interface SearchData {
 @Component({
   templateUrl: './organisations-overview.component.html',
 })
-export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
+export class OrganisationsOverviewComponent implements OnDestroy {
 
   public title = 'Organisations';
   public total: number;
   public searchForm: FormGroup;
 
-  public displayedColumns = ['logo', 'name', 'classification', 'phone', 'address', 'country', 'actions'];
-  public dataSource = new MatTableDataSource();
+  public columns = [{ prop: 'name'}, {prop:'classification'}, {prop:'phone'}, {prop: 'address'}, {prop:'country'}, {prop:'actions'}];
+  public rows: Row[] = [];
 
   public countries: Country[];
   public selectedCountry: Country;
@@ -262,7 +262,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.scope.session.reset();
 
-        this.dataSource.data = loaded.collections.organisations.map<Row>((v: Organisation) => {
+        this.rows = loaded.collections.organisations.map<Row>((v: Organisation) => {
           return {
             organisation: v,
             logo: v.LogoImage,
@@ -280,12 +280,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
         });
   }
 
-  public ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  public ngOnDestroy(): void {
+    public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

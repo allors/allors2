@@ -6,6 +6,8 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
 import { AllorsMaterialAvatarModule } from  '../../../../base/components/avatar';
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
@@ -59,6 +61,7 @@ export { OrganisationsOverviewComponent } from './organisations-overview.compone
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    NgxDatatableModule,
     ReactiveFormsModule,
     RouterModule,
   ],
