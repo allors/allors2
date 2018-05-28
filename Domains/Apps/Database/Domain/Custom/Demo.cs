@@ -126,96 +126,13 @@ namespace Allors
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();
 
-            this.Session.Derive();
-
-            var acmePostalAddress = new PostalAddressBuilder(this.Session)
-                .WithAddress1("Acme address 1")
-                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality("Acme city").WithPostalCode("1111").WithCountry(usa).Build())
-                .Build();
-
-            var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(acmePostalAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var acmeInquiries = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithContactNumber("111 222 333").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderInquiriesPhone)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var acme = new OrganisationBuilder(this.Session)
-                .WithName("Acme")
-                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
-                .WithPartyContactMechanism(acmeBillingAddress)
-                .WithPartyContactMechanism(acmeInquiries)
-                .Build();
-
-            var contact1Email = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString("employee1@acme.com").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var contact2PhoneNumber = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithAreaCode("123").WithContactNumber("456").Build())
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
-                .WithUseAsDefault(true)
-                .Build();
-
-            var contact1 = new PersonBuilder(this.Session)
-                .WithFirstName("contact1")
-                .WithGender(new GenderTypes(this.Session).Male)
-                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
-                .WithPartyContactMechanism(contact1Email)
-                .Build();
-
-            var contact2 = new PersonBuilder(this.Session)
-                .WithFirstName("contact2")
-                .WithGender(new GenderTypes(this.Session).Male)
-                .WithLocale(new Locales(this.Session).EnglishUnitedStates)
-                .WithPartyContactMechanism(contact2PhoneNumber)
-                .Build();
-
-            new CustomerRelationshipBuilder(this.Session)
-                .WithCustomer(acme)
-                .WithInternalOrganisation(internalOrganisation)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new OrganisationContactRelationshipBuilder(this.Session)
-                .WithOrganisation(acme)
-                .WithContact(contact1)
-                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new OrganisationContactRelationshipBuilder(this.Session)
-                .WithOrganisation(acme)
-                .WithContact(contact2)
-                .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            new FaceToFaceCommunicationBuilder(this.Session)
-                .WithDescription("Meeting")
-                .WithSubject("review")
-                .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
-                .WithParticipant(contact1)
-                .WithParticipant(contact2)
-                .WithOwner(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
-                .WithActualStart(DateTime.UtcNow)
-                .Build();
-
             var kg = new UnitOfMeasureBuilder(this.Session)
                 .WithName("Kilograms")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kg").WithLocale(dutchLocale).Build())
                 .Build();
 
             new ProductTypeBuilder(this.Session)
-                .WithName("Gizmo")
+                .WithName($"Gizmo")
                 .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afmeting").WithLocale(dutchLocale).Build())
@@ -278,87 +195,170 @@ namespace Allors
             var goodInventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
             goodInventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
-                .WithDescription("first item")
-                .WithProduct(good)
-                .WithActualUnitPrice(3000)
-                .WithQuantityOrdered(1)
-                .WithMessage(@"line1
-line2")
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
-
-            var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
-                .WithDescription("second item")
-                .WithActualUnitPrice(2000)
-                .WithQuantityOrdered(2)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
-
-            var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
-                .WithDescription("Fee")
-                .WithActualUnitPrice(100)
-                .WithQuantityOrdered(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
-                .Build();
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(acme)
-                .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
-                .WithSalesOrderItem(salesOrderItem1)
-                .WithSalesOrderItem(salesOrderItem2)
-                .WithSalesOrderItem(salesOrderItem3)
-                .WithCustomerReference("a reference number")
-                .WithDescription("Sale of 1 used Aircraft Towbar")
-                .WithVatRegime(new VatRegimes(this.Session).Assessable)
-                .Build();
-
-
-            var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("first item")
-                .WithProduct(good)
-                .WithActualUnitPrice(3000)
-                .WithQuantity(1)
-                .WithMessage(@"line1
-line2")
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
-
-            var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("second item")
-                .WithActualUnitPrice(2000)
-                .WithQuantity(2)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
-                .Build();
-
-            var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
-                .WithDescription("Fee")
-                .WithActualUnitPrice(100)
-                .WithQuantity(1)
-                .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
-                .Build();
-
-            var invoice = new SalesInvoiceBuilder(this.Session)
-                .WithInvoiceNumber("1")
-                .WithBillToCustomer(acme)
-                .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
-                .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
-                .WithSalesInvoiceItem(salesInvoiceItem1)
-                .WithSalesInvoiceItem(salesInvoiceItem2)
-                .WithSalesInvoiceItem(salesInvoiceItem3)
-                .WithCustomerReference("a reference number")
-                .WithDescription("Sale of 1 used Aircraft Towbar")
-                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
-                .WithVatRegime(new VatRegimes(this.Session).Assessable)
-                .Build();
 
             this.Session.Derive();
 
-            var orderContent = order.HtmlContent;
-            File.WriteAllText(@"c:\temp\order.html", orderContent);
+            for (int i = 0; i < 100; i++)
+            {
+                var acmePostalAddress = new PostalAddressBuilder(this.Session)
+                    .WithAddress1($"Acme{i} address 1")
+                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Acme{i} city").WithPostalCode("1111").WithCountry(usa).Build())
+                    .Build();
 
-            var invoiceContent = invoice.HtmlContent;
-            File.WriteAllText(@"c:\temp\invoice.html", invoiceContent);
+                var acmeBillingAddress = new PartyContactMechanismBuilder(this.Session)
+                    .WithContactMechanism(acmePostalAddress)
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
+                    .WithUseAsDefault(true)
+                    .Build();
+
+                var acmeInquiries = new PartyContactMechanismBuilder(this.Session)
+                    .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithContactNumber("111 222 333").Build())
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).OrderInquiriesPhone)
+                    .WithUseAsDefault(true)
+                    .Build();
+
+                var acme = new OrganisationBuilder(this.Session)
+                    .WithName($"Acme{i}")
+                    .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                    .WithPartyContactMechanism(acmeBillingAddress)
+                    .WithPartyContactMechanism(acmeInquiries)
+                    .Build();
+
+                var contact1Email = new PartyContactMechanismBuilder(this.Session)
+                    .WithContactMechanism(new EmailAddressBuilder(this.Session).WithElectronicAddressString($"employee1@acme{i}.com").Build())
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).PersonalEmailAddress)
+                    .WithUseAsDefault(true)
+                    .Build();
+
+                var contact2PhoneNumber = new PartyContactMechanismBuilder(this.Session)
+                    .WithContactMechanism(new TelecommunicationsNumberBuilder(this.Session).WithCountryCode("+1").WithAreaCode("123").WithContactNumber("456").Build())
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralPhoneNumber)
+                    .WithUseAsDefault(true)
+                    .Build();
+
+                var contact1 = new PersonBuilder(this.Session)
+                    .WithFirstName("contact1")
+                    .WithGender(new GenderTypes(this.Session).Male)
+                    .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                    .WithPartyContactMechanism(contact1Email)
+                    .Build();
+
+                var contact2 = new PersonBuilder(this.Session)
+                    .WithFirstName("contact2")
+                    .WithGender(new GenderTypes(this.Session).Male)
+                    .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                    .WithPartyContactMechanism(contact2PhoneNumber)
+                    .Build();
+
+                new CustomerRelationshipBuilder(this.Session)
+                    .WithCustomer(acme)
+                    .WithInternalOrganisation(internalOrganisation)
+                    .WithFromDate(DateTime.UtcNow)
+                    .Build();
+
+                new OrganisationContactRelationshipBuilder(this.Session)
+                    .WithOrganisation(acme)
+                    .WithContact(contact1)
+                    .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
+                    .WithFromDate(DateTime.UtcNow)
+                    .Build();
+
+                new OrganisationContactRelationshipBuilder(this.Session)
+                    .WithOrganisation(acme)
+                    .WithContact(contact2)
+                    .WithContactKind(new OrganisationContactKinds(this.Session).FindBy(M.OrganisationContactKind.Description, "General contact"))
+                    .WithFromDate(DateTime.UtcNow)
+                    .Build();
+
+                new FaceToFaceCommunicationBuilder(this.Session)
+                    .WithDescription("Meeting")
+                    .WithSubject("review")
+                    .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
+                    .WithParticipant(contact1)
+                    .WithParticipant(contact2)
+                    .WithOwner(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
+                    .WithActualStart(DateTime.UtcNow)
+                    .Build();
+
+
+                var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
+                    .WithDescription("first item")
+                    .WithProduct(good)
+                    .WithActualUnitPrice(3000)
+                    .WithQuantityOrdered(1)
+                    .WithMessage(@"line1
+line2")
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .Build();
+
+                var salesOrderItem2 = new SalesOrderItemBuilder(this.Session)
+                    .WithDescription("second item")
+                    .WithActualUnitPrice(2000)
+                    .WithQuantityOrdered(2)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .Build();
+
+                var salesOrderItem3 = new SalesOrderItemBuilder(this.Session)
+                    .WithDescription("Fee")
+                    .WithActualUnitPrice(100)
+                    .WithQuantityOrdered(1)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
+                    .Build();
+
+                var order = new SalesOrderBuilder(this.Session)
+                    .WithBillToCustomer(acme)
+                    .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
+                    .WithSalesOrderItem(salesOrderItem1)
+                    .WithSalesOrderItem(salesOrderItem2)
+                    .WithSalesOrderItem(salesOrderItem3)
+                    .WithCustomerReference("a reference number")
+                    .WithDescription("Sale of 1 used Aircraft Towbar")
+                    .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                    .Build();
+
+
+                var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
+                    .WithDescription("first item")
+                    .WithProduct(good)
+                    .WithActualUnitPrice(3000)
+                    .WithQuantity(1)
+                    .WithMessage(@"line1
+line2")
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .Build();
+
+                var salesInvoiceItem2 = new SalesInvoiceItemBuilder(this.Session)
+                    .WithDescription("second item")
+                    .WithActualUnitPrice(2000)
+                    .WithQuantity(2)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .Build();
+
+                var salesInvoiceItem3 = new SalesInvoiceItemBuilder(this.Session)
+                    .WithDescription("Fee")
+                    .WithActualUnitPrice(100)
+                    .WithQuantity(1)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
+                    .Build();
+
+                var invoice = new SalesInvoiceBuilder(this.Session)
+                    .WithInvoiceNumber("1")
+                    .WithBillToCustomer(acme)
+                    .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
+                    .WithBillToEndCustomerContactMechanism(acmeBillingAddress.ContactMechanism)
+                    .WithSalesInvoiceItem(salesInvoiceItem1)
+                    .WithSalesInvoiceItem(salesInvoiceItem2)
+                    .WithSalesInvoiceItem(salesInvoiceItem3)
+                    .WithCustomerReference("a reference number")
+                    .WithDescription("Sale of 1 used Aircraft Towbar")
+                    .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                    .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                    .Build();
+
+            }
+
+            this.Session.Derive();
         }
 
         private void SetupUser(string email, string firstName, string lastName, string password)

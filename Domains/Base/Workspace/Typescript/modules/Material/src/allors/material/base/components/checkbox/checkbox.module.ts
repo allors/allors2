@@ -17,9 +17,9 @@ export { AllorsMaterialCheckboxComponent } from './checkbox.component';
     AllorsMaterialCheckboxComponent,
   ],
   imports: [
+    CommonModule,
     FlexLayoutModule,
     FormsModule,
-    CommonModule,
     MatInputModule,
     MatCheckboxModule,
   ],

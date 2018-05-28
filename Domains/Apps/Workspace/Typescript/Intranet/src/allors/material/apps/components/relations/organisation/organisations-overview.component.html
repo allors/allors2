@@ -69,57 +69,66 @@
         </mat-card-content>
       </form>
 
-      <mat-list>
-        <div *ngIf="data && data.length === 0">
-          <h3>No organisations to display.</h3>
-        </div>
-        <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item>
+      <table mat-table matSort [dataSource]="dataSource" class="mat-elevation-z8" style="width: 100%;">
 
-            <a-mat-avatar></a-mat-avatar>
+        <ng-container matColumnDef="logo">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <a-mat-avatar [object]="row.logo"></a-mat-avatar>
+          </td>
+        </ng-container>
 
-            <mat-icon *ngIf="!organisation.LogoImage" mat-list-avatar>insert_photo</mat-icon>
-            <img *ngIf="organisation.LogoImage" mat-list-avatar [src]="mediaService.url(organisation.LogoImage)" />
+        <ng-container matColumnDef="name">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let row"> {{ row.name }} </td>
+        </ng-container>
 
-            <h3 mat-line [routerLink]="['/relations/organisation/' + organisation.id]"> {{organisation.PartyName}} </h3>
+        <ng-container matColumnDef="classification">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> classification </th>
+          <td mat-cell *matCellDef="let row"> {{ row.classification }} </td>
+        </ng-container>
 
-            <p *ngIf="organisation.OrganisationClassifications.length > 0" mat-line> {{organisation.OrganisationClassifications[0].Name}}</p>
-            <p *ngIf="organisation.GeneralCorrespondence" mat-line> {{organisation.GeneralCorrespondence?.Address1}} {{organisation.GeneralCorrespondence?.Address2}} {{organisation.GeneralCorrespondence?.Address3}}</p>
-            <p *ngIf="organisation.GeneralCorrespondence" mat-line> {{organisation.GeneralCorrespondence?.PostalBoundary?.PostalCode}} {{organisation.GeneralCorrespondence?.PostalBoundary?.Locality}}
-              {{organisation.GeneralCorrespondence?.PostalBoundary?.Country.Name}} </p>
-            <p *ngIf="organisation.GeneralPhoneNumber" mat-line> {{organisation.GeneralPhoneNumber.CountryCode}} {{organisation.GeneralPhoneNumber.AreaCode}} {{organisation.GeneralPhoneNumber.ContactNumber}}
-              <p mat-line hide-gt-md class="mat-caption"> last modified: {{ organisation.LastModifiedDate | date : shortDate }} </p>
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Phone </th>
+          <td mat-cell *matCellDef="let row"> {{ row.phone }} </td>
+        </ng-container>
 
-              <span flex></span>
+        <ng-container matColumnDef="address">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Address </th>
+          <td mat-cell *matCellDef="let row"> {{ row.address }} </td>
+        </ng-container>
 
-              <span>
-                <div> {{ organisation.CreationDate | date }} </div>
-                <div> {{ organisation.LastModifiedDate | date : shortDate }} </div>
-              </span>
+        <ng-container matColumnDef="country">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef> Country </th>
+          <td mat-cell *matCellDef="let row"> {{ row.country }} </td>
+        </ng-container>
 
-              <span>
-                <button mat-icon-button [mat-menu-trigger-for]="menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <a [routerLink]="['/relations/organisation/' + organisation.id]" mat-menu-item>Details</a>
-                  <button mat-menu-item (click)="delete(organisation)" [disabled]="!organisation.CanExecuteDelete">Delete</button>
-                </mat-menu>
-              </span>
 
-          </mat-list-item>
-        </ng-template>
-      </mat-list>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-icon-button [mat-menu-trigger-for]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <a [routerLink]="['/relations/organisation/' + row.organisation.id]" mat-menu-item>Details</a>
+              <button mat-menu-item (click)="delete(row.organisation)" [disabled]="!row.organisation.CanExecuteDelete">Delete</button>
+            </mat-menu>
+          </td>
+        </ng-container>
 
-      <mat-card *ngIf="this.data && this.data.length !== total">
-        <mat-card-content>
-          <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-        </mat-card-content>
-      </mat-card>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
     </mat-card>
   </div>
 
   <mat-toolbar fxFlex fxLayout="row">
+    <mat-paginator style="background: none" [pageSizeOptions]="[10, 25, 100, -1]"></mat-paginator>
+
+    <div fxFlex></div>
+
     <a mat-raised-button [routerLink]="['/organisation']">
       Add New
     </a>

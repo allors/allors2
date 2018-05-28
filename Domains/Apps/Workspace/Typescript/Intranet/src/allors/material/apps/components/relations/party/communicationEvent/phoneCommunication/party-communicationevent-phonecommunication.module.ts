@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatDatepickerModule } from '@angular/material';
 
-import { AllorsMaterialAvatarModule } from '../../../../shared/avatar';
+import { AllorsMaterialAvatarModule } from  '../../../../../../base/components/avatar';
 import { AllorsMaterialChipsModule } from '../../../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../../../base/components/file';

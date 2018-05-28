@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
@@ -11,18 +11,29 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
-import { Country, CustomOrganisationClassification, InternalOrganisation, Organisation, OrganisationRole } from '../../../../../domain';
+import { Country, CustomOrganisationClassification, InternalOrganisation, Organisation, OrganisationRole, Media } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Like, Page, Path, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
+
+interface Row {
+  organisation: Organisation;
+  logo: Media;
+  name: string;
+  classification: string;
+  phone: string;
+  address: string;
+  country: string;
+}
+
 interface SearchData {
   name: string;
   country: string;
   role: string;
-  classification: string;
+  classifications: string;
   contactFirstName: string;
   contactLastName: string;
 }
@@ -30,12 +41,14 @@ interface SearchData {
 @Component({
   templateUrl: './organisations-overview.component.html',
 })
-export class OrganisationsOverviewComponent implements OnDestroy {
+export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Organisations';
   public total: number;
   public searchForm: FormGroup;
-  public data: Organisation[];
+
+  public displayedColumns = ['logo', 'name', 'classification', 'phone', 'address', 'country', 'actions'];
+  public dataSource = new MatTableDataSource();
 
   public countries: Country[];
   public selectedCountry: Country;
@@ -54,6 +67,9 @@ export class OrganisationsOverviewComponent implements OnDestroy {
   private scope: Scope;
 
   private page$: BehaviorSubject<number>;
+
+  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     public mediaService: MediaService,
@@ -246,13 +262,27 @@ export class OrganisationsOverviewComponent implements OnDestroy {
       .subscribe((loaded) => {
         this.scope.session.reset();
 
-        this.data = loaded.collections.organisations as Organisation[];
-        this.total = loaded.values.organisations_total;
+        this.dataSource.data = loaded.collections.organisations.map<Row>((v: Organisation) => {
+          return {
+            organisation: v,
+            logo: v.LogoImage,
+            name: v.PartyName,
+            classification: v.OrganisationClassifications.map(v => v.Name).join(", ") || "none",
+            phone: `${v.GeneralPhoneNumber.CountryCode || ''} ${v.GeneralPhoneNumber.AreaCode || ''} ${v.GeneralPhoneNumber.ContactNumber || ''}`,
+            address: `${v.GeneralCorrespondence.Address1 || ''} ${v.GeneralCorrespondence.Address2 || ''} ${v.GeneralCorrespondence.Address3 || ''}`,
+            country: `${v.GeneralCorrespondence.Country.Name || 'none'}`
+          };
+        });
       },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         });
+  }
+
+  public ngOnInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   public ngOnDestroy(): void {
@@ -282,10 +312,6 @@ export class OrganisationsOverviewComponent implements OnDestroy {
               });
         }
       });
-  }
-
-  public more(): void {
-    this.page$.next(this.data.length + 50);
   }
 
   public goBack(): void {

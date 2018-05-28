@@ -1,5 +1,6 @@
 // Base Components
 export * from './base/components/autocomplete/autocomplete.module';
+export * from './base/components/avatar/avatar.module';
 export * from './base/components/checkbox/checkbox.module';
 export * from './base/components/chips/chips.module';
 export * from './base/components/datepicker/datepicker.module';
@@ -23,6 +24,3 @@ export * from './base/components/datepicker/MomentUtcDateAdapter';
 export * from './base/services/dialog/index';
 export * from './base/services/error/index';
 export * from './base/services/sidenav/index';
-
-// Apps Components
-export * from './apps/components/shared/avatar';
