@@ -16,8 +16,8 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { PersonInlineModule } from '../../relations/person/person-inline.module';
-import { PartyContactMechanismInlineModule } from '../../relations/party/contactMechanism/party-contactmechanism-inline.module';
-import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/party/contactMechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
+import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
+import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
 
 import { SalesOrderEditComponent } from './salesorder.component';
 export { SalesOrderEditComponent } from './salesorder.component';

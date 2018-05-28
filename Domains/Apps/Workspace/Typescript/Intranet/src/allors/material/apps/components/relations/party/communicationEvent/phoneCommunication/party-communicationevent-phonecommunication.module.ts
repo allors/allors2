@@ -16,7 +16,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/
 
 import { PersonInlineModule } from '../../../person/person-inline.module';
 
-import { PartyContactMechanismTelecommunicationsNumberInlineModule } from '../../contactMechanism/telecommunicationsNumber/party-contactmechanism-telecommunicationsnumber-inline.module';
+import { PartyContactMechanismTelecommunicationsNumberInlineModule } from '../../contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-inline.module';
 
 import { PartyCommunicationEventPhoneCommunicationComponent } from './party-communicationevent-phonecommunication.component';
 export { PartyCommunicationEventPhoneCommunicationComponent } from './party-communicationevent-phonecommunication.component';

@@ -16,7 +16,7 @@
       "es2017",
       "dom"
     ],
-   /*  "noUnusedLocals": true,
+    /* "noUnusedLocals": true,
     "noUnusedParameters": true, */
   }
 }

@@ -16,7 +16,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { PersonInlineModule } from '../../relations/person/person-inline.module';
-import { PartyContactMechanismInlineModule } from '../../relations/party/contactMechanism/party-contactmechanism-inline.module';
+import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
 
 import { ProductQuoteEditComponent } from './productquote.component';
 export { ProductQuoteEditComponent } from './productquote.component';
