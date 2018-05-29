@@ -74,12 +74,12 @@
           <h3>No organisations to display.</h3>
         </div>
         <ng-template let-row let-last="last" ngFor [ngForOf]="rows">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/relations/organisation/', row.object.id])" style="cursor: pointer;">
 
             <mat-icon fxHide fxShow.gt-sm *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
             <img fxHide fxShow.gt-sm *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
 
-            <h3 mat-line [routerLink]="['/relations/organisation/' + row.object.id]">{{row.name}}</h3>
+            <h3 mat-line>{{row.name}}</h3>
             <p mat-line>{{row.classification}}</p>
             <p mat-line>{{row.address}}</p>
             <p mat-line>{{row.address2}}</p>
@@ -90,8 +90,8 @@
               <br>{{ row.object.LastModifiedDate | date : shortDate }}
             </div>
 
-            <div>
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
+            <div (click)="$event.stopPropagation()">
+              <button type="button" mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu x-position="before" #menu="matMenu">
