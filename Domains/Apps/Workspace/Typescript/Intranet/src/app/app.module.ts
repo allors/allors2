@@ -61,6 +61,7 @@ import { DefaultLoggingService } from './app.logging.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DefaultStateService } from '../allors/material/apps/services/DefaultStateService';
 import { StateService } from '../allors/material/apps/services/StateService';
+import { ConfigService } from './app.config.service';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -100,6 +101,7 @@ import { StateService } from '../allors/material/apps/services/StateService';
     { provide: StateService, useClass: DefaultStateService },
     { provide: LoggingService, useClass: DefaultLoggingService },
     { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
+    ConfigService,
     DatabaseService,
     WorkspaceService,
     AuthenticationService,

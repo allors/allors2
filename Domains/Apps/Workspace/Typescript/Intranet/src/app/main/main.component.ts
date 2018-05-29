@@ -1,27 +1,42 @@
-import { Component, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService } from '../../allors/angular';
+import { MenuService, WorkspaceService } from '../../allors/angular';
 import { MatSidenav } from '@angular/material';
+import { Fetch, Query } from '../../allors/framework';
+import { StateService } from '../../allors/material/apps/services/StateService';
+import { MetaDomain } from '../../allors/meta';
 
 @Component({
   styleUrls: ["main.component.scss"],
   templateUrl: './main.component.html'
 })
-export class MainComponent implements OnDestroy {
+export class MainComponent implements OnInit, OnDestroy {
 
   sideMenuItems: SideMenuItem[] = [];
 
+  m: MetaDomain;
+
+  private subscription: Subscription;
   private toggleSubscription;
+
   @ViewChild('drawer') private sidenav: MatSidenav;
 
   private handsetSubscription: Subscription;
 
-  constructor(private breakpointObserver: BreakpointObserver, private titleService: Title, private menuService: MenuService, private sideNavService: AllorsMaterialSideNavService) {
+
+  constructor(
+    private workspaceService: WorkspaceService,
+    private stateService: StateService,
+    private breakpointObserver: BreakpointObserver,
+    private titleService: Title,
+    private menuService: MenuService,
+    private sideNavService: AllorsMaterialSideNavService) {
+
     menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,
@@ -47,13 +62,43 @@ export class MainComponent implements OnDestroy {
       .pipe(
         map(result => result.matches)
       ).subscribe((result) => {
-        if(this.sidenav){
-          if(result){
+        if (this.sidenav) {
+          if (result) {
             this.sidenav.close();
-          } else{
+          } else {
             this.sidenav.open();
           }
         }
+      });
+  }
+
+  public ngOnInit(): void {
+    this.subscription = this.stateService.internalOrganisationId$
+      .switchMap((internalOrganisationId) => {
+
+        const fetches: Fetch[] = [
+          new Fetch({
+            id: internalOrganisationId,
+            name: "internalOrganisation",
+          }),
+        ];
+
+        const queries: Query[] = [
+          new Query(
+            {
+              name: "internalOrganisations",
+              objectType: this.m.Organisation,
+              predicate: new Equals({ roleType: this.m.Organisation.IsInternalOrganisation, value: true }),
+            }),
+        ];
+
+        return this.scope
+          .load("Pull", new PullRequest({ fetches, queries }));
+      })
+      .subscribe((loaded: Loaded) => {
+        this.scope.session.reset();
+        this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
+        this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
       });
   }
 

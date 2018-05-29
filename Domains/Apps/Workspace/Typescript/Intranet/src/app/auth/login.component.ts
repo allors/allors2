@@ -1,22 +1,24 @@
-import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Component, OnDestroy } from "@angular/core";
+import { FormBuilder, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
+import { Subscription } from "rxjs/Subscription";
 
-import { AuthenticationService } from '../../allors/angular';
+import { AuthenticationService } from "../../allors/angular";
+import { ConfigService } from "../app.config.service";
 
 @Component({
-  templateUrl: './login.component.html',
+  templateUrl: "./login.component.html",
 })
 export class LoginComponent implements OnDestroy {
   public loginForm = this.formBuilder.group({
-    password: ['', Validators.required],
-    userName: ['', Validators.required],
+    password: ["", Validators.required],
+    userName: ["", Validators.required],
   });
 
   private subscription: Subscription;
 
   constructor(
+    private configService: ConfigService,
     private authService: AuthenticationService,
     private router: Router,
     public formBuilder: FormBuilder,
@@ -30,12 +32,18 @@ export class LoginComponent implements OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    this.subscription = this.authService.login$(userName, password).subscribe(
+    this.subscription = this.authService
+    .login$(userName, password)
+    .subscribe(
       (result) => {
         if (result.authenticated) {
-          this.router.navigate(['/']);
+          this.configService.setup()
+            .subscribe(() => {
+              this.router.navigate(["/"]);
+            },
+            (error) => alert("Error during setup. Please restart."));
         } else {
-          alert('Could not log in');
+          alert("Could not log in");
         }
       },
       (error) => alert(JSON.stringify(error)),
