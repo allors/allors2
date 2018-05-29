@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-import { AllorsMaterialAvatarModule } from  '../../../../../../base/components/avatar';
+
 import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
@@ -23,7 +23,7 @@ export { PartyContactMechanismEmailAddressEditComponent } from './party-contactm
     PartyContactMechanismEmailAddressEditComponent,
   ],
   imports: [
-    AllorsMaterialAvatarModule,
+    
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,

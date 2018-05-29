@@ -20,13 +20,14 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 
 interface Row {
-  organisation: Organisation;
+  object: Organisation;
   logo: Media;
   name: string;
   classification: string;
   phone: string;
   address: string;
-  country: string;
+  address2: string;
+  address3: string;
 }
 
 interface SearchData {
@@ -47,8 +48,11 @@ export class OrganisationsOverviewComponent implements OnDestroy {
   public total: number;
   public searchForm: FormGroup;
 
+  public data: Organisation[];
+
   public columns = [{ prop: 'name'}, {prop:'classification'}, {prop:'phone'}, {prop: 'address'}, {prop:'country'}, {prop:'actions'}];
   public rows: Row[] = [];
+  public selected: Row[] = [];
 
   public countries: Country[];
   public selectedCountry: Country;
@@ -262,15 +266,17 @@ export class OrganisationsOverviewComponent implements OnDestroy {
       .subscribe((loaded) => {
         this.scope.session.reset();
 
-        this.rows = loaded.collections.organisations.map<Row>((v: Organisation) => {
+        this.data = loaded.collections.organisations as Organisation[];
+        this.rows = this.data.map<Row>((v: Organisation) => {
           return {
-            organisation: v,
+            object: v,
             logo: v.LogoImage,
             name: v.PartyName,
-            classification: v.OrganisationClassifications.map(v => v.Name).join(", ") || "none",
+            classification: v.OrganisationClassifications.map(v => v.Name).join(", "),
             phone: `${v.GeneralPhoneNumber.CountryCode || ''} ${v.GeneralPhoneNumber.AreaCode || ''} ${v.GeneralPhoneNumber.ContactNumber || ''}`,
             address: `${v.GeneralCorrespondence.Address1 || ''} ${v.GeneralCorrespondence.Address2 || ''} ${v.GeneralCorrespondence.Address3 || ''}`,
-            country: `${v.GeneralCorrespondence.Country.Name || 'none'}`
+            address2: `${v.GeneralCorrespondence.PostalBoundary.PostalCode || ''} ${v.GeneralCorrespondence.PostalBoundary.Locality || ''}`,
+            address3: `${v.GeneralCorrespondence.PostalBoundary.Country.Name || ''}`
           };
         });
       },

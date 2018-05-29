@@ -8,7 +8,7 @@
 
   <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <mat-card fxFlex fxLayout="column">
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
       <form novalidate [formGroup]="searchForm">
 
@@ -69,36 +69,47 @@
         </mat-card-content>
       </form>
 
-      <ngx-datatable fxFlex class="material" [scrollbarV]="true" [rows]="rows" [columns]="columns" [headerHeight]="50" [rowHeight]="50">
-        <ngx-datatable-column name="logo">
-          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-              <a-mat-avatar [object]="row.logo"></a-mat-avatar>
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column name="name"></ngx-datatable-column>
-        <ngx-datatable-column name="classification"></ngx-datatable-column>
-        <ngx-datatable-column name="phone"></ngx-datatable-column>
-        <ngx-datatable-column name="address"></ngx-datatable-column>
-        <ngx-datatable-column name="country"></ngx-datatable-column>
-        <ngx-datatable-column name="actions">
-          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-            <button style="margin: 0" mat-icon-button [mat-menu-trigger-for]="menu" style="margin-top: -0.9rem;">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <a [routerLink]="['/relations/organisation/' + row.organisation.id]" mat-menu-item>Details</a>
-              <button mat-menu-item (click)="delete(row.organisation)" [disabled]="!row.organisation.CanExecuteDelete">Delete</button>
-            </mat-menu>
-          </ng-template>
-        </ngx-datatable-column>
-      </ngx-datatable>
+      <mat-list fxFlex style="overflow: auto;">
+        <div *ngIf="rows && rows.length === 0">
+          <h3>No organisations to display.</h3>
+        </div>
+        <ng-template let-row let-last="last" ngFor [ngForOf]="rows">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch">
 
+            <mat-icon fxHide fxShow.gt-sm *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
+            <img fxHide fxShow.gt-sm *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
+
+            <h3 mat-line [routerLink]="['/relations/organisation/' + row.object.id]">{{row.name}}</h3>
+            <p mat-line>{{row.classification}}</p>
+            <p mat-line>{{row.address}}</p>
+            <p mat-line>{{row.address2}}</p>
+            <p mat-line>{{row.address3}}</p>
+            <p mat-line>{{row.phone}}</p>
+
+            <div fxHide fxShow.gt-sm>last&nbsp;modified:
+              <br>{{ row.object.LastModifiedDate | date : shortDate }}
+            </div>
+
+            <div>
+              <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu x-position="before" #menu="matMenu">
+                <a [routerLink]="['/relations/organisation/' + row.object.id]" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(row.object)" [disabled]="!row.object.CanExecuteDelete">Delete</button>
+              </mat-menu>
+            </div>
+
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          </mat-list-item>
+        </ng-template>
+      </mat-list>
     </mat-card>
   </div>
 
   <mat-toolbar fxFlex fxLayout="row">
 
-    <div fxFlex></div>
+    <span fxFlex></span>
 
     <a mat-raised-button [routerLink]="['/organisation']">
       Add New

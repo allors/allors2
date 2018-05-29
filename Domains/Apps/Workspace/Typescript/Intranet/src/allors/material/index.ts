@@ -1,6 +1,5 @@
 // Base Components
 export * from './base/components/autocomplete/autocomplete.module';
-export * from './base/components/avatar/avatar.module';
 export * from './base/components/checkbox/checkbox.module';
 export * from './base/components/chips/chips.module';
 export * from './base/components/datepicker/datepicker.module';
