@@ -14,7 +14,7 @@
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <div >
+      <div>
         <mat-form-field >
           <input matInput placeholder="Organisation" formControlName="company">
         </mat-form-field>
@@ -38,7 +38,7 @@
   <mat-divider></mat-divider>
 
   
-    <mat-list class="will-load">
+    <mat-list>
       <div  *ngIf="data && data.length === 0"  >
         <h3>No sales orders to display.</h3>
       </div>
@@ -47,7 +47,7 @@
 
           <h3 mat-line [routerLink]="['/orders/salesOrder/' + order.id ]"> {{order.ShipToCustomer.displayName}}</h3>
           <h4 mat-line [routerLink]="['/orders/salesOrder/' + order.id ]"> {{order.OrderNumber }}: {{order.CustomerReference}} ({{order.SalesOrderState.Name}})</h4>
-          <p mat-line hide-gt-md class="mat-caption"> last modified: {{ order.LastModifiedDate | date : shortDate }} </p>
+          <p mat-line> last modified: {{ order.LastModifiedDate | date : shortDate }} </p>
 
           <span flex></span>
 

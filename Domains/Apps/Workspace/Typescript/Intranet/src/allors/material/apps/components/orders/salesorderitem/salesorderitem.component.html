@@ -1,24 +1,24 @@
 
   <form #form="ngForm" *ngIf="orderItem" (submit)="save()">
 
-    <div class="pad">
+    <div>
       <div *ngIf="!orderItem.isNew" class="grid-4_lg-2_sm-1">
           <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name" label="Status"></a-mat-static>
           <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemShipmentState" display="Name" label="Shipment Status"></a-mat-static>
           <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
           <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemPaymentState" display="Name" label="Payment Status"></a-mat-static>
-          <div class="grid">
+          <div>
             <button *ngIf="orderItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
             <button *ngIf="orderItem.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
           </div>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
+      <div  *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
         <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
         <a-mat-input  [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Amount"></a-mat-input>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="!orderItem.ItemType || orderItem.InvoiceItemType === productItemType">
+      <div  *ngIf="!orderItem.ItemType || orderItem.InvoiceItemType === productItemType">
         <a-mat-autocomplete  [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"
           (onChange)="goodSelected($event)" [filter]="stateService.goodsFilter.create(scope)"></a-mat-autocomplete>
         <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
@@ -82,7 +82,7 @@
             <button *ngIf="orderItem.CanWriteQuantityOrdered" class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
             <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button (click)="goBack()" type="button">CANCEL</button>
             <button *ngIf="!orderItem.CanWriteQuantityOrdered"  mat-button (click)="goBack()" type="button">DONE</button>
-            <div class="grid-right">
+            <div>
               <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
             </div>
           </div>

@@ -1,5 +1,5 @@
 
-  <form #form="ngForm" class="pad" *ngIf="contactMechanism" (submit)="save()">
+  <form #form="ngForm"  *ngIf="contactMechanism" (submit)="save()">
 
     <div class="grid-2_md-1">
       <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
@@ -7,7 +7,7 @@
       <a-mat-input  [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
       <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
         label="Non Solicitation"></a-mat-slide-toggle>

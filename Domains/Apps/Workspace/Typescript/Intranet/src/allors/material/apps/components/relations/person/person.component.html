@@ -1,5 +1,5 @@
 
-  <form class="pad" #form="ngForm" *ngIf="person" (submit)="save()">
+  <form  #form="ngForm" *ngIf="person" (submit)="save()">
 
     <div class="grid-2_md-1">
       <a-mat-file  [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-file>
@@ -17,7 +17,7 @@
       <a-mat-input  [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-input  [object]="person" [roleType]="m.Person.Function"></a-mat-input>
       <a-mat-select  [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
       <a-mat-select  [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
@@ -37,7 +37,7 @@
       </mat-form-field>
     </div>
 
-    <div class="grid">
+    <div>
       <a-mat-textarea  [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
     </div>
 

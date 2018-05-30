@@ -12,21 +12,21 @@
 </mat-toolbar>
 
 <div body *ngIf="person" layout-gt-md="row">
-  <div >
+  <div>
     <mat-card>
       <mat-card-title>Person</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
-        <div class="pad">
+        <div>
 
-          <div class="grid-2_xs-1">
+          <div>
             <a-mat-static  *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
             <mat-form-field  style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
               <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
             </mat-form-field>
           </div>
 
-          <div class="grid-2_xs-1">
+          <div>
             <div  *ngIf="organisation">
               <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
             </div>
@@ -35,17 +35,17 @@
             </mat-form-field>
           </div>
 
-          <div class="grid-2_xs-1">
+          <div>
             <a-mat-static  *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
             <a-mat-static  *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
             <a-mat-static  [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
           </div>
 
-          <div class="grid">
+          <div>
             <a-mat-static  *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
           </div>
 
-          <div class="grid">
+          <div>
             <p class="col mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
           </div>
         </div>
@@ -63,27 +63,27 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         
-          <mat-list class="will-load">
+          <mat-list>
             <div  *ngIf="!this.communicationEvents"  >
               <h3>No communications to display.</h3>
             </div>
 
             <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
               <mat-list-item>
-                <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
                   Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
                   Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
                   Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
                   Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <p mat-line class="mat-caption">{{ communicationEvent.Subject }} </p>
-                <p mat-line class="mat-caption">Involved:
+                <p mat-line>{{ communicationEvent.Subject }} </p>
+                <p mat-line>Involved:
                   <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
                 </p>
 
@@ -128,12 +128,12 @@
 
   </div>
 
-  <div >
+  <div>
     <mat-card>
       <mat-card-title>
-        <div class="grid-right">
-          <div  style="padding-bottom: 0px">Contact Info</div>
-          <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactMechanismsCollection">
+        <div>
+          <div  >Contact Info</div>
+          <mat-radio-group   [(ngModel)]="contactMechanismsCollection">
             <mat-radio-button value="Current">Current</mat-radio-button>
             <mat-radio-button value="Inactive">Inactive</mat-radio-button>
             <mat-radio-button value="All">All</mat-radio-button>
@@ -145,7 +145,7 @@
 
       <mat-card-content>
         
-          <mat-list class="will-load">
+          <mat-list>
             <div  *ngIf="contactMechanisms.length === 0"  >
               <h3>No info to display.</h3>
             </div>
@@ -168,9 +168,9 @@
                   {{ partyContactMechanism.ContactMechanism.Address1}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
                   {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Country.Name}}
                 </div>
-                <p mat-line class="mat-caption" *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
+                <p mat-line *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
 
-                <p mat-line hide-gt-md class="mat-caption"> last modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </p>
+                <p mat-line> last modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </p>
 
                 <span flex></span>
 
@@ -220,19 +220,19 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         
-          <mat-list class="will-load">
+          <mat-list>
             <div  *ngIf="workEffortAssignments.length === 0"  >
               <h3>No work efforts to display.</h3>
             </div>
 
             <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="workEffortAssignments">
               <mat-list-item>
-                <div mat-line class="mat-caption pointer" [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
+                <div mat-line [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
                   {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
                 </div>
 
-                <p mat-line class="mat-caption">{{ workEffortAssignment.Assignment.Description }} </p>
-                <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line class="mat-caption">Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
+                <p mat-line>{{ workEffortAssignment.Assignment.Description }} </p>
+                <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line >Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 
                 <span      >
                   <div  > Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>

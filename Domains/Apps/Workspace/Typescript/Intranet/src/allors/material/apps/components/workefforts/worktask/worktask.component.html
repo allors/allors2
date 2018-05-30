@@ -1,5 +1,5 @@
 
-  <form #form="ngForm" class="pad" *ngIf="workTask" (submit)="save()">
+  <form #form="ngForm"  *ngIf="workTask" (submit)="save()">
 
     <div class="grid-2_md-1">
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
@@ -14,7 +14,7 @@
     <div class="grid-3_md-1">
       <a-mat-autocomplete  [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(scope)"
         (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
-      <div >
+      <div>
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms"
             display="displayName"></a-mat-select>
@@ -27,7 +27,7 @@
           (cancelled)="contactMechanismCancelled()">
         </party-contactmechanism>
       </div>
-      <div >
+      <div>
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.ContactPerson" [options]="contacts" display="displayName"
             label="Contact Person"></a-mat-select>
@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <mat-form-field >
         <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
           <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>
@@ -55,18 +55,18 @@
       </mat-form-field>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-mat-select>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"
         label="Purpose(s)"></a-mat-select>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-mat-input>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-mat-input>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ScheduledStart" [useTime]="true"></a-mat-datepicker>
       <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ActualStart" [useTime]="true"></a-mat-datepicker>
       <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion" [useTime]="true"></a-mat-datepicker>

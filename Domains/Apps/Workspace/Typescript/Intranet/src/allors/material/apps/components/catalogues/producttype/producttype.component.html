@@ -1,10 +1,10 @@
 
-  <form #form="ngForm" class="pad" *ngIf="productType" (submit)="save()">
+  <form #form="ngForm"  *ngIf="productType" (submit)="save()">
 
-    <div class="grid">
+    <div>
       <a-mat-input  [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
     </div>
-    <div class="grid">
+    <div>
       <a-mat-select  [object]="productType" [roleType]="m.ProductType.SerialisedInventoryItemCharacteristicTypes" [options]="characteristics"
         display="Name"></a-mat-select>
     </div>

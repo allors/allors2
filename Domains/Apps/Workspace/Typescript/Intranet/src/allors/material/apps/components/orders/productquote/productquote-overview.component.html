@@ -12,12 +12,12 @@
 </mat-toolbar>
 
 <div body *ngIf="quote">
-  <div >
+  <div>
     <mat-card>
       <mat-card-title>Product Quote</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
-        <div class="pad">
+        <div>
           <div class="grid-4_lg-2_sm-1">
             <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
             <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
@@ -26,7 +26,7 @@
             <a-mat-static class="col link" *ngIf="salesOrder" [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]"></a-mat-static>
           </div>
 
-          <div class="grid-2_xs-1">
+          <div>
             <a-mat-static class="col link" *ngIf="quote.Receiver.objectType.name == 'Person'" [object]="quote" [roleType]="m.Quote.Receiver"
               display="displayName" label="To" [routerLink]="['/relations/person/' + quote.Receiver.id ]"></a-mat-static>
             <a-mat-static class="col link" *ngIf="quote.Receiver.objectType.name == 'Organisation'" [object]="quote" [roleType]="m.Quote.Receiver"
@@ -35,7 +35,7 @@
               [routerLink]="['/relations/person/' + quote.ContactPerson.id ]" display="displayName"></a-mat-static>
           </div>
 
-          <div class="grid">
+          <div>
             <a-mat-static  *ngIf="quote.FullfillContactMechanism" [object]="quote" [roleType]="m.Quote.FullfillContactMechanism"
               display="displayName" label="Reply to"></a-mat-static>
           </div>
@@ -96,7 +96,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <mat-list class="will-load">
+        <mat-list>
           <div  *ngIf="quote.QuoteItems.length === 0"  >
             <h3>No Items to display.</h3>
           </div>
@@ -129,6 +129,6 @@
     </mat-card>
   </div>
 
-  <div >
+  <div>
   </div>
 </div>

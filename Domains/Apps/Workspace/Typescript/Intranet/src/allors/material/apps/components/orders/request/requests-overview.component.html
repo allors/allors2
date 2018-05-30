@@ -34,7 +34,7 @@
   <mat-divider></mat-divider>
 
   
-    <mat-list class="will-load">
+    <mat-list>
       <div  *ngIf="data && data.length === 0"  >
         <h3>No requests to display.</h3>
       </div>
@@ -44,7 +44,7 @@
           <h3 *ngIf="request.Originator" mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.Originator.displayName}}</h3>
           <h4 mat-line [routerLink]="['/orders/request/' + request.id ]" > {{request.RequestNumber }}: {{request.Description}} ({{request.RequestState.Name}})</h4>
           <p mat-line> Response required date: {{request.RequiredResponseDate | date}} </p>
-          <p mat-line hide-gt-md class="mat-caption"> last modified: {{ request.LastModifiedDate | date : shortDate }} </p>
+          <p mat-line> last modified: {{ request.LastModifiedDate | date : shortDate }} </p>
 
           <span flex></span>
 

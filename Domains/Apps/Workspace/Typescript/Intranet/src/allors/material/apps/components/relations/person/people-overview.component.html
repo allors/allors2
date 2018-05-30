@@ -27,7 +27,7 @@
 
   <mat-card-content>
     
-      <mat-list class="will-load">
+      <mat-list>
         <div  *ngIf="data && data.length === 0"  >
           <h3>No people to display.</h3>
         </div>
@@ -40,7 +40,7 @@
             <h3 mat-line [routerLink]="['/relations/person/' + person.id]"> {{person.Salutation?.Name}} {{person.PartyName}} </h3>
             <p *ngIf="person.GeneralPhoneNumber" mat-line> {{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}
 
-              <p mat-line hide-gt-md class="mat-caption"> last login: {{ person.LastModifiedDate | date : shortDate }} </p>
+              <p mat-line> last login: {{ person.LastModifiedDate | date : shortDate }} </p>
 
               <span flex></span>
 

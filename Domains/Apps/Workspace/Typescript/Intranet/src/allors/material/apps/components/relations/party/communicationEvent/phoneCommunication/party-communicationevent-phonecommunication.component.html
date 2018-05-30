@@ -1,7 +1,7 @@
 
-  <form #form="ngForm" *ngIf="communicationEvent" class="pad" (submit)="save()">
+  <form #form="ngForm" *ngIf="communicationEvent"  (submit)="save()">
     <div class="grid-2_md-1" *ngIf="!communicationEvent.isNew">
-      <div >
+      <div>
         <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="communicationEvent.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
         <button *ngIf="communicationEvent.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-slide-toggle  [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-slide-toggle>
       <a-mat-select  [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes"
         display="Name"></a-mat-select>
@@ -74,8 +74,8 @@
       <a-mat-textarea  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note"></a-mat-textarea>
     </div>
 
-    <div class="grid-2_xs-1">
-      <div >
+    <div>
+      <div>
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers"
             display="displayName" label="Phone number"></a-mat-select>
@@ -96,7 +96,7 @@
       <a-mat-slide-toggle  [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-mat-slide-toggle>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
       <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
       <a-mat-datepicker  [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>

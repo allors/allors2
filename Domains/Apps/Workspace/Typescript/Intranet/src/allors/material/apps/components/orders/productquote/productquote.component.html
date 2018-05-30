@@ -1,27 +1,27 @@
 
   <form #form="ngForm" *ngIf="quote" (submit)="save()">
 
-    <div class="pad">
+    <div>
       <div class="grid-2_md-1" *ngIf="!quote.isNew">
-        <div >
+        <div>
           <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
-          <div class="grid">
+          <div>
             <button *ngIf="quote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
             <button *ngIf="quote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
           </div>
         </div>
-        <div >
+        <div>
           <a-mat-static [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
         </div>
       </div>
 
-      <div class="grid-2_xs-1">
+      <div>
         <a-mat-autocomplete  *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
       </div>
 
       <div class="grid-2_md-1">
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
               display="displayName"></a-mat-select>
@@ -35,7 +35,7 @@
           </party-contactmechanism>
           
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">

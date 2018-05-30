@@ -1,17 +1,17 @@
 
   <form #form="ngForm" *ngIf="invoice" (submit)="save()">
 
-    <div class="pad">
+    <div>
       <div class="grid-2_md-1" *ngIf="!invoice.isNew">
-        <div >
+        <div>
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
-          <div class="grid">
+          <div>
             <button *ngIf="invoice.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
             <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
             <button *ngIf="invoice.CanExecuteFinish" mat-button type="button" (click)="finish(invoice)">Finish</button>
           </div>
         </div>
-        <div >
+        <div>
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseOrder"></a-mat-static>
         </div>
       </div>
@@ -19,7 +19,7 @@
       <div class="grid-2_md-1">
         <a-mat-autocomplete  [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(scope)"
           display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFromContactPerson" [options]="billedFromContacts" display="displayName"
               label="Billed from Contact Person"></a-mat-select>
@@ -46,7 +46,7 @@
       <div class="grid-3_md-1">
         <a-mat-autocomplete  *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" [filter]="stateService.organisationsFilter.create(scope)"
           display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to End Customer"></a-mat-autocomplete>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" [options]="billToContactMechanisms"
               display="displayName"></a-mat-select>
@@ -59,7 +59,7 @@
             (cancelled)="billToContactMechanismCancelled()" label="Bill to End Customer ContactMechanism">
           </party-contactmechanism>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactPerson" [options]="billToContacts" display="displayName"
               label="Billing Contact Person"></a-mat-select>
@@ -82,7 +82,7 @@
       <div class="grid-3_md-1">
         <a-mat-autocomplete  *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" [filter]="stateService.organisationsFilter.create(scope)"
           display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
-         <div >
+         <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
               display="displayName"></a-mat-select>
@@ -96,7 +96,7 @@
             (cancelled)="shipToEndCustomerAddressCancelled()">
           </party-contactmechanism-postaladdress>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts" display="displayName"
               label="Schipping Contact Person"></a-mat-select>

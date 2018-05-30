@@ -1,15 +1,18 @@
 import { Component, AfterViewInit, ViewChild, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
 import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Title } from '@angular/platform-browser';
-import { map } from 'rxjs/operators';
-import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, WorkspaceService } from '../../allors/angular';
 import { MatSidenav } from '@angular/material';
-import { Fetch, Query } from '../../allors/framework';
-import { StateService } from '../../allors/material/apps/services/StateService';
+
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
+import { MenuService, WorkspaceService, Loaded, Scope } from '../../allors/angular';
 import { MetaDomain } from '../../allors/meta';
+import { Fetch, Query, Equals, PullRequest } from '../../allors/framework';
+import { StateService } from '../../allors/material/apps/services/StateService';
+import { Organisation } from '../../allors/domain';
 
 @Component({
   styleUrls: ["main.component.scss"],
@@ -17,6 +20,9 @@ import { MetaDomain } from '../../allors/meta';
 })
 export class MainComponent implements OnInit, OnDestroy {
 
+  selectedInternalOrganisation: Organisation;
+  internalOriganisations: Organisation[];
+  
   sideMenuItems: SideMenuItem[] = [];
 
   m: MetaDomain;
@@ -24,6 +30,8 @@ export class MainComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private toggleSubscription;
 
+  private scope: Scope;
+  
   @ViewChild('drawer') private sidenav: MatSidenav;
 
   private handsetSubscription: Subscription;

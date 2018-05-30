@@ -1,11 +1,11 @@
 
   <form #form="ngForm" *ngIf="order" (submit)="save()">
 
-    <div class="pad">
+    <div>
       <div class="grid-2_md-1" *ngIf="!order.isNew">
-        <div >
+        <div>
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
-          <div class="grid">
+          <div>
             <button *ngIf="order.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
             <button *ngIf="order.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
             <button *ngIf="order.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
@@ -14,7 +14,7 @@
             <button *ngIf="order.CanExecuteConfirm" mat-button type="button" (click)="confirm()">Confirm</button>
           </div>
         </div>
-        <div >
+        <div>
           <div class="grid-2_md-1">
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
             <a-mat-select  *ngIf="stores.length > 1 && !order.Store" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores"
@@ -23,14 +23,14 @@
         </div>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="order.isNew">
+      <div  *ngIf="order.isNew">
         <a-mat-select  *ngIf="stores.length > 1" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores" display="Name"></a-mat-select>
       </div>
 
       <div class="grid-3_md-1">
         <a-mat-autocomplete  *ngIf="showShipToOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="shipToAddresses" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addShipToAddress = !addShipToAddress">
@@ -48,7 +48,7 @@
             </mat-tab>
           </mat-tab-group>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="order" [roleType]="m.SalesOrder.ShipToContactPerson" [options]="shipToContacts" display="displayName"
               label="Shipping Contact Person"></a-mat-select>
@@ -71,7 +71,7 @@
       <div class="grid-3_md-1">
         <a-mat-autocomplete  *ngIf="showBillToOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms"
               display="displayName"></a-mat-select>
@@ -84,7 +84,7 @@
             (cancelled)="billToContactMechanismCancelled()">
           </party-contactmechanism>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="order" [roleType]="m.SalesOrder.BillToContactPerson" [options]="billToContacts" display="displayName"
               label="Billing Contact Person"></a-mat-select>
@@ -107,7 +107,7 @@
       <div class="grid-3_md-1">
         <a-mat-autocomplete  *ngIf="showShipToEndCustomerOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
               display="displayName"></a-mat-select>
@@ -121,7 +121,7 @@
             (cancelled)="shipToEndCustomerAddressCancelled()">
           </party-contactmechanism-postaladdress>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts"
               display="displayName" label="Shipping Contact Person"></a-mat-select>
@@ -145,7 +145,7 @@
       <div class="grid-3_md-1">
         <a-mat-autocomplete  *ngIf="showBillToEndCustomerOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism" [options]="billToEndCustomerContactMechanisms"
               display="displayName"></a-mat-select>
@@ -159,7 +159,7 @@
             (cancelled)="billToEndCustomerContactMechanismCancelled()">
           </party-contactmechanism>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select  [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactPerson" [options]="billToEndCustomerContacts" display="displayName"
               label="Billing Contact Person"></a-mat-select>

@@ -12,14 +12,14 @@
 </mat-toolbar>
 
 <div body *ngIf="isEmail" layout-gt-md="row">
-  <div >
+  <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <div class="pad">
-          <div class="grid-2_xs-1">
+        <div>
+          <div>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
               label="Status"></a-mat-static>
             <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
@@ -36,7 +36,7 @@
               label="Subject"></a-mat-static>
             <a-mat-textarea  [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body"></a-mat-textarea>
           </div>
-          <div class="grid-2_xs-1">
+          <div>
             <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
               <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
             </mat-form-field>
@@ -50,7 +50,7 @@
               <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
             </mat-form-field>
           </div>
-          <div class="grid">
+          <div>
             <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
           </div>
         </div>
@@ -66,14 +66,14 @@
 </div>
 
 <div body *ngIf="isLetter" layout-gt-md="row">
-  <div >
+  <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <div class="pad">
-          <div class="grid-2_xs-1">
+        <div>
+          <div>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
               label="Status"></a-mat-static>
             <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
@@ -91,7 +91,7 @@
             <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
             <a-mat-textarea  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true"></a-mat-textarea>
           </div>
-          <div class="grid-2_xs-1">
+          <div>
             <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
               <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
             </mat-form-field>
@@ -105,7 +105,7 @@
               <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
             </mat-form-field>
           </div>
-          <div class="grid">
+          <div>
             <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
           </div>
         </div>
@@ -121,14 +121,14 @@
 </div>
 
 <div body *ngIf="isMeeting" layout-gt-md="row">
-  <div >
+  <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>Meeting</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <div class="pad">
-          <div class="grid-2_xs-1">
+        <div>
+          <div>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
               label="Status"></a-mat-static>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
@@ -141,7 +141,7 @@
             <a-mat-static  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
             <a-mat-textarea  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true"></a-mat-textarea>
           </div>
-          <div class="grid-2_xs-1">
+          <div>
             <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
               <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
             </mat-form-field>
@@ -155,7 +155,7 @@
               <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
             </mat-form-field>
           </div>
-          <div class="grid">
+          <div>
             <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
           </div>
         </div>
@@ -171,20 +171,20 @@
 </div>
 
 <div body *ngIf="isPhone" layout-gt-md="row">
-  <div >
+  <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <div class="pad">
-          <div class="grid-2_xs-1">
+        <div>
+          <div>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
               label="Status"></a-mat-static>
             <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
               display="Name" label="Purposes"></a-mat-static>
           </div>
-          <div class="grid-2_xs-1">
+          <div>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-mat-static>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-mat-static>
           </div>
@@ -192,11 +192,11 @@
             <a-mat-static  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-static>
             <a-mat-textarea  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" readonly="true"></a-mat-textarea>
           </div>
-          <div class="grid-2_xs-1">
+          <div>
             <a-mat-static   [object]="communicationEvent"
               [roleType]="m.CommunicationEvent.ContactMechanisms" display="displayName" label="Phone number"></a-mat-static>
           </div>
-          <div class="grid-2_xs-1">
+          <div>
             <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
               <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
             </mat-form-field>
@@ -210,7 +210,7 @@
               <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
             </mat-form-field>
           </div>
-          <div class="grid">
+          <div>
             <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
           </div>
         </div>
@@ -231,19 +231,19 @@
   <mat-divider></mat-divider>
   <mat-card-content>
     
-      <mat-list class="will-load">
+      <mat-list>
         <div  *ngIf="communicationEvent.WorkEfforts.length === 0"  >
           <h3>No work efforts to display.</h3>
         </div>
 
         <ng-template let-workEffort let-last="last" ngFor [ngForOf]="communicationEvent.WorkEfforts">
           <mat-list-item>
-            <div mat-line class="mat-caption pointer" [routerLink]="['/worktask/' + workEffort.id ]">
+            <div mat-line [routerLink]="['/worktask/' + workEffort.id ]">
               {{ workEffort.Name }}, {{ workEffort.WorkEffortState.Name }}
             </div>
 
-            <p mat-line class="mat-caption">{{ workEffort.Description }} </p>
-            <p *ngIf="workEffort.Priority" mat-line class="mat-caption">Priority {{ workEffort.Priority.Name }} </p>
+            <p mat-line>{{ workEffort.Description }} </p>
+            <p *ngIf="workEffort.Priority" mat-line >Priority {{ workEffort.Priority.Name }} </p>
 
             <span      >
               <div  > Sched. Start: {{ workEffort.ScheduledStart | date}} </div>

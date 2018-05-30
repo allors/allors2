@@ -12,12 +12,12 @@
 </mat-toolbar>
 
 <div body *ngIf="invoice" layout-gt-md="row">
-  <div >
+  <div>
     <mat-card>
       <mat-card-title>Sales Invoice</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
-        <div class="pad">
+        <div>
           <div class="grid-4_lg-2_sm-1">
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
@@ -25,23 +25,23 @@
               [routerLink]="['/orders/salesOrder/' + invoice.SalesOrder.id ]"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.BillToCustomer" class="grid-2_xs-1">
+          <div *ngIf="invoice.BillToCustomer" >
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to ContactMechanism"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.ShipToCustomer" class="grid-2_xs-1">
+          <div *ngIf="invoice.ShipToCustomer" >
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.BillToEndCustomer" class="grid-2_xs-1">
+          <div *ngIf="invoice.BillToEndCustomer" >
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" display="displayName" label="Bill to End Customer"></a-mat-static>
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" display="displayName"
               label="Bill to End Customer ContactMechanism"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.ShipToEndCustomer" class="grid-2_xs-1">
+          <div *ngIf="invoice.ShipToEndCustomer" >
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" display="displayName" label="Ship to End Customer"></a-mat-static>
             <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" display="displayName" label="Ship to End Customer Address"></a-mat-static>
           </div>
@@ -92,7 +92,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <mat-list class="will-load">
+        <mat-list>
           <div  *ngIf="invoice.SalesInvoiceItems.length === 0"  >
             <h3>No Items to display.</h3>
           </div>
@@ -131,13 +131,13 @@
     </mat-card>
   </div>
 
-  <div >
+  <div>
     <mat-card>
       <mat-card-title>Invoice Terms</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
 
-        <mat-list class="will-load">
+        <mat-list>
           <div *ngIf="invoice.SalesTerms.length === 0"  >
             <h3>No terms to display.</h3>
           </div>

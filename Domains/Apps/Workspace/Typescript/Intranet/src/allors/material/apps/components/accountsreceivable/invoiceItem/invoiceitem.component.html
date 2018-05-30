@@ -1,20 +1,20 @@
 
   <form #form="ngForm" *ngIf="invoiceItem" (submit)="save()">
 
-    <div class="pad">
+    <div>
       <div class="grid-2_md-1" *ngIf="!invoiceItem.isNew">
-        <div >
+        <div>
           <a-mat-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemState" display="Name" label="Status"></a-mat-static>
         </div>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType">
+      <div  *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType">
         <a-mat-select  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes"
           display="Name"></a-mat-select>
         <a-mat-input  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
+      <div  *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
         <a-mat-select  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Facility" [options]="facilities"
           display="Name" (onSelect)="facilitySelected($event)"></a-mat-select>
         <a-mat-autocomplete  *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType"
@@ -24,7 +24,7 @@
           display="Name"></a-mat-select>
       </div>
 
-      <div class="grid-2_xs-1" *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType">
+      <div  *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType">
         <a-mat-input  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
         <a-mat-input  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice"></a-mat-input>
       </div>
@@ -62,7 +62,7 @@
             <button *ngIf="invoiceItem.CanWriteQuantity" class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
             <button *ngIf="invoiceItem.CanWriteQuantity"  mat-button (click)="goBack()" type="button">CANCEL</button>
             <button *ngIf="!invoiceItem.CanWriteQuantity"  mat-button (click)="goBack()" type="button">DONE</button>
-            <div class="grid-right">
+            <div>
               <button *ngIf="invoiceItem.CanWriteQuantity"  mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
             </div>
           </div>

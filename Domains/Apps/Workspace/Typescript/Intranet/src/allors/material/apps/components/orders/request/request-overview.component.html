@@ -17,7 +17,7 @@
       <mat-card-title>Request for Quote</mat-card-title>
       <mat-divider></mat-divider>
       <mat-card-content>
-        <div class="pad">
+        <div>
           <div class="grid-4_lg-2_sm-1">
             <a-mat-static  [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
             <a-mat-static  [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
@@ -26,7 +26,7 @@
             </div>
           </div>
 
-          <div class="grid-2_xs-1">
+          <div>
             <a-mat-static class="col link" *ngIf="request.Originator?.objectType.name == 'Person'" [object]="request" [roleType]="m.Request.Originator"
               display="displayName" label="From" [routerLink]="['/relations/person/' + request.Originator.id ]"></a-mat-static>
             <a-mat-static class="col link" *ngIf="request.Originator?.objectType.name == 'Organisation'" [object]="request" [roleType]="m.Request.Originator"
@@ -90,7 +90,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         
-          <mat-list class="will-load">
+          <mat-list>
             <div  *ngIf="request.RequestItems.length === 0"  >
               <h3>No Items to display.</h3>
             </div>
@@ -122,6 +122,6 @@
     </mat-card>
   </div>
 
-  <div >
+  <div>
   </div>
 </div>

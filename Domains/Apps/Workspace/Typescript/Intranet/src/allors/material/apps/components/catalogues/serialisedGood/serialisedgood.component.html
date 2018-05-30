@@ -21,7 +21,7 @@
       </div>
 
       <div class="grid-2_md-1">
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <mat-form-field >
               <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
@@ -42,7 +42,7 @@
             </mat-tab>
           </mat-tab-group>
         </div>
-        <div >
+        <div>
           <div fxLayout fxLayoutGap="1em">
             <mat-form-field >
               <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
@@ -110,14 +110,14 @@
         <a-mat-input  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
       </div>
       <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
-        <div class="grid">
+        <div>
           <a-mat-input  *ngIf="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
             [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
         </div>
       </div>
 
       <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
-        <div class="grid">
+        <div>
           <a-mat-textarea  *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
             [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-textarea>
         </div>
@@ -166,10 +166,10 @@
       <div class="grid pad-top">
         <a-mat-textarea  [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
       </div>
-      <div class="grid">
+      <div>
         <a-mat-textarea  [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
       </div>
-      <div class="grid">
+      <div>
         <a-mat-textarea  [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
       </div>
     </mat-tab>
@@ -178,7 +178,7 @@
       <div class="grid pad-top">
         <a-mat-file  [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-file>
       </div>
-      <div class="grid">
+      <div>
         <a-mat-files  [object]="good" [roleType]="m.Good.Photos" accept="image/*"></a-mat-files>
       </div>
     </mat-tab>
@@ -190,7 +190,7 @@
     <div class="pad grid-12">
       <button class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
       <button  mat-button (click)="goBack()" type="button">CANCEL</button>
-      <div class="grid-right">
+      <div>
         <button  mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
       </div>
     </div>

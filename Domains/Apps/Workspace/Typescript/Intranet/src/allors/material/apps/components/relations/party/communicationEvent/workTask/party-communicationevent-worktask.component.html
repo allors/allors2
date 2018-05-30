@@ -1,5 +1,5 @@
 
-  <form #form="ngForm" *ngIf="workTask" (submit)="save()" class="pad">
+  <form #form="ngForm" *ngIf="workTask" (submit)="save()" >
 
     <div class="grid-2_md-1">
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
@@ -19,18 +19,18 @@
       </mat-form-field>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-mat-select>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"
         label="Purpose(s)"></a-mat-select>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-mat-input>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-mat-input>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ScheduledStart" [useTime]="true"></a-mat-datepicker>
       <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ActualStart" [useTime]="true"></a-mat-datepicker>
       <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion" [useTime]="true"></a-mat-datepicker>

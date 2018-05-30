@@ -12,7 +12,7 @@
 <mat-card *ngIf="communicationEventStates">
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <div >
+      <div>
         <mat-form-field >
           <input matInput placeholder="Subject" formControlName="subject">
         </mat-form-field>
@@ -43,31 +43,31 @@
 
   <mat-card-content>
     
-      <mat-list class="will-load">
+      <mat-list>
         <div  *ngIf="data && data.length === 0"  >
           <h3>No communication events to display.</h3>
         </div>
         <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="data">
           <mat-list-item>
-                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer"
+                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line 
                  [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
                   Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer"
+                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line 
                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
                   Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer"
+                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line 
                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
                   Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer"
+                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line 
                 [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
                   Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <p mat-line class="mat-caption">State: {{ communicationEvent.CommunicationEventState.Name }} </p>
-                <p mat-line class="mat-caption">Subject: {{ communicationEvent.Subject }} </p>
-                <p mat-line class="mat-caption">Involved:
+                <p mat-line>State: {{ communicationEvent.CommunicationEventState.Name }} </p>
+                <p mat-line>Subject: {{ communicationEvent.Subject }} </p>
+                <p mat-line>Involved:
                   <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
                 </p>
 

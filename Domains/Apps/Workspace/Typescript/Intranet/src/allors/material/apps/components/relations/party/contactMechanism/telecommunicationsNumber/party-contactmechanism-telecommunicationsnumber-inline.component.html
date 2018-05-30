@@ -1,4 +1,4 @@
-<div class="grid-2_xs-1">
+<div>
     <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name"></a-mat-select>
     <a-mat-select  [object]="telecommunicationsNumber" [roleType]="m.ContactMechanism.ContactMechanismType" [options]="contactMechanismTypes"
@@ -9,7 +9,7 @@
     <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
     <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
 </div>
-<div class="grid-2_xs-1">
+<div>
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
         label="Non Solicitation"></a-mat-slide-toggle>

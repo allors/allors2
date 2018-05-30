@@ -1,78 +1,78 @@
-<div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar fxFlex>
-    <mat-toolbar-row fxLayout="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+<mat-toolbar>
+  <mat-toolbar-row fxLayout="row">
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+    <span fxFlex>{{title}}</span>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-  <div *ngIf="organisation" fxFlex fxFill style="padding: 20px;">
+<div style="padding: 20px;">
+  <div *ngIf="organisation" style="display: grid; grid-gap: 20px" [ngStyle.gt-sm]="{'grid-template-columns': '1fr 1fr'}">
 
-    <mat-card>
-
-      <mat-card-title>Organisation</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        <div class="pad">
-          <div class="grid-2_xs-1">
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header>
+        <mat-card-title>Organisation</mat-card-title>
+      </mat-card-header>
+      <mat-card-content fxFlex fxFill>
+        <div>
+          <div>
             <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
             <mat-form-field>
               <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true" />
             </mat-form-field>
           </div>
 
-          <div class="grid-2_xs-1">
- <!--            <a-mat-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
-              display="Name" label="Classification"></a-mat-static>
-            <a-mat-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
-              display="Name" label="Industry"></a-mat-static>
- -->            <a-mat-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
+          <div>
+            <!--
+<a-mat-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" display="Name" label="Classification"></a-mat-static>
+<a-mat-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" display="Name" label="Industry"></a-mat-static>
+-->
+            <a-mat-static [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
             <a-mat-static [object]="organisation" [roleType]="m.Organisation.TaxNumber" display="VAT number"></a-mat-static>
           </div>
 
-          <div class="grid">
+          <div>
             <a-mat-static *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
           </div>
-
-          <div class="grid">
-            <p class="col mat-caption tc-grey-500"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
-          </div>
+          <!-- 
+<div>
+<p class="col mat-caption tc-grey-500"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
+</div>
+-->
         </div>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
-      <mat-card-actions>
-        <button mat-button [routerLink]="[ '/organisation/' + organisation.id]">Edit</button>
-      </mat-card-actions>
+        <mat-card-actions>
+          <button mat-button [routerLink]="[ '/organisation/' + organisation.id]">Edit</button>
+        </mat-card-actions>
     </mat-card>
 
-    <mat-card>
-      <mat-card-title>Communications</mat-card-title>
-      <mat-divider></mat-divider>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header>
+        <mat-card-title>Communications</mat-card-title>
+      </mat-card-header>
 
-      <mat-card-content>
-
-        <mat-list class="will-load">
+      <mat-card-content fxFlex fxFill>
+        <mat-list style="overflow: auto;">
           <div *ngIf="!this.communicationEvents">
             <h3>No communications to display.</h3>
           </div>
 
           <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
             <mat-list-item>
-              <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
+              <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
                 Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-              <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
+              <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
                 Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-              <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
+              <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
                 Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-              <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line class="mat-caption pointer" [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
+              <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">
                 Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-              <p mat-line class="mat-caption">{{ communicationEvent.Subject }} </p>
-              <p mat-line class="mat-caption">Involved:
+              <p mat-line>{{ communicationEvent.Subject }} </p>
+              <p mat-line>Involved:
                 <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
               </p>
 
@@ -102,9 +102,8 @@
             <mat-divider *ngIf="!last" mat-inset></mat-divider>
           </ng-template>
         </mat-list>
-
       </mat-card-content>
-      <mat-divider></mat-divider>
+
       <mat-card-actions>
         <button mat-button [routerLink]="['/party/' + organisation.id +'/communicationevent/facetofacecommunication']">+ Meeting</button>
         <button mat-button [routerLink]="['/party/' + organisation.id +'/communicationevent/phonecommunication']">+ Phone</button>
@@ -113,22 +112,18 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card>
-      <mat-card-title>
-        <div class="grid-right">
-          <div style="padding-bottom: 0px">Contact persons</div>
-          <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactsCollection">
-            <mat-radio-button value="Current">Current</mat-radio-button>
-            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
-            <mat-radio-button value="All">All</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Contact persons</mat-card-title>
+        <mat-radio-group [(ngModel)]="contactsCollection" style="size: 80%;">
+          <mat-radio-button value="Current">Current</mat-radio-button>
+          <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+          <mat-radio-button value="All">All</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-header>
 
-
-        <mat-list class="will-load">
+      <mat-card-content fxFlex fxFill>
+        <mat-list style="overflow: auto;">
           <div *ngIf="contactRelationships.length === 0">
             <h3>No contact persons to display.</h3>
           </div>
@@ -137,27 +132,27 @@
               <div class="pointer" [routerLink]="['/relations/person/' + contactRelationship.Contact.id]" mat-line>{{contactRelationship.Contact.Salutation?.Name}} {{contactRelationship.Contact.FirstName}} {{contactRelationship.Contact.MiddleName}}
                 {{contactRelationship.Contact.LastName}}
               </div>
-              <div *ngIf="contactRelationship.Contact.Function" mat-line class="mat-caption">{{contactRelationship.Contact.Function}}</div>
+              <div *ngIf="contactRelationship.Contact.Function" mat-line >{{contactRelationship.Contact.Function}}</div>
               <div mat-line *ngFor="let partyContactMechanism of contactRelationship.Contact.PartyContactMechanisms">
                 <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'  && partyContactMechanism.UseAsDefault"
-                  mat-line class="mat-caption">
+                  mat-line >
                   {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
                 </p>
                 <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'  && partyContactMechanism.UseAsDefault"
-                  mat-line class="mat-caption">
+                  mat-line >
                   {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
                 </p>
-                <p *ngIf="this.isPhone(partyContactMechanism.ContactMechanism)" mat-line class="mat-caption">
+                <p *ngIf="this.isPhone(partyContactMechanism.ContactMechanism)" mat-line >
                   {{ partyContactMechanism.ContactMechanism?.CountryCode}} {{ partyContactMechanism.ContactMechanism?.AreaCode}} {{ partyContactMechanism.ContactMechanism?.ContactNumber}}
                 </p>
                 <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'  && partyContactMechanism.UseAsDefault"
-                  mat-line class="mat-caption">
+                  mat-line >
                   {{ partyContactMechanism.ContactMechanism?.Address1}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.PostalCode}}
                   {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Country?.Name}}
                 </p>
               </div>
 
-              <p mat-line hide-gt-md class="mat-caption"> last modified: {{ contactRelationship.Contact.LastModifiedDate | date : shortDate }} </p>
+              <p mat-line> last modified: {{ contactRelationship.Contact.LastModifiedDate | date : shortDate }} </p>
 
               <span flex></span>
 
@@ -182,27 +177,24 @@
         </mat-list>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="['/person/organisation/'+ organisation.id]">Add new</button>
       </mat-card-actions>
     </mat-card>
 
-    <mat-card>
-      <mat-card-title>
-        <div class="grid-right">
-          <div style="padding-bottom: 0px">Contact Info</div>
-          <mat-radio-group class="text-xs" data-push-right="off-1" [(ngModel)]="contactMechanismsCollection">
-            <mat-radio-button value="Current">Current</mat-radio-button>
-            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
-            <mat-radio-button value="All">All</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Contact Info</mat-card-title>
+        <mat-radio-group [(ngModel)]="contactMechanismsCollection">
+          <mat-radio-button value="Current">Current</mat-radio-button>
+          <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+          <mat-radio-button value="All">All</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-header>
 
-        <mat-list class="will-load">
+      <mat-card-content fxFlex fxFill>
+
+        <mat-list style="overflow: auto;">
           <div *ngIf="contactMechanisms.length === 0">
             <h3>No info to display.</h3>
           </div>
@@ -225,9 +217,9 @@
                 {{ partyContactMechanism.ContactMechanism.Address1}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
                 {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Country.Name}}
               </div>
-              <p mat-line class="mat-caption" *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
+              <p mat-line *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
 
-              <p mat-line hide-gt-md class="mat-caption"> last modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </p>
+              <p mat-line> last modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </p>
 
               <span flex></span>
 
@@ -261,7 +253,6 @@
         </mat-list>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress']">+ Web</button>
         <button mat-button [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/emailaddress']">+ Email</button>

@@ -1,7 +1,7 @@
 
   <form #form="ngForm" *ngIf="organisation" (submit)="save()">
 
-    <div class="pad">
+    <div>
       <div class="grid-2_md-1">
         <a-mat-file  [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
         <mat-form-field >
@@ -11,7 +11,7 @@
         </mat-form-field>
       </div>
 
-      <div class="grid-2_xs-1">
+      <div>
         <a-mat-input  [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
         <a-mat-select  [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications"
           display="Name" label="Classification"></a-mat-select>
@@ -22,7 +22,7 @@
         <a-mat-slide-toggle  [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
       </div>
 
-      <div class="grid">
+      <div>
         <a-mat-input  [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-input>
       </div>
     </div>

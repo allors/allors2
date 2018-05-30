@@ -1,7 +1,7 @@
 
-  <form #form="ngForm" class="pad" *ngIf="salesTerm" (submit)="save()">
+  <form #form="ngForm"  *ngIf="salesTerm" (submit)="save()">
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-select  [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="invoiceTermTypes" display="Name"></a-mat-select>
       <a-mat-input  [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value"></a-mat-input>
     </div>

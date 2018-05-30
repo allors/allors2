@@ -14,7 +14,7 @@
 <mat-card>
   <div class="pad-top-xs pad-left pad-right">
     <form novalidate [formGroup]="searchForm">
-      <div >
+      <div>
         <mat-form-field >
         <input matInput placeholder="Supplier" formControlName="supplier">
       </mat-form-field>
@@ -45,7 +45,7 @@
   <mat-divider></mat-divider>
 
   
-    <mat-list class="will-load">
+    <mat-list>
       <div  *ngIf="data && data.length === 0"  >
         <h3>No purchase invoices to display.</h3>
       </div>
@@ -56,7 +56,7 @@
           <h3 *ngIf="invoice.BillToCustomer" [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line>To: {{invoice.BillToCustomer.displayName}}</h3>
           <h4 mat-line>number: {{invoice.InvoiceNumber }} reference: {{invoice.CustomerReference}} ({{invoice.PurchaseInvoiceState.Name}})</h4>
           <h4 mat-line>{{invoice.Description}}</h4>
-          <p mat-line hide-gt-md class="mat-caption"> last modified: {{ invoice.LastModifiedDate | date : shortDate }} </p>
+          <p mat-line> last modified: {{ invoice.LastModifiedDate | date : shortDate }} </p>
 
           <span flex></span>
 

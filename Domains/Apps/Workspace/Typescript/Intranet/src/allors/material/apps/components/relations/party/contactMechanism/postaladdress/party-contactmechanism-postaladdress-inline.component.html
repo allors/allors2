@@ -1,4 +1,4 @@
-<div class="grid">
+<div>
     <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name"></a-mat-select>
 </div>
@@ -13,7 +13,7 @@
     <a-mat-select  [object]="postalAddress?.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"
         display="Name"></a-mat-select>
 </div>
-<div class="grid-2_xs-1">
+<div>
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
         label="Non Solicitation"></a-mat-slide-toggle>

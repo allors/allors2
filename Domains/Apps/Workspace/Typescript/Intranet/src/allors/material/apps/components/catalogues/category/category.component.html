@@ -1,4 +1,4 @@
-<form #form="ngForm" class="pad" *ngIf="category" (submit)="save()">
+<form #form="ngForm"  *ngIf="category" (submit)="save()">
 
   <div class="pad-md">
     <div class="grid-2_md-1">
@@ -12,7 +12,7 @@
         label="Scope"></a-mat-select>
     </div>
 
-    <div class="grid-2_xs-1">
+    <div>
       <a-mat-select  [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
     </div>
 
