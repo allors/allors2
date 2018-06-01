@@ -1,4 +1,5 @@
 ﻿/// <reference path="../../allors.module.ts" />
+/// <reference path="internal/Field.ts" />
 namespace Allors.Bootstrap {
 
     export class StaticEnumTemplate {

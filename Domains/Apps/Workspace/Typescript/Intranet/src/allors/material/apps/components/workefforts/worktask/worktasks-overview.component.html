@@ -51,7 +51,7 @@
             <div mat-line [routerLink]="['/workefforts/worktask/' + item.id ]">
               {{ item.Name }}</div>
 
-            <div mat-line class="pointer">State: {{ item.WorkEffortState.Name }}</div>
+            <div mat-line >State: {{ item.WorkEffortState.Name }}</div>
             <p mat-line>{{ item.Description }} </p>
             <p *ngIf="item.Priority" mat-line >Priority {{ item.Priority.Name }} </p>
 
