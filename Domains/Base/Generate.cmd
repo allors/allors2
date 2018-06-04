@@ -23,6 +23,7 @@ cd ../..
 @echo Domain and Workspace
 @echo ====================
 
+dotnet restore Database.sln
 dotnet msbuild Database.sln /target:Clean /verbosity:minimal
 dotnet msbuild Database.sln /target:Database\Generate:Rebuild /p:Configuration="Debug" /verbosity:minimal
 

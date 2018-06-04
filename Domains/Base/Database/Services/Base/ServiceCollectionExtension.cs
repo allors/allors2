@@ -45,7 +45,8 @@ namespace Allors.Services
         {
             var callingAssembly = Assembly.GetCallingAssembly();
 
-            services.AddAllorsShared();
+            services.Shared();
+            services.TemplateAndPdf();
 
             var serverDirectoryFullName = config.Directory.FullName;
             IFileProvider fileProvider = new PhysicalFileProvider(serverDirectoryFullName);
@@ -100,14 +101,26 @@ namespace Allors.Services
 
         public static void AddAllorsEmbedded(this IServiceCollection services)
         {
-            services.AddAllorsShared();
+            services.Shared();
+            services.TemplateAndPdf();
 
             services.AddSingleton<IDerivationService, DerivationService>();
-
             services.AddScoped<IUserService, EmbeddedUserService>();
         }
 
-        private static void AddAllorsShared(this IServiceCollection services)
+        public static void AddAllorsTesting(this IServiceCollection services)
+        {
+            services.Shared();
+
+            services.AddSingleton<IDerivationService, DerivationService>();
+            services.AddScoped<IUserService, UserService>();
+
+            // Custom Template and Pdf
+            services.AddSingleton<IPdfService, ProxyPdfService>();
+            services.AddScoped<ITemplateService, ProxyTemplateService>();
+        }
+
+        private static void Shared(this IServiceCollection services)
         {
             services.AddSingleton<ITreeService, TreeService>();
             services.AddSingleton<ICacheService, CacheService>();
@@ -118,10 +131,15 @@ namespace Allors.Services
             services.AddSingleton<IStateService, StateService>();
             services.AddSingleton<ITimeService, TimeService>();
             services.AddSingleton<IMailService, MailService>();
+
+            services.AddScoped<ISessionService, SessionService>();
+        }
+
+        private static void TemplateAndPdf(this IServiceCollection services)
+        {
             services.AddSingleton<IPdfService, PdfService>();
             services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
-            services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<ITemplateService, TemplateService>();  // Scoped is required for running Razor in Server mode
         }
     }
