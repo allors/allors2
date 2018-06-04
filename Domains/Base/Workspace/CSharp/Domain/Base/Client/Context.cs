@@ -48,7 +48,6 @@
             }
 
             this.Update(response);
-            this.Session.Reset();
         }
 
         public async Task<Result> Query(string service, object args)
