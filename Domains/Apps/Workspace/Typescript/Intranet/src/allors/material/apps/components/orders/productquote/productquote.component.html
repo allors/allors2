@@ -2,7 +2,7 @@
   <form #form="ngForm" *ngIf="quote" (submit)="save()">
 
     <div>
-      <div class="grid-2_md-1" *ngIf="!quote.isNew">
+      <div  *ngIf="!quote.isNew">
         <div>
           <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
           <div>
@@ -20,7 +20,7 @@
           display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"

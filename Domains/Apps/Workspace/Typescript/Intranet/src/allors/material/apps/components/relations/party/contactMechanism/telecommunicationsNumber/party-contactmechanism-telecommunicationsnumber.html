@@ -1,7 +1,7 @@
 
   <form #form="ngForm"  *ngIf="contactMechanism" (submit)="save()">
 
-    <div class="grid-2_md-1">
+    <div >
       <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name" label="Contact purposes"></a-mat-select>
       <a-mat-select  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes"

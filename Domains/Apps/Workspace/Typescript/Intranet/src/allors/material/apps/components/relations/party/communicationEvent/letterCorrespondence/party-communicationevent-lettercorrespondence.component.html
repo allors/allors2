@@ -1,6 +1,6 @@
   <form #form="ngForm"  *ngIf="communicationEvent" (submit)="save()">
 
-    <div class="grid-2_md-1" *ngIf="!communicationEvent.isNew">
+    <div  *ngIf="!communicationEvent.isNew">
       <div>
         <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
         <button *ngIf="communicationEvent.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
@@ -15,7 +15,7 @@
         display="Name"></a-mat-select>
     </div>
 
-    <div class="grid-2_md-1">
+    <div >
       <div>
         <div fxLayout fxLayoutGap="1em">
           <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName"
@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <div class="grid-2_md-1">
+    <div >
       <div>
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses"

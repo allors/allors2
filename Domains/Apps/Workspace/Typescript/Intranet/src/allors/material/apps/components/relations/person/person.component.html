@@ -1,7 +1,7 @@
 
   <form  #form="ngForm" *ngIf="person" (submit)="save()">
 
-    <div class="grid-2_md-1">
+    <div >
       <a-mat-file  [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-file>
       <mat-form-field >
         <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
@@ -23,7 +23,7 @@
       <a-mat-select  [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
     </div>
 
-    <div class="grid-2_md-1">
+    <div >
       <a-mat-select  [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds"
         [options]="organisationContactKinds" display="Description" multiple="true"></a-mat-select>
       <mat-form-field *ngIf="!organisationContactRelationship && !organisation" >

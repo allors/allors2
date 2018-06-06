@@ -25,7 +25,7 @@
             <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
               display="Name" label="Purposes"></a-mat-static>
           </div>
-          <div class="grid-2_md-1">
+          <div >
             <a-mat-static  [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName"
               label="From"></a-mat-static>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName"
@@ -79,7 +79,7 @@
             <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
               display="Name" label="Purposes"></a-mat-static>
           </div>
-          <div class="grid-2_md-1">
+          <div >
             <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName"
               label="Sender"></a-mat-static>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName"
@@ -133,7 +133,7 @@
               label="Status"></a-mat-static>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
           </div>
-          <div class="grid-2_md-1">
+          <div >
             <a-mat-static  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-mat-static>
             <a-mat-static  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-static>
           </div>

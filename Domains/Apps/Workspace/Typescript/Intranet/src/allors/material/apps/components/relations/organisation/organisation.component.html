@@ -1,37 +1,49 @@
+<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm" *ngIf="organisation" (submit)="save()">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <div>
-      <div class="grid-2_md-1">
-        <a-mat-file  [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
-        <mat-form-field >
+    <mat-card *ngIf="organisation" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-input [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+        <a-mat-input [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
+
+      </div>
+
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+
+        <mat-form-field>
           <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
             <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-
-      <div>
-        <a-mat-input  [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
-        <a-mat-select  [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications"
+        <a-mat-select [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications"
           display="Name" label="Classification"></a-mat-select>
-        <a-mat-select  [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries"
-          display="Name" label="Industry"></a-mat-select>
-        <a-mat-select  [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
-        <a-mat-input  [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
-        <a-mat-slide-toggle  [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
+        <a-mat-select [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name"
+          label="Industry"></a-mat-select>
+
       </div>
 
-      <div>
-        <a-mat-input  [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-input>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <a-mat-slide-toggle [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
+        <a-mat-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
+        <a-mat-file [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
+        <a-mat-textarea [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
       </div>
-    </div>
 
-    <mat-divider></mat-divider>
+    </mat-card>
+  </div>
 
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-  </form>
+  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+    <span fxFlex></span>
+    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+  </mat-toolbar>
 
+</form>

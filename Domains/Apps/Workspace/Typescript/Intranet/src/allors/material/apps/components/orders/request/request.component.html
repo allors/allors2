@@ -2,7 +2,7 @@
   <form #form="ngForm" *ngIf="request" (submit)="save()">
 
     <div>
-      <div class="grid-2_md-1" *ngIf="!request.isNew">
+      <div  *ngIf="!request.isNew">
         <div>
           <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
           <div>
@@ -19,7 +19,7 @@
           display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <div>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"

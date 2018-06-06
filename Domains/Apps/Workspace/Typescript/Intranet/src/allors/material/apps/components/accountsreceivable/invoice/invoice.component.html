@@ -1,7 +1,7 @@
 
   <form  #form="ngForm" *ngIf="invoice" (submit)="save()">
 
-    <div class="grid-2_md-1" *ngIf="!invoice.isNew">
+    <div  *ngIf="!invoice.isNew">
       <div>
         <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
         <div>

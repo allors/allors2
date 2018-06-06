@@ -2,7 +2,7 @@
   <form #form="ngForm" *ngIf="quoteItem" (submit)="save()">
 
     <div>
-      <div class="grid-2_md-1" *ngIf="!quoteItem.isNew">
+      <div  *ngIf="!quoteItem.isNew">
         <div>
           <a-mat-static [object]="quoteItem" [roleType]="m.QuoteItem.QuoteItemState" display="Name" label="Status"></a-mat-static>
           <div>

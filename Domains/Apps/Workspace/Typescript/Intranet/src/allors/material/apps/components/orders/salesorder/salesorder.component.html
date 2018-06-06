@@ -2,7 +2,7 @@
   <form #form="ngForm" *ngIf="order" (submit)="save()">
 
     <div>
-      <div class="grid-2_md-1" *ngIf="!order.isNew">
+      <div  *ngIf="!order.isNew">
         <div>
           <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
           <div>
@@ -15,7 +15,7 @@
           </div>
         </div>
         <div>
-          <div class="grid-2_md-1">
+          <div >
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
             <a-mat-select  *ngIf="stores.length > 1 && !order.Store" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores"
               display="Name"></a-mat-select>

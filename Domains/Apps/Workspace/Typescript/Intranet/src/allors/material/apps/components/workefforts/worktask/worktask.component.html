@@ -1,7 +1,7 @@
 
   <form #form="ngForm"  *ngIf="workTask" (submit)="save()">
 
-    <div class="grid-2_md-1">
+    <div >
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
         label="Status"></a-mat-select>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>

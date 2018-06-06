@@ -34,11 +34,15 @@ export class ConfigService {
     return scope
         .load("Pull", new PullRequest({ queries }))
         .do((loaded: Loaded) => {
-            const organisations = loaded.collections.internalOrganisations as Organisation[];
-            const organisation = organisations[0];
-            if (organisation) {
-                this.stateService.internalOrganisationId = organisation.id;
+            const internalOrganisations = loaded.collections.internalOrganisations as Organisation[];
+
+            if (internalOrganisations && internalOrganisations.length > 0) {
+                var organisation = internalOrganisations.find(v=>v.id === this.stateService.internalOrganisationId);
+                if(!organisation){
+                    this.stateService.internalOrganisationId = internalOrganisations[0].id;
+                }
             }
+
             const singletons = loaded.collections.singletons as Singleton[];
             this.stateService.singletonId = singletons[0].id;
         });

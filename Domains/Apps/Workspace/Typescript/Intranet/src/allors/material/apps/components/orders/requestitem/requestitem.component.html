@@ -2,7 +2,7 @@
   <form #form="ngForm" *ngIf="requestItem" (submit)="save()">
 
     <div>
-      <div class="grid-2_md-1" *ngIf="!requestItem.isNew">
+      <div  *ngIf="!requestItem.isNew">
         <div>
           <a-mat-static [object]="requestItem" [roleType]="m.RequestItem.RequestItemState" display="Name" label="Status"></a-mat-static>
           <div>

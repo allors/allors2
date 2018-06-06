@@ -45,6 +45,9 @@ export class MainComponent implements OnInit, OnDestroy {
     private menuService: MenuService,
     private sideNavService: AllorsMaterialSideNavService) {
 
+    this.m = workspaceService.metaPopulation.metaDomain;
+    this.scope = this.workspaceService.createScope(); 
+
     menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,

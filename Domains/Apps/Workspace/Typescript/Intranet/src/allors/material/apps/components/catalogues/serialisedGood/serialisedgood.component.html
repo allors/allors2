@@ -13,14 +13,14 @@
         <a-mat-input  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <a-mat-select  [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
         <a-mat-datepicker  [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
         <a-mat-select  [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
         <a-mat-select  [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <div>
           <div fxLayout fxLayoutGap="1em">
             <mat-form-field >
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <a-mat-select  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
           display="Name"></a-mat-select>
         <a-mat-autocomplete  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [filter]="organisationFilter.create(scope)"

@@ -2,7 +2,7 @@
   <form #form="ngForm" *ngIf="invoice" (submit)="save()">
 
     <div>
-      <div class="grid-2_md-1" *ngIf="!invoice.isNew">
+      <div  *ngIf="!invoice.isNew">
         <div>
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
           <div>
@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <a-mat-autocomplete  [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(scope)"
           display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
         <div>
@@ -39,7 +39,7 @@
         </div>
       </div>
 
-      <div class="grid-2_md-1">
+      <div >
         <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes" display="Name"></a-mat-select>
       </div>
 

@@ -1,12 +1,12 @@
 <form #form="ngForm" *ngIf="catalogue" (submit)="save()">
 
   <div class="pad-md">
-    <div class="grid-2_md-1">
+    <div >
       <a-mat-file  [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-mat-file>
       <a-mat-select  [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
     </div>
 
-    <div class="grid-2_md-1">
+    <div >
       <a-mat-input  [object]="catalogue" [roleType]="m.Catalogue.Name"></a-mat-input>
       <a-mat-input  [object]="catalogue" [roleType]="m.Catalogue.Description"></a-mat-input>
     </div>
