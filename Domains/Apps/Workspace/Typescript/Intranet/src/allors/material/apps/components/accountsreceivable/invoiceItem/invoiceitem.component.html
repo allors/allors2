@@ -29,7 +29,7 @@
         <a-mat-input  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice"></a-mat-input>
       </div>
 
-      <div class="grid-4_md-2_xs-1">
+      <div >
         <a-mat-static  [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" display="Name" label="Invoice VAT Regime"></a-mat-static>
         <a-mat-select  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedVatRegime" [options]="vatRegimes"
           display="Name" label="Item VAT regime"></a-mat-select>

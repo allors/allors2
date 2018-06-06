@@ -94,7 +94,7 @@
               <button type="button" mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
-              <mat-menu x-position="before" #menu="matMenu">
+              <mat-menu #menu="matMenu">
                 <a [routerLink]="['/relations/organisation/' + row.object.id]" mat-menu-item>Details</a>
                 <button mat-menu-item (click)="delete(row.object)" [disabled]="!row.object.CanExecuteDelete">Delete</button>
               </mat-menu>
@@ -108,11 +108,10 @@
   </div>
 
   <mat-toolbar fxFlex fxLayout="row">
-
     <span fxFlex></span>
-
     <a mat-raised-button [routerLink]="['/organisation']">
       Add New
     </a>
   </mat-toolbar>
+
 </div>

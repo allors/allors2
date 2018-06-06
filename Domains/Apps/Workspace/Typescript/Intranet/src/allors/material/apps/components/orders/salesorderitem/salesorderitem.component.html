@@ -25,7 +25,7 @@
         <a-mat-select *ngIf="orderItem.ReservedFromSerialisedInventoryItem"  [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="new State"></a-mat-select>
       </div>
 
-      <div class="grid-4_md-2_xs-1" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
+      <div  *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
         <a-mat-input  *ngIf="orderItem.isNew || orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
         <a-mat-static  *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
         <a-mat-input  [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
@@ -34,14 +34,14 @@
         <a-mat-static  *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       </div>
 
-      <div class="grid-4_md-2_xs-1">
+      <div >
         <a-mat-static  [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
         <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
           label="Item VAT regime"></a-mat-select>
         <a-mat-static  [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
       </div>
 
-      <div *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" class="grid-4_md-2_xs-1">
+      <div *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" >
         <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityReserved" ></a-mat-static>
         <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityRequestsShipping" ></a-mat-static>
         <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityPicked" ></a-mat-static>

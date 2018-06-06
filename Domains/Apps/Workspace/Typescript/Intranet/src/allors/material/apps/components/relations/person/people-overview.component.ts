@@ -25,20 +25,20 @@ interface SearchData {
 @Component({
   templateUrl: './people-overview.component.html',
 })
-export class PeopleOverviewComponent implements OnDestroy {
+export class PeopleOverviewComponent implements OnInit, OnDestroy {
 
-  public total: number;
   public title = 'People';
+  public total: number;
   public searchForm: FormGroup;
+
   public data: Person[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
-  private page$: BehaviorSubject<number>;
-
   constructor(
+    public mediaService: MediaService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
@@ -46,7 +46,6 @@ export class PeopleOverviewComponent implements OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private snackBarService: MatSnackBar,
-    public mediaService: MediaService,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
@@ -58,23 +57,23 @@ export class PeopleOverviewComponent implements OnDestroy {
       firstName: [''],
       lastName: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  public ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-        internalOrganisationId,
-      ];
-    }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = Observable
+      .combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+        return [
+          data,
+          date,
+          internalOrganisationId,
+        ];
+      }, [] as [SearchData, Date, InternalOrganisation]);
 
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
@@ -117,18 +116,10 @@ export class PeopleOverviewComponent implements OnDestroy {
         this.data = loaded.collections.people as Person[];
         this.total = loaded.values.people_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
-  }
-
-  public more(): void {
-    this.page$.next(this.data.length + 50);
-  }
-
-  public goBack(): void {
-    window.history.back();
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public ngOnDestroy(): void {
@@ -137,12 +128,16 @@ export class PeopleOverviewComponent implements OnDestroy {
     }
   }
 
+  public goBack(): void {
+    window.history.back();
+  }
+
   public refresh(): void {
     this.refresh$.next(new Date());
   }
 
   public delete(person: Person): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this person?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -151,9 +146,9 @@ export class PeopleOverviewComponent implements OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }

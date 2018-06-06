@@ -11,4 +11,6 @@ export class LayoutService {
   public columns2x = {'grid-template-columns': '1fr 1fr', 'grid-gap': '1rem'};
 
   public columns3x = {'grid-template-columns': '1fr 1fr 1fr', 'grid-gap': '1rem'};
+
+  public columns4x = {'grid-template-columns': '1fr 1fr 1fr 1fr', 'grid-gap': '1rem'};
 }

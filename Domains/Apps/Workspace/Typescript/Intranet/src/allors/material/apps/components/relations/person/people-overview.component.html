@@ -1,78 +1,91 @@
-<mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/people']"><mat-icon>cloud_download</mat-icon></button>
-  </div>
-</mat-toolbar>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
 
-<mat-card>
-  <div class="pad-top-xs pad-left pad-right">
-    <form novalidate [formGroup]="searchForm">
-      <mat-form-field>
-        <input matInput placeholder="First Name" formControlName="firstName">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Last Name" formControlName="lastName">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </form>
-  </div>
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+      <button mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/people']">
+        <mat-icon>cloud_download</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <mat-divider></mat-divider>
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-  <mat-card-content>
-    
-      <mat-list>
-        <div  *ngIf="data && data.length === 0"  >
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+
+      <form novalidate [formGroup]="searchForm">
+
+        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
+          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+            <mat-label>Search by Last Name</mat-label>
+            <input matInput autocomplete="off" formControlName="lastName">
+            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+              <mat-icon>expand_more</mat-icon>
+            </a>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+            <mat-label>Search by Last Name</mat-label>
+            <input matInput formControlName="lastName">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName">
+          </mat-form-field>
+
+          <div fxFlex="none" *ngIf="advancedSearch">
+            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+              <mat-icon>close</mat-icon>
+            </a>
+          </div>
+
+        </mat-card-content>
+      </form>
+
+      <mat-list fxFlex style="overflow: auto;">
+        <div *ngIf="data && data.length === 0">
           <h3>No people to display.</h3>
         </div>
         <ng-template let-person let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item class="cursor-pointer">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/relations/person/', person.id])"
+            style="cursor: pointer;">
 
-            <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
-            <img *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)"/>
+            <mat-icon fxHide fxShow.gt-sm *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
+            <img fxHide fxShow.gt-sm *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)" />
 
-            <h3 mat-line [routerLink]="['/relations/person/' + person.id]"> {{person.Salutation?.Name}} {{person.PartyName}} </h3>
-            <p *ngIf="person.GeneralPhoneNumber" mat-line> {{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}
+            <h3 mat-line>{{person.Salutation?.Name}} {{person.PartyName}} </h3>
+            <p *ngIf="person.GeneralPhoneNumber" mat-line>{{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}</p>
 
-              <p mat-line> last login: {{ person.LastModifiedDate | date : shortDate }} </p>
+            <div fxHide fxShow.gt-sm>last&nbsp;modified:
+              <br>{{ person.LastModifiedDate | date : shortDate }}
+            </div>
 
-              <span flex></span>
-
-              <span      >
-              <div  > {{ person.CreationDate | date }} </div>
-              <div  > {{ person.LastModifiedDate | date : shortDate }} </div>
-            </span>
-
-              <span>
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-              <mat-icon>more_vert</mat-icon>
+            <div (click)="$event.stopPropagation()">
+              <button type="button" mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-              <a [routerLink]="['/relations/person/' + person.id]" mat-menu-item>Details</a>
-              <button  mat-menu-item (click)="delete(person)" [disabled]="!person.CanExecuteDelete">Delete</button>
+                <a [routerLink]="['/relations/person/' + person.id]" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(person)" [disabled]="!person.CanExecuteDelete">Delete</button>
               </mat-menu>
-            </span>
+            </div>
+
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
 
           </mat-list-item>
-          <mat-divider *ngIf="!last" mat-inset></mat-divider>
         </ng-template>
       </mat-list>
 
-  </mat-card-content>
-</mat-card>
+    </mat-card>
+  </div>
 
-<mat-card body *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
+  <mat-toolbar fxFlex fxLayout="row">
+    <span fxFlex></span>
+    <a mat-raised-button [routerLink]="['/person']">
+      Add New
+    </a>
+  </mat-toolbar>
 
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/person']">
-  <mat-icon>add</mat-icon>
-</a>
+</div>

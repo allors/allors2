@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
@@ -16,8 +17,8 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+
 import { OrganisationComponent } from './organisation.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 export { OrganisationComponent } from './organisation.component';
 
 @NgModule({

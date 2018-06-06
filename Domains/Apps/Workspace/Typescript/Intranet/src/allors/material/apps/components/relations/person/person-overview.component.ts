@@ -3,14 +3,13 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -25,13 +24,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public communicationEvents: CommunicationEvent[];
-  public workEffortAssignments: WorkEffortAssignment[];
-
   public title = 'Person overview';
   public person: Person;
   public organisation: Organisation;
   public internalOrganisation: InternalOrganisation;
+
+  public communicationEvents: CommunicationEvent[];
+  public workEffortAssignments: WorkEffortAssignment[];
 
   public contactMechanismsCollection = 'Current';
   public currentContactMechanisms: PartyContactMechanism[] = [];
@@ -54,12 +53,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private titleService: Title,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
-    private titleService: Title,
     private stateService: StateService) {
 
     titleService.setTitle(this.title);
@@ -85,7 +85,8 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = Observable
+      .combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
@@ -343,7 +344,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public reopenCommunication(communicationEvent: CommunicationEvent): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -352,45 +353,45 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public deleteCommunication(communicationEvent: CommunicationEvent): void {
-      this.dialogService
-       .confirm({ message: 'Are you sure you want to delete this?' })
-       .subscribe((confirm: boolean) => {
-         if (confirm) {
-           this.scope.invoke(communicationEvent.Delete)
-             .subscribe((invoked: Invoked) => {
-               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-               this.refresh();
-             },
-             (error: Error) => {
-               this.errorService.handle(error);
-             });
-         }
-       }); 
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(communicationEvent.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 
   public delete(workEffort: WorkEffort): void {
-      this.dialogService
-       .confirm({ message: 'Are you sure you want to delete this work effort?' })
-       .subscribe((confirm: boolean) => {
-         if (confirm) {
-           this.scope.invoke(workEffort.Delete)
-             .subscribe((invoked: Invoked) => {
-               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-               this.refresh();
-             },
-             (error: Error) => {
-               this.errorService.handle(error);
-             });
-         }
-       }); 
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this work effort?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(workEffort.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 
   public ngOnDestroy(): void {

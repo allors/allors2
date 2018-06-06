@@ -8,13 +8,14 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber } from '../../../../../domain';
 import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
@@ -54,13 +55,17 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     public router: Router,
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private titleService: Title,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
+    titleService.setTitle(this.title);
+    
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -95,7 +100,8 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = Observable
+      .combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');

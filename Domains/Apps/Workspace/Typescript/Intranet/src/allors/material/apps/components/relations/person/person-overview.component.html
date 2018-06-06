@@ -1,268 +1,254 @@
 <mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
+  <mat-toolbar-row fxLayout="row">
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+    <span fxFlex>{{title}}</span>
+  </mat-toolbar-row>
 </mat-toolbar>
 
-<div body *ngIf="person" layout-gt-md="row">
-  <div>
-    <mat-card>
-      <mat-card-title>Person</mat-card-title>
-      <mat-divider></mat-divider>
+<div style="padding: 20px;">
+  <div *ngIf="person" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Person</mat-card-title>
+      </mat-card-header>
+
       <mat-card-content>
         <div>
+          <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
+          <mat-form-field style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
+            <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
+          </mat-form-field>
+        </div>
 
-          <div>
-            <a-mat-static  *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
-            <mat-form-field  style="width: 100%;" fxLayout="column" fxLayoutAlign="top stretch">
-              <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
-            </mat-form-field>
+        <div>
+          <div *ngIf="organisation">
+            <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
           </div>
+          <mat-form-field>
+            <input matInput name="contactKind" [(ngModel)]="contactKindsText" [readonly]="true" />
+          </mat-form-field>
+        </div>
 
-          <div>
-            <div  *ngIf="organisation">
-              <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
-            </div>
-            <mat-form-field >
-              <input matInput name="contactKind" [(ngModel)]="contactKindsText" [readonly]="true" />
-            </mat-form-field>
-          </div>
+        <div>
+          <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
+          <!--
+          <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
+ -->
+          <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
+        </div>
 
-          <div>
-            <a-mat-static  *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
-            <a-mat-static  *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
-            <a-mat-static  [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
-          </div>
+        <div>
+          <a-mat-static *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
+        </div>
 
-          <div>
-            <a-mat-static  *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
-          </div>
-
-          <div>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
-          </div>
+        <div>
+          <p class="col mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
         </div>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="['/person/' + person.id]">Edit</button>
       </mat-card-actions>
     </mat-card>
 
-    <mat-card>
-      <mat-card-title>Communications</mat-card-title>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Communications</mat-card-title>
+      </mat-card-header>
 
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        
-          <mat-list>
-            <div  *ngIf="!this.communicationEvents"  >
-              <h3>No communications to display.</h3>
-            </div>
+      <mat-card-content fxFlex fxFill>
 
-            <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
-              <mat-list-item>
-                <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
+        <mat-list style="overflow: auto;">
+          <div *ngIf="!this.communicationEvents">
+            <h3>No communications to display.</h3>
+          </div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
+          <ng-template let-communicationEvent let-last="last" ngFor [ngForOf]="this.communicationEvents">
+            <mat-list-item>
+              <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
+              <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
+              <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <p mat-line>{{ communicationEvent.Subject }} </p>
-                <p mat-line>Involved:
-                  <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
-                </p>
+              <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
+                Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
-                <span      >
-                  <div  > started: {{ communicationEvent.ActualStart | date}} </div>
-                  <div  > ended: {{ communicationEvent.ActualEnd | date }} </div>
-                </span>
+              <p mat-line>{{ communicationEvent.Subject }} </p>
+              <p mat-line>Involved:
+                <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
+              </p>
 
-                <span>
-                  <button mat-icon-button [mat-menu-trigger-for]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <button mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                    <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
-                    <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
-                    <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
-                    <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
-                  </mat-menu>
-                </span>
+              <span>
+                <div> started: {{ communicationEvent.ActualStart | date}} </div>
+                <div> ended: {{ communicationEvent.ActualEnd | date }} </div>
+              </span>
 
-              </mat-list-item>
+              <span (click)="$event.stopPropagation()">
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
+                  <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                  <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
+                  <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
+                  <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/party/' + person.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                  <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
+                  <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
+                  <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>
+                  <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopenCommunication(communicationEvent)">Reopen</button>
+                </mat-menu>
+              </span>
+            </mat-list-item>
 
-              <mat-divider *ngIf="!last" mat-inset></mat-divider>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
 
-            </ng-template>
-          </mat-list>
+          </ng-template>
+        </mat-list>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/party/' + person.id +'/communicationevent/facetofacecommunication']">+ Meeting</button>
-        <button mat-button [routerLink]="['/party/' + person.id +'/communicationevent/phonecommunication']">+ Phone</button>
-        <button mat-button [routerLink]="['/party/' + person.id +'/communicationevent/emailcommunication']">+ Email</button>
-        <button mat-button [routerLink]="['/party/' + person.id +'/communicationevent/lettercorrespondence']">+ Letter</button>
+        <button mat-button [matMenuTriggerFor]="menu">Add new</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/party/' + person.id +'/communicationevent/facetofacecommunication']">Meeting</button>
+          <button mat-menu-item [routerLink]="['/party/' + person.id +'/communicationevent/phonecommunication']">Phone</button>
+          <button mat-menu-item [routerLink]="['/party/' + person.id +'/communicationevent/emailcommunication']">Email</button>
+          <button mat-menu-item [routerLink]="['/party/' + person.id +'/communicationevent/lettercorrespondence']">Letter</button>
+        </mat-menu>
       </mat-card-actions>
     </mat-card>
 
-  </div>
-
-  <div>
-    <mat-card>
-      <mat-card-title>
-        <div>
-          <div  >Contact Info</div>
-          <mat-radio-group   [(ngModel)]="contactMechanismsCollection">
-            <mat-radio-button value="Current">Current</mat-radio-button>
-            <mat-radio-button value="Inactive">Inactive</mat-radio-button>
-            <mat-radio-button value="All">All</mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </mat-card-title>
-
-      <mat-divider></mat-divider>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>
+          Contact Info
+        </mat-card-title>
+        <mat-radio-group [(ngModel)]="contactMechanismsCollection">
+          <mat-radio-button value="Current">Current</mat-radio-button>
+          <mat-radio-button value="Inactive">Inactive</mat-radio-button>
+          <mat-radio-button value="All">All</mat-radio-button>
+        </mat-radio-group>
+      </mat-card-header>
 
       <mat-card-content>
-        
-          <mat-list>
-            <div  *ngIf="contactMechanisms.length === 0"  >
-              <h3>No info to display.</h3>
-            </div>
-            <ng-template let-partyContactMechanism let-last="last" ngFor [ngForOf]="contactMechanisms">
-              <mat-list-item>
+        <mat-list style="overflow: auto;">
+          <div *ngIf="contactMechanisms.length === 0">
+            <h3>No info to display.</h3>
+          </div>
+          <ng-template let-partyContactMechanism let-last="last" ngFor [ngForOf]="contactMechanisms">
+            <mat-list-item>
 
-                <h3 mat-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
-                <h3 mat-line> {{partyContactMechanism.Contact}}</h3>
-                <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]">
-                  {{ partyContactMechanism.ContactMechanism.ElectronicAddressString}}
-                </div>
-                <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]">
-                  {{ partyContactMechanism.ContactMechanism.ElectronicAddressString}}
-                </div>
-                <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'"
-                  [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]">
-                  {{ partyContactMechanism.ContactMechanism.CountryCode}} {{ partyContactMechanism.ContactMechanism.AreaCode}} {{ partyContactMechanism.ContactMechanism.ContactNumber}}
-                </div>
-                <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]">
-                  {{ partyContactMechanism.ContactMechanism.Address1}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
-                  {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Country.Name}}
-                </div>
-                <p mat-line *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
+              <h3 mat-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
+              <h3 mat-line> {{partyContactMechanism.Contact}}</h3>
+              <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]">
+                {{ partyContactMechanism.ContactMechanism.ElectronicAddressString}}
+              </div>
+              <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]">
+                {{ partyContactMechanism.ContactMechanism.ElectronicAddressString}}
+              </div>
+              <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]">
+                {{ partyContactMechanism.ContactMechanism.CountryCode}} {{ partyContactMechanism.ContactMechanism.AreaCode}} {{ partyContactMechanism.ContactMechanism.ContactNumber}}
+              </div>
+              <div mat-line *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]">
+                {{ partyContactMechanism.ContactMechanism.Address1}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.PostalCode}}
+                {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism.PostalBoundary?.Country.Name}}
+              </div>
+              <p mat-line *ngFor="let contactPurpose of partyContactMechanism.ContactPurposes">{{ contactPurpose.Name }} </p>
 
-                <p mat-line> last modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </p>
+              <p mat-line> last modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </p>
 
-                <span flex></span>
+              <span (click)="$event.stopPropagation()">
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]"
+                    mat-menu-item>Edit</a>
+                  <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
+                  <button mat-menu-item (click)="activateContactMechanism(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
+                  <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </span>
 
-                <span      >
-                  <div  > created: {{ partyContactMechanism.CreationDate | date }} </div>
-                  <div  > modified: {{ partyContactMechanism.LastModifiedDate | date : shortDate }} </div>
-                </span>
+            </mat-list-item>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          </ng-template>
 
-                <span>
-                  <button mat-icon-button [mat-menu-trigger-for]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]"
-                      mat-menu-item>Edit</a>
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]"
-                      mat-menu-item>Edit</a>
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]"
-                      mat-menu-item>Edit</a>
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]"
-                      mat-menu-item>Edit</a>
-                    <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
-                    <button mat-menu-item (click)="activateContactMechanism(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
-                    <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
-                  </mat-menu>
-                </span>
-
-              </mat-list-item>
-              <mat-divider *ngIf="!last" mat-inset></mat-divider>
-            </ng-template>
-
-          </mat-list>
+        </mat-list>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress']">+ Web</button>
-        <button mat-button [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress']">+ Email</button>
-        <button mat-button [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress']">+ Postal</button>
-        <button mat-button [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber']">+ Telecom</button>
+
+        <button mat-button [matMenuTriggerFor]="menu">Add new</button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress']">+ Web</button>
+          <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress']">+ Email</button>
+          <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress']">+ Postal</button>
+          <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber']">+ Telecom</button>
+        </mat-menu>
       </mat-card-actions>
+
     </mat-card>
 
-    <mat-card *ngIf="workEffortAssignments">
-      <mat-card-title>Work Efforts</mat-card-title>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Work Efforts</mat-card-title>
+      </mat-card-header>
 
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        
-          <mat-list>
-            <div  *ngIf="workEffortAssignments.length === 0"  >
-              <h3>No work efforts to display.</h3>
-            </div>
+      <mat-card-content fxFlex fxFill>
 
-            <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="workEffortAssignments">
-              <mat-list-item>
-                <div mat-line [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
-                  {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
-                </div>
+        <mat-list>
+          <div *ngIf="!workEffortAssignments || workEffortAssignments.length === 0">
+            <h3>No work efforts to display.</h3>
+          </div>
 
-                <p mat-line>{{ workEffortAssignment.Assignment.Description }} </p>
-                <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line >Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
+          <ng-template let-workEffortAssignment let-last="last" ngFor [ngForOf]="workEffortAssignments">
+            <mat-list-item>
+              <div mat-line [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
+                {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
+              </div>
 
-                <span      >
-                  <div  > Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
-                  <div  > Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
-                  <div  > Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
-                  <div  > Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
-                </span>
+              <p mat-line>{{ workEffortAssignment.Assignment.Description }} </p>
+              <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line>Priority {{ workEffortAssignment.Assignment.Priority.Name }} </p>
 
-                <span>
-                  <button mat-icon-button [mat-menu-trigger-for]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" mat-menu-item>Edit</a>
-                    <button mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
-                  </mat-menu>
-                </span>
+              <span>
+                <div> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
+                <div> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
+                <div> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
+                <div> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+              </span>
 
+              <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id]" mat-menu-item>Edit</a>
+                  <button mat-menu-item (click)="delete(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </span>
 
-              </mat-list-item>
+            </mat-list-item>
 
-              <mat-divider *ngIf="!last" mat-inset></mat-divider>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
 
-            </ng-template>
-          </mat-list>
-     </mat-card-content>
+          </ng-template>
+        </mat-list>
+      </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/worktask']">+ Task</button>
+        <button mat-button [routerLink]="['/worktask']">Add new</button>
       </mat-card-actions>
     </mat-card>
 

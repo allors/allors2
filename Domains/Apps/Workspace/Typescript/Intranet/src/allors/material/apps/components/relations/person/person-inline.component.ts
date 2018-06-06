@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit , Output } from '@angular/core';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
 import { PullRequest, Query } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -27,7 +27,10 @@ export class PersonInlineComponent implements OnInit {
 
   private scope: Scope;
 
-  constructor(private workspaceService: WorkspaceService, private errorService: ErrorService) {
+  constructor(
+    public layout: LayoutService,
+    private workspaceService: WorkspaceService, 
+    private errorService: ErrorService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

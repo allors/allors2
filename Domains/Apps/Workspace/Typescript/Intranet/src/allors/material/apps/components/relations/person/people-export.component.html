@@ -1,27 +1,53 @@
-<div class="pad-top-xs pad-left pad-right">
-  <form novalidate [formGroup]="searchForm">
-    <mat-form-field>
-      <input matInput placeholder="First Name" formControlName="firstName">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-    <mat-form-field>
-      <input matInput placeholder="Last Name" formControlName="lastName">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-  </form>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+      <form novalidate [formGroup]="searchForm">
+
+          <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
+              <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+                <mat-label>Search by Last Name</mat-label>
+                <input matInput autocomplete="off" formControlName="lastName">
+                <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+                  <mat-icon>expand_more</mat-icon>
+                </a>
+              </mat-form-field>
+    
+              <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+                <mat-label>Search by Last Name</mat-label>
+                <input matInput formControlName="lastName">
+              </mat-form-field>
+    
+              <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName">
+              </mat-form-field>
+
+              <div fxFlex="none" *ngIf="advancedSearch">
+                <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+                  <mat-icon>close</mat-icon>
+                </a>
+              </div>
+    
+            </mat-card-content>
+
+      </form>
+
+        <textarea fxFlex #clipSource [ngModel]="csv"></textarea>
+    </mat-card>
+  </div>
+
+  <mat-toolbar fxFlex fxLayout="row">
+      <span fxFlex></span>
+      <a mat-icon-button matTooltip="Copy to clipboard" (click)="clipSource.select(); copy()">
+          <mat-icon>content_copy</mat-icon>
+        </a>
+    </mat-toolbar>
+
 </div>
-
-<mat-divider></mat-divider>
-
-<mat-card-content style="min-height: 60vh">
-
-  <mat-list  fxLayout="column">
-
-    <textarea #clipSource style="min-height: 60vh" [ngModel]="csv"></textarea>
-
-    <a mat-icon-button matTooltip="Copy to clipboard" (click)="clipSource.select(); copy()">
-      <mat-icon>content_copy</mat-icon>
-    </a>
-
-  </mat-list>
-</mat-card-content>

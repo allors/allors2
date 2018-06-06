@@ -42,7 +42,7 @@ interface SearchData {
 @Component({
   templateUrl: './organisations-overview.component.html',
 })
-export class OrganisationsOverviewComponent implements OnDestroy {
+export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Organisations';
   public total: number;
@@ -50,7 +50,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
 
   public data: Organisation[];
 
-  public columns = [{ prop: 'name'}, {prop:'classification'}, {prop:'phone'}, {prop: 'address'}, {prop:'country'}, {prop:'actions'}];
+  public columns = [{ prop: 'name' }, { prop: 'classification' }, { prop: 'phone' }, { prop: 'address' }, { prop: 'country' }, { prop: 'actions' }];
   public rows: Row[] = [];
   public selected: Row[] = [];
 
@@ -69,8 +69,6 @@ export class OrganisationsOverviewComponent implements OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  private page$: BehaviorSubject<number>;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -99,23 +97,22 @@ export class OrganisationsOverviewComponent implements OnDestroy {
       contactFirstName: [''],
       contactLastName: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
         return [
           data,
-          data !== previousData ? 50 : take,
           date,
           internalOrganisationId,
         ];
-      }, [] as [SearchData, number, Date, InternalOrganisation]);
+      }, [] as [SearchData, Date, InternalOrganisation]);
 
     this.subscription = combined$
       .switchMap(([data, take, , internalOrganisationId]) => {
@@ -286,7 +283,7 @@ export class OrganisationsOverviewComponent implements OnDestroy {
         });
   }
 
-    public ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

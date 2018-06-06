@@ -11,7 +11,7 @@
   </div>
 </mat-toolbar>
 
-<div body *ngIf="isEmail" layout-gt-md="row">
+<div *ngIf="isEmail" >
   <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
@@ -65,7 +65,7 @@
   </div>
 </div>
 
-<div body *ngIf="isLetter" layout-gt-md="row">
+<div *ngIf="isLetter" >
   <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
@@ -120,7 +120,7 @@
   </div>
 </div>
 
-<div body *ngIf="isMeeting" layout-gt-md="row">
+<div *ngIf="isMeeting" >
   <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>Meeting</mat-card-title>
@@ -170,7 +170,7 @@
   </div>
 </div>
 
-<div body *ngIf="isPhone" layout-gt-md="row">
+<div *ngIf="isPhone" >
   <div>
     <mat-card *ngIf="communicationEvent">
       <mat-card-title>{{itemTitle}}</mat-card-title>
