@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../../domain';
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -40,6 +40,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   private scope: Scope;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,

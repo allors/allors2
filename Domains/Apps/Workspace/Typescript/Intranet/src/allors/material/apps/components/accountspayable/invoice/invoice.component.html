@@ -121,25 +121,25 @@
         <a-mat-static  [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
       </div>
 
-      <div class="grid-1">
+      <div >
         <a-mat-input  [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-input>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-input  [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-static  *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment"></a-mat-static>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="invoice" [roleType]="m.PurchaseInvoice.Comment"></a-mat-textarea>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-static  *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment"></a-mat-static>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"></a-mat-textarea>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="invoice" [roleType]="m.PurchaseInvoice.Message"></a-mat-textarea>
       </div>
     </div>

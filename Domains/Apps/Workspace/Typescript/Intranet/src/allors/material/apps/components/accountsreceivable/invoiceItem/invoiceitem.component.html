@@ -38,19 +38,19 @@
         <a-mat-static  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.TotalIncVat"></a-mat-static>
       </div>
 
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Details"></a-mat-textarea>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-static  *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-mat-static>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Comment"></a-mat-textarea>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-static  *ngIf="orderItem?.InternalComment" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment"></a-mat-static>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InternalComment"></a-mat-textarea>
       </div>
     </div>

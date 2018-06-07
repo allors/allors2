@@ -179,22 +179,22 @@
       <a-mat-static  [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
     </div>
 
-    <div class="grid-1">
+    <div >
       <a-mat-input  [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-input>
     </div>
-    <div class="grid-1">
+    <div >
       <a-mat-input  [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
     </div>
-    <div class="grid-1">
+    <div >
       <a-mat-static  *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
     </div>
-    <div class="grid-1">
+    <div >
       <a-mat-textarea  [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
     </div>
-    <div class="grid-1">
+    <div >
       <a-mat-static  *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
     </div>
-    <div class="grid-1">
+    <div >
       <a-mat-textarea  [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
     </div>
     <mat-divider></mat-divider>

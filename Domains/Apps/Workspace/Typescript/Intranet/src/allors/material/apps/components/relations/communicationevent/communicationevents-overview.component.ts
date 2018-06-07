@@ -10,8 +10,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-
-
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../../../../angular';
 import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from '../../../../../domain';
 import { And, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
@@ -28,7 +26,7 @@ interface SearchData {
 @Component({
   templateUrl: './communicationevents-overview.component.html',
 })
-export class CommunicationEventsOverviewComponent implements OnDestroy {
+export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
 
   public total: number;
 
@@ -54,8 +52,6 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  private page$: BehaviorSubject<number>;
-
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
@@ -76,23 +72,19 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
       state: [''],
       subject: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  ngOnInit(): void {
     const search$: Observable<SearchData> = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
     const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    .combineLatest(search$, this.refresh$)
+    .scan(([previousData, previousDate], [data, date]) => {
+      return [data, date];
+    }, [] as [SearchData, Date]);
 
     this.subscription = combined$
       .switchMap(([data, take]: [SearchData, number]) => {
@@ -181,18 +173,14 @@ export class CommunicationEventsOverviewComponent implements OnDestroy {
       });
   }
 
-  public more(): void {
-    this.page$.next(this.data.length + 50);
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  public goBack(): void {
+    window.history.back();
   }
 
   public refresh(): void {

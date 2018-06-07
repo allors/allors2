@@ -1,277 +1,246 @@
 <mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
+  <mat-toolbar-row fxLayout="row">
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+    <span fxFlex>{{title}}</span>
+  </mat-toolbar-row>
 </mat-toolbar>
 
-<div *ngIf="isEmail" >
-  <div>
-    <mat-card *ngIf="communicationEvent">
-      <mat-card-title>{{itemTitle}}</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
+<div style="padding: 20px;">
+
+  <div *ngIf="communicationEvent" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+
+    <mat-card *ngIf="isEmail">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>{{itemTitle}}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content fxFlex fxFill>
+
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+            display="Name" label="Purposes"></a-mat-static>
+        </div>
 
         <div>
-          <div>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
-              label="Status"></a-mat-static>
-            <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
-              display="Name" label="Purposes"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName"
-              label="From"></a-mat-static>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName"
-              label="To"></a-mat-static>
-          </div>
-          <div class="grid-1">
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="SubjectTemplate"
-              label="Subject"></a-mat-static>
-            <a-mat-textarea  [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body"></a-mat-textarea>
-          </div>
-          <div>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
-              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualStart">
-              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledEnd">
-              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualEnd">
-              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-          </div>
-          <div>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
-          </div>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" display="displayName" label="From"></a-mat-static>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" display="displayName" label="To"></a-mat-static>
+        </div>
+
+        <div >
+          <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="SubjectTemplate" label="Subject"></a-mat-static>
+          <a-mat-textarea [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body"></a-mat-textarea>
+        </div>
+
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <mat-form-field *ngIf="communicationEvent.ScheduledStart">
+            <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualStart">
+            <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ScheduledEnd">
+            <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualEnd">
+            <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+        </div>
+        <div>
+          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
 
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="'/party/' + this.party.id + '/communicationevent/emailcommunication/' + this.communicationEvent.id">Edit</button>
       </mat-card-actions>
     </mat-card>
-  </div>
-</div>
 
-<div *ngIf="isLetter" >
-  <div>
-    <mat-card *ngIf="communicationEvent">
-      <mat-card-title>{{itemTitle}}</mat-card-title>
+    <mat-card *ngIf="isLetter">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>{{itemTitle}}</mat-card-title>
+      </mat-card-header>
       <mat-divider></mat-divider>
       <mat-card-content>
 
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+            display="Name" label="Purposes"></a-mat-static>
+        </div>
         <div>
-          <div>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
-              label="Status"></a-mat-static>
-            <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
-              display="Name" label="Purposes"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName"
-              label="Sender"></a-mat-static>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName"
-              label="Receiver"></a-mat-static>
-          </div>
-          <div class="grid-1">
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName"
-              label="Postal Address"></a-mat-static>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
-            <a-mat-textarea  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true"></a-mat-textarea>
-          </div>
-          <div>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
-              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualStart">
-              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledEnd">
-              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualEnd">
-              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-          </div>
-          <div>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
-          </div>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" display="displayName" label="Sender"></a-mat-static>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" display="displayName" label="Receiver"></a-mat-static>
+        </div>
+        <div >
+          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName" label="Postal Address"></a-mat-static>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true"></a-mat-textarea>
+        </div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <mat-form-field *ngIf="communicationEvent.ScheduledStart">
+            <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualStart">
+            <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ScheduledEnd">
+            <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualEnd">
+            <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+        </div>
+        <div>
+          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
 
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="'/party/' + this.party.id + '/communicationevent/lettercorrespondence/' + this.communicationEvent.id">Edit</button>
       </mat-card-actions>
     </mat-card>
-  </div>
-</div>
 
-<div *ngIf="isMeeting" >
-  <div>
-    <mat-card *ngIf="communicationEvent">
-      <mat-card-title>Meeting</mat-card-title>
-      <mat-divider></mat-divider>
+    <mat-card *ngIf="isMeeting">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Meeting</mat-card-title>
+      </mat-card-header>
+
       <mat-card-content>
 
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
+        </div>
         <div>
-          <div>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
-              label="Status"></a-mat-static>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-mat-static>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-static>
-          </div>
-          <div class="grid-1">
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
-            <a-mat-textarea  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true"></a-mat-textarea>
-          </div>
-          <div>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
-              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualStart">
-              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledEnd">
-              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualEnd">
-              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-          </div>
-          <div>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
-          </div>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" display="PartyName"></a-mat-static>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-static>
+        </div>
+        <div >
+          <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true"></a-mat-textarea>
+        </div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <mat-form-field *ngIf="communicationEvent.ScheduledStart">
+            <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualStart">
+            <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ScheduledEnd">
+            <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualEnd">
+            <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+        </div>
+        <div>
+          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
 
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="'/party/' + this.party.id + '/communicationevent/facetofacecommunication/' + this.communicationEvent.id">Edit</button>
       </mat-card-actions>
     </mat-card>
-  </div>
-</div>
 
-<div *ngIf="isPhone" >
-  <div>
-    <mat-card *ngIf="communicationEvent">
-      <mat-card-title>{{itemTitle}}</mat-card-title>
-      <mat-divider></mat-divider>
+    <mat-card *ngIf="isPhone">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>{{itemTitle}}</mat-card-title>
+      </mat-card-header>
+
       <mat-card-content>
-
-        <div>
-          <div>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
-              label="Status"></a-mat-static>
-            <a-mat-static  *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
-              display="Name" label="Purposes"></a-mat-static>
-          </div>
-          <div>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-mat-static>
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-mat-static>
-          </div>
-          <div class="grid-1">
-            <a-mat-static  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-static>
-            <a-mat-textarea  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" readonly="true"></a-mat-textarea>
-          </div>
-          <div>
-            <a-mat-static   [object]="communicationEvent"
-              [roleType]="m.CommunicationEvent.ContactMechanisms" display="displayName" label="Phone number"></a-mat-static>
-          </div>
-          <div>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledStart">
-              <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualStart">
-              <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ScheduledEnd">
-              <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-            <mat-form-field  *ngIf="communicationEvent.ActualEnd">
-              <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
-            </mat-form-field>
-          </div>
-          <div>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
-          </div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
+            display="Name" label="Purposes"></a-mat-static>
         </div>
-
+        <div>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" display="PartyName"></a-mat-static>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" display="PartyName"></a-mat-static>
+        </div>
+        <div >
+          <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-static>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" readonly="true"></a-mat-textarea>
+        </div>
+        <div>
+          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ContactMechanisms" display="displayName" label="Phone number"></a-mat-static>
+        </div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <mat-form-field *ngIf="communicationEvent.ScheduledStart">
+            <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualStart">
+            <input matInput placeholder="Actual Start" [value]="communicationEvent.ActualStart | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ScheduledEnd">
+            <input matInput placeholder="Scheduled End" [value]="communicationEvent.ScheduledEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+          <mat-form-field *ngIf="communicationEvent.ActualEnd">
+            <input matInput placeholder="Actual End" [value]="communicationEvent.ActualEnd | date:'MMM d, y, HH:mm'">
+          </mat-form-field>
+        </div>
+        <div>
+          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+        </div>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button mat-button [routerLink]="'/party/' + this.party.id + '/communicationevent/phonecommunication/' + this.communicationEvent.id">Edit</button>
       </mat-card-actions>
     </mat-card>
+
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Work Efforts</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content fxFlex fxFill>
+
+        <mat-list style="overflow: auto;">
+          <div *ngIf="communicationEvent.WorkEfforts.length === 0">
+            <h3>No work efforts to display.</h3>
+          </div>
+
+          <ng-template let-workEffort let-last="last" ngFor [ngForOf]="communicationEvent.WorkEfforts">
+            <mat-list-item>
+              <div mat-line [routerLink]="['/worktask/' + workEffort.id ]">
+                {{ workEffort.Name }}, {{ workEffort.WorkEffortState.Name }}
+              </div>
+
+              <p mat-line>{{ workEffort.Description }} </p>
+              <p *ngIf="workEffort.Priority" mat-line>Priority {{ workEffort.Priority.Name }} </p>
+
+              <span>
+                <div> Sched. Start: {{ workEffort.ScheduledStart | date}} </div>
+                <div> Sched. Compl.: {{ workEffort.ScheduledCompletion | date }} </div>
+                <div> Act. Start: {{ workEffort.ActualStart | date}} </div>
+                <div> Act. Compl.: {{ workEffort.ActualCompletion | date }} </div>
+              </span>
+
+              <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a [routerLink]="['/worktask/' + workEffort.id]" mat-menu-item>Edit</a>
+                  <button mat-menu-item (click)="deleteWorkEffort(workEffort)" [disabled]="!workEffort.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </span>
+
+              <mat-divider *ngIf="!last" mat-inset></mat-divider>
+            </mat-list-item>
+          </ng-template>
+        </mat-list>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button [routerLink]="['/communicationevent/' + communicationEvent.id +'/worktask']">Add new</button>
+      </mat-card-actions>
+    </mat-card>
+
   </div>
 </div>
-
-<mat-card *ngIf="communicationEvent">
-  <mat-card-title>Work Efforts</mat-card-title>
-
-  <mat-divider></mat-divider>
-  <mat-card-content>
-    
-      <mat-list>
-        <div  *ngIf="communicationEvent.WorkEfforts.length === 0"  >
-          <h3>No work efforts to display.</h3>
-        </div>
-
-        <ng-template let-workEffort let-last="last" ngFor [ngForOf]="communicationEvent.WorkEfforts">
-          <mat-list-item>
-            <div mat-line [routerLink]="['/worktask/' + workEffort.id ]">
-              {{ workEffort.Name }}, {{ workEffort.WorkEffortState.Name }}
-            </div>
-
-            <p mat-line>{{ workEffort.Description }} </p>
-            <p *ngIf="workEffort.Priority" mat-line >Priority {{ workEffort.Priority.Name }} </p>
-
-            <span      >
-              <div  > Sched. Start: {{ workEffort.ScheduledStart | date}} </div>
-              <div  > Sched. Compl.: {{ workEffort.ScheduledCompletion | date }} </div>
-              <div  > Act. Start: {{ workEffort.ActualStart | date}} </div>
-              <div  > Act. Compl.: {{ workEffort.ActualCompletion | date }} </div>
-            </span>
-
-            <span>
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <a [routerLink]="['/worktask/' + workEffort.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="deleteWorkEffort(workEffort)" [disabled]="!workEffort.CanExecuteDelete">Delete</button>
-              </mat-menu>
-            </span>
-
-          </mat-list-item>
-
-          <mat-divider *ngIf="!last" mat-inset></mat-divider>
-
-        </ng-template>
-      </mat-list>
-  </mat-card-content>
-
-  <mat-divider></mat-divider>
-  <mat-card-actions>
-    <button mat-button [routerLink]="['/communicationevent/' + communicationEvent.id +'/worktask']">+ Task</button>
-  </mat-card-actions>
-</mat-card>

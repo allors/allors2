@@ -5,6 +5,7 @@ import { Field } from '../../../../angular';
 
 @Component({
   selector: 'a-mat-datepicker',
+  styleUrls: ["./datepicker.component.scss"],
   templateUrl: './datepicker.component.html',
 })
 export class AllorsMaterialDatepickerComponent extends Field {

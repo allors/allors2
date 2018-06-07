@@ -184,22 +184,22 @@
         <a-mat-static  [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
       </div>
 
-      <div class="grid-1">
+      <div >
         <a-mat-input  [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-input>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-input  [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-static  *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-static  *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
       </div>
-      <div class="grid-1">
+      <div >
         <a-mat-textarea  [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
       </div>
     </div>
