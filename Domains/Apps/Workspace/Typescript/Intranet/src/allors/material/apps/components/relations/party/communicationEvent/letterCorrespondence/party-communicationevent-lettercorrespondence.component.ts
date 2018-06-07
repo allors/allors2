@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from '../../../../../../../domain';
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -42,6 +42,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent implements OnI
   private subscription: Subscription;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,

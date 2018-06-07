@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
 import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -41,6 +41,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   private scope: Scope;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,

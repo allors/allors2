@@ -43,6 +43,10 @@ namespace Allors
                 .WithElectronicAddressString("info@allors.com")
                 .Build();
 
+            var email2 = new EmailAddressBuilder(this.Session)
+                .WithElectronicAddressString("recipient@acme.com")
+                .Build();
+
             var ing = new BankBuilder(this.Session)
                 .WithName("ING België")
                 .WithBic("BBRUBEBB")
@@ -271,16 +275,47 @@ namespace Allors
                     .WithFromDate(DateTime.UtcNow)
                     .Build();
 
+                var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
+
                 new FaceToFaceCommunicationBuilder(this.Session)
-                    .WithDescription("Meeting")
-                    .WithSubject("review")
+                    .WithDescription($"Meeting ${i}")
+                    .WithSubject($"meeting ${i}")
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithParticipant(contact1)
                     .WithParticipant(contact2)
-                    .WithOwner(new People(this.Session).FindBy(M.Person.UserName, "administrator1"))
+                    .WithOwner(administrator)
                     .WithActualStart(DateTime.UtcNow)
                     .Build();
 
+                new EmailCommunicationBuilder(this.Session)
+                    .WithDescription($"Email ${i}")
+                    .WithSubject("email ${i}")
+                    .WithOriginator(email)
+                    .WithAddressee(email2)
+                    .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
+                    .WithOwner(administrator)
+                    .WithActualStart(DateTime.UtcNow)
+                    .Build();
+
+                new LetterCorrespondenceBuilder(this.Session)
+                    .WithDescription($"Letter ${i}")
+                    .WithSubject("letter ${i}")
+                    .WithOriginator(administrator)
+                    .WithReceiver(contact1)
+                    .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
+                    .WithOwner(administrator)
+                    .WithActualStart(DateTime.UtcNow)
+                    .Build();
+
+                new PhoneCommunicationBuilder(this.Session)
+                    .WithDescription($"Phone ${i}")
+                    .WithSubject("phone ${i}")
+                    .WithCaller(administrator)
+                    .WithReceiver(contact1)
+                    .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
+                    .WithOwner(administrator)
+                    .WithActualStart(DateTime.UtcNow)
+                    .Build();
 
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
