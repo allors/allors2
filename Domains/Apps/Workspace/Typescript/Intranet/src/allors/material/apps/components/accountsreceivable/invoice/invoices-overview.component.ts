@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -53,6 +53,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
   private page$: BehaviorSubject<number>;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,

@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -31,6 +31,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,

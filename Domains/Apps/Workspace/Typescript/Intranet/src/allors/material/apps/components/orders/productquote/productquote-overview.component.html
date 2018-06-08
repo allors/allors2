@@ -18,7 +18,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         <div>
-          <div class="grid-4_lg-2_sm-1">
+          <div>
             <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
             <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
             <a-mat-static class="col link" *ngIf="quote.Request" [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber"
@@ -40,7 +40,7 @@
               display="displayName" label="Reply to"></a-mat-static>
           </div>
 
-          <div class="grid-4_lg-2_sm-1">
+          <div>
             <mat-form-field  *ngIf="quote.IssueDate">
               <input matInput placeholder="Issue date" [value]="quote.IssueDate.toDateString()">
             </mat-form-field>

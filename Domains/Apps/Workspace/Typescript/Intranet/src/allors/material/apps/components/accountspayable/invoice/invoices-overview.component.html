@@ -60,14 +60,15 @@
 
         </mat-card-content>
       </form>
-   
+
       <mat-list fxFlex style="overflow: auto;">
         <div *ngIf="data && data.length === 0">
           <h3>No purchase invoices to display.</h3>
         </div>
 
         <ng-template let-invoice let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/accountspayable/invoice/', invoice.id])" style="cursor: pointer;">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/accountspayable/invoice/', invoice.id])"
+            style="cursor: pointer;">
 
             <h3 mat-line>From: {{invoice.BilledFrom.displayName}}</h3>
             <h3 *ngIf="invoice.BillToCustomer" mat-line>To: {{invoice.BillToCustomer.displayName}}</h3>

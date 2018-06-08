@@ -221,7 +221,7 @@
                 <div> Act. Compl.: {{ workEffort.ActualCompletion | date }} </div>
               </span>
 
-              <span>
+              <span (click)="$event.stopPropagation()">
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>

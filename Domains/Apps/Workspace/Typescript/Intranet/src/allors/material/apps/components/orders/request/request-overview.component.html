@@ -18,7 +18,7 @@
       <mat-divider></mat-divider>
       <mat-card-content>
         <div>
-          <div class="grid-4_lg-2_sm-1">
+          <div>
             <a-mat-static  [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
             <a-mat-static  [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
             <div  *ngIf="quote" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
@@ -47,7 +47,7 @@
             <a-mat-static  *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-mat-static>
           </div>
 
-          <div class="grid-4_lg-2_sm-1">
+          <div>
             <mat-form-field  *ngIf="request.RequestDate">
               <input matInput placeholder="Request date" [value]="request.RequestDate.toDateString()">
             </mat-form-field>

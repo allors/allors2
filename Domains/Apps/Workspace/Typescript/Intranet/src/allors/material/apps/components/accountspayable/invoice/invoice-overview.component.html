@@ -82,7 +82,7 @@
 
               <h4 mat-line>Total ex VAT: {{invoiceItem.TotalExVat}}</h4>
 
-              <span>
+              <span (click)="$event.stopPropagation()">
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>
                 </button>
