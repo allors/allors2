@@ -64,26 +64,26 @@
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
-          <div >
+          <div>
             <a-mat-static  *ngIf="order.CustomerReference" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-static>
           </div>
-          <div >
+          <div>
             <a-mat-static  *ngIf="order.Description" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
           </div>
-          <div >
+          <div>
             <a-mat-static  *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
           </div>
-          <div >
+          <div>
             <a-mat-textarea  *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
           </div>
-          <div >
+          <div>
             <a-mat-static  *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
           </div>
-          <div >
+          <div>
             <a-mat-textarea  *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
           </div>
 
-          <div class="grid-2_sm-1">
+          <div>
             <p class="col mat-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
           </div>

@@ -261,6 +261,12 @@ namespace Allors
                     .WithFromDate(DateTime.UtcNow)
                     .Build();
 
+                new SupplierRelationshipBuilder(this.Session)
+                    .WithSupplier(acme)
+                    .WithInternalOrganisation(internalOrganisation)
+                    .WithFromDate(DateTime.UtcNow)
+                    .Build();
+
                 new OrganisationContactRelationshipBuilder(this.Session)
                     .WithOrganisation(acme)
                     .WithContact(contact1)
@@ -377,7 +383,7 @@ line2")
                     .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
                     .Build();
 
-                var invoice = new SalesInvoiceBuilder(this.Session)
+                var salesInvoice = new SalesInvoiceBuilder(this.Session)
                     .WithInvoiceNumber("1")
                     .WithBillToCustomer(acme)
                     .WithBillToContactMechanism(acme.PartyContactMechanisms[0].ContactMechanism)
@@ -388,6 +394,43 @@ line2")
                     .WithCustomerReference("a reference number")
                     .WithDescription("Sale of 1 used Aircraft Towbar")
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                    .WithVatRegime(new VatRegimes(this.Session).Assessable)
+                    .Build();
+
+                var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
+                    .WithDescription("first item")
+                    .WithProduct(good)
+                    .WithActualUnitPrice(3000)
+                    .WithQuantity(1)
+                    .WithMessage(@"line1
+line2")
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .Build();
+
+                var purchaseInvoiceItem2 = new PurchaseInvoiceItemBuilder(this.Session)
+                    .WithDescription("second item")
+                    .WithActualUnitPrice(2000)
+                    .WithQuantity(2)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
+                    .Build();
+
+                var purchaseInvoiceItem3 = new PurchaseInvoiceItemBuilder(this.Session)
+                    .WithDescription("Fee")
+                    .WithActualUnitPrice(100)
+                    .WithQuantity(1)
+                    .WithInvoiceItemType(new InvoiceItemTypes(this.Session).Fee)
+                    .Build();
+
+                var pruchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
+                    .WithInvoiceNumber("1")
+                    .WithBilledFrom(acme)
+                    .WithBillToCustomer(internalOrganisation)
+                    .WithPurchaseInvoiceItem(purchaseInvoiceItem1)
+                    .WithPurchaseInvoiceItem(purchaseInvoiceItem2)
+                    .WithPurchaseInvoiceItem(purchaseInvoiceItem3)
+                    .WithCustomerReference("a reference number")
+                    .WithDescription("Purchase of 1 used Aircraft Towbar")
+                    .WithPurchaseInvoiceType(new PurchaseInvoiceTypes(this.Session).PurchaseInvoice)
                     .WithVatRegime(new VatRegimes(this.Session).Assessable)
                     .Build();
 

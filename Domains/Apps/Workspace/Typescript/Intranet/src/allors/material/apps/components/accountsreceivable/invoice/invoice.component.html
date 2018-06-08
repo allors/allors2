@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="grid-3_md-1">
+    <div>
       <a-mat-autocomplete  *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer"
         [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
       <div>
@@ -53,7 +53,7 @@
       </div>
     </div>
 
-    <div class="grid-3_md-1">
+    <div>
       <a-mat-autocomplete  *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer"
         [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
       <div>
@@ -96,7 +96,7 @@
       </div>
     </div>
 
-    <div class="grid-3_md-1">
+    <div>
       <a-mat-autocomplete  *ngIf="showBillToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer"
         [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="billToEndCustomerSelected($event)"
         label="Bill to end customer"></a-mat-autocomplete>
@@ -135,7 +135,7 @@
       </div>
     </div>
 
-    <div class="grid-3_md-1">
+    <div>
       <a-mat-autocomplete  *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer"
         [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="shipToEndCustomerSelected($event)"
         label="Ship to end customer"></a-mat-autocomplete>
@@ -174,27 +174,27 @@
       </div>
     </div>
 
-    <div class="grid-2_sm-1">
+    <div>
       <a-mat-select  [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
       <a-mat-static  [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
     </div>
 
-    <div >
+    <div>
       <a-mat-input  [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-input>
     </div>
-    <div >
+    <div>
       <a-mat-input  [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
     </div>
-    <div >
+    <div>
       <a-mat-static  *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
     </div>
-    <div >
+    <div>
       <a-mat-textarea  [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
     </div>
-    <div >
+    <div>
       <a-mat-static  *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
     </div>
-    <div >
+    <div>
       <a-mat-textarea  [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
     </div>
     <mat-divider></mat-divider>

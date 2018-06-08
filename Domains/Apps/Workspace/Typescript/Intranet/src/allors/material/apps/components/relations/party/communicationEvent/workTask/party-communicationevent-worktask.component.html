@@ -1,17 +1,17 @@
 
   <form #form="ngForm" *ngIf="workTask" (submit)="save()" >
 
-    <div >
+    <div>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
         label="Status"></a-mat-select>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
     </div>
 
-    <div >
+    <div>
       <a-mat-textarea  [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
     </div>
 
-    <div >
+    <div>
       <mat-form-field >
         <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
           <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>

@@ -15,7 +15,7 @@
           </div>
         </div>
         <div>
-          <div >
+          <div>
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
             <a-mat-select  *ngIf="stores.length > 1 && !order.Store" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores"
               display="Name"></a-mat-select>
@@ -27,7 +27,7 @@
         <a-mat-select  *ngIf="stores.length > 1" [object]="order" [roleType]="m.SalesOrder.Store" [options]="stores" display="Name"></a-mat-select>
       </div>
 
-      <div class="grid-3_md-1">
+      <div>
         <a-mat-autocomplete  *ngIf="showShipToOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
         <div>
@@ -68,7 +68,7 @@
         </div>
       </div>
 
-      <div class="grid-3_md-1">
+      <div>
         <a-mat-autocomplete  *ngIf="showBillToOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
         <div>
@@ -104,7 +104,7 @@
         </div>
       </div>
 
-      <div class="grid-3_md-1">
+      <div>
         <a-mat-autocomplete  *ngIf="showShipToEndCustomerOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="shipToEndCustomerSelected($event)" label="Ship to end customer"></a-mat-autocomplete>
         <div>
@@ -142,7 +142,7 @@
         </div>
       </div>
 
-      <div class="grid-3_md-1">
+      <div>
         <a-mat-autocomplete  *ngIf="showBillToEndCustomerOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer" [filter]="stateService.customersFilter.create(scope)"
           display="Name" (onChange)="billToEndCustomerSelected($event)" label="Bill to end customer"></a-mat-autocomplete>
         <div>
@@ -179,27 +179,27 @@
         </div>
       </div>
 
-      <div class="grid-2_sm-1">
+      <div>
         <a-mat-select  [object]="order" [roleType]="m.SalesOrder.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
         <a-mat-static  [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
       </div>
 
-      <div >
+      <div>
         <a-mat-input  [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-input>
       </div>
-      <div >
+      <div>
         <a-mat-input  [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
       </div>
-      <div >
+      <div>
         <a-mat-static  *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
       </div>
-      <div >
+      <div>
         <a-mat-static  *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
       </div>
     </div>

@@ -1,92 +1,102 @@
-<mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+
+      <form novalidate [formGroup]="searchForm">
+
+        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
+          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+            <mat-label>Search by Supplier</mat-label>
+            <input matInput autocomplete="off" formControlName="supplier">
+            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+              <mat-icon>expand_more</mat-icon>
+            </a>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+            <mat-label>Search by Supplier</mat-label>
+            <input matInput formControlName="supplier">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>From Internal Organisation</mat-label>
+            <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>Invoice Number</mat-label>
+            <input matInput formControlName="invoiceNumber">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>Customer Reference</mat-label>
+            <input matInput formControlName="reference">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state" name="state" [(ngModel)]="selectedPurchaseInvoiceState">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let objectState of purchaseInvoiceStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div fxFlex="none" *ngIf="advancedSearch">
+            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+              <mat-icon>close</mat-icon>
+            </a>
+          </div>
+
+        </mat-card-content>
+      </form>
+   
+      <mat-list fxFlex style="overflow: auto;">
+        <div *ngIf="data && data.length === 0">
+          <h3>No purchase invoices to display.</h3>
+        </div>
+
+        <ng-template let-invoice let-last="last" ngFor [ngForOf]="data">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/accountspayable/invoice/', invoice.id])" style="cursor: pointer;">
+
+            <h3 mat-line>From: {{invoice.BilledFrom.displayName}}</h3>
+            <h3 *ngIf="invoice.BillToCustomer" mat-line>To: {{invoice.BillToCustomer.displayName}}</h3>
+            <h4 mat-line>number: {{invoice.InvoiceNumber }} reference: {{invoice.CustomerReference}} ({{invoice.PurchaseInvoiceState.Name}})</h4>
+            <h4 mat-line>{{invoice.Description}}</h4>
+            <p mat-line> last modified: {{ invoice.LastModifiedDate | date : shortDate }} </p>
+
+            <div (click)="$event.stopPropagation()">
+              <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <a [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-menu-item>Details</a>
+                <a [routerLink]="['/printinvoice/' + invoice.id ]" mat-menu-item>Print</a>
+              </mat-menu>
+            </div>
+
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          </mat-list-item>
+        </ng-template>
+      </mat-list>
+    </mat-card>
   </div>
-</mat-toolbar>
 
-<mat-card>
-  <div >
-    <form novalidate [formGroup]="searchForm">
-      <div>
-        <mat-form-field >
-        <input matInput placeholder="Supplier" formControlName="supplier">
-      </mat-form-field>
-      <mat-form-field >
-        <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation"
-          placeholder="From Internal Organisation">
-          <mat-option>None</mat-option>
-          <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field >
-        <input matInput placeholder="Number" formControlName="invoiceNumber">
-      </mat-form-field>
-      <mat-form-field >
-        <input matInput placeholder="Customer Reference" formControlName="reference">
-      </mat-form-field>
-      <mat-form-field >
-        <mat-select formControlName="state" name="state" [(ngModel)]="selectedPurchaseInvoiceState" placeholder="State">
-          <mat-option>None</mat-option>
-          <mat-option *ngFor="let objectState of purchaseInvoiceStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
-        </mat-select>
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </div>
-    </form>
-  </div>
+  <mat-toolbar fxFlex fxLayout="row">
+    <span fxFlex></span>
+    <a mat-raised-button [routerLink]="['/purchaseinvoice']">
+      Add New
+    </a>
+  </mat-toolbar>
 
-  <mat-divider></mat-divider>
-
-  
-    <mat-list>
-      <div  *ngIf="data && data.length === 0"  >
-        <h3>No purchase invoices to display.</h3>
-      </div>
-      <ng-template let-invoice let-last="last" ngFor [ngForOf]="data">
-        <mat-list-item>
-
-          <h3 [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line> From: {{invoice.BilledFrom.displayName}}</h3>
-          <h3 *ngIf="invoice.BillToCustomer" [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-line>To: {{invoice.BillToCustomer.displayName}}</h3>
-          <h4 mat-line>number: {{invoice.InvoiceNumber }} reference: {{invoice.CustomerReference}} ({{invoice.PurchaseInvoiceState.Name}})</h4>
-          <h4 mat-line>{{invoice.Description}}</h4>
-          <p mat-line> last modified: {{ invoice.LastModifiedDate | date : shortDate }} </p>
-
-          <span flex></span>
-
-          <span      >
-            <div  > {{ invoice.CreationDate | date }} </div>
-            <div  > {{ invoice.LastModifiedDate | date : shortDate }} </div>
-          </span>
-
-          <span>
-            <button mat-icon-button [mat-menu-trigger-for]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <a [routerLink]="['/accountspayable/invoice/' + invoice.id ]" mat-menu-item>Details</a>
-              <a [routerLink]="['/printinvoice/' + invoice.id ]" mat-menu-item>Print</a>
-            </mat-menu>
-          </span>
-
-        </mat-list-item>
-        <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </ng-template>
-    </mat-list>
-</mat-card>
-
-<mat-card body *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
-
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/purchaseinvoice']">
-  <mat-icon>add</mat-icon>
-</a>
+</div>

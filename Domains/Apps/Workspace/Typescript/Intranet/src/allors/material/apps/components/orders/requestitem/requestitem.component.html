@@ -17,17 +17,17 @@
         <a-mat-datepicker  [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
       </div>
 
-      <div >
+      <div>
         <a-mat-input  [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
         <a-mat-select  [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
         <a-mat-static  [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
         <a-mat-input  [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-input>
       </div>
 
-      <div >
+      <div>
         <a-mat-textarea  [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-textarea>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-textarea>
       </div>
     </div>

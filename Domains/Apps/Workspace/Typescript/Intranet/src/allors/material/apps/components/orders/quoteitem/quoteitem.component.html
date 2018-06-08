@@ -12,7 +12,7 @@
         </div>
       </div>
 
-      <div >
+      <div>
         <a-mat-autocomplete  [object]="quoteItem" [roleType]="m.QuoteItem.Product" [options]="goods" display="Name" [filter]="stateService.goodsFilter.create(scope)"
           (onChange)="goodSelected($event)"></a-mat-autocomplete>
       </div>
@@ -24,24 +24,24 @@
         <a-mat-static  [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-static>
       </div>
 
-      <div class="grid-2_sm-1">
+      <div>
         <a-mat-datepicker  [object]="quoteItem" [roleType]="m.QuoteItem.RequiredByDate" disabled="true"></a-mat-datepicker>
         <a-mat-datepicker  [object]="quoteItem" [roleType]="m.QuoteItem.EstimatedDeliveryDate"></a-mat-datepicker>
       </div>
 
-      <div >
+      <div>
         <a-mat-static  *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.Details"></a-mat-textarea>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-mat-textarea>
       </div>
-      <div >
+      <div>
         <a-mat-static  *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-static>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"></a-mat-textarea>
       </div>
     </div>

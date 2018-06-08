@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
@@ -31,6 +31,7 @@ export { PartyContactMechanismEmailAddressInlineComponent } from './party-contac
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
+    FlexLayoutModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,

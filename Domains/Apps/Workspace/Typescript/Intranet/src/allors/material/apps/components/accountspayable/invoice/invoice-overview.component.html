@@ -1,71 +1,54 @@
 <mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button>
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
+  <mat-toolbar-row fxLayout="row">
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+    <span fxFlex>{{title}}</span>
+  </mat-toolbar-row>
 </mat-toolbar>
 
-<div *ngIf="invoice" >
-  <div>
-    <mat-card>
-      <mat-card-title>Purchase Invoice</mat-card-title>
-      <mat-divider></mat-divider>
+<div style="padding: 20px;">
+  <div *ngIf="invoice" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Purchase Invoice</mat-card-title>
+      </mat-card-header>
+
       <mat-card-content>
         <div>
-          <div class="grid-3_lg-2_sm-1">
-            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
-            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+            <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
+            <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
             <a-mat-static class="col link" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" display="PartyName" label="From"
               [routerLink]="['/relations/organisation/' + invoice.BilledFrom.id ]"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.BillToCustomer" >
-            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
-            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" display="displayName"
-              label="Bill to ContactMechanism"></a-mat-static>
+          <div *ngIf="invoice.BillToCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
+            <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" display="displayName" label="Bill to ContactMechanism"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.ShipToEndCustomer" >
-            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
-            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" display="displayName"
-              label="Ship to Address"></a-mat-static>
+          <div *ngIf="invoice.ShipToEndCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
+            <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
-          <div >
-            <a-mat-static  *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-static  *ngIf="invoice.Description" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-static  *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-textarea  *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
-          </div>
-          <div >
-            <a-mat-static  *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
-          </div>
-          <div >
-            <a-mat-textarea  *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment"
-              label="Invoice Internal Comment"></a-mat-textarea>
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-static *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
+            <a-mat-static *ngIf="invoice.Description" [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-static>
+            <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment" label="Order Comment"></a-mat-static>
+            <a-mat-textarea *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.PurchaseInvoice.Comment" label="Invoice Comment"></a-mat-textarea>
+            <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
+            <a-mat-textarea *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.PurchaseInvoice.InternalComment" label="Invoice Internal Comment"></a-mat-textarea>
           </div>
 
-          <div layout="grid-2_sm-1">
-            <p > created: {{ invoice.CreationDate | date}} by {{ invoice.CreatedBy.displayName}}</p>
-            <p > last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy.displayName}}</p>
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+            <p> created: {{ invoice.CreationDate | date}} by {{ invoice.CreatedBy.displayName}}</p>
+            <p> last modified: {{ invoice.LastModifiedDate | date}} by {{ invoice.LastModifiedBy.displayName}}</p>
           </div>
         </div>
 
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id]">Edit</button>
         <button *ngIf="!invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id]">View</button>
@@ -77,13 +60,15 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card>
-      <mat-card-title>Invoice Items</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Invoice Items</mat-card-title>
+      </mat-card-header>
 
-        <mat-list>
-          <div  *ngIf="invoice.PurchaseInvoiceItems.length === 0"  >
+      <mat-card-content fxFlex fxFill>
+
+        <mat-list style="overflow: auto;">
+          <div *ngIf="invoice.PurchaseInvoiceItems.length === 0">
             <h3>No Items to display.</h3>
           </div>
 
@@ -112,13 +97,11 @@
           </ng-template>
         </mat-list>
       </mat-card-content>
-      <mat-divider></mat-divider>
+
       <mat-card-actions>
-        <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id +'/item']">+ Add</button>
+        <button *ngIf="invoice.CanWritePurchaseInvoiceItems" mat-button [routerLink]="['/purchaseinvoice/' + invoice.id +'/item']">Add new</button>
       </mat-card-actions>
     </mat-card>
   </div>
 
-  <div>
-  </div>
 </div>

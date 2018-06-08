@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../../../domain';
 import { PullRequest, Query } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -26,6 +26,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
   public m: MetaDomain;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
   ) {

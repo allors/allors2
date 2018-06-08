@@ -39,7 +39,7 @@
             <a-mat-static  [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
           </div>
 
-          <div class="grid-2_sm-1">
+          <div>
             <p class="col mat-caption tc-grey-500"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
           </div>

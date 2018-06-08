@@ -34,7 +34,7 @@
         <a-mat-static  *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
       </div>
 
-      <div >
+      <div>
         <a-mat-static  [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
         <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
           label="Item VAT regime"></a-mat-select>
@@ -57,20 +57,20 @@
       </mat-form-field>
       <br/> -->
 
-      <div >
+      <div>
         <a-mat-textarea  [object]="orderItem" [roleType]="m.SalesOrderItem.Details"></a-mat-textarea>
       </div>
-      <div >
+      <div>
         <a-mat-static  *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Item Comment"></a-mat-textarea>
       </div>
-      <div >
+      <div>
         <a-mat-static  *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"
           label="Quote Internal Comment"></a-mat-static>
       </div>
-      <div >
+      <div>
         <a-mat-textarea  [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment" label="Order Item Internal Comment"></a-mat-textarea>
       </div>
     </div>
@@ -79,7 +79,7 @@
 
     <mat-card-actions>
         <div class="pad grid-12">
-            <button *ngIf="orderItem.CanWriteQuantityOrdered" class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
+            <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
             <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button (click)="goBack()" type="button">CANCEL</button>
             <button *ngIf="!orderItem.CanWriteQuantityOrdered"  mat-button (click)="goBack()" type="button">DONE</button>
             <div>

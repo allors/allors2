@@ -13,6 +13,7 @@ import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
@@ -22,6 +23,7 @@ import { PartyContactMechanismInlineModule } from '../../relations/party/contact
 import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
 
 import { InvoiceComponent } from './invoice.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 export { InvoiceComponent } from './invoice.component';
 
 @NgModule({
@@ -33,7 +35,6 @@ export { InvoiceComponent } from './invoice.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
@@ -41,10 +42,12 @@ export { InvoiceComponent } from './invoice.component';
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
+    FlexLayoutModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,

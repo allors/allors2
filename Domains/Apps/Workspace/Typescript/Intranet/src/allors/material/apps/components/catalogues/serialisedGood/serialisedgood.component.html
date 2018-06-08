@@ -13,14 +13,14 @@
         <a-mat-input  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
       </div>
 
-      <div >
+      <div>
         <a-mat-select  [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
         <a-mat-datepicker  [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
         <a-mat-select  [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
         <a-mat-select  [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
       </div>
 
-      <div >
+      <div>
         <div>
           <div fxLayout fxLayoutGap="1em">
             <mat-form-field >
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <div >
+      <div>
         <a-mat-select  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships"
           display="Name"></a-mat-select>
         <a-mat-autocomplete  [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [filter]="organisationFilter.create(scope)"
@@ -188,7 +188,7 @@
 
   <mat-card-actions>
     <div class="pad grid-12">
-      <button class="col-2" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
+      <button  mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
       <button  mat-button (click)="goBack()" type="button">CANCEL</button>
       <div>
         <button  mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>

@@ -1,17 +1,17 @@
 
   <form #form="ngForm"  *ngIf="workTask" (submit)="save()">
 
-    <div >
+    <div>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
         label="Status"></a-mat-select>
       <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
     </div>
 
-    <div >
+    <div>
       <a-mat-textarea  [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
     </div>
 
-    <div class="grid-3_md-1">
+    <div>
       <a-mat-autocomplete  [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(scope)"
         (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
       <div>

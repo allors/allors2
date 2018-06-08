@@ -35,7 +35,7 @@
               [routerLink]="['/relations/person/' + request.ContactPerson.id ]"></a-mat-static>
           </div>
 
-          <div >
+          <div>
             <a-mat-static  *ngIf="request.FullfillContactMechanism" [object]="request" [roleType]="m.Request.FullfillContactMechanism"
               display="displayName" label="Reply to"></a-mat-static>
           </div>
@@ -56,17 +56,17 @@
             </mat-form-field>
           </div>
 
-          <div >
+          <div>
             <a-mat-static  *ngIf="request.Description" [object]="request" [roleType]="m.Request.Description"></a-mat-static>
           </div>
-          <div >
+          <div>
             <a-mat-textarea  *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
           </div>
-          <div >
+          <div>
             <a-mat-textarea  *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
           </div>
 
-          <div class="grid-2_sm-1">
+          <div>
             <p class="col mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
           </div>
