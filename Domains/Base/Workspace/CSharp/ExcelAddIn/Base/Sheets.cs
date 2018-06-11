@@ -21,7 +21,7 @@
                 {
                     var interopWorksheet = (Microsoft.Office.Interop.Excel.Worksheet)obj;
                     var vstoWorksheet = this.Host.GetVstoWorksheet(interopWorksheet);
-                    if (!this.SheetByVstoWorksheet.ContainsKey(vstoWorksheet))
+                    if (vstoWorksheet != null && !this.SheetByVstoWorksheet.ContainsKey(vstoWorksheet))
                     {
                         var sheet = this.Instantiate(vstoWorksheet);
                         if (sheet != null)
