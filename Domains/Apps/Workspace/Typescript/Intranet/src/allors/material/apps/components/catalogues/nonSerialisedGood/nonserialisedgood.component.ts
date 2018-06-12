@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from '../../../../../domain';
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -58,6 +58,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,

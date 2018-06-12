@@ -187,7 +187,7 @@
             <input disabled=true matInput placeholder="Last Execution" [value]="repeatingInvoice.FinalExecutionDate?.toDateString()">
           </mat-form-field>
         </div>
-        <div *ngIf="repeatingInvoice" class="grid-2_xs-1 pad-top">
+        <div *ngIf="repeatingInvoice" >
           <mat-form-field>
             <input disabled=true matInput placeholder="Next Execution" [value]="repeatingInvoice.NextExecutionDate.toDateString()">
           </mat-form-field>

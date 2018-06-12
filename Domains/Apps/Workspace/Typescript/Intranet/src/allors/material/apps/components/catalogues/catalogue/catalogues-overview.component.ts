@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -24,7 +24,7 @@ interface SearchData {
 @Component({
   templateUrl: './catalogues-overview.component.html',
 })
-export class CataloguesOverviewComponent implements OnDestroy {
+export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Catalogues';
   public total: number;
@@ -33,7 +33,6 @@ export class CataloguesOverviewComponent implements OnDestroy {
   public filtered: Catalogue[];
 
   private refresh$: BehaviorSubject<Date>;
-  private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -57,26 +56,21 @@ export class CataloguesOverviewComponent implements OnDestroy {
     this.searchForm = this.formBuilder.group({
       name: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-        internalOrganisationId,
-      ];
-    }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+    .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+      return [data, date, internalOrganisationId];
+    }, [] as [SearchData, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .switchMap(([data, , internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -93,7 +87,6 @@ export class CataloguesOverviewComponent implements OnDestroy {
           {
             name: 'catalogues',
             objectType: m.Catalogue,
-            page: new Page({ skip: 0, take }),
             predicate,
             include: [
               new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
@@ -113,18 +106,14 @@ export class CataloguesOverviewComponent implements OnDestroy {
       });
   }
 
-  public more(): void {
-    this.page$.next(this.data.length + 50);
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  public goBack(): void {
+    window.history.back();
   }
 
   public refresh(): void {

@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -39,11 +39,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 

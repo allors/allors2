@@ -135,8 +135,8 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kg").WithLocale(dutchLocale).Build())
                 .Build();
 
-            new ProductTypeBuilder(this.Session)
-                .WithName($"Gizmo")
+            var productType = new ProductTypeBuilder(this.Session)
+                .WithName($"Gizmo Serialized")
                 .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afmeting").WithLocale(dutchLocale).Build())
@@ -149,21 +149,25 @@ namespace Allors
                 .Build();
 
             var productCategory1 = new ProductCategoryBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
                 .WithName("Best selling gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Meest verkochte gizmo's").WithLocale(dutchLocale).Build())
                 .Build();
 
             var productCategory2 = new ProductCategoryBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
                 .WithName("Big Gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Grote Gizmo's").WithLocale(dutchLocale).Build())
                 .Build();
 
             var productCategory3 = new ProductCategoryBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
                 .WithName("Small gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kleine gizmo's").WithLocale(dutchLocale).Build())
                 .Build();
 
             new CatalogueBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
                 .WithName("New gizmo's")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe gizmo's").WithLocale(dutchLocale).Build())
                 .WithDescription("Latest in the world of Gizmo's")
@@ -183,13 +187,15 @@ namespace Allors
 
             var brand1 = new BrandBuilder(this.Session).WithName("brand 1").WithModel(model1Brand1).WithModel(model2Brand1).Build();
 
+            var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
+
             var good = new GoodBuilder(this.Session)
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithStandardFeature(brand1)
@@ -199,7 +205,21 @@ namespace Allors
             var goodInventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
             goodInventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
+            var good2 = new GoodBuilder(this.Session)
+                .WithName("Tiny red round gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
+                .WithDescription("Perfect red with nice curves")
+                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
+                .WithSku("10102")
+                .WithVatRate(vatRate)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                .WithPrimaryProductCategory(productCategory3)
+                .WithStandardFeature(brand1)
+                .WithStandardFeature(model1Brand1)
+                .Build();
 
+            var good2InventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithGood(good2).WithSerialNumber("1").Build();
+            
             this.Session.Derive();
 
             for (int i = 0; i < 100; i++)

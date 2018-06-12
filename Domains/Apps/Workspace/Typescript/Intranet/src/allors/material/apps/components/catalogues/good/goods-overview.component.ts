@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -39,7 +39,7 @@ interface SearchData {
 @Component({
   templateUrl: './goods-overview.component.html',
 })
-export class GoodsOverviewComponent implements OnDestroy {
+export class GoodsOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
   public title = 'Products';
   public total: number;
@@ -89,7 +89,6 @@ export class GoodsOverviewComponent implements OnDestroy {
   public manufacturer: Organisation;
 
   private refresh$: BehaviorSubject<Date>;
-  private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -131,29 +130,24 @@ export class GoodsOverviewComponent implements OnDestroy {
       supplier: [''],
       state: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-          date,
-          internalOrganisationId,
-        ];
-      }, [] as [SearchData, number, Date, InternalOrganisation],
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+        return [data, date, internalOrganisationId];
+      }, [] as [SearchData, Date, InternalOrganisation],
     );
 
     const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .switchMap(([data, , internalOrganisationId]) => {
           const fetches: Fetch[] = [
             this.fetcher.internalOrganisation,
           ];
@@ -415,7 +409,6 @@ export class GoodsOverviewComponent implements OnDestroy {
                   ],
                   name: 'goods',
                   objectType: m.Good,
-                  page: new Page({ skip: 0, take }),
                   predicate: goodsPredicate,
                 }),
               ];
@@ -438,9 +431,12 @@ export class GoodsOverviewComponent implements OnDestroy {
       );
   }
 
-  public more(): void {
-    this.page$.next(this.data.length + 50);
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
+
 
   public refresh(): void {
     this.refresh$.next(new Date());
@@ -492,12 +488,6 @@ export class GoodsOverviewComponent implements OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   public onView(good: Good): void {

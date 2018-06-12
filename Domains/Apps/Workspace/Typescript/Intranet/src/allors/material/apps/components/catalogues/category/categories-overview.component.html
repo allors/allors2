@@ -1,61 +1,61 @@
-<mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+
+      <form novalidate [formGroup]="searchForm">
+        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
+          <mat-form-field fxFlex fxFill appearance="outline">
+            <input matInput placeholder="Name" formControlName="name">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </mat-card-content>
+      </form>
+
+      <mat-list fxFlex style="overflow: auto;">
+        <div *ngIf="data && data.length === 0">
+          <h3>No categories to display.</h3>
+        </div>
+
+        <ng-template let-category let-last="last" ngFor [ngForOf]="data">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/category/', category.id])" style="cursor: pointer;">
+
+            <mat-icon *ngIf="!category.CategoryImage" mat-list-avatar>photo_camera</mat-icon>
+            <img *ngIf="category.CategoryImage" mat-list-avatar [src]="mediaService.url(category.CategoryImage)" />
+
+            <h3 mat-line>{{category.Name}}</h3>
+            <p mat-line>{{category.Description}} </p>
+
+            <div (click)="$event.stopPropagation()">
+              <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <a [routerLink]="'/category/' + [category.id]" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(category)">Delete</button>
+              </mat-menu>
+            </div>
+
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+
+          </mat-list-item>
+        </ng-template>
+      </mat-list>
+    </mat-card>
   </div>
-</mat-toolbar>
 
+  <mat-toolbar fxFlex fxLayout="row">
+    <span fxFlex></span>
+    <a mat-raised-button [routerLink]="['/category']">
+      Add New
+    </a>
+  </mat-toolbar>
 
-<mat-card>
-  <div>
-    <form novalidate [formGroup]="searchForm">
-      <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </form>
-  </div>
-
-  <mat-divider></mat-divider>
-  
-    <mat-list>
-      <div  *ngIf="data && data.length === 0"  >
-        <h3>No categories to display.</h3>
-      </div>
-      <ng-template let-category let-last="last" ngFor [ngForOf]="data">
-        <mat-list-item>
-          <mat-icon *ngIf="!category.CategoryImage" mat-list-avatar>photo_camera</mat-icon>
-          <img *ngIf="category.CategoryImage" mat-list-avatar [src]="mediaService.url(category.CategoryImage)"
-          />
-
-          <h3 mat-line [routerLink]="'/category/' + [category.id]"> {{category.Name}}</h3>
-          <p mat-line> {{category.Description}} </p>
-
-          <span>
-            <button mat-icon-button [mat-menu-trigger-for]="menu">
-            <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-            <a [routerLink]="'/category/' + [category.id]" mat-menu-item>Edit</a>
-            <button mat-menu-item (click)="delete(category)">Delete</button>
-            </mat-menu>
-          </span>
-        </mat-list-item>
-        <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </ng-template>
-    </mat-list>
-</mat-card>
-
-<mat-card body *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
-
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/category']">
-  <mat-icon>add</mat-icon>
-</a>
+</div>

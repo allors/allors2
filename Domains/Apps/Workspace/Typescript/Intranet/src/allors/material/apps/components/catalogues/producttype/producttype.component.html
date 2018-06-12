@@ -1,19 +1,29 @@
+<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm"  *ngIf="productType" (submit)="save()">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <div>
-      <a-mat-input  [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
-    </div>
-    <div>
-      <a-mat-select  [object]="productType" [roleType]="m.ProductType.SerialisedInventoryItemCharacteristicTypes" [options]="characteristics"
-        display="Name"></a-mat-select>
-    </div>
+    <mat-card *ngIf="productType" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-    <mat-divider></mat-divider>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-input [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
+        <a-mat-select [object]="productType" [roleType]="m.ProductType.SerialisedInventoryItemCharacteristicTypes" [options]="characteristics"
+          display="Name"></a-mat-select>
+      </div>
 
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
+    </mat-card>
 
-  </form>
+  </div>
+
+  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+    <span fxFlex></span>
+    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+  </mat-toolbar>
+
+</form>

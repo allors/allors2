@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { InternalOrganisation, ProductCategory } from '../../../../../domain';
 import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -24,20 +24,21 @@ interface SearchData {
 @Component({
   templateUrl: './categories-overview.component.html',
 })
-export class CategoriesOverviewComponent implements OnDestroy {
+export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Categories';
   public total: number;
   public searchForm: FormGroup;
   public data: ProductCategory[];
   public filtered: ProductCategory[];
+
   private refresh$: BehaviorSubject<Date>;
-  private page$: BehaviorSubject<number>;
 
   private subscription: Subscription;
   private scope: Scope;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
@@ -57,25 +58,21 @@ export class CategoriesOverviewComponent implements OnDestroy {
       name: [''],
     });
 
-    this.page$ = new BehaviorSubject<number>(50);
+  }
 
+  ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-    .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-        internalOrganisationId,
-      ];
-    }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+        return [data, date, internalOrganisationId];
+      }, [] as [SearchData, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take, ,  internalOrganisationId]) => {
+      .switchMap(([data, , internalOrganisationId]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -97,7 +94,6 @@ export class CategoriesOverviewComponent implements OnDestroy {
             ],
             name: 'categories',
             objectType: m.ProductCategory,
-            page: new Page({ skip: 0, take }),
             predicate,
           })];
 
@@ -108,18 +104,10 @@ export class CategoriesOverviewComponent implements OnDestroy {
         this.data = loaded.collections.categories as ProductCategory[];
         this.total = loaded.values.categories_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
-  }
-
-  public more(): void {
-    this.page$.next(this.data.length + 50);
-  }
-
-  public goBack(): void {
-    window.history.back();
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public ngOnDestroy(): void {
@@ -128,12 +116,16 @@ export class CategoriesOverviewComponent implements OnDestroy {
     }
   }
 
+  public goBack(): void {
+    window.history.back();
+  }
+
   public refresh(): void {
     this.refresh$.next(new Date());
   }
 
   public delete(category: ProductCategory): void {
-      this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this category?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -142,9 +134,9 @@ export class CategoriesOverviewComponent implements OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }

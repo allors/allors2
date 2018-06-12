@@ -1,63 +1,62 @@
-<mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
-  </div>
-</mat-toolbar>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-<mat-card>
-  <div>
-    <form novalidate [formGroup]="searchForm">
-      <mat-form-field>
-        <input matInput placeholder="Name" formControlName="name">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-    </form>
-  </div>
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-  <mat-divider></mat-divider>
-  
-    <mat-list>
-      <div  *ngIf="data && data.length === 0"  >
-        <h3>No catalogues to display.</h3>
-      </div>
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
-      <ng-template let-catalogue let-last="last" ngFor [ngForOf]="data">
-        <mat-list-item>
+      <form novalidate [formGroup]="searchForm">
+        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
+          <mat-form-field fxFlex fxFill appearance="outline">
+            <input matInput placeholder="Name" formControlName="name">
+            <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+        </mat-card-content>
+      </form>
 
-          <mat-icon *ngIf="!catalogue.CatalogueImage" mat-list-avatar>photo_camera</mat-icon>
-          <img *ngIf="catalogue.CatalogueImage" mat-list-avatar [src]="mediaService.url(catalogue.CatalogueImage)"
-          />
 
-          <h3 mat-line [routerLink]="'/catalogue/' +[catalogue.id]"> {{catalogue.Name}}</h3>
-          <p mat-line> {{catalogue.Description}} </p>
+      <mat-list fxFlex style="overflow: auto;">
+        <div *ngIf="data && data.length === 0">
+          <h3>No catalogues to display.</h3>
+        </div>
 
-          <span>
-                <button mat-icon-button [mat-menu-trigger-for]="menu">
+        <ng-template let-catalogue let-last="last" ngFor [ngForOf]="data">
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/catalogue/', catalogue.id])" style="cursor: pointer;">
+
+            <mat-icon *ngIf="!catalogue.CatalogueImage" mat-list-avatar>photo_camera</mat-icon>
+            <img *ngIf="catalogue.CatalogueImage" mat-list-avatar [src]="mediaService.url(catalogue.CatalogueImage)" />
+
+            <h3 mat-line>{{catalogue.Name}}</h3>
+            <p mat-line>{{catalogue.Description}} </p>
+
+            <div (click)="$event.stopPropagation()">
+              <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
+              </button>
+              <mat-menu #menu="matMenu">
                 <a [routerLink]="'/catalogue/' +[catalogue.id]" mat-menu-item>Edit</a>
                 <button mat-menu-item (click)="delete(catalogue)">Delete</button>
-                </mat-menu>
-              </span>
+              </mat-menu>
+            </div>
 
-        </mat-list-item>
-        <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </ng-template>
-    </mat-list>
-</mat-card>
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+            
+          </mat-list-item>
+        </ng-template>
+      </mat-list>
+    </mat-card>
+  </div>
 
-<mat-card body *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
+  <mat-toolbar fxFlex fxLayout="row">
+    <span fxFlex></span>
+    <a mat-raised-button [routerLink]="['/catalogue']">
+      Add New
+    </a>
+  </mat-toolbar>
 
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/catalogue']">
-  <mat-icon>add</mat-icon>
-</a>
+</div>
