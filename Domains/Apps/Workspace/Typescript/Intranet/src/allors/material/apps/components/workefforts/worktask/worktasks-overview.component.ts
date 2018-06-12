@@ -29,7 +29,7 @@ interface SearchData {
 @Component({
   templateUrl: './worktasks-overview.component.html',
 })
-export class WorkTasksOverviewComponent implements OnDestroy {
+export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   public total: number;
@@ -57,8 +57,6 @@ export class WorkTasksOverviewComponent implements OnDestroy {
   private subscription: Subscription;
   private scope: Scope;
 
-  private page$: BehaviorSubject<number>;
-
   constructor(
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
@@ -85,25 +83,18 @@ export class WorkTasksOverviewComponent implements OnDestroy {
       state: [''],
     });
 
-    this.page$ = new BehaviorSubject<number>(50);
-
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-          date,
-          internalOrganisationId,
-        ];
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+        return [data, date, internalOrganisationId];
       }, [] as [SearchData, number, Date, InternalOrganisation]);
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .switchMap(([data, , internalOrganisationId]) => {
         const m: MetaDomain = this.m;
 
         const fetches: Fetch[] = [
@@ -171,8 +162,8 @@ export class WorkTasksOverviewComponent implements OnDestroy {
                 include: [
                     new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
                     new TreeNode({ roleType: m.WorkEffort.Priority }),
+                    new TreeNode({ roleType: m.WorkEffort.CreatedBy }),
                 ],
-                page: new Page({ skip: 0, take }),
               });
 
             return this.scope
@@ -192,8 +183,13 @@ export class WorkTasksOverviewComponent implements OnDestroy {
       });
   }
 
-  public more(): void {
-    this.page$.next(this.data.length + 50);
+  ngOnInit(): void {
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   public print(worktask: WorkTask) {
@@ -202,12 +198,6 @@ export class WorkTasksOverviewComponent implements OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   public refresh(): void {

@@ -1,83 +1,99 @@
+<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm"  *ngIf="workTask" (submit)="save()">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <div>
-      <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
-        label="Status"></a-mat-select>
-      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
-    </div>
+    <mat-card *ngIf="workTask" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-    <div>
-      <a-mat-textarea  [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
-    </div>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name" label="Status"></a-mat-select>
+        <a-mat-input [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
+      </div>
 
-    <div>
-      <a-mat-autocomplete  [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(scope)"
-        (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
-      <div>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <a-mat-textarea [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
+      </div>
+
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <a-mat-autocomplete [object]="workTask" [roleType]="m.WorkTask.Customer" [filter]="stateService.customersFilter.create(scope)"
+          (onChange)="customerSelected($event)" display="Name"></a-mat-autocomplete>
+      </div>
+
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
         <div fxLayout fxLayoutGap="1em">
-          <a-mat-select fxFlex [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms"
-            display="displayName"></a-mat-select>
+          <a-mat-select fxFlex [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactMechanism = !addContactMechanism">
             <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
             <mat-icon *ngIf="addContactMechanism">close</mat-icon>
           </button>
         </div>
-        <party-contactmechanism *ngIf="workTask.Customer && addContactMechanism" [scope]="scope" (saved)="contactMechanismAdded($event)"
-          (cancelled)="contactMechanismCancelled()">
-        </party-contactmechanism>
       </div>
-      <div>
+
+      <mat-card *ngIf="workTask.Customer && addContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
+        style="margin: 1rem">
+        <mat-card-header>Add a new contact mechanism</mat-card-header>
+        <mat-card-content>
+          <party-contactmechanism [scope]="scope" (saved)="contactMechanismAdded($event)" (cancelled)="contactMechanismCancelled()">
+          </party-contactmechanism>
+        </mat-card-content>
+      </mat-card>
+
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
         <div fxLayout fxLayoutGap="1em">
-          <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.ContactPerson" [options]="contacts" display="displayName"
-            label="Contact Person"></a-mat-select>
+          <a-mat-select [object]="workTask" [roleType]="m.WorkTask.ContactPerson" [options]="contacts" display="displayName" label="Contact Person"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactPerson = !addContactPerson">
             <mat-icon *ngIf="!addContactPerson">add</mat-icon>
             <mat-icon *ngIf="addContactPerson">close</mat-icon>
           </button>
         </div>
-        <mat-tab-group dynamicHeight="true" *ngIf="workTask.Customer && addContactPerson">
-          <mat-tab label="Person">
-            <div class="pad tabInlineComponent">
-              <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event)">
-              </person-inline>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
       </div>
-    </div>
 
-    <div>
-      <mat-form-field >
-        <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
-          <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+      <mat-card *ngIf="workTask.Customer && addContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x" style="margin: 1rem">
+        <mat-card-header>Add a new contact mechanism</mat-card-header>
+        <mat-card-content>
+          <person-inline (cancelled)="addContactPerson = false" (saved)="contactPersonAdded($event)">
+          </person-inline>
+        </mat-card-content>
+      </mat-card>
 
-    <div>
-      <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-mat-select>
-      <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"
-        label="Purpose(s)"></a-mat-select>
-    </div>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <mat-form-field>
+            <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
+              <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
-    <div>
-      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-mat-input>
-      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-mat-input>
-    </div>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-select [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-mat-select>
+        <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"
+          label="Purpose(s)"></a-mat-select>
+      </div>
 
-    <div>
-      <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-      <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ActualStart" [useTime]="true"></a-mat-datepicker>
-      <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion" [useTime]="true"></a-mat-datepicker>
-      <a-mat-datepicker  [object]="workTask" [roleType]="m.WorkTask.ActualCompletion" [useTime]="true"></a-mat-datepicker>
-    </div>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-input [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-mat-input>
+        <a-mat-input [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-mat-input>
+      </div>
 
-    <mat-divider></mat-divider>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledStart" [useTime]="true"></a-mat-datepicker>
+        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualStart" [useTime]="true"></a-mat-datepicker>
+        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion" [useTime]="true"></a-mat-datepicker>
+        <a-mat-datepicker [object]="workTask" [roleType]="m.WorkTask.ActualCompletion" [useTime]="true"></a-mat-datepicker>
+      </div>
 
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
+    </mat-card>
+  </div>
 
-  </form>
+  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+    <span fxFlex></span>
+    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+  </mat-toolbar>
+
+</form>

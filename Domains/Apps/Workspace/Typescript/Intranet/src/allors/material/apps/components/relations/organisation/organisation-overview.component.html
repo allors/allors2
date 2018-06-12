@@ -14,14 +14,14 @@
       </mat-card-header>
 
       <mat-card-content fxFlex fxFill>
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
           <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
           <mat-form-field>
             <input matInput name="role" [(ngModel)]="rolesText" [readonly]="true" />
           </mat-form-field>
         </div>
 
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
           <!--
 <a-mat-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" display="Name" label="Classification"></a-mat-static>
 <a-mat-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" display="Name" label="Industry"></a-mat-static>
@@ -30,7 +30,7 @@
           <a-mat-static [object]="organisation" [roleType]="m.Organisation.TaxNumber" display="VAT number"></a-mat-static>
         </div>
 
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
           <a-mat-static *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
         </div>
         <!-- 

@@ -18,6 +18,7 @@ import {
   Saved,
   Scope,
   WorkspaceService,
+  LayoutService,
 } from '../../../../../angular';
 import {
   ContactMechanism,
@@ -75,6 +76,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -104,6 +106,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
               new TreeNode({ roleType: m.WorkTask.ContactPerson }),
+              new TreeNode({ roleType: m.WorkTask.CreatedBy }),
             ],
             name: 'worktask',
           }),

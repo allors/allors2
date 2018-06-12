@@ -1,52 +1,48 @@
 <mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
+  <mat-toolbar-row fxLayout="row">
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+    <span fxFlex>{{title}}</span>
+  </mat-toolbar-row>
 </mat-toolbar>
 
-<div *ngIf="task" >
-  <div>
-    <mat-card>
-      <mat-card-title>Task</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
+<div style="padding: 20px;">
+  <div *ngIf="task" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Task</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content fxFlex fxFill>
         <div>
-          <div class="grid-3_lg-2_sm-1">
-            <a-mat-static  [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
-            <a-mat-static  [object]="task" [roleType]="m.WorkEffort.WorkEffortNumber"></a-mat-static>
-            <a-mat-static  [object]="task" [roleType]="m.WorkEffort.WorkEffortState" display="Name" label="Status"></a-mat-static>
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+            <a-mat-static [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
+            <a-mat-static [object]="task" [roleType]="m.WorkEffort.WorkEffortNumber"></a-mat-static>
+            <a-mat-static [object]="task" [roleType]="m.WorkEffort.WorkEffortState" display="Name" label="Status"></a-mat-static>
           </div>
 
-          <div *ngIf="task.Customer" >
+          <div *ngIf="task.Customer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
             <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
             <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static>
           </div>
 
-          <div *ngIf="task.FullfillContactMechanism" >
-            <a-mat-static  [object]="task" [roleType]="m.WorkEffort.FullfillContactMechanism" display="displayName" label="Address"></a-mat-static>
+          <div *ngIf="task.FullfillContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-static [object]="task" [roleType]="m.WorkEffort.FullfillContactMechanism" display="displayName" label="Address"></a-mat-static>
           </div>
 
-          <div *ngIf="task.ContactPerson" >
-            <a-mat-static  [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
+          <div *ngIf="task.ContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-static [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
           </div>
 
-          <div>
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
             <p class="col mat-caption tc-grey-500"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
           </div>
-        </div> 
+        </div>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
         <button *ngIf="!task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
@@ -55,8 +51,5 @@
         <button *ngIf="task.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
       </mat-card-actions>
     </mat-card>
-  </div>
-
-  <div>
   </div>
 </div>
