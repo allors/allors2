@@ -1,15 +1,27 @@
+<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save(form)" novalidate>
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm"  *ngIf="salesTerm" (submit)="save()">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <div>
-      <a-mat-select  [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="orderTermTypes" display="Name"></a-mat-select>
-      <a-mat-input  [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value"></a-mat-input>
-    </div>
+    <mat-card *ngIf="salesTerm" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
-    <mat-divider></mat-divider>
+      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <a-mat-select [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="orderTermTypes" display="Name"></a-mat-select>
+        <a-mat-input [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value"></a-mat-input>
+      </div>
 
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-  </form>
+    </mat-card>
+  </div>
+
+  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+    <span fxFlex></span>
+    <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    <button mat-button (click)="goBack()" type="button">CANCEL</button>
+  </mat-toolbar>
+
+</form>

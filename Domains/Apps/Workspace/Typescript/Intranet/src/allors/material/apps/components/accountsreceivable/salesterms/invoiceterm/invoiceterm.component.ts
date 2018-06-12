@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../angular';
+import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../../angular';
 import { InvoiceTermType, SalesInvoice, SalesTerm } from '../../../../../../domain';
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -33,6 +33,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private router: Router,

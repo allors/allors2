@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -34,6 +34,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private router: Router,
