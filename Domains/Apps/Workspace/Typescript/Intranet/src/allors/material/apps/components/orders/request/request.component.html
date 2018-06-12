@@ -1,40 +1,46 @@
+<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm" *ngIf="request" (submit)="save()">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <div>
-      <div  *ngIf="!request.isNew">
-        <div>
+    <mat-card *ngIf="request" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+
+      <mat-card-content fxFlex fxFill style="overflow: auto;">
+        <div *ngIf="!request.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
           <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
-          <div>
-            <button *ngIf="request.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
-            <button *ngIf="request.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
-            <button *ngIf="request.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
-            <button *ngIf="request.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
-          </div>
         </div>
-      </div>
 
-      <div>
-        <a-mat-autocomplete  [object]="request" [roleType]="m.Request.Originator" [filter]="stateService.customersFilter.create(scope)"
-          display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
-      </div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <a-mat-autocomplete [object]="request" [roleType]="m.Request.Originator" [filter]="stateService.customersFilter.create(scope)"
+            display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
+        </div>
 
-      <div>
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms"
-              display="displayName" label="Reply to"></a-mat-select>
+            <a-mat-select fxFlex [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"
+              label="Reply to"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
             </button>
           </div>
-
-          <party-contactmechanism *ngIf="request.Originator && addContactMechanism" [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
-          </party-contactmechanism>
-
         </div>
-        <div>
+
+        <mat-card *ngIf="request.Originator && addContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
+          style="margin: 1rem">
+          <mat-card-header>Add a new contact mechanism</mat-card-header>
+          <mat-card-content>
+            <party-contactmechanism [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+            </party-contactmechanism>
+          </mat-card-content>
+        </mat-card>
+
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactPerson = !addContactPerson">
@@ -42,47 +48,52 @@
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
             </button>
           </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="request.Originator && addContactPerson">
-            <mat-tab label="Person">
-              <div class="pad tabInlineComponent">
-                <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+        </div>
+
+        <mat-card *ngIf="request.Originator && addContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
+          style="margin: 1rem">
+          <mat-card-header>Add a new contact person</mat-card-header>
+          <mat-card-content>
+              <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
                 </person-inline>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+          </mat-card-content>
+        </mat-card>
+
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-static *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+            <a-mat-static *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode" label="Country code"></a-mat-static>
+            <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <a-mat-static class="col-6_xs-12" *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
-        <div>
-          <a-mat-static class="col-6_xs-12" *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode"
-            label="Country code"></a-mat-static>
-          <a-mat-static class="col-6_xs-12" *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-datepicker [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
+          <a-mat-datepicker [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
         </div>
-      </div>
 
-      <div class="grid_sm-1">
-        <a-mat-datepicker  [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
-        <a-mat-datepicker  [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
-      </div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <a-mat-input [object]="request" [roleType]="m.Request.Description"></a-mat-input>
+          <a-mat-textarea [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
+          <a-mat-textarea [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
+        </div>
 
-      <div>
-        <a-mat-input  [object]="request" [roleType]="m.Request.Description"></a-mat-input>
-      </div>
-      <div>
-        <a-mat-textarea  [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-      </div>
-      <div>
-        <a-mat-textarea  [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
-      </div>
-      <mat-divider></mat-divider>
-    </div>
+      </mat-card-content>
 
-    <mat-card-actions>
-      <button *ngIf="request.CanWriteRequestItems" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button *ngIf="request.CanWriteRequestItems" mat-button (click)="goBack()" type="button">CANCEL</button>
-      <button *ngIf="!request.CanWriteRequestItems" mat-button (click)="goBack()" type="button">DONE</button>
-    </mat-card-actions>
+      <mat-card-actions>
+        <button *ngIf="request.CanExecuteSubmit" mat-button type="button" (click)="submit()">Submit</button>
+        <button *ngIf="request.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="request.CanExecuteHold" mat-button type="button" (click)="hold()">Pending Customer</button>
+        <button *ngIf="request.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+      </mat-card-actions>
 
-  </form>
+    </mat-card>
+  </div>
+
+  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+    <span fxFlex></span>
+    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+  </mat-toolbar>
+
+</form>

@@ -21,17 +21,17 @@
           <div>
             <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
             <a-mat-static  [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="quote.Request" [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber"
+            <a-mat-static  *ngIf="quote.Request" [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber"
               [routerLink]="['/orders/request/' + quote.Request.id]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="salesOrder" [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]"></a-mat-static>
+            <a-mat-static  *ngIf="salesOrder" [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]"></a-mat-static>
           </div>
 
           <div>
-            <a-mat-static class="col link" *ngIf="quote.Receiver.objectType.name == 'Person'" [object]="quote" [roleType]="m.Quote.Receiver"
+            <a-mat-static  *ngIf="quote.Receiver.objectType.name == 'Person'" [object]="quote" [roleType]="m.Quote.Receiver"
               display="displayName" label="To" [routerLink]="['/relations/person/' + quote.Receiver.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="quote.Receiver.objectType.name == 'Organisation'" [object]="quote" [roleType]="m.Quote.Receiver"
+            <a-mat-static  *ngIf="quote.Receiver.objectType.name == 'Organisation'" [object]="quote" [roleType]="m.Quote.Receiver"
               display="displayName" label="To" [routerLink]="['/relations/organisation/' + quote.Receiver.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="quote.ContactPerson" [object]="quote" [roleType]="m.Quote.ContactPerson" class="link"
+            <a-mat-static  *ngIf="quote.ContactPerson" [object]="quote" [roleType]="m.Quote.ContactPerson" class="link"
               [routerLink]="['/relations/person/' + quote.ContactPerson.id ]" display="displayName"></a-mat-static>
           </div>
 

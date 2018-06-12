@@ -20,10 +20,10 @@
         <div>
           <div>
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"
+            <a-mat-static  *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"
               [routerLink]="['/orders/productQuote/' + order.Quote.id ]"></a-mat-static>
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id ]"></a-mat-static>
+            <a-mat-static  *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id ]"></a-mat-static>
           </div>
 
           <div class="grid-3_sm-1">
@@ -33,33 +33,33 @@
           </div>
 
           <div *ngIf="order.ShipToCustomer" >
-            <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+            <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Organisation'"  [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
               display="displayName" label="Ship to Customer" [routerLink]="['/relations/organisation/' + order.ShipToCustomer.id ]"></a-mat-static>
-            <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+            <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Person'"  [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
               display="displayName" label="Ship to Customer" [routerLink]="['/relations/person/' + order.ShipToCustomer.id ]"></a-mat-static>
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
           </div>
 
           <div *ngIf="order.BillToCustomer" >
-            <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+            <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'"  [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
               display="displayName" label="Bill to Customer" [routerLink]="['/relations/organisation/' + order.BillToCustomer.id ]"></a-mat-static>
-            <!-- <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+            <!-- <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Person'"  [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
               display="displayName" label="Bill to Customer" [routerLink]="['/relations/person/' + order.BillToCustomer.id ]"></a-mat-static> -->
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
           </div>
 
           <div *ngIf="order.BillToEndCustomer" >
-            <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
+            <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Organisation'"  [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
               display="displayName" label="Bill to End Customer" [routerLink]="['/relations/organisation/' + order.BillToEndCustomer.id ]"></a-mat-static>
-            <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
+            <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Person'"  [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
               display="displayName" label="Bill to End Customer" [routerLink]="['/relations/person/' + order.BillToEndCustomer.id ]"></a-mat-static>
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
           </div>
 
           <div *ngIf="order.ShipToEndCustomer" >
-            <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Organisation'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
+            <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Organisation'"  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
               display="displayName" label="Ship to End Customer" [routerLink]="['/relations/organisation/' + order.ShipToEndCustomer.id ]"></a-mat-static>
-            <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Person'" class="col link" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
+            <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Person'"  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
               display="displayName" label="Ship to End Customer" [routerLink]="['/relations/person/' + order.ShipToEndCustomer.id ]"></a-mat-static>
             <a-mat-static  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>

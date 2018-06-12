@@ -22,9 +22,9 @@
           </div>
 
           <div *ngIf="task.Customer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
-            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
+            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'"  [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
-            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'" class="col link" [object]="task" [roleType]="m.WorkEffort.Customer"
+            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'"  [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static>
           </div>
 

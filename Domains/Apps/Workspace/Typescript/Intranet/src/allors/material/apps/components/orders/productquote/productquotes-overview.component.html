@@ -1,81 +1,99 @@
-<mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button><mat-icon>settings</mat-icon></button>
+<div fxLayout="column" style="height: 100vh; min-height: 100vh">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+
+    <mat-card fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+
+      <form novalidate [formGroup]="searchForm">
+
+        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
+          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+            <mat-label>Search by Organisation</mat-label>
+            <input matInput autocomplete="off" formControlName="company">
+            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+              <mat-icon>expand_more</mat-icon>
+            </a>
+          </mat-form-field>
+
+          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+            <mat-label>Search by Organisation</mat-label>
+            <input matInput formControlName="company">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>Number</mat-label>
+            <input matInput formControlName="quoteNumber">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+            <mat-label>State</mat-label>
+            <mat-select formControlName="state" name="state" [(ngModel)]="selectedQuoteState">
+              <mat-option>None</mat-option>
+              <mat-option *ngFor="let objectState of quoteStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div fxFlex="none" *ngIf="advancedSearch">
+            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+              <mat-icon>close</mat-icon>
+            </a>
+          </div>
+
+        </mat-card-content>
+      </form>
+
+      <mat-list fxFlex style="overflow: auto;">
+        <div *ngIf="data && data.length === 0">
+          <h3>No quotes to display.</h3>
+        </div>
+        <ng-template let-quote let-last="last" ngFor [ngForOf]="data">
+          <mat-list-item>
+
+            <h3 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.Receiver.displayName}}</h3>
+            <h4 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.QuoteState.Name}})</h4>
+            <p mat-line> last modified: {{ quote.LastModifiedDate | date : shortDate }} </p>
+
+            <span flex></span>
+
+            <span>
+              <div> {{ quote.CreationDate | date }} </div>
+              <div> {{ quote.LastModifiedDate | date : shortDate }} </div>
+            </span>
+
+            <span>
+              <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <a [routerLink]="['/orders/productQuote/' + quote.id ]" mat-menu-item>Details</a>
+                <a [routerLink]="['/printproductquote/' + quote.id ]" mat-menu-item>Preview</a>
+                <button mat-menu-item (click)="print(quote)">Print</button>
+                <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
+              </mat-menu>
+            </span>
+
+          </mat-list-item>
+          <mat-divider *ngIf="!last" mat-inset></mat-divider>
+        </ng-template>
+      </mat-list>
+    </mat-card>
   </div>
-</mat-toolbar>
 
-<mat-card>
-  <div>
-    <form novalidate [formGroup]="searchForm">
-      <mat-form-field>
-        <input matInput placeholder="Organisation" formControlName="company">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Number" formControlName="quoteNumber">
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput placeholder="Description" formControlName="description">
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
-      <mat-form-field >
-        <mat-select formControlName="state" name="state" [(ngModel)]="selectedQuoteState" placeholder="State">
-          <mat-option>None</mat-option>
-          <mat-option *ngFor="let objectState of quoteStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </form>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  
-    <mat-list>
-      <div  *ngIf="data && data.length === 0"  >
-        <h3>No quotes to display.</h3>
-      </div>
-      <ng-template let-quote let-last="last" ngFor [ngForOf]="data">
-        <mat-list-item>
-
-          <h3 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.Receiver.displayName}}</h3>
-          <h4 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.QuoteState.Name}})</h4>
-          <p mat-line> last modified: {{ quote.LastModifiedDate | date : shortDate }} </p>
-
-          <span flex></span>
-
-          <span      >
-                <div  > {{ quote.CreationDate | date }} </div>
-                <div  > {{ quote.LastModifiedDate | date : shortDate }} </div>
-              </span>
-
-          <span>
-          <button mat-icon-button [mat-menu-trigger-for]="menu">
-          <mat-icon>more_vert</mat-icon>
-          </button>
-          <mat-menu #menu="matMenu">
-          <a [routerLink]="['/orders/productQuote/' + quote.id ]" mat-menu-item>Details</a>
-          <a [routerLink]="['/printproductquote/' + quote.id ]" mat-menu-item>Preview</a>
-          <button mat-menu-item (click)="print(quote)">Print</button>
-          <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
-          </mat-menu>
-          </span>
-
-        </mat-list-item>
-        <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </ng-template>
-    </mat-list>
-</mat-card>
-
-<mat-card body *ngIf="this.data && this.data.length !== total">
-  <mat-card-content>
-    <button mat-button (click)="more()">More</button> {{this.data?.length}}/{{total}}
-  </mat-card-content>
-</mat-card>
-
-<a mat-fab color="accent" class="mat-fab-bottom-right fixed" [routerLink]="['/productQuote']">
-  <mat-icon>add</mat-icon>
-</a>
+  <mat-toolbar fxFlex fxLayout="row">
+    <span fxFlex></span>
+    <a mat-raised-button [routerLink]="['/productQuote']">
+      Add New
+    </a>
+  </mat-toolbar>
+</div>

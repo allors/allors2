@@ -1,79 +1,72 @@
 <mat-toolbar>
-  <div  layout-align="start center" flex>
-    <button mat-icon-button >
-      <mat-icon>arrow_back</mat-icon>
-    </button>
-    <span>{{title}}</span>
-    <span flex></span>
-    <button mat-icon-button>
-      <mat-icon>settings</mat-icon>
-    </button>
-  </div>
+  <mat-toolbar-row fxLayout="row">
+    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+    <span fxFlex>{{title}}</span>
+  </mat-toolbar-row>
 </mat-toolbar>
 
-<div *ngIf="request" >
-  <div flex-gt-xs="40">
-    <mat-card>
-      <mat-card-title>Request for Quote</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
+<div style="padding: 20px;">
+  <div *ngIf="request" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Request for Quote</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content fxFlex fxFil>
         <div>
-          <div>
-            <a-mat-static  [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
-            <a-mat-static  [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
-            <div  *ngIf="quote" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
-              <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
-            </div>
+          <a-mat-static [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
+          <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
+          <div *ngIf="quote" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
+            <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
           </div>
+        </div>
 
-          <div>
-            <a-mat-static class="col link" *ngIf="request.Originator?.objectType.name == 'Person'" [object]="request" [roleType]="m.Request.Originator"
-              display="displayName" label="From" [routerLink]="['/relations/person/' + request.Originator.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="request.Originator?.objectType.name == 'Organisation'" [object]="request" [roleType]="m.Request.Originator"
-              display="displayName" label="From" [routerLink]="['/relations/organisation/' + request.Originator.id ]"></a-mat-static>
-            <a-mat-static class="col link" *ngIf="request.ContactPerson" [object]="request" [roleType]="m.Request.ContactPerson" display="displayName"
-              [routerLink]="['/relations/person/' + request.ContactPerson.id ]"></a-mat-static>
-          </div>
+        <div>
+          <a-mat-static *ngIf="request.Originator?.objectType.name == 'Person'" [object]="request" [roleType]="m.Request.Originator"
+            display="displayName" label="From" [routerLink]="['/relations/person/' + request.Originator.id ]"></a-mat-static>
+          <a-mat-static *ngIf="request.Originator?.objectType.name == 'Organisation'" [object]="request" [roleType]="m.Request.Originator"
+            display="displayName" label="From" [routerLink]="['/relations/organisation/' + request.Originator.id ]"></a-mat-static>
+          <a-mat-static *ngIf="request.ContactPerson" [object]="request" [roleType]="m.Request.ContactPerson" display="displayName"
+            [routerLink]="['/relations/person/' + request.ContactPerson.id ]"></a-mat-static>
+        </div>
 
-          <div>
-            <a-mat-static  *ngIf="request.FullfillContactMechanism" [object]="request" [roleType]="m.Request.FullfillContactMechanism"
-              display="displayName" label="Reply to"></a-mat-static>
-          </div>
+        <div>
+          <a-mat-static *ngIf="request.FullfillContactMechanism" [object]="request" [roleType]="m.Request.FullfillContactMechanism"
+            display="displayName" label="Reply to"></a-mat-static>
+        </div>
 
-          <div class="grid-4_lg-2_xs-1">
-            <a-mat-static  *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneCountryCode"
-              label="Country code"></a-mat-static>
-            <a-mat-static  *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber" label="Contac number"></a-mat-static>
-            <a-mat-static  *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-mat-static>
-          </div>
+        <div class="grid-4_lg-2_xs-1">
+          <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneCountryCode" label="Country code"></a-mat-static>
+          <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber" label="Contac number"></a-mat-static>
+          <a-mat-static *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-mat-static>
+        </div>
 
-          <div>
-            <mat-form-field  *ngIf="request.RequestDate">
-              <input matInput placeholder="Request date" [value]="request.RequestDate.toDateString()">
-            </mat-form-field>
-            <mat-form-field  *ngIf="request.RequiredResponseDate">
-              <input matInput placeholder="Required response date" [value]="request.RequiredResponseDate.toDateString()">
-            </mat-form-field>
-          </div>
+        <div>
+          <mat-form-field *ngIf="request.RequestDate">
+            <input matInput placeholder="Request date" [value]="request.RequestDate.toDateString()">
+          </mat-form-field>
+          <mat-form-field *ngIf="request.RequiredResponseDate">
+            <input matInput placeholder="Required response date" [value]="request.RequiredResponseDate.toDateString()">
+          </mat-form-field>
+        </div>
 
-          <div>
-            <a-mat-static  *ngIf="request.Description" [object]="request" [roleType]="m.Request.Description"></a-mat-static>
-          </div>
-          <div>
-            <a-mat-textarea  *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-          </div>
-          <div>
-            <a-mat-textarea  *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
-          </div>
+        <div>
+          <a-mat-static *ngIf="request.Description" [object]="request" [roleType]="m.Request.Description"></a-mat-static>
+        </div>
+        <div>
+          <a-mat-textarea *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
+        </div>
+        <div>
+          <a-mat-textarea *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
+        </div>
 
-          <div>
-            <p class="col mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
-          </div>
+        <div>
+          <p class="col mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
+          <p class="col mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
         </div>
       </mat-card-content>
 
-      <mat-divider></mat-divider>
       <mat-card-actions>
         <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">Edit</button>
         <button *ngIf="!request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id ]">View</button>
@@ -85,39 +78,43 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card>
-      <mat-card-title>Request Items</mat-card-title>
-      <mat-divider></mat-divider>
-      <mat-card-content>
-        
-          <mat-list>
-            <div  *ngIf="request.RequestItems.length === 0"  >
-              <h3>No Items to display.</h3>
-            </div>
+    <mat-card fxLayout="column" fxLayoutGap="10px">
+      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+        <mat-card-title>Request Items</mat-card-title>
+      </mat-card-header>
 
-            <ng-template let-requestItem let-last="last" ngFor [ngForOf]="request.RequestItems">
-              <mat-list-item>
-                <h3 *ngIf="requestItem.Product" mat-line [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">{{requestItem.Quantity}} * {{requestItem.Product.Name}} ({{requestItem.RequestItemState.Name}})</h3>
-                <h4 *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" mat-line>{{ serialisedInventoryItem.ExpectedSalesPrice }}</h4>
-                <span>
-                  <button mat-icon-button [mat-menu-trigger-for]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <a *ngIf="request.CanWriteRequestItems && requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>Edit</a>
-                    <a *ngIf="!request.CanWriteRequestItems || !requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]" mat-menu-item>View</a>
-                    <button [disabled]="!requestItem.CanExecuteCancel" mat-menu-item (click)="cancelRequestItem(requestItem)">Cancel</button>
-                    <button [disabled]="!requestItem.CanExecuteDelete" mat-menu-item (click)="deleteRequestItem(requestItem)" >Delete</button>
-                  </mat-menu>
-                </span>
-              </mat-list-item>
+      <mat-card-content fxFlex fxFill>
+
+        <mat-list style="overflow: auto;">
+          <div *ngIf="request.RequestItems.length === 0">
+            <h3>No Items to display.</h3>
+          </div>
+
+          <ng-template let-requestItem let-last="last" ngFor [ngForOf]="request.RequestItems">
+            <mat-list-item>
+              <h3 *ngIf="requestItem.Product" mat-line [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">{{requestItem.Quantity}} * {{requestItem.Product.Name}} ({{requestItem.RequestItemState.Name}})</h3>
+              <h4 *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" mat-line>{{ serialisedInventoryItem.ExpectedSalesPrice }}</h4>
+              <span>
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a *ngIf="request.CanWriteRequestItems && requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]"
+                    mat-menu-item>Edit</a>
+                  <a *ngIf="!request.CanWriteRequestItems || !requestItem.CanWriteQuantity" [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]"
+                    mat-menu-item>View</a>
+                  <button [disabled]="!requestItem.CanExecuteCancel" mat-menu-item (click)="cancelRequestItem(requestItem)">Cancel</button>
+                  <button [disabled]="!requestItem.CanExecuteDelete" mat-menu-item (click)="deleteRequestItem(requestItem)">Delete</button>
+                </mat-menu>
+              </span>
               <mat-divider *ngIf="!last" mat-inset></mat-divider>
-            </ng-template>
-          </mat-list>
+            </mat-list-item>
+          </ng-template>
+        </mat-list>
       </mat-card-content>
-      <mat-divider></mat-divider>
+
       <mat-card-actions>
-        <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id +'/item']">+ Add</button>
+        <button *ngIf="request.CanWriteRequestItems" mat-button [routerLink]="['/request/' + request.id +'/item']">Add new</button>
       </mat-card-actions>
     </mat-card>
   </div>

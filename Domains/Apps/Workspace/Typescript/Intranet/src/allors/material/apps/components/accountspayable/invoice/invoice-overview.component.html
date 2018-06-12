@@ -18,7 +18,7 @@
           <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
             <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
             <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.InvoiceNumber"></a-mat-static>
-            <a-mat-static class="col link" [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" display="PartyName" label="From"
+            <a-mat-static  [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" display="PartyName" label="From"
               [routerLink]="['/relations/organisation/' + invoice.BilledFrom.id ]"></a-mat-static>
           </div>
 

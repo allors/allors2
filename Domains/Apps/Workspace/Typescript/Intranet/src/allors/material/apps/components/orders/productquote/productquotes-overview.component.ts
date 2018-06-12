@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -26,8 +26,7 @@ interface SearchData {
 @Component({
   templateUrl: './productquotes-overview.component.html',
 })
-export class ProductQuotesOverviewComponent implements OnDestroy {
-
+export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   public searchForm: FormGroup;
 
   public title = 'Quotes';
@@ -46,7 +45,6 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
   private scope: Scope;
 
   private refresh$: BehaviorSubject<Date>;
-  private page$: BehaviorSubject<number>;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -54,8 +52,6 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
     private formBuilder: FormBuilder,
     private titleService: Title,
     private router: Router,
-    
-    
     private dialogService: AllorsMaterialDialogService,
     public pdfService: PdfService,
     private stateService: StateService) {
@@ -69,28 +65,23 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
       quoteNumber: [''],
       state: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-          date,
-          internalOrganisationId,
-        ];
-      }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+        return [data, date, internalOrganisationId];
+      }, [] as [SearchData, Date, InternalOrganisation]);
 
     const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .switchMap(([data, , internalOrganisationId]) => {
 
         const internalOrganisationsQuery: Query[] = [
           new Query(
@@ -152,7 +143,6 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
             ],
             name: 'quotes',
             objectType: m.ProductQuote,
-            page: new Page({ skip: 0, take }),
             predicate,
             sort: [new Sort({ roleType: m.ProductQuote.QuoteNumber, direction: 'Desc' })],
           })];
@@ -170,6 +160,12 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
       });
   }
 
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   public print(quote: ProductQuote) {
     this.pdfService.display(quote);
   }
@@ -178,17 +174,7 @@ export class ProductQuotesOverviewComponent implements OnDestroy {
     window.history.back();
   }
 
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   public onView(quote: ProductQuote): void {
     this.router.navigate(['/orders/productQuotes/' + quote.id]);
-  }
-
-  private more(): void {
-    this.page$.next(this.data.length + 50);
   }
 }
