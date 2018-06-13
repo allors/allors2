@@ -52,6 +52,7 @@ export class MainComponent implements OnInit, OnDestroy {
       const sideMenuItem = {
         icon: module.icon,
         title: module.title,
+        link: !module.children || module.children.length == 0 ? module.link : undefined,
         children: pages.map((page) => {
           return {
             title: page.title,
