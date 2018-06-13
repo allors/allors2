@@ -90,6 +90,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
                 include: [
                   new TreeNode({ roleType: m.Request.Currency }),
                   new TreeNode({ roleType: m.Request.Originator }),
+                  new TreeNode({ roleType: m.Request.ContactPerson }),
                   new TreeNode({ roleType: m.Request.RequestState }),
                   new TreeNode({
                     nodes: [

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +10,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import { Field } from '../../../../angular';
 import { ISessionObject } from '../../../../framework';
 
-import { MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'a-mat-autocomplete',
@@ -68,7 +68,7 @@ export class AllorsMaterialAutocompleteComponent extends Field implements OnInit
                   a[this.display] !== b[this.display]
                     ? a[this.display] < b[this.display] ? -1 : 1
                     : 0,
-              );
+            );
           }),
       );
     }
@@ -84,32 +84,8 @@ export class AllorsMaterialAutocompleteComponent extends Field implements OnInit
     };
   }
 
-  public selected(option: ISessionObject): void {
-    this.model = option;
-    this.onChange.emit(option);
-
-    this.searchControl.reset();
-  }
-
-  public focusout(event: any): void {
-    if (!this.searchControl.value) {
-      this.model = undefined;
-      this.onChange.emit(undefined);
-    } else {
-      if (this.trigger.autocomplete.options.length === 1) {
-        const option = this.trigger.autocomplete.options.first.value;
-        this.model = option;
-        this.searchControl.setValue(this.model);
-        this.onChange.emit(option);
-      } else {
-        if (this.model) {
-          this.searchControl.setValue(this.model);
-        } else {
-          this.searchControl.reset();
-        }
-      }
-    }
-
-    this.searchControl.reset();
+  public optionSelected(event: MatAutocompleteSelectedEvent): void {
+    this.model = event.option.value;
+    this.onChange.emit(this.model);
   }
 }

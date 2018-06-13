@@ -9,13 +9,15 @@
     [required]="required" 
     [disabled]="disabled" 
     [readonly]="readonly"
-    [matAutocomplete]="autocomplete" 
-    (focusout)="focusout($event)">
+    [matAutocomplete]="autocomplete"
+    >
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+
+  <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()" (optionSelected)="optionSelected($event)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option[this.display]}}
+    </mat-option>
+  </mat-autocomplete>
+  
 </mat-form-field>
 
-<mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()">
-  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selected(option)">
-    {{option[this.display]}}
-  </mat-option>
-</mat-autocomplete>
