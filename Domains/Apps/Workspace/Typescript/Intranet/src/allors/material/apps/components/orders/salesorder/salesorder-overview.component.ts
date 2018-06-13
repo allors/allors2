@@ -2,14 +2,13 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -36,6 +35,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
+    public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,

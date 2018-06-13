@@ -14,7 +14,7 @@
       </mat-card-header>
 
       <mat-card-content fxFlex fxFil>
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
           <a-mat-static [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
           <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
           <div *ngIf="quote" class="link" [routerLink]="['/orders/productQuote/' + quote.id ]">
@@ -22,7 +22,7 @@
           </div>
         </div>
 
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
           <a-mat-static *ngIf="request.Originator?.objectType.name == 'Person'" [object]="request" [roleType]="m.Request.Originator"
             display="displayName" label="From" [routerLink]="['/relations/person/' + request.Originator.id ]"></a-mat-static>
           <a-mat-static *ngIf="request.Originator?.objectType.name == 'Organisation'" [object]="request" [roleType]="m.Request.Originator"
@@ -36,13 +36,13 @@
             display="displayName" label="Reply to"></a-mat-static>
         </div>
 
-        <div class="grid-4_lg-2_xs-1">
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
           <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneCountryCode" label="Country code"></a-mat-static>
           <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber" label="Contac number"></a-mat-static>
           <a-mat-static *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress" display="displayName"></a-mat-static>
         </div>
 
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
           <mat-form-field *ngIf="request.RequestDate">
             <input matInput placeholder="Request date" [value]="request.RequestDate.toDateString()">
           </mat-form-field>
@@ -51,17 +51,13 @@
           </mat-form-field>
         </div>
 
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
           <a-mat-static *ngIf="request.Description" [object]="request" [roleType]="m.Request.Description"></a-mat-static>
-        </div>
-        <div>
           <a-mat-textarea *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-        </div>
-        <div>
           <a-mat-textarea *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
         </div>
 
-        <div>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
           <p class="col mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
           <p class="col mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
         </div>

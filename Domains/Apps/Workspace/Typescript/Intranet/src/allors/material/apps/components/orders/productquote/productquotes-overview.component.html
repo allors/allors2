@@ -58,20 +58,13 @@
           <h3>No quotes to display.</h3>
         </div>
         <ng-template let-quote let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item>
+          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/orders/productQuote/', quote.id])" style="cursor: pointer;">
 
-            <h3 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.Receiver.displayName}}</h3>
-            <h4 mat-line [routerLink]="['/orders/productQuote/' + quote.id ]"> {{quote.QuoteNumber }}: {{quote.Description}} ({{quote.QuoteState.Name}})</h4>
-            <p mat-line> last modified: {{ quote.LastModifiedDate | date : shortDate }} </p>
+            <h3 mat-line>{{quote.Receiver.displayName}}</h3>
+            <h4 mat-line>{{quote.QuoteNumber }}: {{quote.Description}} ({{quote.QuoteState.Name}})</h4>
+            <p mat-line>last modified: {{ quote.LastModifiedDate | date : shortDate }} </p>
 
-            <span flex></span>
-
-            <span>
-              <div> {{ quote.CreationDate | date }} </div>
-              <div> {{ quote.LastModifiedDate | date : shortDate }} </div>
-            </span>
-
-            <span>
+            <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
@@ -81,7 +74,7 @@
                 <button mat-menu-item (click)="print(quote)">Print</button>
                 <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
               </mat-menu>
-            </span>
+            </div>
 
           </mat-list-item>
           <mat-divider *ngIf="!last" mat-inset></mat-divider>

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -27,7 +27,7 @@ interface SearchData {
 @Component({
   templateUrl: './salesorders-overview.component.html',
 })
-export class SalesOrdersOverviewComponent implements OnDestroy {
+export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
   public searchForm: FormGroup;
 
@@ -47,8 +47,6 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  private page$: BehaviorSubject<number>;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -70,28 +68,23 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
       reference: [''],
       state: [''],
     });
+  }
 
-    this.page$ = new BehaviorSubject<number>(50);
-
+  ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-          date,
-          internalOrganisationId,
-        ];
-      }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+        return [data, date, internalOrganisationId];
+      }, [] as [SearchData, Date, InternalOrganisation]);
 
     const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .switchMap(([data, , internalOrganisationId]) => {
 
         const internalOrganisationsQuery: Query[] = [
           new Query(
@@ -165,7 +158,6 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
               ],
               name: 'orders',
               objectType: m.SalesOrder,
-              page: new Page({ skip: 0, take }),
               predicate,
               sort: [new Sort({ roleType: m.SalesOrder.OrderNumber, direction: 'Desc' })],
             })];
@@ -183,6 +175,12 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
       });
   }
 
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
   public print(order: SalesOrder) {
     this.pdfService.display(order);
   }
@@ -191,17 +189,7 @@ export class SalesOrdersOverviewComponent implements OnDestroy {
     window.history.back();
   }
 
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
   public onView(order: SalesOrder): void {
     this.router.navigate(['/orders/salesOrders/' + order.id]);
-  }
-
-  private more(): void {
-    this.page$.next(this.data.length + 50);
   }
 }

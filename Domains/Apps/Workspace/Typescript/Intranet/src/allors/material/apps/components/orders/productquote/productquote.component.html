@@ -1,92 +1,88 @@
+<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+  <mat-toolbar fxFlex>
+    <mat-toolbar-row fxLayout="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <span fxFlex>{{title}}</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm" *ngIf="quote" (submit)="save()">
+  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
 
-    <div>
-      <div  *ngIf="!quote.isNew">
-        <div>
+    <mat-card *ngIf="quote" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+      <mat-card-content fxFlex fxFill style="overflow: auto;">
+
+        <div *ngIf="!quote.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
           <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
-          <div>
-            <button *ngIf="quote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
-            <button *ngIf="quote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
-          </div>
-        </div>
-        <div>
           <a-mat-static [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
         </div>
-      </div>
 
-      <div>
-        <a-mat-autocomplete  *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(scope)"
-          display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
-      </div>
-
-      <div>
-        <div>
-          <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
-              display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
-              <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
-              <mat-icon *ngIf="addContactMechanism">close</mat-icon>
-            </button>
-          </div>
-
-          <party-contactmechanism *ngIf="quote.Receiver && addContactMechanism" [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
-          </party-contactmechanism>
-          
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <a-mat-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(scope)"
+            display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
         </div>
-        <div>
-          <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
-              <mat-icon *ngIf="!addContactPerson">add</mat-icon>
-              <mat-icon *ngIf="addContactPerson">close</mat-icon>
-            </button>
-          </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="quote.Receiver && addContactPerson">
-            <mat-tab label="Person">
-              <div class="pad tabInlineComponent">
-                <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
-                </person-inline>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+
+        <div fxLayout fxLayoutGap="1em">
+          <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
+            display="displayName"></a-mat-select>
+          <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
+            <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
+            <mat-icon *ngIf="addContactMechanism">close</mat-icon>
+          </button>
         </div>
-      </div>
-  
-      <div>
-        <a-mat-datepicker  [object]="quote" [roleType]="m.ProductQuote.ValidFromDate"></a-mat-datepicker>
-        <a-mat-datepicker  [object]="quote" [roleType]="m.ProductQuote.ValidThroughDate"></a-mat-datepicker>
-      </div>
 
-      <div>
-        <a-mat-datepicker  [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-mat-datepicker>
-        <a-mat-datepicker  [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-mat-datepicker>
-      </div>
+        <mat-card *ngIf="quote.Receiver && addContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x" style="margin: 1rem">
+          <mat-card-header>Add a new contact mechanism</mat-card-header>
+          <mat-card-content>
+            <party-contactmechanism [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+            </party-contactmechanism>
+          </mat-card-content>
+        </mat-card>
 
-      <div>
-        <a-mat-input  [object]="quote" [roleType]="m.ProductQuote.Description"></a-mat-input>
-      </div>
-      <div>
-        <a-mat-static  *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
-      </div>
-      <div>
-        <a-mat-textarea  [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
-      </div>
-      <div>
-        <a-mat-static  *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
-      </div>
-      <div>
-        <a-mat-textarea  [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
-      </div>
-    </div>
+        <div fxLayout fxLayoutGap="1em">
+          <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+          <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
+            <mat-icon *ngIf="!addContactPerson">add</mat-icon>
+            <mat-icon *ngIf="addContactPerson">close</mat-icon>
+          </button>
+        </div>
 
-    <mat-divider></mat-divider>
+        <mat-card *ngIf="quote.Receiver && addContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x" style="margin: 1rem">
+          <mat-card-header>Add a new contact person</mat-card-header>
+          <mat-card-content>
+            <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+            </person-inline>
+          </mat-card-content>
+        </mat-card>
 
-    <mat-card-actions>
-      <button *ngIf="quote.CanWriteQuoteItems" mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button *ngIf="quote.CanWriteQuoteItems" mat-button (click)="goBack()" type="button">CANCEL</button>
-      <button *ngIf="!quote.CanWriteQuoteItems" mat-button (click)="goBack()" type="button">DONE</button>
-    </mat-card-actions>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.ValidFromDate"></a-mat-datepicker>
+          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.ValidThroughDate"></a-mat-datepicker>
+          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-mat-datepicker>
+          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-mat-datepicker>
+        </div>
 
-  </form>
+        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <a-mat-input [object]="quote" [roleType]="m.ProductQuote.Description"></a-mat-input>
+          <a-mat-static *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
+          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
+          <a-mat-static *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+        </div>
+
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button *ngIf="quote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
+        <button *ngIf="quote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+
+  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+    <span fxFlex></span>
+    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+  </mat-toolbar>
+
+</form>
