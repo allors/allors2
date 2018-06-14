@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import "mocha";
 
-import { constructorByName, Person } from "../../src/allors/domain";
+import { domain, Person } from "../../src/allors/domain";
 import { MetaPopulation, Session, Workspace } from "../../src/allors/framework";
 import { data, MetaDomain } from "../../src/allors/meta";
 
@@ -12,7 +12,8 @@ describe("Person",
 
         beforeEach(() => {
             const metaPopulation = new MetaPopulation(data);
-            const workspace = new Workspace(metaPopulation, constructorByName);
+            const workspace = new Workspace(metaPopulation);
+            domain.apply(workspace);
 
             session = new Session(workspace);
         });

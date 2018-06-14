@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import { Locale, Organisation, Person } from '../../../../../domain';
@@ -39,7 +39,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   public ngOnInit(): void {
 
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .switchMap((url) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
@@ -70,7 +70,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     );
   }
 
-  public  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
   }
 
   public ngOnDestroy(): void {

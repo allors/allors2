@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
          MatMenuModule, MatToolbarModule } from '@angular/material';
 
-import { StaticModule, ChipsModule, SelectModule } from '../../../../material';
+import { AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule } from '../../../../material';
 
 import { OrganisationsComponent } from './organisations.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -29,9 +29,9 @@ export { OrganisationsComponent } from './organisations.component';
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
-    ChipsModule,
-    StaticModule,
-    SelectModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialStaticModule,
+    AllorsMaterialSelectModule,
   ],
 })
 export class OrganisationsModule {}

@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from '@angular/material';
 
-import { StaticModule } from '../../../../../material';
+import { AllorsMaterialStaticModule } from '../../../../../material';
 
 import { OrganisationOverviewComponent } from './organisation-overview.component';
 export { OrganisationOverviewComponent } from './organisation-overview.component';
@@ -24,7 +24,7 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     MatIconModule,
     MatListModule,
     MatToolbarModule,
-    StaticModule,
+    AllorsMaterialStaticModule,
   ],
 })
 export class OrganisationOverviewModule {}

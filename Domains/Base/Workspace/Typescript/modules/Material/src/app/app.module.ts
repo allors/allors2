@@ -40,9 +40,11 @@ import {
 } from '../allors/angular';
 
 import {
-  AutoCompleteModule, CheckboxModule, DatepickerModule, ErrorDialogModule, FileModule, FilesModule, InputModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule,
-  StaticModule, TextAreaModule, MomentUtcDateAdapter, DefaultErrorService, ErrorDialogComponent,
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialFileModule, 
+  AllorsMaterialFilesModule, AllorsMaterialInputModule, AllorsMaterialLocalisedTextModule,
+  AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSliderModule,AllorsMaterialSlideToggleModule,
+  AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent,
+  MomentUtcDateAdapter,
 } from '../allors/material';
 
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
@@ -50,8 +52,9 @@ import { DefaultLoggingService } from './app.logging.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const BASE_MATERIAL_MODULES: any[] = [
-  AutoCompleteModule, CheckboxModule, DatepickerModule, ErrorDialogModule, InputModule, FileModule, FilesModule, LocalisedTextModule,
-  RadioGroupModule, SelectModule, SideMenuModule, SliderModule, SlideToggleModule, StaticModule, TextAreaModule,
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, 
+  AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, 
+  AllorsMaterialSideMenuModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
 ];
 
 @NgModule({
@@ -85,7 +88,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
     { provide: LoggingService, useClass: DefaultLoggingService },
-    { provide: ErrorService, useClass: DefaultErrorService },
+    { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
     DatabaseService,
     WorkspaceService,
     AuthenticationService,

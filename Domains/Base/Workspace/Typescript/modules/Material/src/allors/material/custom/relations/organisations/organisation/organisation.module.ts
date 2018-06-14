@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from '@angular/material';
 
-import { AutoCompleteModule, InputModule, StaticModule, ChipsModule, SelectModule } from '../../../../../material';
+import { AllorsMaterialAutoCompleteModule, AllorsMaterialInputModule, AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule } from '../../../../../material';
 
 import { OrganisationComponent } from './organisation.component';
 export { OrganisationComponent } from './organisation.component';
@@ -25,11 +25,11 @@ export { OrganisationComponent } from './organisation.component';
     MatIconModule,
     MatListModule,
     MatToolbarModule,
-    AutoCompleteModule,
-    ChipsModule,
-    InputModule,
-    StaticModule,
-    SelectModule
+    AllorsMaterialAutoCompleteModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialInputModule,
+    AllorsMaterialStaticModule,
+    AllorsMaterialSelectModule
   ],
 })
 export class OrganisationModule {}

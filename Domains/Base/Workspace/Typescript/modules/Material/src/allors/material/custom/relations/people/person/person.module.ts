@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from '@angular/material';
 
-import { AutoCompleteModule, ChipsModule, FileModule, FilesModule, InputModule, SelectModule, StaticModule } from '../../../../../material';
+import { AllorsMaterialAutoCompleteModule, AllorsMaterialChipsModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialInputModule, AllorsMaterialSelectModule, AllorsMaterialStaticModule } from '../../../../../material';
 
 import { PersonComponent } from './person.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -26,14 +26,14 @@ export { PersonComponent } from './person.component';
     MatIconModule,
     MatListModule,
     MatToolbarModule,
-    AutoCompleteModule,
-    ChipsModule,
-    FileModule,
-    FilesModule,
+    AllorsMaterialAutoCompleteModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialFileModule,
+    AllorsMaterialFilesModule,
+    AllorsMaterialInputModule,
+    AllorsMaterialSelectModule,
+    AllorsMaterialStaticModule,
     FlexLayoutModule,
-    InputModule,
-    SelectModule,
-    StaticModule,
   ],
 })
 export class PersonModule {}

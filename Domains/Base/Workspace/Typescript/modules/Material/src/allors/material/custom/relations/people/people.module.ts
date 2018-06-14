@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
          MatMenuModule, MatToolbarModule } from '@angular/material';
 
-import { ChipsModule, StaticModule, SelectModule } from '../../../../material';
+import { AllorsMaterialChipsModule, AllorsMaterialStaticModule, AllorsMaterialSelectModule } from '../../../../material';
 
 import { PeopleComponent } from './people.component';
 export { PeopleComponent } from './people.component';
@@ -27,9 +27,9 @@ export { PeopleComponent } from './people.component';
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
-    ChipsModule,
-    StaticModule,
-    SelectModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialStaticModule,
+    AllorsMaterialSelectModule,
   ],
 })
 export class PeopleModule {}
