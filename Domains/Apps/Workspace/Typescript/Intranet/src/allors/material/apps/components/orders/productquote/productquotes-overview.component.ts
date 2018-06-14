@@ -27,7 +27,7 @@ interface SearchData {
   templateUrl: './productquotes-overview.component.html',
 })
 export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public title = 'Quotes';
   public data: ProductQuote[];

@@ -29,7 +29,7 @@ interface SearchData {
 })
 export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public title = 'Sales Orders';
   public data: SalesOrder[];

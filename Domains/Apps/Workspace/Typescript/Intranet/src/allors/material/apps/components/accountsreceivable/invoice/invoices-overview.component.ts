@@ -31,7 +31,7 @@ interface SearchData {
 })
 export class InvoicesOverviewComponent implements OnDestroy {
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public title = 'Sales Invoices';
   public data: SalesInvoice[];

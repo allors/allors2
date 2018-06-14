@@ -28,7 +28,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Catalogues';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: Catalogue[];
   public filtered: Catalogue[];
 

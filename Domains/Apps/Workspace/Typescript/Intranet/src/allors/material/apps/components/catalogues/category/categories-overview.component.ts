@@ -28,7 +28,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Categories';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: ProductCategory[];
   public filtered: ProductCategory[];
 

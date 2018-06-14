@@ -46,7 +46,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Organisations';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: Organisation[];
 

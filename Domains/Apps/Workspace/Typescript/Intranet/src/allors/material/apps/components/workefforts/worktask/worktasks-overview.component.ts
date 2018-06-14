@@ -36,7 +36,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Work Tasks';
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: WorkTask[];
 

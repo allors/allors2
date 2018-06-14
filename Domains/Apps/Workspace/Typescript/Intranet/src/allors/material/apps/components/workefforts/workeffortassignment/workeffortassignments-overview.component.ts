@@ -39,7 +39,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
   public title = 'Work Task Assignements';
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: WorkEffortAssignment[];
 

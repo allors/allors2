@@ -33,7 +33,7 @@ export class PeopleExportComponent implements OnDestroy {
   public title = 'Export People to CSV';
   public subTitle: string;
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: Person[];
   public csv: string;

@@ -43,7 +43,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
   public title = 'Products';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: Good[];
   public filtered: Good[];
   public chosenGood: string;

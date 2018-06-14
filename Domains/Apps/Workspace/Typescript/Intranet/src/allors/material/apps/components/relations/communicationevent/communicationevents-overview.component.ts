@@ -32,7 +32,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Communications';
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: CommunicationEvent[];
 

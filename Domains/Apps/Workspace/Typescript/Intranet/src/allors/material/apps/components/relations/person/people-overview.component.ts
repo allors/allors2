@@ -29,7 +29,7 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'People';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: Person[];
 

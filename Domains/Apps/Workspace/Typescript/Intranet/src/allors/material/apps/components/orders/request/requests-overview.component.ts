@@ -29,7 +29,7 @@ interface SearchData {
 export class RequestsOverviewComponent implements OnInit, OnDestroy {
   public total: number;
 
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
 
   public title = 'Requests';
   public data: Request[];

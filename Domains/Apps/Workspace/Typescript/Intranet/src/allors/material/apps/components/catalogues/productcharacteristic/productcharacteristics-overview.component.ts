@@ -27,7 +27,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
 
   public title = 'Product Characteristics';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: SerialisedInventoryItemCharacteristicType[];
   public filtered: SerialisedInventoryItemCharacteristicType[];
 

@@ -27,7 +27,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Product Types';
   public total: number;
-  public searchForm: FormGroup;
+  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: ProductType[];
   public filtered: ProductType[];
 
