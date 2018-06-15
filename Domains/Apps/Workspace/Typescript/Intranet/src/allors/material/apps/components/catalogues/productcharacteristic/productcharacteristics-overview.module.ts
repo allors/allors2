@@ -18,6 +18,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
+import { InternalOrganisationSelectModule } from '../../common/internalorganisation/internalorganisation-select.module';
+
 import { ProductCharacteristicsOverviewComponent } from './productcharacteristics-overview.component';
 export { ProductCharacteristicsOverviewComponent } from './productcharacteristics-overview.component';
 
@@ -40,6 +42,7 @@ export { ProductCharacteristicsOverviewComponent } from './productcharacteristic
     CommonModule,
     FlexLayoutModule,
     FormsModule,
+    InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -10,11 +10,10 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { InternalOrganisation, Person } from '../../../../../domain';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService } from '../../../../../angular';
+import { Person } from '../../../../../domain';
 import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {
@@ -42,12 +41,10 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
-    private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    private snackBarService: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService) {
+    titleService: Title) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
@@ -66,17 +63,13 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
       .startWith({});
 
     const combined$ = Observable
-      .combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-        return [
-          data,
-          date,
-          internalOrganisationId,
-        ];
-      }, [] as [SearchData, Date, InternalOrganisation]);
+      .combineLatest(search$, this.refresh$)
+      .scan(([previousData, previousDate], [data, date]) => {
+        return [data, date];
+      }, [] as [SearchData, Date]);
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .switchMap(([data, take]) => {
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
         const predicate: And = new And();
@@ -110,9 +103,7 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
 
       })
       .subscribe((loaded) => {
-
         this.scope.session.reset();
-
         this.data = loaded.collections.people as Person[];
         this.total = loaded.values.people_total;
       },

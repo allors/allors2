@@ -95,7 +95,6 @@ export const routes: Routes = [
       {
         path: 'orders', data: { type: 'module', title: 'Orders', icon: 'share' },
         children: [
-          { path: '', component: orders.OrdersOverviewComponent },
           { path: 'requests', component: orders.RequestsOverviewComponent, data: { type: 'page', title: 'Requests', icon: 'share' } },
           { path: 'request/:id', component: orders.RequestOverviewComponent },
           { path: 'productQuotes', component: orders.ProductQuotesOverviewComponent, data: { type: 'page', title: 'Quotes', icon: 'share' } },

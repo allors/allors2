@@ -8,6 +8,7 @@ import { StateService } from './StateService';
 
 @Injectable()
 export class DefaultStateService extends StateService {
+    private static readonly internalOrganisationsKey = 'StateService$InternalOrganisations';
     private static readonly internalOrganisationIdKey = 'StateService$InternalOrganisationId';
     private static readonly singletonIdKey = 'StateService$SingletonId';
 

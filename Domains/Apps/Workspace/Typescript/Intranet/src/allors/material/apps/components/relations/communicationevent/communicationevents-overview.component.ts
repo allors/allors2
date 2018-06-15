@@ -56,11 +56,11 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
-    private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    private snackBarService: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService) {
+    private dialogService: AllorsMaterialDialogService,
+    titleService: Title,
+  ) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();

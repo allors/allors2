@@ -88,13 +88,13 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
       .distinctUntilChanged()
       .startWith({});
 
-    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-        return [data, date, internalOrganisationId];
-      }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = Observable.combineLatest(search$, this.refresh$)
+      .scan(([previousData, previousDate], [data, date]) => {
+        return [data, date];
+      }, [] as [SearchData, Date]);
 
     this.subscription = combined$
-      .switchMap(([data, , internalOrganisationId]) => {
+      .switchMap(([data]) => {
         const m: MetaDomain = this.m;
 
         const fetches: Fetch[] = [

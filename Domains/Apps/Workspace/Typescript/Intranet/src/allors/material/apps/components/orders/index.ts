@@ -1,4 +1,3 @@
-export * from './order/orders-overview.module';
 export * from './productquote/productquote-overview.module';
 export * from './productquote/productquotes-overview.module';
 export * from './productquote/productquote-print.module';
@@ -18,7 +17,6 @@ export * from './salesterms/incoterm/incoterm.module';
 export * from './salesterms/invoiceterm/invoiceterm.module';
 export * from './salesterms/orderterm/orderterm.module';
 
-import { OrdersOverviewModule } from './order/orders-overview.module';
 import { ProductQuoteOverviewModule } from './productquote/productquote-overview.module';
 import { ProductQuotePrintModule } from './productquote/productquote-print.module';
 import { ProductQuotesOverviewModule } from './productquote/productquotes-overview.module';
@@ -41,7 +39,6 @@ import { OrderTermEditModule } from './salesterms/orderterm/orderterm.module';
 export const Modules = [
   IncoTermEditModule,
   InvoiceTermEditModule,
-  OrdersOverviewModule,
   OrderTermEditModule,
   ProductQuoteOverviewModule,
   ProductQuotesOverviewModule,

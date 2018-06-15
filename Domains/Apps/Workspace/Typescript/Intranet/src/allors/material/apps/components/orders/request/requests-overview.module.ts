@@ -19,6 +19,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
+import { InternalOrganisationSelectModule } from '../../common/internalorganisation/internalorganisation-select.module';
+
 import { RequestsOverviewComponent } from './requests-overview.component';
 export { RequestsOverviewComponent } from './requests-overview.component';
 
@@ -41,6 +43,7 @@ export { RequestsOverviewComponent } from './requests-overview.component';
     CdkTableModule,
     FlexLayoutModule,
     FormsModule,
+    InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,

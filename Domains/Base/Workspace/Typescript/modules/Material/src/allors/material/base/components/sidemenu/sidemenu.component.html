@@ -14,9 +14,9 @@
     </mat-list-item>
 
     <div *ngIf="hasChildren(item) && item.open">
-      <mat-list-item *ngFor="let child of item.children" class="expanded" routerLinkActive="active">
+      <mat-list-item *ngFor="let child of item.children" class="expanded" routerLinkActive="active" (click)="router.navigate([child.link])">
         <mat-icon mat-list-icon>{{child.icon}}</mat-icon>
-        <a matLine [routerLink]="child.link">{{child.title}}</a>
+        <a matLine>{{child.title}}</a>
       </mat-list-item>
     </div>
   </div>

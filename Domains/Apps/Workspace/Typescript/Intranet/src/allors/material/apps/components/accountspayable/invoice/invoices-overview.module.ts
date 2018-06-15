@@ -18,6 +18,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
+import { InternalOrganisationSelectModule } from '../../common/internalorganisation/internalorganisation-select.module';
+
 import { InvoicesOverviewComponent } from './invoices-overview.component';
 export { InvoicesOverviewComponent } from './invoices-overview.component';
 
@@ -39,6 +41,7 @@ export { InvoicesOverviewComponent } from './invoices-overview.component';
     CommonModule,
     FlexLayoutModule,
     FormsModule,
+    InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,

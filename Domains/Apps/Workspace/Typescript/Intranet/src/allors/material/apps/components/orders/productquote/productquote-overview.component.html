@@ -88,9 +88,9 @@
           </div>
 
           <ng-template let-quoteItem let-last="last" ngFor [ngForOf]="quote.QuoteItems">
-              <mat-list-item (click)="router.navigate(['/productQuote/' + quote.id + '/item/' + quoteItem.id])">
+            <mat-list-item (click)="router.navigate(['/productQuote/' + quote.id + '/item/' + quoteItem.id])">
               <h3 *ngIf="quoteItem.Product" mat-line>{{quoteItem.Quantity}} * {{quoteItem.Product.Name}} ({{quoteItem.QuoteItemState.Name}})</h3>
-              
+
               <div (click)="$event.stopPropagation()">
                 <button mat-icon-button [mat-menu-trigger-for]="menu">
                   <mat-icon>more_vert</mat-icon>

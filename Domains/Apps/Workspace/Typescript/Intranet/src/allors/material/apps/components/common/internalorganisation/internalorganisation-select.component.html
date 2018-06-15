@@ -1,0 +1,7 @@
+<mat-form-field *ngIf="internalOrganisations">
+  <mat-select [(value)]="internalOrganisation">
+    <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation">
+      {{ internalOrganisation.Name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

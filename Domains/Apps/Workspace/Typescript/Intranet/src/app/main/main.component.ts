@@ -118,6 +118,11 @@ export class MainComponent implements OnInit, OnDestroy {
     this.handsetSubscription.unsubscribe;
   }
 
+  isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches)
+    );
+    
   get title(): string {
     return this.titleService.getTitle();
   }

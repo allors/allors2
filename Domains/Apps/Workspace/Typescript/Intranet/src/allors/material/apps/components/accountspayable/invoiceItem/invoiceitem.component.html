@@ -1,5 +1,5 @@
 <form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()" novalidate>
-  <mat-toolbar fxFlex>
+  <mat-toolbar>
     <mat-toolbar-row fxLayout="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <span fxFlex>{{title}}</span>
@@ -52,7 +52,7 @@
     </mat-card>
   </div>
 
-  <mat-toolbar fxFlex fxLayout="row" fxLayoutGap="1rem">
+  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
     <span fxFlex></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
