@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Load.cs" company="Allors bvba">
+// <copyright file="Save.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -21,29 +21,40 @@
 namespace Allors.Console
 {
     using System;
-    using System.Data;
     using System.IO;
     using System.Xml;
 
-    public class Load : Command
-    {
-        private readonly FileInfo fileInfo;
+    using Allors.Services;
 
-        public Load(string file)
+    using Microsoft.Extensions.Logging;
+
+    public class Save
+    {
+        private readonly IDatabase database;
+        private readonly ILogger<Save> logger;
+
+        public Save(IDatabaseService databaseService, ILogger<Save> logger)
         {
-            this.fileInfo = new FileInfo(file);
+            this.database = databaseService.Database;
+            this.logger = logger;
         }
 
-        public override void Execute()
+        public int Execute(SaveOptions opts)
         {
-            var database = this.CreateDatabase(IsolationLevel.Serializable);
+            var fileInfo = new FileInfo(opts.File);
 
-            using (var reader = XmlReader.Create(this.fileInfo.FullName))
+            using (var stream = File.Create(fileInfo.FullName))
             {
-                Console.WriteLine("Loading from " + this.fileInfo.FullName);
-                database.Load(reader);
-                Console.WriteLine("Loaded from " + this.fileInfo.FullName);
+                using (var writer = XmlWriter.Create(stream))
+                {
+                    this.logger.LogInformation("Begin", fileInfo.FullName);
+                    this.logger.LogInformation("Saving {file}", fileInfo.FullName);
+                    this.database.Save(writer);
+                    this.logger.LogInformation("End", fileInfo.FullName);
+                }
             }
+
+            return 0;
         }
     }
 }

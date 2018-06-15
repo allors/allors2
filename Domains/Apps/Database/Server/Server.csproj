@@ -55,7 +55,7 @@
   
 
 <ItemGroup>
-  <Content Update="NLog.config">
+  <Content Update="nlog.config">
     <CopyToOutputDirectory>Always</CopyToOutputDirectory>
   </Content>
 </ItemGroup>

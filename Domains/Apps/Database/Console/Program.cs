@@ -20,69 +20,101 @@
 
 namespace Allors.Console
 {
-    using System;
-    using System.CommandLine;
+    using System.IO;
+    using System.Linq;
+
+    using Allors.Adapters.Object.SqlClient;
+    using Allors.Domain;
+    using Allors.Meta;
+    using Allors.Services;
+
+    using CommandLine;
+
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
+    using NLog.Extensions.Logging;
+
+    using ILogger = Allors.ILogger;
+    using ObjectFactory = Allors.ObjectFactory;
 
     public class Program
     {
-        public static int Main(string[] args)
+        private static readonly ServiceProvider ServiceProvider;
+
+        static Program()
         {
-            try
+            var services = new ServiceCollection();
+            services.AddAllors(new ServiceConfig
+                                   {
+                                       Directory = ServerDirectory,
+                                       ApplicationName = "Server"
+                                   });
+
+            var configurationRoot = new ConfigurationBuilder()
+                .AddJsonFile(@"appSettings.json")
+                .Build();
+            services.AddSingleton(configurationRoot);
+
+            services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            services.AddLogging((builder) => builder.SetMinimumLevel(LogLevel.Trace));
+
+            services.AddTransient<Custom>();
+            services.AddTransient<Load>();
+            services.AddTransient<Populate>();
+            services.AddTransient<Save>();
+            services.AddTransient<Upgrade>();
+
+            ServiceProvider = services.BuildServiceProvider();
+
+            var databaseService = ServiceProvider.GetRequiredService<IDatabaseService>();
+            var configuration = new Configuration
+                                    {
+                                        ConnectionString = configurationRoot["allors"],
+                                        ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
+                                        CommandTimeout = 0
+                                    };
+            
+            databaseService.Database = new Database(ServiceProvider, configuration);
+
+            var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
+            loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
+            NLog.LogManager.LoadConfiguration("nlog.config");
+        }
+
+        private static DirectoryInfo ServerDirectory
+        {
+            get
             {
-                Commands? command = null;
-                var file = "population.xml";
-
-                ArgumentSyntax.Parse(
-                    args,
-                    syntax =>
-                        {
-                            syntax.DefineCommand("populate", ref command, Commands.Populate, "Setup the database with an initial population");
-
-                            syntax.DefineCommand("save", ref command, Commands.Save, "Save the database");
-                            syntax.DefineOption("f|file", ref file, "The source xml file.");
-
-                            syntax.DefineCommand("load", ref command, Commands.Load, "Load the database");
-                            syntax.DefineOption("f|file", ref file, "The destination xml file.");
-
-                            syntax.DefineCommand("upgrade", ref command, Commands.Upgrade, "Upgrade the database");
-                            syntax.DefineOption("f|file", ref file, "The destination xml file.");
-
-                            syntax.DefineCommand("import", ref command, Commands.Import, "Import from external sources");
-
-                            syntax.DefineCommand("custom", ref command, Commands.Custom, "Custom code");
-                        });
-
-
-                switch (command)
+                var directoryInfo = new DirectoryInfo(".");
+                while (directoryInfo != null && directoryInfo.GetDirectories("Server").Length == 0)
                 {
-                    case Commands.Populate:
-                        new Populate().Execute();
-                        break;
-
-                    case Commands.Save:
-                        new Save(file).Execute();
-                        break;
-
-                    case Commands.Load:
-                        new Load(file).Execute();
-                        break;
-
-                    case Commands.Upgrade:
-                        new Upgrade(file).Execute();
-                        break;
-
-                    case Commands.Custom:
-                        new Custom().Execute();
-                        break;
+                    directoryInfo = directoryInfo.Parent;
                 }
 
-                return 0;
+                directoryInfo = directoryInfo?.GetDirectories("Server").FirstOrDefault();
+                return directoryInfo;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                return 1;
-            }
+        }
+
+        public static int Main(string[] args)
+        {
+            var logger = ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+            return Parser.Default.ParseArguments<CustomOptions, LoadOptions, PopulateOptions, SaveOptions, UpgradeOptions>(args)
+                .MapResult(
+                    (CustomOptions opts) => ServiceProvider.GetRequiredService<Custom>().Execute(),
+                    (LoadOptions opts) => ServiceProvider.GetRequiredService<Load>().Execute(opts),
+                    (PopulateOptions opts) => ServiceProvider.GetRequiredService<Populate>().Execute(),
+                    (SaveOptions opts) => ServiceProvider.GetRequiredService<Save>().Execute(opts),
+                    (UpgradeOptions opts) => ServiceProvider.GetRequiredService<Upgrade>().Execute(opts),
+                    errors =>
+                        {
+                            logger.LogError("{errors}", errors);
+                            return 1;
+                        });
         }
     }
 }

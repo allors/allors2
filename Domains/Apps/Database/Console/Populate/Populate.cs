@@ -25,26 +25,38 @@ namespace Allors.Console
     using System.IO;
 
     using Allors.Domain;
+    using Allors.Services;
 
-    public class Populate : Command
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.Logging;
+
+    public class Populate
     {
-        public override void Execute()
-        {
-            var database = this.CreateDatabase(IsolationLevel.Serializable);
+        private readonly string dataPath;
+        private readonly IDatabase database;
+        private readonly ILogger<Populate> logger;
 
+        public Populate(IConfigurationRoot configurationRoot, IDatabaseService databaseService, ILogger<Populate> logger)
+        {
+            this.dataPath = configurationRoot["datapath"];
+            this.database = databaseService.Database;
+            this.logger = logger;
+        }
+
+        public int Execute()
+        {
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
 
             var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
             if (confirmationKey.ToLower().Equals("y"))
             {
-                database.Init();
+                this.logger.LogInformation("Begin");
 
-                database = this.CreateDatabase(IsolationLevel.Serializable);
+                this.database.Init();
 
-                using (var session = database.CreateSession())
+                using (var session = this.database.CreateSession())
                 {
-                    var dataPath = this.Configuration["dataPath"];
-                    var directoryInfo = dataPath != null ? new DirectoryInfo(dataPath) : null;
+                    var directoryInfo = this.dataPath != null ? new DirectoryInfo(this.dataPath) : null;
                     new Setup(session, directoryInfo).Apply();
 
                     session.Derive();
@@ -64,7 +76,11 @@ namespace Allors.Console
                     session.Derive();
                     session.Commit();
                 }
+
+                this.logger.LogInformation("End");
             }
+
+            return 0;
         }
     }
 }
