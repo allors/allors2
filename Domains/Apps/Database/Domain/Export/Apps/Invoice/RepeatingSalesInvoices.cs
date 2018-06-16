@@ -16,9 +16,11 @@
 
 namespace Allors.Domain
 {
+    using Allors.Domain.Logging;
+
     public partial class RepeatingSalesInvoices
     {
-        public static void Daily(ISession session, ILogger logger)
+        public static void Daily(ISession session)
         {
             var repeatingSalesInvoices = new RepeatingSalesInvoices(session).Extent();
 
@@ -28,23 +30,6 @@ namespace Allors.Domain
                 {
                     repeatingSalesInvoice.Repeat();
                 }
-            }
-
-            var derivation = new NonLogging.Derivation(session, new DerivationConfig());
-            var validation = derivation.Derive();
-
-            if (validation.HasErrors)
-            {
-                foreach (var error in validation.Errors)
-                {
-                    logger?.Error(error.Message);
-                }
-
-                session.Rollback();
-            }
-            else
-            {
-                session.Commit();
             }
         }
     }
