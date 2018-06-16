@@ -14,14 +14,18 @@
 
         <mat-tab label="General">
           <div style="margin-top: 1rem;" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+            <a-mat-input [object]="good" [roleType]="m.Good.ArticleNumber"></a-mat-input>
             <a-mat-input [object]="good" [roleType]="m.Good.Name"></a-mat-input>
-            <a-mat-input [object]="good" [roleType]="m.Good.Description"></a-mat-input>
             <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates"
               display="Name" label="Status"></a-mat-select>
             <mat-form-field *ngIf="salesInvoice">
               <input matInput placeholder="Invoice" [value]="salesInvoice.InvoiceNumber" readonly="true" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id]">
             </mat-form-field>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
+          </div>
+
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-input [object]="good" [roleType]="m.Good.Description"></a-mat-input>
           </div>
 
           <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">

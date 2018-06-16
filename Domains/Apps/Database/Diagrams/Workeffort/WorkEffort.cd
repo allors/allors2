@@ -17,12 +17,11 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEYAkQIAgAA=</HashCode>
+      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkQIAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Facility" />
-      <Property Name="InventoryItemsNeeded" />
       <Property Name="OrderItemFulfillment" />
     </ShowAsAssociation>
   </Interface>
@@ -86,6 +85,20 @@
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortAssignment">
     <Position X="1.25" Y="5.25" Width="2" />
+    <AssociationLine Name="Assignment" Type="Allors.Domain.WorkEffort" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.25" Y="6.365" />
+        <Point X="4.166" Y="6.365" Type="JumpStart" />
+        <Point X="4.333" Y="6.365" Type="JumpEnd" />
+        <Point X="7.292" Y="6.365" Type="JumpStart" />
+        <Point X="7.458" Y="6.365" Type="JumpEnd" />
+        <Point X="7.75" Y="6.365" />
+        <Point X="7.75" Y="3.838" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.107" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAQAAAAAAAAEAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -106,23 +119,17 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortPartyAssignment">
-    <Position X="0.75" Y="2.75" Width="2.25" />
-    <AssociationLine Name="Assignment" Type="Allors.Domain.WorkEffort" FixedToPoint="true">
+    <Position X="0.5" Y="2.5" Width="2.25" />
+    <AssociationLine Name="Assignment" Type="Allors.Domain.WorkEffort" FixedFromPoint="true">
       <Path>
-        <Point X="3" Y="3.824" />
-        <Point X="3.156" Y="3.824" />
-        <Point X="3.156" Y="2.732" />
-        <Point X="3.979" Y="2.732" Type="JumpStart" />
-        <Point X="4.145" Y="2.732" Type="JumpEnd" />
-        <Point X="7" Y="2.732" />
+        <Point X="2.75" Y="2.812" />
+        <Point X="7" Y="2.812" />
       </Path>
     </AssociationLine>
     <AssociationLine Name="Facility" Type="Allors.Domain.Facility" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="3" Y="3.344" />
-        <Point X="3.073" Y="3.344" Type="JumpStart" />
-        <Point X="3.24" Y="3.344" Type="JumpEnd" />
-        <Point X="4.062" Y="3.344" />
+        <Point X="2.75" Y="2.625" />
+        <Point X="4.062" Y="2.625" />
         <Point X="4.062" Y="1.441" />
       </Path>
     </AssociationLine>
@@ -149,8 +156,10 @@
         <Point X="15.25" Y="6.625" />
         <Point X="12.302" Y="6.625" Type="JumpStart" />
         <Point X="12.135" Y="6.625" Type="JumpEnd" />
-        <Point X="8.5" Y="6.625" />
-        <Point X="8.5" Y="3.838" />
+        <Point X="8.083" Y="6.625" Type="JumpStart" />
+        <Point X="7.917" Y="6.625" Type="JumpEnd" />
+        <Point X="7.375" Y="6.625" />
+        <Point X="7.375" Y="3.838" />
       </Path>
       <MemberNameLabel ManuallyPlaced="true">
         <Position X="0.164" Y="0.179" />
@@ -166,6 +175,18 @@
   </Interface>
   <Interface Name="Allors.Domain.CommunicationEvent" Collapsed="true">
     <Position X="15.75" Y="4.5" Width="2.75" />
+    <AssociationLine Name="WorkEfforts" Type="Allors.Domain.WorkEffort" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.75" Y="5.223" />
+        <Point X="12.302" Y="5.223" Type="JumpStart" />
+        <Point X="12.135" Y="5.223" Type="JumpEnd" />
+        <Point X="8.688" Y="5.223" />
+        <Point X="8.688" Y="3.838" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.367" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AICAAEKAAACgAEAEAIDIAAIAQgiAQAACAACAgCEIAAQ=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>

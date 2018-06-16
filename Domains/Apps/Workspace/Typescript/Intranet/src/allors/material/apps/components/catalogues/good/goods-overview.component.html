@@ -1,10 +1,8 @@
 <div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar>
+  <mat-toolbar fxFlex>
     <mat-toolbar-row fxLayout="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span>{{title}}</span>
-      <span fxFlex></span>
-      <internalorganisation-select></internalorganisation-select>
+      <span fxFlex>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
@@ -132,24 +130,23 @@
           <h3>No products to display.</h3>
         </div>
 
-        <ng-template let-good let-last="last" ngFor [ngForOf]="data">
+        <ng-template let-row let-last="last" ngFor [ngForOf]="rows">
           <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" style="cursor: pointer;">
 
-            <mat-icon *ngIf="!good.PrimaryPhoto" mat-list-avatar>photo_camera</mat-icon>
-            <img *ngIf="good.PrimaryPhoto" mat-list-avatar [src]="mediaService.url(good.PrimaryPhoto)" />
+            <mat-icon fxHide fxShow.gt-sm *ngIf="!row.avatar" mat-list-avatar>insert_photo</mat-icon>
+            <img fxHide fxShow.gt-sm *ngIf="row.avatar" mat-list-avatar [src]="mediaService.url(row.logo)" />
 
-            <h3 *ngIf="serialisedGood(good)" mat-line [routerLink]="'/serialisedGood/' + [good.id]"> {{good.Name}}</h3>
-            <h3 *ngIf="!serialisedGood(good)" mat-line [routerLink]="'/nonSerialisedGood/' + [good.id]"> {{good.Name}}</h3>
-            <p mat-line>{{ good.Description }} </p>
-            <p mat-line>Primary category: {{ good.PrimaryProductCategory?.Name }} </p>
+            <h3 *ngIf="row.isSerialised" mat-line [routerLink]="'/serialisedGood/' + [row.good.id]">{{row.name}}</h3>
+            <h3 *ngIf="!row.isSerialised" mat-line [routerLink]="'/nonSerialisedGood/' + [row.good.id]">{{row.name}}</h3>
+            <p mat-line>{{row.description}} <span *ngIf="row.nonSerialisedInventoryItem">; Available: {{row.available}}</span></p>
 
             <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a *ngIf="serialisedGood(good)" [routerLink]="'/serialisedGood/' + [good.id]" mat-menu-item>Edit</a>
-                <a *ngIf="!serialisedGood(good)" [routerLink]="'/nonSerialisedGood/' + [good.id]" mat-menu-item>Edit</a>
+                <a *ngIf="row.isSerialised" [routerLink]="'/serialisedGood/' + [row.good.id]" mat-menu-item>Edit</a>
+                <a *ngIf="!row.isSerialised" [routerLink]="'/nonSerialisedGood/' + [row.good.id]" mat-menu-item>Edit</a>
                 <button mat-menu-item (click)="delete(good)">Delete</button>
               </mat-menu>
             </div>
@@ -162,7 +159,7 @@
 
   </div>
 
-  <mat-toolbar fxLayout="row">
+  <mat-toolbar fxFlex fxLayout="row">
     <span fxFlex></span>
     <a mat-raised-button (click)="addGood()">
       Add New

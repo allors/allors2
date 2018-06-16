@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.Employment">
+    <Position X="17.75" Y="5.5" Width="2.5" />
+    <InheritanceLine Type="Allors.Domain.PartyRelationship" FixedFromPoint="true">
+      <Path>
+        <Point X="19" Y="4.242" />
+        <Point X="19" Y="5.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAABAACQAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Employee" />
+      <Property Name="Employer" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.PartyRelationship">
+    <Position X="17.75" Y="2.75" Width="2.25" />
+    <InheritanceLine Type="Allors.Domain.Period" FixedToPoint="true">
+      <Path>
+        <Point X="19" Y="1.925" />
+        <Point X="19" Y="2.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Person" Collapsed="true">
+    <Position X="21.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAggEiAJgAAAEiKABAQAAYEACAAAAiAAAAgAACAAAg=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
+    <Position X="14.75" Y="5.5" Width="1.75" />
+    <AssociationLine Name="ActiveEmployees" Type="Allors.Domain.Person" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15.625" Y="6.191" />
+        <Point X="15.625" Y="7.367" />
+        <Point X="22.125" Y="7.367" />
+        <Point X="22.125" Y="6.45" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>mAQAEAGECRYAAICAUAgQhhIIBgGMgoIACAESAAAxSAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ActiveEmployees" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Period">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

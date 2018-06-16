@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.WorkEffortPartyAssignment" Collapsed="true">
+    <Position X="3.25" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Party" />
+      <Property Name="Assignment" />
+      <Property Name="Facility" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Party" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AYAIGAABVAAQAoAQIJgmAACgoAgUAAAACAIFBANAgEI=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.WorkEffort" Collapsed="true">
+    <Position X="7" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkQIAgAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.WorkEffortInventoryAssignment">
+    <Position X="10.5" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQCAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Assignment" />
+      <Property Name="InventoryItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
+    <Position X="14.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAQAAEAAAAAAAgAE=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.Facility" Collapsed="true">
+    <Position X="3.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAACAAAAgAAAAAAAAAAQAAAAAACABAAAAAEAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

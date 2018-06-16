@@ -2,6 +2,7 @@ namespace Allors
 {
     using System;
     using System.IO;
+    using System.IO.Compression;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -107,14 +108,21 @@ namespace Allors
                 internalOrganisation.LogoImage = image;
             }
 
-            var facility = new FacilityBuilder(this.Session)
-                .WithName("Headquarters")
-                .WithDescription("Allors HQ")
+            var facility1 = new FacilityBuilder(this.Session)
+                .WithName("facility1")
+                .WithDescription("Facility 1")
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
                 .WithOwner(internalOrganisation)
                 .Build();
 
-            internalOrganisation.DefaultFacility = facility;
+            var facility2 = new FacilityBuilder(this.Session)
+                .WithName("facility1")
+                .WithDescription("Facility 1")
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithOwner(internalOrganisation)
+                .Build();
+
+            internalOrganisation.DefaultFacility = facility1;
 
             new StoreBuilder(this.Session)
                 .WithName("Allors store")
@@ -189,7 +197,8 @@ namespace Allors
 
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var good = new GoodBuilder(this.Session)
+            var good1 = new GoodBuilder(this.Session)
+                .WithArticleNumber("gz-1")
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
@@ -202,10 +211,13 @@ namespace Allors
                 .WithStandardFeature(model1Brand1)
                 .Build();
 
-            var goodInventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
-            goodInventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).WithFacility(facility1).Build();
+            goodInventoryItem1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).WithFacility(facility2).Build();
+            goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             var good2 = new GoodBuilder(this.Session)
+                .WithArticleNumber("gz-2")
                 .WithName("Tiny red round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -216,10 +228,25 @@ namespace Allors
                 .WithPrimaryProductCategory(productCategory3)
                 .WithStandardFeature(brand1)
                 .WithStandardFeature(model1Brand1)
+                .WithProductType(productType)
                 .Build();
 
             var good2InventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithGood(good2).WithSerialNumber("1").Build();
-            
+
+            var good3 = new GoodBuilder(this.Session)
+                .WithArticleNumber("gz-3")
+                .WithName("Tiny green round gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
+                .WithDescription("Perfect red with nice curves")
+                .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
+                .WithSku("10103")
+                .WithVatRate(vatRate)
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(productCategory3)
+                .WithStandardFeature(brand1)
+                .WithStandardFeature(model1Brand1)
+                .Build();
+
             this.Session.Derive();
 
             for (int i = 0; i < 100; i++)
@@ -345,7 +372,7 @@ namespace Allors
 
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
-                    .WithProduct(good)
+                    .WithProduct(good1)
                     .WithActualUnitPrice(3000)
                     .WithQuantityOrdered(1)
                     .WithMessage(@"line1
@@ -381,7 +408,7 @@ line2")
 
                 var salesInvoiceItem1 = new SalesInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
-                    .WithProduct(good)
+                    .WithProduct(good1)
                     .WithActualUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1
@@ -419,7 +446,7 @@ line2")
 
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
-                    .WithProduct(good)
+                    .WithProduct(good1)
                     .WithActualUnitPrice(3000)
                     .WithQuantity(1)
                     .WithMessage(@"line1

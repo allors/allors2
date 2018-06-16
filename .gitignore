@@ -202,3 +202,4 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 Domains/Apps/Repository/Domain/Apps/Good.cs
+Domains/Apps/Workspace/Typescript/Intranet/package-lock.json

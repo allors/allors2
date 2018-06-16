@@ -28,33 +28,82 @@ namespace Allors.Server
             string html = null;
             string fileName = null;
             string footer = null;
-            
-//            if (@object is SalesInvoice salesInvoice)
-//            {
-//                // TODO: Security
-//                html = salesInvoice.HtmlContent;
-//                fileName = "SalesInvoice-" + salesInvoice.InvoiceNumber + ".pdf";
-//                footer = $@"<!DOCTYPE html>
-//<html>
-//    <style>
-//    .footer p {{
-//                margin: 3px;
-//                font-size: 8px;
-//                line-height: 8px;
-//                text-align: left;
-//                font-weight: normal;
-//                padding-bottom: 10px;
-//            }}
-//    </style>
-//    <body>
-//        <div class=""footer"">
-//                <p>General Conditions upon request, AVIACO BVBA</p>
-//                <p>Total amount due in {salesInvoice.PaymentNetDays} days.</p>
-//                <p>If payment overdue interest will be calculated according General Conditions.</p>
-//        </div>
-//    </body>
-//</html>";
-//            }
+
+            if (@object is ProductQuote productQuote)
+            {
+                // TODO: Security
+                html = productQuote.HtmlContent;
+                fileName = "ProductQuote-" + productQuote.QuoteNumber + ".pdf";
+                footer = @"<!DOCTYPE html>
+<html>
+    <style>
+    .footer p {
+                margin: 3px;
+                font-size: 8px;
+                line-height: 10px;
+                text-align: left;
+                font-weight: normal;
+                padding-bottom: 10px;
+            }
+    </style>
+    <body>
+        <div class=""footer"">
+            <p>todo</p>
+        </div>
+    </body>
+</html>";
+            }
+
+            if (@object is SalesOrder salesOrder)
+            {
+                // TODO: Security
+                html = salesOrder.HtmlContent;
+                fileName = "SalesOrder-" + salesOrder.OrderNumber + ".pdf";
+                footer = $@"<!DOCTYPE html>
+<html>
+    <style>
+    .footer p {{
+                margin: 3px;
+                font-size: 8px;
+                line-height: 8px;
+                text-align: left;
+                font-weight: normal;
+                padding-bottom: 10px;
+            }}
+    </style>
+    <body>
+        <div class=""footer"">
+            <p>todo</p>
+        </div>
+    </body>
+</html>";
+            }
+
+            if (@object is SalesInvoice salesInvoice)
+            {
+                // TODO: Security
+                html = salesInvoice.HtmlContent;
+                fileName = "SalesInvoice-" + salesInvoice.InvoiceNumber + ".pdf";
+                footer = $@"<!DOCTYPE html>
+<html>
+    <style>
+    .footer p {{
+                margin: 3px;
+                font-size: 8px;
+                line-height: 8px;
+                text-align: left;
+                font-weight: normal;
+                padding-bottom: 10px;
+            }}
+    </style>
+    <body>
+        <div class=""footer"">
+            <p>todo</p>
+        </div>
+    </body>
+</html>";
+            }
+
 
             if (html != null)
             {

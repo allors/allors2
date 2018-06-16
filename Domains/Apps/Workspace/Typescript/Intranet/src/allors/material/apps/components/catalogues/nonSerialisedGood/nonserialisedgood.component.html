@@ -14,12 +14,15 @@
 
         <mat-tab label="General">
           <div style="margin-top: 1rem;" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+            <a-mat-input [object]="good" [roleType]="m.Good.ArticleNumber"></a-mat-input>
             <a-mat-input [object]="good" [roleType]="m.Good.Name"></a-mat-input>
-            <a-mat-input [object]="good" [roleType]="m.Good.Description"></a-mat-input>
-
             <!-- <a-mat-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.NonSerialisedInventoryItemState"
             [options]="inventoryItemObjectStates" display="Name" label="Status"></a-mat-select> -->
             <a-mat-select [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
+          </div>
+
+          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+            <a-mat-input [object]="good" [roleType]="m.Good.Description"></a-mat-input>
           </div>
 
           <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
