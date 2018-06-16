@@ -140,7 +140,7 @@
 
             <h3 *ngIf="row.isSerialised" mat-line [routerLink]="'/serialisedGood/' + [row.good.id]">{{row.name}}</h3>
             <h3 *ngIf="!row.isSerialised" mat-line [routerLink]="'/nonSerialisedGood/' + [row.good.id]">{{row.name}}</h3>
-            <p mat-line>{{row.description}} <span *ngIf="row.nonSerialisedInventoryItem">; Available: {{row.available}}</span></p>
+            <p mat-line>{{row.description}} <span *ngIf="!row.isSerialised">; Available: {{row.available}}</span></p>
 
             <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">

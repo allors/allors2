@@ -13,7 +13,7 @@ export * from './productcharacteristic/productcharacteristic.module';
 export * from './producttype/producttypes-overview.module';
 export * from './producttype/producttype.module';
 
-export * from './nonSerialisedGood/nonserialisedgoodmodule';
+export * from './nonSerialisedGood/nonserialisedgood.module';
 export * from './serialisedGood/serialisedgood.module';
 
 import { CatalogueModule } from './catalogue/catalogue.module';
@@ -31,7 +31,7 @@ import { ProductCharacteristicsOverviewModule } from './productcharacteristic/pr
 import { ProductTypeModule } from './producttype/producttype.module';
 import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';
 
-import { NonSerialisedGoodModule } from './nonSerialisedGood/nonserialisedgoodmodule';
+import { NonSerialisedGoodModule } from './nonSerialisedGood/nonserialisedgood.module';
 import { SerialisedGoodModule } from './serialisedGood/serialisedgood.module';
 
 export const Modules = [
