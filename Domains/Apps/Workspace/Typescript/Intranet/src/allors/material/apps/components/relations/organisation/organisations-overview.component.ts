@@ -270,10 +270,10 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
             logo: v.LogoImage,
             name: v.PartyName,
             classification: v.OrganisationClassifications.map(v => v.Name).join(", "),
-            phone: `${v.GeneralPhoneNumber.CountryCode || ''} ${v.GeneralPhoneNumber.AreaCode || ''} ${v.GeneralPhoneNumber.ContactNumber || ''}`,
-            address: `${v.GeneralCorrespondence.Address1 || ''} ${v.GeneralCorrespondence.Address2 || ''} ${v.GeneralCorrespondence.Address3 || ''}`,
-            address2: `${v.GeneralCorrespondence.PostalBoundary.PostalCode || ''} ${v.GeneralCorrespondence.PostalBoundary.Locality || ''}`,
-            address3: `${v.GeneralCorrespondence.PostalBoundary.Country.Name || ''}`
+            phone: `${v.GeneralPhoneNumber? v.GeneralPhoneNumber.CountryCode : ''} ${v.GeneralPhoneNumber? v.GeneralPhoneNumber.AreaCode : ''} ${v.GeneralPhoneNumber? v.GeneralPhoneNumber.ContactNumber : ''}`,
+            address: `${v.GeneralCorrespondence && v.GeneralCorrespondence.Address1? v.GeneralCorrespondence.Address1 : ''} ${v.GeneralCorrespondence && v.GeneralCorrespondence.Address2? v.GeneralCorrespondence.Address2 : ''} ${v.GeneralCorrespondence && v.GeneralCorrespondence.Address3? v.GeneralCorrespondence.Address3 : ''}`,
+            address2: `${v.GeneralCorrespondence && v.GeneralCorrespondence.PostalBoundary? v.GeneralCorrespondence.PostalBoundary.PostalCode : ''} ${v.GeneralCorrespondence && v.GeneralCorrespondence.PostalBoundary? v.GeneralCorrespondence.PostalBoundary.Locality : ''}`,
+            address3: `${v.GeneralCorrespondence && v.GeneralCorrespondence.PostalBoundary.Country? v.GeneralCorrespondence.PostalBoundary.Country.Name : ''}`
           };
         });
       },

@@ -49,7 +49,7 @@ namespace Allors.Domain
             if (@this.GetType() == typeof(Good))
             {
                 var good = (Good)@this;
-                if (good.InventoryItemKind.Equals(new InventoryItemKinds(session).Serialised))
+                if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(session).Serialised))
                 {
                     foreach (SerialisedInventoryItem inventoryItem in good.InventoryItemsWhereGood)
                     {

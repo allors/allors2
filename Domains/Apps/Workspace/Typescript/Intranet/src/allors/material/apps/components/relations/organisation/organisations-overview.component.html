@@ -75,7 +75,7 @@
         <div *ngIf="rows && rows.length === 0">
           <h3>No organisations to display.</h3>
         </div>
-        
+
         <ng-template let-row let-last="last" ngFor [ngForOf]="rows">
           <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/relations/organisation/', row.object.id])" style="cursor: pointer;">
 
