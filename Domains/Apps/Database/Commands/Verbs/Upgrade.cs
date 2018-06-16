@@ -1,4 +1,4 @@
-﻿namespace Allors.Console
+﻿namespace Commands.Verbs
 {
     using System;
     using System.Collections.Generic;
@@ -6,12 +6,15 @@
     using System.Linq;
     using System.Xml;
 
+    using Allors;
     using Allors.Domain;
     using Allors.Services;
 
+    using CommandLine;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
-
+    
     public class Upgrade
     {
         private readonly string dataPath;
@@ -30,14 +33,14 @@
         {
         };
 
-        public Upgrade(IConfigurationRoot configurationRoot, IDatabaseService databaseService, ILogger<Upgrade> logger)
+        public Upgrade(IConfiguration configuration, IDatabaseService databaseService, ILogger<Upgrade> logger)
         {
-            this.dataPath = configurationRoot["datapath"];
+            this.dataPath = configuration["datapath"];
             this.database = databaseService.Database;
             this.logger = logger;
         }
 
-        public int Execute(UpgradeOptions opts)
+        public int Execute(Options opts)
         {
             var fileInfo = new FileInfo(opts.File);
            
@@ -109,6 +112,13 @@
 
             this.logger.LogInformation("End");
             return 0;
+        }
+
+        [Verb("upgrade", HelpText = "Upgrade the database.")]
+        public class Options
+        {
+            [Option('f', "file", Required = false, HelpText = "File to load from.")]
+            public string File { get; set; }
         }
     }
 }

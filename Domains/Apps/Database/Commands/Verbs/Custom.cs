@@ -1,7 +1,12 @@
-﻿namespace Allors.Console
+﻿namespace Commands.Verbs
 {
+    using System;
+
+    using Allors;
     using Allors.Domain;
     using Allors.Services;
+
+    using CommandLine;
 
     using Microsoft.Extensions.Logging;
 
@@ -32,6 +37,11 @@
             }
 
             return 0;
+        }
+
+        [Verb("custom", HelpText = "Custom action.")]
+        public class Options
+        {
         }
     }
 }

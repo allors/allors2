@@ -18,8 +18,9 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Console
+namespace Commands
 {
+    using System;
     using System.IO;
     using System.Linq;
 
@@ -30,15 +31,14 @@ namespace Allors.Console
 
     using CommandLine;
 
+    using Commands.Verbs;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
     using NLog.Extensions.Logging;
-
-    using ILogger = Allors.ILogger;
-    using ObjectFactory = Allors.ObjectFactory;
-
+    
     public class Program
     {
         private static readonly ServiceProvider ServiceProvider;
@@ -52,32 +52,35 @@ namespace Allors.Console
                                        ApplicationName = "Server"
                                    });
 
-            var configurationRoot = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
                 .Build();
-            services.AddSingleton(configurationRoot);
+            services.AddSingleton<IConfiguration>(configuration);
 
             services.AddSingleton<ILoggerFactory, LoggerFactory>();
             services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             services.AddLogging((builder) => builder.SetMinimumLevel(LogLevel.Trace));
 
-            services.AddTransient<Custom>();
-            services.AddTransient<Load>();
-            services.AddTransient<Populate>();
-            services.AddTransient<Save>();
-            services.AddTransient<Upgrade>();
+            var assembly = typeof(Program).Assembly;
+            var verbTypes = assembly.ExportedTypes
+                .Where(v => v.IsClass && v.IsPublic && !v.IsNested && v.Namespace.StartsWith("Commands.Verbs"));
+
+            foreach (var verbType in verbTypes)
+            {
+                services.AddTransient(verbType);
+            }
 
             ServiceProvider = services.BuildServiceProvider();
 
             var databaseService = ServiceProvider.GetRequiredService<IDatabaseService>();
-            var configuration = new Configuration
+            var databaseConfiguration = new Configuration
                                     {
-                                        ConnectionString = configurationRoot["allors"],
-                                        ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User)),
+                                        ConnectionString = configuration["allors"],
+                                        ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
                                         CommandTimeout = 0
                                     };
             
-            databaseService.Database = new Database(ServiceProvider, configuration);
+            databaseService.Database = new Database(ServiceProvider, databaseConfiguration);
 
             var loggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
             loggerFactory.AddNLog(new NLogProviderOptions { CaptureMessageTemplates = true, CaptureMessageProperties = true });
@@ -88,7 +91,7 @@ namespace Allors.Console
         {
             get
             {
-                var directoryInfo = new DirectoryInfo(".");
+                var directoryInfo = new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory);
                 while (directoryInfo != null && directoryInfo.GetDirectories("Server").Length == 0)
                 {
                     directoryInfo = directoryInfo.Parent;
@@ -103,18 +106,26 @@ namespace Allors.Console
         {
             var logger = ServiceProvider.GetRequiredService<ILogger<Program>>();
 
-            return Parser.Default.ParseArguments<CustomOptions, LoadOptions, PopulateOptions, SaveOptions, UpgradeOptions>(args)
-                .MapResult(
-                    (CustomOptions opts) => ServiceProvider.GetRequiredService<Custom>().Execute(),
-                    (LoadOptions opts) => ServiceProvider.GetRequiredService<Load>().Execute(opts),
-                    (PopulateOptions opts) => ServiceProvider.GetRequiredService<Populate>().Execute(),
-                    (SaveOptions opts) => ServiceProvider.GetRequiredService<Save>().Execute(opts),
-                    (UpgradeOptions opts) => ServiceProvider.GetRequiredService<Upgrade>().Execute(opts),
-                    errors =>
-                        {
-                            logger.LogError("{errors}", errors);
-                            return 1;
-                        });
+            try
+            {
+                return Parser.Default.ParseArguments<Custom.Options, Load.Options, Populate.Options, Save.Options, Upgrade.Options>(args)
+                    .MapResult(
+                        (Custom.Options opts) => ServiceProvider.GetRequiredService<Custom>().Execute(),
+                        (Load.Options opts) => ServiceProvider.GetRequiredService<Load>().Execute(opts),
+                        (Populate.Options opts) => ServiceProvider.GetRequiredService<Populate>().Execute(),
+                        (Save.Options opts) => ServiceProvider.GetRequiredService<Save>().Execute(opts),
+                        (Upgrade.Options opts) => ServiceProvider.GetRequiredService<Upgrade>().Execute(opts),
+                        errors =>
+                            {
+                                logger.LogError("{errors}", errors);
+                                return ExitCode.Error;
+                            });
+            } 
+            catch (Exception e)
+            {
+                logger.LogError("Uncaught Exception: {exception}", e);
+                return ExitCode.Error;
+            }
         }
     }
 }

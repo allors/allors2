@@ -18,14 +18,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Console
+namespace Commands.Verbs
 {
     using System;
     using System.Data;
     using System.IO;
 
+    using Allors;
     using Allors.Domain;
     using Allors.Services;
+
+    using CommandLine;
 
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -36,9 +39,9 @@ namespace Allors.Console
         private readonly IDatabase database;
         private readonly ILogger<Populate> logger;
 
-        public Populate(IConfigurationRoot configurationRoot, IDatabaseService databaseService, ILogger<Populate> logger)
+        public Populate(IConfiguration configuration, IDatabaseService databaseService, ILogger<Populate> logger)
         {
-            this.dataPath = configurationRoot["datapath"];
+            this.dataPath = configuration["datapath"];
             this.database = databaseService.Database;
             this.logger = logger;
         }
@@ -81,6 +84,11 @@ namespace Allors.Console
             }
 
             return 0;
+        }
+
+        [Verb("populate", HelpText = "Load the database.")]
+        public class Options
+        {
         }
     }
 }

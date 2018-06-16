@@ -18,13 +18,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Console
+namespace Commands.Verbs
 {
     using System;
     using System.IO;
     using System.Xml;
 
+    using Allors;
     using Allors.Services;
+
+    using CommandLine;
 
     using Microsoft.Extensions.Logging;
 
@@ -39,7 +42,7 @@ namespace Allors.Console
             this.logger = logger;
         }
 
-        public int Execute(SaveOptions opts)
+        public int Execute(Options opts)
         {
             var fileInfo = new FileInfo(opts.File);
 
@@ -55,6 +58,13 @@ namespace Allors.Console
             }
 
             return 0;
+        }
+
+        [Verb("save", HelpText = "Save the database.")]
+        public class Options
+        {
+            [Option('f', "file", Required = false, Default = "population.xml", HelpText = "File to save to.")]
+            public string File { get; set; }
         }
     }
 }

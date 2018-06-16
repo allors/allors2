@@ -18,12 +18,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Console
+namespace Commands.Verbs
 {
     using System.IO;
     using System.Xml;
 
+    using Allors;
     using Allors.Services;
+
+    using CommandLine;
 
     using Microsoft.Extensions.Logging;
 
@@ -38,7 +41,7 @@ namespace Allors.Console
             this.logger = logger;
         }
 
-        public int Execute(LoadOptions opts)
+        public int Execute(Options opts)
         {
             var fileInfo = new FileInfo(opts.File);
 
@@ -50,7 +53,14 @@ namespace Allors.Console
                 this.logger.LogInformation("End");
             }
 
-            return 0;
+            return ExitCode.Success;
+        }
+
+        [Verb("load", HelpText = "Load the database.")]
+        public class Options
+        {
+            [Option('f', "file", Required = false, Default = "population.xml", HelpText = "File to load from.")]
+            public string File { get; set; }
         }
     }
 }
