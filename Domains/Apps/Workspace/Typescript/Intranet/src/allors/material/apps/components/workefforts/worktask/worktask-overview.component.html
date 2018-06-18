@@ -6,7 +6,7 @@
 </mat-toolbar>
 
 <div style="padding: 20px;">
-  <div *ngIf="task" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+  <div *ngIf="task" class="row">
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
       <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
@@ -15,28 +15,28 @@
 
       <mat-card-content fxFlex fxFill>
         <div>
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+          <div class="row">
             <a-mat-static [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
             <a-mat-static [object]="task" [roleType]="m.WorkEffort.WorkEffortNumber"></a-mat-static>
             <a-mat-static [object]="task" [roleType]="m.WorkEffort.WorkEffortState" display="Name" label="Status"></a-mat-static>
           </div>
 
-          <div *ngIf="task.Customer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="task.Customer" class="row">
             <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'"  [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
             <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'"  [object]="task" [roleType]="m.WorkEffort.Customer"
               display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static>
           </div>
 
-          <div *ngIf="task.FullfillContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div *ngIf="task.FullfillContactMechanism" class="row">
             <a-mat-static [object]="task" [roleType]="m.WorkEffort.FullfillContactMechanism" display="displayName" label="Address"></a-mat-static>
           </div>
 
-          <div *ngIf="task.ContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div *ngIf="task.ContactPerson" class="row">
             <a-mat-static [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <p class="col mat-caption tc-grey-500"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
           </div>

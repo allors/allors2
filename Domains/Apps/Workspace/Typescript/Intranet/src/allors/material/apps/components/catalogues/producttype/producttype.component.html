@@ -6,11 +6,11 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="productType" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <a-mat-input [object]="productType" [roleType]="m.ProductType.Name"></a-mat-input>
         <a-mat-select [object]="productType" [roleType]="m.ProductType.SerialisedInventoryItemCharacteristicTypes" [options]="characteristics"
           display="Name"></a-mat-select>

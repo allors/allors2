@@ -6,17 +6,17 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="organisation" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <a-mat-input [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
         <a-mat-input [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
 
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+      <div class="row">
 
         <mat-form-field>
           <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
@@ -30,7 +30,7 @@
 
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+      <div class="row">
         <a-mat-slide-toggle [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
         <a-mat-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
         <a-mat-file [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>

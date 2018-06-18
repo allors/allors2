@@ -6,17 +6,17 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="contactMechanism" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+      <div class="row">
         <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
           display="Name" label="Contact purposes"></a-mat-select>
         <a-mat-input [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
         <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
       </div>

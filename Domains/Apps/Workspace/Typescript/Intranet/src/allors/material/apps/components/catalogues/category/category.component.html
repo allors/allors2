@@ -6,25 +6,25 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="category" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+      <div class="row">
         <a-mat-file [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <a-mat-input [object]="category" [roleType]="m.ProductCategory.Name"></a-mat-input>
         <a-mat-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+      <div class="row">
         <a-mat-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
         <a-mat-input [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-input>
       </div>
 
-      <mat-expansion-panel *ngIf="locales" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+      <mat-expansion-panel *ngIf="locales" class="row">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Translations
@@ -33,7 +33,7 @@
 
         <div *ngFor="let locale of locales; let i = index">
           <mat-divider *ngIf="i > 0"></mat-divider>
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedNames" [locale]="locale"></a-mat-localised-text>
             <a-mat-localised-text [object]="category" [roleType]="m.ProductCategory.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
           </div>

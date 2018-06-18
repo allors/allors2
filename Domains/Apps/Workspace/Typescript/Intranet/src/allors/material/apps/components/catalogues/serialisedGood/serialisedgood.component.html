@@ -6,14 +6,14 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="good" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
       <mat-tab-group fxFlex>
 
         <mat-tab label="General">
-          <div style="margin-top: 1rem;" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div style="margin-top: 1rem;" class="row">
             <a-mat-input [object]="good" [roleType]="m.Good.ArticleNumber"></a-mat-input>
             <a-mat-input [object]="good" [roleType]="m.Good.Name"></a-mat-input>
             <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates"
@@ -24,18 +24,18 @@
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <a-mat-input [object]="good" [roleType]="m.Good.Description"></a-mat-input>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-select [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
             <a-mat-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
             <a-mat-select [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
             <a-mat-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <div fxLayout fxLayoutGap="1em">
               <mat-form-field>
                 <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
@@ -50,14 +50,14 @@
             </div>
           </div>
 
-          <mat-card *ngIf="addBrand" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x" style="margin: 1rem">
+          <mat-card *ngIf="addBrand" class="row" style="margin: 1rem">
             <mat-card-header>Add a new brand</mat-card-header>
             <mat-card-content>
               <brand-inline [scope]="scope" (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
             </mat-card-content>
           </mat-card>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <div fxLayout fxLayoutGap="1em">
               <mat-form-field>
                 <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
@@ -72,14 +72,14 @@
             </div>
           </div>
 
-          <mat-card *ngIf="addModel" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x" style="margin: 1rem">
+          <mat-card *ngIf="addModel" class="row" style="margin: 1rem">
             <mat-card-header>Add a new model</mat-card-header>
             <mat-card-content>
               <model-inline [scope]="scope" (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
             </mat-card-content>
           </mat-card>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-select [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships" display="Name"></a-mat-select>
             <a-mat-autocomplete [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [filter]="organisationFilter.create(scope)"
               display="Name"></a-mat-autocomplete>
@@ -101,7 +101,7 @@
 
             <div *ngFor="let locale of locales; let i = index">
               <mat-divider *ngIf="i > 0"></mat-divider>
-              <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+              <div class="row">
                 <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedNames" [locale]="locale"></a-mat-localised-text>
                 <a-mat-localised-text [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
               </div>
@@ -110,7 +110,7 @@
         </mat-tab>
 
         <mat-tab label="Characteristics">
-          <div style="margin-top: 1rem;" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div style="margin-top: 1rem;" class="row">
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.AcquisitionYear"></a-mat-input>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ManufacturingYear"></a-mat-input>
             <mat-form-field fxLayout="column" fxLayoutAlign="top stretch">
@@ -123,20 +123,18 @@
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
           </div>
 
-          <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" [ngStyle]="layout.columns"
-            [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" class="row">
             <a-mat-input *ngIf="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
               [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
           </div>
 
-          <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" [ngStyle]="layout.columns"
-            [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics" class="row">
             <a-mat-textarea *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
               [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-textarea>
           </div>
 
           <mat-expansion-panel *ngIf="locales" label="Translations">
-            <div *ngFor="let locale of locales; let i = index" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+            <div *ngFor="let locale of locales; let i = index" class="row">
               <mat-divider *ngIf="i > 0"></mat-divider>
               <div *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
                 <a-mat-localised-text *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue"
@@ -148,7 +146,7 @@
         </mat-tab>
 
         <mat-tab label="Financial">
-          <div style="margin-top: 1rem;" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div style="margin-top: 1rem;" class="row">
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-input>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.PurchasePrice"></a-mat-input>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ReplacementValue"></a-mat-input>

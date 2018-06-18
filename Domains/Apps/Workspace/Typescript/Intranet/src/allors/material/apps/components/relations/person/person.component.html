@@ -1,4 +1,4 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+<form #form="ngForm" class="a-root" (submit)="save()">
   <mat-toolbar>
     <mat-toolbar-row fxLayout="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
@@ -6,11 +6,11 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px; overflow: auto;">
+  <div>
 
-    <mat-card *ngIf="organisation" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="organisation" class="container-fluid">
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <mat-form-field>
           <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
             <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
@@ -19,19 +19,19 @@
         <a-mat-input [object]="person" [roleType]="m.Person.Function"></a-mat-input>
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns4x">
-        <a-mat-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
-        <a-mat-input [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-        <a-mat-input [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-        <a-mat-input [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+      <div class="row">
+        <a-mat-select [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name" class="col"></a-mat-select>
+        <a-mat-input [object]="person" [roleType]="m.Person.FirstName" class="col"></a-mat-input>
+        <a-mat-input [object]="person" [roleType]="m.Person.MiddleName" class="col"></a-mat-input>
+        <a-mat-input [object]="person" [roleType]="m.Person.LastName" class="col"></a-mat-input>
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <a-mat-select [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
         <a-mat-select [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
       </div>
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+      <div class="row">
         <a-mat-select [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds"
           display="Description" multiple="true"></a-mat-select>
         <mat-form-field *ngIf="!organisationContactRelationship && !organisation">

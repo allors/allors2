@@ -6,21 +6,21 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="request" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
       <mat-card-content fxFlex fxFill style="overflow: auto;">
-        <div *ngIf="!request.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div *ngIf="!request.isNew" class="row">
           <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-autocomplete [object]="request" [roleType]="m.Request.Originator" [filter]="stateService.customersFilter.create(scope)"
             display="Name" (onChange)="originatorSelected($event)" label="Requesting organisation"></a-mat-autocomplete>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"
               label="Reply to"></a-mat-select>
@@ -31,7 +31,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="request.Originator && addContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
+        <mat-card *ngIf="request.Originator && addContactMechanism" class="row"
           style="margin: 1rem">
           <mat-card-header>Add a new contact mechanism</mat-card-header>
           <mat-card-content>
@@ -40,7 +40,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactPerson = !addContactPerson">
@@ -50,7 +50,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="request.Originator && addContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
+        <mat-card *ngIf="request.Originator && addContactPerson" class="row"
           style="margin: 1rem">
           <mat-card-header>Add a new contact person</mat-card-header>
           <mat-card-content>
@@ -59,20 +59,20 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-static *ngIf="request.EmailAddress" [object]="request" [roleType]="m.Request.EmailAddress"></a-mat-static>
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-static *ngIf="request.TelephoneCountryCode" [object]="request" [roleType]="m.Request.TelephoneCountryCode" label="Country code"></a-mat-static>
             <a-mat-static *ngIf="request.TelephoneNumber" [object]="request" [roleType]="m.Request.TelephoneNumber"></a-mat-static>
           </div>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-datepicker [object]="request" [roleType]="m.Request.RequestDate"></a-mat-datepicker>
           <a-mat-datepicker [object]="request" [roleType]="m.Request.RequiredResponseDate"></a-mat-datepicker>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-input [object]="request" [roleType]="m.Request.Description"></a-mat-input>
           <a-mat-textarea [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
           <a-mat-textarea [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>

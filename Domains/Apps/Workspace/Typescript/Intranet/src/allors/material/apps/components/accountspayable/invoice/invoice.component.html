@@ -6,16 +6,16 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="invoice" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
       <mat-card-content fxFlex fxFill style="overflow: auto;">
-        <div *ngIf="!invoice.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div *ngIf="!invoice.isNew" class="row">
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseOrder"></a-mat-static>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-autocomplete [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(scope)"
             display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
           <div fxLayout="row" fxLayoutGap="1em">
@@ -29,8 +29,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="invoice.BilledFrom && addBilledFromContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
-          style="margin: 1rem">
+        <mat-card *ngIf="invoice.BilledFrom && addBilledFromContactPerson" class="row" style="margin: 1rem">
           <mat-card-header>Add a new person</mat-card-header>
           <mat-card-content>
             <person-inline (cancelled)="billedFromContactPersonCancelled($event); addBilledFromContactPerson = false" (saved)="billedFromContactPersonAdded($event); addBilledFromContactPerson = false">
@@ -38,13 +37,13 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-select [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceType" [options]="purchaseInvoiceTypes" display="Name"></a-mat-select>
           <a-mat-autocomplete *ngIf="showBillToOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomer" [filter]="stateService.organisationsFilter.create(scope)"
             display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to End Customer"></a-mat-autocomplete>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" [options]="billToContactMechanisms"
               display="displayName"></a-mat-select>
@@ -56,8 +55,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="invoice.BillToCustomer && addBillToContactMechanism" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
-          style="margin: 1rem">
+        <mat-card *ngIf="invoice.BillToCustomer && addBillToContactMechanism" class="row" style="margin: 1rem">
           <mat-card-header>Add a new contact mechanism</mat-card-header>
           <mat-card-content>
             <party-contactmechanism [scope]="scope" (saved)="billToContactMechanismAdded($event)" (cancelled)="billToContactMechanismCancelled()"
@@ -66,7 +64,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactPerson" [options]="billToContacts"
               display="displayName" label="Billing Contact Person"></a-mat-select>
@@ -78,8 +76,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="invoice.BillToCustomer && addBillToContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
-          style="margin: 1rem">
+        <mat-card *ngIf="invoice.BillToCustomer && addBillToContactPerson" class="row" style="margin: 1rem">
           <mat-card-header>Add a new person</mat-card-header>
           <mat-card-content>
             <person-inline (cancelled)="billToContactPersonCancelled($event); addBillToContactPerson = false" (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
@@ -87,7 +84,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-autocomplete *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer"
             [filter]="stateService.organisationsFilter.create(scope)" display="Name" (onChange)="shipToEndCustomerSelected($event)"
             label="Ship to end customer"></a-mat-autocomplete>
@@ -102,8 +99,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerAddress" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
-          style="margin: 1rem">
+        <mat-card *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerAddress" class="row" style="margin: 1rem">
           <mat-card-header>Add a new contact mechanism</mat-card-header>
           <mat-card-content>
             <party-contactmechanism-postaladdress [scope]="scope" (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="shipToEndCustomerAddressCancelled()">
@@ -111,7 +107,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts"
               display="displayName" label="Schipping Contact Person"></a-mat-select>
@@ -123,8 +119,7 @@
           </div>
         </div>
 
-        <mat-card *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerContactPerson" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x"
-          style="margin: 1rem">
+        <mat-card *ngIf="invoice.ShipToEndCustomer && addShipToEndCustomerContactPerson" class="row" style="margin: 1rem">
           <mat-card-header>Add a new contact mechanism</mat-card-header>
           <mat-card-content>
             <person-inline (cancelled)="shipToEndCustomerContactPersonCancelled($event); addshipToEndCustomerContactPerson = false" (saved)="shipToEndCustomerContactPersonAdded($event); addshipToEndCustomerContactPerson = false">
@@ -132,17 +127,17 @@
           </mat-card-content>
         </mat-card>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-select [object]="invoice" [roleType]="m.PurchaseInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
           <a-mat-static [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-input [object]="invoice" [roleType]="m.PurchaseInvoice.Description"></a-mat-input>
           <a-mat-input [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-input>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.PurchaseOrder.Comment"></a-mat-static>
           <a-mat-textarea [object]="invoice" [roleType]="m.PurchaseInvoice.Comment"></a-mat-textarea>
           <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.PurchaseOrder.InternalComment"></a-mat-static>

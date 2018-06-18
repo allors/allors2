@@ -1,9 +1,9 @@
-<div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+<div class="row">
     <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
         display="Name"></a-mat-select>
     <a-mat-input  [object]="emailAddress" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
 </div>
-<div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+<div class="row">
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
 </div>

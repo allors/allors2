@@ -7,7 +7,7 @@
 
 <div style="padding: 20px;">
 
-  <div *ngIf="communicationEvent" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+  <div *ngIf="communicationEvent" class="row">
 
     <mat-card *ngIf="isEmail">
       <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
@@ -16,7 +16,7 @@
 
       <mat-card-content fxFlex fxFill>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
           <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
             display="Name" label="Purposes"></a-mat-static>
@@ -32,7 +32,7 @@
           <a-mat-textarea [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body"></a-mat-textarea>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <mat-form-field *ngIf="communicationEvent.ScheduledStart">
             <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
           </mat-form-field>
@@ -64,7 +64,7 @@
 
       <mat-card-content>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
           <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
             display="Name" label="Purposes"></a-mat-static>
@@ -78,7 +78,7 @@
           <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
           <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true"></a-mat-textarea>
         </div>
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <mat-form-field *ngIf="communicationEvent.ScheduledStart">
             <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
           </mat-form-field>
@@ -110,7 +110,7 @@
 
       <mat-card-content>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes" display="Name" label="Purposes"></a-mat-static>
         </div>
@@ -122,7 +122,7 @@
           <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
           <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true"></a-mat-textarea>
         </div>
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <mat-form-field *ngIf="communicationEvent.ScheduledStart">
             <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
           </mat-form-field>
@@ -153,7 +153,7 @@
       </mat-card-header>
 
       <mat-card-content>
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
           <a-mat-static *ngIf="communicationEvent.EventPurposes" [object]="communicationEvent" [roleType]="m.CommunicationEvent.EventPurposes"
             display="Name" label="Purposes"></a-mat-static>
@@ -169,7 +169,7 @@
         <div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ContactMechanisms" display="displayName" label="Phone number"></a-mat-static>
         </div>
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <mat-form-field *ngIf="communicationEvent.ScheduledStart">
             <input matInput placeholder="Scheduled Start" [value]="communicationEvent.ScheduledStart | date:'MMM d, y, HH:mm'">
           </mat-form-field>

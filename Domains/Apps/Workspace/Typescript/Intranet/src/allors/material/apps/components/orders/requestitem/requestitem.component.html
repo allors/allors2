@@ -6,7 +6,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="requestItem" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
       <mat-card-content fxFlex fxFill style="overflow: auto;">
@@ -23,14 +23,14 @@
           <a-mat-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.Quantity"></a-mat-input>
           <a-mat-select [object]="requestItem" [roleType]="m.RequestItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
           <a-mat-static [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
           <a-mat-input [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-input>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-textarea>
           <a-mat-textarea [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-textarea>
         </div>

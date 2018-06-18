@@ -1,0 +1,34 @@
+/* See https://www.amadousall.com/the-good-parts-of-bootstrap-4-you-are-missing-in-your-angular-material-projects */
+
+$grid-breakpoints: (
+  xs: 0, // handset portrait (small, medium, large) | handset landscape (small)
+  sm: 600px, // handset landscape (medium, large) | tablet portrait(small, large)
+  md: 960px, //  tablet landscape (small, large)
+  lg: 1280px, // laptops and desktops
+  xl: 1600px // large desktops
+);
+
+$container-max-widths: (
+  sm: 600px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1600px
+);
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/utilities";
+
+* {
+  &:active,
+  :focus {
+    outline: none !important;
+  }
+}
+
+label {
+  margin-bottom: 0;
+}

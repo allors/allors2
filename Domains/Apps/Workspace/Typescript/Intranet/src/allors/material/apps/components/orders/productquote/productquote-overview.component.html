@@ -6,7 +6,7 @@
 </mat-toolbar>
 
 <div style="padding: 20px;">
-  <div *ngIf="quote" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+  <div *ngIf="quote" class="row">
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
       <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
@@ -15,14 +15,14 @@
 
       <mat-card-content fxFlex fxFill>
         <div>
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
             <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteNumber"></a-mat-static>
             <a-mat-static *ngIf="quote.Request" [object]="quote" [roleType]="m.Quote.Request" display="RequestNumber" [routerLink]="['/orders/request/' + quote.Request.id]"></a-mat-static>
             <a-mat-static *ngIf="salesOrder" [object]="salesOrder" [roleType]="m.SalesOrder.OrderNumber" [routerLink]="['/orders/salesOrder/' + salesOrder.id ]"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <a-mat-static *ngIf="quote.Receiver.objectType.name == 'Person'" [object]="quote" [roleType]="m.Quote.Receiver" display="displayName"
               label="To" [routerLink]="['/relations/person/' + quote.Receiver.id ]"></a-mat-static>
             <a-mat-static *ngIf="quote.Receiver.objectType.name == 'Organisation'" [object]="quote" [roleType]="m.Quote.Receiver" display="displayName"
@@ -36,7 +36,7 @@
               label="Reply to"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+          <div class="row">
             <mat-form-field *ngIf="quote.IssueDate">
               <input matInput placeholder="Issue date" [value]="quote.IssueDate.toDateString()">
             </mat-form-field>
@@ -48,7 +48,7 @@
             </mat-form-field>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-static [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
             <a-mat-static *ngIf="quote.Description" [object]="quote" [roleType]="m.Quote.Description" y></a-mat-static>
             <a-mat-static *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
@@ -57,7 +57,7 @@
             <a-mat-textarea *ngIf="quote.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <p class="col mat-caption tc-grey-500"> created: {{ quote.CreationDate | date}} by {{ quote.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ quote.LastModifiedDate | date}} by {{ quote.LastModifiedBy.displayName}}</p>
           </div>

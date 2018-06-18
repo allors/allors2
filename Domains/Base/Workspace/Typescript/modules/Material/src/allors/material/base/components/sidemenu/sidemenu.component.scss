@@ -18,7 +18,7 @@
   }
 
   .active {
-    background-color: mat-color($primary);
+    background-color: mat-color($primary) !important;
   }
 }
 

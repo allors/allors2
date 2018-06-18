@@ -6,22 +6,22 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="invoiceItem" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
       <mat-card-content fxFlex fxFill style="overflow: auto;">
 
-        <div *ngIf="!invoiceItem.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div *ngIf="!invoiceItem.isNew" class="row">
           <a-mat-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.SalesInvoiceItemState" display="Name" label="Status"></a-mat-static>
         </div>
 
-        <div *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType" class="row">
           <a-mat-select [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
           <a-mat-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
         </div>
 
-        <div *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" class="row">
           <a-mat-select [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Facility" [options]="facilities" display="Name" (onSelect)="facilitySelected($event)"></a-mat-select>
           <a-mat-autocomplete *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem"
             [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)" [filter]="goodsFacilityFilter.create(scope)"
@@ -29,12 +29,12 @@
           <a-mat-select [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
         </div>
 
-        <div *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType" class="row">
           <a-mat-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Quantity"></a-mat-input>
           <a-mat-input [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.ActualUnitPrice"></a-mat-input>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" display="Name" label="Invoice VAT Regime"></a-mat-static>
           <a-mat-select [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
             label="Item VAT regime"></a-mat-select>
@@ -43,7 +43,7 @@
           <a-mat-static [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.TotalIncVat"></a-mat-static>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-textarea [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Details"></a-mat-textarea>
           <a-mat-static *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment"></a-mat-static>
           <a-mat-textarea [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Comment"></a-mat-textarea>

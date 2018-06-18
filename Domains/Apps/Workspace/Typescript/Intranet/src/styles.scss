@@ -1,17 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body, app-root { margin: 0; height: 100vh; min-height: 100vh; }
-
-mat-sidenav-content {
-    height: 100vh;
-    min-height: 100vh;
-    > *:not(router-outlet) {
-      height: 100vh;
-      min-height: 100vh;
-      display: block;
-      > {
-        height: 100vh;
-        min-height: 100vh;
-      }
-    }
-}
+@import "allors/material/base/styles/bootstrap";
+@import "allors/material/base/styles/layout";

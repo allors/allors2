@@ -6,20 +6,20 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="communicationEvent" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
       <mat-card-content fxFlex fxFill  style="overflow: auto;">
-        <div *ngIf="!communicationEvent.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div *ngIf="!communicationEvent.isNew" class="row">
+          <div class="row">
             <a-mat-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
             <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-mat-slide-toggle>
           </div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-select *ngIf="communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator"
             [options]="allEmailAddresses" display="displayName" label="From"></a-mat-select>
           <a-mat-select *ngIf="!communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator"
@@ -30,12 +30,12 @@
             [options]="allEmailAddresses" display="displayName" label="To"></a-mat-chips>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-input [object]="communicationEvent.EmailTemplate" [roleType]="m.EmailTemplate.SubjectTemplate" label="Subject "></a-mat-input>
           <a-mat-textarea [object]="communicationEvent.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" label="Body"></a-mat-textarea>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
           <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
           <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>

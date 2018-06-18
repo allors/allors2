@@ -6,7 +6,7 @@
 </mat-toolbar>
 
 <div style="padding: 20px;">
-  <div *ngIf="order" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+  <div *ngIf="order" class="row">
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
       <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
@@ -14,20 +14,20 @@
       </mat-card-header>
 
       <mat-card-content>
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.OrderNumber"></a-mat-static>
             <a-mat-static *ngIf="order.Quote" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber" [routerLink]="['/orders/productQuote/' + order.Quote.id ]"></a-mat-static>
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
             <a-mat-static *ngIf="salesInvoice" [object]="salesInvoice" [roleType]="m.SalesInvoice.InvoiceNumber" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id ]"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+          <div class="row">
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderShipmentState" display="Name" label="Shipment Status"></a-mat-static>
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.SalesOrderPaymentState" display="Name" label="Payment Status"></a-mat-static>
           </div>
 
-          <div *ngIf="order.ShipToCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="order.ShipToCustomer" class="row">
             <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
               display="displayName" label="Ship to Customer" [routerLink]="['/relations/organisation/' + order.ShipToCustomer.id ]"></a-mat-static>
             <a-mat-static *ngIf="order.ShipToCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
@@ -35,7 +35,7 @@
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToAddress" display="displayName" label="Ship to"></a-mat-static>
           </div>
 
-          <div *ngIf="order.BillToCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="order.BillToCustomer" class="row">
             <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
               display="displayName" label="Bill to Customer" [routerLink]="['/relations/organisation/' + order.BillToCustomer.id ]"></a-mat-static>
             <!-- <a-mat-static *ngIf="order.BillToCustomer?.objectType.name == 'Person'"  [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
@@ -43,7 +43,7 @@
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
           </div>
 
-          <div *ngIf="order.BillToEndCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns3x">
+          <div *ngIf="order.BillToEndCustomer" class="row">
             <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
               display="displayName" label="Bill to End Customer" [routerLink]="['/relations/organisation/' + order.BillToEndCustomer.id ]"></a-mat-static>
             <a-mat-static *ngIf="order.BillToEndCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
@@ -51,7 +51,7 @@
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism" display="displayName" label="Bill to Address"></a-mat-static>
           </div>
 
-          <div *ngIf="order.ShipToEndCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="order.ShipToEndCustomer" class="row">
             <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Organisation'" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
               display="displayName" label="Ship to End Customer" [routerLink]="['/relations/organisation/' + order.ShipToEndCustomer.id ]"></a-mat-static>
             <a-mat-static *ngIf="order.ShipToEndCustomer?.objectType.name == 'Person'" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
@@ -59,7 +59,7 @@
             <a-mat-static [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <a-mat-static *ngIf="order.CustomerReference" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-static>
             <a-mat-static *ngIf="order.Description" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
             <a-mat-static *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
@@ -68,7 +68,7 @@
             <a-mat-textarea *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <p class="col mat-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
             <p class="col mat-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
           </div>

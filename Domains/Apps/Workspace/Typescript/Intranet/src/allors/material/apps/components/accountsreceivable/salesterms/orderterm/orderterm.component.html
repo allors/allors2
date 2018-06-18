@@ -6,11 +6,11 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="salesTerm" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
 
-      <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+      <div class="row">
         <a-mat-select [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="orderTermTypes" display="Name"></a-mat-select>
         <a-mat-input [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value"></a-mat-input>
       </div>

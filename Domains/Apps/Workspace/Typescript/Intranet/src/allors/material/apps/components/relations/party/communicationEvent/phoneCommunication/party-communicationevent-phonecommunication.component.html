@@ -6,19 +6,19 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="communicationEvent" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
       <mat-card-content fxFlex fxFill style="overflow: auto;">
 
-        <div *ngIf="!communicationEvent.isNew" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div *ngIf="!communicationEvent.isNew" class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
           <a-mat-select [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
           <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-slide-toggle>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div *ngIf="communicationEvent.IncomingCall">
             <div fxLayout fxLayoutGap="1em">
               <a-mat-chips fxFlex style="padding-left: 0px" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts"
@@ -72,12 +72,12 @@
           </div>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-input [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-input>
           <a-mat-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note"></a-mat-textarea>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <div>
             <div fxLayout fxLayoutGap="1em">
               <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers"
@@ -100,7 +100,7 @@
           <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-mat-slide-toggle>
         </div>
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+        <div class="row">
           <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
           <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
           <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>

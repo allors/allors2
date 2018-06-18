@@ -6,12 +6,12 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div fxFlex fxFill fxLayout="row" fxLayoutAlign="start stretch" style="padding: 20px;">
+  <div>
 
     <mat-card *ngIf="repeatinginvoice" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
       <mat-card-content fxFlex fxFill style="overflow: auto;">
 
-        <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+        <div class="row">
           <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name"></a-mat-select>
           <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name"></a-mat-select>
           <a-mat-datepicker [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.NextExecutionDate"></a-mat-datepicker>

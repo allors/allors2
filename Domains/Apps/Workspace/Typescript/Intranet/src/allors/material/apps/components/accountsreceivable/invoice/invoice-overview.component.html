@@ -6,7 +6,7 @@
 </mat-toolbar>
 
 <div style="padding: 20px;">
-  <div *ngIf="invoice" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+  <div *ngIf="invoice" class="row">
     <mat-card fxLayout="column" fxLayoutGap="10px">
       <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
         <mat-card-title>Sales Invoice</mat-card-title>
@@ -14,37 +14,37 @@
 
       <mat-card-content fxFlex fxFill>
         <div>
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div class="row">
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.SalesInvoiceState" display="Name" label="Status"></a-mat-static>
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.InvoiceNumber"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <a-mat-static *ngIf="invoice.SalesOrder" [object]="invoice" [roleType]="m.SalesInvoice.SalesOrder" display="OrderNumber"
               [routerLink]="['/orders/salesOrder/' + invoice.SalesOrder.id ]"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.BillToCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="invoice.BillToCustomer" class="row">
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.BillToCustomer" display="displayName" label="Bill to Customer"></a-mat-static>
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" display="displayName" label="Bill to ContactMechanism"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.ShipToCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="invoice.ShipToCustomer" class="row">
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" display="displayName" label="Ship to Customer"></a-mat-static>
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" display="displayName" label="Ship to Address"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.BillToEndCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="invoice.BillToEndCustomer" class="row">
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomer" display="displayName" label="Bill to End Customer"></a-mat-static>
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" display="displayName" label="Bill to End Customer ContactMechanism"></a-mat-static>
           </div>
 
-          <div *ngIf="invoice.ShipToEndCustomer" [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns2x">
+          <div *ngIf="invoice.ShipToEndCustomer" class="row">
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomer" display="displayName" label="Ship to End Customer"></a-mat-static>
             <a-mat-static [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" display="displayName" label="Ship to End Customer Address"></a-mat-static>
           </div>
 
-          <div [ngStyle]="layout.columns" [ngStyle.gt-sm]="layout.columns1x">
+          <div class="row">
             <a-mat-static *ngIf="invoice.CustomerReference" [object]="invoice" [roleType]="m.PurchaseInvoice.CustomerReference"></a-mat-static>
             <a-mat-static *ngIf="invoice.Description" [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-static>
             <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
