@@ -175,7 +175,7 @@ namespace Allors.Server
                             }
 
                             // Json.net deserializes number to long or double, instead of int. 
-                            if (unitType.IsInteger && !(role is int))
+                            if (unitType.IsInteger && role != null && !(role is int))
                             {
                                 role = Convert.ToInt32(role);
                             }
