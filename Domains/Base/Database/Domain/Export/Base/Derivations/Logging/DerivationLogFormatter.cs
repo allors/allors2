@@ -66,7 +66,7 @@ namespace Allors.Domain.Logging
 
         public static string FormatCycleDetected(Object dependent, Object dependee)
         {
-            return $"Cycle detected between dependent: {dependent}, dependee: {dependee}";
+            return $"Cycle detected between dependent: {FormatDerivable(dependent)}, dependee: {FormatDerivable(dependee)}";
         }
 
         public static string FormatCycleDetected(Object derivable)
