@@ -17,9 +17,9 @@
           (onChange)="goodSelected($event)"></a-mat-autocomplete>
       </div>
       <div class="grid_md-2_xs-1">
-        <a-mat-input  [object]="quoteItem" [roleType]="m.QuoteItem.Quantity"></a-mat-input>
-        <a-mat-select  [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name"></a-mat-select>
-        <a-mat-input  [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice"></a-mat-input>
+        <a-mat-input  [object]="quoteItem" [roleType]="m.QuoteItem.Quantity" class="col-md"></a-mat-input>
+        <a-mat-select  [object]="quoteItem" [roleType]="m.QuoteItem.UnitOfMeasure" [options]="unitsOfMeasure" display="Name" class="col-md"></a-mat-select>
+        <a-mat-input  [object]="quoteItem" [roleType]="m.QuoteItem.UnitPrice" class="col-md"></a-mat-input>
         <a-mat-static  [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
         <a-mat-static  [object]="requestItem" [roleType]="m.RequestItem.MaximumAllowedPrice"></a-mat-static>
       </div>
@@ -33,16 +33,16 @@
         <a-mat-static  *ngIf="requestItem?.Comment" [object]="requestItem" [roleType]="m.RequestItem.Comment"></a-mat-static>
       </div>
       <div>
-        <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.Details"></a-mat-textarea>
+        <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.Details" class="col-md-12"></a-mat-textarea>
       </div>
       <div>
-        <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.Comment"></a-mat-textarea>
+        <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.Comment" class="col-md-12"></a-mat-textarea>
       </div>
       <div>
         <a-mat-static  *ngIf="requestItem?.InternalComment" [object]="requestItem" [roleType]="m.RequestItem.InternalComment"></a-mat-static>
       </div>
       <div>
-        <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"></a-mat-textarea>
+        <a-mat-textarea  [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" class="col-md-12"></a-mat-textarea>
       </div>
     </div>
 

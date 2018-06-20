@@ -11,17 +11,17 @@
     <mat-card *ngIf="catalogue" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
       <div class="row">
-        <a-mat-file [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*"></a-mat-file>
+        <a-mat-file [object]="catalogue" [roleType]="m.Catalogue.CatalogueImage" accept="image/*" class="col-md-12"></a-mat-file>
       </div>
 
       <div class="row">
-        <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
-        <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+        <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.CatScope" [options]="catScopes" display="Name" label="Scope" class="col-md"></a-mat-select>
+        <a-mat-select [object]="catalogue" [roleType]="m.Catalogue.ProductCategories" [options]="categories" display="Name" class="col-md"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-input [object]="catalogue" [roleType]="m.Catalogue.Name"></a-mat-input>
-        <a-mat-textarea [object]="catalogue" [roleType]="m.Catalogue.Description"></a-mat-textarea>
+        <a-mat-input [object]="catalogue" [roleType]="m.Catalogue.Name" class="col-md"></a-mat-input>
+        <a-mat-textarea [object]="catalogue" [roleType]="m.Catalogue.Description" class="col-md-12"></a-mat-textarea>
       </div>
 
       <mat-expansion-panel *ngIf="locales" class="row">

@@ -17,24 +17,24 @@
         </div>
 
         <div *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType !== productItemType" class="row">
-          <a-mat-select [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
-          <a-mat-input [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice" label="Amount"></a-mat-input>
+          <a-mat-select [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name" class="col-md"></a-mat-select>
+          <a-mat-input [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice" label="Amount" class="col-md"></a-mat-input>
         </div>
 
         <div *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" class="row">
           <a-mat-autocomplete *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem"
             [roleType]="m.PurchaseInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)" [filter]="stateService.goodsFilter.create(scope)"></a-mat-autocomplete>
-          <a-mat-select [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
+          <a-mat-select [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name" class="col-md"></a-mat-select>
         </div>
 
         <div *ngIf="invoiceItem.InvoiceItemType && invoiceItem.InvoiceItemType === productItemType" class="row">
-          <a-mat-input [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Quantity"></a-mat-input>
-          <a-mat-input [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice"></a-mat-input>
+          <a-mat-input [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Quantity" class="col-md"></a-mat-input>
+          <a-mat-input [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.ActualUnitPrice" class="col-md"></a-mat-input>
         </div>
 
         <div class="row">
           <a-mat-select [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
-            label="Item VAT regime"></a-mat-select>
+            label="Item VAT regime" class="col-md"></a-mat-select>
           <a-mat-static [object]="invoiceItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
           <a-mat-static [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.UnitVat"></a-mat-static>
           <a-mat-static [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.TotalIncVat"></a-mat-static>
@@ -42,10 +42,10 @@
 
         <div class="row">
           <a-mat-static *ngIf="orderItem?.Comment" [object]="orderItem" [roleType]="m.PurchaseOrderItem.Comment"></a-mat-static>
-          <a-mat-textarea [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Comment"></a-mat-textarea>
+          <a-mat-textarea [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Comment" class="col-md-12"></a-mat-textarea>
           <a-mat-static *ngIf="orderItem?.InternalComment" [object]="orderItem" [roleType]="m.PurchaseOrderItem.InternalComment"></a-mat-static>
-          <a-mat-textarea [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InternalComment"></a-mat-textarea>
-          <a-mat-textarea [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Message"></a-mat-textarea>
+          <a-mat-textarea [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.InternalComment" class="col-md-12"></a-mat-textarea>
+          <a-mat-textarea [object]="invoiceItem" [roleType]="m.PurchaseInvoiceItem.Message" class="col-md-12"></a-mat-textarea>
         </div>
 
       </mat-card-content>

@@ -52,9 +52,9 @@
             <a-mat-static [object]="quote" [roleType]="m.Quote.Price" label="Quote Value"></a-mat-static>
             <a-mat-static *ngIf="quote.Description" [object]="quote" [roleType]="m.Quote.Description" y></a-mat-static>
             <a-mat-static *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
-            <a-mat-textarea *ngIf="quote.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-textarea>
+            <a-mat-textarea *ngIf="quote.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment" class="col-md-12"></a-mat-textarea>
             <a-mat-static *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
-            <a-mat-textarea *ngIf="quote.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+            <a-mat-textarea *ngIf="quote.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment" class="col-md-12"></a-mat-textarea>
           </div>
 
           <div class="row">

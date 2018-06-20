@@ -21,7 +21,7 @@
             display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToContactMechanism" [options]="billToContactMechanisms"
-              display="displayName"></a-mat-select>
+              display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addBillToContactMechanism = !addBillToContactMechanism">
               <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
@@ -42,7 +42,7 @@
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToContactPerson" [options]="billToContacts" display="displayName"
-              label="Billing Contact Person"></a-mat-select>
+              label="Billing Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addBillToContactPerson = !addBillToContactPerson">
               <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
@@ -71,7 +71,7 @@
           <a-mat-autocomplete *ngIf="showShipToOrganisations" [object]="invoice" [roleType]="m.SalesInvoice.ShipToCustomer" [filter]="stateService.customersFilter.create(scope)"
             display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToAddresses" display="displayName"></a-mat-select>
+            <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToAddress" [options]="shipToAddresses" display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addShipToAddress = !addShipToAddress">
               <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
@@ -93,7 +93,7 @@
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToContactPerson" [options]="shipToContacts" display="displayName"
-              label="Shipping Contact Person"></a-mat-select>
+              label="Shipping Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addShipToContactPerson = !addShipToContactPerson">
               <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
@@ -117,7 +117,7 @@
             label="Bill to end customer"></a-mat-autocomplete>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactMechanism" [options]="billToEndCustomerContactMechanisms"
-              display="displayName"></a-mat-select>
+              display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
               <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
@@ -138,7 +138,7 @@
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.BillToEndCustomerContactPerson" [options]="billToEndCustomerContacts"
-              display="displayName" label="billing Contact Person"></a-mat-select>
+              display="displayName" label="billing Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BillToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addBillToEndCustomerContactPerson = !addBillToEndCustomerContactPerson">
               <mat-icon *ngIf="!addBillToEndCustomerContactPerson">add</mat-icon>
@@ -162,7 +162,7 @@
             label="Ship to end customer"></a-mat-autocomplete>
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
-              display="displayName"></a-mat-select>
+              display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
               <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
@@ -183,7 +183,7 @@
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="invoice" [roleType]="m.SalesInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts"
-              display="displayName" label="Schipping Contact Person"></a-mat-select>
+              display="displayName" label="Schipping Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWriteSalesInvoiceItems" type="button"
               (click)="addShipToEndCustomerContactPerson = !addshipToEndCustomerContactPerson">
               <mat-icon *ngIf="!addShipToEndCustomerContactPerson">add</mat-icon>
@@ -202,17 +202,17 @@
         </mat-card>
 
         <div class="row">
-          <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" [options]="vatRegimes" display="Name"></a-mat-select>
+          <a-mat-select [object]="invoice" [roleType]="m.SalesInvoice.VatRegime" [options]="vatRegimes" display="Name" class="col-md"></a-mat-select>
           <a-mat-static [object]="invoice.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
         </div>
 
         <div class="row">
-          <a-mat-input [object]="invoice" [roleType]="m.SalesInvoice.Description"></a-mat-input>
-          <a-mat-input [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference"></a-mat-input>
+          <a-mat-input [object]="invoice" [roleType]="m.SalesInvoice.Description" class="col-md"></a-mat-input>
+          <a-mat-input [object]="invoice" [roleType]="m.SalesInvoice.CustomerReference" class="col-md"></a-mat-input>
           <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment"></a-mat-static>
-          <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment"></a-mat-textarea>
+          <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.Comment" class="col-md-12"></a-mat-textarea>
           <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment"></a-mat-static>
-          <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment"></a-mat-textarea>
+          <a-mat-textarea [object]="invoice" [roleType]="m.SalesInvoice.InternalComment" class="col-md-12"></a-mat-textarea>
         </div>
       </mat-card-content>
 

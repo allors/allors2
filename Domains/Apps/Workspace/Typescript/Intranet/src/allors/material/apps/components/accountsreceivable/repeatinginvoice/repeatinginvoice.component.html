@@ -12,8 +12,8 @@
       <mat-card-content fxFlex fxFill style="overflow: auto;">
 
         <div class="row">
-          <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name"></a-mat-select>
-          <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name"></a-mat-select>
+          <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name" class="col-md"></a-mat-select>
+          <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name" class="col-md"></a-mat-select>
           <a-mat-datepicker [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.NextExecutionDate"></a-mat-datepicker>
           <a-mat-datepicker [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.FinalExecutionDate"></a-mat-datepicker>
         </div>

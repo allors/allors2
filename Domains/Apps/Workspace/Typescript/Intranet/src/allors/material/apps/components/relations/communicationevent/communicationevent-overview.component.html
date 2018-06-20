@@ -29,7 +29,7 @@
 
         <div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.EmailCommunication.EmailTemplate" display="SubjectTemplate" label="Subject"></a-mat-static>
-          <a-mat-textarea [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body"></a-mat-textarea>
+          <a-mat-textarea [object]="email.EmailTemplate" [roleType]="m.EmailTemplate.BodyTemplate" readonly="true" label="Body" class="col-md-12"></a-mat-textarea>
         </div>
 
         <div class="row">
@@ -76,7 +76,7 @@
         <div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" display="displayName" label="Postal Address"></a-mat-static>
           <a-mat-static [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-static>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true"></a-mat-textarea>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" readonly="true" class="col-md-12"></a-mat-textarea>
         </div>
         <div class="row">
           <mat-form-field *ngIf="communicationEvent.ScheduledStart">
@@ -120,7 +120,7 @@
         </div>
         <div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-static>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true"></a-mat-textarea>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" readonly="true" class="col-md-12"></a-mat-textarea>
         </div>
         <div class="row">
           <mat-form-field *ngIf="communicationEvent.ScheduledStart">
@@ -164,7 +164,7 @@
         </div>
         <div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-static>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" readonly="true"></a-mat-textarea>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" readonly="true" class="col-md-12"></a-mat-textarea>
         </div>
         <div>
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.ContactMechanisms" display="displayName" label="Phone number"></a-mat-static>

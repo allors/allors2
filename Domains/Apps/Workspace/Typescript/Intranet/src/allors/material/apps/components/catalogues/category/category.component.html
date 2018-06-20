@@ -11,17 +11,17 @@
     <mat-card *ngIf="category" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
       <div class="row">
-        <a-mat-file [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*"></a-mat-file>
+        <a-mat-file [object]="category" [roleType]="m.ProductCategory.CategoryImage" accept="image/*" class="col-md-12"></a-mat-file>
       </div>
 
       <div class="row">
-        <a-mat-input [object]="category" [roleType]="m.ProductCategory.Name"></a-mat-input>
-        <a-mat-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope"></a-mat-select>
+        <a-mat-input [object]="category" [roleType]="m.ProductCategory.Name" class="col-md"></a-mat-input>
+        <a-mat-select [object]="category" [roleType]="m.ProductCategory.CatScope" [options]="catScopes" display="Name" label="Scope" class="col-md"></a-mat-select>
       </div>
 
       <div class="row">
-        <a-mat-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name"></a-mat-select>
-        <a-mat-input [object]="category" [roleType]="m.ProductCategory.Description"></a-mat-input>
+        <a-mat-select [object]="category" [roleType]="m.ProductCategory.Parents" [options]="categories" display="Name" class="col-md"></a-mat-select>
+        <a-mat-input [object]="category" [roleType]="m.ProductCategory.Description" class="col-md"></a-mat-input>
       </div>
 
       <mat-expansion-panel *ngIf="locales" class="row">

@@ -1,13 +1,13 @@
 <div>
     <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
-        display="Name"></a-mat-select>
+        display="Name" class="col-md"></a-mat-select>
     <a-mat-select  [object]="telecommunicationsNumber" [roleType]="m.ContactMechanism.ContactMechanismType" [options]="contactMechanismTypes"
-        display="Name"></a-mat-select>
+        display="Name" class="col-md"></a-mat-select>
 </div>
 <div class="grid-3_xs-1">
-    <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
-    <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
-    <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
+    <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.CountryCode" class="col-md"></a-mat-input>
+    <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.AreaCode" class="col-md"></a-mat-input>
+    <a-mat-input  [object]="telecommunicationsNumber" [roleType]="m.TelecommunicationsNumber.ContactNumber" class="col-md"></a-mat-input>
 </div>
 <div>
     <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>

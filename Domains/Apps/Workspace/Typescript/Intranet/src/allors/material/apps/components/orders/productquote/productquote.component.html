@@ -23,7 +23,7 @@
 
         <div fxLayout fxLayoutGap="1em">
           <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
-            display="displayName"></a-mat-select>
+            display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
             <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
             <mat-icon *ngIf="addContactMechanism">close</mat-icon>
@@ -39,7 +39,7 @@
         </mat-card>
 
         <div fxLayout fxLayoutGap="1em">
-          <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+          <a-mat-select fxFlex [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
             <mat-icon *ngIf="!addContactPerson">add</mat-icon>
             <mat-icon *ngIf="addContactPerson">close</mat-icon>
@@ -62,11 +62,11 @@
         </div>
 
         <div class="row">
-          <a-mat-input [object]="quote" [roleType]="m.ProductQuote.Description"></a-mat-input>
+          <a-mat-input [object]="quote" [roleType]="m.ProductQuote.Description" class="col-md"></a-mat-input>
           <a-mat-static *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
-          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
+          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment" class="col-md-12"></a-mat-textarea>
           <a-mat-static *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
-          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
+          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment" class="col-md-12"></a-mat-textarea>
         </div>
 
       </mat-card-content>

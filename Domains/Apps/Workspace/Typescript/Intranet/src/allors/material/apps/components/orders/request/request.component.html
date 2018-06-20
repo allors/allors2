@@ -23,7 +23,7 @@
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"
-              label="Reply to"></a-mat-select>
+              label="Reply to" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
               <mat-icon *ngIf="addContactMechanism">close</mat-icon>
@@ -42,7 +42,7 @@
 
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+            <a-mat-select fxFlex [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
@@ -73,9 +73,9 @@
         </div>
 
         <div class="row">
-          <a-mat-input [object]="request" [roleType]="m.Request.Description"></a-mat-input>
-          <a-mat-textarea [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-          <a-mat-textarea [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
+          <a-mat-input [object]="request" [roleType]="m.Request.Description" class="col-md"></a-mat-input>
+          <a-mat-textarea [object]="request" [roleType]="m.Request.Comment" class="col-md-12"></a-mat-textarea>
+          <a-mat-textarea [object]="request" [roleType]="m.Request.InternalComment" class="col-md-12"></a-mat-textarea>
         </div>
 
       </mat-card-content>

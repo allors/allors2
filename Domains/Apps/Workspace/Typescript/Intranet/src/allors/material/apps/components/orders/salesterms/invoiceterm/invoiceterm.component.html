@@ -2,8 +2,8 @@
   <form #form="ngForm"  *ngIf="salesTerm" (submit)="save()">
 
     <div>
-      <a-mat-select  [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="invoiceTermTypes" display="Name"></a-mat-select>
-      <a-mat-input  [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value"></a-mat-input>
+      <a-mat-select  [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="invoiceTermTypes" display="Name" class="col-md"></a-mat-select>
+      <a-mat-input  [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value" class="col-md"></a-mat-input>
     </div>
 
     <mat-divider></mat-divider>

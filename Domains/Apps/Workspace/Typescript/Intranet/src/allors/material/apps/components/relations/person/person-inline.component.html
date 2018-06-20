@@ -1,12 +1,12 @@
 <div class="row">
-    <a-mat-select  [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
-    <a-mat-input  [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-    <a-mat-input  [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-    <a-mat-input  [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+    <a-mat-select  [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name" class="col-md"></a-mat-select>
+    <a-mat-input  [object]="person" [roleType]="m.Person.FirstName" class="col-md"></a-mat-input>
+    <a-mat-input  [object]="person" [roleType]="m.Person.MiddleName" class="col-md"></a-mat-input>
+    <a-mat-input  [object]="person" [roleType]="m.Person.LastName" class="col-md"></a-mat-input>
 </div>
 <div class="row">
-    <a-mat-select  [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
-    <a-mat-select  [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+    <a-mat-select  [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name" class="col-md"></a-mat-select>
+    <a-mat-select  [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name" class="col-md"></a-mat-select>
 </div>
 
 <button mat-button color="primary" type="button" (click)="save()">Save</button>

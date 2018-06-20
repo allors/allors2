@@ -17,8 +17,8 @@
         </div>
 
         <div class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject"></a-mat-input>
-          <a-mat-select [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
+          <a-mat-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" class="col-md"></a-mat-input>
+          <a-mat-select [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
         </div>
 
         <div class="row">
@@ -48,8 +48,8 @@
         </div>
 
         <div *ngIf="!communicationEvent.isNew" class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location"></a-mat-input>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note"></a-mat-textarea>
+          <a-mat-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" class="col-md"></a-mat-input>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" class="col-md-12"></a-mat-textarea>
         </div>
       </mat-card-content>
 

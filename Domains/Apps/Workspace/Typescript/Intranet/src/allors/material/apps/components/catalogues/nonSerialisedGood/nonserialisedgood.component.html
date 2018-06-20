@@ -14,20 +14,20 @@
 
         <mat-tab label="General">
           <div style="margin-top: 1rem;" class="row">
-            <a-mat-input [object]="good" [roleType]="m.Good.ArticleNumber"></a-mat-input>
-            <a-mat-input [object]="good" [roleType]="m.Good.Name"></a-mat-input>
+            <a-mat-input [object]="good" [roleType]="m.Good.ArticleNumber" class="col-md"></a-mat-input>
+            <a-mat-input [object]="good" [roleType]="m.Good.Name" class="col-md"></a-mat-input>
             <!-- <a-mat-select [object]="inventoryItem" [roleType]="m.NonSerialisedInventoryItem.NonSerialisedInventoryItemState"
-            [options]="inventoryItemObjectStates" display="Name" label="Status"></a-mat-select> -->
-            <a-mat-select [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
+            [options]="inventoryItemObjectStates" display="Name" label="Status" class="col-md"></a-mat-select> -->
+            <a-mat-select [object]="good" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name" class="col-md"></a-mat-select>
           </div>
 
           <div class="row">
-            <a-mat-input [object]="good" [roleType]="m.Good.Description"></a-mat-input>
+            <a-mat-input [object]="good" [roleType]="m.Good.Description" class="col-md"></a-mat-input>
           </div>
 
           <div class="row">
             <a-mat-autocomplete [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-autocomplete>
-            <a-mat-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+            <a-mat-select [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name" class="col-md"></a-mat-select>
             <mat-form-field>
               <input matInput name="actualQuantityOnHand" [(ngModel)]="actualQuantityOnHand" placeholder="Actual Quantity in stock">
             </mat-form-field>
@@ -86,7 +86,7 @@
                 <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
               </mat-select>
             </mat-form-field>
-            <a-mat-select [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
+            <a-mat-select [object]="good" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name" class="col-md"></a-mat-select>
             <a-mat-datepicker [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
           </div>
 
@@ -110,19 +110,19 @@
 
         <mat-tab label="Comments">
           <div style="margin-top: 1rem;">
-            <a-mat-textarea [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
+            <a-mat-textarea [object]="good" [roleType]="m.Good.InternalComment" class="col-md-12"></a-mat-textarea>
           </div>
           <div>
-            <a-mat-textarea [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
+            <a-mat-textarea [object]="good" [roleType]="m.Good.Keywords" class="col-md-12"></a-mat-textarea>
           </div>
           <div>
-            <a-mat-textarea [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
+            <a-mat-textarea [object]="good" [roleType]="m.Good.Comment" class="col-md-12"></a-mat-textarea>
           </div>
         </mat-tab>
 
         <mat-tab label="Images">
           <div style="margin-top: 1rem;">
-            <a-mat-file [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-file>
+            <a-mat-file [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*" class="col-md-12"></a-mat-file>
           </div>
           <div>
             <a-mat-files [object]="good" [roleType]="m.Good.Photos" accept="image/*"></a-mat-files>

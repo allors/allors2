@@ -3,14 +3,14 @@
 
     <div>
       <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
-        display="Name" label="Contact purposes"></a-mat-select>
+        display="Name" label="Contact purposes" class="col-md"></a-mat-select>
       <a-mat-select  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes"
-        display="Name" label="Type"></a-mat-select>
+        display="Name" label="Type" class="col-md"></a-mat-select>
     </div>
     <div class="grid-3_xs-1">
-      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
-      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
-      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
+      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode" class="col-md"></a-mat-input>
+      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode" class="col-md"></a-mat-input>
+      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber" class="col-md"></a-mat-input>
     </div>
     <div>
       <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>

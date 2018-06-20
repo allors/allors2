@@ -63,9 +63,9 @@
             <a-mat-static *ngIf="order.CustomerReference" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-static>
             <a-mat-static *ngIf="order.Description" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-static>
             <a-mat-static *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
-            <a-mat-textarea *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
+            <a-mat-textarea *ngIf="order.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment" class="col-md-12"></a-mat-textarea>
             <a-mat-static *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment" label="Quote Internal Comment"></a-mat-static>
-            <a-mat-textarea *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
+            <a-mat-textarea *ngIf="order.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment" class="col-md-12"></a-mat-textarea>
           </div>
 
           <div class="row">

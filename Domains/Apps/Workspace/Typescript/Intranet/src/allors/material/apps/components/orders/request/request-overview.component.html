@@ -53,8 +53,8 @@
 
         <div class="row">
           <a-mat-static *ngIf="request.Description" [object]="request" [roleType]="m.Request.Description"></a-mat-static>
-          <a-mat-textarea *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment"></a-mat-textarea>
-          <a-mat-textarea *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment"></a-mat-textarea>
+          <a-mat-textarea *ngIf="request.Comment" [object]="request" [roleType]="m.Request.Comment" class="col-md-12"></a-mat-textarea>
+          <a-mat-textarea *ngIf="request.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" class="col-md-12"></a-mat-textarea>
         </div>
 
         <div class="row">

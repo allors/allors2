@@ -14,7 +14,7 @@
 
         <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
+          <a-mat-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
           <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-mat-slide-toggle>
         </div>
 
@@ -58,7 +58,7 @@
 
           <div fxLayout fxLayoutGap="1em">
             <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses"
-              display="displayName" label="Postal Address"></a-mat-select>
+              display="displayName" label="Postal Address" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addAddress = !addAddress">
               <mat-icon *ngIf="!addAddress">add</mat-icon>
               <mat-icon *ngIf="addAddress">close</mat-icon>
@@ -76,8 +76,8 @@
         </div>
 
         <div class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject"></a-mat-input>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note"></a-mat-textarea>
+          <a-mat-input [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject" class="col-md"></a-mat-input>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" class="col-md-12"></a-mat-textarea>
         </div>
 
         <div class="row">

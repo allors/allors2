@@ -11,9 +11,9 @@
     <mat-card *ngIf="productCharacteristic" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
       <div class="row">
-        <a-mat-input [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name"></a-mat-input>
+        <a-mat-input [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name" class="col-md"></a-mat-input>
         <a-mat-select [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [options]="allUoms"
-          display="Name"></a-mat-select>
+          display="Name" class="col-md"></a-mat-select>
       </div>
 
       <mat-expansion-panel *ngIf="locales">

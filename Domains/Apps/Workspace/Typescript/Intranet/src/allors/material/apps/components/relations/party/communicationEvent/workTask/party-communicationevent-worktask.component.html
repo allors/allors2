@@ -3,12 +3,12 @@
 
     <div>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name"
-        label="Status"></a-mat-select>
-      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
+        label="Status" class="col-md"></a-mat-select>
+      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.Name" class="col-md"></a-mat-input>
     </div>
 
     <div>
-      <a-mat-textarea  [object]="workTask" [roleType]="m.WorkTask.Description"></a-mat-textarea>
+      <a-mat-textarea  [object]="workTask" [roleType]="m.WorkTask.Description" class="col-md-12"></a-mat-textarea>
     </div>
 
     <div>
@@ -20,14 +20,14 @@
     </div>
 
     <div>
-      <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name"></a-mat-select>
+      <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name" class="col-md"></a-mat-select>
       <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name"
-        label="Purpose(s)"></a-mat-select>
+        label="Purpose(s)" class="col-md"></a-mat-select>
     </div>
 
     <div>
-      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.EstimatedHours"></a-mat-input>
-      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.ActualHours"></a-mat-input>
+      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.EstimatedHours" class="col-md"></a-mat-input>
+      <a-mat-input  [object]="workTask" [roleType]="m.WorkTask.ActualHours" class="col-md"></a-mat-input>
     </div>
 
     <div>

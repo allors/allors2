@@ -14,7 +14,7 @@
 
         <div *ngIf="!communicationEvent.isNew" class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-select [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
+          <a-mat-select [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
           <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-slide-toggle>
         </div>
 
@@ -73,15 +73,15 @@
         </div>
 
         <div class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject"></a-mat-input>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note"></a-mat-textarea>
+          <a-mat-input [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject" class="col-md"></a-mat-input>
+          <a-mat-textarea [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" class="col-md-12"></a-mat-textarea>
         </div>
 
         <div class="row">
           <div>
             <div fxLayout fxLayoutGap="1em">
               <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers"
-                display="displayName" label="Phone number"></a-mat-select>
+                display="displayName" label="Phone number" class="col-md"></a-mat-select>
               <button mat-mini-fab color="accent" type="button" (click)="addPhoneNumber = !addPhoneNumber">
                 <mat-icon *ngIf="!addPhoneNumber">add</mat-icon>
                 <mat-icon *ngIf="addPhoneNumber">close</mat-icon>
