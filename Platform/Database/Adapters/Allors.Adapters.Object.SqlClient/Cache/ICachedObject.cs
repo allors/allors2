@@ -24,6 +24,8 @@ namespace Allors.Adapters.Object.SqlClient.Caching
 
     public interface ICachedObject
     {
+        long Version { get; }
+
         bool TryGetValue(IRoleType roleType, out object value);
 
         void SetValue(IRoleType roleType, object value);

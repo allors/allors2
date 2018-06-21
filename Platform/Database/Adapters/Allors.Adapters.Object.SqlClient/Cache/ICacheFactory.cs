@@ -21,7 +21,7 @@
 namespace Allors.Adapters.Object.SqlClient.Caching
 {
     /// <summary>
-    /// The cache factory is a factory for cache objects.
+    /// The cache factory creates a new Cache.
     /// </summary>
     public interface ICacheFactory
     {

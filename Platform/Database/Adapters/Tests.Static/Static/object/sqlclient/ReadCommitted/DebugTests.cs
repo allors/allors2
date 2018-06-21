@@ -24,8 +24,8 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 {
     using Adapters;
 
+    using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Object.SqlClient.Debug;
-    using Allors.Adapters.Object.SqlClient.Caching.Debugging;
 
     using Xunit;
 
@@ -35,14 +35,14 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         private readonly Profile profile;
 
         private DebugConnectionFactory connectionFactory;
-        private DebugCacheFactory cacheFactory;
+        private DefaultCacheFactory cacheFactory;
 
         protected override IProfile Profile => this.profile;
 
         public DebugTests()
         {
             this.connectionFactory = new DebugConnectionFactory();
-            this.cacheFactory = new DebugCacheFactory();
+            this.cacheFactory = new DefaultCacheFactory();
             this.profile = new Profile(this.connectionFactory, this.cacheFactory);
         }
 

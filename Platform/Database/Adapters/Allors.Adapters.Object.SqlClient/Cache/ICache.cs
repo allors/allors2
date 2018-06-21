@@ -37,7 +37,7 @@ namespace Allors.Adapters.Object.SqlClient.Caching
 
         void OnCommit(IList<long> accessedObjectIds, IList<long> changedObjectIds);
 
-        void OnRollback(IList<long> accessedObjectIds);
+        void OnRollback(List<long> accessedObjectIds);
 
         /// <summary>
         /// Invalidates the Cache.

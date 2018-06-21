@@ -25,11 +25,13 @@ namespace Allors.Adapters.Object.SqlClient.Caching
     /// <summary>
     /// Factory for default cache.
     /// </summary>
-    public sealed class DefaultCacheFactory : CacheFactory
+    public sealed class DefaultCacheFactory : ICacheFactory
     {
-        protected override ICache CreateCache(IClass[] excludedClasses)
+        public IClass[] ExcludedClasses { get; set; } 
+
+        public ICache CreateCache()
         {
-            return new DefaultCache(excludedClasses);
+            return new DefaultCache(this.ExcludedClasses);
         }
     }
 }

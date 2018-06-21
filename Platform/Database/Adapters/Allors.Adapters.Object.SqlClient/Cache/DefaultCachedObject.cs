@@ -20,11 +20,30 @@
 
 namespace Allors.Adapters.Object.SqlClient.Caching
 {
-    public sealed class DefaultCachedObject : CachedObject
+    using System.Collections.Concurrent;
+
+    using Allors.Meta;
+
+    public sealed class DefaultCachedObject : ICachedObject
     {
-        public DefaultCachedObject(long localCacheVersion)
-            : base(localCacheVersion)
+        private readonly ConcurrentDictionary<IRoleType, object> roleByRoleType;
+
+        internal DefaultCachedObject(long version)
         {
+            this.Version = version;
+            this.roleByRoleType = new ConcurrentDictionary<IRoleType, object>();
+        }
+
+        public long Version { get; }
+
+        public bool TryGetValue(IRoleType roleType, out object value)
+        {
+            return this.roleByRoleType.TryGetValue(roleType, out value);
+        }
+
+        public void SetValue(IRoleType roleType, object value)
+        {
+            this.roleByRoleType[roleType] = value;
         }
     }
 }

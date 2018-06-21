@@ -21,8 +21,10 @@
 namespace Allors.Adapters
 {
     using System;
+    using System.Linq;
 
     using Allors;
+    using Allors.Meta;
 
     using Domain;
 
@@ -125,8 +127,7 @@ namespace Allors.Adapters
 
             }
         }
-
-
+        
         [Fact]
         public void FailedCommit()
         {
@@ -186,6 +187,87 @@ namespace Allors.Adapters
                 var c2 = session.Instantiate(c2Id);
  
                 Assert.Null(c1.C1C2one2one);
+            }
+        }
+
+        [Fact]
+        public void PrefetchCompositeRole()
+        {
+            var database = this.CreateDatabase();
+            database.Init();
+
+            using (var session = database.CreateSession())
+            {
+                var c1a = C1.Create(session);
+                var c1b = C1.Create(session);
+                var c2a = C2.Create(session);
+                var c2b = C2.Create(session);
+
+                session.Commit();
+
+                c1a.C1C2many2one = c2a;
+
+                var extent = session.Extent<C1>();
+                var array = extent.ToArray();
+
+                var nestedPrefetchPolicyBuilder = new PrefetchPolicyBuilder();
+                nestedPrefetchPolicyBuilder.WithRule(M.C2.C2C2one2manies);
+                var nestedPrefetchPolicy = nestedPrefetchPolicyBuilder.Build();
+
+                var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
+                prefetchPolicyBuilder.WithRule(M.C1.C1C2many2one, nestedPrefetchPolicy);
+                var prefetchPolicy = prefetchPolicyBuilder.Build();
+                session.Prefetch(prefetchPolicy, c1a, c1b);
+                
+                var result = c1a.C1C2many2one;
+
+                session.Rollback();
+                
+                Assert.False(c1a.ExistC1C2many2one);
+            }
+        }
+
+        [Fact]
+        public void PrefetchCompositesRole()
+        {
+            var database = this.CreateDatabase();
+            database.Init();
+
+            using (var session = database.CreateSession())
+            {
+                var c1a = C1.Create(session);
+                var c1b = C1.Create(session);
+                var c2a = C2.Create(session);
+                var c2b = C2.Create(session);
+                var c2c = C2.Create(session);
+
+                c1a.AddC1C2one2many(c2a);
+                c1a.AddC1C2one2many(c2b);
+
+                session.Commit();
+
+                c1a.RemoveC1C1one2manies();
+                c1a.AddC1C2one2many(c2c);
+
+                var extent = session.Extent<C1>();
+                var array = extent.ToArray();
+
+                var nestedPrefetchPolicyBuilder = new PrefetchPolicyBuilder();
+                nestedPrefetchPolicyBuilder.WithRule(M.C2.C2C2one2manies);
+                var nestedPrefetchPolicy = nestedPrefetchPolicyBuilder.Build();
+
+                var prefetchPolicyBuilder = new PrefetchPolicyBuilder();
+                prefetchPolicyBuilder.WithRule(M.C1.C1C2one2manies, nestedPrefetchPolicy);
+                var prefetchPolicy = prefetchPolicyBuilder.Build();
+                session.Prefetch(prefetchPolicy, c1a, c1b);
+                
+                var result = c1a.C1C2one2manies;
+
+                session.Rollback();
+                
+                Assert.Equal(2, c1a.C1C2one2manies.Count);
+                Assert.Contains(c2a, c1a.C1C2one2manies.ToArray());
+                Assert.Contains(c2b, c1a.C1C2one2manies.ToArray());
             }
         }
 

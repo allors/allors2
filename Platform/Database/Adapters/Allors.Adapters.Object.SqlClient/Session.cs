@@ -439,18 +439,13 @@ namespace Allors.Adapters.Object.SqlClient
                     this.State.AssociationsByRoleByAssociationType = new Dictionary<IAssociationType, Dictionary<Reference, long[]>>();
 
                     this.State.ChangeSet = new ChangeSet();
-
-                    this.busyCommittingOrRollingBack = false;
-
+                    
                     this.Database.Cache.OnCommit(accessed, changed);
 
                     this.Prefetcher.ResetCommands();
                     this.Commands.ResetCommands();
-                }
-                catch
-                {
-                    // TODO: Reset cache
-                    throw;
+
+                    this.busyCommittingOrRollingBack = false;
                 }
                 finally
                 {
@@ -496,7 +491,7 @@ namespace Allors.Adapters.Object.SqlClient
                     this.State.ChangeSet = new ChangeSet();
 
                     this.Database.Cache.OnRollback(accessed);
-
+                    
                     this.Prefetcher.ResetCommands();
                     this.Commands.ResetCommands();
                 }

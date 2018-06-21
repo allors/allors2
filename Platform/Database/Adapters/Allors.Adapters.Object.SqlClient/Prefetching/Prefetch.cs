@@ -45,7 +45,6 @@ namespace Allors.Adapters.Object.SqlClient
             var leafs = new HashSet<long>();
 
             var nestedObjectIdsByRoleType = new Dictionary<IRoleType, HashSet<long>>();
-            var nestedObjectIdsByAssociationType = new Dictionary<IAssociationType, HashSet<long>>();
 
             // Phase 1
             var unitRoles = false;
@@ -65,8 +64,7 @@ namespace Allors.Adapters.Object.SqlClient
                             var referencesByClass = new Dictionary<IClass, List<Reference>>();
                             foreach (var reference in this.references)
                             {
-                                List<Reference> classedReferences;
-                                if (!referencesByClass.TryGetValue(reference.Class, out classedReferences))
+                                if (!referencesByClass.TryGetValue(reference.Class, out var classedReferences))
                                 {
                                     classedReferences = new List<Reference>();
                                     referencesByClass.Add(reference.Class, classedReferences);
@@ -84,8 +82,7 @@ namespace Allors.Adapters.Object.SqlClient
                                 foreach (var reference in classedReferences)
                                 {
                                     var roles = this.prefetcher.Session.State.GetOrCreateRoles(reference);
-                                    object role;
-                                    if (!roles.TryGetUnitRole(roleType, out role))
+                                    if (!roles.TryGetUnitRole(roleType, out var role))
                                     {
                                         referencesWithoutCachedRole.Add(reference);
                                     }
@@ -120,7 +117,7 @@ namespace Allors.Adapters.Object.SqlClient
                         else
                         {
                             var associationType = relationType.AssociationType;
-                            if (!(associationType.IsMany && roleType.IsMany) && relationType.ExistExclusiveClasses)
+                            if (associationType.IsOne && relationType.ExistExclusiveClasses)
                             {
                                 this.prefetcher.PrefetchCompositesRoleObjectTable(this.references, roleType, nestedObjectIds, leafs);
                             }
@@ -181,11 +178,6 @@ namespace Allors.Adapters.Object.SqlClient
                 objectIds.UnionWith(nestedObjectIds);
             }
 
-            foreach (var nestedObjectIds in nestedObjectIdsByAssociationType.Values)
-            {
-                objectIds.UnionWith(nestedObjectIds);
-            }
-
             var referenceByObjectId = this.prefetcher.GetReferencesForPrefetching(objectIds).ToDictionary(v => v.ObjectId);
 
             foreach (var prefetchRule in this.prefetchPolicy)
@@ -223,7 +215,6 @@ namespace Allors.Adapters.Object.SqlClient
                     }
                 }
             }
-
         }
     }
 }

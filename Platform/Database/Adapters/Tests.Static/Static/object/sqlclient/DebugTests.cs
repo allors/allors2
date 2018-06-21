@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PrefetchTest.cs" company="Allors bvba">
+// <copyright file="DebugTests.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the Lesser General Public Licence v3 (LGPL)
@@ -18,12 +18,13 @@ namespace Allors.Adapters.Object.SqlClient
 {
     using System;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
 
     using Adapters;
 
     using Allors;
-    using Allors.Adapters.Object.SqlClient.Caching.Debugging;
+    using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Object.SqlClient.Debug;
     using Allors.Domain;
 
@@ -55,8 +56,6 @@ namespace Allors.Adapters.Object.SqlClient
         protected Database Database => (Database)this.Profile.Database;
 
         protected DebugConnectionFactory ConnectionFactory => (DebugConnectionFactory)this.Database.ConnectionFactory;
-
-        protected DebugCache Cache => ((DebugCacheFactory)this.Database.CacheFactory).Cache;
 
         protected Action[] Markers => this.Profile.Markers;
 
@@ -105,7 +104,7 @@ namespace Allors.Adapters.Object.SqlClient
 
                     session.Rollback();
                     connection.Commands.Clear();
-                    this.Cache.Invalidate();
+                    this.InvalidateCache();
                 }
 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
@@ -132,7 +131,7 @@ namespace Allors.Adapters.Object.SqlClient
                 init();
                 this.Populate();
 
-                this.Cache.Invalidate();
+                this.InvalidateCache();
 
                 var connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
@@ -148,7 +147,7 @@ namespace Allors.Adapters.Object.SqlClient
                     Assert.Equal(2, connection.Executions.Count());
                 }
                 
-                this.Cache.Invalidate();
+                this.InvalidateCache();
 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
@@ -189,7 +188,7 @@ namespace Allors.Adapters.Object.SqlClient
                     Assert.Equal(6, connection.Executions.Count());
                 }
 
-                this.Cache.Invalidate();
+                this.InvalidateCache();
 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
@@ -237,7 +236,7 @@ namespace Allors.Adapters.Object.SqlClient
                     Assert.Equal(3, connection.Executions.Count());
                 }
 
-                this.Cache.Invalidate();
+                this.InvalidateCache();
 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
@@ -293,7 +292,7 @@ namespace Allors.Adapters.Object.SqlClient
                     Assert.Equal(6, connection.Executions.Count());
                 }
 
-                this.Cache.Invalidate();
+                this.InvalidateCache();
 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
@@ -371,7 +370,7 @@ namespace Allors.Adapters.Object.SqlClient
                     Assert.Equal(6, connection.Executions.Count());
                 }
 
-                this.Cache.Invalidate();
+                this.InvalidateCache();
                 
                 connection = (DebugConnection)this.ConnectionFactory.Create(this.Database);
                 using (var session = this.Database.CreateSession(connection))
@@ -428,6 +427,13 @@ namespace Allors.Adapters.Object.SqlClient
         protected ISession CreateSession()
         {
             return this.Profile.Database.CreateSession();
+        }
+
+        private void InvalidateCache()
+        {
+            var method = this.Database.GetType().GetProperty("Cache",  BindingFlags.Instance | BindingFlags.NonPublic);
+            var cache = (ICache)method.GetValue(this.Database);
+            cache.Invalidate();
         }
     }
 }

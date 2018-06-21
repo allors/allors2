@@ -51,14 +51,14 @@ namespace Allors.Adapters
         {
             get
             {
-                var caches = new List<Action> { this.Init };
+                var inits = new List<Action> { this.Init };
 
                 if (Settings.ExtraInits)
                 {
-                    caches.Add(this.Init);
+                    inits.Add(this.Init);
                 }
 
-                return caches.ToArray();
+                return inits.ToArray();
             }
         }
 

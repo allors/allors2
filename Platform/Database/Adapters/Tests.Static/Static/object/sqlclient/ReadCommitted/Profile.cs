@@ -21,7 +21,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
 
     using Adapters;
 
-    using Allors.Adapters.Object.SqlClient.Caching.Debugging;
+    using Allors.Adapters.Object.SqlClient.Caching;
     using Allors.Adapters.Object.SqlClient.Debug;
     using Allors.Meta;
 
@@ -32,7 +32,7 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
         private readonly Prefetchers prefetchers = new Prefetchers();
 
         private readonly DebugConnectionFactory connectionFactory;
-        private readonly DebugCacheFactory cacheFactory;
+        private readonly DefaultCacheFactory cacheFactory;
 
         public Profile()
         {
@@ -40,7 +40,8 @@ namespace Allors.Adapters.Object.SqlClient.ReadCommitted
             this.ServiceProvider = services.BuildServiceProvider();
         }
 
-        public Profile(DebugConnectionFactory connectionFactory, DebugCacheFactory cacheFactory)
+        public Profile(DebugConnectionFactory connectionFactory, DefaultCacheFactory cacheFactory)
+        : this()
         {
             this.connectionFactory = connectionFactory;
             this.cacheFactory = cacheFactory;
