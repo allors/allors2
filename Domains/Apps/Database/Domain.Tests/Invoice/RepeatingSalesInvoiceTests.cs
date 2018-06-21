@@ -350,7 +350,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 5, 14), repeatingInvoice.NextExecutionDate.Date);
@@ -413,7 +413,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 1, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 5, 21), repeatingInvoice.NextExecutionDate.Date);
@@ -475,7 +475,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 1, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 6, 14), repeatingInvoice.NextExecutionDate.Date);
@@ -539,7 +539,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 1, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 5, 21), repeatingInvoice.NextExecutionDate.Date);
@@ -552,7 +552,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 2, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 5, 28), repeatingInvoice.NextExecutionDate.Date);
@@ -564,7 +564,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 3, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 6, 4), repeatingInvoice.NextExecutionDate.Date);
@@ -577,7 +577,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 4, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 6, 4), repeatingInvoice.NextExecutionDate.Date);
@@ -590,7 +590,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            RepeatingSalesInvoices.Daily(this.Session, null);
+            RepeatingSalesInvoices.Daily(this.Session);
 
             Assert.Equal(countBefore + 4, new SalesInvoices(this.Session).Extent().Count);
             Assert.Equal(new DateTime(2018, 6, 4), repeatingInvoice.NextExecutionDate.Date);
