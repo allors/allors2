@@ -60,6 +60,7 @@
     <Compile Include="generated\AccessControl.g.cs" />
     <Compile Include="generated\AutomatedAgent.g.cs" />
     <Compile Include="generated\C1.g.cs" />
+    <Compile Include="generated\C2.g.cs" />
     <Compile Include="generated\Counter.g.cs" />
     <Compile Include="generated\Country.g.cs" />
     <Compile Include="generated\Currency.g.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="generated\Enumeration.g.cs" />
     <Compile Include="generated\Gender.g.cs" />
     <Compile Include="generated\I1.g.cs" />
+    <Compile Include="generated\I12.g.cs" />
+    <Compile Include="generated\I2.g.cs" />
     <Compile Include="generated\Language.g.cs" />
     <Compile Include="generated\Locale.g.cs" />
     <Compile Include="generated\Localised.g.cs" />
@@ -88,6 +91,7 @@
     <Compile Include="generated\Permission.g.cs" />
     <Compile Include="generated\Person.g.cs" />
     <Compile Include="generated\Role.g.cs" />
+    <Compile Include="generated\S1.g.cs" />
     <Compile Include="generated\SecurityToken.g.cs" />
     <Compile Include="generated\ShipmentState.g.cs" />
     <Compile Include="generated\Singleton.g.cs" />

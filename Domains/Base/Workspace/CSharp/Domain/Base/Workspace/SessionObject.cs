@@ -1,4 +1,5 @@
-﻿namespace Allors.Workspace {
+﻿namespace Allors.Workspace
+{
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -41,12 +42,18 @@
         void Reset();
     }
 
-    public interface INewSessionObject : ISessionObject {
+    public interface INewSessionObject : ISessionObject
+    {
         long? NewId { get; set; }
     }
 
     public class SessionObject : INewSessionObject
     {
+        private static readonly ISessionObject[] EmptySessionObjects = new ISessionObject[0];
+
+        private Dictionary<RoleType, object> changedRoleByRoleType;
+        private Dictionary<RoleType, object> roleByRoleType = new Dictionary<RoleType, object>();
+        
         protected SessionObject(Session session)
         {
             this.Session = session;
@@ -55,14 +62,13 @@
         public Session Session { get; }
 
         public WorkspaceObject WorkspaceObject { get; set; }
+        
         public Class ObjectType { get; set; }
 
         public long? NewId { get; set; }
 
-        private Dictionary<RoleType, object> changedRoleByRoleType;
-        private Dictionary<RoleType, object> roleByRoleType = new Dictionary<RoleType, object>();
-
-        public bool HasChanges {
+        public bool HasChanges
+        {
             get
             {
                 if (this.NewId != null)
@@ -73,21 +79,25 @@
                 return this.changedRoleByRoleType != null;
             }
         }
- 
+
         public long Id => this.WorkspaceObject?.Id ?? this.NewId.Value;
 
         public long? Version => this.WorkspaceObject?.Version;
 
-        public bool CanRead(RoleType roleType) {
-            if (this.NewId != null) {
+        public bool CanRead(RoleType roleType)
+        {
+            if (this.NewId != null)
+            {
                 return true;
             }
 
             return this.WorkspaceObject.CanRead(roleType.PropertyName);
         }
 
-        public bool CanWrite(RoleType roleType) {
-            if (this.NewId != null) {
+        public bool CanWrite(RoleType roleType)
+        {
+            if (this.NewId != null)
+            {
                 return true;
             }
 
@@ -192,7 +202,7 @@
                                 return new ArrayList().ToArray(roleType.ObjectType.ClrType);
                             }
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             var stringValue = "N/A";
                             try
@@ -210,7 +220,7 @@
                     if (roleType.ObjectType.IsComposite && roleType.IsMany)
                     {
                         // TODO: Optimize
-                        value = new ArrayList(new ISessionObject[0]).ToArray(roleType.ObjectType.ClrType);
+                        value = new ArrayList(EmptySessionObjects).ToArray(roleType.ObjectType.ClrType);
                     }
                 }
 
@@ -220,15 +230,34 @@
             return value;
         }
 
-        public void Set(RoleType roleType, object value) {
-            if (this.changedRoleByRoleType == null) {
-                this.changedRoleByRoleType = new Dictionary<RoleType, object>();
+        public void Set(RoleType roleType, object value)
+        {
+            var current = this.Get(roleType);
+            if (roleType.ObjectType.IsUnit || roleType.IsOne)
+            {
+                if (object.Equals(current, value))
+                {
+                    return;
+                }
+            }
+            else
+            {
+                if (value == null)
+                {
+                    value = EmptySessionObjects;
+                }
+
+                var currentCollection = (IList<object>)current;
+                var valueCollection = (IList<object>)value;
+                if (currentCollection.Count == valueCollection.Count && !currentCollection.Except(valueCollection).Any())
+                {
+                    return;
+                }
             }
 
-            if (value == null) {
-                if (roleType.ObjectType.IsComposite && roleType.IsMany) {
-                    value = new ISessionObject[0];
-                }
+            if (this.changedRoleByRoleType == null)
+            {
+                this.changedRoleByRoleType = new Dictionary<RoleType, object>();
             }
 
             if (roleType.ObjectType.IsComposite && roleType.IsMany)
@@ -236,21 +265,24 @@
                 // TODO: Optimize
                 value = new ArrayList((Array)value).ToArray(roleType.ObjectType.ClrType);
             }
-            
+
             this.roleByRoleType[roleType] = value;
             this.changedRoleByRoleType[roleType] = value;
         }
 
-        public void Add(RoleType roleType, ISessionObject value) {
+        public void Add(RoleType roleType, ISessionObject value)
+        {
             var roles = (ISessionObject[])this.Get(roleType);
-            if (!roles.Contains(value)) {
+            if (!roles.Contains(value))
+            {
                 roles = new List<ISessionObject>(roles) { value }.ToArray();
             }
 
             this.Set(roleType, roles);
         }
 
-        public void Remove(RoleType roleType, ISessionObject value) {
+        public void Remove(RoleType roleType, ISessionObject value)
+        {
             var roles = (ISessionObject[])this.Get(roleType);
             if (roles.Contains(value))
             {
@@ -267,11 +299,11 @@
             if (this.changedRoleByRoleType != null)
             {
                 var data = new PushRequestObject
-                               {
-                                   I = this.Id.ToString(),
-                                   V = this.Version.ToString(),
-                                   Roles = this.SaveRoles()
-                               };
+                {
+                    I = this.Id.ToString(),
+                    V = this.Version.ToString(),
+                    Roles = this.SaveRoles()
+                };
 
                 return data;
             }
@@ -279,22 +311,26 @@
             return null;
         }
 
-        public PushRequestNewObject SaveNew() {
+        public PushRequestNewObject SaveNew()
+        {
             var data = new PushRequestNewObject
             {
                 NI = this.NewId.ToString(),
                 T = this.ObjectType.Name
             };
 
-            if (this.changedRoleByRoleType != null) {
+            if (this.changedRoleByRoleType != null)
+            {
                 data.Roles = this.SaveRoles();
             }
 
             return data;
         }
-        
-        public void Reset() {
-            if (this.WorkspaceObject != null) {
+
+        public void Reset()
+        {
+            if (this.WorkspaceObject != null)
+            {
                 this.WorkspaceObject = this.WorkspaceObject.Workspace.Get(this.Id);
             }
 

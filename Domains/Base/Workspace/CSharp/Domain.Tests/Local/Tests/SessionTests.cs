@@ -67,6 +67,50 @@ namespace Tests.Local
         }
 
         [Fact]
+        public void HasChanges()
+        {
+            this.Workspace.Sync(Fixture.loadData);
+
+            var session = new Session(this.Workspace);
+            var martien = session.Get(3) as Person;
+            var acme = session.Get(101) as Organisation;
+
+            Assert.False(session.HasChanges);
+
+            var firstName = martien.FirstName;
+            martien.FirstName = firstName;
+
+            Assert.False(session.HasChanges);
+
+            martien.UserName = null;
+
+            Assert.False(session.HasChanges);
+
+            var owner = acme.Owner;
+            acme.Owner = owner;
+
+            Assert.False(session.HasChanges);
+
+            acme.CycleOne = null;
+
+            Assert.False(session.HasChanges);
+
+            var employees = acme.Employees;
+            acme.Employees = employees;
+
+            Assert.False(session.HasChanges);
+
+            employees = employees.Reverse().ToArray();
+            acme.Employees = employees;
+
+            Assert.False(session.HasChanges);
+
+            acme.CycleMany = null;
+
+            Assert.False(session.HasChanges);
+        }
+        
+        [Fact]
         public void UnitSave()
         {
             this.Workspace.Sync(Fixture.loadData);
