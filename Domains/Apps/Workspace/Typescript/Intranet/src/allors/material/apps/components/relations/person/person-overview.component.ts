@@ -24,7 +24,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title = 'Person overview';
+  public title = 'Person';
   public person: Person;
   public organisation: Organisation;
   public internalOrganisation: InternalOrganisation;
@@ -202,6 +202,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             id,
             include: [
               new TreeNode({ roleType: m.OrganisationContactRelationship.Organisation }),
+              new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
             ],
             name: 'organisationContactRelationships',
             path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact }),
