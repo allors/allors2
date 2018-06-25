@@ -1,14 +1,14 @@
 <mat-toolbar>
-  <mat-toolbar-row >
+  <mat-toolbar-row>
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
     <span>{{title}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div style="padding: 20px;">
+<div class="container-fluid">
   <div *ngIf="invoice" class="row">
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header fxLayoutAlign="space-between">
         <mat-card-title>Sales Invoice</mat-card-title>
       </mat-card-header>
 
@@ -50,7 +50,8 @@
             <a-mat-static *ngIf="order?.Comment" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-static>
             <a-mat-textarea *ngIf="invoice.Comment" [object]="invoice" [roleType]="m.SalesInvoice.Comment" label="Invoice Comment" class="col-md-12"></a-mat-textarea>
             <a-mat-static *ngIf="order?.InternalComment" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-static>
-            <a-mat-textarea *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment" label="Invoice Internal Comment" class="col-md-12"></a-mat-textarea>
+            <a-mat-textarea *ngIf="invoice.InternalComment" [object]="invoice" [roleType]="m.SalesInvoice.InternalComment" label="Invoice Internal Comment"
+              class="col-md-12"></a-mat-textarea>
           </div>
 
           <div>
@@ -73,14 +74,15 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header fxLayoutAlign="space-between">
         <mat-card-title>Invoice Items</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
 
-        <mat-list style="overflow: auto;">
+        <mat-list>
+
           <div *ngIf="invoice.SalesInvoiceItems.length === 0">
             <h3>No Items to display.</h3>
           </div>
@@ -118,8 +120,8 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header fxLayoutAlign="space-between">
         <mat-card-title>Invoice Terms</mat-card-title>
       </mat-card-header>
 
@@ -169,8 +171,8 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header fxLayoutAlign="space-between">
         <mat-card-title>Repeating Invoice</mat-card-title>
       </mat-card-header>
 
@@ -187,7 +189,7 @@
             <input disabled=true matInput placeholder="Last Execution" [value]="repeatingInvoice.FinalExecutionDate?.toDateString()">
           </mat-form-field>
         </div>
-        <div *ngIf="repeatingInvoice" >
+        <div *ngIf="repeatingInvoice">
           <mat-form-field>
             <input disabled=true matInput placeholder="Next Execution" [value]="repeatingInvoice.NextExecutionDate.toDateString()">
           </mat-form-field>

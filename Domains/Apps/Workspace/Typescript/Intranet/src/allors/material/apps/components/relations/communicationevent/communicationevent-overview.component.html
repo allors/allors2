@@ -5,7 +5,7 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div style="padding: 20px;">
+<div class="container-fluid">
 
   <div *ngIf="communicationEvent" class="row">
 
@@ -47,7 +47,7 @@
           </mat-form-field>
         </div>
         <div>
-          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          <p class="col mat-caption"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
 
       </mat-card-content>
@@ -93,7 +93,7 @@
           </mat-form-field>
         </div>
         <div>
-          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          <p class="col mat-caption"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
 
       </mat-card-content>
@@ -137,7 +137,7 @@
           </mat-form-field>
         </div>
         <div>
-          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          <p class="col mat-caption"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
 
       </mat-card-content>
@@ -184,7 +184,7 @@
           </mat-form-field>
         </div>
         <div>
-          <p class="col mat-caption tc-grey-500"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
+          <p class="col mat-caption"> last modified: {{ communicationEvent.LastModifiedDate | date}} by {{ communicationEvent.LastModifiedBy.displayName}}</p>
         </div>
       </mat-card-content>
 
@@ -193,14 +193,15 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card>
       <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Work Efforts</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
 
-        <mat-list style="overflow: auto;">
+          <mat-list>
+
           <div *ngIf="communicationEvent.WorkEfforts.length === 0">
             <h3>No work efforts to display.</h3>
           </div>

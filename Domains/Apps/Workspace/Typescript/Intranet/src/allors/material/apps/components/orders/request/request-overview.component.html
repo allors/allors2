@@ -5,10 +5,10 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div style="padding: 20px;">
+<div class="container-fluid">
   <div *ngIf="request" class="row">
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card>
       <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Request for Quote</mat-card-title>
       </mat-card-header>
@@ -58,8 +58,8 @@
         </div>
 
         <div class="row">
-          <p class="col mat-caption tc-grey-500"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
-          <p class="col mat-caption tc-grey-500"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
+          <p class="col mat-caption"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
+          <p class="col mat-caption"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
         </div>
       </mat-card-content>
 
@@ -74,14 +74,15 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card>
       <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Request Items</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
 
-        <mat-list style="overflow: auto;">
+          <mat-list>
+
           <div *ngIf="request.RequestItems.length === 0">
             <h3>No Items to display.</h3>
           </div>

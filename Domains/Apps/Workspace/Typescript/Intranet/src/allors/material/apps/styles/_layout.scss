@@ -55,6 +55,7 @@
     overflow: auto;
 
     > div {
+
       > div {
         padding-top: 1rem; 
         padding-bottom: 1rem; 
@@ -71,7 +72,7 @@
           
           > div {
             flex: 0 0 auto;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.3rem;
 
             mat-icon {
               vertical-align: text-bottom;
@@ -88,6 +89,14 @@
           > mat-card-content {
             flex-grow: 1;
             overflow: auto;
+
+            > div {
+              padding-top: 1rem;
+            }
+
+            > mat-list {
+              padding-top: 0;
+            }
           }
 
           > mat-card-actions {

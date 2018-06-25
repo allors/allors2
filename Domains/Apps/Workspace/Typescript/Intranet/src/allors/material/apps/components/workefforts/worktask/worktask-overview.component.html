@@ -5,10 +5,10 @@
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div style="padding: 20px;">
+<div class="container-fluid">
   <div *ngIf="task" class="row">
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
+    <mat-card>
       <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Task</mat-card-title>
       </mat-card-header>
@@ -37,8 +37,8 @@
           </div>
 
           <div class="row">
-            <p class="col mat-caption tc-grey-500"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
+            <p class="col mat-caption"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
+            <p class="col mat-caption"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
           </div>
         </div>
       </mat-card-content>
