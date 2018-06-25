@@ -1,16 +1,16 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+<form #form="ngForm"  (submit)="save()">
   <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="request" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="request"  fxLayout="column" fxLayoutAlign="start stretch">
 
-      <mat-card-content fxFlex fxFill style="overflow: auto;">
+      <mat-card-content  style="overflow: auto;">
         <div *ngIf="!request.isNew" class="row">
           <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
         </div>
@@ -22,7 +22,7 @@
 
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"
+            <a-mat-select  [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"
               label="Reply to" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactMechanism = !addContactMechanism">
               <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
@@ -42,7 +42,7 @@
 
         <div class="row">
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
+            <a-mat-select  [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>
               <mat-icon *ngIf="addContactPerson">close</mat-icon>
@@ -90,8 +90,8 @@
     </mat-card>
   </div>
 
-  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
-    <span fxFlex></span>
+  <mat-toolbar  >
+    <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
   </mat-toolbar>

@@ -1,16 +1,16 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()" novalidate>
+<form #form="ngForm"  (submit)="save()" novalidate>
   <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="communicationEvent" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="communicationEvent"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-      <mat-card-content fxFlex fxFill style="overflow: auto;">
+      <mat-card-content  style="overflow: auto;">
 
         <div *ngIf="!communicationEvent.isNew" class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
@@ -21,7 +21,7 @@
         <div class="row">
           <div *ngIf="communicationEvent.IncomingCall">
             <div fxLayout fxLayoutGap="1em">
-              <a-mat-chips fxFlex style="padding-left: 0px" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts"
+              <a-mat-chips  style="padding-left: 0px" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="contacts"
                 display="PartyName"></a-mat-chips>
               <button mat-mini-fab color="accent" type="button" (click)="addCaller = !addCaller">
                 <mat-icon *ngIf="!addCaller">add</mat-icon>
@@ -39,7 +39,7 @@
           </div>
           <div *ngIf="!communicationEvent.IncomingCall">
             <div fxLayout fxLayoutGap="1em">
-              <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="employees" display="PartyName"></a-mat-chips>
+              <a-mat-chips  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Callers" [options]="employees" display="PartyName"></a-mat-chips>
               <button mat-mini-fab color="accent" type="button" disabled="true">
                 <mat-icon>add</mat-icon>
               </button>
@@ -47,7 +47,7 @@
           </div>
           <div *ngIf="communicationEvent.IncomingCall">
             <div fxLayout fxLayoutGap="1em">
-              <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="employees" display="PartyName"></a-mat-chips>
+              <a-mat-chips  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="employees" display="PartyName"></a-mat-chips>
               <button mat-mini-fab color="accent" type="button" disabled="true">
                 <mat-icon>add</mat-icon>
               </button>
@@ -55,7 +55,7 @@
           </div>
           <div *ngIf="!communicationEvent.IncomingCall">
             <div fxLayout fxLayoutGap="1em">
-              <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="contacts" display="PartyName"></a-mat-chips>
+              <a-mat-chips  [object]="communicationEvent" [roleType]="m.PhoneCommunication.Receivers" [options]="contacts" display="PartyName"></a-mat-chips>
               <button mat-mini-fab color="accent" type="button" (click)="addReceiver = !addReceiver">
                 <mat-icon *ngIf="!addReceiver">add</mat-icon>
                 <mat-icon *ngIf="addReceiver">close</mat-icon>
@@ -80,7 +80,7 @@
         <div class="row">
           <div>
             <div fxLayout fxLayoutGap="1em">
-              <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers"
+              <a-mat-select  [object]="communicationEvent" [roleType]="m.PhoneCommunication.ContactMechanisms" [options]="phonenumbers"
                 display="displayName" label="Phone number" class="col-md"></a-mat-select>
               <button mat-mini-fab color="accent" type="button" (click)="addPhoneNumber = !addPhoneNumber">
                 <mat-icon *ngIf="!addPhoneNumber">add</mat-icon>
@@ -117,8 +117,8 @@
     </mat-card>
   </div>
 
-  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
-    <span fxFlex></span>
+  <mat-toolbar  >
+    <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
   </mat-toolbar>

@@ -1,16 +1,16 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()" novalidate>
+<form #form="ngForm"  (submit)="save()" novalidate>
   <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="communicationEvent" fxFlex fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="communicationEvent"  fxLayout="column" fxLayoutAlign="start stretch">
 
-      <mat-card-content fxFlex fxFill  style="overflow: auto;">
+      <mat-card-content   style="overflow: auto;">
         <div *ngIf="!communicationEvent.isNew" class="row">
           <div class="row">
             <a-mat-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
@@ -52,8 +52,8 @@
 
   </div>
 
-  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
-    <span fxFlex></span>
+  <mat-toolbar  >
+    <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
   </mat-toolbar>

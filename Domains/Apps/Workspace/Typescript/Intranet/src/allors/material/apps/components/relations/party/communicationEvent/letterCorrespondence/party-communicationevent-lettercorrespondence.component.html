@@ -1,16 +1,16 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()" novalidate>
+<form #form="ngForm"  (submit)="save()" novalidate>
   <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="communicationEvent" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="communicationEvent"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
-      <mat-card-content fxFlex fxFill style="overflow: auto;">
+      <mat-card-content  style="overflow: auto;">
 
         <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
@@ -21,7 +21,7 @@
         <div class="row">
 
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName"
+            <a-mat-chips  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName"
               label="Sender"></a-mat-chips>
             <button mat-mini-fab color="accent" [disabled]="!communicationEvent.IncomingLetter || !PartyIsOrganisation" type="button"
               (click)="addSender = !addSender">
@@ -39,7 +39,7 @@
           </mat-tab-group>
 
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-chips fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" [options]="contacts" display="displayName"
+            <a-mat-chips  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" [options]="contacts" display="displayName"
               label="Receiver"></a-mat-chips>
             <button mat-mini-fab color="accent" [disabled]="communicationEvent.IncomingLetter || !PartyIsOrganisation" type="button"
               (click)="addReceiver = !addReceiver">
@@ -57,7 +57,7 @@
           </div>
 
           <div fxLayout fxLayoutGap="1em">
-            <a-mat-select fxFlex [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses"
+            <a-mat-select  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses"
               display="displayName" label="Postal Address" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" type="button" (click)="addAddress = !addAddress">
               <mat-icon *ngIf="!addAddress">add</mat-icon>
@@ -97,8 +97,8 @@
     </mat-card>
   </div>
 
-  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
-    <span fxFlex></span>
+  <mat-toolbar  >
+    <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
   </mat-toolbar>

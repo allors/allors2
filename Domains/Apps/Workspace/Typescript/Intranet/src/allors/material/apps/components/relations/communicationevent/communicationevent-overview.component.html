@@ -1,7 +1,7 @@
 <mat-toolbar>
-  <mat-toolbar-row fxLayout="row">
+  <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span fxFlex>{{title}}</span>
+    <span>{{title}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -10,11 +10,11 @@
   <div *ngIf="communicationEvent" class="row">
 
     <mat-card *ngIf="isEmail">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>{{itemTitle}}</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
 
         <div class="row">
           <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
@@ -58,7 +58,7 @@
     </mat-card>
 
     <mat-card *ngIf="isLetter">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>{{itemTitle}}</mat-card-title>
       </mat-card-header>
 
@@ -104,7 +104,7 @@
     </mat-card>
 
     <mat-card *ngIf="isMeeting">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Meeting</mat-card-title>
       </mat-card-header>
 
@@ -148,7 +148,7 @@
     </mat-card>
 
     <mat-card *ngIf="isPhone">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>{{itemTitle}}</mat-card-title>
       </mat-card-header>
 
@@ -194,11 +194,11 @@
     </mat-card>
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Work Efforts</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
 
         <mat-list style="overflow: auto;">
           <div *ngIf="communicationEvent.WorkEfforts.length === 0">

@@ -1,35 +1,33 @@
-<div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+<div class="a-master">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <span>{{title}}</span>
-      <span fxFlex></span>
+      <span class="col"></span>
       <internalorganisation-select></internalorganisation-select>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
-
-    <mat-card class="container-fluid">
-
-      <form novalidate [formGroup]="searchForm">
-
-        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFlex fxFill appearance="outline">
+    <mat-card>
+      <mat-card-content class="container-fluid a-search">
+        <form class="row" novalidate [formGroup]="searchForm">
+          <mat-form-field class="col" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput formControlName="name">
           </mat-form-field>
-        </mat-card-content>
+        </form>
+      </mat-card-content>
 
-      </form>
+      <mat-card-content class="container-fluid a-list">
 
-      <mat-list fxFlex style="overflow: auto;">
-        <div *ngIf="data && data.length === 0">
+        <div *ngIf="data?.length === 0">
           <h3>No characteristics to display.</h3>
         </div>
 
-        <ng-template let-characteristic let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/productCharacteristic/', characteristic.id])"
+        <mat-list>
+          <mat-list-item *ngFor="let characteristic of data; let last = last" (click)="router.navigate(['/productCharacteristic/', characteristic.id])"
             style="cursor: pointer;">
 
             <h3 *ngIf="characteristic.UnitOfMeasure" mat-line>{{characteristic.Name}} ({{characteristic.UnitOfMeasure.Name}})</h3>
@@ -47,17 +45,20 @@
             <mat-divider *ngIf="!last" mat-inset></mat-divider>
 
           </mat-list-item>
-        </ng-template>
-      </mat-list>
+        </mat-list>
+      </mat-card-content>
+
     </mat-card>
 
   </div>
 
-  <mat-toolbar fxLayout="row">
-    <span fxFlex></span>
-    <a mat-raised-button [routerLink]="['/productCharacteristic']">
-      Add New
-    </a>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button [routerLink]="['/productCharacteristic']">
+        Add New
+      </a>
+    </mat-toolbar-row>
   </mat-toolbar>
 
 </div>

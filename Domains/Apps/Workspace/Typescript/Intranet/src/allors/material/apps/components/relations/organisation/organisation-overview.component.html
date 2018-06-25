@@ -1,7 +1,7 @@
 <mat-toolbar>
-  <mat-toolbar-row fxLayout="row">
+  <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span fxFlex>{{title}}</span>
+    <span>{{title}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -9,11 +9,11 @@
   <div *ngIf="organisation" class="row">
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Organisation</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
         <div class="row">
           <a-mat-static [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
           <mat-form-field>
@@ -46,11 +46,11 @@
     </mat-card>
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Communications</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
 
         <mat-list style="overflow: auto;">
           <div *ngIf="!this.communicationEvents">
@@ -116,7 +116,7 @@
     </mat-card>
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Contact persons</mat-card-title>
         <mat-radio-group [(ngModel)]="contactsCollection" style="size: 80%;">
           <mat-radio-button value="Current">Current</mat-radio-button>
@@ -125,7 +125,7 @@
         </mat-radio-group>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
         <mat-list style="overflow: auto;">
           <div *ngIf="contactRelationships.length === 0">
             <h3>No contact persons to display.</h3>
@@ -180,7 +180,7 @@
     </mat-card>
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Contact Info</mat-card-title>
         <mat-radio-group [(ngModel)]="contactMechanismsCollection">
           <mat-radio-button value="Current">Current</mat-radio-button>
@@ -189,7 +189,7 @@
         </mat-radio-group>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
 
         <mat-list style="overflow: auto;">
           <div *ngIf="contactMechanisms.length === 0">

@@ -1,34 +1,33 @@
-<div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+<div class="a-master">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <span>{{title}}</span>
-      <span fxFlex></span>
+      <span class="col"></span>
       <internalorganisation-select></internalorganisation-select>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
+    <mat-card>
+      <mat-card-content class="container-fluid a-search">
+        <form class="row" novalidate [formGroup]="searchForm">
 
-    <mat-card class="container-fluid">
-
-      <form novalidate [formGroup]="searchForm">
-
-        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput autocomplete="off" formControlName="name">
-            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+            <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
               <mat-icon>expand_more</mat-icon>
-            </a>
+            </button>
           </mat-form-field>
 
-          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput formControlName="name">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Country</mat-label>
             <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry">
               <mat-option>None</mat-option>
@@ -36,7 +35,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Role</mat-label>
             <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole">
               <mat-option>None</mat-option>
@@ -44,7 +43,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Classification</mat-label>
             <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification">
               <mat-option>None</mat-option>
@@ -52,32 +51,35 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="contactFirstName">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Last Name</mat-label>
             <input matInput formControlName="contactLastName">
           </mat-form-field>
 
-          <div fxFlex="none" *ngIf="advancedSearch">
-            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+          <div class="col-1 pt-2" *ngIf="advancedSearch">
+            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;"
+              title="Reset Search">
               <mat-icon>close</mat-icon>
-            </a>
+            </button>
           </div>
 
-        </mat-card-content>
-      </form>
+        </form>
+      </mat-card-content>
 
-      <mat-list fxFlex style="overflow: auto;">
-        <div *ngIf="rows && rows.length === 0">
+      <mat-card-content class="container-fluid a-list">
+
+        <div *ngIf="rows?.length === 0">
           <h3>No organisations to display.</h3>
         </div>
 
-        <ng-template let-row let-last="last" ngFor [ngForOf]="rows">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/relations/organisation/', row.object.id])" style="cursor: pointer;">
+        <mat-list>
+          <mat-list-item *ngFor="let row of rows; let last = last" (click)="router.navigate(['/relations/organisation/', row.object.id])"
+            style="cursor: pointer;">
 
             <mat-icon fxHide fxShow.gt-sm *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
             <img fxHide fxShow.gt-sm *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
@@ -105,13 +107,14 @@
 
             <mat-divider *ngIf="!last" mat-inset></mat-divider>
           </mat-list-item>
-        </ng-template>
-      </mat-list>
+        </mat-list>
+
+      </mat-card-content>
     </mat-card>
   </div>
 
-  <mat-toolbar fxLayout="row">
-    <span fxFlex></span>
+  <mat-toolbar >
+    <span class="col"></span>
     <a mat-raised-button [routerLink]="['/organisation']">
       Add New
     </a>

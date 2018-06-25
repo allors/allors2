@@ -1,44 +1,45 @@
-<div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+<div class="a-master">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <span>{{title}}</span>
-      <span fxFlex></span>
+      <span class="col"></span>
       <internalorganisation-select></internalorganisation-select>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card class="container-fluid">
+    <mat-card>
+      <mat-card-content class="container-fluid a-search">
 
-      <form novalidate [formGroup]="searchForm">
+        <form class="row" novalidate [formGroup]="searchForm">
 
-        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
             <mat-label>Search by Organisation</mat-label>
             <input matInput autocomplete="off" formControlName="company">
-            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+            <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
               <mat-icon>expand_more</mat-icon>
-            </a>
+            </button>
           </mat-form-field>
 
-          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Search by Organisation</mat-label>
             <input matInput formControlName="company">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Number</mat-label>
             <input matInput formControlName="orderNumber">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Customer Reference</mat-label>
             <input matInput formControlName="reference">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>State</mat-label>
             <mat-select formControlName="state" name="state" [(ngModel)]="selectedOrderState">
               <mat-option>None</mat-option>
@@ -46,22 +47,24 @@
             </mat-select>
           </mat-form-field>
 
-          <div fxFlex="none" *ngIf="advancedSearch">
-            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+          <div class="col-1 pt-2" *ngIf="advancedSearch">
+            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;"
+              title="Reset Search">
               <mat-icon>close</mat-icon>
-            </a>
+            </button>
           </div>
 
-        </mat-card-content>
-      </form>
+        </form>
+      </mat-card-content>
 
-      <mat-list fxFlex style="overflow: auto;">
-        <div *ngIf="data && data.length === 0">
+      <mat-card-content class="container-fluid a-list">
+
+        <div *ngIf="data?.length === 0">
           <h3>No sales orders to display.</h3>
         </div>
-        <ng-template let-order let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" (click)="router.navigate(['/orders/salesOrder/', order.id])"
-            style="cursor: pointer;">
+
+        <mat-list>
+          <mat-list-item *ngFor="let order of data; let last = last" (click)="router.navigate(['/orders/salesOrder/', order.id])" style="cursor: pointer;">
 
             <h3 mat-line> {{order.ShipToCustomer.displayName}}</h3>
             <h4 mat-line> {{order.OrderNumber }}: {{order.CustomerReference}} ({{order.SalesOrderState.Name}})</h4>
@@ -80,15 +83,18 @@
 
             <mat-divider *ngIf="!last" mat-inset></mat-divider>
           </mat-list-item>
-        </ng-template>
-      </mat-list>
+        </mat-list>
+      </mat-card-content>
+
     </mat-card>
   </div>
 
-  <mat-toolbar fxLayout="row">
-    <span fxFlex></span>
-    <a mat-raised-button [routerLink]="['/salesOrder']">
-      Add New
-    </a>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button [routerLink]="['/salesOrder']">
+        Add New
+      </a>
+    </mat-toolbar-row>
   </mat-toolbar>
 </div>

@@ -1,14 +1,14 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+<form #form="ngForm"  (submit)="save()">
   <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="productType" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="productType"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
       <div class="row">
         <a-mat-input [object]="productType" [roleType]="m.ProductType.Name" class="col-md"></a-mat-input>
@@ -20,8 +20,8 @@
 
   </div>
 
-  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
-    <span fxFlex></span>
+  <mat-toolbar  >
+    <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
   </mat-toolbar>

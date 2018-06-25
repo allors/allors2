@@ -1,44 +1,44 @@
-<div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+<div class="a-master">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <span>{{title}}</span>
-      <span fxFlex></span>
+      <span class="col"></span>
       <internalorganisation-select></internalorganisation-select>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
+    <mat-card>
+      <mat-card-content class="container-fluid a-search">
 
-    <mat-card class="container-fluid">
+        <form class="row" novalidate [formGroup]="searchForm">
 
-      <form novalidate [formGroup]="searchForm">
-
-        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput autocomplete="off" formControlName="name">
-            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+            <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
               <mat-icon>expand_more</mat-icon>
-            </a>
+            </button>
           </mat-form-field>
 
-          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput formControlName="name">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Article Nr</mat-label>
             <input matInput formControlName="articleNumber">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Keyword</mat-label>
             <input matInput formControlName="keyword">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Owner</mat-label>
             <mat-select formControlName="owner" name="owner" [(ngModel)]="selectedOwner">
               <mat-option>None</mat-option>
@@ -46,7 +46,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Ownership</mat-label>
             <mat-select formControlName="ownership" name="ownership" [(ngModel)]="selectedOwnership">
               <mat-option>None</mat-option>
@@ -54,7 +54,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Brand</mat-label>
             <mat-select formControlName="brand" name="brand" [(ngModel)]="selectedBrand">
               <mat-option>None</mat-option>
@@ -62,7 +62,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Model</mat-label>
             <mat-select formControlName="model" name="model" [(ngModel)]="selectedModel">
               <mat-option>None</mat-option>
@@ -70,7 +70,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Category</mat-label>
             <mat-select formControlName="productCategory" name="productCategory" [(ngModel)]="selectedProductCategory">
               <mat-option>None</mat-option>
@@ -78,7 +78,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Product Type</mat-label>
             <mat-select formControlName="productType" name="productType" [(ngModel)]="selectedProductType">
               <mat-option>None</mat-option>
@@ -86,7 +86,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Inventory Kind</mat-label>
             <mat-select formControlName="inventoryItemKind" name="inventoryItemKind" [(ngModel)]="selectedInventoryItemKind">
               <mat-option>None</mat-option>
@@ -94,7 +94,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Manufacturer</mat-label>
             <mat-select formControlName="manufacturer" name="manufacturer" [(ngModel)]="selectedManufacturer">
               <mat-option>None</mat-option>
@@ -102,7 +102,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Supplier</mat-label>
             <mat-select formControlName="supplier" name="supplier" [(ngModel)]="selectedSupplier">
               <mat-option>None</mat-option>
@@ -110,7 +110,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>State</mat-label>
             <mat-select formControlName="state" name="state" [(ngModel)]="selectedSerialisedInventoryItemState">
               <mat-option>None</mat-option>
@@ -118,29 +118,33 @@
             </mat-select>
           </mat-form-field>
 
-          <div fxFlex="none" *ngIf="advancedSearch">
-            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+          <div class="col-1 pt-2" *ngIf="advancedSearch">
+            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;"
+              title="Reset Search">
               <mat-icon>close</mat-icon>
-            </a>
+            </button>
           </div>
 
-        </mat-card-content>
-      </form>
+        </form>
+      </mat-card-content>
 
-      <mat-list fxFlex style="overflow: auto;">
-        <div *ngIf="data && data.length === 0">
+      <mat-card-content class="container-fluid a-list">
+
+        <div *ngIf="data?.length === 0">
           <h3>No products to display.</h3>
         </div>
 
-        <ng-template let-row let-last="last" ngFor [ngForOf]="rows">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" style="cursor: pointer;">
+        <mat-list>
+          <mat-list-item *ngFor="let row of rows; let last = last" style="cursor: pointer;">
 
             <mat-icon fxHide fxShow.gt-sm *ngIf="!row.avatar" mat-list-avatar>insert_photo</mat-icon>
             <img fxHide fxShow.gt-sm *ngIf="row.avatar" mat-list-avatar [src]="mediaService.url(row.logo)" />
 
             <h3 *ngIf="row.isSerialised" mat-line [routerLink]="'/serialisedGood/' + [row.good.id]">{{row.name}}</h3>
             <h3 *ngIf="!row.isSerialised" mat-line [routerLink]="'/nonSerialisedGood/' + [row.good.id]">{{row.name}}</h3>
-            <p mat-line>{{row.description}} <span *ngIf="!row.isSerialised">; Available: {{row.available}}</span></p>
+            <p mat-line>{{row.description}}
+              <span *ngIf="!row.isSerialised">; Available: {{row.available}}</span>
+            </p>
 
             <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">
@@ -155,17 +159,20 @@
 
             <mat-divider *ngIf="!last" mat-inset></mat-divider>
           </mat-list-item>
-        </ng-template>
-      </mat-list>
+        </mat-list>
+      </mat-card-content>
+
     </mat-card>
 
   </div>
 
-  <mat-toolbar fxLayout="row">
-    <span fxFlex></span>
-    <a mat-raised-button (click)="addGood()">
-      Add New
-    </a>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button (click)="addGood()">
+        Add New
+      </a>
+    </mat-toolbar-row>
   </mat-toolbar>
 
 </div>

@@ -1,7 +1,7 @@
 <mat-toolbar>
-  <mat-toolbar-row fxLayout="row">
+  <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span fxFlex>{{title}}</span>
+    <span>{{title}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -9,11 +9,11 @@
   <div *ngIf="request" class="row">
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Request for Quote</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFil>
+      <mat-card-content  fxFil>
         <div class="row">
           <a-mat-static [object]="request" [roleType]="m.Request.RequestNumber"></a-mat-static>
           <a-mat-static [object]="request" [roleType]="m.Request.RequestState" display="Name" label="Status"></a-mat-static>
@@ -75,11 +75,11 @@
     </mat-card>
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Request Items</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
 
         <mat-list style="overflow: auto;">
           <div *ngIf="request.RequestItems.length === 0">

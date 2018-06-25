@@ -1,14 +1,14 @@
-<form #form="ngForm" fxLayout="column" style="height: 100vh; min-height: 100vh" (submit)="save()">
+<form #form="ngForm"  (submit)="save()">
   <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+    <mat-toolbar-row >
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="workTask" fxFlex fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="workTask"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
 
       <div class="row">
         <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name" label="Status" class="col-md"></a-mat-select>
@@ -26,7 +26,7 @@
 
       <div class="row">
         <div fxLayout fxLayoutGap="1em">
-          <a-mat-select fxFlex [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" class="col-md"></a-mat-select>
+          <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactMechanism = !addContactMechanism">
             <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
             <mat-icon *ngIf="addContactMechanism">close</mat-icon>
@@ -63,7 +63,7 @@
 
       <div class="row">
           <mat-form-field>
-            <mat-select fxFlex name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
+            <mat-select  name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
               <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -90,8 +90,8 @@
     </mat-card>
   </div>
 
-  <mat-toolbar fxLayout="row" fxLayoutGap="1rem">
-    <span fxFlex></span>
+  <mat-toolbar  >
+    <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
   </mat-toolbar>

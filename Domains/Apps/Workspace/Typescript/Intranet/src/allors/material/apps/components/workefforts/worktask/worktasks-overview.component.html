@@ -1,37 +1,38 @@
-<div fxLayout="column" style="height: 100vh; min-height: 100vh">
-  <mat-toolbar>
-    <mat-toolbar-row fxLayout="row">
+<div class="a-master">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span fxFlex>{{title}}</span>
+      <span>{{title}}</span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card class="container-fluid">
+    <mat-card>
+      <mat-card-content class="container-fluid a-search">
 
-      <form novalidate [formGroup]="searchForm">
+        <form class="row" novalidate [formGroup]="searchForm">
 
-        <mat-card-content fxLayout="row wrap" fxLayoutGap="1rem">
-          <mat-form-field fxFlex fxFill *ngIf="!advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput autocomplete="off" formControlName="name">
-            <a matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
+            <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
               <mat-icon>expand_more</mat-icon>
-            </a>
+            </button>
           </mat-form-field>
 
-          <mat-form-field fxFlex="1 2 calc(15em)" *ngIf="advancedSearch" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
             <input matInput formControlName="name">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Description</mat-label>
             <input matInput formControlName="description">
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>State</mat-label>
             <mat-select formControlName="state" name="state" [(ngModel)]="selectedWorkEffortState">
               <mat-option>None</mat-option>
@@ -39,7 +40,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="advancedSearch" fxFlex="1 2 calc(15em)" appearance="outline">
+          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Priority</mat-label>
             <mat-select formControlName="priority" name="priority" [(ngModel)]="selectedPriority">
               <mat-option>None</mat-option>
@@ -47,56 +48,61 @@
             </mat-select>
           </mat-form-field>
 
-          <div fxFlex="none" *ngIf="advancedSearch">
-            <a mat-icon-button (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
+          <div class="col-1 pt-2" *ngIf="advancedSearch">
+            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;"
+              title="Reset Search">
               <mat-icon>close</mat-icon>
-            </a>
+            </button>
           </div>
 
-        </mat-card-content>
-      </form>
+        </form>
+      </mat-card-content>
 
-
-      <mat-list>
+      <mat-card-content class="container-fluid a-list">
         <div *ngIf="data && data.length === 0">
           <h3>No work tasks to display.</h3>
         </div>
 
-        <ng-template let-item let-last="last" ngFor [ngForOf]="data">
-          <mat-list-item fxLayout="column" fxLayoutAlign="start stretch" [routerLink]="['/workefforts/worktask/' + item.id ]" style="cursor: pointer;">
-            <div mat-line>{{ item.Name }}</div>
+        <mat-list>
 
-            <div mat-line>State: {{ item.WorkEffortState.Name }}</div>
-            <p mat-line>{{ item.Description }} </p>
-            <p *ngIf="item.Priority" mat-line>Priority {{ item.Priority.Name }} </p>
+          <ng-template let-item let-last="last" ngFor [ngForOf]="data">
+            <mat-list-item [routerLink]="['/workefforts/worktask/' + item.id ]" style="cursor: pointer;">
+              <div mat-line>{{ item.Name }}</div>
 
-            <div (click)="$event.stopPropagation()">
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <a [routerLink]="['/workefforts/worktask/' + item.id ]" mat-menu-item>Details</a>
-                <a [routerLink]="['/printworktask/' + item.id ]" mat-menu-item>Preview</a>
-                <button mat-menu-item (click)="print(item)">Print</button>
-                <button mat-menu-item (click)="delete(item)" [disabled]="!item.CanExecuteDelete">Delete</button>
-              </mat-menu>
-            </div>
+              <div mat-line>State: {{ item.WorkEffortState.Name }}</div>
+              <p mat-line>{{ item.Description }} </p>
+              <p *ngIf="item.Priority" mat-line>Priority {{ item.Priority.Name }} </p>
 
-            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+              <div (click)="$event.stopPropagation()">
+                <button mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a [routerLink]="['/workefforts/worktask/' + item.id ]" mat-menu-item>Details</a>
+                  <a [routerLink]="['/printworktask/' + item.id ]" mat-menu-item>Preview</a>
+                  <button mat-menu-item (click)="print(item)">Print</button>
+                  <button mat-menu-item (click)="delete(item)" [disabled]="!item.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </div>
 
-          </mat-list-item>
-        </ng-template>
-      </mat-list>
+              <mat-divider *ngIf="!last" mat-inset></mat-divider>
+
+            </mat-list-item>
+          </ng-template>
+        </mat-list>
+      </mat-card-content>
 
     </mat-card>
 
   </div>
 
-  <mat-toolbar fxLayout="row">
-    <span fxFlex></span>
-    <a mat-raised-button [routerLink]="['/worktask']">
-      Add New
-    </a>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button [routerLink]="['/worktask']">
+        Add New
+      </a>
+    </mat-toolbar-row>
   </mat-toolbar>
 
 </div>

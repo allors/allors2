@@ -1,7 +1,7 @@
 <mat-toolbar>
-  <mat-toolbar-row fxLayout="row">
+  <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span fxFlex>{{title}}</span>
+    <span>{{title}}</span>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -9,11 +9,11 @@
   <div *ngIf="task" class="row">
 
     <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-header  fxLayoutAlign="space-between">
         <mat-card-title>Task</mat-card-title>
       </mat-card-header>
 
-      <mat-card-content fxFlex fxFill>
+      <mat-card-content>
         <div>
           <div class="row">
             <a-mat-static [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
