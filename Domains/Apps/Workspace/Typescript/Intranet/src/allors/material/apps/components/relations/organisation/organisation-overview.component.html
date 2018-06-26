@@ -44,7 +44,7 @@
               </div>
               <!-- 
 <div>
-<p class="col mat-caption"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</p>
+<caption class="col"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</caption>
 </div>
 -->
             </div>
@@ -92,8 +92,8 @@
                   <!--                 <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
  -->
                 </p>
-                <p mat-line class="mat-caption"> started: {{ communicationEvent.ActualStart | date}} </p>
-                <p mat-line> ended: {{ communicationEvent.ActualEnd | date }} </p>
+                <caption mat-line>started: {{ communicationEvent.ActualStart | date}}</caption>
+                <caption mat-line>ended: {{ communicationEvent.ActualEnd | date }}</caption>
 
                 <span (click)="$event.stopPropagation()">
                   <button mat-icon-button [mat-menu-trigger-for]="menu">

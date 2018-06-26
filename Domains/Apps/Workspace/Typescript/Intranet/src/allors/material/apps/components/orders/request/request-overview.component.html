@@ -58,8 +58,8 @@
         </div>
 
         <div class="row">
-          <p class="col mat-caption"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</p>
-          <p class="col mat-caption"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</p>
+          <caption class="col"> created: {{ request.CreationDate | date}} by {{ request.CreatedBy.displayName}}</caption>
+          <caption class="col"> last modified: {{ request.LastModifiedDate | date}} by {{ request.LastModifiedBy.displayName}}</caption>
         </div>
       </mat-card-content>
 

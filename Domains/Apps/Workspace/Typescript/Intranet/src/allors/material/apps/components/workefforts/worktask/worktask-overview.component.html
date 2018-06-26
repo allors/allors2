@@ -37,8 +37,8 @@
           </div>
 
           <div class="row">
-            <p class="col mat-caption"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</p>
-            <p class="col mat-caption"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</p>
+            <caption class="col"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</caption>
+            <caption class="col"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</caption>
           </div>
         </div>
       </mat-card-content>
