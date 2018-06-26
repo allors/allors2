@@ -162,10 +162,10 @@ namespace Allors.Adapters.Object.SqlClient
             var previousRole = this.GetCompositeRole(roleType);
             var newRole = newRoleStrategy?.Reference.ObjectId;
 
-            this.Reference.Session.State.ChangeSet.OnChangingCompositeRole(this.Reference.ObjectId, roleType, previousRole, newRole);
-
             if (newRole != null && !newRole.Equals(previousRole))
             {
+                this.Reference.Session.State.ChangeSet.OnChangingCompositeRole(this.Reference.ObjectId, roleType, previousRole, newRole);
+
                 if (roleType.AssociationType.IsOne)
                 {
                     if (previousRole != null)
