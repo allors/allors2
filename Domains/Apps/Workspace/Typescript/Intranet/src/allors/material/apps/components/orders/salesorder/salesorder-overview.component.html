@@ -1,7 +1,7 @@
 <mat-toolbar>
   <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span>{{title}}</span>
+    <h1>{{title}}</h1>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -9,7 +9,7 @@
   <div *ngIf="order" class="row">
 
     <mat-card>
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>Sales Order</mat-card-title>
       </mat-card-header>
 
@@ -91,7 +91,7 @@
     </mat-card>
 
     <mat-card>
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>Order Items</mat-card-title>
       </mat-card-header>
 
@@ -133,7 +133,7 @@
     </mat-card>
 
     <mat-card>
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>Order Terms</mat-card-title>
       </mat-card-header>
 

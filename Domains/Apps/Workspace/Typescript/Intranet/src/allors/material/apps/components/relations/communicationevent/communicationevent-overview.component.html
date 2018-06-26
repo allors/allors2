@@ -1,7 +1,7 @@
 <mat-toolbar>
   <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span>{{title}}</span>
+    <h1>{{title}}</h1>
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -10,7 +10,7 @@
   <div *ngIf="communicationEvent" class="row">
 
     <mat-card *ngIf="isEmail">
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>{{itemTitle}}</mat-card-title>
       </mat-card-header>
 
@@ -58,7 +58,7 @@
     </mat-card>
 
     <mat-card *ngIf="isLetter">
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>{{itemTitle}}</mat-card-title>
       </mat-card-header>
 
@@ -104,7 +104,7 @@
     </mat-card>
 
     <mat-card *ngIf="isMeeting">
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>Meeting</mat-card-title>
       </mat-card-header>
 
@@ -148,7 +148,7 @@
     </mat-card>
 
     <mat-card *ngIf="isPhone">
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>{{itemTitle}}</mat-card-title>
       </mat-card-header>
 
@@ -194,7 +194,7 @@
     </mat-card>
 
     <mat-card>
-      <mat-card-header  fxLayoutAlign="space-between">
+      <mat-card-header  >
         <mat-card-title>Work Efforts</mat-card-title>
       </mat-card-header>
 
