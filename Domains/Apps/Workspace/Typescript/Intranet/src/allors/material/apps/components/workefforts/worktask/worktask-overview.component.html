@@ -1,55 +1,63 @@
-<mat-toolbar>
-  <mat-toolbar-row >
-    <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <h1>{{title}}</h1>
-  </mat-toolbar-row>
-</mat-toolbar>
+<div class="a-detail">
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-<div class="container-fluid">
-  <div *ngIf="task" class="row">
+  <div class="container-fluid">
+    <div *ngIf="task" class="row align-items-stretch">
 
-    <mat-card>
-      <mat-card-header  >
-        <mat-card-title>Task</mat-card-title>
-      </mat-card-header>
-
-      <mat-card-content>
-        <div>
-          <div class="row">
-            <a-mat-static [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
-            <a-mat-static [object]="task" [roleType]="m.WorkEffort.WorkEffortNumber"></a-mat-static>
-            <a-mat-static [object]="task" [roleType]="m.WorkEffort.WorkEffortState" display="Name" label="Status"></a-mat-static>
-          </div>
-
-          <div *ngIf="task.Customer" class="row">
-            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Organisation'"  [object]="task" [roleType]="m.WorkEffort.Customer"
-              display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
-            <a-mat-static *ngIf="task.Customer?.objectType.name == 'Person'"  [object]="task" [roleType]="m.WorkEffort.Customer"
-              display="displayName" label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static>
-          </div>
-
-          <div *ngIf="task.FullfillContactMechanism" class="row">
-            <a-mat-static [object]="task" [roleType]="m.WorkEffort.FullfillContactMechanism" display="displayName" label="Address"></a-mat-static>
-          </div>
-
-          <div *ngIf="task.ContactPerson" class="row">
-            <a-mat-static [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
-          </div>
+      <div class="col-md-6">
+        <mat-card>
 
           <div class="row">
-            <caption class="col"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</caption>
-            <caption class="col"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</caption>
+            <div class="col">
+              <h2>
+                <mat-icon>credit_card</mat-icon> Task</h2>
+            </div>
           </div>
-        </div>
-      </mat-card-content>
 
-      <mat-card-actions>
-        <button *ngIf="task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
-        <button *ngIf="!task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
-        <button mat-button [routerLink]="['/printworktask/' + task.id ]">Preview</button>
-        <button mat-button (click)="print()">Print</button>
-        <button *ngIf="task.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
-      </mat-card-actions>
-    </mat-card>
+          <mat-card-content>
+            <div class="container">
+              <div class="row">
+                <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.Name"></a-mat-static>
+                <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.WorkEffortNumber"></a-mat-static>
+                <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.WorkEffortState" display="Name" label="Status"></a-mat-static>
+              </div>
+
+              <div *ngIf="task.Customer" class="row">
+                <a-mat-static class="col" *ngIf="task.Customer?.objectType.name == 'Organisation'" [object]="task" [roleType]="m.WorkEffort.Customer"
+                  display="displayName" label="Customer" [routerLink]="['/relations/organisation/' + task.Customer.id ]"></a-mat-static>
+                <a-mat-static class="col" *ngIf="task.Customer?.objectType.name == 'Person'" [object]="task" [roleType]="m.WorkEffort.Customer" display="displayName"
+                  label="Customer" [routerLink]="['/relations/person/' + task.Customer.id ]"></a-mat-static>
+              </div>
+
+              <div *ngIf="task.FullfillContactMechanism" class="row">
+                <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.FullfillContactMechanism" display="displayName" label="Address"></a-mat-static>
+              </div>
+
+              <div *ngIf="task.ContactPerson" class="row">
+                <a-mat-static class="col" [object]="task" [roleType]="m.WorkEffort.ContactPerson" display="displayName"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <caption class="col"> created: {{ task.CreationDate | date}} by {{ task.CreatedBy.displayName}}</caption>
+                <caption class="col"> last modified: {{ task.LastModifiedDate | date}} by {{ task.LastModifiedBy.displayName}}</caption>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button *ngIf="task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
+            <button *ngIf="!task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
+            <button mat-button [routerLink]="['/printworktask/' + task.id ]">Preview</button>
+            <button mat-button (click)="print()">Print</button>
+            <button *ngIf="task.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
   </div>
 </div>

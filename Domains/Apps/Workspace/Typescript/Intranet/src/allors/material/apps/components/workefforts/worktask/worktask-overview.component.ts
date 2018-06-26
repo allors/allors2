@@ -60,6 +60,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.WorkTask.Customer }),
               new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
               new TreeNode({ roleType: m.WorkTask.ContactPerson }),
+              new TreeNode({ roleType: m.WorkTask.CreatedBy }),
             ],
             name: 'task',
           }),
