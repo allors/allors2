@@ -1,27 +1,10 @@
-<mat-form-field fxFlex fxFill>
-  <mat-chip-list fxLayout="row" #chipList>
-    <mat-chip
-      fxFlex="none"
-      *ngFor="let item of model"
-      [selectable]="!readonly"
-      [removable]="!readonly"
-      (remove)="remove(item)">
+<mat-form-field>
+  <mat-chip-list class="d-flex" #chipList>
+    <mat-chip *ngFor="let item of model" [selectable]="!readonly" [removable]="!readonly" (remove)="remove(item)">
       {{item[this.display]}}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
     </mat-chip>
-    <input 
-      #searchInput
-      [matChipInputFor]="chipList"
-      [matAutocomplete]="auto" 
-      [formControl]="searchControl" 
-      type="text" 
-      autocomplete="off" 
-      matInput 
-      [placeholder]="label" 
-      [required]="required" 
-      [disabled]="disabled" 
-      [readonly]="readonly"
-      (focusout)="focusout($event)">
+    <input #searchInput [matChipInputFor]="chipList" [matAutocomplete]="auto" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" (focusout)="focusout($event)">
   </mat-chip-list>
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn()">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selected(option)">

@@ -3,53 +3,56 @@
   <mat-toolbar class="a-header">
     <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <span>{{title}}</span>
+      <h1>{{title}}</h1>
       <span class="col"></span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div class="container-fluid">
     <div *ngIf="person" class="row align-items-stretch">
+
       <div class="col-md-6">
         <mat-card>
 
           <div class="row">
             <div class="col">
-              <mat-icon>person</mat-icon> Person
+              <h2>
+                <mat-icon>person</mat-icon> Person</h2>
             </div>
           </div>
 
           <mat-card-content>
-            <div>
-              <a-mat-static *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
-              <mat-form-field>
-                <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
-              </mat-form-field>
-            </div>
-
-            <div>
-              <div *ngIf="organisation">
-                <a-mat-static class="cursor-pointer" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
+            <div class="container">
+              <div class="row">
+                <a-mat-static class="col" *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
+                <mat-form-field class="col">
+                  <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
+                </mat-form-field>
               </div>
-              <mat-form-field>
-                <input matInput name="contactKind" [(ngModel)]="contactKindsText" [readonly]="true" />
-              </mat-form-field>
-            </div>
 
-            <div>
-              <a-mat-static *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
-              <!--
+              <div class="row">
+                <a-mat-static class="col" *ngIf="organisation" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation"
+                  [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
+                <mat-form-field class="col">
+                  <input matInput type="string" [ngModel]="contactKindsText" name="contactKind" placeholder="Contact Kind" readonly />
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
+                <!--
               <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
       -->
-              <a-mat-static [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
-            </div>
+                <a-mat-static class="col" [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
+              </div>
 
-            <div>
-              <a-mat-static *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
-            </div>
+              <div class="row">
+                <a-mat-static class="col" *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
+              </div>
 
-            <div>
-              <p class="col mat-caption tc-grey-500"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</p>
+              <div class="row">
+                <caption class="col"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</caption>
+              </div>
             </div>
           </mat-card-content>
 
@@ -64,7 +67,8 @@
 
           <div class="row">
             <div class="col">
-              <mat-icon>people</mat-icon> Communications
+              <h2>
+                <mat-icon>people</mat-icon> Communications</h2>
             </div>
           </div>
 
@@ -137,8 +141,10 @@
 
           <div class="row">
             <div class="col">
-              <mat-icon>contacts</mat-icon> Contact Info
+              <h2>
+                <mat-icon>contacts</mat-icon> Contact Info</h2>
             </div>
+
             <div class="col">
               <mat-button-toggle-group [(ngModel)]="contactMechanismsCollection">
                 <mat-button-toggle value="Current">Current</mat-button-toggle>
@@ -221,7 +227,8 @@
 
           <div class="row">
             <div class="col">
-              <mat-icon>work</mat-icon> Work Efforts
+              <h2>
+                <mat-icon>work</mat-icon> Work Efforts</h2>
             </div>
           </div>
 

@@ -1,15 +1,15 @@
 <mat-toolbar>
   <mat-toolbar-row >
     <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-    <span>{{title}}</span>
+    <h1>{{title}}</h1>
   </mat-toolbar-row>
 </mat-toolbar>
 
-<div style="padding: 20px;">
+<div class="container-fluid">
   <div *ngIf="order" class="row">
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header  >
         <mat-card-title>Sales Order</mat-card-title>
       </mat-card-header>
 
@@ -69,8 +69,8 @@
           </div>
 
           <div class="row">
-            <p class="col mat-caption tc-grey-500"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</p>
-            <p class="col mat-caption tc-grey-500"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</p>
+            <caption class="col"> created: {{ order.CreationDate | date}} by {{ order.CreatedBy.displayName}}</caption>
+            <caption class="col"> last modified: {{ order.LastModifiedDate | date}} by {{ order.LastModifiedBy.displayName}}</caption>
           </div>
       </mat-card-content>
 
@@ -90,13 +90,14 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header  >
         <mat-card-title>Order Items</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
-        <mat-list style="overflow: auto;">
+          <mat-list>
+
           <div *ngIf="order.SalesOrderItems.length === 0">
             <h3>No Items to display.</h3>
           </div>
@@ -131,14 +132,15 @@
       </mat-card-actions>
     </mat-card>
 
-    <mat-card fxLayout="column" fxLayoutGap="10px">
-      <mat-card-header  fxLayoutAlign="space-between">
+    <mat-card>
+      <mat-card-header  >
         <mat-card-title>Order Terms</mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
 
-        <mat-list style="overflow: auto;">
+          <mat-list>
+
           <div *ngIf="order.SalesTerms.length === 0">
             <h3>No terms to display.</h3>
           </div>

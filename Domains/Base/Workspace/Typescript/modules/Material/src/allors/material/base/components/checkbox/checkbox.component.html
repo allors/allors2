@@ -1,6 +1,6 @@
-<div fxFlex fxLayout="row">
+<div class="d-flex flex-column align-items-stretch">
   <mat-checkbox [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
-  {{label}}
+    {{label}}
   </mat-checkbox>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </div>
