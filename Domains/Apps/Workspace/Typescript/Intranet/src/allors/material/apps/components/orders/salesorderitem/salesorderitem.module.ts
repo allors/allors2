@@ -11,6 +11,7 @@ import { AllorsMaterialDatepickerModule } from '../../../../base/components/date
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
@@ -27,12 +28,12 @@ export { SalesOrderItemEditComponent } from './salesorderitem.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-	
     AllorsMaterialChipsModule,
-	AllorsMaterialDatepickerModule,
+    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
@@ -42,7 +43,7 @@ export { SalesOrderItemEditComponent } from './salesorderitem.component';
     MatCardModule,
     MatDatepickerModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -57,4 +58,4 @@ export { SalesOrderItemEditComponent } from './salesorderitem.component';
     RouterModule,
   ],
 })
-export class SalesOrderItemEditModule {}
+export class SalesOrderItemEditModule { }

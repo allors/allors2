@@ -1,55 +1,57 @@
+<form class="a-edit" #form="ngForm" (submit)="save()">
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm" *ngIf="orderItem" (submit)="save()">
+  <div>
+    <mat-card *ngIf="orderItem">
+      <mat-card-content class="container-fluid">
+        <div class="row" *ngIf="!orderItem.isNew">
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemShipmentState" display="Name" label="Shipment Status"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemPaymentState" display="Name" label="Payment Status"></a-mat-static>
+        </div>
 
-    <div>
-      <div *ngIf="!orderItem.isNew" >
-          <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemState" display="Name" label="Status"></a-mat-static>
-          <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemShipmentState" display="Name" label="Shipment Status"></a-mat-static>
-          <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemInvoiceState" display="Name" label="Invoice Status"></a-mat-static>
-          <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.SalesOrderItemPaymentState" display="Name" label="Payment Status"></a-mat-static>
-          <div>
-            <button *ngIf="orderItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
-            <button *ngIf="orderItem.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
-          </div>
-      </div>
+        <div class="row" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
+          <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
+          <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Amount"></a-mat-input>
+        </div>
 
-      <div  *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType !== productItemType">
-        <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name" class="col-md"></a-mat-select>
-        <a-mat-input  [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Amount" class="col-md"></a-mat-input>
-      </div>
+        <div class="row" *ngIf="!orderItem.ItemType || orderItem.InvoiceItemType === productItemType">
+          <a-mat-autocomplete class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)" [filter]="stateService.goodsFilter.create(scope)"></a-mat-autocomplete>
+          <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
+          <a-mat-select class="col-md" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="new State"></a-mat-select>
+        </div>
 
-      <div  *ngIf="!orderItem.ItemType || orderItem.InvoiceItemType === productItemType">
-        <a-mat-autocomplete  [object]="orderItem" [roleType]="m.SalesOrderItem.Product" [options]="goods" display="Name"
-          (onChange)="goodSelected($event)" [filter]="stateService.goodsFilter.create(scope)"></a-mat-autocomplete>
-        <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name" class="col-md"></a-mat-select>
-        <a-mat-select *ngIf="orderItem.ReservedFromSerialisedInventoryItem"  [object]="orderItem" [roleType]="m.SalesOrderItem.NewSerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="new State" class="col-md"></a-mat-select>
-      </div>
+        <div class="row" *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
+          <a-mat-input class="col-md" *ngIf="orderItem.isNew || orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-input>
+          <a-mat-static class="col-md" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
+          <a-mat-input class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price"></a-mat-input>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
+          <a-mat-static class="col-md" *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
+        </div>
 
-      <div  *ngIf="orderItem.InvoiceItemType && orderItem.InvoiceItemType === productItemType">
-        <a-mat-input  *ngIf="orderItem.isNew || orderItem.ReservedFromNonSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered" class="col-md"></a-mat-input>
-        <a-mat-static  *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityOrdered"></a-mat-static>
-        <a-mat-input  [object]="orderItem" [roleType]="m.SalesOrderItem.ActualUnitPrice" label="Unit Price" class="col-md"></a-mat-input>
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.UnitVat"></a-mat-static>
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.TotalIncVat"></a-mat-static>
-        <a-mat-static  *ngIf="orderItem.ReservedFromSerialisedInventoryItem" [object]="serialisedInventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-static>
-      </div>
+        <div class="row">
+          <a-mat-static class="col-md" [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
+          <a-mat-select class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes" display="Name" label="Item VAT regime"></a-mat-select>
+          <a-mat-static class="col-md" [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+        </div>
 
-      <div>
-        <a-mat-static  [object]="order.VatRegime?.VatRate" [roleType]="m.VatRate.Rate" display="Rate" label="VAT % from order"></a-mat-static>
-        <a-mat-select  [object]="orderItem" [roleType]="m.SalesOrderItem.AssignedVatRegime" [options]="vatRegimes" display="Name"
-          label="Item VAT regime" class="col-md"></a-mat-select>
-        <a-mat-static  [object]="orderItem.AssignedVatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
-      </div>
+        <div class="row" *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem">
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityReserved"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityRequestsShipping"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityPicked"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShipped"></a-mat-static>
+          <a-mat-static class="col-md" [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShortFalled" label="Quantity short"></a-mat-static>
+        </div>
 
-      <div *ngIf="orderItem.ReservedFromNonSerialisedInventoryItem" >
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityReserved" ></a-mat-static>
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityRequestsShipping" ></a-mat-static>
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityPicked" ></a-mat-static>
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShipped" ></a-mat-static>
-        <a-mat-static  [object]="orderItem" [roleType]="m.SalesOrderItem.QuantityShortFalled" label="Quantity short"></a-mat-static>
-      </div> 
-  
-      <!-- <mat-form-field>
+        <!-- <mat-form-field>
         <input matInput placeholder="Discount amount" name="discount" [(ngModel)]="discount">
       </mat-form-field>
       <mat-form-field>
@@ -57,34 +59,29 @@
       </mat-form-field>
       <br/> -->
 
-      <div>
-        <a-mat-textarea  [object]="orderItem" [roleType]="m.SalesOrderItem.Details" class="col-md-12"></a-mat-textarea>
-      </div>
-      <div>
-        <a-mat-static  *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
-      </div>
-      <div>
-        <a-mat-textarea  [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Item Comment" class="col-md-12"></a-mat-textarea>
-      </div>
-      <div>
-        <a-mat-static  *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment"
-          label="Quote Internal Comment"></a-mat-static>
-      </div>
-      <div>
-        <a-mat-textarea  [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment" label="Order Item Internal Comment" class="col-md-12"></a-mat-textarea>
-      </div>
-    </div>
+        <div class="row">
+          <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Details"></a-mat-textarea>
+          <a-mat-static class="col-md-12" *ngIf="quoteItem?.Comment" [object]="quoteItem" [roleType]="m.QuoteItem.Comment" label="Quote Comment"></a-mat-static>
+          <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.Comment" label="Order Item Comment"></a-mat-textarea>
+          <a-mat-static class="col-md-12" *ngIf="quoteItem?.InternalComment" [object]="quoteItem" [roleType]="m.QuoteItem.InternalComment" label="Quote Internal Comment"></a-mat-static>
+          <a-mat-textarea class="col-md-12" [object]="orderItem" [roleType]="m.SalesOrderItem.InternalComment" label="Order Item Internal Comment"></a-mat-textarea>
+        </div>
 
-    <mat-divider></mat-divider>
+      </mat-card-content>
 
-    <mat-card-actions>
-        <div class="pad grid-12">
-            <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
-            <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button (click)="goBack()" type="button">CANCEL</button>
-            <button *ngIf="!orderItem.CanWriteQuantityOrdered"  mat-button (click)="goBack()" type="button">DONE</button>
-            <div>
-              <button *ngIf="orderItem.CanWriteQuantityOrdered"  mat-button (click)="update()" type="button" color="primary" [disabled]="!form.form.valid">SAVE</button>
-            </div>
-          </div>
-    </mat-card-actions>
-  </form>
+      <mat-card-actions>
+        <button *ngIf="orderItem.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+        <button *ngIf="orderItem.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+</form>

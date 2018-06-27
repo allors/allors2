@@ -10,6 +10,7 @@ import { AllorsMaterialDatepickerModule } from '../../../../../base/components/d
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
@@ -25,12 +26,12 @@ export { InvoiceTermEditComponent } from './invoiceterm.component';
     InvoiceTermEditComponent,
   ],
   imports: [
-    
     AllorsMaterialChipsModule,
-	  AllorsMaterialDatepickerModule,
+    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
@@ -40,7 +41,7 @@ export { InvoiceTermEditComponent } from './invoiceterm.component';
     MatCardModule,
     MatDatepickerModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -55,4 +56,4 @@ export { InvoiceTermEditComponent } from './invoiceterm.component';
     RouterModule,
   ],
 })
-export class InvoiceTermEditModule {}
+export class InvoiceTermEditModule { }

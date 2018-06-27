@@ -45,14 +45,13 @@ export { NonSerialisedGoodComponent } from './nonserialisedgood.component';
     AllorsMaterialTextAreaModule,
     BrandInlineModule,
     CommonModule,
-    
     FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
     MatExpansionModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -65,7 +64,7 @@ export { NonSerialisedGoodComponent } from './nonserialisedgood.component';
     MatOptionModule,
     ModelInlineModule,
     ReactiveFormsModule,
-    RouterModule,  
+    RouterModule,
   ],
 })
 export class NonSerialisedGoodModule { }

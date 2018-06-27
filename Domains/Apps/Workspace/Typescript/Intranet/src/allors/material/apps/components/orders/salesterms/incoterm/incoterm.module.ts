@@ -15,6 +15,7 @@ import { AllorsMaterialStaticModule } from '../../../../../base/components/stati
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
 import { IncoTermEditComponent } from './incoterm.component';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 export { IncoTermEditComponent } from './incoterm.component';
 
 @NgModule({
@@ -25,12 +26,12 @@ export { IncoTermEditComponent } from './incoterm.component';
     IncoTermEditComponent,
   ],
   imports: [
-    
     AllorsMaterialChipsModule,
-	  AllorsMaterialDatepickerModule,
+    AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
@@ -40,7 +41,7 @@ export { IncoTermEditComponent } from './incoterm.component';
     MatCardModule,
     MatDatepickerModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -55,4 +56,4 @@ export { IncoTermEditComponent } from './incoterm.component';
     RouterModule,
   ],
 })
-export class IncoTermEditModule {}
+export class IncoTermEditModule { }

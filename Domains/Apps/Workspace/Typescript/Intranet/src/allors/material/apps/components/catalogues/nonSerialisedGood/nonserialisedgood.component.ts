@@ -122,23 +122,23 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           new Query(this.m.InventoryItemKind),
           new Query(this.m.NonSerialisedInventoryItemState),
           new Query(
-          {
-            name: 'productCategories',
-            objectType: this.m.ProductCategory,
-            sort: [new Sort({ roleType: m.ProductCategory.Name, direction: 'Asc' })],
-          }),
+            {
+              name: 'productCategories',
+              objectType: this.m.ProductCategory,
+              sort: [new Sort({ roleType: m.ProductCategory.Name, direction: 'Asc' })],
+            }),
           new Query(
-          {
-            name: 'productTypes',
-            objectType: this.m.ProductType,
-            sort: [new Sort({ roleType: m.ProductType.Name, direction: 'Asc' })],
-          }),
+            {
+              name: 'productTypes',
+              objectType: this.m.ProductType,
+              sort: [new Sort({ roleType: m.ProductType.Name, direction: 'Asc' })],
+            }),
           new Query(
-          {
-            name: 'brands',
-            objectType: this.m.Brand,
-            sort: [new Sort({ roleType: m.Brand.Name, direction: 'Asc' })],
-          }),
+            {
+              name: 'brands',
+              objectType: this.m.Brand,
+              sort: [new Sort({ roleType: m.Brand.Name, direction: 'Asc' })],
+            }),
         ];
 
         return this.scope
@@ -186,10 +186,10 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                   this.brandSelected(this.selectedBrand);
                 }
                 if (feature.objectType.name === 'Model') {
-                 this.selectedModel = feature as Model;
-               }
-            });
-           }
+                  this.selectedModel = feature as Model;
+                }
+              });
+            }
 
             this.title = this.good.Name;
             this.subTitle = 'Non Serialised';
@@ -200,7 +200,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 {
                   name: 'manufacturers',
                   objectType: m.Organisation,
-                  predicate: new Equals({ roleType: m.Organisation.IsManufacturer, value: true}),
+                  predicate: new Equals({ roleType: m.Organisation.IsManufacturer, value: true }),
                   sort: [new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' })],
                 }),
             ];
@@ -211,10 +211,10 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -227,7 +227,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public modelAdded(model: Model): void {
     this.selectedBrand.AddModel(model);
-    this.models = this.selectedBrand.Models.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
     this.selectedModel = model;
   }
 
@@ -247,12 +247,12 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         const selectedBrand = loaded.objects.selectedbrand as Brand;
-        this.models = selectedBrand.Models.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
     );
   }
 
@@ -264,7 +264,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
 
   public refresh(): void {
-      this.refresh$.next(new Date());
+    this.refresh$.next(new Date());
   }
 
   public save(): void {
@@ -296,14 +296,14 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       this.selectedSuppliers.forEach((supplier: Organisation) => {
         const index = suppliersToDelete.indexOf(supplier);
         if (index > -1) {
-            suppliersToDelete.splice(index, 1);
+          suppliersToDelete.splice(index, 1);
         }
 
         const now = new Date();
         const supplierOffering = this.supplierOfferings.find((v) =>
           v.Supplier === supplier &&
           v.FromDate <= now &&
-        (v.ThroughDate === null || v.ThroughDate >= now));
+          (v.ThroughDate === null || v.ThroughDate >= now));
 
         if (supplierOffering === undefined) {
           this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
@@ -319,7 +319,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         const supplierOffering = this.supplierOfferings.find((v) =>
           v.Supplier === supplier &&
           v.FromDate <= now &&
-        (v.ThroughDate === null || v.ThroughDate >= now));
+          (v.ThroughDate === null || v.ThroughDate >= now));
 
         if (supplierOffering !== undefined) {
           supplierOffering.ThroughDate = new Date();
@@ -331,9 +331,9 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

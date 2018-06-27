@@ -1,6 +1,6 @@
-<form #form="ngForm"  (submit)="save()">
-  <mat-toolbar>
-    <mat-toolbar-row >
+<form class="a-edit" #form="ngForm" (submit)="save()">
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
     </mat-toolbar-row>
@@ -8,34 +8,36 @@
 
   <div>
 
-    <mat-card *ngIf="productCharacteristic"    style="overflow: auto;">
+    <mat-card *ngIf="productCharacteristic" style="overflow: auto;">
+      <mat-card-content class="container-fluid">
 
-      <div class="row">
-        <a-mat-input [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name" class="col-md"></a-mat-input>
-        <a-mat-select [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [options]="allUoms"
-          display="Name" class="col-md"></a-mat-select>
-      </div>
-
-      <mat-expansion-panel *ngIf="locales">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Translations
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <div *ngFor="let locale of locales; let i = index">
-          <mat-divider *ngIf="i > 0"></mat-divider>
-          <div>
-            <a-mat-localised-text [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.LocalisedNames"
-              [locale]="locale"></a-mat-localised-text>
-          </div>
+        <div class="row">
+          <a-mat-input class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.Name"></a-mat-input>
+          <a-mat-select class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [options]="allUoms" display="Name"></a-mat-select>
         </div>
-      </mat-expansion-panel>
 
+        <div class="row">
+          <mat-expansion-panel class="col" *ngIf="locales">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Translations
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div *ngFor="let locale of locales; let i = index">
+              <mat-divider *ngIf="i > 0"></mat-divider>
+              <div class="row">
+                <a-mat-localised-text class="col-md" [object]="productCharacteristic" [roleType]="m.SerialisedInventoryItemCharacteristicType.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </div>
+
+      </mat-card-content>
     </mat-card>
   </div>
 
-  <mat-toolbar  >
+  <mat-toolbar>
     <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>

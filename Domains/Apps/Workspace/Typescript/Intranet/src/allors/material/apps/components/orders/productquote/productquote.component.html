@@ -1,72 +1,82 @@
-<form #form="ngForm"  (submit)="save()">
-  <mat-toolbar>
-    <mat-toolbar-row >
+<form class="a-edit" #form="ngForm" (submit)="save()">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
+      <span class="col"></span>
     </mat-toolbar-row>
   </mat-toolbar>
 
+
   <div>
+    <mat-card *ngIf="quote">
+      <mat-card-content class="container-fluid">
 
-    <mat-card *ngIf="quote"   >
-      <mat-card-content  style="overflow: auto;">
-
-        <div *ngIf="!quote.isNew" class="row">
-          <a-mat-static [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
-          <a-mat-static [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
+        <div class="row" *ngIf="!quote.isNew">
+          <a-mat-static class="col-md" [object]="quote" [roleType]="m.Quote.QuoteState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static class="col-md" [object]="quote" [roleType]="m.ProductQuote.Request" display="RequestNumber"></a-mat-static>
+          <a-mat-autocomplete class="col-md" *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
         </div>
 
         <div class="row">
-          <a-mat-autocomplete *ngIf="showOrganisations" [object]="quote" [roleType]="m.ProductQuote.Receiver" [filter]="stateService.customersFilter.create(scope)"
-            display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
-        </div>
-
-        <div >
-          <a-mat-select  [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
-            display="displayName" class="col-md"></a-mat-select>
-          <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
-            <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
-            <mat-icon *ngIf="addContactMechanism">close</mat-icon>
-          </button>
-        </div>
-
-        <mat-card *ngIf="quote.Receiver && addContactMechanism" class="row" style="margin: 1rem">
-          <mat-card-header>Add a new contact mechanism</mat-card-header>
-          <mat-card-content>
-            <party-contactmechanism [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
-            </party-contactmechanism>
-          </mat-card-content>
-        </mat-card>
-
-        <div >
-          <a-mat-select  [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
-          <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
-            <mat-icon *ngIf="!addContactPerson">add</mat-icon>
-            <mat-icon *ngIf="addContactPerson">close</mat-icon>
-          </button>
-        </div>
-
-        <mat-card *ngIf="quote.Receiver && addContactPerson" class="row" style="margin: 1rem">
-          <mat-card-header>Add a new contact person</mat-card-header>
-          <mat-card-content>
-            <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
-            </person-inline>
-          </mat-card-content>
-        </mat-card>
-
-        <div class="row">
-          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.ValidFromDate"></a-mat-datepicker>
-          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.ValidThroughDate"></a-mat-datepicker>
-          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-mat-datepicker>
-          <a-mat-datepicker [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-mat-datepicker>
+          <div class="col-12">
+            <div class="row">
+              <a-mat-select class="col" [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"></a-mat-select>
+              <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
+                <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
+                <mat-icon *ngIf="addContactMechanism">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-12" *ngIf="quote.Receiver && addContactMechanism">
+            <mat-card>
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism [scope]="scope" (saved)="partyContactMechanismAdded($event)" (cancelled)="partyContactMechanismCancelled()">
+                </party-contactmechanism>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
 
         <div class="row">
-          <a-mat-input [object]="quote" [roleType]="m.ProductQuote.Description" class="col-md"></a-mat-input>
-          <a-mat-static *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
-          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment" class="col-md-12"></a-mat-textarea>
-          <a-mat-static *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
-          <a-mat-textarea [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment" class="col-md-12"></a-mat-textarea>
+          <div class="col-12">
+            <div class="row">
+              <a-mat-select class="col" [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName"></a-mat-select>
+              <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
+                <mat-icon *ngIf="!addContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-12" *ngIf="quote.Receiver && addContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new contact person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="personCancelled($event); addContactPerson = false" (saved)="personAdded($event); addContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-datepicker class="col-md" [object]="quote" [roleType]="m.ProductQuote.ValidFromDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="quote" [roleType]="m.ProductQuote.ValidThroughDate"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
+          <a-mat-datepicker class="col-md" [object]="quote" [roleType]="m.ProductQuote.IssueDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="quote" [roleType]="m.ProductQuote.RequiredResponseDate"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
+          <a-mat-input class="col-md-12" [object]="quote" [roleType]="m.ProductQuote.Description"></a-mat-input>
+          <a-mat-static class="col-md-12" *ngIf="request?.Comment" [object]="request" [roleType]="m.Request.Comment" label="Request Comment"></a-mat-static>
+          <a-mat-textarea class="col-md-12" [object]="quote" [roleType]="m.ProductQuote.Comment" label="Quote Comment"></a-mat-textarea>
+          <a-mat-static class="col-md-12" *ngIf="request?.InternalComment" [object]="request" [roleType]="m.Request.InternalComment" label="Request Internal Comment"></a-mat-static>
+          <a-mat-textarea class="col-md-12" [object]="quote" [roleType]="m.ProductQuote.InternalComment" label="Quote Internal Comment"></a-mat-textarea>
         </div>
 
       </mat-card-content>
@@ -79,7 +89,7 @@
     </mat-card>
   </div>
 
-  <mat-toolbar  >
+  <mat-toolbar>
     <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>

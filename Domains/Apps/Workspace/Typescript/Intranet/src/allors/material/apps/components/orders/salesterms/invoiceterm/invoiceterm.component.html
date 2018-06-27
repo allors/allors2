@@ -1,15 +1,29 @@
+<form class="a-edit" #form="ngForm" (submit)="save()">
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm"  *ngIf="salesTerm" (submit)="save()">
+  <div>
+    <mat-card *ngIf="salesTerm">
+      <mat-card-content class="container-fluid">
+        <div class="row">
+          <a-mat-select [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="invoiceTermTypes" display="Name" class="col-md"></a-mat-select>
+          <a-mat-input [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value" class="col-md"></a-mat-input>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-    <div>
-      <a-mat-select  [object]="salesTerm" [roleType]="m.SalesTerm.TermType" [options]="invoiceTermTypes" display="Name" class="col-md"></a-mat-select>
-      <a-mat-input  [object]="salesTerm" [roleType]="m.SalesTerm.TermValue" label="Value" class="col-md"></a-mat-input>
-    </div>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-    <mat-divider></mat-divider>
-
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-  </form>
+</form>
