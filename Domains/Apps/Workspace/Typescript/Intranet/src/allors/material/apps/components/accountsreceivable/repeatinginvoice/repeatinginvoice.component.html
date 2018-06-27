@@ -1,29 +1,36 @@
-<form #form="ngForm"  (submit)="save()" novalidate>
-  <mat-toolbar>
-    <mat-toolbar-row >
+<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
+      <span class="col"></span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="repeatinginvoice"   >
-      <mat-card-content  style="overflow: auto;">
+    <mat-card *ngIf="repeatinginvoice">
+      <mat-card-content style="overflow: auto;">
+        <mat-card-content class="container-fluid">
 
-        <div class="row">
-          <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name" class="col-md"></a-mat-select>
-          <a-mat-select [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name" class="col-md"></a-mat-select>
-          <a-mat-datepicker [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.NextExecutionDate"></a-mat-datepicker>
-          <a-mat-datepicker [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.FinalExecutionDate"></a-mat-datepicker>
-        </div>
-        
+          <div class="row">
+            <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name"></a-mat-select>
+            <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name"></a-mat-select>
+          </div>
+
+          <div class="row">
+            <a-mat-datepicker class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.NextExecutionDate"></a-mat-datepicker>
+            <a-mat-datepicker class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.FinalExecutionDate"></a-mat-datepicker>
+          </div>
+
+        </mat-card-content>
       </mat-card-content>
     </mat-card>
 
   </div>
 
-  <mat-toolbar  >
+  <mat-toolbar>
     <span class="col"></span>
     <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
     <button mat-button (click)="goBack()" type="button">CANCEL</button>

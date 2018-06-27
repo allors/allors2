@@ -76,7 +76,7 @@
                   </div>
                 </div>
                 <div class="col-md-12">
-                  <mat-card *ngIf="addModel" class="row" style="margin: 1rem">
+                  <mat-card *ngIf="addModel" >
                     <mat-card-header>Add a new model</mat-card-header>
                     <mat-card-content>
                       <model-inline [scope]="scope" (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
