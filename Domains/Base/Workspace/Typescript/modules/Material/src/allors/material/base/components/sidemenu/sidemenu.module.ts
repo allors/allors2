@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatInputModule, MatIconModule, MatListModule } from '@angular/material';
 
 import { AllorsMaterialSideMenuComponent } from './sidemenu.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { RouterModule } from '@angular/router';
 export { AllorsMaterialSideMenuComponent } from './sidemenu.component';
 export { SideMenuItem } from './sidemenuitem';
@@ -20,7 +20,7 @@ export { SideMenuItem } from './sidemenuitem';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatAutocompleteModule,
     MatInputModule,

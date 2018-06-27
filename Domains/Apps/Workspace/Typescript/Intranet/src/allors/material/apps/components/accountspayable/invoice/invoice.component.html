@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="invoice"  fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="invoice"   >
       <mat-card-content  style="overflow: auto;">
         <div *ngIf="!invoice.isNew" class="row">
           <a-mat-static [object]="invoice" [roleType]="m.PurchaseInvoice.PurchaseInvoiceState" display="Name" label="Status"></a-mat-static>
@@ -18,7 +18,7 @@
         <div class="row">
           <a-mat-autocomplete [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFrom" [filter]="stateService.organisationsFilter.create(scope)"
             display="Name" (onChange)="billedFromSelected($event)" label="Billed from"></a-mat-autocomplete>
-          <div  fxLayoutGap="1em">
+          <div  >
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.BilledFromContactPerson" [options]="billedFromContacts"
               display="displayName" label="Billed from Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BilledFrom || !invoice.CanWritePurchaseInvoiceItems" type="button"
@@ -44,7 +44,7 @@
         </div>
 
         <div class="row">
-          <div fxLayout fxLayoutGap="1em">
+          <div >
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactMechanism" [options]="billToContactMechanisms"
               display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWritePurchaseInvoiceItems" type="button"
@@ -65,7 +65,7 @@
         </mat-card>
 
         <div class="row">
-          <div fxLayout fxLayoutGap="1em">
+          <div >
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.BillToCustomerContactPerson" [options]="billToContacts"
               display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.BillToCustomer || !invoice.CanWritePurchaseInvoiceItems" type="button"
@@ -88,7 +88,7 @@
           <a-mat-autocomplete *ngIf="showShipToEndCustomerOrganisations" [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomer"
             [filter]="stateService.organisationsFilter.create(scope)" display="Name" (onChange)="shipToEndCustomerSelected($event)"
             label="Ship to end customer"></a-mat-autocomplete>
-          <div fxLayout fxLayoutGap="1em">
+          <div >
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
               display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWritePurchaseInvoiceItems" type="button"
@@ -108,7 +108,7 @@
         </mat-card>
 
         <div class="row">
-          <div fxLayout fxLayoutGap="1em">
+          <div >
             <a-mat-select  [object]="invoice" [roleType]="m.PurchaseInvoice.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts"
               display="displayName" label="Schipping Contact Person" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!invoice.ShipToEndCustomer || !invoice.CanWritePurchaseInvoiceItems" type="button"

@@ -1,4 +1,4 @@
-<mat-form-field fxFlex fxLayout="column" fxLayoutAlign="top stretch">
+<mat-form-field class="d-flex flex-column align-items-stretch">
   <textarea matInput [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly"></textarea>
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 </mat-form-field>

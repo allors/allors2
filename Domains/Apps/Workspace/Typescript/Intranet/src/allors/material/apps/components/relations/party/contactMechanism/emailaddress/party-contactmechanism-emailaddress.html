@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="contactMechanism"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="contactMechanism"    style="overflow: auto;">
 
       <div class="row">
         <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"

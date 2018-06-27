@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="order"  fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="order"   >
 
       <mat-card-content  style="overflow: auto;">
         <div *ngIf="!order.isNew" class="row">
@@ -29,7 +29,7 @@
             display="Name" (onChange)="shipToCustomerSelected($event)" label="Ship to organisation"></a-mat-autocomplete>
         </div>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="shipToAddresses" display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addShipToAddress = !addShipToAddress">
             <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
@@ -47,7 +47,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.ShipToContactPerson" [options]="shipToContacts" display="displayName"
             label="Shipping Contact Person" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
@@ -70,7 +70,7 @@
             display="Name" (onChange)="billToCustomerSelected($event)" label="Bill to"></a-mat-autocomplete>
         </div>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms"
             display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
@@ -88,7 +88,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.BillToContactPerson" [options]="billToContacts" display="displayName"
             label="Billing Contact Person" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer || !order.CanWriteSalesOrderItems" type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
@@ -112,7 +112,7 @@
             label="Ship to end customer"></a-mat-autocomplete>
         </div>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
             display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteSalesOrderItems" type="button"
@@ -131,7 +131,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerContactPerson" [options]="shipToEndCustomerContacts"
             display="displayName" label="Shipping Contact Person" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteSalesOrderItems" type="button"
@@ -156,7 +156,7 @@
             label="Bill to end customer"></a-mat-autocomplete>
         </div>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism" [options]="billToEndCustomerContactMechanisms"
             display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer || !order.CanWriteSalesOrderItems" type="button"
@@ -175,7 +175,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactPerson" [options]="billToEndCustomerContacts"
             display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer || !order.CanWriteSalesOrderItems" type="button"

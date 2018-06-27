@@ -1,5 +1,5 @@
-<div fxFlex fxLayout="row">
-    <mat-form-field fxFlex="auto">
+<div class="row">
+    <mat-form-field class="col">
         <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
     </mat-form-field>
 
@@ -10,8 +10,8 @@
 
 <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" multiple="multiple" />
 
-<div *ngIf="model" fxFlex fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="2rem" style="margin-bottom: 1rem;">
-    <mat-card fxFlex="0 0 6rem" fxLayout="column" *ngFor="let media of medias">
+<div class="row" *ngIf="model" style="margin-bottom: 1rem;">
+    <mat-card class="col" *ngFor="let media of medias">
         <img mat-card-image fxFlex="auto" [src]="src(media)">
         <mat-card-actions fxFlex="none">
             <a mat-button (click)="delete(media)">DELETE</a>

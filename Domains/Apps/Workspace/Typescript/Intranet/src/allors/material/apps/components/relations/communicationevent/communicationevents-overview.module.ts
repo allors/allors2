@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
@@ -39,7 +39,7 @@ export { CommunicationEventsOverviewComponent } from './communicationevents-over
     AllorsMaterialTextAreaModule,
     CommonModule,
     CdkTableModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatButtonModule,
     MatCardModule,

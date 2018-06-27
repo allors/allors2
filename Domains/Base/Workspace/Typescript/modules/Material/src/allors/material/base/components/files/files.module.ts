@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatIconModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialFilesComponent } from './files.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialFilesComponent } from './files.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialFilesComponent } from './files.component';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatButtonModule,
     MatCardModule,

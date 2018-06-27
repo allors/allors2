@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatChipsModule, MatIconModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialChipsComponent } from './chips.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialChipsComponent } from './chips.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialChipsComponent } from './chips.component';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,

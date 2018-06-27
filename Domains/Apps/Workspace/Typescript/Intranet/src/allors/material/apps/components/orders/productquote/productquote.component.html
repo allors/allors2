@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="quote"  fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="quote"   >
       <mat-card-content  style="overflow: auto;">
 
         <div *ngIf="!quote.isNew" class="row">
@@ -21,7 +21,7 @@
             display="Name" (onChange)="receiverSelected($event)" label="Receiving organisation"></a-mat-autocomplete>
         </div>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="quote" [roleType]="m.ProductQuote.FullfillContactMechanism" [options]="contactMechanisms"
             display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactMechanism = !addContactMechanism">
@@ -38,7 +38,7 @@
           </mat-card-content>
         </mat-card>
 
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="quote" [roleType]="m.ProductQuote.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" type="button" [disabled]="!quote.Receiver || !quote.CanWriteQuoteItems" (click)="addContactPerson = !addContactPerson">
             <mat-icon *ngIf="!addContactPerson">add</mat-icon>

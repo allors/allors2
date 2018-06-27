@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 
 import { TextareaComponent } from './textarea.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { TextareaComponent } from './textarea.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { TextareaComponent } from './textarea.component';
     TextareaComponent,
   ],
   imports: [
-    FlexLayoutModule,
+    
     FormsModule,
     CommonModule,
     MatInputModule,

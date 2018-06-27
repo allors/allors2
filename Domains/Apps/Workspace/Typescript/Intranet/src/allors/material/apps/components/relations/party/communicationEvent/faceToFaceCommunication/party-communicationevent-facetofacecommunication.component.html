@@ -1,55 +1,63 @@
-<form #form="ngForm"  (submit)="save()" novalidate>
-  <mat-toolbar>
-    <mat-toolbar-row >
+<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
+      <span class="col"></span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
 
-    <mat-card *ngIf="communicationEvent"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="communicationEvent">
 
-      <mat-card-content  style="overflow: auto;">
+      <mat-card-content class="container-fluid">
 
-        <div *ngIf="!communicationEvent.isNew" class="row">
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+        <div class="row" *ngIf="!communicationEvent.isNew">
+          <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
+            label="Status"></a-mat-static>
         </div>
 
         <div class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" class="col-md"></a-mat-input>
-          <a-mat-select [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
+          <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" class="col-md"></a-mat-input>
+          <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes"
+            display="Name" class="col-md"></a-mat-select>
         </div>
 
         <div class="row">
-          <div fxLayout fxLayoutGap="1em">
-            <a-mat-chips  [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
-              display="displayName"></a-mat-chips>
-            <button mat-mini-fab color="accent" type="button" (click)="addParticipant = !addParticipant">
-              <mat-icon *ngIf="!addParticipant">add</mat-icon>
-              <mat-icon *ngIf="addParticipant">close</mat-icon>
-            </button>
+          <div class="col-12">
+            <div class="row">
+              <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
+                display="displayName"></a-mat-chips>
+              <button mat-mini-fab color="accent" type="button" (click)="addParticipant = !addParticipant">
+                <mat-icon *ngIf="!addParticipant">add</mat-icon>
+                <mat-icon *ngIf="addParticipant">close</mat-icon>
+              </button>
+            </div>
           </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="addParticipant">
-            <mat-tab label="Person">
-              <div class="pad tabInlineComponent">
+
+          <div class="col-12" *ngIf="addParticipant">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
                 <person-inline (cancelled)="participantCancelled($event); addParticipant = false" (saved)="participantAdded($event); addParticipant = false">
                 </person-inline>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
 
         <div class="row">
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
         </div>
 
-        <div *ngIf="!communicationEvent.isNew" class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" class="col-md"></a-mat-input>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" class="col-md-12"></a-mat-textarea>
+        <div class="row" *ngIf="!communicationEvent.isNew">
+          <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Location" class="col-md"></a-mat-input>
+          <a-mat-textarea class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Note" class="col-md-12"></a-mat-textarea>
         </div>
       </mat-card-content>
 
@@ -62,10 +70,12 @@
     </mat-card>
   </div>
 
-  <mat-toolbar  >
-    <span class="col"></span>
-    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    </mat-toolbar-row>
   </mat-toolbar>
 
 </form>

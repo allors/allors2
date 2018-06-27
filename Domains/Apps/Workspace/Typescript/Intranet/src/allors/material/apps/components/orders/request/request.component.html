@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="request"  fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="request"   >
 
       <mat-card-content  style="overflow: auto;">
         <div *ngIf="!request.isNew" class="row">
@@ -21,7 +21,7 @@
         </div>
 
         <div class="row">
-          <div fxLayout fxLayoutGap="1em">
+          <div >
             <a-mat-select  [object]="request" [roleType]="m.Request.FullfillContactMechanism" [options]="contactMechanisms" display="displayName"
               label="Reply to" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactMechanism = !addContactMechanism">
@@ -41,7 +41,7 @@
         </mat-card>
 
         <div class="row">
-          <div fxLayout fxLayoutGap="1em">
+          <div >
             <a-mat-select  [object]="request" [roleType]="m.Request.ContactPerson" [options]="contacts" display="displayName" class="col-md"></a-mat-select>
             <button mat-mini-fab color="accent" [disabled]="!request.Originator || !request.CanWriteRequestItems" type="button" (click)="addContactPerson = !addContactPerson">
               <mat-icon *ngIf="!addContactPerson">add</mat-icon>

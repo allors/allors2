@@ -7,7 +7,7 @@ import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, M
 import { AllorsMaterialAutoCompleteModule, AllorsMaterialChipsModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialInputModule, AllorsMaterialSelectModule, AllorsMaterialStaticModule } from '../../../../../material';
 
 import { PersonComponent } from './person.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { PersonComponent } from './person.component';
 
 @NgModule({
@@ -33,7 +33,7 @@ export { PersonComponent } from './person.component';
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialStaticModule,
-    FlexLayoutModule,
+    
   ],
 })
 export class PersonModule {}

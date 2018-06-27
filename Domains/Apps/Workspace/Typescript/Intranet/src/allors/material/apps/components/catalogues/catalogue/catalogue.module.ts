@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
@@ -38,7 +38,7 @@ export { CatalogueComponent } from './catalogue.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatButtonModule,
     MatCardModule,

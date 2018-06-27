@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material';
 
 import { AllorsMaterialSelectComponent } from './select.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialSelectComponent } from './select.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialSelectComponent } from './select.component';
     AllorsMaterialSelectComponent,
   ],
   imports: [
-    FlexLayoutModule,
+    
     FormsModule,
     CommonModule,
     MatSelectModule,

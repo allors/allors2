@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatDatepickerModule } from '@angular/material';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 import { AllorsMaterialChipsModule } from '../../../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../../../base/components/datepicker';
@@ -41,7 +41,7 @@ export { PartyCommunicationEventPhoneCommunicationComponent } from './party-comm
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatButtonModule,
     MatCardModule,

@@ -132,12 +132,22 @@
       flex-grow: 1;
       display: flex; 
       flex-direction: column;
-      overflow: auto;
-
+      align-items: stretch;
+      
       > mat-card-content {
+        flex-grow: 1;
+        overflow: auto;
+
+        > div {
+          padding-top: 1rem;
+        }
+      }
+
+      > mat-card-actions {
         flex: 0 0 auto;
       }
     }
+
   }
 
   > mat-toolbar.a-footer {

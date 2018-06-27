@@ -8,7 +8,7 @@ import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, M
 import { AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule } from '../../../../material';
 
 import { OrganisationsComponent } from './organisations.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { OrganisationsComponent } from './organisations.component';
 
 @NgModule({
@@ -20,7 +20,7 @@ export { OrganisationsComponent } from './organisations.component';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
+    
     RouterModule,
     MatAutocompleteModule,
     MatButtonModule,

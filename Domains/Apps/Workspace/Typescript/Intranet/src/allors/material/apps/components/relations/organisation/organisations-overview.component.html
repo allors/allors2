@@ -81,8 +81,8 @@
           <mat-list-item *ngFor="let row of rows; let last = last" (click)="router.navigate(['/relations/organisation/', row.object.id])"
             style="cursor: pointer;">
 
-            <mat-icon fxHide fxShow.gt-sm *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
-            <img fxHide fxShow.gt-sm *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
+            <mat-icon  *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
+            <img  *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
 
             <h3 mat-line>{{row.name}}</h3>
             <p mat-line>{{row.classification}}</p>
@@ -91,7 +91,7 @@
             <p mat-line>{{row.address3}}</p>
             <p mat-line>{{row.phone}}</p>
 
-            <div fxHide fxShow.gt-sm>last&nbsp;modified:
+            <div >last&nbsp;modified:
               <br>{{ row.object.LastModifiedDate | date : shortDate }}
             </div>
 

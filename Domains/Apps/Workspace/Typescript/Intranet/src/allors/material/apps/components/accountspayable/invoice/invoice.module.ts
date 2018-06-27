@@ -23,7 +23,7 @@ import { PartyContactMechanismInlineModule } from '../../relations/party/contact
 import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
 
 import { InvoiceComponent } from './invoice.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { InvoiceComponent } from './invoice.component';
 
 @NgModule({
@@ -47,7 +47,7 @@ export { InvoiceComponent } from './invoice.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatButtonModule,
     MatCardModule,

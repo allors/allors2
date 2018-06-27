@@ -1,12 +1,9 @@
 import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
 export { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
 
 @NgModule({
@@ -18,7 +15,7 @@ export { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatAutocompleteModule,
     MatInputModule,

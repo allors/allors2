@@ -1,19 +1,19 @@
-<div fxFlex fxLayout="row">
-    <mat-form-field fxFlex="auto">
+<div class="row">
+    <mat-form-field class="col">
         <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
     </mat-form-field>
 
-    <button mat-icon-button fxFlex="none" type="button" (click)="fileInput.click()">
+    <button mat-icon-button type="button" (click)="fileInput.click()">
         <mat-icon>add_to_photos</mat-icon>
     </button>
 </div>
 
 <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
 
-<div *ngIf="model" fxFlex fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="2rem" style="margin-bottom: 1rem;">
-    <mat-card fxFlex="0 0 6rem" fxLayout="column">
-        <img mat-card-image fxFlex="auto" [src]="src">
-        <mat-card-actions fxFlex="none">
+<div *ngIf="model" class="row" style="margin-bottom: 1rem;">
+    <mat-card class="col-1">
+        <img mat-card-image [src]="src">
+        <mat-card-actions >
             <a mat-button (click)="delete()">DELETE</a>
         </mat-card-actions>
     </mat-card>

@@ -1,6 +1,7 @@
-<form #form="ngForm"  (submit)="save()" novalidate>
-  <mat-toolbar>
-    <mat-toolbar-row >
+<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
     </mat-toolbar-row>
@@ -8,83 +9,92 @@
 
   <div>
 
-    <mat-card *ngIf="communicationEvent"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="communicationEvent">
 
-      <mat-card-content  style="overflow: auto;">
+      <mat-card-content class="container-fluid">
 
         <div class="row">
-          <a-mat-static [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
-          <a-mat-select [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
-          <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-mat-slide-toggle>
+          <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
+              <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.LetterCorrespondence.IncomingLetter"></a-mat-slide-toggle>
+            </div>
+          </div>
         </div>
 
         <div class="row">
-
-          <div fxLayout fxLayoutGap="1em">
-            <a-mat-chips  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName"
-              label="Sender"></a-mat-chips>
-            <button mat-mini-fab color="accent" [disabled]="!communicationEvent.IncomingLetter || !PartyIsOrganisation" type="button"
-              (click)="addSender = !addSender">
-              <mat-icon *ngIf="!addSender">add</mat-icon>
-              <mat-icon *ngIf="addSender">close</mat-icon>
-            </button>
+          <div class="col-md">
+            <div class="row">
+              <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Originators" [options]="contacts" display="displayName" label="Sender"></a-mat-chips>
+              <button mat-mini-fab color="accent" [disabled]="!communicationEvent.IncomingLetter || !PartyIsOrganisation" type="button" (click)="addSender = !addSender">
+                <mat-icon *ngIf="!addSender">add</mat-icon>
+                <mat-icon *ngIf="addSender">close</mat-icon>
+              </button>
+            </div>
           </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="communicationEvent.IncomingLetter && addSender">
-            <mat-tab label="Person">
-              <div class="pad tabInlineComponent">
+          <div class="col-md-12" *ngIf="communicationEvent.IncomingLetter && addSender">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
                 <person-inline (cancelled)="senderCancelled($event); addSender = false" (saved)="senderAdded($event); addSender = false">
                 </person-inline>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
-
-          <div fxLayout fxLayoutGap="1em">
-            <a-mat-chips  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" [options]="contacts" display="displayName"
-              label="Receiver"></a-mat-chips>
-            <button mat-mini-fab color="accent" [disabled]="communicationEvent.IncomingLetter || !PartyIsOrganisation" type="button"
-              (click)="addReceiver = !addReceiver">
-              <mat-icon *ngIf="!addReceiver">add</mat-icon>
-              <mat-icon *ngIf="addReceiver">close</mat-icon>
-            </button>
-            <mat-tab-group dynamicHeight="true" *ngIf="!communicationEvent.IncomingLetter && addReceiver">
-              <mat-tab label="Person">
-                <div class="pad tabInlineComponent">
-                  <person-inline (cancelled)="receiverCancelled($event); addReceiver = false" (saved)="receiverAdded($event); addReceiver = false">
-                  </person-inline>
-                </div>
-              </mat-tab>
-            </mat-tab-group>
+              </mat-card-content>
+            </mat-card>
           </div>
 
-          <div fxLayout fxLayoutGap="1em">
-            <a-mat-select  [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses"
-              display="displayName" label="Postal Address" class="col-md"></a-mat-select>
-            <button mat-mini-fab color="accent" type="button" (click)="addAddress = !addAddress">
-              <mat-icon *ngIf="!addAddress">add</mat-icon>
-              <mat-icon *ngIf="addAddress">close</mat-icon>
-            </button>
+          <div class="col-md">
+            <div class="row">
+              <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Receivers" [options]="contacts" display="displayName" label="Receiver"></a-mat-chips>
+              <button mat-mini-fab color="accent" [disabled]="communicationEvent.IncomingLetter || !PartyIsOrganisation" type="button" (click)="addReceiver = !addReceiver">
+                <mat-icon *ngIf="!addReceiver">add</mat-icon>
+                <mat-icon *ngIf="addReceiver">close</mat-icon>
+              </button>
+            </div>
           </div>
-          <mat-tab-group dynamicHeight="true" *ngIf="addAddress">
-            <mat-tab label="Postal Address">
-              <div class="pad tabInlineComponent">
-                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="addressCancelled($event); addAddress = false" (saved)="addressAdded($event); addAddress = false">
-                </party-contactmechanism-postaladdress>
-              </div>
-            </mat-tab>
-          </mat-tab-group>
+          <div class="col-md-12" *ngIf="!communicationEvent.IncomingLetter && addReceiver">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="receiverCancelled($event); addReceiver = false" (saved)="receiverAdded($event); addReceiver = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
 
+          <div class="col-md-12">
+            <div class="row">
+              <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.ContactMechanisms" [options]="postalAddresses" display="displayName" label="Postal Address" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" type="button" (click)="addAddress = !addAddress">
+                <mat-icon *ngIf="!addAddress">add</mat-icon>
+                <mat-icon *ngIf="addAddress">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="addAddress">
+            <mat-card>
+              <mat-card-header>Add a new address</mat-card-header>
+              <mat-card-content>
+                  <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="addressCancelled($event); addAddress = false" (saved)="addressAdded($event); addAddress = false">
+                    </party-contactmechanism-postaladdress>
+                  </mat-card-content>
+            </mat-card>
+          </div>
         </div>
 
         <div class="row">
-          <a-mat-input [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject" class="col-md"></a-mat-input>
-          <a-mat-textarea [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" class="col-md-12"></a-mat-textarea>
+          <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Subject" class="col-md"></a-mat-input>
+          <a-mat-textarea class="col-md" [object]="communicationEvent" [roleType]="m.LetterCorrespondence.Note" class="col-md-12"></a-mat-textarea>
         </div>
 
         <div class="row">
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
         </div>
       </mat-card-content>
 
@@ -97,7 +107,7 @@
     </mat-card>
   </div>
 
-  <mat-toolbar  >
+  <mat-toolbar>
     <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>

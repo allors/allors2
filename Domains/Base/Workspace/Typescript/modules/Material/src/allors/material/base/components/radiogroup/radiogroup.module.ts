@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule, MatRadioModule } from '@angular/material';
 
 import { AllorsMaterialRadioGroupComponent } from './radiogroup.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialRadioGroupComponent } from './radiogroup.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialRadioGroupComponent } from './radiogroup.component';
     AllorsMaterialRadioGroupComponent,
   ],
   imports: [
-    FlexLayoutModule,
+    
     FormsModule,
     CommonModule,
     MatInputModule,

@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 
 import { AllorsMaterialLocalisedTextComponent } from './localisedtext.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialLocalisedTextComponent } from './localisedtext.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialLocalisedTextComponent } from './localisedtext.component'
     AllorsMaterialLocalisedTextComponent,
   ],
   imports: [
-    FlexLayoutModule,
+    
     FormsModule,
     CommonModule,
     MatInputModule,

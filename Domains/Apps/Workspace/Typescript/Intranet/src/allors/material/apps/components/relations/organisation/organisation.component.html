@@ -1,46 +1,44 @@
-<form #form="ngForm"  (submit)="save()">
-  <mat-toolbar>
-    <mat-toolbar-row >
+<form class="a-edit" #form="ngForm" (submit)="save()">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
+      <span class="col"></span>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
+    <mat-card *ngIf="organisation"   style="overflow: auto;">
+      <mat-card-content class="container-fluid">
 
-    <mat-card *ngIf="organisation"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+        <div class="row">
+          <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+          <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
 
-      <div class="row">
-        <a-mat-input [object]="organisation" [roleType]="m.Organisation.Name" class="col-md"></a-mat-input>
-        <a-mat-input [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number" class="col-md"></a-mat-input>
+        </div>
 
-      </div>
+        <div class="row">
+          <mat-form-field class="col-md">
+            <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
+              <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications" display="Name" label="Classification"></a-mat-select>
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name" label="Industry"></a-mat-select>
+        </div>
 
-      <div class="row">
-
-        <mat-form-field>
-          <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
-            <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <a-mat-select [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" [options]="classifications"
-          display="Name" label="Classification" class="col-md"></a-mat-select>
-        <a-mat-select [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" [options]="industries" display="Name"
-          label="Industry" class="col-md"></a-mat-select>
-
-      </div>
-
-      <div class="row">
-        <a-mat-slide-toggle [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
-        <a-mat-select [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name" class="col-md"></a-mat-select>
-        <a-mat-file [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*" class="col-md-12"></a-mat-file>
-        <a-mat-textarea [object]="organisation" [roleType]="m.Organisation.Comment" class="col-md-12"></a-mat-textarea>
-      </div>
-
+        <div class="row">
+          <a-mat-slide-toggle class="col-md" [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
+          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
+          <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
+          <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
+        </div>
+      </mat-card-content>
     </mat-card>
   </div>
 
-  <mat-toolbar  >
+  <mat-toolbar>
     <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>

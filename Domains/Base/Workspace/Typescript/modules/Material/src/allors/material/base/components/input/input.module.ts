@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material';
 
 import { AllorsMaterialInputComponent } from './input.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialInputComponent } from './input.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialInputComponent } from './input.component';
     AllorsMaterialInputComponent,
   ],
   imports: [
-    FlexLayoutModule,
+    
     FormsModule,
     CommonModule,
     MatInputModule,

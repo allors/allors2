@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule, MatIconModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialDatepickerComponent } from './datepicker.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialDatepickerComponent } from './datepicker.component';
 
 @NgModule({
@@ -17,7 +17,7 @@ export { AllorsMaterialDatepickerComponent } from './datepicker.component';
     AllorsMaterialDatepickerComponent,
   ],
   imports: [
-    FlexLayoutModule,
+    
     FormsModule,
     CommonModule,
     MatInputModule,

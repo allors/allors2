@@ -19,7 +19,7 @@ import { PersonInlineModule } from '../../../person/person-inline.module';
 import { PartyContactMechanismPostalAddressInlineModule } from '../../contactmechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
 
 import { PartyCommunicationEventLetterCorrespondenceComponent } from './party-communicationevent-lettercorrespondence.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-communicationevent-lettercorrespondence.component';
 
 @NgModule({
@@ -41,7 +41,7 @@ export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-co
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatButtonModule,
     MatCardModule,

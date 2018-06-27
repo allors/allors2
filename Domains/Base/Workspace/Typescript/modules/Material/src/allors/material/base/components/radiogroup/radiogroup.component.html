@@ -1,4 +1,4 @@
-<mat-form-field fxFlex fxLayout="row">
+<mat-form-field class="d-flex flex-column align-items-stretch">
   <mat-radio-group [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
     <mat-radio-button *ngFor="let option of options" [value]="optionValue(option)">{{optionLabel(option)}}</mat-radio-button>
   </mat-radio-group>

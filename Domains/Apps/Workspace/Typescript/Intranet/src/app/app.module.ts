@@ -3,7 +3,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { CdkAccordionModule, CdkAccordionItem } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -75,7 +75,7 @@ import { ConfigService } from './app.config.service';
     CDK_MODULES,
     MATERIAL_MODULES,
     ALLORS_MATERIAL_MODULES,
-    FlexLayoutModule,
+    
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,

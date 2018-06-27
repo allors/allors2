@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="good"  fxLayout="column" fxLayoutAlign="start stretch">
+    <mat-card *ngIf="good"   >
 
       <mat-tab-group >
 
@@ -36,7 +36,7 @@
           </div>
 
           <div class="row">
-            <div fxLayout fxLayoutGap="1em">
+            <div >
               <mat-form-field>
                 <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
                   <mat-option>None</mat-option>
@@ -58,7 +58,7 @@
           </mat-card>
 
           <div class="row">
-            <div fxLayout fxLayoutGap="1em">
+            <div >
               <mat-form-field>
                 <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
                   <mat-option>None</mat-option>
@@ -113,11 +113,11 @@
           <div style="margin-top: 1rem;" class="row">
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.AcquisitionYear" class="col-md"></a-mat-input>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ManufacturingYear" class="col-md"></a-mat-input>
-            <mat-form-field fxLayout="column" fxLayoutAlign="top stretch">
+            <mat-form-field  >
               <input  matInput [(ngModel)]="inventoryItem.age" name="age" placeholder="Age" readonly>
             </mat-form-field>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.LifeTime" class="col-md"></a-mat-input>
-            <mat-form-field fxLayout="column" fxLayoutAlign="top stretch">
+            <mat-form-field  >
               <input  matInput [(ngModel)]="inventoryItem.yearsToGo" name="yearsToGo" placeholder="Years to go" readonly>
             </mat-form-field>
             <a-mat-input [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears" class="col-md"></a-mat-input>

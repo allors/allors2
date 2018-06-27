@@ -137,8 +137,8 @@
         <mat-list>
           <mat-list-item *ngFor="let row of rows; let last = last" style="cursor: pointer;">
 
-            <mat-icon fxHide fxShow.gt-sm *ngIf="!row.avatar" mat-list-avatar>insert_photo</mat-icon>
-            <img fxHide fxShow.gt-sm *ngIf="row.avatar" mat-list-avatar [src]="mediaService.url(row.logo)" />
+            <mat-icon  *ngIf="!row.avatar" mat-list-avatar>insert_photo</mat-icon>
+            <img  *ngIf="row.avatar" mat-list-avatar [src]="mediaService.url(row.logo)" />
 
             <h3 *ngIf="row.isSerialised" mat-line [routerLink]="'/serialisedGood/' + [row.good.id]">{{row.name}}</h3>
             <h3 *ngIf="!row.isSerialised" mat-line [routerLink]="'/nonSerialisedGood/' + [row.good.id]">{{row.name}}</h3>

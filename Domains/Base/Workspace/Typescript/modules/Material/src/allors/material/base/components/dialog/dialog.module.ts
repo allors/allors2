@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 
 import { AllorsMaterialDialogComponent } from './dialog.component';
 import { FormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 export { AllorsMaterialDialogComponent };
 
@@ -22,7 +22,7 @@ export { AllorsMaterialDialogComponent };
   imports: [
     CommonModule,
     FormsModule,
-    FlexLayoutModule,
+    
     MatButtonModule,
     MatDialogModule,
     MatInputModule,

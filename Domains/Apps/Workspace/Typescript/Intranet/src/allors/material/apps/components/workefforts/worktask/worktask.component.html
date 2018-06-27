@@ -8,7 +8,7 @@
 
   <div>
 
-    <mat-card *ngIf="workTask"  fxLayout="column" fxLayoutAlign="start stretch" style="overflow: auto;">
+    <mat-card *ngIf="workTask"    style="overflow: auto;">
 
       <div class="row">
         <a-mat-select [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name" label="Status" class="col-md"></a-mat-select>
@@ -25,7 +25,7 @@
       </div>
 
       <div class="row">
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select  [object]="workTask" [roleType]="m.WorkTask.FullfillContactMechanism" [options]="contactMechanisms" display="displayName" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactMechanism = !addContactMechanism">
             <mat-icon *ngIf="!addContactMechanism">add</mat-icon>
@@ -44,7 +44,7 @@
       </mat-card>
 
       <div class="row">
-        <div fxLayout fxLayoutGap="1em">
+        <div >
           <a-mat-select [object]="workTask" [roleType]="m.WorkTask.ContactPerson" [options]="contacts" display="displayName" label="Contact Person" class="col-md"></a-mat-select>
           <button mat-mini-fab color="accent" [disabled]="!workTask.Customer || !workTask.CanWriteName" type="button" (click)="addContactPerson = !addContactPerson">
             <mat-icon *ngIf="!addContactPerson">add</mat-icon>

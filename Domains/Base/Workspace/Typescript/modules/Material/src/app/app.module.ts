@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { CdkAccordionModule, CdkAccordionItem } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -69,7 +69,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     CDK_MODULES,
     MATERIAL_MODULES,
     BASE_MATERIAL_MODULES,
-    FlexLayoutModule,
+    
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,

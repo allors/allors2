@@ -1,5 +1,5 @@
-<mat-form-field>
-  <mat-chip-list class="d-flex" #chipList>
+<mat-form-field class="d-flex flex-column align-items-stretch">
+  <mat-chip-list #chipList>
     <mat-chip *ngFor="let item of model" [selectable]="!readonly" [removable]="!readonly" (remove)="remove(item)">
       {{item[this.display]}}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>

@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialCheckboxComponent } from './checkbox.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 export { AllorsMaterialCheckboxComponent } from './checkbox.component';
 
 @NgModule({
@@ -18,7 +18,7 @@ export { AllorsMaterialCheckboxComponent } from './checkbox.component';
   ],
   imports: [
     CommonModule,
-    FlexLayoutModule,
+    
     FormsModule,
     MatInputModule,
     MatCheckboxModule,
