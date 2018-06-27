@@ -1,27 +1,41 @@
+<form class="a-edit" #form="ngForm" *ngIf="contactMechanism" (submit)="save()">
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  <form #form="ngForm"  *ngIf="contactMechanism" (submit)="save()">
+  <div>
+    <mat-card *ngIf="contactMechanism">
+      <mat-card-content class="container-fluid">
+        <div class="row">
+          <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes" ></a-mat-select>
+          <a-mat-select class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes" display="Name" label="Type"></a-mat-select>
+        </div>
+        
+        <div class="row">
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode" ></a-mat-input>
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode" ></a-mat-input>
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
+        </div>
 
-    <div>
-      <a-mat-select  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
-        display="Name" label="Contact purposes" class="col-md"></a-mat-select>
-      <a-mat-select  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes"
-        display="Name" label="Type" class="col-md"></a-mat-select>
-    </div>
-    <div class="row">
-      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode" class="col-md"></a-mat-input>
-      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode" class="col-md"></a-mat-input>
-      <a-mat-input  [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber" class="col-md"></a-mat-input>
-    </div>
-    <div>
-      <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
-      <a-mat-slide-toggle  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator"
-        label="Non Solicitation"></a-mat-slide-toggle>
-    </div>
+        <div class="row">
+          <a-mat-slide-toggle class="col-md"  [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.UseAsDefault" label="Use as default"></a-mat-slide-toggle>
+          <a-mat-slide-toggle class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
+        </div>
 
-    <mat-divider></mat-divider>
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-  </form>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+</form>

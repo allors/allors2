@@ -223,9 +223,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.person = loaded.objects.person as Person;
         const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
-        this.contactKindsText = organisationContactRelationships[0].ContactKinds
+        this.contactKindsText = organisationContactRelationships.length > 0 ?  organisationContactRelationships[0].ContactKinds
           .map((v: OrganisationContactKind) => v.Description)
-          .reduce((acc: string, cur: string) => acc + ', ' + cur);
+          .reduce((acc: string, cur: string) => acc + ', ' + cur) : undefined;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
         this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
 

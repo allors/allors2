@@ -7,6 +7,7 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
 import { AllorsMaterialSlideToggleModule } from '../../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
@@ -28,6 +29,7 @@ export { PartyContactMechanismTelecommunicationsNumberAddComponent } from './par
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,

@@ -4,9 +4,9 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-
 import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
 import { AllorsMaterialSlideToggleModule } from '../../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
@@ -23,10 +23,10 @@ export { PartyContactMechanismTelecommunicationsNumberEditComponent } from './pa
     PartyContactMechanismTelecommunicationsNumberEditComponent,
   ],
   imports: [
-    
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
@@ -35,7 +35,7 @@ export { PartyContactMechanismTelecommunicationsNumberEditComponent } from './pa
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -49,4 +49,4 @@ export { PartyContactMechanismTelecommunicationsNumberEditComponent } from './pa
     RouterModule,
   ],
 })
-export class PartyContactMechanismTelecommunicationsNumberEditModule {}
+export class PartyContactMechanismTelecommunicationsNumberEditModule { }

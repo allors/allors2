@@ -32,7 +32,6 @@ export { PartyContactMechanismEmailAddressAddComponent } from './party-contactme
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
     FormsModule,
     MatButtonModule,
     MatCardModule,
