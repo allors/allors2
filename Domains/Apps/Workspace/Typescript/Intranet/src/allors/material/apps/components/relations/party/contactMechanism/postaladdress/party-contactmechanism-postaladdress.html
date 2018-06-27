@@ -12,7 +12,7 @@
       <a-mat-input  [object]="contactMechanism" [roleType]="m.PostalAddress.Address3" label="Address line 3" class="col-md"></a-mat-input>
     </div>
 
-    <div class="grid-3_xs-1">
+    <div class="row">
       <a-mat-input  [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Locality" label="City" class="col-md"></a-mat-input>
       <a-mat-input  [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.PostalCode" label="Postal code" class="col-md"></a-mat-input>
       <a-mat-select  [object]="contactMechanism.PostalBoundary" [roleType]="m.PostalBoundary?.Country" [options]="countries"

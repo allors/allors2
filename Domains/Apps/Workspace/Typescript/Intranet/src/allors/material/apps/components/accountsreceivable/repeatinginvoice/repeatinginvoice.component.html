@@ -11,20 +11,18 @@
   <div>
 
     <mat-card *ngIf="repeatinginvoice">
-      <mat-card-content style="overflow: auto;">
-        <mat-card-content class="container-fluid">
+      <mat-card-content class="container-fluid">
 
-          <div class="row">
-            <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name"></a-mat-select>
-            <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name"></a-mat-select>
-          </div>
+        <div class="row">
+          <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.Frequency" [options]="frequencies" display="Name"></a-mat-select>
+          <a-mat-select class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.DayOfWeek" [options]="daysOfWeek" display="Name"></a-mat-select>
+        </div>
 
-          <div class="row">
-            <a-mat-datepicker class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.NextExecutionDate"></a-mat-datepicker>
-            <a-mat-datepicker class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.FinalExecutionDate"></a-mat-datepicker>
-          </div>
+        <div class="row">
+          <a-mat-datepicker class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.NextExecutionDate"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="repeatinginvoice" [roleType]="m.RepeatingSalesInvoice.FinalExecutionDate"></a-mat-datepicker>
+        </div>
 
-        </mat-card-content>
       </mat-card-content>
     </mat-card>
 

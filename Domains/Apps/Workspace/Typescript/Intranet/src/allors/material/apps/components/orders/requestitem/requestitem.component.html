@@ -1,6 +1,6 @@
-<form #form="ngForm"  (submit)="save()">
+<form #form="ngForm" (submit)="save()">
   <mat-toolbar>
-    <mat-toolbar-row >
+    <mat-toolbar-row>
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
     </mat-toolbar-row>
@@ -8,8 +8,8 @@
 
   <div>
 
-    <mat-card *ngIf="requestItem"   >
-      <mat-card-content  style="overflow: auto;">
+    <mat-card *ngIf="requestItem">
+      <mat-card-content class="container-fluid">
 
         <div *ngIf="!requestItem.isNew">
           <div>
@@ -18,8 +18,7 @@
         </div>
 
         <div>
-          <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name" [filter]="stateService.goodsFilter.create(scope)"
-            (onChange)="goodSelected($event)"></a-mat-autocomplete>
+          <a-mat-autocomplete [object]="requestItem" [roleType]="m.RequestItem.Product" [options]="goods" display="Name" [filter]="stateService.goodsFilter.create(scope)" (onChange)="goodSelected($event)"></a-mat-autocomplete>
           <a-mat-datepicker [object]="requestItem" [roleType]="m.RequestItem.RequiredByDate"></a-mat-datepicker>
         </div>
 
@@ -43,7 +42,7 @@
 
   </div>
 
-  <mat-toolbar  >
+  <mat-toolbar>
     <span class="col"></span>
     <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
     <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>

@@ -8,7 +8,8 @@
 
   <div>
 
-    <mat-card *ngIf="contactMechanism"    style="overflow: auto;">
+    <mat-card *ngIf="contactMechanism">
+        <mat-card-content class="container-fluid">
 
       <div class="row">
         <a-mat-select [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes"
@@ -21,6 +22,7 @@
         <a-mat-slide-toggle [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.NonSolicitationIndicator" label="Non Solicitation"></a-mat-slide-toggle>
       </div>
 
+      </mat-card-content>
     </mat-card>
   </div>
 
