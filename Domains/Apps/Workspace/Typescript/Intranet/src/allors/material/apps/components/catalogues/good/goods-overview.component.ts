@@ -55,6 +55,7 @@ interface SearchData {
 })
 export class GoodsOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
+  public advancedSearch: boolean;
   public title = 'Products';
   public searchForm: FormGroup;
   public filtered: Good[];
