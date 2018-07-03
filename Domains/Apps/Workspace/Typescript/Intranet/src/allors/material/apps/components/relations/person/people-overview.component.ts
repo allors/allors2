@@ -96,7 +96,7 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.Person.Picture }),
               new TreeNode({ roleType: m.Person.GeneralPhoneNumber }),
             ],
-            sort: [new Sort({ roleType: m.Person.FirstName })],
+            sort: [new Sort({ roleType: m.Person.PartyName })],
           })];
 
         return this.scope.load('Pull', new PullRequest({ queries }));

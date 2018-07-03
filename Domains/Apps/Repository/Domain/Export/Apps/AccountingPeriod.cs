@@ -17,6 +17,8 @@ namespace Allors.Repository
 
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public Guid UniqueId { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }

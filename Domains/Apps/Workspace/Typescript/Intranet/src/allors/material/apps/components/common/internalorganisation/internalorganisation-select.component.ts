@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { StateService } from '../../../services/StateService';
 import { WorkspaceService, Loaded, ErrorService } from '../../../../../angular';
 import { MetaDomain } from '../../../../../meta';
-import { Query, Equals, PullRequest } from '../../../../../framework';
+import { Query, Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
 @Component({
@@ -40,7 +40,10 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
       new Query({
         name: "internalOrganisations",
         objectType: m.Organisation,
-        predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true })
+        predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+        sort: [
+          new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+        ],
       })
     ];
 

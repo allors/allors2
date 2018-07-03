@@ -27,7 +27,7 @@
               </div>
 
               <div class="row">
-                <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Description"></a-mat-input>
+                <a-mat-textarea class="col-md" [object]="good" [roleType]="m.Good.Description"></a-mat-textarea>
               </div>
 
               <div class="row">
@@ -213,7 +213,24 @@
                 <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
                 <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
               </div>
-            </div>
+
+              <div class="row">
+                <mat-expansion-panel class="col" *ngIf="locales">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Translations
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div *ngFor="let locale of locales; let i = index">
+                    <mat-divider *ngIf="i > 0"></mat-divider>
+                    <div class="row">
+                      <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedComments" [locale]="locale"></a-mat-localised-text>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+          </div>
           </mat-tab>
 
           <mat-tab label="Images">

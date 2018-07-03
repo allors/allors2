@@ -42,15 +42,18 @@ namespace Allors.Domain
             var send = this.Meta.Send;
             var cancelInvoice = this.Meta.CancelInvoice;
             var writeOff = this.Meta.WriteOff;
+            var reopen = this.Meta.Reopen;
 
-            config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice);
+            config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice, reopen);
 
             config.Deny(this.ObjectType, sent, Operations.Write);
-            config.Deny(this.ObjectType, sent, send, writeOff, cancelInvoice);
+            config.Deny(this.ObjectType, sent, send, writeOff, cancelInvoice, reopen);
             config.Deny(this.ObjectType, paid, Operations.Write);
-            config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice);
-            config.Deny(this.ObjectType, writtenOff, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen);
+            config.Deny(this.ObjectType, writtenOff, Operations.Write);
+            config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff);
             config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, cancelled, send, cancelInvoice, writeOff);
         }
     }
 }

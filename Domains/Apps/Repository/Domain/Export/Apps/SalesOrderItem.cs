@@ -34,6 +34,9 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public decimal TotalDiscountAsPercentage { get; set; }
         public DiscountAdjustment DiscountAdjustment { get; set; }
         public decimal UnitVat { get; set; }

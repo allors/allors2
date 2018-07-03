@@ -88,12 +88,18 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'requestStates',
               objectType: m.RequestState,
+              sort: [
+                new Sort({ roleType: m.RequestState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'internalOrganisations',
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 

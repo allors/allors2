@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -119,6 +119,9 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'goods',
               objectType: m.Good,
+              sort: [
+                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -211,7 +214,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public gotoOrder(): void {

@@ -117,6 +117,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
               new TreeNode({ roleType: m.Good.Photos }),
               new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
               new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
+              new TreeNode({ roleType: m.Good.LocalisedComments, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
               new TreeNode({ roleType: m.Good.ProductCategories }),
               new TreeNode({ roleType: m.Good.InventoryItemKind }),
               new TreeNode({ roleType: m.Good.SuppliedBy }),
@@ -155,9 +156,24 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
         const queries: Query[] = [
           new Query(this.m.VatRate),
-          new Query(this.m.Ownership),
-          new Query(this.m.InventoryItemKind),
-          new Query(this.m.SerialisedInventoryItemState),
+          new Query(
+            {
+              name: 'ownerships',
+              objectType: this.m.Ownership,
+              sort: [new Sort({ roleType: m.Ownership.Name, direction: 'Asc' })],
+            }),
+          new Query(
+            {
+              name: 'InventoryItemKinds',
+              objectType: this.m.InventoryItemKind,
+              sort: [new Sort({ roleType: m.InventoryItemKind.Name, direction: 'Asc' })],
+            }),
+          new Query(
+            {
+              name: 'serialisedInventoryItemStates',
+              objectType: this.m.SerialisedInventoryItemState,
+              sort: [new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' })],
+            }),
           new Query(
           {
             name: 'productCategories',
@@ -188,9 +204,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.productTypes = loaded.collections.productTypes as ProductType[];
             this.vatRates = loaded.collections.VatRates as VatRate[];
             this.brands = loaded.collections.brands as Brand[];
-            this.ownerships = loaded.collections.Ownerships as Ownership[];
-            this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
-            this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+            this.ownerships = loaded.collections.ownerships as Ownership[];
+            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
+            this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
             this.locales = loaded.collections.locales as Locale[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;

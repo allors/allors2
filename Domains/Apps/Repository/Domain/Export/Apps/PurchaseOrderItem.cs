@@ -35,6 +35,8 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public decimal TotalDiscountAsPercentage { get; set; }
 
         public DiscountAdjustment DiscountAdjustment { get; set; }

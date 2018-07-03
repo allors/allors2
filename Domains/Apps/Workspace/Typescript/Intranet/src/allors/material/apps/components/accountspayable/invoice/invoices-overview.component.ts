@@ -99,12 +99,18 @@ export class InvoicesOverviewComponent implements OnDestroy {
             {
               name: 'purchaseinvoiceStates',
               objectType: m.PurchaseInvoiceState,
+              sort: [
+                new Sort({ roleType: m.PurchaseInvoiceState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'internalOrganisations',
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 

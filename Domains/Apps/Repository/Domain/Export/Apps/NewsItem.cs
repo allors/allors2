@@ -52,7 +52,7 @@ namespace Allors.Repository
         [AssociationId("ca816c14-6aaf-4ed8-b140-f9c941e4f769")]
         [RoleId("687c0be7-138d-4ea3-a87f-58df8ac7e60d")]
         #endregion
-        [Size(256)]
+        [Size(-1)]
 
         public string LongText { get; set; }
         #region Allors

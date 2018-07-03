@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
@@ -107,11 +107,17 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
             {
               name: 'purposes',
               objectType: this.m.CommunicationEventPurpose,
+              sort: [
+                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'emailAddresses',
               objectType: this.m.EmailAddress,
+              sort: [
+                new Sort({ roleType: m.EmailAddress.ElectronicAddressString, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -223,7 +229,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
            } else {
              cancelFn();
            }
-         }); 
+         });
     } else {
       cancelFn();
     }
@@ -258,7 +264,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }

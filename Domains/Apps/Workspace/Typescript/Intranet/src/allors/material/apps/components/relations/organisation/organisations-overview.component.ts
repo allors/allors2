@@ -123,11 +123,17 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'organisationRoles',
               objectType: m.OrganisationRole,
+              sort: [
+                new Sort({ roleType: m.OrganisationRole.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'classifications',
               objectType: m.CustomOrganisationClassification,
+              sort: [
+                new Sort({ roleType: m.CustomOrganisationClassification.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
@@ -253,7 +259,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
                     ],
                   }),
                 ],
-                sort: [new Sort({ roleType: m.Organisation.Name })],
+                sort: [new Sort({ roleType: m.Organisation.PartyName })],
               })];
 
             return this.scope

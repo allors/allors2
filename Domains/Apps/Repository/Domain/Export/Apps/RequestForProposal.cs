@@ -45,6 +45,9 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }

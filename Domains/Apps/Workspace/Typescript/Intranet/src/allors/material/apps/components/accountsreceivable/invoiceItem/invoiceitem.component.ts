@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -50,7 +50,7 @@ export class InvoiceItemEditComponent
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService,
-    
+
   ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
@@ -108,10 +108,16 @@ export class InvoiceItemEditComponent
           new Query({
             name: 'goods',
             objectType: m.Good,
+            sort: [
+              new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+            ],
           }),
           new Query({
             name: 'invoiceItemTypes',
             objectType: m.InvoiceItemType,
+            sort: [
+              new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
+            ],
           }),
           new Query({
             name: 'vatRates',
@@ -125,7 +131,10 @@ export class InvoiceItemEditComponent
             include: [ new TreeNode({ roleType: m.Facility.Owner }) ],
             name: 'facilities',
             objectType: m.Facility,
-          }),
+            sort: [
+              new Sort({ roleType: m.Facility.Name, direction: 'Asc' }),
+            ],
+        }),
         ];
 
         return this.scope.load('Pull', new PullRequest({ fetches, queries }));

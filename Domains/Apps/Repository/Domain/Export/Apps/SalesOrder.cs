@@ -58,6 +58,9 @@ namespace Allors.Repository
         public string HtmlContent { get; set; }
 
         public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public Locale Locale { get; set; }
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }

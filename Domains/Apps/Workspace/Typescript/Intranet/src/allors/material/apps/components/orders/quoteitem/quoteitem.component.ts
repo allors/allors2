@@ -91,11 +91,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
               objectType: m.Good,
               sort: [new Sort({ roleType: m.Good.Name, direction: 'Asc' })],
             }),
-            new Query(
-              {
-                name: 'unitsOfMeasure',
-                objectType: m.UnitOfMeasure,
-              }),
+          new Query(
+            {
+              name: 'unitsOfMeasure',
+              objectType: m.UnitOfMeasure,
+              sort: [
+                new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
+              ],
+            }),
           ];
 
         return this.scope
@@ -167,7 +170,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           } else {
             submitFn();
           }
-        }); 
+        });
     } else {
       submitFn();
     }
@@ -202,7 +205,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }

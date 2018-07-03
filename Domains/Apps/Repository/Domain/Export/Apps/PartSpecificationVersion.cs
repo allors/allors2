@@ -41,7 +41,7 @@ namespace Allors.Repository
         [RoleId("7F779C0F-165C-4946-8920-BAAF5A96DD46")]
         #endregion
         [Required]
-        [Size(256)]
+        [Size(-1)]
         public string Description { get; set; }
 
         #region inherited methods

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
 import { ContactMechanismType, Enumeration, Party, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 

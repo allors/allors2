@@ -16,6 +16,8 @@ namespace Allors.Repository
 
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         #endregion
 
         #region Allors
@@ -24,7 +26,7 @@ namespace Allors.Repository
         [RoleId("1d396f6f-279d-4b83-9d95-6ece6089f6a0")]
         #endregion
         [Required]
-        [Size(256)]
+        [Size(-1)]
 
         public string Description { get; set; }
         #region Allors

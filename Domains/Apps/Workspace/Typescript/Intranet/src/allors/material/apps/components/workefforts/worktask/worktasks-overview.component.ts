@@ -13,7 +13,7 @@ import 'rxjs/add/operator/startWith';
 
 import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, ContainedIn, Equals, Fetch, Like, Page, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -107,16 +107,25 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
               name: 'internalOrganisations',
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'workEffortStates',
               objectType: m.WorkEffortState,
+              sort: [
+                new Sort({ roleType: m.WorkEffortState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'priorities',
               objectType: m.Priority,
+              sort: [
+                new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -218,7 +227,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public onView(person: Person): void {

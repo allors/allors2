@@ -40,7 +40,8 @@ import {
   Fetch,
   PullRequest,
   Query,
-  TreeNode
+  TreeNode,
+  Sort
 } from "../../../../../../../framework";
 import { MetaDomain } from "../../../../../../../meta";
 import { StateService } from "../../../../../services/StateService";
@@ -182,8 +183,11 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
         const queries: Query[] = [
           new Query({
             name: "purposes",
-            objectType: this.m.CommunicationEventPurpose
-          })
+            objectType: this.m.CommunicationEventPurpose,
+            sort: [
+              new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
+            ],
+        })
         ];
 
         return this.scope.load("Pull", new PullRequest({ fetches, queries }));

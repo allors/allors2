@@ -73,6 +73,9 @@ namespace Allors.Repository
         public string HtmlContent { get; set; }
 
         public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
         #endregion
 
         #region Allors

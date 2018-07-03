@@ -46,6 +46,8 @@ namespace Allors.Repository
         public DateTime LastModifiedDate { get; set; }
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }

@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -124,6 +124,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'goods',
               objectType: m.Good,
+              sort: [
+                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -237,7 +240,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                this.errorService.handle(error);
              });
          }
-       }); 
+       });
   }
 
   public deleteInvoiceItem(invoiceItem: PurchaseInvoiceItem): void {
@@ -254,7 +257,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                this.errorService.handle(error);
              });
          }
-       }); 
+       });
   }
 
   public createInvoice(): void {

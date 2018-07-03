@@ -88,12 +88,18 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'quoteStates',
               objectType: m.QuoteState,
+              sort: [
+                new Sort({ roleType: m.QuoteState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'internalOrganisations',
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 

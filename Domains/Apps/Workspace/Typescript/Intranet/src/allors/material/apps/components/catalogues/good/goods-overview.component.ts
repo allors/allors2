@@ -171,16 +171,46 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
         ];
 
         const searchQuery: Query[] = [
-          new Query(m.Brand),
-          new Query(m.Model),
-          new Query(m.InventoryItemKind),
-          new Query(m.Ownership),
-          new Query(m.SerialisedInventoryItemState),
+          new Query({
+            name: 'brands',
+            objectType: m.Brand,
+            sort: [
+              new Sort({ roleType: m.Brand.Name, direction: 'Asc' }),
+            ],
+          }),
+          new Query({
+            name: 'models',
+            objectType: m.Model,
+            sort: [
+              new Sort({ roleType: m.Model.Name, direction: 'Asc' }),
+            ],
+          }),
+          new Query({
+            name: 'inventoryItemKinds',
+            objectType: m.InventoryItemKind,
+            sort: [
+              new Sort({ roleType: m.InventoryItemKind.Name, direction: 'Asc' }),
+            ],
+          }),
+          new Query({
+            name: 'ownership',
+            objectType: m.Ownership,
+            sort: [
+              new Sort({ roleType: m.Ownership.Name, direction: 'Asc' }),
+            ],
+          }),
+          new Query({
+            name: 'serialisedInventoryItemStates',
+            objectType: m.SerialisedInventoryItemState,
+            sort: [
+              new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
+            ],
+          }),
           new Query({
             name: 'organisations',
             objectType: m.Organisation,
             sort: [
-              new Sort({ roleType: m.ProductType.Name, direction: 'Asc' }),
+              new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
             ],
           }),
           new Query({
@@ -210,7 +240,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
         return this.scope
           .load('Pull', new PullRequest({ fetches, queries: searchQuery }))
           .switchMap((loaded) => {
-            this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+            this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
             this.serialisedInventoryItemState = this.serialisedInventoryItemStates.find(
               (v: SerialisedInventoryItemState) => v.Name === data.state,
             );
@@ -218,17 +248,17 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
 
-            this.brands = loaded.collections.Brands as Brand[];
+            this.brands = loaded.collections.brands as Brand[];
             this.brand = this.brands.find(
               (v: Brand) => v.Name === data.brand,
             );
 
-            this.models = loaded.collections.Models as Model[];
+            this.models = loaded.collections.models as Model[];
             this.model = this.models.find(
               (v: Model) => v.Name === data.model,
             );
 
-            this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
+            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
             this.inventoryItemKind = this.inventoryItemKinds.find(
               (v: InventoryItemKind) => v.Name === data.inventoryItemKind,
             );
@@ -243,7 +273,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
               (v: ProductType) => v.Name === data.productType,
             );
 
-            this.ownerships = loaded.collections.Ownerships as Ownership[];
+            this.ownerships = loaded.collections.ownerships as Ownership[];
             this.ownership = this.ownerships.find(
               (v: Ownership) => v.Name === data.ownership,
             );
@@ -426,6 +456,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
                       new TreeNode({ roleType: m.Good.PrimaryPhoto }),
                       new TreeNode({ roleType: m.Good.LocalisedNames }),
                       new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
+                      new TreeNode({ roleType: m.Good.LocalisedComments }),
                       new TreeNode({ roleType: m.Good.PrimaryProductCategory }),
                     ]
                   }),
@@ -451,6 +482,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
                       new TreeNode({ roleType: m.Good.PrimaryPhoto }),
                       new TreeNode({ roleType: m.Good.LocalisedNames }),
                       new TreeNode({ roleType: m.Good.LocalisedDescriptions }),
+                      new TreeNode({ roleType: m.Good.LocalisedComments }),
                       new TreeNode({ roleType: m.Good.PrimaryProductCategory }),
                     ]
                   }),
@@ -461,6 +493,9 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
               query.Goods({
                 include: { PrimaryPhoto: {}, Product_LocalisedNames: {}, Product_LocalisedDescriptions: {}, Product_PrimaryProductCategory: {} },
                 predicate: goodsPredicate,
+                sort: [
+                  new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+                ],
               })
             ];
 

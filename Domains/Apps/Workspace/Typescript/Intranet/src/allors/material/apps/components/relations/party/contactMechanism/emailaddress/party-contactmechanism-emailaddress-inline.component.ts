@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 
 import { ErrorService, Loaded, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../../../domain';
-import { PullRequest, Query } from '../../../../../../../framework';
+import { PullRequest, Query, Sort } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({
@@ -38,6 +38,9 @@ export class PartyContactMechanismEmailAddressInlineComponent
       new Query({
         name: 'contactMechanismPurposes',
         objectType: this.m.ContactMechanismPurpose,
+        sort: [
+          new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
+        ],
       }),
     ];
 

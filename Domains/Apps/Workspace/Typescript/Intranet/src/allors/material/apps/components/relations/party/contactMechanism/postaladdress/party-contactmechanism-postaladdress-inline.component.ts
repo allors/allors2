@@ -45,6 +45,9 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
         {
           name: 'contactMechanismPurposes',
           objectType: this.m.ContactMechanismPurpose,
+          sort: [
+            new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
+          ],
         }),
       ];
 

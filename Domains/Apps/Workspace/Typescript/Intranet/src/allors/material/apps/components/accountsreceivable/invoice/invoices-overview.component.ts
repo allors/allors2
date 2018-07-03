@@ -9,12 +9,13 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, LayoutService, Invoked, Saved } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { MatSnackBar } from '@angular/material';
 
 interface SearchData {
   internalOrganisation: string;
@@ -45,6 +46,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
   public salesInvoiceStates: SalesInvoiceState[];
   public selectedSalesInvoiceState: SalesInvoiceState;
   public salesInvoiceState: SalesInvoiceState;
+  public readyForPostingState: SalesInvoiceState;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -58,6 +60,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
+    private snackBar: MatSnackBar,
     private router: Router,
     private dialogService: AllorsMaterialDialogService,
     public pdfService: PdfService,
@@ -105,12 +108,18 @@ export class InvoicesOverviewComponent implements OnDestroy {
             {
               name: 'salesinvoiceStates',
               objectType: m.SalesInvoiceState,
+              sort: [
+                new Sort({ roleType: m.SalesInvoiceState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'internalOrganisations',
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -119,6 +128,8 @@ export class InvoicesOverviewComponent implements OnDestroy {
         .switchMap((loaded: Loaded) => {
           this.salesInvoiceStates = loaded.collections.salesinvoiceStates as SalesInvoiceState[];
           this.salesInvoiceState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.Name === data.state);
+
+          this.readyForPostingState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.UniqueId.toUpperCase() === '488F61FF-F474-44BA-9925-49AF7BCB0CD0');
 
           this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
           this.billToInternalOrganisation = this.internalOrganisations.find(
@@ -185,6 +196,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
               include: [
                 new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
                 new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
+                new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
               ],
               name: 'invoices',
               objectType: m.SalesInvoice,
@@ -224,7 +236,164 @@ export class InvoicesOverviewComponent implements OnDestroy {
     this.router.navigate(['/accountsreceivable/invoices/' + invoice.id]);
   }
 
-  private more(): void {
-    this.page$.next(this.data.length + 50);
+  public refresh(): void {
+    this.refresh$.next(new Date());
+  }
+
+  public send(invoice: SalesInvoice): void {
+    const sendFn: () => void = () => {
+      this.scope.invoke(invoice.Send)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                sendFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            sendFn();
+          }
+        });
+    } else {
+      sendFn();
+    }
+  }
+
+  public cancel(invoice: SalesInvoice): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(invoice.CancelInvoice)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  public writeOff(invoice: SalesInvoice): void {
+    const writeOffFn: () => void = () => {
+      this.scope.invoke(invoice.WriteOff)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                writeOffFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            writeOffFn();
+          }
+        });
+    } else {
+      writeOffFn();
+    }
+  }
+
+  public reopen(invoice: SalesInvoice): void {
+    const reopenFn: () => void = () => {
+      this.scope.invoke(invoice.Reopen)
+        .subscribe((invoked: Invoked) => {
+          this.refresh();
+          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                reopenFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            reopenFn();
+          }
+        });
+    } else {
+      reopenFn();
+    }
+  }
+
+  public delete(invoice: SalesInvoice): void {
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this invoice?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(invoice.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 }

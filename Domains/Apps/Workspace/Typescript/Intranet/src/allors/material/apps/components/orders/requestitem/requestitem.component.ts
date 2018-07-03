@@ -84,6 +84,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             {
               name: 'unitsOfMeasure',
               objectType: m.UnitOfMeasure,
+              sort: [
+                new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -163,7 +166,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }

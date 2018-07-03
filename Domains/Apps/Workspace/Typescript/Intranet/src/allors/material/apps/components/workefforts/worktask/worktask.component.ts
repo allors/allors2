@@ -41,6 +41,7 @@ import {
   PullRequest,
   Query,
   TreeNode,
+  Sort,
 } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
@@ -116,15 +117,24 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'workEffortStates',
             objectType: this.m.WorkEffortState,
-          }),
+            sort: [
+              new Sort({ roleType: m.WorkEffortState.Name, direction: 'Asc' }),
+            ],
+        }),
           new Query({
             name: 'priorities',
             objectType: this.m.Priority,
-          }),
+            sort: [
+              new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
+            ],
+        }),
           new Query({
             name: 'workEffortPurposes',
             objectType: this.m.WorkEffortPurpose,
-          }),
+            sort: [
+              new Sort({ roleType: m.WorkEffortPurpose.Name, direction: 'Asc' }),
+            ],
+        }),
         ];
 
         return this.scope

@@ -14,6 +14,8 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public ObjectState[] PreviousObjectStates { get; set; }
 
         public ObjectState[] LastObjectStates { get; set; }
@@ -91,7 +93,7 @@ namespace Allors.Repository
         [AssociationId("30b2b652-b7a8-42ec-bd10-dd606a1be951")]
         [RoleId("c176a9ff-7656-4c22-bf00-e19cdcd16566")]
         #endregion
-        [Size(256)]
+        [Size(-1)]
         [Workspace]
         public string Description { get; set; }
 

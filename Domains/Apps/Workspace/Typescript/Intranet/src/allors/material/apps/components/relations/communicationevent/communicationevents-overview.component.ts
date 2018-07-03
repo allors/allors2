@@ -95,16 +95,25 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'communicationEventStates',
               objectType: m.CommunicationEventState,
-            }),
+              sort: [
+                new Sort({ roleType: m.CommunicationEventState.Name, direction: 'Asc' }),
+              ],
+          }),
           new Query(
             {
               name: 'purposes',
               objectType: m.CommunicationEventPurpose,
+              sort: [
+                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'persons',
               objectType: m.Person,
+              sort: [
+                new Sort({ roleType: m.Person.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -153,6 +162,9 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
                   objectType: m.CommunicationEvent,
                   page: new Page({ skip: 0, take }),
                   predicate,
+                  sort: [
+                    new Sort({ roleType: m.CommunicationEvent.ScheduledEnd, direction: 'Desc' }),
+                  ],
                 }),
             ];
 
@@ -201,7 +213,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public close(communicationEvent: CommunicationEvent): void {
@@ -218,7 +230,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public reopen(communicationEvent: CommunicationEvent): void {
@@ -235,7 +247,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public delete(communicationEvent: CommunicationEvent): void {
@@ -252,7 +264,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public checkType(obj: any): string {

@@ -29,6 +29,15 @@ namespace Allors.Domain
 
     public partial class SalesInvoice
     {
+        private bool IsDeletable =>
+            this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.strategy.Session).ReadyForPosting) && 
+            this.AllItemsDeletable() &&
+            !this.ExistSalesOrder && 
+            !this.ExistPurchaseInvoice &&
+            !this.ExistRepeatingSalesInvoiceWhereSource &&
+            !this.ExistShipment &&
+            !this.IsRepeatingInvoice;
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.SalesInvoice, M.SalesInvoice.SalesInvoiceState),
@@ -391,6 +400,11 @@ namespace Allors.Domain
         public void AppsWriteOff(SalesInvoiceWriteOff method)
         {
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).WrittenOff;
+        }
+
+        public void AppsReopen(SalesInvoiceReopen method)
+        {
+            this.SalesInvoiceState = this.PreviousSalesInvoiceState;
         }
 
         public void AppsCancelInvoice(SalesInvoiceCancelInvoice method)
@@ -829,6 +843,40 @@ namespace Allors.Domain
                     salesChannelRevenue.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
+        }
+
+        public void AppsDelete(DeletableDelete method)
+        {
+            if (this.IsDeletable)
+            {
+                this.ShippingAndHandlingCharge.Delete();
+                this.Fee.Delete();
+                this.DiscountAdjustment.Delete();
+                this.SurchargeAdjustment.Delete();
+
+                foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+                {
+                    salesInvoiceItem.Delete();
+                }
+
+                foreach (SalesTerm salesTerm in this.SalesTerms)
+                {
+                    salesTerm.Delete();
+                }
+            }
+        }
+
+        private bool AllItemsDeletable()
+        {
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                if (!salesInvoiceItem.IsDeletable)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

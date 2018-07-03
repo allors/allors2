@@ -72,6 +72,9 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'incoTermTypes',
             objectType: m.IncoTermType,
+            sort: [
+              new Sort({ roleType: m.IncoTermType.Name, direction: 'Asc' }),
+            ],
           }),
         ];
 

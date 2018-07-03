@@ -54,6 +54,9 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         public Locale Locale { get; set; }
         public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public string HtmlContent { get; set; }
 
         public User CreatedBy { get; set; }
@@ -480,6 +483,7 @@ namespace Allors.Repository
         [RoleId("F08C7F44-6ACC-4402-AB46-931410A6B0AB")]
         [Indexed]
         #endregion
+        [Required]
         [Workspace]
         public bool IsRepeatingInvoice { get; set; }
 
@@ -527,5 +531,17 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public void Credit() { }
+
+        #region Allors
+        [Id("6C9A6C2B-193A-48A8-9AAB-A6FFE2D64FC0")]
+        #endregion
+        [Workspace]
+        public void Delete() { }
+
+        #region Allors
+        [Id("033FF876-BBC5-47B3-B2C9-CEDE9869C231")]
+        #endregion
+        [Workspace]
+        public void Reopen() { }
     }
 }

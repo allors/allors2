@@ -67,21 +67,25 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
               objectType: this.m.Singleton,
               include: [
                 new TreeNode({ roleType: m.Singleton.AdditionalLocales,
-                   nodes: [
-                      new TreeNode({ roleType: m.Locale.Language}),
-                   ],
-              }),
-              ],
+                   nodes: [ new TreeNode({ roleType: m.Locale.Language}) ],
+                  }),
+                ],
             }),
             new Query(
               {
                 name: 'uoms',
                 objectType: this.m.UnitOfMeasure,
+                sort: [
+                  new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
+                ],
               }),
             new Query(
               {
                 name: 'timeFrequencies',
                 objectType: this.m.TimeFrequency,
+                sort: [
+                  new Sort({ roleType: m.TimeFrequency.Name, direction: 'Asc' }),
+                ],
               }),
             ];
 

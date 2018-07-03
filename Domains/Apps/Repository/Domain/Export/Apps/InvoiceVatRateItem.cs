@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6e380347-21e3-4a00-819f-ed11e6882d03")]
     #endregion
-    public partial class InvoiceVatRateItem : AccessControlledObject 
+    public partial class InvoiceVatRateItem : AccessControlledObject, Deletable 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -58,6 +58,10 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
+
+        public void Delete()
+        {
+        }
 
         #endregion
     }

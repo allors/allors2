@@ -21,7 +21,7 @@ namespace Allors.Repository
         [AssociationId("d67a1bb9-802a-47a9-97bd-28809cd5c85a")]
         [RoleId("89d49ef1-a3b6-4404-97d9-024c66e0a1f6")]
         #endregion
-        [Size(256)]
+        [Size(-1)]
 
         public string ItemDescription { get; set; }
         #region Allors
@@ -39,7 +39,7 @@ namespace Allors.Repository
         [AssociationId("77a773f7-e649-4dd1-9dd9-d7a5eb09ae95")]
         [RoleId("9cbd890b-c0b5-4a0c-a931-fc5601b5ef0d")]
         #endregion
-        [Size(256)]
+        [Size(-1)]
 
         public string RejectionReason { get; set; }
         #region Allors

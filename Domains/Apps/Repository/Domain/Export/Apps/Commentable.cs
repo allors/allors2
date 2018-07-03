@@ -15,5 +15,15 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         string Comment { get; set; }
+
+        #region Allors
+        [Id("88CDC491-70DB-4B5C-B628-B18806D1FDBD")]
+        [AssociationId("396F14D8-7FA5-4E0C-A58B-E3988B733367")]
+        [RoleId("16562E16-4FE1-4437-8BEF-FB8909C44480")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Workspace]
+        LocalisedText[] LocalisedComments { get; set; }
     }
 }

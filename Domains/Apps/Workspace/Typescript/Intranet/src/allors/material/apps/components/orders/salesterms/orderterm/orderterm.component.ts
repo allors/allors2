@@ -72,6 +72,9 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'orderTermTypes',
             objectType: m.OrderTermType,
+            sort: [
+              new Sort({ roleType: m.OrderTermType.Name, direction: 'Asc' }),
+            ],
           }),
         ];
 

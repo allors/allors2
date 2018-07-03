@@ -22,7 +22,7 @@ namespace Allors.Repository
         [RoleId("692c0d2f-0e62-4601-b7d4-21e496596f5d")]
         #endregion
         [Required]
-        [Size(256)]
+        [Size(-1)]
 
         public string Description { get; set; }
         #region Allors

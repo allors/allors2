@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { NewGoodDialogComponent } from '../../catalogues';
@@ -97,11 +97,32 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         ];
 
         const queries: Query[] = [
-          new Query(m.Good),
           new Query(m.VatRate),
           new Query(m.VatRegime),
-          new Query(m.InvoiceItemType),
-          new Query(m.SerialisedInventoryItemState),
+          new Query(
+            {
+              name: 'goods',
+              objectType: m.Good,
+              sort: [
+                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'invoiceItemTypes',
+              objectType: m.InvoiceItemType,
+              sort: [
+                new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'serialisedInventoryItemStates',
+              objectType: m.SerialisedInventoryItemState,
+              sort: [
+                new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
+              ],
+            }),
         ];
 
         return this.scope
@@ -113,11 +134,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
-        this.goods = loaded.collections.Goods as Good[];
+        this.goods = loaded.collections.goods as Good[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.serialisedInventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
-        this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
+        this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44CB-8354-FB887ADA42AD');
 
         if (!this.orderItem) {
@@ -242,7 +263,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }
@@ -277,7 +298,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); 
+        });
     } else {
       rejectFn();
     }

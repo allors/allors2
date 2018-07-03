@@ -9,7 +9,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
-import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -80,10 +80,31 @@ export class OrganisationComponent implements OnInit, OnDestroy {
         ];
 
         const queries: Query[] = [
-          new Query(this.m.Locale),
           new Query(this.m.OrganisationRole),
-          new Query(this.m.CustomOrganisationClassification),
-          new Query(this.m.IndustryClassification),
+          new Query(
+            {
+              name: 'locales',
+              objectType: m.Locale,
+              sort: [
+                new Sort({ roleType: m.Locale.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'customOrganisationClassifications',
+              objectType: m.CustomOrganisationClassification,
+              sort: [
+                new Sort({ roleType: m.CustomOrganisationClassification.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'industryClassifications',
+              objectType: m.IndustryClassification,
+              sort: [
+                new Sort({ roleType: m.IndustryClassification.Name, direction: 'Asc' }),
+              ],
+            }),
           ];
 
         if (id != null) {
@@ -140,9 +161,9 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           this.organisation.IsManufacturer = false;
         }
 
-        this.locales = loaded.collections.Locales as Locale[];
-        this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
-        this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
+        this.locales = loaded.collections.locales as Locale[];
+        this.classifications = loaded.collections.customOrganisationClassifications as CustomOrganisationClassification[];
+        this.industries = loaded.collections.industryClassifications as IndustryClassification[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8B5E0CEE-4C98-42F1-8F18-3638FBA943A0');
         this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8C6D629B-1E27-4520-AA8C-E8ADF93A5095');

@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -170,9 +170,30 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         }
 
         const queries: Query[] = [
-          new Query(m.Good),
-          new Query(m.BillingProcess),
-          new Query(m.SerialisedInventoryItemState),
+          new Query(
+            {
+              name: 'goods',
+              objectType: m.Good,
+              sort: [
+                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'billingProcesses',
+              objectType: m.BillingProcess,
+              sort: [
+                new Sort({ roleType: m.BillingProcess.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'serialisedInventoryItemStates',
+              objectType: m.SerialisedInventoryItemState,
+              sort: [
+                new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
+              ],
+            }),
         ];
 
         return this.scope
@@ -180,11 +201,11 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.goods = loaded.collections.Goods as Good[];
+        this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
-        this.billingProcesses = loaded.collections.BillingProcesses as BillingProcess[];
+        this.inventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.billingProcesses = loaded.collections.billingProcesses as BillingProcess[];
         this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === 'AB01CCC2-6480-4FC0-B20E-265AFD41FAE2');
 
         if (this.order) {
@@ -325,7 +346,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public deleteSalesTerm(salesTerm: SalesTerm): void {
@@ -342,7 +363,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public ship(): void {

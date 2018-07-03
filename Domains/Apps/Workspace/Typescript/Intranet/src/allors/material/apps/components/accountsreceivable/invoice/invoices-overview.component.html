@@ -89,6 +89,11 @@
                 <a [routerLink]="['/accountsreceivable/invoice/' + invoice.id ]" mat-menu-item>Details</a>
                 <a [routerLink]="['/printinvoice/' + invoice.id ]" mat-menu-item>Preview</a>
                 <button mat-menu-item (click)="print(invoice)">Print</button>
+                <button *ngIf="invoice.CanExecuteSend" mat-menu-item (click)="send(invoice)">Send</button>
+                <button *ngIf="invoice.CanExecuteCancelInvoice" mat-menu-item (click)="cancel(invoice)">Cancel</button>
+                <button *ngIf="invoice.CanExecuteWriteOff" mat-menu-item (click)="writeOff(invoice)">Write off</button>
+                <button *ngIf="invoice.CanExecuteReopen" mat-menu-item (click)="reopen(invoice)">Reopen</button>
+                <button *ngIf="invoice.SalesInvoiceState === readyForPostingState && !invoice.SalesOrder" mat-menu-item (click)="delete(invoice)">Delete</button>
               </mat-menu>
             </div>
 

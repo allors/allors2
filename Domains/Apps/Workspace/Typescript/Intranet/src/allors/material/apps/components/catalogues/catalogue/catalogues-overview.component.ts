@@ -12,7 +12,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
 import { Catalogue, InternalOrganisation } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Page, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, Equals, Fetch, Like, Page, Path, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -91,6 +91,9 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
               new TreeNode({ roleType: m.Catalogue.ProductCategories }),
+            ],
+            sort: [
+              new Sort({ roleType: m.Catalogue.Name, direction: 'Asc' }),
             ],
           })];
 

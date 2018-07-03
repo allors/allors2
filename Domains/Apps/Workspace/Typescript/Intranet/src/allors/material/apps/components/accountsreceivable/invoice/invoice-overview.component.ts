@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -160,6 +160,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'goods',
               objectType: m.Good,
+              sort: [
+                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
@@ -267,7 +270,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 
   public deleteSalesTerm(salesTerm: SalesTerm): void {
@@ -284,6 +287,6 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               this.errorService.handle(error);
             });
         }
-      }); 
+      });
   }
 }

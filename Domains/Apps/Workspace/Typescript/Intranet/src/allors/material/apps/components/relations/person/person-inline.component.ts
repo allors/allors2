@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit , Output } from '@angular/core';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
-import { PullRequest, Query } from '../../../../../framework';
+import { PullRequest, Query, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 @Component({
@@ -29,7 +29,7 @@ export class PersonInlineComponent implements OnInit {
 
   constructor(
     public layout: LayoutService,
-    private workspaceService: WorkspaceService, 
+    private workspaceService: WorkspaceService,
     private errorService: ErrorService) {
 
     this.scope = this.workspaceService.createScope();
@@ -42,17 +42,26 @@ export class PersonInlineComponent implements OnInit {
         {
           name: 'locales',
           objectType: this.m.Locale,
-        }),
+          sort: [
+            new Sort({ roleType: this.m.Locale.Name, direction: 'Asc' }),
+          ],
+      }),
       new Query(
         {
           name: 'genders',
           objectType: this.m.GenderType,
-        }),
+          sort: [
+            new Sort({ roleType: this.m.GenderType.Name, direction: 'Asc' }),
+          ],
+      }),
       new Query(
-        {
-          name: 'salutations',
-          objectType: this.m.Salutation,
-        }),
+      {
+        name: 'salutations',
+        objectType: this.m.Salutation,
+        sort: [
+          new Sort({ roleType: this.m.Salutation.Name, direction: 'Asc' }),
+        ],
+      }),
     ];
 
     this.scope

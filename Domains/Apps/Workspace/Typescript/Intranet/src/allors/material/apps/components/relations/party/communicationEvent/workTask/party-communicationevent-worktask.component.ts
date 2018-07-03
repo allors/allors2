@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 

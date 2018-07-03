@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort} from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
@@ -46,7 +46,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     private dialogService: AllorsMaterialDialogService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    
+
     private stateService: StateService,
   ) {
 
@@ -117,6 +117,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
             {
               name: 'purposes',
               objectType: this.m.CommunicationEventPurpose,
+              sort: [
+                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -207,7 +210,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }
@@ -242,7 +245,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }

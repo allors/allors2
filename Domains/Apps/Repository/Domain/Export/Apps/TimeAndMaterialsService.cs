@@ -66,6 +66,10 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
+
         #endregion
 
         #region inherited methods
@@ -83,7 +87,5 @@ namespace Allors.Repository
 
         public void Delete() { }
         #endregion
-
-        public string Comment { get; set; }
     }
 }

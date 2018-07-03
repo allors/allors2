@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -93,10 +93,24 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const rolesQuery: Query[] = [
-          new Query(m.Currency),
           new Query(m.VatRate),
           new Query(m.VatRegime),
-          new Query(m.PurchaseInvoiceType),
+          new Query(
+            {
+              name: 'currencies',
+              objectType: m.Currency,
+              sort: [
+                new Sort({ roleType: m.Currency.Name, direction: 'Asc' }),
+              ],
+            }),
+          new Query(
+            {
+              name: 'purchaseInvoiceTypes',
+              objectType: m.PurchaseInvoiceType,
+              sort: [
+                new Sort({ roleType: m.PurchaseInvoiceType.Name, direction: 'Asc' }),
+              ],
+            }),
         ];
 
         return this.scope
@@ -105,8 +119,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             this.scope.session.reset();
             this.vatRates = loaded.collections.VatRates as VatRate[];
             this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-            this.currencies = loaded.collections.Currencies as Currency[];
-            this.purchaseInvoiceTypes = loaded.collections.PurchaseInvoiceTypes as PurchaseInvoiceType[];
+            this.currencies = loaded.collections.currencies as Currency[];
+            this.purchaseInvoiceTypes = loaded.collections.purchaseInvoiceTypes as PurchaseInvoiceType[];
 
             const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,
@@ -331,7 +345,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 this.errorService.handle(error);
               });
         }
-      }); 
+      });
   }
 
   public ngOnDestroy(): void {

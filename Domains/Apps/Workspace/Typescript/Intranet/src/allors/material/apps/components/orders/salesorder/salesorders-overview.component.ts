@@ -91,12 +91,18 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'orderStates',
               objectType: m.SalesOrderState,
+              sort: [
+                new Sort({ roleType: m.SalesOrderState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'internalOrganisations',
               objectType: m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 

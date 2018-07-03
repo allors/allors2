@@ -12,6 +12,8 @@ namespace Allors.Repository
         #region inherited properties
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -54,7 +56,7 @@ namespace Allors.Repository
         [RoleId("179d1a3b-8325-49da-9009-f104802f189d")]
         #endregion
         [Required]
-        [Size(256)]
+        [Size(-1)]
 
         public string Description { get; set; }
         #region Allors

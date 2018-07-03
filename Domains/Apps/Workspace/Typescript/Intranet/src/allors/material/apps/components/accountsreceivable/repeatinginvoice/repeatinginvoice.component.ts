@@ -75,7 +75,10 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'frequencies',
             objectType: m.TimeFrequency,
-          }),
+            sort: [
+              new Sort({ roleType: m.TimeFrequency.Name, direction: 'Asc' }),
+            ],
+        }),
           new Query({
             name: 'daysOfWeek',
             objectType: m.DayOfWeek,

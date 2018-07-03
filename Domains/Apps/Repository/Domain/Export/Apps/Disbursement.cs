@@ -31,6 +31,8 @@ namespace Allors.Repository
 
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public Guid UniqueId { get; set; }
 
         #endregion

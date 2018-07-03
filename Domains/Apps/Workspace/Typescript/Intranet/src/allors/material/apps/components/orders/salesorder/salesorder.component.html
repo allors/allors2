@@ -200,7 +200,7 @@
         </div>
 
         <div class="row">
-          <a-mat-input class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-input>
+          <a-mat-textarea class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-textarea>
           <a-mat-input class="col-md" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
           <a-mat-static class="col-md" *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
           <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>

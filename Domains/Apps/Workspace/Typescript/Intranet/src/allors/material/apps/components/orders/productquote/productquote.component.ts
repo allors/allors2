@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -74,14 +74,21 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const rolesQuery: Query[] = [
-          new Query(m.Currency),
-        ];
+          new Query(
+            {
+              name: 'currencies',
+              objectType: m.Currency,
+              sort: [
+                new Sort({ roleType: m.Currency.Name, direction: 'Asc' }),
+              ],
+            }),
+          ];
 
         return this.scope
           .load('Pull', new PullRequest({ queries: rolesQuery }))
           .switchMap((loaded) => {
             this.scope.session.reset();
-            this.currencies = loaded.collections.Currencies as Currency[];
+            this.currencies = loaded.collections.currencies as Currency[];
 
             const fetches: Fetch[] = [
               this.fetcher.internalOrganisation,
@@ -186,7 +193,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           } else {
             submitFn();
           }
-        }); 
+        });
     } else {
       submitFn();
     }
@@ -221,7 +228,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); 
+        });
     } else {
       rejectFn();
     }
@@ -256,7 +263,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); 
+        });
     } else {
       rejectFn();
     }

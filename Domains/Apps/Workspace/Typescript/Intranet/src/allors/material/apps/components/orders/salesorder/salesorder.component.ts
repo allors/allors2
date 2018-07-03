@@ -121,21 +121,34 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         const m: MetaDomain = this.m;
 
         const queries: Query[] = [
-          new Query(m.Currency),
           new Query(m.VatRate),
           new Query(m.VatRegime),
+          new Query(
+            {
+              name: 'currencies',
+              objectType: m.Currency,
+              sort: [
+                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
+              ],
+            }),
           new Query(
             {
               include: [new TreeNode({ roleType: m.Store.BillingProcess })],
               name: 'stores',
               objectType: m.Store,
               predicate: new Equals({ roleType: m.Store.InternalOrganisation, value: internalOrganisationId }),
+              sort: [
+                new Sort({ roleType: m.Store.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'internalOrganisations',
               objectType: this.m.Organisation,
               predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: [
+                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+              ],
             }),
         ];
 
@@ -146,7 +159,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             this.vatRates = loaded.collections.VatRates as VatRate[];
             this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
             this.stores = loaded.collections.stores as Store[];
-            this.currencies = loaded.collections.Currencies as Currency[];
+            this.currencies = loaded.collections.currencies as Currency[];
             this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
             const fetches: Fetch[] = [
@@ -403,7 +416,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             cancelFn();
           }
-        }); 
+        });
     } else {
       cancelFn();
     }
@@ -438,7 +451,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             rejectFn();
           }
-        }); 
+        });
     } else {
       rejectFn();
     }
@@ -473,7 +486,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             holdFn();
           }
-        }); 
+        });
     } else {
       holdFn();
     }
@@ -508,7 +521,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             continueFn();
           }
-        }); 
+        });
     } else {
       continueFn();
     }
@@ -543,7 +556,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             confirmFn();
           }
-        }); 
+        });
     } else {
       confirmFn();
     }
@@ -578,7 +591,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           } else {
             finishFn();
           }
-        }); 
+        });
     } else {
       finishFn();
     }

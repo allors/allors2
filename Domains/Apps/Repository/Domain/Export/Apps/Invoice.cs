@@ -45,7 +45,7 @@ namespace Allors.Repository
         [AssociationId("aa6230a9-7a9e-4d42-a14a-49b1c3b382ab")]
         [RoleId("5c1fbd73-39e2-4a4a-b58b-2e6c7a110755")]
         #endregion
-        [Size(256)]
+        [Size(-1)]
         [Workspace]
         string Description { get; set; }
 

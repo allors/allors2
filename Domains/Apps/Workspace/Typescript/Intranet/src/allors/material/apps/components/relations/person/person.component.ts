@@ -97,11 +97,46 @@ export class PersonComponent implements OnInit, OnDestroy {
         ];
 
         const queries: Query[] = [
-          new Query(m.Locale),
-          new Query(m.GenderType),
-          new Query(m.Salutation),
-          new Query(m.PersonRole),
-          new Query(m.OrganisationContactKind),
+          new Query(
+            {
+              name: 'locales',
+              objectType: this.m.Locale,
+              sort: [
+                new Sort({ roleType: m.Locale.Name, direction: 'Asc' }),
+              ],
+          }),
+          new Query(
+            {
+              name: 'genderTypes',
+              objectType: this.m.GenderType,
+              sort: [
+                new Sort({ roleType: m.GenderType.Name, direction: 'Asc' }),
+              ],
+          }),
+          new Query(
+            {
+              name: 'salutations',
+              objectType: this.m.Salutation,
+              sort: [
+                new Sort({ roleType: m.Salutation.Name, direction: 'Asc' }),
+              ],
+          }),
+          new Query(
+            {
+              name: 'personRoles',
+              objectType: this.m.PersonRole,
+              sort: [
+                new Sort({ roleType: m.PersonRole.Name, direction: 'Asc' }),
+              ],
+          }),
+          new Query(
+            {
+              name: 'organisationContactKinds',
+              objectType: this.m.OrganisationContactKind,
+              sort: [
+                new Sort({ roleType: m.OrganisationContactKind.Description, direction: 'Asc' }),
+              ],
+          }),
         ];
 
         if (id != null) {
@@ -159,11 +194,11 @@ export class PersonComponent implements OnInit, OnDestroy {
               this.person = this.scope.session.create('Person') as Person;
             }
 
-            this.locales = loaded.collections.Locales as Locale[];
-            this.genders = loaded.collections.GenderTypes as Enumeration[];
-            this.salutations = loaded.collections.Salutations as Enumeration[];
-            this.roles = loaded.collections.PersonRoles as PersonRole[];
-            this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
+            this.locales = loaded.collections.locales as Locale[];
+            this.genders = loaded.collections.genderTypes as Enumeration[];
+            this.salutations = loaded.collections.salutations as Enumeration[];
+            this.roles = loaded.collections.personRoles as PersonRole[];
+            this.organisationContactKinds = loaded.collections.organisationContactKinds as OrganisationContactKind[];
 
             if (loaded.collections.organisationContactRelationships !== undefined) {
               this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;
@@ -192,7 +227,7 @@ export class PersonComponent implements OnInit, OnDestroy {
                   {
                     name: 'organisations',
                     objectType: m.Organisation,
-                    sort: [new Sort({ roleType: m.Organisation.Name, direction: 'Asc' })],
+                    sort: [new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' })],
                   }),
               );
             }

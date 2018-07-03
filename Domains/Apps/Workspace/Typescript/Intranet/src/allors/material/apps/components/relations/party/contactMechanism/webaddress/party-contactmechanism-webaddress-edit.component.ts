@@ -58,6 +58,9 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnD
             {
               name: 'contactMechanismPurposes',
               objectType: this.m.ContactMechanismPurpose,
+              sort: [
+                new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 

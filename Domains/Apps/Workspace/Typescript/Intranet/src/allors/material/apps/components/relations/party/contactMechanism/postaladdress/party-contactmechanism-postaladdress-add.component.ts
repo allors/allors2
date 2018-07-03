@@ -77,6 +77,9 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
             {
               name: 'contactMechanismPurposes',
               objectType: this.m.ContactMechanismPurpose,
+              sort: [
+                new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {

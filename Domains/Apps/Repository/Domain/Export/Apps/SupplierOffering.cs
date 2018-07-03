@@ -12,6 +12,8 @@ namespace Allors.Repository
         #region inherited properties
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         public DateTime FromDate { get; set; }
 
         public DateTime ThroughDate { get; set; }

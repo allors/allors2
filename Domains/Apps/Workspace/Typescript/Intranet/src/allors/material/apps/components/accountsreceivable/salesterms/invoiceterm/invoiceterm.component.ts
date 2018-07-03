@@ -72,6 +72,9 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'invoiceTermTypes',
             objectType: m.InvoiceTermType,
+            sort: [
+              new Sort({ roleType: m.IncoTermType.Name, direction: 'Asc' }),
+            ],
           }),
         ];
 

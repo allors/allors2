@@ -34,7 +34,7 @@ namespace Allors.Repository
         [RoleId("cf456f4d-8c76-4bfe-9996-89b660c9b153")]
         [Derived]
         [Indexed]
-        [Size(256)]
+        [Size(-1)]
         [Workspace]
         #endregion
         string WorkItemDescription { get; set; }

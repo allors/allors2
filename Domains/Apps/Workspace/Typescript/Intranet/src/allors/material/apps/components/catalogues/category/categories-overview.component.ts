@@ -12,7 +12,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { InternalOrganisation, ProductCategory } from '../../../../../domain';
-import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -95,6 +95,9 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
             name: 'categories',
             objectType: m.ProductCategory,
             predicate,
+            sort: [
+              new Sort({ roleType: m.ProductCategory.Name, direction: 'Asc' }),
+            ],
           })];
 
         return this.scope.load('Pull', new PullRequest({ queries }));

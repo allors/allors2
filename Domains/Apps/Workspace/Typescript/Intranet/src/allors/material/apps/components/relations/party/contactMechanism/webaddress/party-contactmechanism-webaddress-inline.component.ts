@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@ang
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from '../../../../../../../domain';
-import { PullRequest, Query } from '../../../../../../../framework';
+import { PullRequest, Query, Sort } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({

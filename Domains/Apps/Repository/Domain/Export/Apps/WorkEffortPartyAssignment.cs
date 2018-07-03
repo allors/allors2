@@ -20,6 +20,8 @@ namespace Allors.Repository
 
         public string Comment { get; set; }
 
+        public LocalisedText[] LocalisedComments { get; set; }
+
         #endregion
 
         #region Allors
@@ -52,7 +54,6 @@ namespace Allors.Repository
 
         public Facility Facility { get; set; }
 
-
         #region inherited methods
 
 
@@ -69,6 +70,5 @@ namespace Allors.Repository
 
 
         #endregion
-
     }
 }
