@@ -52,36 +52,42 @@ namespace Allors.Domain
                 .WithName("Cash")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kas").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CashId)
+                .WithIsActive(true)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
                 .WithName("Bank")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bank").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BankId)
+                .WithIsActive(true)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
                 .WithName("Giro")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Giro").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GiroId)
+                .WithIsActive(true)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
                 .WithName("General")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Memoriaal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GeneralId)
+                .WithIsActive(true)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
                 .WithName("Sales")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SalesId)
+                .WithIsActive(true)
                 .Build();
 
             new JournalTypeBuilder(this.Session)
                 .WithName("Purchase")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PurchaseId)
+                .WithIsActive(true)
                 .Build();
         }
     }

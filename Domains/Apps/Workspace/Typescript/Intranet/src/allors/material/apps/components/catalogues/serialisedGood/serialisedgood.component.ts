@@ -172,6 +172,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             {
               name: 'serialisedInventoryItemStates',
               objectType: this.m.SerialisedInventoryItemState,
+              predicate: new Equals({ roleType: m.SerialisedInventoryItemState.IsActive, value: true }),
               sort: [new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' })],
             }),
           new Query(
@@ -210,8 +211,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.locales = loaded.collections.locales as Locale[];
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
-            this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
             this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];
+            this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+            this.activeSuppliers = this.activeSuppliers.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === 'Serialised');

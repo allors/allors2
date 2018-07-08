@@ -47,24 +47,28 @@ namespace Allors.Domain
                 .WithName("Insubordination")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weigering van bevel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InsubordinationId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentTerminationReasonBuilder(this.Session)
                 .WithName("Accepted New Job")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Nieuwe job aangenomen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AcceptedNewJobId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentTerminationReasonBuilder(this.Session)
                 .WithName("Non Performance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Slechte performantie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NonPerformanceId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentTerminationReasonBuilder(this.Session)
                 .WithName("Moved")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verhuis").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MovedId)
+                .WithIsActive(true)
                 .Build();
         }
     }

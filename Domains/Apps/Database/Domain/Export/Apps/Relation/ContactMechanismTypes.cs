@@ -43,18 +43,21 @@ namespace Allors.Domain
                 .WithName("Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefoon").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhoneId)
+                .WithIsActive(true)
                 .Build();
 
             new ContactMechanismTypeBuilder(this.Session)
                 .WithName("Mobile Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MobilePhoneId)
+                .WithIsActive(true)
                 .Build();
 
             new ContactMechanismTypeBuilder(this.Session)
                 .WithName("Fax")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fax").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FaxId)
+                .WithIsActive(true)
                 .Build();
         }
     }

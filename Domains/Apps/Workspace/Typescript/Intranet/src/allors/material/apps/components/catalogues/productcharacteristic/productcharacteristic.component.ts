@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedInventoryItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
-import { Fetch, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { Fetch, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 @Component({
@@ -75,6 +75,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
               {
                 name: 'uoms',
                 objectType: this.m.UnitOfMeasure,
+                predicate: new Equals({ roleType: m.UnitOfMeasure.IsActive, value: true }),
                 sort: [
                   new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
                 ],
@@ -83,6 +84,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
               {
                 name: 'timeFrequencies',
                 objectType: this.m.TimeFrequency,
+                predicate: new Equals({ roleType: m.TimeFrequency.IsActive, value: true }),
                 sort: [
                   new Sort({ roleType: m.TimeFrequency.Name, direction: 'Asc' }),
                 ],

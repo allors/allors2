@@ -52,36 +52,42 @@ namespace Allors.Domain
                 .WithName("Received")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontvangen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ReceivedId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
                 .WithName("Reviewed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gereviewed").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ReviewedId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
                 .WithName("Filed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ingediend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FiledId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
                 .WithName("Rejected")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Geweigerd").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RejectedId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
                 .WithName("Notified Of Non Interested")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet geïnteresseerd beantwoord").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NotifiedOfNonInterestedId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentApplicationStatusBuilder(this.Session)
                 .WithName("Employed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aangenomen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployedId)
+                .WithIsActive(true)
                 .Build();
         }
     }

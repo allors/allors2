@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Single")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Alleenstaand").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SingleId)
+                .WithIsActive(true)
                 .Build();
             
             new MaritalStatusBuilder(this.Session)
                 .WithName("Married")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gehuwd").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MarriedId)
+                .WithIsActive(true)
                 .Build();
             
             new MaritalStatusBuilder(this.Session)
                 .WithName("Divorced")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gescheiden").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DivorcedId)
+                .WithIsActive(true)
                 .Build();
             
             new MaritalStatusBuilder(this.Session)
                 .WithName("Widowed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weduw(e)(naar)").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WidowedId)
+                .WithIsActive(true)
                 .Build();
         }
     }

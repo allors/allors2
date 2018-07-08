@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Purchase invoice")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aankoop factuur").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PurchaseInvoiceId)
+                .WithIsActive(true)
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
                 .WithName("Customer return")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Crediet nota retour").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerReturnId)
+                .WithIsActive(true)
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
                 .WithName("Commission")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Commissie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CommissionId)
+                .WithIsActive(true)
                 .Build();
             
             new PurchaseInvoiceTypeBuilder(this.Session)
                 .WithName("Payroll")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Salaris").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PayrollId)
+                .WithIsActive(true)
                 .Build();
         }
     }

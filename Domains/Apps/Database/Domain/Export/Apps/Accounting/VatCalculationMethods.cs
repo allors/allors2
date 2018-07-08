@@ -39,12 +39,16 @@ namespace Allors.Domain
             new VatCalculationMethodBuilder(this.Session)
                 .WithName("Cash management scheme")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kasstelsel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(CashId).Build();
+                .WithUniqueId(CashId)
+                .WithIsActive(true)
+                .Build();
 
             new VatCalculationMethodBuilder(this.Session)
                 .WithName("Incoice management scheme")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Factuurstelsel").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InvoiceId).Build();
+                .WithUniqueId(InvoiceId)
+                .WithIsActive(true)
+                .Build();
         }
     }
 }

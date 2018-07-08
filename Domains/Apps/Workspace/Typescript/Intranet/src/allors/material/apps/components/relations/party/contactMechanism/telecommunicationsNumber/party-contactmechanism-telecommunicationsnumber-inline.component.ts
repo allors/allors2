@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@ang
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../../domain';
-import { PullRequest, Query, Sort } from '../../../../../../../framework';
+import { PullRequest, Query, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({
@@ -38,18 +38,20 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
         {
           name: 'contactMechanismPurposes',
           objectType: this.m.ContactMechanismPurpose,
+          predicate: new Equals({ roleType: this.m.ContactMechanismPurpose.IsActive, value: true }),
           sort: [
             new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
           ],
-    }),
-      new Query(
-        {
-          name: 'contactMechanismTypes',
-          objectType: this.m.ContactMechanismType,
-          sort: [
-            new Sort({ roleType: this.m.ContactMechanismType.Name, direction: 'Asc' }),
-          ],
-    }),
+        }),
+          new Query(
+            {
+              name: 'contactMechanismTypes',
+              objectType: this.m.ContactMechanismType,
+              predicate: new Equals({ roleType: this.m.ContactMechanismType.IsActive, value: true }),
+              sort: [
+                new Sort({ roleType: this.m.ContactMechanismType.Name, direction: 'Asc' }),
+              ],
+        }),
       ];
 
     this.scope

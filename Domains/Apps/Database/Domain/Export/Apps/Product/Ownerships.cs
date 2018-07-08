@@ -40,12 +40,14 @@ namespace Allors.Domain
                 .WithName("Own")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eigen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OwnId)
+                .WithIsActive(true)
                 .Build();
             
             new OwnershipBuilder(this.Session)
                 .WithName("Trading")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Handel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TradingId)
+                .WithIsActive(true)
                 .Build();
         }
     }

@@ -49,30 +49,35 @@ namespace Allors.Domain
                 .WithName("Mr.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MrId)
+                .WithIsActive(true)
                 .Build();
 
             new SalutationBuilder(this.Session)
                 .WithName("Mrs.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mvr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MrsId)
+                .WithIsActive(true)
                 .Build();
             
             new SalutationBuilder(this.Session)
                 .WithName("Dr.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DrId)
+                .WithIsActive(true)
                 .Build();
             
             new SalutationBuilder(this.Session)
                 .WithName("Ms.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Juff.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MsId)
+                .WithIsActive(true)
                 .Build();
 
             new SalutationBuilder(this.Session)
                 .WithName("Mme.")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mvr.").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MmeId)
+                .WithIsActive(true)
                 .Build();
         }
     }

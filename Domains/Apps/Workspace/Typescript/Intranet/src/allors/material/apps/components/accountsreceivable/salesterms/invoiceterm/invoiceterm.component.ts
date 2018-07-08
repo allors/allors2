@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../../angular';
 import { InvoiceTermType, SalesInvoice, SalesTerm } from '../../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../../framework';
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
@@ -72,6 +72,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'invoiceTermTypes',
             objectType: m.InvoiceTermType,
+            predicate: new Equals({ roleType: m.InvoiceTermType.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.IncoTermType.Name, direction: 'Asc' }),
             ],

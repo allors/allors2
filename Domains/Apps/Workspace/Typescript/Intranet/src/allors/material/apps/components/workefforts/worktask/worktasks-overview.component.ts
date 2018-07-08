@@ -123,6 +123,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'priorities',
               objectType: m.Priority,
+              predicate: new Equals({ roleType: m.Priority.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
               ],

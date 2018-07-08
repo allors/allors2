@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../angular';
 import { OrderTermType, SalesOrder, SalesTerm } from '../../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../../framework';
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
@@ -72,6 +72,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'orderTermTypes',
             objectType: m.OrderTermType,
+            predicate: new Equals({ roleType: m.OrderTermType.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.OrderTermType.Name, direction: 'Asc' }),
             ],

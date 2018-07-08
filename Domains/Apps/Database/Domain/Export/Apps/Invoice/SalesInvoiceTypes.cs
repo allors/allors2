@@ -43,18 +43,21 @@ namespace Allors.Domain
                 .WithName("Sales invoice")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop factuur").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SalesInvoiceId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesInvoiceTypeBuilder(this.Session)
                 .WithName("Purchase return")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkoop retour").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PurchaseReturnId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesInvoiceTypeBuilder(this.Session)
                 .WithName("Interest")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interest").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InterestId)
+                .WithIsActive(true)
                 .Build();
         }
     }

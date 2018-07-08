@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, Singleton, TelecommunicationsNumber } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 
@@ -115,6 +115,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
             {
               name: 'purposes',
               objectType: this.m.CommunicationEventPurpose,
+              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
               ],

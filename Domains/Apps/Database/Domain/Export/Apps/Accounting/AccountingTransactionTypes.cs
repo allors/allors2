@@ -65,48 +65,56 @@ namespace Allors.Domain
                 .WithName("Bank statement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bankafschrift").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BankStatementId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Payment receipt")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Binnenkomende betaling").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PaymentReceiptId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Payment disbursement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitgaande betaling").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PaymentDisbursementId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Accounts payable")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debiteuren post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AccountsPayableId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Accounts receivable")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Crediteuren post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AccountsReceivableId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Budget posting")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Budget post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BudgettingId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("Inventory adjustment")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Voorraad aanpassing").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InventoryAdjustmentId)
+                .WithIsActive(true)
                 .Build();
 
             new AccountingTransactionTypeBuilder(this.Session)
                 .WithName("General")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GeneralId)
+                .WithIsActive(true)
                 .Build();
         }
     }

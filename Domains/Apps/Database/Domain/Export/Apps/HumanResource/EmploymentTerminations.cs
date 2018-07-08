@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Resignation")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontslag genomen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ResignationId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentTerminationBuilder(this.Session)
                 .WithName("Fired")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ontslagen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FiredId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentTerminationBuilder(this.Session)
                 .WithName("Retirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pensioen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RetirenmentId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentTerminationBuilder(this.Session)
                 .WithName("Deceased")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overleden").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DeceasedId)
+                .WithIsActive(true)
                 .Build();
         }
     }

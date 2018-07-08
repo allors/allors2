@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Billing for Order Items")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Order Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForOrderItemsId)
+                .WithIsActive(true)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
                 .WithName("Billing for Shipment Items")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForShipmentItemsId)
+                .WithIsActive(true)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
                 .WithName("Billing for Work Efforts")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForWorkEffortsId)
+                .WithIsActive(true)
                 .Build();
 
             new BillingProcessBuilder(this.Session)
                 .WithName("Billing for Time Entries")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Billing for Shipment Items").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingForTimeEntriesId)
+                .WithIsActive(true)
                 .Build();
         }
     }

@@ -58,46 +58,55 @@ namespace Allors.Domain
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(GoodId)
                 .WithName("In good order")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(BeingReparedId)
                 .WithName("Being Repared")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SlightlyDamagedId)
                 .WithName("Slightly Damaged")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(DefectiveId)
                 .WithName("Defective")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(ScrapId)
                 .WithName("Scrap")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(AvailableId)
                 .WithName("Available")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SoldId)
                 .WithName("Sold")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(InRentId)
                 .WithName("InRent")
+                .WithIsActive(true)
                 .Build();
 
             new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(AssignedId)
                 .WithName("Assigned")
+                .WithIsActive(true)
                 .Build();
         }
     }

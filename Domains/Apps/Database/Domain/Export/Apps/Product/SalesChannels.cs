@@ -61,54 +61,63 @@ namespace Allors.Domain
                 .WithName("No Channel")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Geen verkoopkanaal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NoChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("via Web")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via Web").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WebChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("POS Channel")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kassa Kanaal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PosChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("by Fax")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via Fax").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FaxChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("by Phone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefonisch").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhoneChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("via E-Mail")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via E-Mail").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmailChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("Snail mail Channel")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via Post").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SnailMailChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("Affiliate Channel")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Affiliate Kanaal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AffiliateChannelId)
+                .WithIsActive(true)
                 .Build();
             
             new SalesChannelBuilder(this.Session)
                 .WithName("via eBay")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("via eBay").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EbayChannelId)
+                .WithIsActive(true)
                 .Build();
         }
     }

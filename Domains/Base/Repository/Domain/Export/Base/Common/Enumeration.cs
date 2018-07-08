@@ -55,7 +55,6 @@ namespace Allors.Repository
         [RoleId("0c6faf5a-eac9-454c-bd53-3b8409e56d34")]
         #endregion
         [Indexed]
-        [Required]
         [Workspace]
         bool IsActive { get; set; }
     }

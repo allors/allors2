@@ -43,17 +43,21 @@ namespace Allors.Domain
                 .WithName("NewsPaper")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Krant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(NewsPaperId)
+                .WithIsActive(true)
                 .Build();
             
             new EmploymentApplicationSourceBuilder(this.Session)
                 .WithName("PersonallReferal")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Persoonlijk doorverwezen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PersonallReferalId).Build();
+                .WithUniqueId(PersonallReferalId)
+                .WithIsActive(true)
+                .Build();
             
             new EmploymentApplicationSourceBuilder(this.Session)
                 .WithName("Internet")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Internet").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InternetId)
+                .WithIsActive(true)
                 .Build();
         }
     }

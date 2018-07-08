@@ -55,42 +55,49 @@ namespace Allors.Domain
                 .WithName("Very High")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
                 .WithUniqueId(VeryHighId)
+                .WithIsActive(true)
                 .Build();
 
             new PriorityBuilder(this.Session)
                 .WithName("High")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
                 .WithUniqueId(HighId)
+                .WithIsActive(true)
                 .Build();
 
             new PriorityBuilder(this.Session)
                 .WithName("Medium")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddeld").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MediumId)
+                .WithIsActive(true)
                 .Build();
 
             new PriorityBuilder(this.Session)
                 .WithName("Low")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LowId)
+                .WithIsActive(true)
                 .Build();
 
             new PriorityBuilder(this.Session)
                 .WithName("First")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eerste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FirstId)
+                .WithIsActive(true)
                 .Build();
 
             new PriorityBuilder(this.Session)
                 .WithName("Third")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tweede").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SecondId)
+                .WithIsActive(true)
                 .Build();
 
             new PriorityBuilder(this.Session)
                 .WithName("Third")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ThirdId)
+                .WithIsActive(true)
                 .Build();
         }
     }

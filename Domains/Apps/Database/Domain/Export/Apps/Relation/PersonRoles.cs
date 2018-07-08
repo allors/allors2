@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Employee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werknemer").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployeeId)
+                .WithIsActive(true)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
                 .WithName("Sales Rep")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoper").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EmployeeId)
+                .WithIsActive(true)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
                 .WithName("Organisation Contact")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Contact").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ContactId)
+                .WithIsActive(true)
                 .Build();
 
             new PersonRoleBuilder(this.Session)
                 .WithName("Customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerId)
+                .WithIsActive(true)
                 .Build();
         }
     }

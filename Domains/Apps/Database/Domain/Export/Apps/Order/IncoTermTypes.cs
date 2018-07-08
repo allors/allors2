@@ -66,66 +66,77 @@ namespace Allors.Domain
                 .WithName("Incoterm EXW (Ex Works)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm EXW (Af fabriek)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(ExwId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm FCA (Free Carrier)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FCA (Vrachtvrij tot vervoerder)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(FcaId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm CPT (Carriage Paid To)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CPT (Vrachtvrij tot)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CptId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm CIP (Carriage and Insurance Paid To)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIP (Vrachtvrij inclusief verzekering tot)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CipId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm DAT (Delivered At Terminal)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAT (Franco terminal)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DatId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm DAP (Delivered At Place)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DAP (Franco ter plaatse)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DapId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm DDP (Delivered Duty Paid)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm DDP (Franco inclusief rechten)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DdpId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm FAS (Free Alongside Ship)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FAS (Vrij langszij schip)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm FOB (Free On Board)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm FOB (Vrij aan boord)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm CFR (Cost and Freight)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CFR (Kostprijs en vracht)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
+                .WithIsActive(true)
                 .Build();
 
             new IncoTermTypeBuilder(this.Session)
                 .WithName("Incoterm CIF (Cost, Insurance and Freight)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Incoterm CIF (Kostprijs, verzekering en vracht)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CifId)
+                .WithIsActive(true)
                 .Build();
         }
     }

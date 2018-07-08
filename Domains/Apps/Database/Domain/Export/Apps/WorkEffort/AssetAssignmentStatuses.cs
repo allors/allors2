@@ -40,12 +40,14 @@ namespace Allors.Domain
                 .WithName("Requested")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aangevraagd").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RequestedId)
+                .WithIsActive(true)
                 .Build();
             
             new AssetAssignmentStatusBuilder(this.Session)
                 .WithName("Assigned")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Toegekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AssignedId)
+                .WithIsActive(true)
                 .Build();
         }
     }

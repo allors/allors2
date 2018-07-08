@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@ang
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from '../../../../../../../domain';
-import { PullRequest, Query, Sort } from '../../../../../../../framework';
+import { PullRequest, Query, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({
@@ -36,7 +36,11 @@ export class PartyContactMechanismInlineWebAddressComponent implements OnInit, O
         {
           name: 'contactMechanismPurposes',
           objectType: this.m.ContactMechanismPurpose,
-        }),
+          predicate: new Equals({ roleType: this.m.ContactMechanismPurpose.IsActive, value: true }),
+          sort: [
+            new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
+          ],
+    }),
     ];
 
     this.scope.load('Pull', new PullRequest({ queries })).subscribe(

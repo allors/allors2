@@ -43,18 +43,21 @@ namespace Allors.Domain
                 .WithName("Male")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mannelijk").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MaleId)
+                .WithIsActive(true)
                 .Build();
 
             new GenderTypeBuilder(this.Session)
                 .WithName("Female")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrouwelijk").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FemaleId)
+                .WithIsActive(true)
                 .Build();
 
             new GenderTypeBuilder(this.Session)
                 .WithName("Other")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Anders").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FemaleId)
+                .WithIsActive(true)
                 .Build();
         }
     }

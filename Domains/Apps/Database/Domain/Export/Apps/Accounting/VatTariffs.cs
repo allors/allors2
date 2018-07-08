@@ -42,17 +42,23 @@ namespace Allors.Domain
             new VatTariffBuilder(this.Session)
                 .WithName("Standard")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoog").WithLocale(dutchLocale).Build())
-                .WithUniqueId(StandardId).Build();
+                .WithUniqueId(StandardId)
+                .WithIsActive(true)
+                .Build();
 
             new VatTariffBuilder(this.Session)
                 .WithName("Reduced rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laag").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ReducedRateId).Build();
+                .WithUniqueId(ReducedRateId)
+                .WithIsActive(true)
+                .Build();
 
             new VatTariffBuilder(this.Session)
                 .WithName("Zero rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("nul tarief").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ZeroRateId).Build();
+                .WithUniqueId(ZeroRateId)
+                .WithIsActive(true)
+                .Build();
         }
     }
 }

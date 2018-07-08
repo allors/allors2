@@ -43,18 +43,21 @@ namespace Allors.Domain
                 .WithName("Customer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerId)
+                .WithIsActive(true)
                 .Build();
 
             new OrganisationRoleBuilder(this.Session)
                 .WithName("Supplier")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Leverancier").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SupplierId)
+                .WithIsActive(true)
                 .Build();
 
             new OrganisationRoleBuilder(this.Session)
                 .WithName("Manufacturer")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fabrikant").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ManufacturerId)
+                .WithIsActive(true)
                 .Build();
         }
     }

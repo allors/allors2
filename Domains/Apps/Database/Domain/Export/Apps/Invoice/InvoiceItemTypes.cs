@@ -24,7 +24,6 @@ namespace Allors.Domain
         private static readonly Guid InterestChargeId = new Guid("9077D502-1823-4ac5-B8E9-A6F074186A3F");
         private static readonly Guid MiscChargeId = new Guid("2175B0D1-E2D3-4a83-8842-DDF02A7DF794");
         private static readonly Guid PromotionId = new Guid("2D2E81A5-E42F-497e-B446-3D448FF8FF75");
-        private static readonly Guid VatId = new Guid("2DB43A22-6FED-4e85-843F-377157E9D72B");
         private static readonly Guid ShippingAndHandlingId = new Guid("735349ED-14FF-4f57-8754-F053FD358B8A");
         private static readonly Guid SurchargeId = new Guid("7B5AD1AC-BC9F-46ea-8FD3-01A9624D7E13");
         private static readonly Guid WarrantyId = new Guid("5F5994E3-AF24-4cab-9F1E-5869556488E3");
@@ -45,8 +44,6 @@ namespace Allors.Domain
         public InvoiceItemType MiscCharge => this.Cache[MiscChargeId];
 
         public InvoiceItemType Promotion => this.Cache[PromotionId];
-
-        public InvoiceItemType SalesTax => this.Cache[VatId];
 
         public InvoiceItemType ShippingAndHandling => this.Cache[ShippingAndHandlingId];
 
@@ -76,84 +73,91 @@ namespace Allors.Domain
                 .WithName("Fee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Honorarium").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FeeId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Discount")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Korting").WithLocale(dutchLocale).Build())
                 .WithUniqueId(DiscountId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Interest Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interest toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InterestChargeId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Miscellaneous Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MiscChargeId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Promotion")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoopbevordering ").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PromotionId)
-                .Build();
-            
-            new InvoiceItemTypeBuilder(this.Session)
-                .WithName("VAT")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("BTW").WithLocale(dutchLocale).Build())
-                .WithUniqueId(VatId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Shipping & Handling")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bezorgkosten").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShippingAndHandlingId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Surcharge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SurchargeId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Warranty")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Garantie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WarrantyId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Product Feature")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product onderdeel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductFeatureItemId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Part Item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onderdeel item").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PartItemId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Product")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductItemId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Service Product Item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Dienst onderdeel").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ServiceProductItemId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceItemTypeBuilder(this.Session)
                 .WithName("Freight Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vracht toeslag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FreightChargeId)
+                .WithIsActive(true)
                 .Build();
         }
     }

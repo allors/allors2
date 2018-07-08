@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Beginner")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Starter").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BeginnerId)
+                .WithIsActive(true)
                 .Build();
 
             new SkillLevelBuilder(this.Session)
                 .WithName("Intermediate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Intermediate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(IntermediateId)
+                .WithIsActive(true)
                 .Build();
             
             new SkillLevelBuilder(this.Session)
                 .WithName("Advanced")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Ervaren").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AdvancedId)
+                .WithIsActive(true)
                 .Build();
             
             new SkillLevelBuilder(this.Session)
                 .WithName("Expert")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Expert").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExpertId)
+                .WithIsActive(true)
                 .Build();
         }
     }

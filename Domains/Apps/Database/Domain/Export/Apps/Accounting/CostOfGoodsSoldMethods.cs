@@ -42,18 +42,22 @@ namespace Allors.Domain
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("FiFo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("FiFo").WithLocale(dutchLocale).Build())
-                .WithUniqueId(FiFoId).Build();
+                .WithUniqueId(FiFoId)
+                .WithIsActive(true)
+                .Build();
             
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("LiFo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("LiFo").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LiFoId)
+                .WithIsActive(true)
                 .Build();
 
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Average price")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddelde prijs").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AverageId)
+                .WithIsActive(true)
                 .Build();
         }
     }

@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -75,6 +75,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'frequencies',
             objectType: m.TimeFrequency,
+            predicate: new Equals({ roleType: m.TimeFrequency.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.TimeFrequency.Name, direction: 'Asc' }),
             ],

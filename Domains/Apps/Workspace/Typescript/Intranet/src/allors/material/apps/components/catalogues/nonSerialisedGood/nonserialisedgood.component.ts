@@ -121,6 +121,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           new Query({
             name: 'varianceReasons',
             objectType: m.VarianceReason,
+            predicate: new Equals({ roleType: m.VarianceReason.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.VarianceReason.Name, direction: 'Asc' }),
             ],
@@ -175,6 +176,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
             this.facility = internalOrganisation.DefaultFacility;
             this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+            this.activeSuppliers = this.activeSuppliers.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
             const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === 'Non serialised');

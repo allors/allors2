@@ -61,54 +61,63 @@ namespace Allors.Domain
                 .WithName("Billing Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Facturatie rate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BillingRateId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Cost")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kost").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CostId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Regular Pay")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gewone bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RegularPayId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Overtime Pay")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betaling overuren").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OvertimePayId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Overtime Billing Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overuren rate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OvertimeBillingRateId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Weekend Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weekend rate").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WeekendRateId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Average Pay Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gemiddeld bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AveragePayRateId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Highest Pay Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Hoogste bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(HighestPayRateId)
+                .WithIsActive(true)
                 .Build();
             
             new RateTypeBuilder(this.Session)
                 .WithName("Lowest Pay Rate")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Laagste bezoldiging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(LowestPayRateId)
+                .WithIsActive(true)
                 .Build();
         }
     }

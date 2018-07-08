@@ -37,6 +37,7 @@ namespace Allors.Domain
                 .WithName("Project Management")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project Management").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectManagementId)
+                .WithIsActive(true)
                 .Build();
         }
     }

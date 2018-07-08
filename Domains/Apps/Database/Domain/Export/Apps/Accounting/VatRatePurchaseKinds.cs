@@ -42,17 +42,22 @@ namespace Allors.Domain
             new VatRatePurchaseKindBuilder(this.Session)
                 .WithName("Goods")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goederen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(GoodsId).Build();
+                .WithUniqueId(GoodsId)
+                .WithIsActive(true)
+                .Build();
 
             new VatRatePurchaseKindBuilder(this.Session)
                 .WithName("Services")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diensten").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ServicesId).Build();
+                .WithUniqueId(ServicesId)
+                .WithIsActive(true)
+                .Build();
 
             new VatRatePurchaseKindBuilder(this.Session)
                 .WithName("Investments")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Investeringen").WithLocale(dutchLocale).Build())
-                .WithUniqueId(InvestmentsId).Build();
+                .WithUniqueId(InvestmentsId).WithIsActive(true)
+                .Build();
         }
     }
 }

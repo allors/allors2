@@ -52,36 +52,42 @@ namespace Allors.Domain
                 .WithName("Constraint Specification")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Constraint Specification").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ConstraintSpecificationId)
+                .WithIsActive(true)
                 .Build();
             
             new PartSpecificationTypeBuilder(this.Session)
                 .WithName("Operating Condition")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operating Condition").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OperatingConditionId)
+                .WithIsActive(true)
                 .Build();
             
             new PartSpecificationTypeBuilder(this.Session)
                 .WithName("Part Specification")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Part Specification").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PartSpecificationId)
+                .WithIsActive(true)
                 .Build();
             
             new PartSpecificationTypeBuilder(this.Session)
                 .WithName("Performance Specification")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Performance Specification").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PerformanceSpecificationId)
+                .WithIsActive(true)
                 .Build();
 
             new PartSpecificationTypeBuilder(this.Session)
                 .WithName("Testing Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Testing Requirement").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TestingRequirementId)
+                .WithIsActive(true)
                 .Build();
 
             new PartSpecificationTypeBuilder(this.Session)
                 .WithName("Tolerance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tolerance").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ToleranceId)
+                .WithIsActive(true)
                 .Build();
         }
     }

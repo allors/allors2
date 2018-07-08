@@ -111,6 +111,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             {
               name: 'invoiceItemTypes',
               objectType: m.InvoiceItemType,
+              predicate: new Equals({ roleType: m.InvoiceItemType.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
               ],
@@ -119,6 +120,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             {
               name: 'serialisedInventoryItemStates',
               objectType: m.SerialisedInventoryItemState,
+              predicate: new Equals({ roleType: m.SerialisedInventoryItemState.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
               ],

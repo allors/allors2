@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../../angular';
 import { IncoTermType, SalesInvoice, SalesTerm } from '../../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../../framework';
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
@@ -73,6 +73,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'incoTermTypes',
             objectType: m.IncoTermType,
+            predicate: new Equals({ roleType: m.IncoTermType.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.IncoTermType.Name, direction: 'Asc' }),
             ],

@@ -40,12 +40,14 @@ namespace Allors.Domain
                 .WithName("Retirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Pensioen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RetirementId)
+                .WithIsActive(true)
                 .Build();
             
             new DeductionTypeBuilder(this.Session)
                 .WithName("Insurance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verzekering").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InsuranceId)
+                .WithIsActive(true)
                 .Build();
         }
     }

@@ -107,6 +107,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             {
               name: 'purchaseInvoiceTypes',
               objectType: m.PurchaseInvoiceType,
+              predicate: new Equals({ roleType: m.PurchaseInvoiceType.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.PurchaseInvoiceType.Name, direction: 'Asc' }),
               ],

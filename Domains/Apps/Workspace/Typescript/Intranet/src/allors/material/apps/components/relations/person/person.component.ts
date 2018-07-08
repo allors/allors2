@@ -109,6 +109,7 @@ export class PersonComponent implements OnInit, OnDestroy {
             {
               name: 'genderTypes',
               objectType: this.m.GenderType,
+              predicate: new Equals({ roleType: m.GenderType.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.GenderType.Name, direction: 'Asc' }),
               ],
@@ -117,6 +118,7 @@ export class PersonComponent implements OnInit, OnDestroy {
             {
               name: 'salutations',
               objectType: this.m.Salutation,
+              predicate: new Equals({ roleType: m.Salutation.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.Salutation.Name, direction: 'Asc' }),
               ],

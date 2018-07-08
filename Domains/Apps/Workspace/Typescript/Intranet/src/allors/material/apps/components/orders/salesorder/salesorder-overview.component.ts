@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -190,6 +190,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'serialisedInventoryItemStates',
               objectType: m.SerialisedInventoryItemState,
+              predicate: new Equals({ roleType: m.SerialisedInventoryItemState.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
               ],

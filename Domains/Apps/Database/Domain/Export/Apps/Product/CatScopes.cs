@@ -40,12 +40,14 @@ namespace Allors.Domain
                 .WithName("Private")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Prive").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PrivateId)
+                .WithIsActive(true)
                 .Build();
             
             new CatScopeBuilder(this.Session)
                 .WithName("Public")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Publiek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PublicId)
+                .WithIsActive(true)
                 .Build();
         }
     }

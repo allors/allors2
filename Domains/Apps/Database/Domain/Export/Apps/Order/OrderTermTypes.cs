@@ -49,30 +49,35 @@ namespace Allors.Domain
                 .WithName("Percentage Cancellation Charge")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Procent annulerings toeslag").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentageCancellationChargeId)
+                .WithIsActive(true)
                 .Build();
 
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Days Cancellation Without Penalty")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen annulatie zonder kost").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysCancellationWithoutPenaltyId)
+                .WithIsActive(true)
                 .Build();
             
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Percentage Penalty Non Performance")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Percentage toeslag slechte (non performance)").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PercentagePenaltyNonPerformanceId)
+                .WithIsActive(true)
                 .Build();
             
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Days Within Which Deliverary Must Occur")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aantal dagen waarbinnen levering moet gebeuren").WithLocale(belgianLocale).Build())
                 .WithUniqueId(DaysWithinWhichDeliveraryMustOccurId)
+                .WithIsActive(true)
                 .Build();
             
             new OrderTermTypeBuilder(this.Session)
                 .WithName("Non returnable sales item")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet retourneerbaat item").WithLocale(belgianLocale).Build())
                 .WithUniqueId(NonReturnableSalesItemId)
+                .WithIsActive(true)
                 .Build();
         }
     }

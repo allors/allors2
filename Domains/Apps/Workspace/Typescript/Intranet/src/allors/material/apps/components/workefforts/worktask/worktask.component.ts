@@ -42,6 +42,7 @@ import {
   Query,
   TreeNode,
   Sort,
+  Equals,
 } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
@@ -124,6 +125,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'priorities',
             objectType: this.m.Priority,
+            predicate: new Equals({ roleType: m.Priority.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
             ],
@@ -131,6 +133,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           new Query({
             name: 'workEffortPurposes',
             objectType: this.m.WorkEffortPurpose,
+            predicate: new Equals({ roleType: this.m.WorkEffortPurpose.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.WorkEffortPurpose.Name, direction: 'Asc' }),
             ],

@@ -849,10 +849,25 @@ namespace Allors.Domain
         {
             if (this.IsDeletable)
             {
-                this.ShippingAndHandlingCharge.Delete();
-                this.Fee.Delete();
-                this.DiscountAdjustment.Delete();
-                this.SurchargeAdjustment.Delete();
+                if (this.ExistShippingAndHandlingCharge)
+                {
+                    this.ShippingAndHandlingCharge.Delete();
+                }
+
+                if (this.ExistFee)
+                {
+                    this.Fee.Delete();
+                }
+
+                if (this.ExistDiscountAdjustment)
+                {
+                    this.DiscountAdjustment.Delete();
+                }
+
+                if (this.ExistSurchargeAdjustment)
+                {
+                    this.SurchargeAdjustment.Delete();
+                }
 
                 foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
                 {

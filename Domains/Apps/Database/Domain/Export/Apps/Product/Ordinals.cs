@@ -43,18 +43,21 @@ namespace Allors.Domain
                 .WithName("First")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Eerste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FirstId)
+                .WithIsActive(true)
                 .Build();
             
             new OrdinalBuilder(this.Session)
                 .WithName("Second")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Tweede").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SecondId)
+                .WithIsActive(true)
                 .Build();
             
             new OrdinalBuilder(this.Session)
                 .WithName("Third")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Derde").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ThirdId)
+                .WithIsActive(true)
                 .Build();
         }
     }

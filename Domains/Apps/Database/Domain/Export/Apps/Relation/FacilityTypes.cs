@@ -37,6 +37,7 @@ namespace Allors.Domain
                 .WithName("Warehouse")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Magazijn").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WarehouseId)
+                .WithIsActive(true)
                 .Build();
         }
     }

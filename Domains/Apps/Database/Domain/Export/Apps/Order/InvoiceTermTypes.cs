@@ -52,36 +52,42 @@ namespace Allors.Domain
                 .WithName("Payment-net days")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betaaltermijn").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PaymentNetDaysId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Penalty for late fee")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete late betaling").WithLocale(belgianLocale).Build())
                 .WithUniqueId(LateFeeId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Penalty for collection agency")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boete incassobureau").WithLocale(belgianLocale).Build())
                 .WithUniqueId(CollectionAgencyPenaltyId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Payment condition: 100% before transport")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betalings voorwaarde: 100% voorafgaand aan verzending").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PayFullBeforeTransportId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Payment condition: 50% on order and 50% before transport")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Betalings voorwaarde: 50% bij order en 50% voorafgaand aan verzending").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PayHalfBeforeTransportId)
+                .WithIsActive(true)
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
                 .WithName("Custom")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Custom").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PayHalfBeforeTransportId)
+                .WithIsActive(true)
                 .Build();
         }
     }

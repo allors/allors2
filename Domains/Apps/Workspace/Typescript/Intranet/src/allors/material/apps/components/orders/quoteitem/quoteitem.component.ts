@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -95,6 +95,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             {
               name: 'unitsOfMeasure',
               objectType: m.UnitOfMeasure,
+              predicate: new Equals({ roleType: m.UnitOfMeasure.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
               ],

@@ -39,12 +39,15 @@ namespace Allors.Domain
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Use top level´s cost center GL-account")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van hoogste niveau").WithLocale(dutchLocale).Build())
-                .WithUniqueId(Topid).Build();
+                .WithUniqueId(Topid)
+                .WithIsActive(true)
+                .Build();
             
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Use bottom level´s cost center GL-account")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gebruik grootboekrekening van kostenplaats van laagste niveau").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BottomId)
+                .WithIsActive(true)
                 .Build();
         }
     }

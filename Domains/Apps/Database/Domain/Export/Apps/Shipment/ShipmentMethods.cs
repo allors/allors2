@@ -49,30 +49,35 @@ namespace Allors.Domain
                 .WithName("Ground")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Weg").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GroundId)
+                .WithIsActive(true)
                 .Build();
 
             new ShipmentMethodBuilder(this.Session)
                 .WithName("Rail")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Spoor").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RailId)
+                .WithIsActive(true)
                 .Build();
             
             new ShipmentMethodBuilder(this.Session)
                 .WithName("Air")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vliegtuig").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FirstClassAirId)
+                .WithIsActive(true)
                 .Build();
             
             new ShipmentMethodBuilder(this.Session)
                 .WithName("Boat")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Boot").WithLocale(dutchLocale).Build())
                 .WithUniqueId(BoatId)
+                .WithIsActive(true)
                 .Build();
 
             new ShipmentMethodBuilder(this.Session)
                 .WithName("Ex works")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Af fabriek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExWorksId)
+                .WithIsActive(true)
                 .Build();
         }
     }

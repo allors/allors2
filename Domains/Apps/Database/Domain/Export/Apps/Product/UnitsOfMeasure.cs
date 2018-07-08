@@ -155,24 +155,28 @@ namespace Allors.Domain
                 .WithName("pack")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("pakket").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PackId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("pair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("paar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PairId)
+                .WithIsActive(true)
                 .Build();
            
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("piece")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("stuk").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PieceId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
                 .WithName("people")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("personen").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PeopleId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -180,6 +184,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("millimeter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("mm")
                 .WithUniqueId(MillimeterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -187,6 +192,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("centimeter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("cm")
                 .WithUniqueId(CentimeterId)
+                .WithIsActive(true)
                 .Build();
             
             new UnitOfMeasureBuilder(this.Session)
@@ -194,6 +200,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("m")
                 .WithUniqueId(MeterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -201,6 +208,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("km")
                 .WithUniqueId(KilometerId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -208,6 +216,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milligram").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("mg")
                 .WithUniqueId(MilligramId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -215,6 +224,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("gram").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("g")
                 .WithUniqueId(GramId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -222,6 +232,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("kg")
                 .WithUniqueId(KilogramId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -229,6 +240,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ton").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("t")
                 .WithUniqueId(KilogramId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -236,6 +248,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("graden Celsius").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("°C")
                 .WithUniqueId(DegreeCelsiusId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -243,6 +256,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante meter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("m²")
                 .WithUniqueId(SquareMeterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -250,6 +264,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("hectare").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("ha")
                 .WithUniqueId(HectareId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -257,6 +272,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("vierkante kilometer").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("km²")
                 .WithUniqueId(SquareKilometerId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -264,6 +280,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("milliliter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("ml")
                 .WithUniqueId(MilliLiterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -271,6 +288,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke centimeter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("cm³")
                 .WithUniqueId(CubicCentimeterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -278,6 +296,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("liter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("L")
                 .WithUniqueId(LiterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -285,6 +304,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kubieke meter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("m³")
                 .WithUniqueId(CubicMeterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -292,6 +312,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("meter per seconde").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("m/s")
                 .WithUniqueId(MeterPerSecondId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -299,6 +320,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilometer per uur").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("km/h")
                 .WithUniqueId(KilometerPerHourId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -306,6 +328,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilogram per kubieke meter").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("kg/m³")
                 .WithUniqueId(KilogramPerCubicMeterId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -313,6 +336,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("newton").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("N")
                 .WithUniqueId(NewtonId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -320,6 +344,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilopascal").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("kPa")
                 .WithUniqueId(KiloPascalId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -327,6 +352,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("watt").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("W")
                 .WithUniqueId(WattId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -334,6 +360,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("kW")
                 .WithUniqueId(KiloWattId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -341,6 +368,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilojoule").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("kJ")
                 .WithUniqueId(KiloJouleId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -348,6 +376,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("megajoule").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("MJ")
                 .WithUniqueId(MegaJouleId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -355,6 +384,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("kilowatt uur").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("kW·h")
                 .WithUniqueId(KiloWattHourId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -362,6 +392,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ampere").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("A")
                 .WithUniqueId(KiloWattHourId)
+                .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
@@ -369,6 +400,7 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("volt").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("V")
                 .WithUniqueId(KiloWattHourId)
+                .WithIsActive(true)
                 .Build();
         }
     }

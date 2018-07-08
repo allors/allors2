@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Poor")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Slecht").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PoorId)
+                .WithIsActive(true)
                 .Build();
 
             new SkillRatingBuilder(this.Session)
                 .WithName("Fair")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Matig").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FairId)
+                .WithIsActive(true)
                 .Build();
             
             new SkillRatingBuilder(this.Session)
                 .WithName("Good")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goed").WithLocale(dutchLocale).Build())
                 .WithUniqueId(GoodId)
+                .WithIsActive(true)
                 .Build();
             
             new SkillRatingBuilder(this.Session)
                 .WithName("Excellent")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Uitstekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ExcellentId)
+                .WithIsActive(true)
                 .Build();
         }
     }

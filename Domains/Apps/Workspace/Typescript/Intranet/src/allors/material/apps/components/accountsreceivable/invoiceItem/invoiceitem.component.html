@@ -25,7 +25,7 @@
 
         <div class="row" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType">
           <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Facility" [options]="facilities" display="Name" (onSelect)="facilitySelected($event)"></a-mat-select>
-          <a-mat-autocomplete class="col-md" *ngIf="!invoiceItem.InvoiceItemType || invoiceItem.InvoiceItemType === productItemType" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)" [filter]="goodsFacilityFilter.create(scope)" [disabled]="!invoiceItem.Facility"></a-mat-autocomplete>
+          <a-mat-autocomplete class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.Product" [options]="goods" display="Name" (onChange)="goodSelected($event)" [filter]="goodsFacilityFilter.create(scope)" [disabled]="!invoiceItem.Facility"></a-mat-autocomplete>
           <a-mat-select class="col-md" [object]="invoiceItem" [roleType]="m.SalesInvoiceItem.InvoiceItemType" [options]="invoiceItemTypes" display="Name"></a-mat-select>
         </div>
 

@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort} from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort, Equals} from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
@@ -117,6 +117,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
             {
               name: 'purposes',
               objectType: this.m.CommunicationEventPurpose,
+              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
               ],

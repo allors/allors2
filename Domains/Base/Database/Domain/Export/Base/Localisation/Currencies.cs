@@ -210,6 +210,7 @@ namespace Allors.Domain
                 new CurrencyBuilder(this.Session)
                     .WithIsoCode(data[i, 0])
                     .WithName(data[i, 1])
+                    .WithIsActive(true)
                     .Build();
             }
         }

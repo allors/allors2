@@ -49,30 +49,35 @@ namespace Allors.Domain
                 .WithName("Program")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Programma").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProgramId)
+                .WithIsActive(true)
                 .Build();
             
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Project")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectId)
+                .WithIsActive(true)
                 .Build();
             
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Phase")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Fase").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhaseId)
+                .WithIsActive(true)
                 .Build();
 
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Activity")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Activiteit").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ActivityId)
+                .WithIsActive(true)
                 .Build();
 
             new WorkEffortTypeKindBuilder(this.Session)
                 .WithName("Task")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Taak").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WorkTaskId)
+                .WithIsActive(true)
                 .Build();
         }
     }

@@ -43,16 +43,19 @@ namespace Allors.Domain
             new EuSalesListTypeBuilder(this.Session)
                 .WithName("Goods")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Goederen").WithLocale(dutchLocale).Build())
+                .WithIsActive(true)
                 .WithUniqueId(GoodsId).Build();
 
             new EuSalesListTypeBuilder(this.Session)
                 .WithName("Services")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diensten").WithLocale(dutchLocale).Build())
+                .WithIsActive(true)
                 .WithUniqueId(ServicesId).Build();
 
             new EuSalesListTypeBuilder(this.Session)
                 .WithName("Triangular trade")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ABC-transactie").WithLocale(dutchLocale).Build())
+                .WithIsActive(true)
                 .WithUniqueId(TriangularTradeId).Build();
         }
     }

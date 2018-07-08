@@ -49,30 +49,35 @@ namespace Allors.Domain
                 .WithName("Planned For")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gepland").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PlannedForId)
+                .WithIsActive(true)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
                 .WithName("Active")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Actief").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ActiveId)
+                .WithIsActive(true)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
                 .WithName("Open")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Open").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PositionOpenId)
+                .WithIsActive(true)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
                 .WithName("Inactive")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Niet actief").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InactiveId)
+                .WithIsActive(true)
                 .Build();
             
             new PositionStatusBuilder(this.Session)
                 .WithName("Closed")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gesloten").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PositionClosedId)
+                .WithIsActive(true)
                 .Build();
         }
     }

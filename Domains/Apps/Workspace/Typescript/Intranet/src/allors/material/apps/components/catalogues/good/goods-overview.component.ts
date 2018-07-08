@@ -202,6 +202,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
           new Query({
             name: 'serialisedInventoryItemStates',
             objectType: m.SerialisedInventoryItemState,
+            predicate: new Equals({ roleType: m.SerialisedInventoryItemState.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
             ],

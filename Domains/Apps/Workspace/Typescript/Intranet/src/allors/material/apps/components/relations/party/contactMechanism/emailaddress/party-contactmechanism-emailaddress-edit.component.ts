@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../../../angular';
 import { EmailAddress, Enumeration, PartyContactMechanism } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
@@ -59,6 +59,7 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
             {
               name: 'contactMechanismPurposes',
               objectType: this.m.ContactMechanismPurpose,
+              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
               ],

@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit , Output } from '@angular/core';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
-import { PullRequest, Query, Sort } from '../../../../../framework';
+import { PullRequest, Query, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 @Component({
@@ -50,6 +50,7 @@ export class PersonInlineComponent implements OnInit {
         {
           name: 'genders',
           objectType: this.m.GenderType,
+          predicate: new Equals({ roleType: this.m.GenderType.IsActive, value: true }),
           sort: [
             new Sort({ roleType: this.m.GenderType.Name, direction: 'Asc' }),
           ],
@@ -58,6 +59,7 @@ export class PersonInlineComponent implements OnInit {
       {
         name: 'salutations',
         objectType: this.m.Salutation,
+        predicate: new Equals({ roleType: this.m.Salutation.IsActive, value: true }),
         sort: [
           new Sort({ roleType: this.m.Salutation.Name, direction: 'Asc' }),
         ],

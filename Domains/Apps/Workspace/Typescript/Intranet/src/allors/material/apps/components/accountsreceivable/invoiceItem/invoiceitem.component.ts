@@ -115,6 +115,7 @@ export class InvoiceItemEditComponent
           new Query({
             name: 'invoiceItemTypes',
             objectType: m.InvoiceItemType,
+            predicate: new Equals({ roleType: m.InvoiceItemType.IsActive, value: true }),
             sort: [
               new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
             ],

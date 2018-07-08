@@ -40,12 +40,14 @@ namespace Allors.Domain
                 .WithName("Enforced Sequence (no gaps)")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aansluitend genummerd").WithLocale(dutchLocale).Build())
                 .WithUniqueId(EnforcedSequenceId)
+                .WithIsActive(true)
                 .Build();
             
             new InvoiceSequenceBuilder(this.Session)
                 .WithName("Restart each fiscal year (no gaps, reset to '1' each year")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Herstart elk fiscaal jaar (aansluitend, begint elk jaar met nummer '1'").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RestartOnFiscalYearId)
+                .WithIsActive(true)
                 .Build();
         }
     }

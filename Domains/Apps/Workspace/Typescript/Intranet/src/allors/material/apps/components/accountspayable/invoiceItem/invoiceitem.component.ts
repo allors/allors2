@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/observable/combineLatest';
 import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -91,6 +91,7 @@ export class InvoiceItemEditComponent
           }),
           new Query({
             name: 'invoiceItemTypes',
+            predicate: new Equals({ roleType: m.InvoiceItemType.IsActive, value: true }),
             objectType: m.InvoiceItemType,
           }),
           new Query({

@@ -103,6 +103,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
             {
               name: 'purposes',
               objectType: m.CommunicationEventPurpose,
+              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
               sort: [
                 new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
               ],

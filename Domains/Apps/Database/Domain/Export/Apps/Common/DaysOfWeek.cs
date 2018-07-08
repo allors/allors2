@@ -40,42 +40,49 @@
                 .WithName("Sunday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zondag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SundayId)
+                .WithIsActive(true)
                 .Build();
 
             new DayOfWeekBuilder(this.Session)
                 .WithName("Monday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Maandag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MondayId)
+                .WithIsActive(true)
                 .Build();
 
             new DayOfWeekBuilder(this.Session)
                 .WithName("Tuesday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("dinsdag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TuesdayId)
+                .WithIsActive(true)
                 .Build();
 
             new DayOfWeekBuilder(this.Session)
                 .WithName("Wednesday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Woensdag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WednesdayId)
+                .WithIsActive(true)
                 .Build();
 
             new DayOfWeekBuilder(this.Session)
                 .WithName("Thursday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Donderdag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ThursdayId)
+                .WithIsActive(true)
                 .Build();
 
             new DayOfWeekBuilder(this.Session)
                 .WithName("Friday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vrijdag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(FridayId)
+                .WithIsActive(true)
                 .Build();
 
             new DayOfWeekBuilder(this.Session)
                 .WithName("Saturday")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zaterdag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SaturdayId)
+                .WithIsActive(true)
                 .Build();
         }
     }

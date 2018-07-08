@@ -39,12 +39,15 @@ namespace Allors.Domain
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Debit")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Debet").WithLocale(dutchLocale).Build())
-                .WithUniqueId(DebitId).Build();
+                .WithUniqueId(DebitId)
+                .WithIsActive(true)
+                .Build();
             
             new DebitCreditConstantBuilder(this.Session)
                 .WithName("Credit")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CreditId)
+                .WithIsActive(true)
                 .Build();
         }
     }

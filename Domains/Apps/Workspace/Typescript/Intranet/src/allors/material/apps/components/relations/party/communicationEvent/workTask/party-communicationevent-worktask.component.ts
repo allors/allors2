@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 
@@ -44,7 +44,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    
+
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
@@ -87,16 +87,27 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
             {
               name: 'workEffortStates',
               objectType: this.m.WorkEffortState,
+              sort: [
+                new Sort({ roleType: m.WorkEffortState.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'priorities',
               objectType: this.m.Priority,
+              predicate: new Equals({ roleType: m.Priority.IsActive, value: true }),
+              sort: [
+                new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'workEffortPurposes',
               objectType: this.m.WorkEffortPurpose,
+              predicate: new Equals({ roleType: m.WorkEffortPurpose.IsActive, value: true }),
+              sort: [
+                new Sort({ roleType: m.WorkEffortPurpose.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {

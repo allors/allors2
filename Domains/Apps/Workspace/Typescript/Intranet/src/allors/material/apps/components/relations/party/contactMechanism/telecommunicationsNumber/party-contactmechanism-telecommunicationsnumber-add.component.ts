@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
 import { ContactMechanismType, Enumeration, Party, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort } from '../../../../../../../framework';
+import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
@@ -69,11 +69,19 @@ export class PartyContactMechanismTelecommunicationsNumberAddComponent implement
             {
               name: 'contactMechanismPurposes',
               objectType: this.m.ContactMechanismPurpose,
+              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: [
+                new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
+              ],
             }),
           new Query(
             {
               name: 'contactMechanismTypes',
               objectType: this.m.ContactMechanismType,
+              predicate: new Equals({ roleType: m.ContactMechanismType.IsActive, value: true }),
+              sort: [
+                new Sort({ roleType: this.m.ContactMechanismType.Name, direction: 'Asc' }),
+              ],
             }),
         ];
 

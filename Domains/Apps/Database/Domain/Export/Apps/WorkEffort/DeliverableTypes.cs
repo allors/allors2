@@ -46,24 +46,28 @@ namespace Allors.Domain
                 .WithName("Project Plan")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Projectplan").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectPlanId)
+                .WithIsActive(true)
                 .Build();
             
             new DeliverableTypeBuilder(this.Session)
                 .WithName("Presentation")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Presentatie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PresentationId)
+                .WithIsActive(true)
                 .Build();
             
             new DeliverableTypeBuilder(this.Session)
                 .WithName("Report")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Rapport").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ReportId)
+                .WithIsActive(true)
                 .Build();
             
             new DeliverableTypeBuilder(this.Session)
                 .WithName("Market Analysis")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Markt analyse").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MarketAnalysisId)
+                .WithIsActive(true)
                 .Build();
         }
     }

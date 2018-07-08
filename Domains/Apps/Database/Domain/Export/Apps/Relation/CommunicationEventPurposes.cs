@@ -67,66 +67,77 @@ namespace Allors.Domain
                 .WithName("Support Call")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Support call").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SupportCallId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("Inquiry")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vraag").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InquiryId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("CustomerServiceCall")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klantendienst").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerServiceCallId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("SalesFollowUp")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoop opvolging").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SalesFollowUpId)
+                .WithIsActive(true)
                 .Build();
 
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("Appointment")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afspraak").WithLocale(dutchLocale).Build())
                 .WithUniqueId(AppointmentId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("Meeting")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vergadering").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MeetingId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("Seminar")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Seminar").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SeminarId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("ActivityRequest")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Aanvraag activiteit").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ActivityRequestId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("Conference")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Conferencie").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ConferenceId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("SalesMeeting")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verkoops meeting").WithLocale(dutchLocale).Build())
                 .WithUniqueId(SalesMeetingId)
+                .WithIsActive(true)
                 .Build();
             
             new CommunicationEventPurposeBuilder(this.Session)
                 .WithName("Interview")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interview").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InterviewId)
+                .WithIsActive(true)
                 .Build();
         }
     }

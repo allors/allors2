@@ -52,36 +52,42 @@ namespace Allors.Domain
                 .WithName("Customer Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Klant vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(CustomerRequirementId)
+                .WithIsActive(true)
                 .Build();
             
             new RequirementTypeBuilder(this.Session)
                 .WithName("Internal Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Interne vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(InternalRequirementId)
+                .WithIsActive(true)
                 .Build();
             
             new RequirementTypeBuilder(this.Session)
                 .WithName("Product Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Product vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductRequirementId)
+                .WithIsActive(true)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
                 .WithName("Project Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Project vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProjectRequirementId)
+                .WithIsActive(true)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
                 .WithName("Resource Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Resource vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ResourceRequirementId)
+                .WithIsActive(true)
                 .Build();
 
             new RequirementTypeBuilder(this.Session)
                 .WithName("Work Requirement")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Werk vereiste").WithLocale(dutchLocale).Build())
                 .WithUniqueId(WorkRequirementId)
+                .WithIsActive(true)
                 .Build();
         }
     }
