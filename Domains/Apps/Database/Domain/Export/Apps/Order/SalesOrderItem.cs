@@ -58,8 +58,8 @@ namespace Allors.Domain
             {
                 if (this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Cancelled) ||
                     this.SalesOrderItemState.Equals(new SalesOrderItemStates(this.Strategy.Session).Rejected) ||
-                    ((this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem) || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem)) && this.QuantityOrdered == 0) ||
-                    ((!this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem) && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem)) && this.ActualUnitPrice == 0) ||
+                    (this.IsSubTotalItem && this.QuantityOrdered == 0) ||
+                    (!this.IsSubTotalItem && this.ActualUnitPrice == 0) ||
                     !this.ExistShipToAddress || !this.ExistShipToParty ||
                     (this.ExistCalculatedUnitPrice && this.CalculatedUnitPrice == 0))
                 {
@@ -138,7 +138,7 @@ namespace Allors.Domain
                 derivation.Validation.AssertExists(this, M.SalesOrderItem.ProductFeature);
             }
 
-            if (this.ExistInvoiceItemType && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem))
+            if (this.ExistInvoiceItemType && this.QuantityOrdered == 0)
             {
                 this.QuantityOrdered = 1;
             }
@@ -771,7 +771,7 @@ namespace Allors.Domain
             this.UnitVat = vat;
             this.TotalBasePrice = 0;
 
-            if (this.InvoiceItemType == new InvoiceItemTypes(this.strategy.Session).ProductItem)
+            if (this.IsSubTotalItem)
             {
                 this.TotalBasePrice = price * this.QuantityOrdered;
             }
@@ -1137,5 +1137,9 @@ namespace Allors.Domain
 
             this.AppsOnDeriveOrderItemState(derivation);
         }
-   }
+
+        private bool AppsIsSubTotalItem =>
+            this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+            || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem);
+    }
 }

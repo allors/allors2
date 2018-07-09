@@ -245,6 +245,17 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       });
   }
 
+  public reopen(): void {
+    this.scope.invoke(this.invoice.Reopen)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.handle(error);
+      });
+  }
+
   public copy(): void {
     this.scope.invoke(this.invoice.Copy)
       .subscribe((invoked: Invoked) => {
