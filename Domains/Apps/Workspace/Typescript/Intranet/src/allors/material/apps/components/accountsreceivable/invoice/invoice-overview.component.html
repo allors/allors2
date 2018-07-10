@@ -77,6 +77,7 @@
             <button *ngIf="invoice.CanExecuteCancelInvoice" mat-button type="button" (click)="cancel()">Cancel</button>
             <button *ngIf="invoice.CanExecuteWriteOff" mat-button type="button" (click)="writeOff()">Write off</button>
             <button *ngIf="invoice.CanExecuteCopy" mat-button type="button" (click)="copy()">Copy</button>
+            <button *ngIf="invoice.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>
             <button mat-button [routerLink]="['/printinvoice/' + invoice.id ]">Preview</button>
             <button mat-button (click)="print()">Print</button>
           </mat-card-actions>

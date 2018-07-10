@@ -63,7 +63,7 @@ namespace Allors.Domain
             new TimeFrequencyBuilder(this.Session)
                 .WithName("second")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("seconde").WithLocale(dutchLocale).Build())
-                .WithSymbol("s")
+                .WithAbbreviation("s")
                 .WithUniqueId(SecondId)
                 .WithIsActive(true)
                 .Build();
@@ -71,7 +71,7 @@ namespace Allors.Domain
             new TimeFrequencyBuilder(this.Session)
                 .WithName("minute")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("minuut").WithLocale(dutchLocale).Build())
-                .WithSymbol("min")
+                .WithAbbreviation("min")
                 .WithUniqueId(MinuteId)
                 .WithIsActive(true)
                 .Build();
@@ -79,7 +79,7 @@ namespace Allors.Domain
             new TimeFrequencyBuilder(this.Session)
                 .WithName("hour")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("uur").WithLocale(dutchLocale).Build())
-                .WithSymbol("hr")
+                .WithAbbreviation("hr")
                 .WithUniqueId(HourId)
                 .WithIsActive(true)
                 .Build();

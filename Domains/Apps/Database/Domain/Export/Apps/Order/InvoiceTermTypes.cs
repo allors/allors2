@@ -24,7 +24,7 @@ namespace Allors.Domain
         private static readonly Guid CollectionAgencyPenaltyId = new Guid("56C719DE-1B5D-4c2a-8AE3-F205F9852C79");
         private static readonly Guid PayFullBeforeTransportId = new Guid("B4C38969-9507-4D44-A644-CF8CA6ADB79A");
         private static readonly Guid PayHalfBeforeTransportId = new Guid("F5B1107F-A325-4E97-94AE-ACEFC306C465");
-        private static readonly Guid CustomId = new Guid("9A8F6C1F-B590-408F-B42E-0AF12F42C14B");
+        private static readonly Guid OtherId = new Guid("9A8F6C1F-B590-408F-B42E-0AF12F42C14B");
 
         private UniquelyIdentifiableSticky<InvoiceTermType> cache;
 
@@ -38,7 +38,7 @@ namespace Allors.Domain
 
         public InvoiceTermType PayHalfBeforeTransport => this.Cache[PayHalfBeforeTransportId];
 
-        public InvoiceTermType Custom => this.Cache[CustomId];
+        public InvoiceTermType Other => this.Cache[OtherId];
 
         private UniquelyIdentifiableSticky<InvoiceTermType> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InvoiceTermType>(this.Session));
 
@@ -84,8 +84,8 @@ namespace Allors.Domain
                 .Build();
 
             new InvoiceTermTypeBuilder(this.Session)
-                .WithName("Custom")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Custom").WithLocale(belgianLocale).Build())
+                .WithName("Other")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Overige").WithLocale(belgianLocale).Build())
                 .WithUniqueId(PayHalfBeforeTransportId)
                 .WithIsActive(true)
                 .Build();

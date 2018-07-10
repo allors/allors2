@@ -85,14 +85,14 @@ namespace Allors.Domain
 
             derivation.Validation.AssertExistsAtMostOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
 
-            if (this.ExistInvoiceItemType && this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem) && this.Quantity <= 0)
-            {
-                derivation.Validation.AssertExists(this, this.Meta.Quantity);
-            }
-
-            if (this.ExistInvoiceItemType && !this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem))
+            if (this.ExistInvoiceItemType && this.Quantity == 0)
             {
                 this.Quantity = 1;
+            }
+
+            if (this.ExistInvoiceItemType && this.IsSubTotalItem && this.Quantity <= 0)
+            {
+                derivation.Validation.AssertExists(this, this.Meta.Quantity);
             }
 
             if (derivation.IsCreated(this) && !this.ExistOrderItemBillingsWhereSalesInvoiceItem && this.ExistProduct && this.Product is Good)
@@ -336,7 +336,7 @@ namespace Allors.Domain
             this.UnitVat = vat;
             this.TotalBasePrice = 0;
 
-            if (this.InvoiceItemType == new InvoiceItemTypes(this.strategy.Session).ProductItem)
+            if (this.IsSubTotalItem)
             {
                 this.TotalBasePrice = price * this.Quantity;
             }
@@ -538,5 +538,9 @@ namespace Allors.Domain
                 invoiceVatRateItem.Delete();
             }
         }
+
+        private bool AppsIsSubTotalItem =>
+            this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+            || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem);
     }
 }

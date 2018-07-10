@@ -38,6 +38,7 @@ namespace Allors.Domain
             var partiallyPaid = new SalesInvoiceStates(this.Session).PartiallyPaid;
             var writtenOff = new SalesInvoiceStates(this.Session).WrittenOff;
             var cancelled = new SalesInvoiceStates(this.Session).Cancelled;
+            var readyForPosting = new SalesInvoiceStates(this.Session).ReadyForPosting;
 
             var send = this.Meta.Send;
             var cancelInvoice = this.Meta.CancelInvoice;
@@ -46,13 +47,14 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, partiallyPaid, send, cancelInvoice, reopen);
 
+            config.Deny(this.ObjectType, readyForPosting, reopen);
             config.Deny(this.ObjectType, sent, Operations.Write);
             config.Deny(this.ObjectType, sent, send, writeOff, cancelInvoice, reopen);
             config.Deny(this.ObjectType, paid, Operations.Write);
             config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen);
             config.Deny(this.ObjectType, writtenOff, Operations.Write);
             config.Deny(this.ObjectType, writtenOff, send, cancelInvoice, writeOff);
-            config.Deny(this.ObjectType, cancelled, Operations.Write, Operations.Execute);
+            config.Deny(this.ObjectType, cancelled, Operations.Write);
             config.Deny(this.ObjectType, cancelled, send, cancelInvoice, writeOff);
         }
     }
