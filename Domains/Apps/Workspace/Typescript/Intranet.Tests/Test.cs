@@ -26,6 +26,7 @@ namespace Intranet.Tests
 
     public abstract class Test : IDisposable, IAsyncLifetime
     {
+        public const string ClientUrl = "http://localhost:4200";
         public const string ServerUrl = "http://localhost:5000";
 
         public static readonly string DatabaseInithUrl = $"{ServerUrl}/Test/Init";
@@ -83,6 +84,10 @@ namespace Intranet.Tests
             new Setup(this.Session, null).Apply();
             this.Session.Commit();
 
+            new Demo(this.Session, null).Execute();
+
+            this.Session.Commit();
+            
             await this.OnInitAsync();
         }
 
@@ -97,7 +102,7 @@ namespace Intranet.Tests
 
         public async Task<Page> Login(string userName = "administrator")
         {
-            await this.Page.GoToAsync("http://localhost:4200");
+            await this.NavigateByUrl("/");
 
             var loginPage = new LoginPage(this.Page);
             await loginPage.Login(userName);
@@ -105,6 +110,14 @@ namespace Intranet.Tests
             return this.Page;
         }
         
+        public async Task NavigateByUrl(string url)
+        {
+            var fullyQualifiedUrl = url.StartsWith("/") ? ClientUrl + url : url;
+
+            await this.Page.GoToAsync(fullyQualifiedUrl);
+            await this.Page.WaitForAngularAsync();
+        }
+
         protected virtual Task OnInitAsync()
         {
             return Task.CompletedTask;

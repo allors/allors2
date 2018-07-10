@@ -26,19 +26,5 @@ async () => await new Promise(resolve => {
                 didWork = await page.EvaluateFunctionAsync<dynamic>(Function);
             }
         }
-
-
-        public static async Task RouterNavigate(this Page page, string url)
-        {
-            const string Function =
-@"
-(url) => {
-    var testService = window.testService;
-    testService.router.navigateByUrl(url);
-}
-";
-
-            var result = await page.EvaluateFunctionAsync<dynamic>(Function, url);
-        }
     }
 }
