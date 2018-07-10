@@ -18,7 +18,7 @@
         public IDatabase Database { get; set; }
 
         [HttpGet]
-        public IActionResult Setup()
+        public IActionResult Init()
         {
             var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
 
@@ -26,15 +26,7 @@
             database.Init();
             stateService.Clear();
 
-            using (var session = database.CreateSession())
-            {
-              new Setup(session, null).Apply();
-
-              session.Derive();
-              session.Commit();
-            }
-
-            return this.Ok("Setup");
+            return this.Ok("Init");
         }
 
         [HttpGet]
@@ -42,7 +34,7 @@
         {
             var timeService = this.Database.ServiceProvider.GetRequiredService<ITimeService>();
             timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
-            return this.Ok();
+            return this.Ok("TimeShift");
         }
     }
 }

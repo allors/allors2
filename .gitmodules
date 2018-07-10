@@ -1,0 +1,3 @@
+[submodule "External/puppeteer-sharp"]
+	path = External/puppeteer-sharp
+	url = https://github.com/kblok/puppeteer-sharp

@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\External\puppeteer-sharp\lib\PuppeteerSharp\PuppeteerSharp.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Memory\Allors.Adapters.Memory.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Adapters\Allors.Adapters.Object.SqlClient\Allors.Adapters.Object.SqlClient.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Framework\Allors.Framework\Allors.Framework.csproj" />
+    <ProjectReference Include="..\..\..\..\..\Platform\Database\Protocol\Allors.Protocol.csproj" />
+    <ProjectReference Include="..\..\..\Database\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\..\Database\Meta\Meta.csproj" />
+    <ProjectReference Include="..\..\..\Database\Resources\Resources.csproj" />
+    <ProjectReference Include="..\..\..\Database\Services\Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
