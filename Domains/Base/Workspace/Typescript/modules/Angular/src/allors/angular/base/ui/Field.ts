@@ -124,4 +124,14 @@ export abstract class Field implements AfterViewInit, OnDestroy {
       .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
       : undefined;
   }
+
+
+  get dataAllorsId(): string {
+    return this.object ? this.object.id : null;
+  }
+
+  get dataAllorsRoleType(): string {
+    return this.roleType ? this.roleType.id : null;
+  }
+
 }

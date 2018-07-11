@@ -11,12 +11,6 @@ namespace Intranet.Pages
         {
         }
 
-        public Input LastName
-        {
-            get
-            {
-                return new Input(this.Page, "input[formcontrolname='lastName']");
-            }
-        }
+        public Input LastName => new Input(this.Page, formControlName: "lastName");
     }
 }
