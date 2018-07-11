@@ -4,24 +4,25 @@ namespace Intranet.Pages
 
     using Intranet.Tests;
 
-    using PuppeteerSharp;
-    using PuppeteerSharp.Input;
+    using OpenQA.Selenium;
 
-    public class PersonPage : BasePage
+    public class PersonPage : Page
     {
-        public PersonPage(Page page)
-            : base(page)
+        public PersonPage(IWebDriver driver)
+            : base(driver)
         {
         }
 
-        public MaterialSelect Salutation => new MaterialSelect(this.Page, roleType: M.Person.Salutation);
+        public MaterialSelect Salutation => new MaterialSelect(this.Driver, roleType: M.Person.Salutation);
 
-        public MaterialInput FirstName => new MaterialInput(this.Page, roleType: M.Person.FirstName);
+        public MaterialInput FirstName => new MaterialInput(this.Driver, roleType: M.Person.FirstName);
 
-        public MaterialInput MiddleName => new MaterialInput(this.Page, roleType: M.Person.MiddleName);
+        public MaterialInput MiddleName => new MaterialInput(this.Driver, roleType: M.Person.MiddleName);
 
-        public MaterialInput LastName => new MaterialInput(this.Page, roleType: M.Person.LastName);
+        public MaterialInput LastName => new MaterialInput(this.Driver, roleType: M.Person.LastName);
 
-        public Button Save => new Button(this.Page, selector: ".a-footer button[type='submit']");
+        public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
+
+        public Button Save => new Button(this.Driver, By.CssSelector(".a-footer button[type='submit']"));
     }
 }

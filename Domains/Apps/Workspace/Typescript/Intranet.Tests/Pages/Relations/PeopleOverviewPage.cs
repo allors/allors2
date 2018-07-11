@@ -2,15 +2,15 @@ namespace Intranet.Pages
 {
     using Intranet.Tests;
 
-    using PuppeteerSharp;
+    using OpenQA.Selenium;
 
-    public class PeopleOverviewPage : BasePage
+    public class PeopleOverviewPage : Page
     {
-        public PeopleOverviewPage(Page page)
-            : base(page)
+        public PeopleOverviewPage(IWebDriver driver)
+            : base(driver)
         {
         }
 
-        public Input LastName => new Input(this.Page, formControlName: "lastName");
+        public Input LastName => new Input(this.Driver, formControlName: "lastName");
     }
 }

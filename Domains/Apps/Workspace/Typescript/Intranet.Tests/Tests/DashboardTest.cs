@@ -13,9 +13,10 @@ namespace Intranet.Tests
         [Fact]
         public async void Title()
         {
-            await this.Login();
+            this.Login();
 
-            Assert.Equal("Dashboard", await this.Page.GetTitleAsync());
+
+            Assert.Equal("Dashboard", this.Driver.Title);
         }
     }
 }

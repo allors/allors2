@@ -2,8 +2,6 @@ namespace Intranet.Tests
 {
     using System;
     using System.Globalization;
-    using System.Net;
-    using System.Threading.Tasks;
 
     using Allors;
     using Allors.Adapters.Object.SqlClient;
@@ -16,15 +14,11 @@ namespace Intranet.Tests
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    using PuppeteerSharp;
-
-    using Xunit;
+    using OpenQA.Selenium;
 
     using ObjectFactory = Allors.ObjectFactory;
-    using Page = PuppeteerSharp.Page;
-    using Task = System.Threading.Tasks.Task;
 
-    public abstract class Test : IDisposable, IAsyncLifetime
+    public abstract class Test : IDisposable
     {
         public const string ClientUrl = "http://localhost:4200";
         public const string ServerUrl = "http://localhost:5000";
@@ -34,30 +28,11 @@ namespace Intranet.Tests
 
         protected Test(TestFixture fixture)
         {
-        }
-
-        public ISession Session { get; set; }
-
-        public Browser Browser { get; set; }
-
-        public Page Page { get; set; }
-
-        public async Task InitializeAsync()
-        {
             // Init Browser
-            this.Browser = await Puppeteer.LaunchAsync(new LaunchOptions
-            {
-                Headless = false,
-                Args = new[] { "--start-maximized" }
-            });
+            this.Driver = fixture.Driver;
 
             // Init Server
-            this.Page = (await this.Browser.PagesAsync())[0];
-            var initResponse = await this.Page.GoToAsync(Test.DatabaseInithUrl);
-            if (!initResponse.Ok)
-            {
-                throw new Exception("Server.Init() failed");
-            }
+            this.Driver.Navigate().GoToUrl(Test.DatabaseInithUrl);
 
             // Init Allors
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
@@ -72,10 +47,10 @@ namespace Intranet.Tests
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration
-            {
-                ConnectionString = appConfiguration["allors"],
-                ObjectFactory = objectFactory,
-            };
+                                    {
+                                        ConnectionString = appConfiguration["allors"],
+                                        ObjectFactory = objectFactory,
+                                    };
 
             var database = new Database(serviceProvider, configuration);
 
@@ -87,40 +62,22 @@ namespace Intranet.Tests
             new Demo(this.Session, null).Execute();
 
             this.Session.Commit();
-            
-            await this.OnInitAsync();
         }
 
-        public async Task DisposeAsync()
-        {
-            await this.Browser.CloseAsync();
-        }
+        public ISession Session { get; set; }
+
+        public IWebDriver Driver { get; set; }
 
         public virtual void Dispose()
         {
         }
 
-        public async Task<Page> Login(string userName = "administrator")
+        public void Login(string userName = "administrator")
         {
-            await this.NavigateByUrl("/");
+            this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
 
-            var loginPage = new LoginPage(this.Page);
-            await loginPage.Login(userName);
-
-            return this.Page;
-        }
-        
-        public async Task NavigateByUrl(string url)
-        {
-            var fullyQualifiedUrl = url.StartsWith("/") ? ClientUrl + url : url;
-
-            await this.Page.GoToAsync(fullyQualifiedUrl);
-            await this.Page.WaitForAngularAsync();
-        }
-
-        protected virtual Task OnInitAsync()
-        {
-            return Task.CompletedTask;
+            var page = new LoginPage(this.Driver);
+            page.Login();
         }
     }
 }

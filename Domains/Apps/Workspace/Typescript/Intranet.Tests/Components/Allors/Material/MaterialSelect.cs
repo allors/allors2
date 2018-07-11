@@ -1,39 +1,43 @@
 namespace Intranet.Tests
 {
-    using System.Threading.Tasks;
-
     using Allors.Meta;
 
-    using PuppeteerSharp;
-    using PuppeteerSharp.Input;
+    using OpenQA.Selenium;
 
-    public class MaterialSelect
+    public class MaterialSelect : Component
     {
-        public MaterialSelect(Page page, RoleType roleType)
+        public MaterialSelect(IWebDriver driver, RoleType roleType) : base(driver)
         {
-            this.Page = page;
-            this.ArrowSelector = $"mat-select[data-allors-roletype='{roleType.IdAsNumberString}'] .mat-select-arrow";
+            this.ArrowSelector = By.CssSelector($"mat-select[data-allors-roletype='{roleType.IdAsNumberString}'] .mat-select-arrow");
+            this.ValueTextSelector = By.CssSelector($"mat-select[data-allors-roletype='{roleType.IdAsNumberString}'] .mat-select-value-text");
         }
 
-        public Page Page { get; }
-
-        public string ArrowSelector { get; }
-
-        public async Task SelectAsyn(string text)
+        public string Value
         {
-            await this.Page.ClickAsync(this.ArrowSelector);
-            await this.Page.WaitForAngularAsync();
+            get
+            {
+                this.Driver.WaitForAngular();
+                var element = this.Driver.FindElement(this.ValueTextSelector);
+                var property = element.Text;
+                return property;
+            }
 
-            var optionSelector = $"mat-option[data-allors-option-display='{text}']";
-            await this.Page.ClickAsync(optionSelector);
-            await this.Page.WaitForAngularAsync();
+            set
+            {
+                this.Driver.WaitForAngular();
+                var arrow = this.Driver.FindElement(this.ArrowSelector);
+                this.ScrollToElement(arrow);
+                arrow.Click();
+
+                this.Driver.WaitForAngular();
+                var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{value}'] span");
+                var option = this.Driver.FindElement(optionSelector);
+                option.Click();
+            }
         }
 
-        public async Task<string> Value()
-        {
-            var element = await this.Page.QuerySelectorAsync(this.ArrowSelector);
-            var property = await element.GetPropertyAsync("value");
-            return (string)await property.JsonValueAsync();
-        }
+        private By ArrowSelector { get; }
+
+        private By ValueTextSelector { get; }
     }
 }

@@ -1,35 +1,38 @@
 namespace Intranet.Tests
 {
-    using System.Threading.Tasks;
-
     using Allors.Meta;
 
-    using PuppeteerSharp;
+    using OpenQA.Selenium;
 
     public class MaterialInput
+    : Component
     {
-        public MaterialInput(Page page, RoleType roleType)
+        public MaterialInput(IWebDriver driver, RoleType roleType)
+        : base(driver)
         {
-            this.Page = page;
-            this.InputSelector = $"input[data-allors-roletype='{roleType.IdAsNumberString}']";
+            this.Selector = By.CssSelector($"input[data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
-        public Page Page { get; }
+        public By Selector { get; }
 
-        public string InputSelector { get; }
-
-
-        public async Task TypeAsync(string text)
+        public string Text
         {
-            await this.Page.TypeAsync(this.InputSelector, text);
-            await this.Page.WaitForAngularAsync();
-        }
+            get
+            {
+                this.Driver.WaitForAngular();
+                var element = this.Driver.FindElement(this.Selector);
+                return element.GetAttribute("value");
+            }
 
-        public async Task<string> Value()
-        {
-            var element = await this.Page.QuerySelectorAsync(this.InputSelector);
-            var property = await element.GetPropertyAsync("value");
-            return (string)await property.JsonValueAsync();
+            set
+            {
+                this.Driver.WaitForAngular();
+                var element = this.Driver.FindElement(this.Selector);
+                this.ScrollToElement(element);
+                element.Clear();
+                element.SendKeys(value);
+                element.SendKeys(Keys.Tab);
+            }
         }
     }
 }

@@ -1,28 +1,23 @@
 namespace Intranet.Tests
 {
-    using System.Threading.Tasks;
+    using OpenQA.Selenium;
 
-    using PuppeteerSharp;
-
-    public class Button
+    public class Button : Component
     {
-        public Button(Page page, string selector = null)
+        public Button(IWebDriver driver, By selector)
+        : base(driver)
         {
-            this.Page = page;
-            if (!string.IsNullOrWhiteSpace(selector))
-            {
-                this.Selector = selector;
-            }
+            this.Selector = selector;
         }
 
-        public Page Page { get; }
+        public By Selector { get; }
 
-        public string Selector { get; }
-        
-        public async Task ClickAsync()
+        public void Click()
         {
-            await this.Page.ClickAsync(this.Selector);
-            await this.Page.WaitForAngularAsync();
+            this.Driver.WaitForAngular();
+            var element = this.Driver.FindElement(this.Selector);
+            this.ScrollToElement(element);
+            element.Click();
         }
     }
 }

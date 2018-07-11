@@ -1,6 +1,7 @@
 namespace Intranet.Tests
 {
     using System.Linq;
+    using System.Threading;
 
     using Allors.Domain;
 
@@ -8,34 +9,42 @@ namespace Intranet.Tests
 
     using Xunit;
 
-    using Task = System.Threading.Tasks.Task;
-
     [Collection("Test collection")]
     public class PersonTest : Test
     {
         public PersonTest(TestFixture fixture)
             : base(fixture)
         {
+            this.Login();
+            this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/person");
         }
 
         [Fact]
-        public async void Title()
+        public void Title()
         {
-            Assert.Equal("Person", await this.Page.GetTitleAsync());
+            Assert.Equal("Person", this.Driver.Title);
         }
 
         [Fact]
-        public async void Save()
+        public void Save()
         {
             var before = new People(this.Session).Extent().ToArray();
-            
-            var page = new PersonPage(this.Page);
 
-            await page.Salutation.SelectAsyn("Mr.");
-            await page.FirstName.TypeAsync("Jos");
-            await page.LastName.TypeAsync("Smos");
+            var page = new PersonPage(this.Driver);
 
-            await page.Save.ClickAsync();
+            this.Driver.WaitForAngular();
+
+            page.Salutation.Value = "Mr.";
+
+            page.FirstName.Text = "Jos";
+            page.LastName.Text = "Smos";
+            page.Comment.Text = "This is a comment";
+
+            Assert.Equal("Mr.", page.Salutation.Value);
+
+            page.Save.Click();
+
+            this.Driver.WaitForAngular();
 
             this.Session.Rollback();
 
@@ -48,13 +57,7 @@ namespace Intranet.Tests
             Assert.Equal("Mr.", person.Salutation.Name);
             Assert.Equal("Jos", person.FirstName);
             Assert.Equal("Smos", person.LastName);
-        }
-
-
-        protected override async Task OnInitAsync()
-        {
-            await this.Login();
-            await this.NavigateByUrl("/person");
+            Assert.Equal("This is a comment", person.Comment);
         }
     }
 }

@@ -2,16 +2,26 @@ namespace Intranet.Pages
 {
     using System.Threading.Tasks;
 
-    public class LoginPage : BasePage
+    using Intranet.Tests;
+
+    using OpenQA.Selenium;
+
+    public class LoginPage : Page
     {
-        public LoginPage(PuppeteerSharp.Page page) : base(page)
+        public LoginPage(IWebDriver driver) : base(driver)
         {
         }
 
-        public async Task Login(string userName = "administrator")
+        public Input UserName => new Input(this.Driver, By.CssSelector("input[formcontrolname='userName']"));
+
+        public Button Button => new Button(this.Driver, By.CssSelector("button"));
+
+        public void Login(string userName = "administrator")
         {
-            await this.TypeAsync("input[formcontrolname='userName']", userName);
-            await this.ClickAsync("button");
+            this.UserName.Text = userName;
+            this.Button.Click();
+
+            this.Driver.WaitForAngular();
         }
     }
 }

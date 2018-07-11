@@ -12,30 +12,24 @@ namespace Intranet.Tests
         public PeopleOverviewTest(TestFixture fixture)
             : base(fixture)
         {
+            this.Login();
+            this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/relations/people");
         }
 
         [Fact]
-        public async void Title()
+        public void Title()
         {
-            Assert.Equal("People", await this.Page.GetTitleAsync());
+            Assert.Equal("People", this.Driver.Title);
         }
 
         [Fact]
-        public async void Search()
+        public void Search()
         {
-            var page = new PeopleOverviewPage(this.Page);
+            var page = new PeopleOverviewPage(this.Driver);
 
-            await page.LastName.TypeAsync("jos");
-            var value = await page.LastName.Value();
+            page.LastName.Text = "jos";
 
-            Assert.Equal("jos", value);
-        }
-
-
-        protected override async Task OnInitAsync()
-        {
-            await this.Login();
-            await this.NavigateByUrl("/relations/people");
+            Assert.Equal("jos", page.LastName.Text);
         }
     }
 }

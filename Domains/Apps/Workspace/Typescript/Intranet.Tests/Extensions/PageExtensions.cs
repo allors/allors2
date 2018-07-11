@@ -1,29 +1,26 @@
 namespace Intranet.Tests
 {
-    using System.Threading.Tasks;
-
-    using PuppeteerSharp;
+    using OpenQA.Selenium;
 
     public static class PageExtensions
     {
-        public static async Task WaitForAngularAsync(this Page page)
+        public static void WaitForAngular(this IWebDriver driver)
         {
             const string Function =
                 @"
-async () => await new Promise(resolve => {
 
-    window.getAngularTestability(document.querySelector('app-root'))
-      .whenStable(function(didWork) {
-        resolve(didWork);
-      });
-
-})
+var done = arguments[0];
+window.getAngularTestability(document.querySelector('app-root'))
+    .whenStable(function(didWork) {
+        done(didWork);
+});
 ";
 
+            var javascriptExecutor = (IJavaScriptExecutor)driver;
             var didWork = true;
             while (didWork)
             {
-                didWork = await page.EvaluateFunctionAsync<dynamic>(Function);
+                didWork = (bool)javascriptExecutor.ExecuteAsyncScript(Function);
             }
         }
     }

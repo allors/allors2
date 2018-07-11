@@ -1,6 +1,7 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from '@angular/core';
+import { Component, OnDestroy , OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -57,7 +58,7 @@ export class PersonComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private titleService: Title,
-    private dialogService: AllorsMaterialDialogService,
+    private location: Location,
     private stateService: StateService) {
 
     this.scope = this.workspaceService.createScope();
@@ -202,7 +203,7 @@ export class PersonComponent implements OnInit, OnDestroy {
             this.roles = loaded.collections.personRoles as PersonRole[];
             this.organisationContactKinds = loaded.collections.organisationContactKinds as OrganisationContactKind[];
 
-            if (loaded.collections.organisationContactRelationships !== undefined) {
+            if(loaded.collections.organisationContactRelationships && loaded.collections.organisationContactRelationships.length > 0) {
               this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;
               this.organisation = this.organisationContactRelationship.Organisation;
             }
@@ -299,6 +300,6 @@ export class PersonComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
-    window.history.back();
+    this.location.back();
   }
 }
