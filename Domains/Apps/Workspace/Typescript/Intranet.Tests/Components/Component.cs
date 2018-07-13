@@ -2,6 +2,7 @@ namespace Intranet.Tests
 {
     using OpenQA.Selenium;
     using OpenQA.Selenium.Interactions;
+    using OpenQA.Selenium.Support.PageObjects;
 
     public abstract class Component
     {
@@ -12,7 +13,7 @@ namespace Intranet.Tests
 
         public IWebDriver Driver { get; }
 
-        public void ScrollToElement(IWebElement element)
+        protected void ScrollToElement(IWebElement element)
         {
             //const string ScrollToCommand = @"arguments[0].scrollIntoView(true);";
             //var javaScriptExecutor = (IJavaScriptExecutor)this.Driver;
@@ -20,6 +21,13 @@ namespace Intranet.Tests
 
             var actions = new Actions(this.Driver);
             actions.MoveToElement(element);
+        }
+
+        protected bool SelectorIsVisible(By selector)
+        {
+            this.Driver.WaitForAngular();
+            var elements = this.Driver.FindElements(selector);
+            return elements.Count == 1 && elements[0].Displayed;
         }
     }
 }

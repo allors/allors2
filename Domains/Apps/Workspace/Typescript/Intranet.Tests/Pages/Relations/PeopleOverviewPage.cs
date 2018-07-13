@@ -1,10 +1,10 @@
-namespace Intranet.Pages
+namespace Intranet.Pages.Relations
 {
     using Intranet.Tests;
 
     using OpenQA.Selenium;
 
-    public class PeopleOverviewPage : Page
+    public class PeopleOverviewPage : MainPage
     {
         public PeopleOverviewPage(IWebDriver driver)
             : base(driver)
@@ -12,5 +12,10 @@ namespace Intranet.Pages
         }
 
         public Input LastName => new Input(this.Driver, formControlName: "lastName");
+
+        public Button Export => new Button(this.Driver, By.XPath("//button[.//mat-icon[contains(text(),'cloud_download')]]"));
+
+        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+
     }
 }

@@ -8,6 +8,7 @@ import { ErrorService, Loaded, Saved, Scope, WorkspaceService, LayoutService } f
 import { IUnitOfMeasure, Locale, SerialisedInventoryItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
+import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 
 @Component({
   templateUrl: './productcharacteristic.component.html',
@@ -34,7 +35,10 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
     public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    titleService: Title) {
+
+      titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

@@ -1,5 +1,7 @@
 namespace Intranet.Pages
 {
+    using Intranet.Tests;
+
     using OpenQA.Selenium;
 
     public abstract class Page

@@ -1,11 +1,10 @@
-namespace Intranet.Tests
+namespace Intranet.Tests.Relations
 {
     using System.Linq;
-    using System.Threading;
 
     using Allors.Domain;
 
-    using Intranet.Pages;
+    using Intranet.Pages.Relations;
 
     using Xunit;
 
@@ -15,8 +14,9 @@ namespace Intranet.Tests
         public PersonTest(TestFixture fixture)
             : base(fixture)
         {
-            this.Login();
-            this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/person");
+            var dashboard = this.Login();
+            var people = dashboard.Sidenav.NavigateToPeople();
+            people.AddNew.Click();
         }
 
         [Fact]
@@ -39,8 +39,6 @@ namespace Intranet.Tests
             page.FirstName.Text = "Jos";
             page.LastName.Text = "Smos";
             page.Comment.Text = "This is a comment";
-
-            Assert.Equal("Mr.", page.Salutation.Value);
 
             page.Save.Click();
 

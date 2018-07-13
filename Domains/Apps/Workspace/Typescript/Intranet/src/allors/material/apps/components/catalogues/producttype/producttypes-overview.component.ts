@@ -45,6 +45,8 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialogService: AllorsMaterialDialogService) {
 
+      titleService.setTitle(this.title);
+
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 

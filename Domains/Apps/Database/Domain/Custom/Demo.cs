@@ -342,7 +342,7 @@ namespace Allors
 
                 new EmailCommunicationBuilder(this.Session)
                     .WithDescription($"Email ${i}")
-                    .WithSubject("email ${i}")
+                    .WithSubject($"email ${i}")
                     .WithOriginator(email)
                     .WithAddressee(email2)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
@@ -352,7 +352,7 @@ namespace Allors
 
                 new LetterCorrespondenceBuilder(this.Session)
                     .WithDescription($"Letter ${i}")
-                    .WithSubject("letter ${i}")
+                    .WithSubject($"letter ${i}")
                     .WithOriginator(administrator)
                     .WithReceiver(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
@@ -362,7 +362,7 @@ namespace Allors
 
                 new PhoneCommunicationBuilder(this.Session)
                     .WithDescription($"Phone ${i}")
-                    .WithSubject("phone ${i}")
+                    .WithSubject($"phone ${i}")
                     .WithCaller(administrator)
                     .WithReceiver(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)

@@ -56,6 +56,8 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
     public pdfService: PdfService,
     private stateService: StateService) {
 
+    titleService.setTitle(this.title);
+
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 

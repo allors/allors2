@@ -1,8 +1,6 @@
-namespace Intranet.Tests
+namespace Intranet.Tests.Relations
 {
-    using System.Threading.Tasks;
-
-    using Intranet.Pages;
+    using Intranet.Pages.Relations;
 
     using Xunit;
 
@@ -12,8 +10,8 @@ namespace Intranet.Tests
         public PeopleOverviewTest(TestFixture fixture)
             : base(fixture)
         {
-            this.Login();
-            this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/relations/people");
+            var dashboard = this.Login();
+            dashboard.Sidenav.NavigateToPeople();
         }
 
         [Fact]

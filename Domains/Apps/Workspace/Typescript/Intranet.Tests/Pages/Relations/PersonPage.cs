@@ -1,4 +1,4 @@
-namespace Intranet.Pages
+namespace Intranet.Pages.Relations
 {
     using Allors.Meta;
 
@@ -6,7 +6,7 @@ namespace Intranet.Pages
 
     using OpenQA.Selenium;
 
-    public class PersonPage : Page
+    public class PersonPage : MainPage
     {
         public PersonPage(IWebDriver driver)
             : base(driver)

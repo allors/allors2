@@ -122,7 +122,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
-    this.titleService.setTitle('Products');
+    this.titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -193,7 +193,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
             ],
           }),
           new Query({
-            name: 'ownership',
+            name: 'ownerShips',
             objectType: m.Ownership,
             sort: [
               new Sort({ roleType: m.Ownership.Name, direction: 'Asc' }),
@@ -274,7 +274,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
               (v: ProductType) => v.Name === data.productType,
             );
 
-            this.ownerships = loaded.collections.ownerships as Ownership[];
+            this.ownerships = loaded.collections.ownerShips as Ownership[];
             this.ownership = this.ownerships.find(
               (v: Ownership) => v.Name === data.ownership,
             );

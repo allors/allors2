@@ -59,7 +59,7 @@ namespace Intranet.Tests
             new Setup(this.Session, null).Apply();
             this.Session.Commit();
 
-            new Demo(this.Session, null).Execute();
+            new Population(this.Session, null).Execute();
 
             this.Session.Commit();
         }
@@ -72,12 +72,12 @@ namespace Intranet.Tests
         {
         }
 
-        public void Login(string userName = "administrator")
+        public DashboardPage Login(string userName = "administrator")
         {
             this.Driver.Navigate().GoToUrl(Test.ClientUrl + "/login");
 
             var page = new LoginPage(this.Driver);
-            page.Login();
+            return page.Login();
         }
     }
 }

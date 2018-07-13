@@ -1,6 +1,9 @@
 namespace Intranet.Tests
 {
+    using System;
+
     using OpenQA.Selenium;
+    using OpenQA.Selenium.Support.UI;
 
     public static class PageExtensions
     {
@@ -23,5 +26,11 @@ window.getAngularTestability(document.querySelector('app-root'))
                 didWork = (bool)javascriptExecutor.ExecuteAsyncScript(Function);
             }
         }
+        
+        public static void WaitForCondition(this IWebDriver driver, Func<IWebDriver, bool> condition)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(30)).Until(condition);
+        }
     }
+       
 }
