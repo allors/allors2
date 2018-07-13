@@ -14,6 +14,7 @@ import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 
 @Component({
   templateUrl: './organisation.component.html',
@@ -55,8 +56,10 @@ export class OrganisationComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService) {
+    private stateService: StateService,
+    titleService: Title) {
 
+    titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);

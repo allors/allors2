@@ -211,7 +211,7 @@ namespace Allors.Domain
                 partyName.Append(this.LastName);
             }
 
-            return partyName.Length > 0 ? partyName.ToString() : this.UserName;
+            return partyName.Length > 0 ? partyName.ToString() : $"[{this.UserName}]";
         }
 
         public void AppsDelete(DeletableDelete method)

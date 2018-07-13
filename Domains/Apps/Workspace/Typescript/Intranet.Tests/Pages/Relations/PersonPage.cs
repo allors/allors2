@@ -23,6 +23,6 @@ namespace Intranet.Pages.Relations
 
         public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
 
-        public Button Save => new Button(this.Driver, By.CssSelector(".a-footer button[type='submit']"));
+        public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
     }
 }
