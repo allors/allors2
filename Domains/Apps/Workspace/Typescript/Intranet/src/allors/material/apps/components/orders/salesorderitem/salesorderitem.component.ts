@@ -217,6 +217,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         if (isNew) {
           this.router.navigate(['/salesOrder/' + this.order.id + '/item/' + this.orderItem.id]);
         } else {
@@ -307,8 +308,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   }
 
   private refreshInventory(product: Product): void {
-
-    this.orderItem.InvoiceItemType = this.productItemType;
 
     const fetches: Fetch[] = [
       new Fetch({

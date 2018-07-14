@@ -20,14 +20,14 @@ namespace Allors.Domain
     public partial class SalesInvoiceTypes
     {
         private static readonly Guid SalesInvoiceId = new Guid("92411BF1-835E-41f8-80AF-6611EFCE5B32");
-        private static readonly Guid PurchaseReturnId = new Guid("CC990516-D7DD-44d1-8614-4BB88EC6EE97");
+        private static readonly Guid CreditNoteId = new Guid("EF5B7C52-E782-416D-B46F-89C8C7A5C24D");
         private static readonly Guid InterestId = new Guid("D1FB37DF-39C9-4212-8EAB-5B0D540EF5E3");
 
         private UniquelyIdentifiableSticky<SalesInvoiceType> cache;
 
         public SalesInvoiceType SalesInvoice => this.Cache[SalesInvoiceId];
 
-        public SalesInvoiceType PurchaseReturn => this.Cache[PurchaseReturnId];
+        public SalesInvoiceType CreditNote => this.Cache[CreditNoteId];
 
         public SalesInvoiceType Interest => this.Cache[InterestId];
 
@@ -47,9 +47,9 @@ namespace Allors.Domain
                 .Build();
             
             new SalesInvoiceTypeBuilder(this.Session)
-                .WithName("Purchase return")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkoop retour").WithLocale(dutchLocale).Build())
-                .WithUniqueId(PurchaseReturnId)
+                .WithName("Credit Note")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Credit Nota").WithLocale(dutchLocale).Build())
+                .WithUniqueId(CreditNoteId)
                 .WithIsActive(true)
                 .Build();
             

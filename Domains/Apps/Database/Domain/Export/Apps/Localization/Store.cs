@@ -31,20 +31,13 @@ namespace Allors.Domain
             }
             else
             {
-                FiscalYearInvoiceNumber fiscalYearInvoiceNumber = null;
-                foreach (FiscalYearInvoiceNumber x in this.FiscalYearInvoiceNumbers)
-                {
-                    if (x.FiscalYear.Equals(year))
-                    {
-                        fiscalYearInvoiceNumber = x;
-                        break;
-                    }
-                }
+                var fiscalYearInvoiceNumbers = new FiscalYearInvoiceNumbers(this.strategy.Session).Extent();
+                fiscalYearInvoiceNumbers.Filter.AddEquals(M.FiscalYearInvoiceNumber.FiscalYear, year);
+                var fiscalYearInvoiceNumber = fiscalYearInvoiceNumbers.First;
 
                 if (fiscalYearInvoiceNumber == null)
                 {
                     fiscalYearInvoiceNumber = new FiscalYearInvoiceNumberBuilder(this.Strategy.Session).WithFiscalYear(year).Build();
-                    fiscalYearInvoiceNumber.NextSalesInvoiceNumber = 1;
                     this.AddFiscalYearInvoiceNumber(fiscalYearInvoiceNumber);
                 }
 
@@ -87,6 +80,31 @@ namespace Allors.Domain
             return string.Concat(this.WorkEffortNumberPrefix, salesOrderNumber);
         }
 
+        public string DeriveNextCreditNoteNumber(int year)
+        {
+            int creditNoteNumber;
+            if (this.InternalOrganisation.InvoiceSequence.Equals(new InvoiceSequences(this.Strategy.Session).EnforcedSequence))
+            {
+                creditNoteNumber = this.CreditNoteCounter.NextValue();
+            }
+            else
+            {
+                var fiscalYearInvoiceNumbers = new FiscalYearInvoiceNumbers(this.strategy.Session).Extent();
+                fiscalYearInvoiceNumbers.Filter.AddEquals(M.FiscalYearInvoiceNumber.FiscalYear, year);
+                var fiscalYearInvoiceNumber = fiscalYearInvoiceNumbers.First;
+
+                if (fiscalYearInvoiceNumber == null)
+                {
+                    fiscalYearInvoiceNumber = new FiscalYearInvoiceNumberBuilder(this.Strategy.Session).WithFiscalYear(year).Build();
+                    this.AddFiscalYearInvoiceNumber(fiscalYearInvoiceNumber);
+                }
+
+                creditNoteNumber = fiscalYearInvoiceNumber.DeriveNextCreditNoteNumber();
+            }
+
+            return string.Concat(this.CreditNoteNumberPrefix, creditNoteNumber).Replace("{year}", year.ToString());
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSalesOrderCounter)
@@ -101,7 +119,7 @@ namespace Allors.Domain
 
             if (!this.ExistWorkEffortCounter)
             {
-                this.WorkEffortCounter= new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
             if (!this.ExistBillingProcess)
@@ -112,6 +130,11 @@ namespace Allors.Domain
             if (!this.ExistSalesInvoiceTemporaryCounter)
             {
                 this.SalesInvoiceTemporaryCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            }
+
+            if (!this.ExistCreditNoteCounter)
+            {
+                this.CreditNoteCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
         }
 

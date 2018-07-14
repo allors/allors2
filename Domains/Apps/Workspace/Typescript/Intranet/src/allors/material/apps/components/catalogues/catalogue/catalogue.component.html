@@ -42,7 +42,7 @@
                 <a-mat-localised-text class="col" [object]="catalogue" [roleType]="m.Catalogue.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
               </div>
             </div>
-            
+
           </mat-expansion-panel>
         </div>
 
@@ -54,7 +54,8 @@
     <mat-toolbar-row class="row">
       <span class="col"></span>
       <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
     </mat-toolbar-row>
   </mat-toolbar>
 

@@ -347,7 +347,15 @@ namespace Allors.Domain
 
         public void AppsSend(SalesInvoiceSend method)
         {
-            this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
+            if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice))
+            {
+                this.InvoiceNumber = this.Store.DeriveNextInvoiceNumber(this.InvoiceDate.Year);
+            }
+
+            if (object.Equals(this.SalesInvoiceType, new SalesInvoiceTypes(this.Strategy.Session).CreditNote))
+            {
+                this.InvoiceNumber = this.Store.DeriveNextCreditNoteNumber(this.InvoiceDate.Year);
+            }
 
             this.SalesInvoiceState = new SalesInvoiceStates(this.Strategy.Session).Sent;
 
@@ -534,6 +542,74 @@ namespace Allors.Domain
             return salesInvoice;
         }
 
+        public SalesInvoice AppsCredit(SalesInvoiceCredit method)
+        {
+            var salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                .WithSalesOrder(this.SalesOrder)
+                .WithPurchaseInvoice(this.PurchaseInvoice)
+                .WithBilledFrom(this.BilledFrom)
+                .WithBilledFromContactMechanism(this.BilledFromContactMechanism)
+                .WithBilledFromContactPerson(this.BilledFromContactPerson)
+                .WithBillToCustomer(this.BillToCustomer)
+                .WithBillToContactMechanism(this.BillToContactMechanism)
+                .WithBillToContactPerson(this.BillToContactPerson)
+                .WithBillToEndCustomer(this.BillToEndCustomer)
+                .WithBillToEndCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
+                .WithBillToEndCustomerContactPerson(this.BillToEndCustomerContactPerson)
+                .WithShipToCustomer(this.ShipToCustomer)
+                .WithShipToAddress(this.ShipToAddress)
+                .WithShipToContactPerson(this.ShipToContactPerson)
+                .WithShipToEndCustomer(this.ShipToEndCustomer)
+                .WithShipToEndCustomerAddress(this.ShipToEndCustomerAddress)
+                .WithShipToEndCustomerContactPerson(this.ShipToEndCustomerContactPerson)
+                .WithDescription(this.Description)
+                .WithStore(this.Store)
+                .WithInvoiceDate(DateTime.UtcNow)
+                .WithSalesChannel(this.SalesChannel)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).CreditNote)
+                .WithVatRegime(this.VatRegime)
+                .WithDiscountAdjustment(this.DiscountAdjustment)
+                .WithSurchargeAdjustment(this.SurchargeAdjustment)
+                .WithShippingAndHandlingCharge(this.ShippingAndHandlingCharge)
+                .WithCustomerReference(this.CustomerReference)
+                .WithPaymentMethod(this.PaymentMethod)
+                .WithBillingAccount(this.BillingAccount)
+                .Build();
+
+            if (this.ExistDiscountAdjustment)
+            {
+                salesInvoice.DiscountAdjustment = new DiscountAdjustmentBuilder(this.strategy.Session).WithAmount(this.DiscountAdjustment.Amount * -1).Build();
+            }
+
+            if (this.ExistSurchargeAdjustment)
+            {
+                salesInvoice.SurchargeAdjustment = new SurchargeAdjustmentBuilder(this.strategy.Session).WithAmount(this.SurchargeAdjustment.Amount * -1).Build();
+            }
+
+            foreach (SalesInvoiceItem salesInvoiceItem in this.SalesInvoiceItems)
+            {
+                var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                    .WithInvoiceItemType(salesInvoiceItem.InvoiceItemType)
+                    .WithActualUnitPrice(salesInvoiceItem.ActualUnitPrice * -1)
+                    .WithProduct(salesInvoiceItem.Product)
+                    .WithProductFeature(salesInvoiceItem.ProductFeature)
+                    .WithQuantity(salesInvoiceItem.Quantity)
+                    .WithDescription(salesInvoiceItem.Description)
+                    .WithSerializedInventoryItem(salesInvoiceItem.SerializedInventoryItem)
+                    .WithComment(salesInvoiceItem.Comment)
+                    .WithDetails(salesInvoiceItem.Details)
+                    .WithInternalComment(salesInvoiceItem.InternalComment)
+                    .WithSalesRep(salesInvoiceItem.SalesRep)
+                    .WithFacility(salesInvoiceItem.Facility)
+                    .WithAssignedVatRegime(salesInvoiceItem.AssignedVatRegime)
+                    .Build();
+
+                salesInvoice.AddSalesInvoiceItem(invoiceItem);
+            }
+
+            return salesInvoice;
+        }
+
         public void AppsOnDeriveLocale(IDerivation derivation)
         {
             if (this.ExistBillToCustomer && this.BillToCustomer.ExistLocale)
@@ -557,7 +633,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveAmountPaid(IDerivation derivation)
         {
-            this.AmountPaid = 0;
+            this.AmountPaid = this.AdvancePayment;
             foreach (PaymentApplication paymentApplication in this.PaymentApplicationsWhereInvoice)
             {
                 this.AmountPaid += paymentApplication.AmountApplied;

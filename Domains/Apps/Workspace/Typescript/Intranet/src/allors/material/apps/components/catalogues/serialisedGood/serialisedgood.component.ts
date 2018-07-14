@@ -352,6 +352,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         if (isNew) {
           this.router.navigate(['/serialisedGood/' + this.good.id]);
         } else {

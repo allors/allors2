@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
@@ -19,17 +17,24 @@ namespace Allors.Repository
         #endregion
         [Derived]
         [Required]
-
         public int NextSalesInvoiceNumber { get; set; }
+
+        #region Allors
+        [Id("C349F8A9-82D8-406B-B026-AFBE67DCD375")]
+        [AssociationId("6D7DF8E3-43C0-439A-B1D7-ECB3B1E367D0")]
+        [RoleId("07C36822-3147-47AC-8B68-542E66038FB9")]
+        #endregion
+        [Derived]
+        [Required]
+        public int NextCreditNoteNumber { get; set; }
+
         #region Allors
         [Id("c1b0dcb6-8627-4a47-86d0-2866344da3f1")]
         [AssociationId("3d1c515f-a52f-4038-9820-794f44927beb")]
         [RoleId("ba7329de-0176-4782-92e1-1cd932823ec0")]
         #endregion
         [Required]
-
         public int FiscalYear { get; set; }
-
 
         #region inherited methods
 
@@ -44,6 +49,5 @@ namespace Allors.Repository
 
         public void OnPostDerive(){}
         #endregion
-
     }
 }

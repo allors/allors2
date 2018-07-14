@@ -168,6 +168,24 @@ namespace Allors.Repository
         public Counter SalesInvoiceCounter { get; set; }
 
         #region Allors
+        [Id("22CB75F8-CDF0-4D20-ABF5-79B43ADA30FD")]
+        [AssociationId("DCD856F9-7C0C-4BEF-8529-AE59BB962F2E")]
+        [RoleId("92DD02F8-3532-405C-9E08-07227F59140D")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string CreditNoteNumberPrefix { get; set; }
+
+        #region Allors
+        [Id("8193E342-DB5B-4001-8321-3013CEB469EB")]
+        [AssociationId("D7ED58EC-4FBF-44A6-B828-0188D07A3617")]
+        [RoleId("C5822581-BA32-4BD6-BDB9-6ABC0C261713")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Counter CreditNoteCounter { get; set; }
+
+        #region Allors
         [Id("3CBCF813-7FD4-4C69-98C8-CFC260234477")]
         [AssociationId("92F3D9D3-39C9-4482-B66C-4D328F61B47B")]
         [RoleId("A79C364B-9CA8-4659-9ADE-FBBDECA0E2AB")]
@@ -282,6 +300,15 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string WorkEffortNumberPrefix { get; set; }
+
+        #region Allors
+        [Id("CE31A755-7053-4A27-A0AE-7C38AFA03E2F")]
+        [AssociationId("AA22F139-B7D6-4F86-ABCD-7A41ED5366DA")]
+        [RoleId("217207B1-5FF6-4DD2-83AF-3E728ADE0BF9")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool UseCreditNoteSequence { get; set; }
 
         #region inherited methods
 

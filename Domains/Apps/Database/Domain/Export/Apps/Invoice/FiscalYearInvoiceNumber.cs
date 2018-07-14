@@ -25,5 +25,14 @@ namespace Allors.Domain
             
             return salesInvoiceNumber;
         }
+
+        public int DeriveNextCreditNoteNumber()
+        {
+            this.NextCreditNoteNumber = this.ExistNextCreditNoteNumber ? this.NextCreditNoteNumber : 1;
+            int creditNoteNumber = this.NextCreditNoteNumber;
+            this.NextCreditNoteNumber++;
+
+            return creditNoteNumber;
+        }
     }
 }

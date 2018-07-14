@@ -487,6 +487,16 @@ namespace Allors.Repository
         [Workspace]
         public bool IsRepeatingInvoice { get; set; }
 
+        #region Allors
+        [Id("CE515051-9555-4810-8175-17B152919C2A")]
+        [AssociationId("5403D269-EFF6-40C5-A8D5-DA275601399C")]
+        [RoleId("B341F11F-E2AB-48C7-B431-1ADED2F827FE")]
+        [Indexed]
+        #endregion
+        [Required]
+        [Workspace]
+        public decimal AdvancePayment{ get; set; }
+
         #region inherited methods
 
 

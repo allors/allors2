@@ -185,6 +185,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         if (!this.invoice) {
           this.invoice = this.scope.session.create('SalesInvoice') as SalesInvoice;
           this.invoice.BilledFrom = internalOrganisation;
+          this.invoice.AdvancePayment = 0;
           this.title = 'Add Sales Invoice';
         } else {
           this.title = 'Sales Invoice for: ' + this.invoice.BillToCustomer.PartyName;

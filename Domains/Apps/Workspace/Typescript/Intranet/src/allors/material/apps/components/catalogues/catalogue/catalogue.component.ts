@@ -16,7 +16,7 @@ import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-    
+
 
 @Component({
   templateUrl: './catalogue.component.html',
@@ -141,6 +141,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.scope
       .save()
       .subscribe((saved: Saved) => {
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refresh();
       },
       (error: Error) => {

@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -34,6 +34,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     public layout: LayoutService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
+    private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
@@ -250,6 +251,17 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
+      },
+      (error: Error) => {
+        this.errorService.handle(error);
+      });
+  }
+
+  public credit(): void {
+    this.scope.invoke(this.invoice.Credit)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
       },
       (error: Error) => {
         this.errorService.handle(error);
