@@ -24,7 +24,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title = 'Person';
+  public title = 'Person Overview';
   public person: Person;
   public organisation: Organisation;
   public internalOrganisation: InternalOrganisation;

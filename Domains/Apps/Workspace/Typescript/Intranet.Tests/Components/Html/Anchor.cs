@@ -17,9 +17,12 @@ namespace Intranet.Tests
         public void Click()
         {
             this.Driver.WaitForAngular();
+
             var element = this.Driver.FindElement(this.Selector);
             this.ScrollToElement(element);
             element.Click();
+
+            this.Driver.WaitForAngular();
         }
     }
 }

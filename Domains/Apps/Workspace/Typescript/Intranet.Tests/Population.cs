@@ -344,7 +344,7 @@ namespace Intranet.Tests
                 .WithOriginator(email)
                 .WithAddressee(email2)
                 .WithEventPurpose(new CommunicationEventPurposes(this.session).Meeting)
-                .WithOwner(administrator)
+                .WithOwner(contact1)
                 .WithActualStart(DateTime.UtcNow)
                 .Build();
 

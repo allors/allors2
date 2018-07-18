@@ -25,6 +25,8 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
+  public loaded: boolean;
+
   public internalOrganisation: InternalOrganisation;
   public person: Person;
   public organisation: Organisation;
@@ -239,6 +241,7 @@ export class PersonComponent implements OnInit, OnDestroy {
       })
       .subscribe((loaded) => {
         this.organisations = loaded.collections.organisations as Organisation[];
+        this.loaded = true;
       },
       (error: any) => {
          this.errorService.handle(error);

@@ -29,16 +29,12 @@ namespace Intranet.Tests.Relations
 
             var page = new OrganisationPage(this.Driver);
 
-            this.Driver.WaitForAngular();
-
             page.Name.Text = "Acme";
             page.TaxNumber.Text = "111.111.111";
             page.IsManufacturer.Value = true;
             page.Comment.Text = "This is a comment";
 
             page.Save.Click();
-
-            this.Driver.WaitForAngular();
 
             this.Session.Rollback();
 
