@@ -21,18 +21,28 @@
 
 namespace Allors.Repository
 {
+    using System;
+
     using Attributes;
 
     #region Allors
     [Id("fd397adf-40b4-4ef8-b449-dd5a24273df3")]
     #endregion
     [Plural("Currencies")]
-    public partial class Currency : AccessControlledObject 
+    public partial class Currency : AccessControlledObject, Enumeration
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public Guid UniqueId { get; set; }
+
+        public string Name { get; set; }
+
+        public LocalisedText[] LocalisedNames { get; set; }
+
+        public bool IsActive { get; set; }
 
         #endregion
 
@@ -46,29 +56,7 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string IsoCode { get; set; }
-
-        #region Allors
-        [Id("74c8308b-1b76-4218-9532-f01c9d1e146b")]
-        [AssociationId("2cb43671-c648-4bd4-ac08-7302c29246e7")]
-        [RoleId("e7c93764-d634-4187-97ed-9248ea56bab2")]
-        #endregion
-        [Indexed]
-        [Required]
-        [Unique]
-        [Size(256)]
-        [Workspace]
-        public string Name { get; set; }
         
-        #region Allors
-        [Id("e9fc0472-cf7a-4e02-b061-cb42b6f5c273")]
-        [AssociationId("06b8f2b2-91f0-4b89-ae19-b47de4524556")]
-        [RoleId("e1301b8f-25cc-4ace-884e-79af1d303f53")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        public LocalisedText[] LocalisedNames { get; set; }
-
         #region inherited methods
 
 
