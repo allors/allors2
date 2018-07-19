@@ -14,6 +14,7 @@ import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, 
 import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
+import { Title } from '../../../../../../../../../node_modules/@angular/platform-browser';
 
 @Component({
   templateUrl: './party-communicationevent-worktask.component.html',
@@ -43,9 +44,11 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,    
+    private stateService: StateService,
+    titleService: Title,) {
 
-    private stateService: StateService) {
+    titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);

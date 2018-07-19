@@ -262,7 +262,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let workEffort of communicationEvent.WorkEfforts; let last=last">
+              <mat-list-item *ngFor="let workEffort of communicationEvent.WorkEfforts; let last=last" [attr.data-allors-id]="workEffort.id">
                 <div mat-line [routerLink]="['/worktask/' + workEffort.id ]">
                   {{ workEffort.Name }}, {{ workEffort.WorkEffortState.Name }}
                 </div>

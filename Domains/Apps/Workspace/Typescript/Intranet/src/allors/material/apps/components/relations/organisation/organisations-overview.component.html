@@ -78,8 +78,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let row of rows; let last = last" (click)="router.navigate(['/relations/organisation/', row.object.id])"
-            style="cursor: pointer;">
+          <mat-list-item *ngFor="let row of rows; let last = last" [attr.data-allors-id]="row.object.id" (click)="router.navigate(['/relations/organisation/', row.object.id])" style="cursor: pointer;">
 
             <mat-icon  *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
             <img  *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />

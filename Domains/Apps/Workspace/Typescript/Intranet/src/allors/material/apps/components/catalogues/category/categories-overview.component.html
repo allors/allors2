@@ -26,7 +26,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let category of data; let last = last" (click)="router.navigate(['/category/', category.id])" style="cursor: pointer;">
+          <mat-list-item *ngFor="let category of data; let last = last" [attr.data-allors-id]="category.id" (click)="router.navigate(['/category/', category.id])" style="cursor: pointer;">
 
             <mat-icon *ngIf="!category.CategoryImage" mat-list-avatar>photo_camera</mat-icon>
             <img *ngIf="category.CategoryImage" mat-list-avatar [src]="mediaService.url(category.CategoryImage)" />

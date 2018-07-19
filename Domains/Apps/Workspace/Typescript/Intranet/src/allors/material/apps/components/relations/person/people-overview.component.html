@@ -51,7 +51,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let person of data; let last = last" (click)="router.navigate(['/relations/person/', person.id])" style="cursor: pointer;">
+          <mat-list-item *ngFor="let person of data; let last = last" [attr.data-allors-id]="person.id" (click)="router.navigate(['/relations/person/', person.id])" style="cursor: pointer;">
 
             <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
               <img *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)" />

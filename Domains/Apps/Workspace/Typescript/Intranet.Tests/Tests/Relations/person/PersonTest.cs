@@ -43,6 +43,7 @@ namespace Intranet.Tests.Relations
 
             page.Save.Click();
 
+            this.Driver.WaitForAngular();
             this.Session.Rollback();
 
             var after = new People(this.Session).Extent().ToArray();
@@ -75,6 +76,7 @@ namespace Intranet.Tests.Relations
 
             page.Save.Click();
 
+            this.Driver.WaitForAngular();
             this.Session.Rollback();
 
             var after = new People(this.Session).Extent().ToArray();

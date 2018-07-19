@@ -13,6 +13,7 @@ import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, Letter
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 
 @Component({
   templateUrl: './communicationevent-overview.component.html',
@@ -56,7 +57,10 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService) {
+    private dialogService: AllorsMaterialDialogService,
+    titleService: Title) {
+
+    titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

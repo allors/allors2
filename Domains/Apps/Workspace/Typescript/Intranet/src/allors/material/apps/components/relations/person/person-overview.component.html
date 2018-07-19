@@ -79,28 +79,17 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last">
-                <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
-
-                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
-
-                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
-
-                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line [routerLink]="['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ]">
-                  Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
+              <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="router.navigate(['/relations/party/' + person.id + '/communicationevent/' + communicationEvent.id ])" style="cursor: pointer;">
+                <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line>Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
+                <div *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-line>Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
+                <div *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-line>Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
+                <div *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-line>Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
                 <p mat-line>{{ communicationEvent.Subject }} </p>
+                <p mat-line>{{ communicationEvent.ActualStart | date}} <span *ngIf="communicationEvent.ActualEnd">/ {{ communicationEvent.ActualEnd | date }}</span></p>
                 <p mat-line>Involved:
                   <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
                 </p>
-
-                <span>
-                  <div> started: {{ communicationEvent.ActualStart | date}} </div>
-                  <div> ended: {{ communicationEvent.ActualEnd | date }} </div>
-                </span>
 
                 <div (click)="$event.stopPropagation()">
                   <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">
@@ -161,7 +150,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let partyContactMechanism of this.contactMechanisms; let last=last">
+              <mat-list-item *ngFor="let partyContactMechanism of this.contactMechanisms; let last=last" [attr.data-allors-id]="partyContactMechanism.id">
 
                 <h3 mat-line> {{partyContactMechanism.ContactPurpose?.Name}}</h3>
                 <h3 mat-line> {{partyContactMechanism.Contact}}</h3>
@@ -239,7 +228,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let workEffortAssignment of this.workEffortAssignments; let last=last">
+              <mat-list-item *ngFor="let workEffortAssignment of this.workEffortAssignments; let last=last" [attr.data-allors-id]="workEffortAssignment.id">
                 <div mat-line [routerLink]="['/worktask/' + workEffortAssignment.Assignment.id ]">
                   {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
                 </div>

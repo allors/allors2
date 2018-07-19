@@ -73,8 +73,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let invoice of data; let last = last" (click)="router.navigate(['/accountsreceivable/invoice/', invoice.id])"
-            style="cursor: pointer;">
+          <mat-list-item *ngFor="let invoice of data; let last = last" [attr.data-allors-id]="invoice.id" (click)="router.navigate(['/accountsreceivable/invoice/', invoice.id])" style="cursor: pointer;">
 
             <h3 mat-line> {{invoice.BillToCustomer.displayName}}</h3>
             <h4 mat-line>number: {{invoice.InvoiceNumber }} reference: {{invoice.CustomerReference}} ({{invoice.SalesInvoiceState.Name}})</h4>

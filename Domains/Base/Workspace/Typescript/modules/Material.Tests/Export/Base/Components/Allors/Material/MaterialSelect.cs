@@ -25,18 +25,14 @@ namespace Intranet.Tests
             set
             {
                 this.Driver.WaitForAngular();
-                
                 var arrow = this.Driver.FindElement(this.ArrowSelector);
                 this.ScrollToElement(arrow);
                 arrow.Click();
 
                 this.Driver.WaitForAngular();
-                
                 var optionSelector = By.CssSelector($"mat-option[data-allors-option-display='{value}'] span");
                 var option = this.Driver.FindElement(optionSelector);
                 option.Click();
-
-                this.Driver.WaitForAngular();
             }
         }
 

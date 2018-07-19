@@ -73,7 +73,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" (click)="router.navigate(['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ])"
+              <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="router.navigate(['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ])"
                 style="cursor: pointer;">
                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line>
                   Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
@@ -153,7 +153,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let contactRelationship of this.contactRelationships; let last=last" (click)="router.navigate(['/relations/person/' + contactRelationship.Contact.id])"
+              <mat-list-item *ngFor="let contactRelationship of this.contactRelationships; let last=last" [attr.data-allors-id]="contactRelationShip.id" (click)="router.navigate(['/relations/person/' + contactRelationship.Contact.id])"
                 style="cursor: pointer;">
                 <div mat-line>{{contactRelationship.Contact.Salutation?.Name}} {{contactRelationship.Contact.FirstName}} {{contactRelationship.Contact.MiddleName}}
                   {{contactRelationship.Contact.LastName}}

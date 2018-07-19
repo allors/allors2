@@ -100,7 +100,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let invoiceItem of invoice.SalesInvoiceItems; let last=last">
+              <mat-list-item *ngFor="let invoiceItem of invoice.SalesInvoiceItems; let last=last" [attr.data-allors-id]="invoiceItem.id">
                 <h3 *ngIf="invoiceItem.Product && invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
                 <h3 *ngIf="invoiceItem.Product && !invoice.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</h3>
 
@@ -148,7 +148,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let salesTerm of invoice.SalesTerms; let last=last">
+              <mat-list-item *ngFor="let salesTerm of invoice.SalesTerms; let last=last" [attr.data-allors-id]="salesTerm.id">
                 <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
                 <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
                 <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesinvoice/' + invoice.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>

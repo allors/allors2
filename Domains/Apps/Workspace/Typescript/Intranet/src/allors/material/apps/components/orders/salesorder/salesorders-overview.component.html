@@ -64,7 +64,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let order of data; let last = last" (click)="router.navigate(['/orders/salesOrder/', order.id])" style="cursor: pointer;">
+          <mat-list-item *ngFor="let order of data; let last = last" [attr.data-allors-id]="order.id" (click)="router.navigate(['/orders/salesOrder/', order.id])" style="cursor: pointer;">
 
             <h3 mat-line> {{order.ShipToCustomer.displayName}}</h3>
             <h4 mat-line> {{order.OrderNumber }}: {{order.CustomerReference}} ({{order.SalesOrderState.Name}})</h4>

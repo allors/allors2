@@ -36,6 +36,7 @@ namespace Intranet.Tests.Relations
 
             page.Save.Click();
 
+            this.Driver.WaitForAngular();
             this.Session.Rollback();
 
             var after = new Organisations(this.Session).Extent().ToArray();

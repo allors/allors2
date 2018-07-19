@@ -83,7 +83,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let invoiceItem of this.invoice.PurchaseInvoiceItems; let last=last">
+              <mat-list-item *ngFor="let invoiceItem of this.invoice.PurchaseInvoiceItems; let last=last" [attr.data-allors-id]="invoiceItem.id">
                 <div *ngIf="invoiceItem.Product && invoice.CanWritePurchaseInvoiceItems" mat-line [routerLink]="['/purchaseinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</div>
                 <div *ngIf="invoiceItem.Product && !invoice.CanWritePurchaseInvoiceItems" mat-line>{{invoiceItem.Quantity}} * {{invoiceItem.Product.Name}}</div>
                 <div *ngIf="!invoiceItem.Product && invoice.CanWritePurchaseInvoiceItems" mat-line [routerLink]="['/purchaseinvoice/' + invoice.id + '/item/' + invoiceItem.id ]">{{invoiceItem.InvoiceItemType.Name}}</div>

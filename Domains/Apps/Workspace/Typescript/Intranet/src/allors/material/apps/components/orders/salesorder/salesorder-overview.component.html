@@ -119,7 +119,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let orderItem of order.SalesOrderItems; let last=last">
+              <mat-list-item *ngFor="let orderItem of order.SalesOrderItems; let last=last" [attr.data-allors-id]="orderItem.id">
                 <h3 *ngIf="orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.QuantityOrdered}} * {{orderItem.Product.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
                 <h3 *ngIf="!orderItem.Product" mat-line [routerLink]="['/salesOrder/' + order.id + '/item/' + orderItem.id ]">{{orderItem.InvoiceItemType.Name}} ({{orderItem.SalesOrderItemState.Name}})</h3>
                 <h4 mat-line>Total ex VAT: {{orderItem.TotalExVat}}</h4>
@@ -164,7 +164,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let salesTerm of order.SalesTerms; let last=last">
+              <mat-list-item *ngFor="let salesTerm of order.SalesTerms; let last=last" [attr.data-allors-id]="salesTerm.id">
                 <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>
                 <h3 *ngIf="salesTerm?.objectType.name == 'IncoTerm' && !salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/incoterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}</h3>
                 <h3 *ngIf="salesTerm?.objectType.name == 'InvoiceTerm' && salesTerm.TermValue" mat-line [routerLink]="['/salesOrder/' + order.id + '/invoiceterm/' + salesTerm.id ]">{{salesTerm.TermType.Name}}: {{salesTerm.TermValue}}</h3>

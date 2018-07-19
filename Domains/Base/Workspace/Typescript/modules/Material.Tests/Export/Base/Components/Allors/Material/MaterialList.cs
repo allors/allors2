@@ -1,34 +1,29 @@
 namespace Intranet.Tests
 {
     using Allors;
-    using Allors.Meta;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    public class MaterialList<T> 
-    : Component where T : IObject
+    public class MaterialList : Component
     {
-        private readonly RoleType roleType;
-
-        public MaterialList(IWebDriver driver, RoleType roleType, By selector = null)
-        : base(driver)
+        public MaterialList(IWebDriver driver, By selector = null)
+            : base(driver)
         {
-            this.roleType = roleType;
-            this.Selector = selector ?? By.CssSelector("mat-list");
+            this.Selector = selector;
         }
 
         public By Selector { get; }
 
-        public void Select(T obj)
+        public MaterialListItem FindListItem(IObject obj)
         {
             this.Driver.WaitForAngular();
 
-            var path = new ByChained(this.Selector, By.XPath($"//mat-list-item[.//*[text()[contains(.,'{obj.Strategy.GetUnitRole(this.roleType.RelationType)}')]]]"));
+            var itemPath = By.CssSelector($"mat-list-item[data-allors-id='{obj.Id}']");
+            var path = this.Selector != null ? new ByChained(this.Selector, itemPath) : itemPath; 
             var listItem = this.Driver.FindElement(path);
-            listItem.Click();
 
-            this.Driver.WaitForAngular();
+            return new MaterialListItem(this.Driver, listItem);
         }
     }
 }

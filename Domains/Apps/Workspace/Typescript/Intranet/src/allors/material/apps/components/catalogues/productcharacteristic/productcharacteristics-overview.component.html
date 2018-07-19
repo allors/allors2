@@ -27,8 +27,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let characteristic of data; let last = last" (click)="router.navigate(['/productCharacteristic/', characteristic.id])"
-            style="cursor: pointer;">
+          <mat-list-item *ngFor="let characteristic of data; let last = last" [attr.data-allors-id]="characteristic.id" (click)="router.navigate(['/productCharacteristic/', characteristic.id])" style="cursor: pointer;">
 
             <h3 *ngIf="characteristic.UnitOfMeasure" mat-line>{{characteristic.Name}} ({{characteristic.UnitOfMeasure.Name}})</h3>
             <h3 *ngIf="!characteristic.UnitOfMeasure" mat-line>{{characteristic.Name}}</h3>

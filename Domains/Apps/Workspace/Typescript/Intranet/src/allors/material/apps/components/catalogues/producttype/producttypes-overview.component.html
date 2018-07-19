@@ -28,7 +28,7 @@
             <h3>No product types to display.</h3>
           </div>
 
-          <mat-list-item *ngFor="let productType of data; let last = last">
+          <mat-list-item *ngFor="let productType of data; let last = last" [attr.data-allors-id]="productType.id">
 
             <h3 mat-line [routerLink]="['/productType/' + productType.id]"> {{productType.Name}}</h3>
 

@@ -62,7 +62,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let quote of data; let last = last" (click)="router.navigate(['/orders/productQuote/', quote.id])"
+          <mat-list-item *ngFor="let quote of data; let last = last" [attr.data-allors-id]="quote.id" (click)="router.navigate(['/orders/productQuote/', quote.id])"
             style="cursor: pointer;">
 
             <h3 mat-line>{{quote.Receiver.displayName}}</h3>

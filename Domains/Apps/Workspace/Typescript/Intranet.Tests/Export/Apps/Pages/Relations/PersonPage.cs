@@ -1,5 +1,6 @@
 namespace Intranet.Pages.Relations
 {
+    using Allors.Domain;
     using Allors.Meta;
 
     using Intranet.Tests;
@@ -24,5 +25,6 @@ namespace Intranet.Pages.Relations
         public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
 
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
+
     }
 }

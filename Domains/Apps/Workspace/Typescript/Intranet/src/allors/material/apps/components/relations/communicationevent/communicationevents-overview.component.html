@@ -68,7 +68,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let communicationEvent of data; let last = last" style="cursor: pointer;">
+          <mat-list-item *ngFor="let communicationEvent of data; let last = last" style="cursor: pointer;" [attr.data-allors-id]="communicationEvent.id">
             <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line [routerLink]="['/relations/party/' + communicationEvent.InvolvedParties[0].id + '/communicationevent/' + communicationEvent.id ]">
               Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 

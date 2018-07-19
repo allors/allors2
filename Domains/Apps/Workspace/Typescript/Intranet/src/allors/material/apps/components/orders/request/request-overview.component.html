@@ -102,7 +102,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let requestItem of request.RequestItems; let last=last">
+              <mat-list-item *ngFor="let requestItem of request.RequestItems; let last=last" [attr.data-allors-id]="requestItem.id">
                 <h3 *ngIf="requestItem.Product" mat-line [routerLink]="['/request/' + request.id + '/item/' + requestItem.id ]">{{requestItem.Quantity}} * {{requestItem.Product.Name}} ({{requestItem.RequestItemState.Name}})</h3>
                 <h4 *ngIf="serialisedInventoryItem?.ExpectedSalesPrice" mat-line>{{ serialisedInventoryItem.ExpectedSalesPrice }}</h4>
                 <span>

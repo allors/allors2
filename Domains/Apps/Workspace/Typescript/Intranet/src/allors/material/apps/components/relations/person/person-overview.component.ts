@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
@@ -11,7 +11,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Fetch, Path, PullRequest, Query, TreeNode, ISessionObject } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -58,6 +58,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
+    private router: Router,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {

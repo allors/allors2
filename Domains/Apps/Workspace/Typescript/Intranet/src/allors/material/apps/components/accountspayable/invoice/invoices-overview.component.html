@@ -33,7 +33,7 @@
             <mat-label>From Internal Organisation</mat-label>
             <mat-select formControlName="internalOrganisation" name="internalOrganisation" [(ngModel)]="selectedInternalOrganisation">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName">{{ internalOrganisation.PartyName }}</mat-option>
+              <mat-option *ngFor="let internalOrganisation of internalOrganisations" [value]="internalOrganisation.PartyName" [attr.data-allors-id]="internalOrganisation.id">{{ internalOrganisation.PartyName }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -71,8 +71,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let invoice of data; let last = last" (click)="router.navigate(['/accountspayable/invoice/', invoice.id])"
-            style="cursor: pointer;">
+          <mat-list-item *ngFor="let invoice of data; let last = last" [attr.data-allors-id]="invoice.id" (click)="router.navigate(['/accountspayable/invoice/', invoice.id])" style="cursor: pointer;">
 
             <h3 mat-line>From: {{invoice.BilledFrom.displayName}}</h3>
             <h3 *ngIf="invoice.BillToCustomer" mat-line>To: {{invoice.BillToCustomer.displayName}}</h3>

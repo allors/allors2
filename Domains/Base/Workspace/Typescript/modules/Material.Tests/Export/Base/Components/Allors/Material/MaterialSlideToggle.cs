@@ -30,7 +30,6 @@ namespace Intranet.Tests
             set
             {
                 this.Driver.WaitForAngular();
-
                 var element = this.Driver.FindElement(this.ContainerSelector);
                 this.ScrollToElement(element);
                 if (element.Selected)
@@ -47,8 +46,6 @@ namespace Intranet.Tests
                         element.Click();
                     }
                 }
-
-                this.Driver.WaitForAngular();
             }
         }
     }
