@@ -153,7 +153,7 @@
               <mat-menu #menu="matMenu">
                 <a *ngIf="row.isSerialised" [routerLink]="'/serialisedGood/' + [row.good.id]" mat-menu-item>Edit</a>
                 <a *ngIf="!row.isSerialised" [routerLink]="'/nonSerialisedGood/' + [row.good.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="delete(good)">Delete</button>
+                <button mat-menu-item (click)="delete(row.good)">Delete</button>
               </mat-menu>
             </div>
 
