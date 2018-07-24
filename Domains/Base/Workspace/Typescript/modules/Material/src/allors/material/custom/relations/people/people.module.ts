@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
          MatMenuModule, MatToolbarModule } from '@angular/material';
 
-import { AllorsMaterialChipsModule, AllorsMaterialStaticModule, AllorsMaterialSelectModule } from '../../../../material';
+import { AllorsMaterialChipsModule, AllorsMaterialStaticModule, AllorsMaterialSelectModule, AllorsMaterialSideNavToggleModule } from '../../../../material';
 
 import { PeopleComponent } from './people.component';
 export { PeopleComponent } from './people.component';
@@ -20,6 +20,7 @@ export { PeopleComponent } from './people.component';
   imports: [
     CommonModule,
     RouterModule,
+
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -27,7 +28,9 @@ export { PeopleComponent } from './people.component';
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
+    
     AllorsMaterialChipsModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialSelectModule,
   ],

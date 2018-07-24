@@ -21,7 +21,6 @@ import {
   Saved,
   Scope,
   WorkspaceService,
-  LayoutService
 } from "../../../../../../../angular";
 import {
   CommunicationEventPurpose,
@@ -74,7 +73,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   private subscription: Subscription;
 
   constructor(
-    public layout: LayoutService,
+    
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,

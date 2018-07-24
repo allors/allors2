@@ -9,6 +9,7 @@ import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/au
 
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
+import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
@@ -36,6 +37,7 @@ export { WorkTaskEditComponent } from './worktask.component';
     AllorsMaterialAutoCompleteModule,
 	  AllorsMaterialChipsModule,
 	  AllorsMaterialDatepickerModule,
+	  AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,

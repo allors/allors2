@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 
 import { MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from '@angular/material';
 
-import { AllorsMaterialStaticModule } from '../../../../../material';
+import { AllorsMaterialStaticModule, AllorsMaterialSideNavToggleModule } from '../../../../../material';
 
 import { PersonOverviewComponent } from './person-overview.component';
 export { PersonOverviewComponent } from './person-overview.component';
@@ -19,11 +19,14 @@ export { PersonOverviewComponent } from './person-overview.component';
   imports: [
     CommonModule,
     RouterModule,
+
     MatButtonModule,
     MatCardModule,
     MatIconModule,
     MatListModule,
     MatToolbarModule,
+
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialStaticModule,
   ],
 })

@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Query, TreeNode, ISessionObject } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -53,7 +53,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    public layout: LayoutService,
+    
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,

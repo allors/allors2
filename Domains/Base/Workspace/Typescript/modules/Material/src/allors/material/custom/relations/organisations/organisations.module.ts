@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule,
          MatMenuModule, MatToolbarModule } from '@angular/material';
 
-import { AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule } from '../../../../material';
+import { AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule, AllorsMaterialSideNavToggleModule } from '../../../../material';
 
 import { OrganisationsComponent } from './organisations.component';
 
@@ -20,8 +20,8 @@ export { OrganisationsComponent } from './organisations.component';
   ],
   imports: [
     CommonModule,
-    
     RouterModule,
+
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
@@ -29,7 +29,9 @@ export { OrganisationsComponent } from './organisations.component';
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
+
     AllorsMaterialChipsModule,
+    AllorsMaterialSideNavToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialSelectModule,
   ],

@@ -99,13 +99,13 @@
         </div>
 
         <div class="row">
-          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-mat-datetimepicker>
+          <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-mat-datetimepicker>
         </div>
 
         <div class="row">
-          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart" [useTime]="true"></a-mat-datepicker>
-          <a-mat-datepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd" [useTime]="true"></a-mat-datepicker>
+          <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-mat-datetimepicker>
+          <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-mat-datetimepicker>
         </div>
       </mat-card-content>
 

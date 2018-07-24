@@ -30,7 +30,7 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     private titleService: Title,
     private route: ActivatedRoute) {
 
-    this.title = 'Organisation';
+    this.title = 'Organisation Overview';
     this.titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

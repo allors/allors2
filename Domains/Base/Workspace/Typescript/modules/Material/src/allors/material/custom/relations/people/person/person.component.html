@@ -1,27 +1,38 @@
-<mat-card>
-  <form #form="ngForm" *ngIf="person" (submit)="save()">
-    <mat-card-content class="push-bottom-none">
+<form class="a-edit" #form="ngForm" *ngIf="person" (submit)="save()">
 
-      <div fxLayout="column">
-        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px" fxLayoutGap.lt-md="0px">
-          <a-mat-input fxFlex [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-          <a-mat-input fxFlex [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-          <a-mat-input fxFlex [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div>
+    <mat-card>
+      <mat-card-content class="container-fluid">
+
+        <div class="row">
+          <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+          <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+          <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
         </div>
 
-        <a-mat-file fxFlex [object]="person" [roleType]="m.Person.Photo"></a-mat-file>
-        <a-mat-files fxFlex [object]="person" [roleType]="m.Person.Pictures"></a-mat-files>
+        <div class="row">
+          <a-mat-file class="col-md" [object]="person" [roleType]="m.Person.Photo"></a-mat-file>
+          <a-mat-files class="col-md" [object]="person" [roleType]="m.Person.Pictures"></a-mat-files>
+        </div>
 
-      </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-    </mat-card-content>
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-    <mat-divider></mat-divider>
-
-    <mat-card-actions>
-      <button mat-button color="primary" type="submit">SAVE</button>
-      <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
-
-  </form>
-</mat-card>
+</form>

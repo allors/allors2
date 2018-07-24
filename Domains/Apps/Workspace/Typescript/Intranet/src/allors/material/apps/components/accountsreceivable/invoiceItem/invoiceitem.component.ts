@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
-import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
+import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -42,7 +42,7 @@ export class InvoiceItemEditComponent
   private scope: Scope;
 
   constructor(
-    public layout: LayoutService,
+    
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private router: Router,

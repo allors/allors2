@@ -12,7 +12,9 @@ import { environment } from '../environments/environment';
 import { AuthorizationService } from './auth/authorization.service';
 import { LoginComponent } from './auth/login.component';
 import { MainComponent } from './main/main.component';
+
 import * as relations from '../allors/material/custom/relations';
+import * as tests from '../allors/material/custom/tests';
 
 const CDK_MODULES: any[] = [
   CdkAccordionModule
@@ -36,7 +38,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService
 } from '../allors/angular';
 
 import {
@@ -45,6 +47,9 @@ import {
   AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSliderModule,AllorsMaterialSlideToggleModule,
   AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent,
   MomentUtcDateAdapter,
+  AllorsMaterialSideNavService,
+  AllorsMaterialDialogService,
+  AllorsMaterialSideNavToggleModule,
 } from '../allors/material';
 
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
@@ -54,7 +59,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 const BASE_MATERIAL_MODULES: any[] = [
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, 
   AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, 
-  AllorsMaterialSideMenuModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
+  AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule,
+  AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
 ];
 
 @NgModule({
@@ -79,6 +85,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     AppRoutingModule,
 
     relations.Modules,
+    tests.Modules,
   ],
   providers: [
     { provide: DatabaseConfig, useValue: { url: environment.url } },
@@ -89,6 +96,9 @@ const BASE_MATERIAL_MODULES: any[] = [
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
     { provide: LoggingService, useClass: DefaultLoggingService },
     { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
+    AllorsMaterialSideNavService,
+    AllorsMaterialDialogService,
+    MenuService,
     DatabaseService,
     WorkspaceService,
     AuthenticationService,

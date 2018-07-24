@@ -3,7 +3,7 @@
         <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
     </mat-form-field>
 
-    <button mat-icon-button fxFlex="none" type="button" (click)="fileInput.click()">
+    <button mat-icon-button type="button" (click)="fileInput.click()">
         <mat-icon>add_to_photos</mat-icon>
     </button>
 </div>
@@ -12,8 +12,8 @@
 
 <div class="row" *ngIf="model" style="margin-bottom: 1rem;">
     <mat-card class="col" *ngFor="let media of medias">
-        <img mat-card-image fxFlex="auto" [src]="src(media)">
-        <mat-card-actions fxFlex="none">
+        <img mat-card-image [src]="src(media)">
+        <mat-card-actions>
             <a mat-button (click)="delete(media)">DELETE</a>
         </mat-card-actions>
     </mat-card>

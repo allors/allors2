@@ -28,7 +28,7 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     private titleService: Title,
     private route: ActivatedRoute) {
 
-    this.title = 'Person';
+    this.title = 'Person Overview';
     this.titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;

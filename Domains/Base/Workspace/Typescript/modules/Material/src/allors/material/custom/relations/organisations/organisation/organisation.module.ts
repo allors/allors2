@@ -2,11 +2,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatIconModule, MatListModule, MatToolbarModule, MatMenuModule } from '@angular/material';
 
-import { AllorsMaterialAutoCompleteModule, AllorsMaterialInputModule, AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule } from '../../../../../material';
+import { AllorsMaterialAutoCompleteModule, AllorsMaterialInputModule, AllorsMaterialStaticModule, AllorsMaterialChipsModule, AllorsMaterialSelectModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSlideToggleModule, AllorsMaterialSliderModule, AllorsMaterialTextAreaModule, AllorsMaterialRadioGroupModule } from '../../../../../material';
 
 import { OrganisationComponent } from './organisation.component';
+import { RouterModule } from '../../../../../../../node_modules/@angular/router';
+import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/datetimepicker';
 export { OrganisationComponent } from './organisation.component';
 
 @NgModule({
@@ -19,17 +21,33 @@ export { OrganisationComponent } from './organisation.component';
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
+
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
     MatListModule,
+    MatMenuModule,
     MatToolbarModule,
+
     AllorsMaterialAutoCompleteModule,
+    AllorsMaterialCheckboxModule,
     AllorsMaterialChipsModule,
+    AllorsMaterialDatepickerModule,
+    AllorsMaterialDatetimepickerModule,
+    AllorsMaterialFileModule,
+    AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
+    AllorsMaterialLocalisedTextModule,
+    AllorsMaterialRadioGroupModule,
+    AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
+    AllorsMaterialSlideToggleModule,
+    AllorsMaterialSliderModule,
+    AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
-    AllorsMaterialSelectModule
+    AllorsMaterialTextAreaModule,
   ],
 })
 export class OrganisationModule {}

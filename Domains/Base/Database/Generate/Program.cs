@@ -40,9 +40,6 @@
                     { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Material/src/allors/meta/generated" },
                     { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Material/src/allors/domain/generated" },
 
-                    { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Covalent/src/allors/meta/generated" },
-                    { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Covalent/src/allors/domain/generated" },
-
                     { "Workspace/Typescript/modules/Templates/meta.ts.stg", "Workspace/Typescript/modules/Promise/src/allors/meta/generated" },
                     { "Workspace/Typescript/modules/Templates/domain.ts.stg", "Workspace/Typescript/modules/Promise/src/allors/domain/generated" },
                 };

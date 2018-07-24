@@ -36,9 +36,7 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    CommonModule,
-    
-    FormsModule,
+
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -56,6 +54,9 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+
+    CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
   ],

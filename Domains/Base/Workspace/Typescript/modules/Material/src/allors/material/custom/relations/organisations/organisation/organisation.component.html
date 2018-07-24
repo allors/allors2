@@ -1,38 +1,63 @@
-<mat-card>
-  <form #form="ngForm" *ngIf="organisation" (submit)="save()">
-    <mat-card-content class="push-bottom-none">
+<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
 
-      <div fxLayout="column">
-        <a-mat-input fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
-        
-        <a-mat-autocomplete fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
-        <a-mat-autocomplete fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
-        
-        <a-mat-select fxFlex [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div>
+    <mat-card>
+      <form #form="ngForm" *ngIf="organisation" (submit)="save()">
+        <mat-card-content class="container-fluid">
 
-        <a-mat-chips fxFlex class="push-top" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
+          <div class="row">
+            <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+          </div>
 
-        <h3>Output</h3>
-        <div class="push-top">{{organisation?.Owner?.UserName}}</div>
+          <div class="row">
+            <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
+            <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+          </div>
 
-        <h3>Security</h3>
-        <div>CanWriteName: {{organisation.CanWriteName}}</div>
-        <div>CanWriteOwner: {{organisation.CanWriteOwner}}</div>
+          <div class="row">
+            <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
+            <a-mat-chips class="col-md" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
+          </div>
 
-        <h3>Events</h3>
-        <div>id: {{field?.object?.id}}, roleType: {{field?.roleType?.name}}</div>
+          <div class="row pt-5">
+            <h3 class="col-md">Output</h3>
+            <div class="col-md">{{organisation?.Owner?.UserName}}</div>
+          </div>
 
-      </div>
+          <div class="row">
+            <h3 class="col-md">Security</h3>
+            <div class="col-md">
+              CanWriteName: {{organisation.CanWriteName}}
+              <br> CanWriteOwner: {{organisation.CanWriteOwner}}
+            </div>
 
-    </mat-card-content>
+          </div>
 
-    <mat-divider></mat-divider>
+          <div class="row">
+            <h3 class="col-md">Events</h3>
+            <div class="col-md">id: {{field?.object?.id}}, roleType: {{field?.roleType?.name}}</div>
+          </div>
 
-    <mat-card-actions>
+        </mat-card-content>
+      </form>
+    </mat-card>
+
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
       <button mat-button (click)="toggleCanWrite()" type="button">TOGGLE CANWRITE</button>
       <button mat-button color="primary" type="submit">SAVE</button>
       <button mat-button (click)="goBack()" type="button">CANCEL</button>
-    </mat-card-actions>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-  </form>
-</mat-card>
+</form>

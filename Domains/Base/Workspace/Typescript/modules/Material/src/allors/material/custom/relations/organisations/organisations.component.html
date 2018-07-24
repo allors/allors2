@@ -1,39 +1,69 @@
-<mat-card *ngIf="data">
-  <mat-card-content>
-    <mat-list class="will-load">
-      <div class="mat-padding" *ngIf="data && data.length === 0" layout="row" layout-align="center center">
-        <h3>No organisations to display.</h3>
-      </div>
-      <ng-template let-organisation let-last="last" ngFor [ngForOf]="data">
-        <mat-list-item>
+<div class="a-master">
 
-          <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>business_center</mat-icon>
-          <img *ngIf="organisation.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}" />
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+      <button mat-icon-button matTooltip="Export">
+        <mat-icon>cloud_download</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
-          <h3 mat-line>{{organisation.Name}}</h3>
-          <p mat-line> {{organisation.Owner?.UserName}} </p>
-          <p mat-line hide-gt-md class="mat-caption"> last login: {{ organisation.LastAccess | date }} </p>
+  <div>
+    <mat-card *ngIf="data">
+      <mat-card-content class="container-fluid a-list">
 
-          <span flex></span>
+        <div *ngIf="data && data.length === 0">
+          <h3>No organisations to display.</h3>
+        </div>
 
-          <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
-            <div class="mat-caption"> {{ organisation.Created | date }} </div>
-            <div class="mat-caption" flex-gt-xs="50"> {{ organisation.LastAccess | date }} </div>
-          </span>
+        <mat-list>
 
-          <span>
-            <button mat-icon-button [mat-menu-trigger-for]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu x-position="before" #menu="matMenu">
-              <a [routerLink]="[organisation.id + '/overview']" mat-menu-item>Details</a>
-              <button mat-menu-item (click)="delete(organisation)">Delete</button>
-            </mat-menu>
-          </span>
+          <mat-list-item *ngFor="let organisation of data; let last = last" [attr.data-allors-id]="organisation.id" (click)="router.navigate(['/relations/organisations/' + organisation.id + '/overview'])" style="cursor: pointer;">
 
-        </mat-list-item>
-        <mat-divider *ngIf="!last" mat-inset></mat-divider>
-      </ng-template>
-    </mat-list>
-  </mat-card-content>
-</mat-card>
+            <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>business_center</mat-icon>
+            <img *ngIf="organisation.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}" />
+
+            <h3 mat-line>{{organisation.Name}}</h3>
+            <p mat-line> {{organisation.Owner?.UserName}} </p>
+            <p mat-line hide-gt-md class="mat-caption"> last login: {{ organisation.LastAccess | date }} </p>
+
+            <span flex></span>
+
+            <span hide-xs hide-sm hide-md flex-gt-xs="60" flex-xs="40" layout-gt-xs="row">
+              <div class="mat-caption"> {{ organisation.Created | date }} </div>
+              <div class="mat-caption" flex-gt-xs="50"> {{ organisation.LastAccess | date }} </div>
+            </span>
+
+            <div (click)="$event.stopPropagation()">
+              <button mat-icon-button [mat-menu-trigger-for]="menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu x-position="before" #menu="matMenu">
+                <a [routerLink]="[organisation.id + '/overview']" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(organisation)">Delete</button>
+              </mat-menu>
+            </div>
+
+            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+
+          </mat-list-item>
+        </mat-list>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <a mat-raised-button [routerLink]="['/relations/organisations/add']">
+        Add New
+      </a>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+
+</div>

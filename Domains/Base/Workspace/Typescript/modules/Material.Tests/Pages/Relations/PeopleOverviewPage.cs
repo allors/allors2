@@ -20,11 +20,13 @@ namespace Intranet.Pages.Relations
 
         public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
 
-        public MaterialList<Person> List => new MaterialList<Person>(this.Driver, M.Person.UserName);
+        public MaterialList List => new MaterialList(this.Driver);
 
         public PersonOverviewPage Select(Person person)
         {
-            this.List.Select(person);
+            var listItem = this.List.FindListItem(person);
+            listItem.Click();
+
             return new PersonOverviewPage(this.Driver);
         }
     }

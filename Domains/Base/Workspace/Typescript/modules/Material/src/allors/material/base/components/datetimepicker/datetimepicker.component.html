@@ -1,0 +1,18 @@
+<div class="row" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <mat-form-field class="col">
+    <input matInput [matDatepicker]="picker" [(ngModel)]="model" [name]="name" [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-hint *ngIf="hint">{{hint}}</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="this.model">
+    <input matInput matInput type="number" min="0" max="23" [(ngModel)]="hours" [name]="hours" placeholder="hours" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  </mat-form-field>
+
+  <mat-form-field *ngIf="this.model">
+    <input matInput matInput type="number" min="0" max="59" [(ngModel)]="minutes" [name]="minutes" placeholder="minutes" [required]="required" [disabled]="disabled" [readonly]="readonly">
+  </mat-form-field>
+</div>
+
+<mat-datepicker #picker></mat-datepicker>

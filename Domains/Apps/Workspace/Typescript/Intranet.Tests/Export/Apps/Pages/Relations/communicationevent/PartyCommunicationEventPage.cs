@@ -1,5 +1,7 @@
 namespace Intranet.Pages.Relations
 {
+    using Intranet.Tests;
+
     using OpenQA.Selenium;
 
     public class PartyCommunicationEventPage : MainPage
@@ -8,5 +10,7 @@ namespace Intranet.Pages.Relations
             : base(driver)
         {
         }
+
+        public Button Edit => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'Edit')]"));
     }
 }

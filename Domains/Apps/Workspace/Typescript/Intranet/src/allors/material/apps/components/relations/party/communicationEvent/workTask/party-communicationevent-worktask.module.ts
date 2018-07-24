@@ -7,6 +7,7 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialChipsModule } from '../../../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../../../base/components/datepicker';
+import { AllorsMaterialDatetimepickerModule } from '../../../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
@@ -30,6 +31,7 @@ export { PartyCommunicationEventWorkTaskComponent } from './party-communicatione
     
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
+    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,

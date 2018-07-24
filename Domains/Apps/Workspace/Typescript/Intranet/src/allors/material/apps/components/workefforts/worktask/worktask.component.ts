@@ -18,7 +18,6 @@ import {
   Saved,
   Scope,
   WorkspaceService,
-  LayoutService,
 } from '../../../../../angular';
 import {
   ContactMechanism,
@@ -78,7 +77,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    public layout: LayoutService,
+    
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,

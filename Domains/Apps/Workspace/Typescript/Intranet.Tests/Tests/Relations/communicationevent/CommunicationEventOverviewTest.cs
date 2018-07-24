@@ -10,11 +10,11 @@ namespace Intranet.Tests.Relations
     using Xunit;
 
     [Collection("Test collection")]
-    public class PartyCommunicationEventTest : Test
+    public class CommunicationEventOverviewTest : Test
     {
         private readonly PeopleOverviewPage people;
 
-        public PartyCommunicationEventTest(TestFixture fixture)
+        public CommunicationEventOverviewTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();

@@ -10,9 +10,6 @@ import { Field } from '../../../../angular';
 })
 export class AllorsMaterialDatepickerComponent extends Field {
 
-  @Input()
-  public useTime: boolean;
-
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
   }

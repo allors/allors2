@@ -3,6 +3,7 @@ export * from './base/components/autocomplete/autocomplete.module';
 export * from './base/components/checkbox/checkbox.module';
 export * from './base/components/chips/chips.module';
 export * from './base/components/datepicker/datepicker.module';
+export * from './base/components/datetimepicker/datetimepicker.module';
 export * from './base/components/dialog/dialog.module';
 export * from './base/components/errordialog/errordialog.module';
 export * from './base/components/file/file.module';

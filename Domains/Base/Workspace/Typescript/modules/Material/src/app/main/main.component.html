@@ -1,32 +1,13 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" fullscreen>
 
-    <mat-sidenav
-      style="width: 18rem;"
-      #drawer
-      class="sidenav side-theme"
-      fixedInViewport="true"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="!(isHandset$ | async)">
-      <mat-toolbar>Allors Material</mat-toolbar>
-      <a-mat-sidemenu [items]="sideMenuItems"></a-mat-sidemenu>
-    </mat-sidenav>
+  <mat-sidenav style="width: 18rem;" #drawer class="sidenav side-theme" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
+    <mat-toolbar>Allors Apps</mat-toolbar>
+    <a-mat-sidemenu [items]="sideMenuItems"></a-mat-sidemenu>
+  </mat-sidenav>
 
-    <mat-sidenav-content>
-      <mat-toolbar color="primary">
-        <button
-          type="button"
-          aria-label="Toggle sidenav"
-          mat-icon-button
-          (click)="drawer.toggle()"
-          *ngIf="isHandset$ | async"
-          >
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
-        </button>
-        <span>{{title}}</span>
-      </mat-toolbar>
+  <mat-sidenav-content>
       <router-outlet></router-outlet>
-    </mat-sidenav-content>
-  
+  </mat-sidenav-content>
+
 </mat-sidenav-container>
-  

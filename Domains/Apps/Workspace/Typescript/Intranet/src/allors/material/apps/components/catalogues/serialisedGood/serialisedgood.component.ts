@@ -10,7 +10,7 @@ import 'rxjs/add/observable/combineLatest';
 
 import { isType } from '@angular/core/src/type';
 import { forEach } from '@angular/router/src/utils/collection';
-import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService, LayoutService } from '../../../../../angular';
+import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, SupplierOffering, VatRate, VendorProduct } from '../../../../../domain';
 import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
 import { FetchFactory, MetaDomain } from '../../../../../meta';
@@ -61,7 +61,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    public layout: LayoutService,
+    
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private router: Router,
