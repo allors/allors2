@@ -6,7 +6,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
-import { Enumeration, Locale, Organisation, Person } from '../../../../domain';
+import { Enumeration, Locale, Organisation, Person, Data } from '../../../../domain';
 import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse,
          Query, RoleType, Sort, TreeNode } from '../../../../framework';
 import { MetaDomain } from '../../../../meta';
@@ -20,10 +20,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public peopleFilter: FilterFactory;
-
-  public people: Person[];
-  public organisation: Organisation;
+  public data: Data;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -42,8 +39,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
-    this.peopleFilter = new FilterFactory({objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
-
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -58,11 +53,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const queries = [
-          new Query(
-            {
-              name: 'people',
-              objectType: this.m.Person,
-            }),
         ];
 
         return this.scope
@@ -72,9 +62,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.scope.session.reset();
 
-        this.people = loaded.collections.people as Person[];
-
-        this.organisation = this.scope.session.create("Organisation") as Organisation;
+        this.data = this.scope.session.create("Data") as Data;
       },
       (error: any) => {
         this.errorService.handle(error);

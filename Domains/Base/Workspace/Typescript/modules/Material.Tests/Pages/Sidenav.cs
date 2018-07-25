@@ -1,5 +1,6 @@
 namespace Intranet.Tests
 {
+    using System;
     using Intranet.Pages;
     using Intranet.Pages.Relations;
 
@@ -24,6 +25,10 @@ namespace Intranet.Tests
         
         public Anchor Organisations => this.Link("/relations/organisations");
 
+        public Element TestsGroup => this.Group("Tests");
+
+        public Anchor Form => this.Link("/tests/form");
+
 
         public Button Toggle => new Button(this.Driver, By.CssSelector("a-mat-sidenavtoggle button"));
 
@@ -44,6 +49,12 @@ namespace Intranet.Tests
         {
             this.Navigate(this.RelationsGroup, this.Organisations);
             return new OrganisationsOverviewPage(this.Driver);
+        }
+
+        public FormPage NavigateToForm()
+        {
+            this.Navigate(this.TestsGroup, this.Form);
+            return new FormPage(this.Driver);
         }
 
         private void Navigate(Element group, Anchor link)

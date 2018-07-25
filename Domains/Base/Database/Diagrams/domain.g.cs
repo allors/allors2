@@ -466,6 +466,15 @@ namespace Allors.Domain
 		public interface ClassWithoutRoles  : Object 
 		{
 		}
+		public interface Data  : AccessControlledObject 
+		{
+						global::System.String String {set;}
+
+						global::System.DateTime? Date {set;}
+
+						global::System.DateTime? DateTime {set;}
+
+		}
 		public interface Dependee  : DerivationCounted 
 		{
 						Subdependee Subdependee {set;}

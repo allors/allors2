@@ -111,6 +111,17 @@ namespace Allors.Domain
 								S1 S1One2One {set;}
 
 				}
+				public interface Data 
+				{
+								global::System.String String {set;}
+
+
+								global::System.DateTime? Date {set;}
+
+
+								global::System.DateTime? DateTime {set;}
+
+				}
 				public interface Dependent : Deletable 
 				{
 				}

@@ -1,4 +1,4 @@
-<form class="a-edit" #form="ngForm" *ngIf="organisation" (submit)="save()">
+<form class="a-edit" #form="ngForm" (submit)="save()">
 
   <mat-toolbar class="a-header">
     <mat-toolbar-row class="row">
@@ -9,21 +9,16 @@
   </mat-toolbar>
 
   <div>
-    <mat-card>
+    <mat-card *ngIf="data">
       <mat-card-content class="container-fluid">
 
         <div class="row">
-          <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+          <a-mat-input class="col-md" [object]="data" [roleType]="m.Data.String"></a-mat-input>
         </div>
 
         <div class="row">
-          <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create()" display="UserName" (onChange)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
-          <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-select>
-          <a-mat-chips class="col-md" [object]="organisation" [roleType]="m.Organisation.Employees" [options]="people" display="UserName"></a-mat-chips>
+          <a-mat-datepicker class="col-md" [object]="data" [roleType]="m.Data.Date"></a-mat-datepicker>
+          <a-mat-datetimepicker class="col-md" [object]="data" [roleType]="m.Data.DateTime"></a-mat-datetimepicker>
         </div>
 
       </mat-card-content>

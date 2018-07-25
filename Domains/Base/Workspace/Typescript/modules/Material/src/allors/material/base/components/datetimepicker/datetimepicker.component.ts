@@ -16,25 +16,40 @@ export class AllorsMaterialDatetimepickerComponent extends Field {
 
   get hours(): number {
     if (this.model) {
+      if(this.model.hour){
+        return this.model.hour();
+      }
+
       return this.model.getHours();
     }
   }
 
   set hours(value: number) {
     if (this.model) {
-      this.model.setHours(value);
+      if(this.model.hour){
+        this.model.hour(value);
+      } else {
+        this.model.setHours(value);
+      }
     }
   }
 
   get minutes(): number {
     if (this.model) {
+      if(this.model.minute){
+        return this.model.minute();
+      }
       return this.model.getMinutes();
     }
   }
 
   set minutes(value: number) {
     if (this.model) {
-      this.model.setMinutes(value);
+      if(this.model.minute){
+        this.model.minute(value);
+      } else{
+        this.model.setMinutes(value);
+      }
     }
   }
 }

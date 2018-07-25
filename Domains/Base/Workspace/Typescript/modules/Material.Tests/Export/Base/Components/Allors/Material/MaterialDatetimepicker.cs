@@ -5,7 +5,6 @@ namespace Intranet.Tests
     using Allors.Meta;
 
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Support.PageObjects;
 
     public class MaterialDatetimePicker
     : Component
@@ -13,31 +12,31 @@ namespace Intranet.Tests
         public MaterialDatetimePicker(IWebDriver driver, RoleType roleType)
         : base(driver)
         {
-            this.Selector = By.CssSelector($"div[data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.CssSelector($"div[data-allors-roletype='{roleType.IdAsNumberString}'] input");
         }
 
         public By Selector { get; }
 
-         public DateTime? Date
+         public DateTime? Value
         {
             get
             {
                 this.Driver.WaitForAngular();
-                var dateElement = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input[1]")));
+                var dateElement = this.Driver.FindElements(this.Selector)[0];
                 var dateValue = dateElement.GetAttribute("value");
                 if (!string.IsNullOrEmpty(dateValue))
                 {
                     // TODO: UTC
                     var dateTime = DateTime.Parse(dateValue);
 
-                    var hourElement = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input[2]")));
+                    var hourElement = this.Driver.FindElements(this.Selector)[1];
                     var hourValue = hourElement.GetAttribute("value");
                     if (int.TryParse(hourValue, out var hours))
                     {
                         dateTime = dateTime.AddHours(hours);
                     }
 
-                    var minuteElement = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input[2]")));
+                    var minuteElement = this.Driver.FindElements(this.Selector)[2];
                     var minuteValue = minuteElement.GetAttribute("value");
                     if (int.TryParse(minuteValue, out var minutes))
                     {
@@ -60,14 +59,16 @@ namespace Intranet.Tests
 
                 this.Driver.WaitForAngular();
 
-                dateElement = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input[1]")));
+                dateElement = this.Driver.FindElements(this.Selector)[0];
                 dateElement.Clear();
                 if (value != null)
                 {
                     dateElement.SendKeys(value.Value.ToString("d"));
                 }
 
-                var hourElement = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input[2]")));
+                this.Driver.WaitForAngular();
+
+                var hourElement = this.Driver.FindElements(this.Selector)[1];
                 this.ScrollToElement(hourElement);
                 hourElement.Clear();
                 if (value != null)
@@ -75,13 +76,17 @@ namespace Intranet.Tests
                     hourElement.SendKeys(value.Value.Hour.ToString());
                 }
 
-                var minuteElement = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input[3]")));
+                this.Driver.WaitForAngular();
+
+                var minuteElement = this.Driver.FindElements(this.Selector)[2];
                 this.ScrollToElement(minuteElement);
                 minuteElement.Clear();
                 if (value != null)
                 {
                     minuteElement.SendKeys(value.Value.Minute.ToString());
                 }
+
+                this.Driver.WaitForAngular();
 
                 minuteElement.SendKeys(Keys.Tab);
             }

@@ -15,7 +15,7 @@ namespace Intranet.Tests
 
         public By Selector { get; }
 
-        public string Text
+        public string Value
         {
             get
             {

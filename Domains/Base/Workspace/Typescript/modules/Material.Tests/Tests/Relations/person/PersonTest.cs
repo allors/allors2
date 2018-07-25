@@ -35,8 +35,8 @@ namespace Intranet.Tests.Relations
 
             var page = new PersonPage(this.Driver);
             
-            page.FirstName.Text = "Jos";
-            page.LastName.Text = "Smos";
+            page.FirstName.Value = "Jos";
+            page.LastName.Value = "Smos";
 
             page.Save.Click();
 

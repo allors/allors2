@@ -13,17 +13,17 @@ namespace Intranet.Tests
         public MaterialDatePicker(IWebDriver driver, RoleType roleType)
         : base(driver)
         {
-            this.Selector = By.CssSelector($"div[data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = new ByChained(By.CssSelector($"div[data-allors-roletype='{roleType.IdAsNumberString}']"), By.CssSelector("input"));
         }
 
         public By Selector { get; }
         
-        public DateTime? Date
+        public DateTime? Value
         {
             get
             {
                 this.Driver.WaitForAngular();
-                var element = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input")));
+                var element = this.Driver.FindElement(this.Selector);
                 var value = element.GetAttribute("value");
                 if (!string.IsNullOrEmpty(value))
                 {
@@ -37,13 +37,14 @@ namespace Intranet.Tests
             set
             {
                 this.Driver.WaitForAngular();
-                var element = this.Driver.FindElement(new ByChained(this.Selector, By.XPath("//input")));
+                var element = this.Driver.FindElement(this.Selector);
                 this.ScrollToElement(element);
                 element.Clear();
                 if (value != null)
                 {
                     element.SendKeys(value.Value.ToString("d"));
                 }
+
                 element.SendKeys(Keys.Tab);
             }
         }
