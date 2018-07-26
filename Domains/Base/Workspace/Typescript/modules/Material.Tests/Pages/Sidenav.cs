@@ -34,6 +34,7 @@ namespace Intranet.Tests
 
         public DashboardPage NavigateToHome()
         {
+            this.Driver.WaitForAngular();
             this.Home.Click();
 
             return new DashboardPage(this.Driver);
@@ -59,6 +60,8 @@ namespace Intranet.Tests
 
         private void Navigate(Element group, Anchor link)
         {
+            this.Driver.WaitForAngular();
+
             if (!link.IsVisble)
             {
                 if (!group.IsVisible)

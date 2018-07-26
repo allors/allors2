@@ -468,6 +468,14 @@ namespace Allors.Domain
 		}
 		public interface Data  : AccessControlledObject 
 		{
+						Person AutocompleteFilter {set;}
+
+						Person AutocompleteOptions {set;}
+
+						global::System.Boolean? Checkbox {set;}
+
+						Person Chips {set;}
+
 						global::System.String String {set;}
 
 						global::System.DateTime? Date {set;}

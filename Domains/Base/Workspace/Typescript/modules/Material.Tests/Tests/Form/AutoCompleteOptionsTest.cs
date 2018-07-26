@@ -1,20 +1,19 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests
 {
     using System.Linq;
 
-    using Allors;
     using Allors.Domain;
-
+    using Allors.Meta;
     using Intranet.Pages.Relations;
 
     using Xunit;
 
     [Collection("Test collection")]
-    public class DateTimeTest : Test
+    public class AutoCompleteOptionsTest : Test
     {
         private readonly FormPage page;
 
-        public DateTimeTest(TestFixture fixture)
+        public AutoCompleteOptionsTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
@@ -24,10 +23,11 @@ namespace Intranet.Tests.Relations
         [Fact]
         public void Initial()
         {
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
+
             var before = new Datas(this.Session).Extent().ToArray();
 
-            var date = this.Session.Now();
-            this.page.Datetime.Value = date;
+            this.page.AutoCompleteOptions.Select("jane", "jane@doe.org");
 
             this.page.Save.Click();
 
@@ -40,7 +40,7 @@ namespace Intranet.Tests.Relations
 
             var data = after.Except(before).First();
 
-            Assert.True(data.ExistDateTime);
+            Assert.Equal(jane, data.AutocompleteOptions);
         }
     }
 }

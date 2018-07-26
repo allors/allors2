@@ -16,6 +16,43 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("36FA4EB8-5EA9-4F56-B5AA-9908EF2B417F")]
+        [AssociationId("C0CA43A1-9C16-42BA-B83B-5E6C72DCB605")]
+        [RoleId("5F26C1A3-BD24-465B-A4F9-D7A5D79A5C80")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person AutocompleteFilter { get; set; }
+
+        #region Allors
+        [Id("C1C4D5D9-EEC0-44B5-9317-713E9AB2277E")]
+        [AssociationId("9ED53BA6-6B03-448D-B2E7-42AD045BEEC3")]
+        [RoleId("4B25DD13-A74D-483C-A0C4-7A5491B9D955")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Person AutocompleteOptions { get; set; }
+        
+        #region Allors
+        [Id("46964F62-AF12-4450-83DA-C695C4A0ECE8")]
+        [AssociationId("4E112908-E5B4-448C-B6A6-58094165522B")]
+        [RoleId("BA0EA6C5-E62F-487B-B57C-D7412A6BF958")]
+        #endregion
+        [Workspace]
+        public bool Checkbox { get; set; }
+
+        #region Allors
+        [Id("7E098B17-2ECB-4D1C-AA73-80684394BD9B")]
+        [AssociationId("D13FDDE0-8817-4B13-BE41-D54ED349813F")]
+        [RoleId("903F0C58-0867-49D8-B3F7-EA1A6F89EA35")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public Person[] Chips { get; set; }
+
+        #region Allors
         [Id("46C310DE-8E36-412E-8068-A9D734734E74")]
         [AssociationId("7F157FB6-8F06-4C71-B0B9-FD3B2E6237AD")]
         [RoleId("3E57DB60-D0C5-4748-8095-31FD10A9DD50")]

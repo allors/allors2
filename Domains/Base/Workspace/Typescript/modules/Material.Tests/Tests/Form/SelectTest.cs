@@ -2,31 +2,33 @@ namespace Intranet.Tests
 {
     using System.Linq;
 
-    using Allors;
     using Allors.Domain;
+    using Allors.Meta;
 
     using Intranet.Pages.Relations;
 
     using Xunit;
 
     [Collection("Test collection")]
-    public class InputTest : Test
+    public class SelectTest : Test
     {
         private readonly FormPage page;
 
-        public InputTest(TestFixture fixture)
+        public SelectTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
             this.page = dashboard.Sidenav.NavigateToForm();
         }
-        
+
         [Fact]
         public void Initial()
         {
+            var jane = new People(this.Session).FindBy(M.Person.UserName, "jane@doe.org");
+
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.String.Value = "Hello";
+            this.page.AutoCompleteFilter.Select("jane", "jane@doe.org");
 
             this.page.Save.Click();
 
@@ -39,7 +41,7 @@ namespace Intranet.Tests
 
             var data = after.Except(before).First();
 
-            Assert.Equal("Hello", data.String);
+            Assert.Equal(jane, data.AutocompleteFilter);
         }
     }
 }

@@ -1,6 +1,5 @@
 namespace Intranet.Pages.Relations
 {
-    using Allors.Domain;
     using Allors.Meta;
 
     using Intranet.Tests;

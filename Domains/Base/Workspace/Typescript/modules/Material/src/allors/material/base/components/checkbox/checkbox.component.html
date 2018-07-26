@@ -1,4 +1,4 @@
-<div class="d-flex flex-column align-items-stretch">
+<div class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
   <mat-checkbox [(ngModel)]="model" [name]="name" [required]="required" [disabled]="disabled">
     {{label}}
   </mat-checkbox>

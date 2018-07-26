@@ -113,6 +113,18 @@ namespace Allors.Domain
 				}
 				public interface Data 
 				{
+								Person AutocompleteFilter {set;}
+
+
+								Person AutocompleteOptions {set;}
+
+
+								global::System.Boolean? Checkbox {set;}
+
+
+								Person Chips {set;}
+
+
 								global::System.String String {set;}
 
 

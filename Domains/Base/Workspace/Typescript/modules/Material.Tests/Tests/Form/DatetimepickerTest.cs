@@ -10,23 +10,24 @@ namespace Intranet.Tests
     using Xunit;
 
     [Collection("Test collection")]
-    public class InputTest : Test
+    public class DatetimepickerTest : Test
     {
         private readonly FormPage page;
 
-        public InputTest(TestFixture fixture)
+        public DatetimepickerTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
             this.page = dashboard.Sidenav.NavigateToForm();
         }
-        
+
         [Fact]
         public void Initial()
         {
             var before = new Datas(this.Session).Extent().ToArray();
 
-            this.page.String.Value = "Hello";
+            var date = this.Session.Now();
+            this.page.Datetime.Value = date;
 
             this.page.Save.Click();
 
@@ -39,7 +40,7 @@ namespace Intranet.Tests
 
             var data = after.Except(before).First();
 
-            Assert.Equal("Hello", data.String);
+            Assert.True(data.ExistDateTime);
         }
     }
 }

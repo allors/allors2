@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests
 {
     using System.Linq;
 
@@ -10,11 +10,11 @@ namespace Intranet.Tests.Relations
     using Xunit;
 
     [Collection("Test collection")]
-    public class DateTest : Test
+    public class DatepickerTest : Test
     {
         private readonly FormPage page;
 
-        public DateTest(TestFixture fixture)
+        public DatepickerTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
