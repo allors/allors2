@@ -10,7 +10,7 @@ namespace Intranet.Tests
         public MaterialInput(IWebDriver driver, RoleType roleType)
         : base(driver)
         {
-            this.Selector = By.CssSelector($"input[data-allors-roletype='{roleType.IdAsNumberString}']");
+            this.Selector = By.CssSelector($"a-mat-input *[data-allors-roletype='{roleType.IdAsNumberString}'] input");
         }
 
         public By Selector { get; }

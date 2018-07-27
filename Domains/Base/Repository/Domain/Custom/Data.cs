@@ -47,6 +47,7 @@ namespace Allors.Repository
         [Id("7E098B17-2ECB-4D1C-AA73-80684394BD9B")]
         [AssociationId("D13FDDE0-8817-4B13-BE41-D54ED349813F")]
         [RoleId("903F0C58-0867-49D8-B3F7-EA1A6F89EA35")]
+        [Indexed]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Workspace]
@@ -76,6 +77,59 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public DateTime DateTime { get; set; }
+
+        #region Allors
+        [Id("BA910E25-0D71-43E1-8311-7C9620AC0CDE")]
+        [AssociationId("55675B9D-6226-45F1-9DE2-ED92263212D9")]
+        [RoleId("90FAB888-FA1A-4DAE-809A-0AC1D4618A30")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Media File { get; set; }
+
+        #region Allors
+        [Id("68515CCE-3E87-4D21-B5E5-2136CC3D4F5C")]
+        [AssociationId("C07CDDB3-7D31-416E-B4DE-D9197BD5FA25")]
+        [RoleId("65195AEF-8A73-40F6-B8DF-98A1C1B6B54D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        public Media[] MultipleFiles { get; set; }
+
+        #region Allors
+        [Id("3AA7FE12-F9DC-43A8-ACA7-3EADAEE0D05D")]
+        [AssociationId("C0EFDE58-8A46-48B1-8742-AEDB5970A2E5")]
+        [RoleId("735F03A0-8F3A-486F-AD7A-55EEFD2671E8")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string RadioGroup { get; set; }
+
+        #region Allors
+        [Id("C5061BAE-0B3B-474D-ABAA-DDAD638B8DA1")]
+        [AssociationId("D4B26BEE-AF21-4DA4-8C18-4A0E835C2FBD")]
+        [RoleId("F0DCBF23-FCDE-4661-87EC-857D3E983000")]
+        #endregion
+        [Workspace]
+        public int Slider { get; set; }
+
+        #region Allors
+        [Id("753E6310-B943-48E8-A9F6-306D2A5DB6E4")]
+        [AssociationId("522AA21D-A52B-4F3D-B734-062A63EF4E75")]
+        [RoleId("73109BBE-1CE4-4677-8CBB-E9375166200A")]
+        #endregion
+        [Workspace]
+        public bool SlideToggle { get; set; }
+
+        #region Allors
+        [Id("7B18C411-5414-4E28-A7C1-5749347B673B")]
+        [AssociationId("A964B0D0-3D8D-4D1A-9EBE-36BDF1AC0EB2")]
+        [RoleId("3AF4AA7C-27F4-490C-B0F4-434FB2D981F1")]
+        #endregion
+        [Workspace]
+        public string TextArea { get; set; }
 
         #region inherited methods
         

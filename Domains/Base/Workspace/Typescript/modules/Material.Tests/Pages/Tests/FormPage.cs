@@ -28,6 +28,18 @@ namespace Intranet.Pages.Relations
 
         public MaterialChips Chips => new MaterialChips(this.Driver, roleType: M.Data.Chips);
 
+        public MaterialFile File => new MaterialFile(this.Driver, roleType: M.Data.File);
+
+        public MaterialFiles Files => new MaterialFiles(this.Driver, roleType: M.Data.MultipleFiles);
+
+        public MaterialRadioGroup RadioGroup => new MaterialRadioGroup(this.Driver, roleType: M.Data.RadioGroup);
+
+        public MaterialSlider Slider => new MaterialSlider(this.Driver, roleType: M.Data.Slider);
+
+        public MaterialSlideToggle SlideToggle => new MaterialSlideToggle(this.Driver, roleType: M.Data.SlideToggle);
+
+        public MaterialTextArea TextArea => new MaterialTextArea(this.Driver, roleType: M.Data.TextArea);
+
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
     }
 }

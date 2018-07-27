@@ -10,6 +10,7 @@ import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse,
          Query, RoleType, Sort, TreeNode } from '../../../../framework';
 import { MetaDomain } from '../../../../meta';
 import { QueryFactory } from '../../../../meta/generated/query.g';
+import { RadioGroupOption } from '../../../base/components/radiogroup/radiogroup.component';
 
 @Component({
   templateUrl: './form.component.html',
@@ -25,6 +26,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   public people: Person[];
 
   public peopleFilter: FilterFactory;
+
+  public radioGroupOptions: RadioGroupOption[] = [
+    {label: "One", value: "one"},
+    {label: "Two", value: "two"},
+    {label: "Three", value: "three"},
+  ];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -62,7 +69,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         ];
 
         const queries = [
-          query.Datas(),
+          query.Datas({include: {
+            AutocompleteFilter: {},
+            AutocompleteOptions: {},
+            Chips: {},
+            File: {},
+            MultipleFiles: {}
+          }}),
           query.People(),
         ];
 

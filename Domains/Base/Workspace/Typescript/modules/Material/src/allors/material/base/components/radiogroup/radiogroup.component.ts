@@ -9,7 +9,7 @@ export interface RadioGroupOption {
 }
 
 @Component({
-  selector: 'a-mat-radio-group',
+  selector: 'a-mat-radiogroup',
   templateUrl: './radiogroup.component.html',
 })
 export class AllorsMaterialRadioGroupComponent extends Field {

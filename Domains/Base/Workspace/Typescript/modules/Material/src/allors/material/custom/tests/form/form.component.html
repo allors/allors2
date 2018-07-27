@@ -31,6 +31,21 @@
           <a-mat-chips class="col-md" [object]="data" [roleType]="m.Data.Chips" [options]="people" display="UserName"></a-mat-chips>
         </div>
 
+        <div class="row">
+          <a-mat-file class="col-md-12" [object]="data" [roleType]="m.Data.File" accept="image/*"></a-mat-file>
+          <a-mat-files class="col-md-12" [object]="data" [roleType]="m.Data.MultipleFiles" accept="image/*"></a-mat-files>
+        </div>
+
+        <div class="row">
+          <a-mat-radiogroup class="col-md" [object]="data" [roleType]="m.Data.RadioGroup" [options]="radioGroupOptions"></a-mat-radiogroup>
+          <a-mat-slider class="col-md" [object]="data" [roleType]="m.Data.Slider" [min]="1" [max]="20" [step]="1" ></a-mat-slider>
+        </div>
+
+        <div class="row">
+          <a-mat-slidetoggle class="col-md" [object]="data" [roleType]="m.Data.SlideToggle"></a-mat-slidetoggle>
+          <a-mat-textarea class="col-md" [object]="data" [roleType]="m.Data.TextArea"></a-mat-textarea>
+        </div>
+
       </mat-card-content>
     </mat-card>
   </div>

@@ -1,20 +1,24 @@
-<div class="row">
+<div [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
+  <div class="row">
     <mat-form-field class="col">
-        <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
+      <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
     </mat-form-field>
 
     <button mat-icon-button type="button" (click)="fileInput.click()">
-        <mat-icon>add_to_photos</mat-icon>
+      <mat-icon>add_to_photos</mat-icon>
     </button>
-</div>
+  </div>
 
-<input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
+  <input #fileInput type="file" (change)="onFileInput($event)" style="display:none;" />
 
-<div *ngIf="model" class="row" style="margin-bottom: 1rem;">
-    <mat-card class="col-1">
+  <div *ngIf="model" class="row" style="margin-bottom: 1rem;">
+    <div class="col-2">
+      <mat-card>
         <img mat-card-image [src]="src">
-        <mat-card-actions >
-            <a mat-button (click)="delete()">DELETE</a>
+        <mat-card-actions>
+          <a mat-button (click)="delete()">DELETE</a>
         </mat-card-actions>
-    </mat-card>
+      </mat-card>
+    </div>
+  </div>
 </div>

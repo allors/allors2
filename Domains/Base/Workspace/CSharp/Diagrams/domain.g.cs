@@ -133,6 +133,24 @@ namespace Allors.Domain
 
 								global::System.DateTime? DateTime {set;}
 
+
+								Media File {set;}
+
+
+								Media MultipleFiles {set;}
+
+
+								global::System.String RadioGroup {set;}
+
+
+								global::System.Int32? Slider {set;}
+
+
+								global::System.Boolean? SlideToggle {set;}
+
+
+								global::System.String TextArea {set;}
+
 				}
 				public interface Dependent : Deletable 
 				{

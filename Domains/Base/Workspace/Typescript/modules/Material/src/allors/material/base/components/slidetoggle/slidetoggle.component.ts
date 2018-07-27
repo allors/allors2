@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Field } from '../../../../angular';
 
 @Component({
-  selector: 'a-mat-slide-toggle',
+  selector: 'a-mat-slidetoggle',
   templateUrl: './slidetoggle.component.html',
 })
 export class AllorsMaterialSlideToggleComponent extends Field {
