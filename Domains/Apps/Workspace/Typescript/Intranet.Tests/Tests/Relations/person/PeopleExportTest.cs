@@ -1,7 +1,5 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests.RelationsPerson
 {
-    using Intranet.Pages.Relations;
-
     using Xunit;
 
     [Collection("Test collection")]

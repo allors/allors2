@@ -17,7 +17,7 @@
           <div class="col-md">
             <div class="row">
               <a-mat-select class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
-              <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-slide-toggle>
+              <a-mat-slidetoggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.IncomingCall"></a-mat-slidetoggle>
             </div>
           </div>
         </div>
@@ -70,7 +70,7 @@
           <div class="col-md">
             <div class="row">
               <a-mat-input class="col" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Subject" class="col-md"></a-mat-input>
-              <a-mat-slide-toggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-mat-slide-toggle>
+              <a-mat-slidetoggle [object]="communicationEvent" [roleType]="m.PhoneCommunication.LeftVoiceMail"></a-mat-slidetoggle>
             </div>
           </div>
           <a-mat-textarea class="col-md" [object]="communicationEvent" [roleType]="m.PhoneCommunication.Note" class="col-md-12"></a-mat-textarea>

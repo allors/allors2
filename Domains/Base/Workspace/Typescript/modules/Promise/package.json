@@ -10,7 +10,7 @@
     "tc:test": "_mocha --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"
   },
   "dependencies": {
-    "axios": "^0.16.2"
+    "axios": "latest"
   },
   "devDependencies": {
     "@types/chai": "latest",

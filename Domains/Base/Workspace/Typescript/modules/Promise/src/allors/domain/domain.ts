@@ -11,7 +11,7 @@ class Domain {
     public apply(workspace: Workspace) {
         this.extensions.forEach((v) => {
             v(workspace);
-        })
+        });
     }
 }
 

@@ -45,7 +45,6 @@
   <ItemGroup>
     <Folder Include="Export\Apps\Pages\Relations\party\contactmechanism\" />
     <Folder Include="Export\Apps\Pages\Relations\person\" />
-    <Folder Include="Tests\Relations\party\contactmechanism\" />
   </ItemGroup>
 
 </Project>

@@ -12,16 +12,13 @@
                 "--colors",
                 "--recursive",
                 "--inspect-brk",
-                "${workspaceFolder}/test/**/Query.spec.ts",
-                "--require", "ts-node/register"
+                "${workspaceFolder}/dist/**/Fetch.spec.js",
             ],
             "stopOnEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "sourceMaps": true,
             "protocol": "inspector",
-            "outFiles": [
-                "${workspaceFolder}/test/**/*.*"
-            ]
+            "preLaunchTask": "Compile"
         }
     ]
 }

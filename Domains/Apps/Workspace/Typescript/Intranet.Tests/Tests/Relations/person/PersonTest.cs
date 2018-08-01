@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests.RelationsPerson
 {
     using System.Linq;
 
@@ -37,9 +37,9 @@ namespace Intranet.Tests.Relations
 
             page.Salutation.Value = "Mr.";
 
-            page.FirstName.Text = "Jos";
-            page.LastName.Text = "Smos";
-            page.Comment.Text = "This is a comment";
+            page.FirstName.Value = "Jos";
+            page.LastName.Value = "Smos";
+            page.Comment.Value = "This is a comment";
 
             page.Save.Click();
 
@@ -70,9 +70,9 @@ namespace Intranet.Tests.Relations
             
             page.Salutation.Value = "Mr.";
 
-            page.FirstName.Text = "Jos";
-            page.LastName.Text = "Smos";
-            page.Comment.Text = "This is a comment";
+            page.FirstName.Value = "Jos";
+            page.LastName.Value = "Smos";
+            page.Comment.Value = "This is a comment";
 
             page.Save.Click();
 

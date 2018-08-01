@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Catalogues
+namespace Intranet.Tests.CataloguesProductType
 {
     using Xunit;
 

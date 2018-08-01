@@ -1,4 +1,4 @@
-namespace Intranet.Tests.WorkEfforts
+namespace Intranet.Tests.WorkEffortsWorkTask
 {
     using Xunit;
 

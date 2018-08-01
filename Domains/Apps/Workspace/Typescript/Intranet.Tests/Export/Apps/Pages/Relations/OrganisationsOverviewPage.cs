@@ -1,5 +1,7 @@
 namespace Intranet.Pages.Relations
 {
+    using Allors.Domain;
+
     using Intranet.Tests;
 
     using OpenQA.Selenium;
@@ -14,5 +16,14 @@ namespace Intranet.Pages.Relations
         public Input Name => new Input(this.Driver, formControlName: "name");
 
         public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+
+        public MaterialList List => new MaterialList(this.Driver);
+
+        public OrganisationOverviewPage Select(Organisation organisation)
+        {
+            var listItem = this.List.FindListItem(organisation);
+            listItem.Click();
+            return new OrganisationOverviewPage(this.Driver);
+        }
     }
 }

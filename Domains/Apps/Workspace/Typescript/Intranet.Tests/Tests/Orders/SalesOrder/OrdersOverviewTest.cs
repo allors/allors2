@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Orders
+namespace Intranet.Tests.OrdersSalesOrder
 {
     using Intranet.Pages.Orders;
 

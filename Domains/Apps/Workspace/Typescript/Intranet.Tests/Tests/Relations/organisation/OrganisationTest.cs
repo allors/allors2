@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests.RelationsOrganisation
 {
     using System.Linq;
     using Allors.Domain;
@@ -29,10 +29,10 @@ namespace Intranet.Tests.Relations
 
             var page = new OrganisationPage(this.Driver);
 
-            page.Name.Text = "Acme";
-            page.TaxNumber.Text = "111.111.111";
+            page.Name.Value = "Acme";
+            page.TaxNumber.Value = "111.111.111";
             page.IsManufacturer.Value = true;
-            page.Comment.Text = "This is a comment";
+            page.Comment.Value = "This is a comment";
 
             page.Save.Click();
 

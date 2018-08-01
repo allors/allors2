@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Drawing;
     using System.IO;
 
     using OpenQA.Selenium;
@@ -45,6 +46,10 @@
             options.AddArguments("disable-infobars");
 
             this.Driver = new ChromeDriver(Environment.CurrentDirectory, options);
+
+            // Move to monitor on the left
+            this.Driver.Manage().Window.Position = new Point(-1000, 0);
+            this.Driver.Manage().Window.Maximize();
         }
 
         private void StopWebdriver()

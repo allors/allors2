@@ -1,29 +1,29 @@
-namespace Intranet.Tests.Orders
+namespace Intranet.Tests.OrdersRequest
 {
     using Intranet.Pages.Orders;
 
     using Xunit;
 
     [Collection("Test collection")]
-    public class QuotesOverviewTest : Test
+    public class RequestsOverviewTest : Test
     {
-        public QuotesOverviewTest(TestFixture fixture)
+        public RequestsOverviewTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToQuotes();
+            dashboard.Sidenav.NavigateToRequests();
         }
 
         [Fact]
         public void Title()
         {
-            Assert.Equal("Quotes", this.Driver.Title);
+            Assert.Equal("Requests", this.Driver.Title);
         }
 
         [Fact]
         public void Search()
         {
-            var page = new QuotesOverviewPage(this.Driver);
+            var page = new RequestsOverviewPage(this.Driver);
 
             page.Company.Text = "acme";
         }

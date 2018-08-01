@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests.RelationsOrganisation
 {
     using Intranet.Pages.Relations;
 

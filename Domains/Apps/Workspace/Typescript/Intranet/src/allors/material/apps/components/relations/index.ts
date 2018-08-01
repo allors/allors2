@@ -20,10 +20,10 @@ export * from './party/communicationevent/emailcommunication/party-communication
 export * from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
 export * from './party/communicationevent/lettercorrespondence/party-communicationevent-lettercorrespondence.module';
 export * from './party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module';
-export * from './party/communicationevent/worktask/party-communicationevent-worktask.module';
 
 export * from './communicationevent/communicationevent-overview.module';
 export * from './communicationevent/communicationevents-overview.module';
+export * from './communicationevent/worktask/communicationevent-worktask.module';
 
 import { PeopleExportModule } from './person/people-export.module';
 import { PeopleOverviewModule } from './person/people-overview.module';
@@ -47,16 +47,16 @@ import { PartyCommunicationEventEmailCommunicationModule } from './party/communi
 import { PartyCommunicationEventFaceToFaceCommunicationModule } from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
 import { PartyCommunicationEventLetterCorrespondenceModule } from './party/communicationevent/lettercorrespondence/party-communicationevent-lettercorrespondence.module';
 import { PartyCommunicationEventPhoneCommunicationModule } from './party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module';
-import { PartyCommunicationEventWorkTaskModule } from './party/communicationevent/worktask/party-communicationevent-worktask.module';
+
 
 import { CommunicationEventOverviewModule } from './communicationevent/communicationevent-overview.module';
 import { CommunicationEventsOverviewModule } from './communicationevent/communicationevents-overview.module';
+import { CommunicationEventWorkTaskModule } from './communicationevent/worktask/communicationevent-worktask.module';
 
 export const Modules = [
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
   PartyContactMechanismEmailAddressAddModule, PartyContactMechanismEmailAddressEditModule, PartyContactMechanismAddPostalAddressModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
-  PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule, PartyCommunicationEventWorkTaskModule,
-  CommunicationEventsOverviewModule,
-  CommunicationEventOverviewModule,
+  PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule, 
+  CommunicationEventWorkTaskModule, CommunicationEventsOverviewModule, CommunicationEventOverviewModule,
 ];

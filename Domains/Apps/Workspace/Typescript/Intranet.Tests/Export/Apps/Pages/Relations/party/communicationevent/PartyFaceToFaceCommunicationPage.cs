@@ -17,6 +17,8 @@ namespace Intranet.Pages.Relations
 
         public MaterialTextArea Comment => new MaterialTextArea(this.Driver, roleType: M.Person.Comment);
 
+        public MaterialDatetimePicker ScheduledStart => new MaterialDatetimePicker(this.Driver, M.EmailCommunication.ScheduledStart);
+
         public Button Save => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'SAVE')]"));
     }
 }

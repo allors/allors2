@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests.RelationsPerson
 {
     using System.Linq;
 

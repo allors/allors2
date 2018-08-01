@@ -2,24 +2,23 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
-import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
-import { StateService } from '../../../../../services/StateService';
-import { Title } from '../../../../../../../../../node_modules/@angular/platform-browser';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../angular';
+import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
+import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { Title } from '../../../../../../../../node_modules/@angular/platform-browser';
 
 @Component({
-  templateUrl: './party-communicationevent-worktask.component.html',
+  templateUrl: './communicationevent-worktask.component.html',
 })
-export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
+export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
   public title = 'Work Task';
   public subTitle: string;
@@ -136,7 +135,7 @@ export class PartyCommunicationEventWorkTaskComponent implements OnInit, OnDestr
         this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
         this.priorities = loaded.collections.priorities as Priority[];
         this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
-        const internalOrganisation = loaded.objects.internalOrganisationId as InternalOrganisation;
+        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
       },
       (error: any) => {

@@ -38,7 +38,6 @@ export { PersonComponent } from './person.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
     FormsModule,
     MatButtonModule,
     MatCardModule,

@@ -1,0 +1,64 @@
+<form class="a-edit" #form="ngForm" (submit)="save()">
+
+  <mat-toolbar class="a-header">
+    <mat-toolbar-row class="row">
+      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
+      <h1>{{title}}</h1>
+      <span class="col"></span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div>
+    <mat-card *ngIf="workTask">
+      <mat-card-content class="container-fluid">
+
+        <div class="row">
+          <a-mat-select class="col-md" [object]="workTask" [roleType]="m.WorkTask.WorkEffortState" [options]="workEffortStates" display="Name" label="Status" class="col-md"></a-mat-select>
+          <a-mat-input class="col-md" [object]="workTask" [roleType]="m.WorkTask.Name" class="col-md"></a-mat-input>
+        </div>
+
+        <div class="row">
+          <a-mat-textarea class="col-md" [object]="workTask" [roleType]="m.WorkTask.Description" class="col-md-12"></a-mat-textarea>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="col-md" >
+            <mat-select name="assignment" [(ngModel)]="assignees" placeholder="Assign To" multiple="true">
+              <mat-option *ngFor="let employee of employees" [value]="employee">{{ employee.displayName }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="row" >
+          <a-mat-select class="col-md" [object]="workTask" [roleType]="m.WorkTask.Priority" [options]="priorities" display="Name" class="col-md"></a-mat-select>
+          <a-mat-select class="col-md" [object]="workTask" [roleType]="m.WorkTask.WorkEffortPurposes" [options]="workEffortPurposes" display="Name" label="Purpose(s)" class="col-md"></a-mat-select>
+        </div>
+
+        <div class="row">
+          <a-mat-input class="col-md" [object]="workTask" [roleType]="m.WorkTask.EstimatedHours" class="col-md"></a-mat-input>
+          <a-mat-input class="col-md" [object]="workTask" [roleType]="m.WorkTask.ActualHours" class="col-md"></a-mat-input>
+        </div>
+
+        <div class="row">
+          <a-mat-datetimepicker class="col-md" [object]="workTask" [roleType]="m.WorkTask.ScheduledStart"></a-mat-datetimepicker>
+          <a-mat-datetimepicker class="col-md" [object]="workTask" [roleType]="m.WorkTask.ActualStart"></a-mat-datetimepicker>
+        </div>
+
+        <div class="row">
+          <a-mat-datetimepicker class="col-md" [object]="workTask" [roleType]="m.WorkTask.ScheduledCompletion"></a-mat-datetimepicker>
+          <a-mat-datetimepicker class="col-md" [object]="workTask" [roleType]="m.WorkTask.ActualCompletion"></a-mat-datetimepicker>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-toolbar class="a-footer">
+    <mat-toolbar-row class="row">
+      <span class="col"></span>
+      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+</form>

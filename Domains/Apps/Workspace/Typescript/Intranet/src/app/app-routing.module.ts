@@ -86,8 +86,8 @@ export const routes: Routes = [
       {
         path: 'communicationevent',
         children: [
-          { path: ':id/worktask', component: relations.PartyCommunicationEventWorkTaskComponent },
-          { path: ':id/worktask/:roleId', component: relations.PartyCommunicationEventWorkTaskComponent },
+          { path: ':id/worktask', component: relations.CommunicationEventWorkTaskComponent },
+          { path: ':id/worktask/:roleId', component: relations.CommunicationEventWorkTaskComponent },
         ],
       },
 

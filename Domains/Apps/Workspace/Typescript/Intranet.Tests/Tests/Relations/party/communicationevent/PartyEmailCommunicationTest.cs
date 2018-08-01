@@ -1,4 +1,4 @@
-namespace Intranet.Tests.Relations
+namespace Intranet.Tests.RelationsPartyCommunicationEvent
 {
     using System.Linq;
 
@@ -45,11 +45,12 @@ namespace Intranet.Tests.Relations
             var page = new PartyEmailCommunicationPage(this.Driver);
 
             var scheduledStart = this.Session.Now();
-            page.ScheduledStart.Date = scheduledStart;
+            page.ScheduledStart.Value = scheduledStart;
             
             page.Save.Click();
 
             this.Driver.WaitForAngular();
+            this.Session.Rollback();
 
             Assert.True(email.ExistScheduledStart);
         }

@@ -1,4 +1,4 @@
-namespace Intranet.Tests.AccountsPayable
+namespace Intranet.Tests.AccountsReceivableInvoice
 {
     using Xunit;
 
@@ -9,13 +9,13 @@ namespace Intranet.Tests.AccountsPayable
             : base(fixture)
         {
             var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToAccountsPayableInvoices();
+            dashboard.Sidenav.NavigateToAccountsReceivableInvoices();
         }
 
         [Fact]
         public void Title()
         {
-            Assert.Equal("Purchase Invoices", this.Driver.Title);
+            Assert.Equal("Sales Invoices", this.Driver.Title);
         }
     }
 }

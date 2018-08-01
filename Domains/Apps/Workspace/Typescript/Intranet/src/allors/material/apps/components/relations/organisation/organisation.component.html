@@ -29,7 +29,7 @@
         </div>
 
         <div class="row">
-          <a-mat-slide-toggle class="col-md" [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slide-toggle>
+          <a-mat-slidetoggle class="col-md" [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slidetoggle>
           <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales" display="Name"></a-mat-select>
           <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
           <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
