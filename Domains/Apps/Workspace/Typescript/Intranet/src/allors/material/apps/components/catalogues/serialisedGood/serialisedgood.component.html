@@ -161,7 +161,7 @@
                   <div *ngFor="let locale of locales; let i = index" class="row">
                     <mat-divider *ngIf="i > 0"></mat-divider>
                     <div class="row" *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
-                      <a-mat-localised-text class="col-md" *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-localised-text>
+                      <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-localised-text>
                     </div>
                   </div>
                 </mat-expansion-panel>

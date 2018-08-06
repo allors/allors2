@@ -385,41 +385,43 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
       this.good.AddStandardFeature(this.selectedModel);
     }
 
-    const suppliersToDelete = this.suppliers;
+    if (this.suppliers !== undefined) {
+      const suppliersToDelete = this.suppliers.filter(v => v);
 
-    if (this.selectedSuppliers !== undefined) {
-      this.selectedSuppliers.forEach((supplier: Organisation) => {
-        const index = suppliersToDelete.indexOf(supplier);
-        if (index > -1) {
-            suppliersToDelete.splice(index, 1);
-        }
+      if (this.selectedSuppliers !== undefined) {
+        this.selectedSuppliers.forEach((supplier: Organisation) => {
+          const index = suppliersToDelete.indexOf(supplier);
+          if (index > -1) {
+              suppliersToDelete.splice(index, 1);
+          }
 
-        const now = new Date();
-        const supplierOffering = this.supplierOfferings.find((v) =>
-          v.Supplier === supplier &&
-          v.FromDate <= now &&
-        (v.ThroughDate === null || v.ThroughDate >= now));
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+          (v.ThroughDate === null || v.ThroughDate >= now));
 
-        if (supplierOffering === undefined) {
-          this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
-        } else {
-          supplierOffering.ThroughDate = null;
-        }
-      });
-    }
+          if (supplierOffering === undefined) {
+            this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
+          } else {
+            supplierOffering.ThroughDate = null;
+          }
+        });
+      }
 
-    if (suppliersToDelete !== undefined) {
-      suppliersToDelete.forEach((supplier: Organisation) => {
-        const now = new Date();
-        const supplierOffering = this.supplierOfferings.find((v) =>
-          v.Supplier === supplier &&
-          v.FromDate <= now &&
-        (v.ThroughDate === null || v.ThroughDate >= now));
+      if (suppliersToDelete !== undefined) {
+        suppliersToDelete.forEach((supplier: Organisation) => {
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+          (v.ThroughDate === null || v.ThroughDate >= now));
 
-        if (supplierOffering !== undefined) {
-          supplierOffering.ThroughDate = new Date();
-        }
-      });
+          if (supplierOffering !== undefined) {
+            supplierOffering.ThroughDate = new Date();
+          }
+        });
+      }
     }
   }
 
