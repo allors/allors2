@@ -18,16 +18,29 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
 using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Between : IPredicate
+    public class Between : IRolePredicate
     {
+        public Between(IRoleType roleType = null)
+        {
+            this.RoleType = roleType;
+        }
+
         public IRoleType RoleType { get; set; }
 
-        public string FirstValue { get; set; }
+        public IEnumerable<object> Values { get; set; }
 
-        public string SecondValue { get; set; }
+        public string Parameter { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            var values = this.Values.ToArray();
+            compositePredicate.AddBetween(this.RoleType, values[0], values[1]);
+        }
     }
 }

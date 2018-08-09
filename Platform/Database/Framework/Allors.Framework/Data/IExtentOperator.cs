@@ -18,22 +18,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Data
 {
-    public class Except : IExtentOperator
+    public interface IExtentOperator : IExtent
     {
-        public Except(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
-
-        public IExtent[] Operands { get; set; }
-
-        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
-        {
-            return session.Except(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
-        }
+        IExtent[] Operands { get; set; }
     }
 }

@@ -18,22 +18,16 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-namespace Allors.Data
+namespace Allors.Data.Schema
 {
-    public class Except : IExtentOperator
+    public static class ExtentKind
     {
-        public Except(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
+        public const string Predicate = "Predicate";
 
-        public IExtent[] Operands { get; set; }
+        public const string Union = "Union";
 
-        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
-        {
-            return session.Except(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
-        }
+        public const string Intersect = "Intersect";
+
+        public const string Except = "Except";
     }
 }

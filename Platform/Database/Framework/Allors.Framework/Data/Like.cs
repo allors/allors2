@@ -19,14 +19,27 @@
 //-------------------------------------------------------------------------------------------------
 
 
+using System.Collections.Generic;
 using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Like : IPredicate
+    public class Like : IRolePredicate
     {
+        public Like(IRoleType roleType = null)
+        {
+            this.RoleType = roleType;
+        }
+
         public IRoleType RoleType { get; set; }
 
         public string Value { get; set; }
+
+        public string Parameter { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            compositePredicate.AddLike(this.RoleType, this.Value);
+        }
     }
 }

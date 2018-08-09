@@ -18,14 +18,27 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class LessThan : IPredicate
+    public class LessThan : IRolePredicate
     {
+        public LessThan(IRoleType roleType = null)
+        {
+            this.RoleType = roleType;
+        }
+
         public IRoleType RoleType { get; set; }
 
-        public string Value { get; set; }
+        public object Value { get; set; }
+
+        public string Parameter { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            compositePredicate.AddLessThan(this.RoleType, this.Value);
+        }
     }
 }

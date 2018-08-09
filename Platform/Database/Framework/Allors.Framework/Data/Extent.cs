@@ -18,14 +18,27 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using Allors.Meta;
 
 namespace Allors.Data
 {
     public class Extent : IExtent
     {
-        public IObjectType ObjectType { get; set; }
+        public Extent(IComposite objectType)
+        {
+            this.ObjectType = objectType;
+        }
 
-        public ICompositePredicate Predicate { get; set; }
+        public IComposite ObjectType { get; set; }
+
+        public IPredicate Predicate { get; set; }
+
+        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
+        {
+            var extent = session.Extent(this.ObjectType);
+            this.Predicate.Build(session, arguments, extent.Filter);
+            return extent;
+        }
     }
 }

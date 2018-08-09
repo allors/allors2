@@ -18,14 +18,40 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Instanceof : IPredicate
+    public class Instanceof : IPropertyPredicate
     {
-        public IObjectType ObjectType { get; set; }
+        public Instanceof(IComposite objectType = null)
+        {
+            this.ObjectType = objectType;
+        }
+
+        public IComposite ObjectType { get; set; }
 
         public IPropertyType PropertyType { get; set; }
+        
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            if (this.PropertyType != null)
+            {
+                if (this.PropertyType is IRoleType roleType)
+                {
+                    compositePredicate.AddInstanceof(roleType, this.ObjectType);
+                }
+                else
+                {
+                    var associationType = (IAssociationType)PropertyType;
+                    compositePredicate.AddInstanceof(associationType, this.ObjectType);
+                }
+            }
+            else
+            {
+                compositePredicate.AddInstanceof(this.ObjectType);
+            }
+        }
     }
 }

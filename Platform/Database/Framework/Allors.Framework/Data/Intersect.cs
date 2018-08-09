@@ -18,10 +18,22 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Data
 {
-    public class Intersect : IExtent
+    public class Intersect : IExtentOperator
     {
-        public IExtent[] Extents { get; set; }
+        public Intersect(params IExtent[] operands)
+        {
+            this.Operands = operands;
+        }
+
+        public IExtent[] Operands { get; set; }
+
+        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
+        {
+            return session.Intersect(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+        }
     }
 }

@@ -110,10 +110,10 @@ namespace Allors
         /// <summary>
         /// Adds a Predicate that evaluates to true if the role of the object under evaluation equals the object (unit or composite).
         /// </summary>
-        /// <param name="role">The role .</param>
+        /// <param name="roleType">The role .</param>
         /// <param name="valueOrAllorsObject">The object.</param>
         /// <returns>the composing CompositePredicate</returns>
-        ICompositePredicate AddEquals(IRoleType role, object valueOrAllorsObject);
+        ICompositePredicate AddEquals(IRoleType roleType, object valueOrAllorsObject);
 
         /// <summary>
         /// Adds a Predicate that evaluates to true if the association of the object under evaluation equals the allorsObject.

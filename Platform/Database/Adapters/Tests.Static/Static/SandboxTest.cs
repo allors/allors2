@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------------------------------------------
+﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SandboxTest.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // 
@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using Allors.Data;
+
 namespace Allors.Adapters
 {
     using System;
@@ -25,8 +27,6 @@ namespace Allors.Adapters
     using Allors;
 
     using Allors.Domain;
-    using Adapters;
-
     using Allors.Meta;
 
     using Xunit;
@@ -98,6 +98,23 @@ namespace Allors.Adapters
                 }
 
                 Assert.False(c1B.ExistC1sWhereC1C1many2one);
+            }
+        }
+        
+        [Fact]
+        public void Extent()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+                var population = new TestPopulation(this.Session);
+
+                var extent = new Data.Extent(M.C1.ObjectType)
+                {
+                    Predicate = new Equals(M.C1.C1AllorsString) { Value = "ᴀbracadabra" }
+                };
+
+                var objects = this.Session.Resolve<C1>(extent);
             }
         }
     }

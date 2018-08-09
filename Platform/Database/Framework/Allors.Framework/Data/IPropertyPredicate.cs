@@ -22,12 +22,8 @@ using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Any : IPredicate
+    public interface IPropertyPredicate : IPredicate
     {
-        public IPropertyType PropertyType { get; set; }
-
-        public IExtent Extent { get; set; }
-
-        public long[] Objects { get; set; }
+        IPropertyType PropertyType { get; set; }
     }
 }

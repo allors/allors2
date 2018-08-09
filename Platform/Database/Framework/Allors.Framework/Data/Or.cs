@@ -18,10 +18,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Data
 {
     public class Or : ICompositePredicate
     {
-        IPredicate[] Predicates { get; set; }
+        public Or(params IPredicate[] operands)
+        {
+            this.Operands = operands;
+        }
+
+        public IPredicate[] Operands { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            var or = compositePredicate.AddOr();
+            foreach (var predicate in this.Operands)
+            {
+                predicate.Build(session, arguments, or);
+            }
+        }
     }
 }

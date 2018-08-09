@@ -18,10 +18,23 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using Allors.Meta;
+
 namespace Allors.Data
 {
-    public class Union : IExtent
+    public class Union : IExtentOperator
     {
-        public IExtent[] Extents { get; set; }
+        public Union(params IExtent[] operands)
+        {
+            this.Operands = operands;
+        }
+
+        public IExtent[] Operands { get; set; }
+
+        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
+        {
+            return session.Union(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+        }
     }
 }

@@ -18,10 +18,26 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Data
 {
     public class And : ICompositePredicate
     {
-        IPredicate[] Predicates { get; set; }
+        public And(params IPredicate[] operands)
+        {
+            this.Operands = operands;
+        }
+
+        public IPredicate[] Operands { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            var and = compositePredicate.AddAnd();
+            foreach (var predicate in this.Operands)
+            {
+                predicate.Build(session, arguments, and);
+            }
+        }
     }
 }

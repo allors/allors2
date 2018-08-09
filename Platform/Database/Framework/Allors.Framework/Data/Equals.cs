@@ -18,16 +18,43 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Equals : IPredicate
+    public class Equals : IPropertyPredicate
     {
+        public Equals(IPropertyType propertyType = null)
+        {
+            this.PropertyType = propertyType;
+        }
+
         public IPropertyType PropertyType { get; set; }
 
-        public long Object { get; set; }
+        public IObject Object { get; set; }
 
-        public string Value { get; set; }
+        public object Value { get; set; }
+
+        public string Parameter { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            if (this.PropertyType == null)
+            {
+                compositePredicate.AddEquals(this.Object);
+            }
+
+            if (this.PropertyType is IRoleType roleType)
+            {
+                compositePredicate.AddEquals(roleType, this.Object ?? this.Value);
+            }
+            else
+            {
+                var associationType = (IAssociationType)PropertyType;
+                compositePredicate.AddEquals(associationType, this.Object);
+            }
+        }
     }
 }

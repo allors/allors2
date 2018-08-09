@@ -18,12 +18,31 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Exists : IPredicate
+    public class Exists : IPropertyPredicate
     {
+        public Exists(IPropertyType propertyType = null)
+        {
+            this.PropertyType = propertyType;
+        }
+
         public IPropertyType PropertyType { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            if (this.PropertyType is IRoleType roleType)
+            {
+                compositePredicate.AddExists(roleType);
+            }
+            else
+            {
+                var associationType = (IAssociationType)PropertyType;
+                compositePredicate.AddExists(associationType);
+            }
+        }
     }
 }

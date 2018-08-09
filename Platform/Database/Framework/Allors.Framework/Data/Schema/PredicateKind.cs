@@ -18,22 +18,30 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
-namespace Allors.Data
+namespace Allors.Data.Schema
 {
-    public class Except : IExtentOperator
+    public static class PredicateKind
     {
-        public Except(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
+        public const string And = "And";
 
-        public IExtent[] Operands { get; set; }
+        public const string Or = "Or";
 
-        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
-        {
-            return session.Except(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
-        }
+        public const string Not = "Not";
+
+        public const string InstanceOf = "InstanceOf";
+
+        public const string Exists = "Exists";
+
+        public const string Equals = "Equals";
+
+        public const string Intersects = "Intersects";
+
+        public const string Between = "Between";
+
+        public const string GreaterThan = "GreaterThan";
+
+        public const string LessThan = "LessThan";
+
+        public const string Like = "Like";
     }
 }

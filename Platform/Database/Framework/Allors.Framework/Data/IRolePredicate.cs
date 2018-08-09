@@ -18,22 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
+using Allors.Meta;
 
 namespace Allors.Data
 {
-    public class Except : IExtentOperator
+    public interface IRolePredicate : IPredicate
     {
-        public Except(params IExtent[] operands)
-        {
-            this.Operands = operands;
-        }
-
-        public IExtent[] Operands { get; set; }
-
-        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
-        {
-            return session.Except(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
-        }
+        IRoleType RoleType { get; set; }
     }
 }

@@ -19,21 +19,15 @@
 //-------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Allors.Data
 {
-    public class Except : IExtentOperator
+    public static class ISessionExtensions
     {
-        public Except(params IExtent[] operands)
+        public static T[] Resolve<T>(this ISession session, IExtent extent, IDictionary<string, object> arguments = null) where T : IObject
         {
-            this.Operands = operands;
-        }
-
-        public IExtent[] Operands { get; set; }
-
-        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
-        {
-            return session.Except(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+            return extent.Build(session, arguments).Cast<T>().ToArray();
         }
     }
 }

@@ -18,10 +18,23 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Allors.Data
 {
     public class Not : ICompositePredicate
     {
-        IPredicate Predicate { get; set; }
+        public Not(IPredicate operand = null)
+        {
+            this.Operand = operand;
+        }
+
+        public IPredicate Operand { get; set; }
+
+        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        {
+            var not = compositePredicate.AddNot();
+            this.Operand?.Build(session, arguments, not);
+        }
     }
 }
