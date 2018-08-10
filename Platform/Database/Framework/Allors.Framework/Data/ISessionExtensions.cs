@@ -18,16 +18,21 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static class ISessionExtensions
     {
-        public static T[] Resolve<T>(this ISession session, IExtent extent, IDictionary<string, object> arguments = null) where T : IObject
+        public static T[] Resolve<T>(this ISession session, IExtent extent, IReadOnlyDictionary<string, object> arguments = null) where T : IObject
         {
             return extent.Build(session, arguments).Cast<T>().ToArray();
+        }
+
+        public static T[] Resolve<T>(this ISession session, IExtent extent, object arguments) where T : IObject
+        {
+            return extent.Build(session, new Arguments(arguments)).Cast<T>().ToArray();
         }
     }
 }

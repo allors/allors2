@@ -32,7 +32,7 @@ namespace Allors.Data
 
         public IExtent[] Operands { get; set; }
 
-        Allors.Extent IExtent.Build(ISession session, IDictionary<string, object> arguments)
+        Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
         {
             return session.Union(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
         }

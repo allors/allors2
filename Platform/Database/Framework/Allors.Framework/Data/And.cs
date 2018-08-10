@@ -31,7 +31,7 @@ namespace Allors.Data
 
         public IPredicate[] Operands { get; set; }
 
-        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             var and = compositePredicate.AddAnd();
             foreach (var predicate in this.Operands)

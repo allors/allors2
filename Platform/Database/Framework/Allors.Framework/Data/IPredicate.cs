@@ -24,6 +24,6 @@ namespace Allors.Data
 {
     public interface IPredicate
     {
-        void Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate);
+        void Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate);
     }
 }

@@ -18,14 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using Allors.Data;
-
 namespace Allors.Adapters
 {
     using System;
 
     using Allors;
-
+    using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
 
@@ -102,7 +100,7 @@ namespace Allors.Adapters
         }
         
         [Fact]
-        public void Extent()
+        public void EqualsWithParameter()
         {
             foreach (var init in this.Inits)
             {
@@ -111,11 +109,34 @@ namespace Allors.Adapters
 
                 var extent = new Data.Extent(M.C1.ObjectType)
                 {
-                    Predicate = new Equals(M.C1.C1AllorsString) { Value = "ᴀbracadabra" }
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
                 };
 
-                var objects = this.Session.Resolve<C1>(extent);
+                var objects = this.Session.Resolve<C1>(extent, new { pString = "ᴀbra" });
+
+                Assert.Single(objects);
             }
         }
+
+
+        [Fact]
+        public void EqualsMissingParameter()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+                var population = new TestPopulation(this.Session);
+
+                var extent = new Data.Extent(M.C1.ObjectType)
+                                 {
+                                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
+                                 };
+
+                var objects = this.Session.Resolve<C1>(extent);
+
+                Assert.Equal(4, objects.Length);
+            }
+        }
+
     }
 }

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="IExtent.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -24,6 +24,6 @@ namespace Allors.Data
 {
     public interface IExtent
     {
-        Allors.Extent Build(ISession session, IDictionary<string, object> arguments);
+        Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments);
     }
 }

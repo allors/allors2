@@ -37,7 +37,7 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
-        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             compositePredicate.AddLike(this.RoleType, this.Value);
         }

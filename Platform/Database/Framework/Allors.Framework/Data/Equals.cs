@@ -18,12 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
+    using Allors.Meta;
+
     public class Equals : IPropertyPredicate
     {
         public Equals(IPropertyType propertyType = null)
@@ -31,6 +31,7 @@ namespace Allors.Data
             this.PropertyType = propertyType;
         }
 
+        /// <inheritdoc/>
         public IPropertyType PropertyType { get; set; }
 
         public IObject Object { get; set; }
@@ -39,21 +40,48 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
-        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        /// <inheritdoc/>
+        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
+
             if (this.PropertyType == null)
             {
-                compositePredicate.AddEquals(this.Object);
-            }
-
-            if (this.PropertyType is IRoleType roleType)
-            {
-                compositePredicate.AddEquals(roleType, this.Object ?? this.Value);
+                var equals = this.Parameter != null ? arguments?[this.Parameter] : this.Object;
+                if (equals != null)
+                {
+                    compositePredicate.AddEquals(this.Object);
+                }
             }
             else
             {
-                var associationType = (IAssociationType)PropertyType;
-                compositePredicate.AddEquals(associationType, this.Object);
+                if (this.PropertyType is IRoleType roleType)
+                {
+                    if (roleType.ObjectType.IsUnit)
+                    {
+                        var equals = this.Parameter != null ? arguments?[this.Parameter] : this.Value;
+                        if (equals != null)
+                        {
+                            compositePredicate.AddEquals(roleType, equals);
+                        }
+                    }
+                    else
+                    {
+                        var equals = this.Parameter != null ? arguments?[this.Parameter] : this.Object;
+                        if (equals != null)
+                        {
+                            compositePredicate.AddEquals(roleType, equals);
+                        }
+                    }
+                }
+                else
+                {
+                    var associationType = (IAssociationType)this.PropertyType;
+                    var equals = (IObject)(this.Parameter != null ? arguments?[this.Parameter] : this.Object);
+                    if (equals != null)
+                    {
+                        compositePredicate.AddEquals(associationType, equals);
+                    }
+                }
             }
         }
     }

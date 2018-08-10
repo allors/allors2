@@ -31,7 +31,7 @@ namespace Allors.Data
 
         public IPredicate Operand { get; set; }
 
-        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             var not = compositePredicate.AddNot();
             this.Operand?.Build(session, arguments, not);

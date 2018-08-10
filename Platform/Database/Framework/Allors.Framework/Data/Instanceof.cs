@@ -34,7 +34,7 @@ namespace Allors.Data
 
         public IPropertyType PropertyType { get; set; }
         
-        void IPredicate.Build(ISession session, IDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
+        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             if (this.PropertyType != null)
             {
