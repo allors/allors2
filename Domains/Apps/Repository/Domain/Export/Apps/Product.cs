@@ -170,6 +170,16 @@ namespace Allors.Repository
         Document[] Documents { get; set; }
 
         #region Allors
+        [Id("944F8DF7-1E19-46EA-8DFA-031093DD387E")]
+        [AssociationId("CB7DD964-E46C-4589-B04E-FB23FE8946F8")]
+        [RoleId("57F654B9-C50E-4B09-B51A-D6977D5895B7")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        Media[] ElectronicDocuments { get; set; }
+
+        #region Allors
         [Id("8645a62d-b230-4378-b4a2-f7ab64c99e58")]
         [AssociationId("f9d855e4-d16b-4d63-9654-a1b455aaa0db")]
         [RoleId("63a361ba-030b-4c95-91a6-ce9131dede95")]

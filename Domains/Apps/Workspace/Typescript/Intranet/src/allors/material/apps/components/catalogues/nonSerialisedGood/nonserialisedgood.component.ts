@@ -58,7 +58,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
+
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -88,6 +88,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Good.Photos }),
+              new TreeNode({ roleType: m.Good.ElectronicDocuments }),
               new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
               new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
               new TreeNode({ roleType: m.Good.LocalisedComments, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
@@ -179,7 +180,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             this.activeSuppliers = this.activeSuppliers.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-            const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === 'Non serialised');
+            const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === 'eaa6c331-0dd9-4bb1-8245-12a673304468');
 
             if (this.good === undefined) {
               this.good = this.scope.session.create('Good') as Good;

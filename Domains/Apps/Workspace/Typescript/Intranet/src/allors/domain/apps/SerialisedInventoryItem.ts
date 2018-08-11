@@ -18,13 +18,23 @@ domain.extend((workspace) => {
 
   Object.defineProperty(obj, 'age', {
     get(this: SerialisedInventoryItem) {
-      return new Date().getFullYear() - this.ManufacturingYear;
+      if (obj.ManufacturingYear) {
+        return new Date().getFullYear() - this.ManufacturingYear;
+      }
+      else {
+        return 0;
+      }
     },
   });
 
   Object.defineProperty(obj, 'yearsToGo', {
     get(this: SerialisedInventoryItem) {
-      return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
+      if (obj.ManufacturingYear) {
+        return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
+      }
+      else {
+        return 0;
+      }
     },
   });
 
@@ -36,7 +46,12 @@ domain.extend((workspace) => {
 
   Object.defineProperty(obj, 'marketValue', {
     get(this: SerialisedInventoryItem) {
-      return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
+      if (obj.ManufacturingYear) {
+        return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
+      }
+      else {
+        return 0;
+      }
     },
   });
 

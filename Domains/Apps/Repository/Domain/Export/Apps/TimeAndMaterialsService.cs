@@ -44,6 +44,8 @@ namespace Allors.Repository
 
         public Document[] Documents { get; set; }
 
+        public Media[] ElectronicDocuments { get; set; }
+
         public ProductFeature[] StandardFeatures { get; set; }
 
         public UnitOfMeasure UnitOfMeasure { get; set; }

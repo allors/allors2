@@ -61,7 +61,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
+
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private router: Router,
@@ -115,6 +115,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             include: [
               new TreeNode({ roleType: m.Good.PrimaryPhoto }),
               new TreeNode({ roleType: m.Good.Photos }),
+              new TreeNode({ roleType: m.Good.ElectronicDocuments }),
               new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
               new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
               new TreeNode({ roleType: m.Good.LocalisedComments, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
@@ -164,7 +165,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             }),
           new Query(
             {
-              name: 'InventoryItemKinds',
+              name: 'inventoryItemKinds',
               objectType: this.m.InventoryItemKind,
               sort: [new Sort({ roleType: m.InventoryItemKind.Name, direction: 'Asc' })],
             }),
@@ -216,7 +217,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             this.activeSuppliers = this.activeSuppliers.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))
 
             const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-            const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.Name === 'Serialised');
+            const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae');
 
             if (this.good === undefined) {
               this.good = this.scope.session.create('Good') as Good;
