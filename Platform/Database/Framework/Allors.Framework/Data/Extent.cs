@@ -24,7 +24,7 @@ namespace Allors.Data
 
     using Allors.Meta;
 
-    public class Extent : IExtent
+    public class Extent : IExtent, IPredicateContainer
     {
         public Extent(IComposite objectType)
         {
@@ -40,6 +40,22 @@ namespace Allors.Data
             var extent = session.Extent(this.ObjectType);
             this.Predicate?.Build(session, arguments, extent.Filter);
             return extent;
+        }
+
+        void IPredicateContainer.AddPredicate(IPredicate predicate)
+        {
+            this.Predicate = predicate;
+        }
+
+        public Schema.Extent Save()
+        {
+            return new Schema.Extent
+                       {
+                           Kind = Schema.ExtentKind.Predicate,
+                           ObjectType = this.ObjectType.Id,
+                           Predicate = this.Predicate?.Save()
+                       };
+
         }
     }
 }

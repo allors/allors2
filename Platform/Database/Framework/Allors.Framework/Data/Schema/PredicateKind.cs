@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="PredicateKind.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -28,14 +28,16 @@ namespace Allors.Data.Schema
 
         public const string Not = "Not";
 
-        public const string InstanceOf = "InstanceOf";
+        public const string Instanceof = "Instanceof";
 
         public const string Exists = "Exists";
 
         public const string Equals = "Equals";
 
-        public const string Intersects = "Intersects";
+        public const string Contains = "Contains";
 
+        public const string ContainedIn = "ContainedIn";
+        
         public const string Between = "Between";
 
         public const string GreaterThan = "GreaterThan";

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="IPredicateContainer.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,34 +18,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Data
 {
-    using Allors.Data.Schema;
-
-    public class LessThan : IRolePredicate
+    public interface IPredicateContainer
     {
-        public LessThan(IRoleType roleType = null)
-        {
-            this.RoleType = roleType;
-        }
-
-        public IRoleType RoleType { get; set; }
-
-        public object Value { get; set; }
-
-        public string Parameter { get; set; }
-
-        public Predicate Save()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
-        {
-            compositePredicate.AddLessThan(this.RoleType, this.Value);
-        }
+        void AddPredicate(IPredicate predicate);
     }
 }

@@ -35,5 +35,10 @@ namespace Allors.Data
         {
             return session.Intersect(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
         }
+
+        public Schema.Extent Save()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -22,6 +22,8 @@ using System.Collections.Generic;
 
 namespace Allors.Data
 {
+    using Allors.Data.Schema;
+
     public class Not : ICompositePredicate
     {
         public Not(IPredicate operand = null)
@@ -30,6 +32,16 @@ namespace Allors.Data
         }
 
         public IPredicate Operand { get; set; }
+
+        void IPredicateContainer.AddPredicate(IPredicate predicate)
+        {
+            this.Operand = predicate;
+        }
+
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

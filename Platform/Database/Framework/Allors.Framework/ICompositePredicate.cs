@@ -28,8 +28,8 @@ namespace Allors
     /// <para> A Predicate is an expression that either returns true, false or unknown (Three Value Logic).
     /// A CompositePredicate is a Predicate that can contain other Predicates.</para>
     /// <para>CompositePredicates are applied to other predicates (And and Or) or to a single other predicate (Not).
-    /// Non-CompositePredicates are applied to objects (InstanceOf) or to
-    /// relations of those objects (InstanceOf,Exists,NotExists,Contains,Equals,Like,LessThan,GreaterThan and Between).</para>
+    /// Non-CompositePredicates are applied to objects (Instanceof) or to
+    /// relations of those objects (Instanceof,Exists,NotExists,Contains,Equals,Like,LessThan,GreaterThan and Between).</para>
     /// <para> Adding a CompositePredicate returns the newly added CompositePredicate,
     /// adding a Non-CompositePredicate returns the composing CompositePredicate to which the Non-CompositePredicate was added.
     /// This allows for chained method invocations, e.g predicate.AddEquals(...).AddEquals(...)</para>

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="ContainedIn.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,15 +18,16 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Allors.Meta;
-
 namespace Allors.Data
 {
-    public class Intersects : IPropertyPredicate
+    using System.Collections.Generic;
+
+    using Allors.Data.Schema;
+    using Allors.Meta;
+
+    public class ContainedIn : IPropertyPredicate
     {
-        public Intersects(IPropertyType propertyType = null) => this.PropertyType = propertyType;
+        public ContainedIn(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
         public IPropertyType PropertyType { get; set; }
 
@@ -36,43 +37,34 @@ namespace Allors.Data
 
         public string Parameter { get; set; }
 
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
+
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             if (this.PropertyType is IRoleType roleType)
             {
-                if (roleType.IsOne)
+                if (this.Objects != null)
                 {
-                    if (this.Objects != null)
-                    {
-                        compositePredicate.AddContainedIn(roleType, this.Objects);
-                    }
-                    else
-                    {
-                        compositePredicate.AddContainedIn(roleType, this.Extent.Build(session, arguments));
-                    }
+                    compositePredicate.AddContainedIn(roleType, this.Objects);
                 }
                 else
                 {
-                    compositePredicate.AddContains(roleType, this.Objects.First());
+                    compositePredicate.AddContainedIn(roleType, this.Extent.Build(session, arguments));
                 }
             }
             else
             {
                 var associationType = (IAssociationType)PropertyType;
-                if (associationType.IsOne)
+                if (this.Objects != null)
                 {
-                    if (this.Objects != null)
-                    {
-                        compositePredicate.AddContainedIn(associationType, this.Objects);
-                    }
-                    else
-                    {
-                        compositePredicate.AddContainedIn(associationType, this.Extent.Build(session, arguments));
-                    }
+                    compositePredicate.AddContainedIn(associationType, this.Objects);
                 }
                 else
                 {
-                    compositePredicate.AddContains(associationType, this.Objects.First());
+                    compositePredicate.AddContainedIn(associationType, this.Extent.Build(session, arguments));
                 }
             }
         }

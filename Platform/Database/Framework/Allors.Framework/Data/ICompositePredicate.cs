@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="ICompositePredicate.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,7 +20,7 @@
 
 namespace Allors.Data
 {
-    public interface ICompositePredicate : IPredicate
+    public interface ICompositePredicate : IPredicate, IPredicateContainer
     {
     }
 }

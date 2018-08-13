@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Contains.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,23 +18,23 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Allors.Data.Schema;
+    using Allors.Meta;
 
-    public class LessThan : IRolePredicate
+    public class Contains : IPropertyPredicate
     {
-        public LessThan(IRoleType roleType = null)
-        {
-            this.RoleType = roleType;
-        }
+        public Contains(IPropertyType propertyType = null) => this.PropertyType = propertyType;
 
-        public IRoleType RoleType { get; set; }
+        public IPropertyType PropertyType { get; set; }
 
-        public object Value { get; set; }
+        public IExtent Extent { get; set; }
+
+        public IObject Object { get; set; }
 
         public string Parameter { get; set; }
 
@@ -45,7 +45,15 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            compositePredicate.AddLessThan(this.RoleType, this.Value);
+            if (this.PropertyType is IRoleType roleType)
+            {
+                compositePredicate.AddContains(roleType, this.Object);
+            }
+            else
+            {
+                var associationType = (IAssociationType)this.PropertyType;
+                compositePredicate.AddContains(associationType, this.Object);
+            }
         }
     }
 }

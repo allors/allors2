@@ -23,6 +23,8 @@ using Allors.Meta;
 
 namespace Allors.Data
 {
+    using Allors.Data.Schema;
+
     public class Instanceof : IPropertyPredicate
     {
         public Instanceof(IComposite objectType = null)
@@ -33,7 +35,12 @@ namespace Allors.Data
         public IComposite ObjectType { get; set; }
 
         public IPropertyType PropertyType { get; set; }
-        
+
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
+
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             if (this.PropertyType != null)

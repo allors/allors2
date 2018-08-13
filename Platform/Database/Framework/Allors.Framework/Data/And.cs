@@ -22,6 +22,10 @@ using System.Collections.Generic;
 
 namespace Allors.Data
 {
+    using System.Linq;
+
+    using Allors.Data.Schema;
+
     public class And : ICompositePredicate
     {
         public And(params IPredicate[] operands)
@@ -31,6 +35,11 @@ namespace Allors.Data
 
         public IPredicate[] Operands { get; set; }
 
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
+
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             var and = compositePredicate.AddAnd();
@@ -38,6 +47,11 @@ namespace Allors.Data
             {
                 predicate.Build(session, arguments, and);
             }
+        }
+
+        public void AddPredicate(IPredicate predicate)
+        {
+            this.Operands = this.Operands.Append(predicate).ToArray();
         }
     }
 }

@@ -18,11 +18,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
     public class Union : IExtentOperator
     {
         public Union(params IExtent[] operands)
@@ -35,6 +34,11 @@ namespace Allors.Data
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
         {
             return session.Union(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+        }
+
+        public Schema.Extent Save()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

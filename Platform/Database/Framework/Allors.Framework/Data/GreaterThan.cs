@@ -23,6 +23,8 @@ using Allors.Meta;
 
 namespace Allors.Data
 {
+    using Allors.Data.Schema;
+
     public class GreaterThan : IRolePredicate
     {
         public GreaterThan(IRoleType roleType = null)
@@ -35,6 +37,11 @@ namespace Allors.Data
         public object Value { get; set; }
        
         public string Parameter { get; set; }
+
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

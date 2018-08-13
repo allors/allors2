@@ -18,12 +18,14 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
     public interface IExtent
     {
         Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments);
+
+        Schema.Extent Save();
     }
 }

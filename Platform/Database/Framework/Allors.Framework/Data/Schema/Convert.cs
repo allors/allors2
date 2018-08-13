@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Convert.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,12 +18,14 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Xml;
-
 namespace Allors.Data.Schema
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Xml;
+
+    using Allors.Meta;
+
     public static class Convert
     {
         private static readonly Dictionary<Type, Func<object, string>> ConversionByType = new Dictionary<Type, Func<object, string>> {
@@ -50,6 +52,44 @@ namespace Allors.Data.Schema
             }
 
             throw new ArgumentException();
+        }
+
+        public static object ToValue(IUnit unit, string @string)
+        {
+            if (@string == null)
+            {
+                return null;
+            }
+
+            switch (unit.UnitTag)
+            {
+                case UnitTags.Binary:
+                    return System.Convert.FromBase64String(@string);
+
+                case UnitTags.Boolean:
+                    return XmlConvert.ToBoolean(@string);
+
+                case UnitTags.DateTime:
+                    return XmlConvert.ToDateTime(@string, XmlDateTimeSerializationMode.Utc);
+
+                case UnitTags.Decimal:
+                    return XmlConvert.ToDecimal(@string);
+
+                case UnitTags.Float:
+                    return XmlConvert.ToDouble(@string);
+
+                case UnitTags.Integer:
+                    return XmlConvert.ToInt32(@string);
+
+                case UnitTags.String:
+                    return @string;
+
+                case UnitTags.Unique:
+                    return XmlConvert.ToGuid(@string);
+
+                default:
+                    throw new Exception("Unknown unit " + unit);
+            }
         }
     }
 }

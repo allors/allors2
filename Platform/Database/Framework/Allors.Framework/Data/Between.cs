@@ -24,6 +24,8 @@ using Allors.Meta;
 
 namespace Allors.Data
 {
+    using Allors.Data.Schema;
+
     public class Between : IRolePredicate
     {
         public Between(IRoleType roleType = null)
@@ -36,6 +38,11 @@ namespace Allors.Data
         public IEnumerable<object> Values { get; set; }
 
         public string Parameter { get; set; }
+
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

@@ -22,6 +22,7 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
+    using Allors.Data.Schema;
     using Allors.Meta;
 
     public class Equals : IPropertyPredicate
@@ -39,6 +40,17 @@ namespace Allors.Data
         public object Value { get; set; }
 
         public string Parameter { get; set; }
+
+        public Predicate Save()
+        {
+            return new Predicate
+                       {
+                           Kind = PredicateKind.Equals,
+                           Object = this.Object?.Id.ToString(),
+                           Value = Convert.ToString(this.Value),
+                           Parameter = this.Parameter
+                       };
+        }
 
         /// <inheritdoc/>
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

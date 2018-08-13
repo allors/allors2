@@ -24,6 +24,7 @@ namespace Allors.Adapters
 
     using Allors;
     using Allors.Data;
+    using Allors.Data.Schema;
     using Allors.Domain;
     using Allors.Meta;
 
@@ -98,7 +99,7 @@ namespace Allors.Adapters
                 Assert.False(c1B.ExistC1sWhereC1C1many2one);
             }
         }
-        
+
         [Fact]
         public void EqualsWithParameter()
         {
@@ -118,9 +119,55 @@ namespace Allors.Adapters
             }
         }
 
-
         [Fact]
         public void EqualsMissingParameter()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+                var population = new TestPopulation(this.Session);
+
+                var extent = new Data.Extent(M.C1.ObjectType)
+                {
+                    Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
+                };
+
+                var objects = this.Session.Resolve<C1>(extent);
+
+                Assert.Equal(4, objects.Length);
+            }
+        }
+
+        [Fact]
+        public void LoadExtent()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+                var population = new TestPopulation(this.Session);
+                
+                var schemaExtent = new Data.Schema.Extent
+                {
+                    Kind = ExtentKind.Predicate,
+                    ObjectType = M.C1.ObjectType.Id,
+                    Predicate = new Predicate
+                    {
+                        Kind = PredicateKind.Equals,
+                        PropertyType = M.C1.C1AllorsString.Id,
+                        Value = "ᴀbra"
+                    }
+                };
+
+                var extent = schemaExtent.Load(this.Session);
+
+                var objects = this.Session.Resolve<C1>(extent);
+
+                Assert.Single(objects);
+            }
+        }
+
+        [Fact]
+        public void SaveExtent()
         {
             foreach (var init in this.Inits)
             {
@@ -132,11 +179,19 @@ namespace Allors.Adapters
                                      Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
                                  };
 
-                var objects = this.Session.Resolve<C1>(extent);
 
-                Assert.Equal(4, objects.Length);
+                var schemaExtent = extent.Save();
+
+                Assert.NotNull(schemaExtent);
+
+                Assert.Equal(ExtentKind.Predicate, schemaExtent.Kind);
+
+                var predicate = schemaExtent.Predicate;
+
+                Assert.NotNull(predicate);
+                Assert.Equal(PredicateKind.Equals, predicate.Kind);
+                Assert.Equal("pString", predicate.Parameter);
             }
         }
-
     }
 }

@@ -20,12 +20,54 @@
 
 namespace Allors.Data.Schema
 {
+    using System;
+    using System.Linq;
+
+    using Allors.Meta;
+
     public class Extent 
     {
         public string Kind { get; set; }
 
         public Extent[] Operands { get; set; }
 
+        public Guid ObjectType { get; set; }
+
         public Predicate Predicate { get; set; }
+
+        /// <summary>
+        /// Loads an <see cref="Allors.Extent"/> based on this <see cref="Extent"/>.
+        /// </summary>
+        /// <param name="session">
+        /// The database to resolve information from.
+        /// </param>
+        /// <returns>
+        /// The loaded <see cref="Extent"/>.
+        /// </returns>
+        public IExtent Load(ISession session)
+        {
+            IExtent[] Operands() => this.Operands.Select(v => v.Load(session)).ToArray();
+
+            switch (this.Kind)
+            {
+                case ExtentKind.Predicate:
+                    var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(this.ObjectType);
+                    var extent = new Data.Extent(objectType);
+                    extent.Predicate = this.Predicate?.Load(session);
+                    return extent;
+
+                case ExtentKind.Union:
+                    return new Union(Operands());
+
+                case ExtentKind.Except:
+                    return new Except(Operands());
+
+                case ExtentKind.Intersect:
+                    return new Intersect(Operands());
+
+                default:
+                    throw new Exception("Unknown extent kind " + this.Kind);
+            }
+        }
     }
 }

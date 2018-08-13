@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="IPredicate.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -22,8 +22,12 @@ using System.Collections.Generic;
 
 namespace Allors.Data
 {
+    using Allors.Data.Schema;
+
     public interface IPredicate
     {
+        Predicate Save();
+
         void Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate);
     }
 }

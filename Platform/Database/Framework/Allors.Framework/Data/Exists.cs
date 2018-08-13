@@ -23,6 +23,8 @@ using Allors.Meta;
 
 namespace Allors.Data
 {
+    using Allors.Data.Schema;
+
     public class Exists : IPropertyPredicate
     {
         public Exists(IPropertyType propertyType = null)
@@ -31,6 +33,11 @@ namespace Allors.Data
         }
 
         public IPropertyType PropertyType { get; set; }
+
+        public Predicate Save()
+        {
+            throw new System.NotImplementedException();
+        }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
