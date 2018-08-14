@@ -28,30 +28,31 @@ namespace Allors.Data.Schema
 
     public static class Convert
     {
-        private static readonly Dictionary<Type, Func<object, string>> ConversionByType = new Dictionary<Type, Func<object, string>> {
-            { typeof(string), v => (string)v },
-            { typeof(int), v => XmlConvert.ToString((int)v) },
-            { typeof(decimal), v => XmlConvert.ToString((decimal)v) },
-            { typeof(double), v => XmlConvert.ToString((double)v) },
-            { typeof(bool), v => XmlConvert.ToString((bool)v) },
-            { typeof(DateTime), v => XmlConvert.ToString((DateTime)v, XmlDateTimeSerializationMode.Utc) },
-            { typeof(Guid), v => XmlConvert.ToString((Guid)v) },
-            { typeof(byte[]), v => System.Convert.ToBase64String((byte[])v) },
-        };
-
         internal static string ToString(object value)
         {
-            if (value == null)
+            switch (value)
             {
-                return null;
+                case null:
+                    return null;
+                case string @string:
+                    return @string;
+                case int @int:
+                    return XmlConvert.ToString(@int);
+                case decimal @decimal:
+                    return XmlConvert.ToString(@decimal);
+                case double @double:
+                    return XmlConvert.ToString(@double);
+                case bool @bool:
+                    return XmlConvert.ToString(@bool);
+                case DateTime dateTime:
+                    return XmlConvert.ToString(dateTime, XmlDateTimeSerializationMode.Utc);
+                case Guid @guid:
+                    return XmlConvert.ToString(@guid);
+                case byte[] binary:
+                    return System.Convert.ToBase64String(binary);
+                default:
+                    throw new ArgumentException();
             }
-
-            if (ConversionByType.TryGetValue(value.GetType(), out var conversion))
-            {
-                return conversion(value);
-            }
-
-            throw new ArgumentException();
         }
 
         public static object ToValue(IUnit unit, string @string)

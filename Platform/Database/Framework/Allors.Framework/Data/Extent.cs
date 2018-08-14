@@ -52,7 +52,7 @@ namespace Allors.Data
             return new Schema.Extent
                        {
                            Kind = Schema.ExtentKind.Predicate,
-                           ObjectType = this.ObjectType.Id,
+                           ObjectType = this.ObjectType?.Id,
                            Predicate = this.Predicate?.Save()
                        };
 

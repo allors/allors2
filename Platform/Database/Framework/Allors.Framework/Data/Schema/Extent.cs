@@ -31,7 +31,7 @@ namespace Allors.Data.Schema
 
         public Extent[] Operands { get; set; }
 
-        public Guid ObjectType { get; set; }
+        public Guid? ObjectType { get; set; }
 
         public Predicate Predicate { get; set; }
 
@@ -46,24 +46,32 @@ namespace Allors.Data.Schema
         /// </returns>
         public IExtent Load(ISession session)
         {
-            IExtent[] Operands() => this.Operands.Select(v => v.Load(session)).ToArray();
+            Func<IExtent[]> operands = () => this.Operands.Select(v => v.Load(session)).ToArray();
 
             switch (this.Kind)
             {
                 case ExtentKind.Predicate:
-                    var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(this.ObjectType);
-                    var extent = new Data.Extent(objectType);
-                    extent.Predicate = this.Predicate?.Load(session);
+                    if (!this.ObjectType.HasValue)
+                    {
+                        return null;
+                    }
+
+                    var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(this.ObjectType.Value);
+                    var extent = new Data.Extent(objectType)
+                    {
+                        Predicate = this.Predicate?.Load(session)
+                    };
+
                     return extent;
 
                 case ExtentKind.Union:
-                    return new Union(Operands());
+                    return new Union(operands());
 
                 case ExtentKind.Except:
-                    return new Except(Operands());
+                    return new Except(operands());
 
                 case ExtentKind.Intersect:
-                    return new Intersect(Operands());
+                    return new Intersect(operands());
 
                 default:
                     throw new Exception("Unknown extent kind " + this.Kind);

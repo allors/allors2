@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Not.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,10 +18,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
     using Allors.Data.Schema;
 
     public class Not : ICompositePredicate
@@ -40,8 +40,13 @@ namespace Allors.Data
 
         public Predicate Save()
         {
-            throw new System.NotImplementedException();
+            return new Predicate()
+            {
+                Kind = PredicateKind.And,
+                Operand = this.Operand?.Save()
+            };
         }
+
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Between.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,13 +18,13 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Allors.Data.Schema;
+    using Allors.Meta;
 
     public class Between : IRolePredicate
     {
@@ -41,8 +41,15 @@ namespace Allors.Data
 
         public Predicate Save()
         {
-            throw new System.NotImplementedException();
+            return new Predicate
+                       {
+                           Kind = PredicateKind.Between,
+                           RoleType = this.RoleType?.Id,
+                           Values = this.Values.Select(Convert.ToString).ToArray(),
+                           Parameter = this.Parameter
+                       };
         }
+
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

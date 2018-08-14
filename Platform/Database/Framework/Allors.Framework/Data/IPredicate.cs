@@ -18,10 +18,10 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
     using Allors.Data.Schema;
 
     public interface IPredicate

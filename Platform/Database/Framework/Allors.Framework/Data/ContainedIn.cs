@@ -21,6 +21,7 @@
 namespace Allors.Data
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Allors.Data.Schema;
     using Allors.Meta;
@@ -39,7 +40,14 @@ namespace Allors.Data
 
         public Predicate Save()
         {
-            throw new System.NotImplementedException();
+            return new Predicate
+                       {
+                           Kind = PredicateKind.ContainedIn,
+                           PropertyType = this.PropertyType?.Id,
+                           Extent = this.Extent?.Save(),
+                           Objects = this.Objects.Select(v => v.Id.ToString()).ToArray(),
+                           Parameter = this.Parameter
+                       };
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

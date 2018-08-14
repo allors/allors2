@@ -29,9 +29,11 @@ namespace Allors.Data.Schema
     {
         public string Kind { get; set; }
 
-        public Guid PropertyType { get; set; }
+        public Guid? PropertyType { get; set; }
 
-        public Guid ObjectType { get; set; }
+        public Guid? RoleType { get; set; }
+
+        public Guid? ObjectType { get; set; }
 
         public string Parameter { get; set; }
 
@@ -72,12 +74,14 @@ namespace Allors.Data.Schema
                     };
 
                 default:
-                    var propertyType = (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(this.PropertyType);
+                    var propertyType = this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(this.PropertyType.Value) : null;
+                    var roleType = this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(this.RoleType.Value) : null;
+
                     switch (this.Kind)
                     {
                         case PredicateKind.Instanceof:
 
-                            return new Instanceof((IComposite)session.Database.MetaPopulation.Find(this.ObjectType))
+                            return new Instanceof(this.ObjectType != null ? (IComposite)session.Database.MetaPopulation.Find(this.ObjectType.Value) : null)
                             {
                                 PropertyType = propertyType
                             };
@@ -98,8 +102,7 @@ namespace Allors.Data.Schema
                             }
                             else if (this.Value != null)
                             {
-                                var roleType = (IRoleType)propertyType;
-                                var value = Convert.ToValue((IUnit)roleType.ObjectType, this.Value);
+                                var value = Convert.ToValue((IUnit)((IRoleType)propertyType)?.ObjectType, this.Value);
                                 equals.Value = value;
                             }
 
@@ -131,31 +134,31 @@ namespace Allors.Data.Schema
 
                         case PredicateKind.Between:
 
-                            return new Between((IRoleType)propertyType)
+                            return new Between(roleType)
                             {
                                 Parameter = this.Parameter,
-                                Values = this.Values.Select(v => Convert.ToValue((IUnit)((IRoleType)propertyType).ObjectType, v)).ToArray()
+                                Values = this.Values.Select(v => Convert.ToValue((IUnit)roleType?.ObjectType, v)).ToArray()
                             };
 
                         case PredicateKind.GreaterThan:
 
-                            return new GreaterThan((IRoleType)propertyType)
+                            return new GreaterThan(roleType)
                             {
                                 Parameter = this.Parameter,
-                                Value = Convert.ToValue((IUnit)((IRoleType)propertyType).ObjectType, this.Value)
+                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, this.Value)
                             };
 
                         case PredicateKind.LessThan:
 
-                            return new LessThan((IRoleType)propertyType)
+                            return new LessThan(roleType)
                             {
                                 Parameter = this.Parameter,
-                                Value = Convert.ToValue((IUnit)((IRoleType)propertyType).ObjectType, this.Value)
+                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, this.Value)
                             };
 
                         case PredicateKind.Like:
 
-                            return new Like((IRoleType)propertyType)
+                            return new Like(roleType)
                             {
                                 Parameter = this.Parameter,
                                 Value = this.Value

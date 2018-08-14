@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Exists.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,12 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
     using Allors.Data.Schema;
+    using Allors.Meta;
 
     public class Exists : IPropertyPredicate
     {
@@ -33,12 +33,16 @@ namespace Allors.Data
         }
 
         public IPropertyType PropertyType { get; set; }
-
+        
         public Predicate Save()
         {
-            throw new System.NotImplementedException();
+            return new Predicate
+                       {
+                           Kind = PredicateKind.Exists,
+                           PropertyType = this.PropertyType?.Id
+                       };
         }
-
+        
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
             if (this.PropertyType is IRoleType roleType)
@@ -47,7 +51,7 @@ namespace Allors.Data
             }
             else
             {
-                var associationType = (IAssociationType)PropertyType;
+                var associationType = (IAssociationType)this.PropertyType;
                 compositePredicate.AddExists(associationType);
             }
         }

@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="GreaterThan.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,12 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using Allors.Meta;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+
     using Allors.Data.Schema;
+    using Allors.Meta;
 
     public class GreaterThan : IRolePredicate
     {
@@ -40,7 +40,13 @@ namespace Allors.Data
 
         public Predicate Save()
         {
-            throw new System.NotImplementedException();
+            return new Predicate
+                       {
+                           Kind = PredicateKind.GreaterThan,
+                           RoleType = this.RoleType?.Id,
+                           Value = Convert.ToString(this.Value),
+                           Parameter = this.Parameter
+                       };
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)

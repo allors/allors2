@@ -40,8 +40,16 @@ namespace Allors.Data
 
         public Predicate Save()
         {
-            throw new System.NotImplementedException();
+            return new Predicate
+                       {
+                           Kind = PredicateKind.Contains,
+                           PropertyType = this.PropertyType?.Id,
+                           Extent = this.Extent?.Save(),
+                           Object = this.Object?.Id.ToString(),
+                           Parameter = this.Parameter
+                       };
         }
+
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {

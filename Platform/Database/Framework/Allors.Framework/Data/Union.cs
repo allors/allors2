@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Union.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -21,6 +21,7 @@
 namespace Allors.Data
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Union : IExtentOperator
     {
@@ -33,12 +34,16 @@ namespace Allors.Data
 
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
         {
-            return session.Union(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+            return session.Union(this.Operands[0].Build(session, arguments), this.Operands[1].Build(session, arguments));
         }
 
         public Schema.Extent Save()
         {
-            throw new System.NotImplementedException();
+            return new Schema.Extent
+                       {
+                           Kind = Schema.ExtentKind.Union,
+                           Operands = this.Operands.Select(v => v.Save()).ToArray()
+                       };
         }
     }
 }

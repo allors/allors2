@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Intersect.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,10 +18,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Allors.Data
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Intersect : IExtentOperator
     {
         public Intersect(params IExtent[] operands)
@@ -38,7 +39,11 @@ namespace Allors.Data
 
         public Schema.Extent Save()
         {
-            throw new System.NotImplementedException();
+            return new Schema.Extent
+                       {
+                           Kind = Schema.ExtentKind.Intersect,
+                           Operands = this.Operands.Select(v => v.Save()).ToArray()
+                       };
         }
     }
 }
