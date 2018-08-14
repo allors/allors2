@@ -7,12 +7,16 @@ namespace Allors.Repository
     #region Allors
     [Id("003433eb-a0c6-454d-8517-0c03e9be3e96")]
     #endregion
-    public partial class ProductFeatureApplicabilityRelationship : AccessControlledObject 
+    public partial class ProductFeatureApplicability : AccessControlledObject, Period
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public DateTime FromDate { get; set; }
+
+        public DateTime ThroughDate { get; set; }
 
         #endregion
 
@@ -24,8 +28,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public Product AvailableFor { get; set; }
+
         #region Allors
         [Id("c17d3bde-ebbc-463c-b9cb-b0a5a700c6a1")]
         [AssociationId("323a85e8-ee5c-4967-9f3d-64e8e5b04d7c")]
@@ -34,9 +38,17 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        public ProductFeature ProductFeature { get; set; }
 
-        public ProductFeature UsedToDefine { get; set; }
-
+        #region Allors
+        [Id("A1AE46BD-FB2B-4454-8A4B-9D4C7025A577")]
+        [AssociationId("A8488C04-1961-4ADF-B66D-8932A2750F8E")]
+        [RoleId("6BAFBF65-D366-4177-B33B-B99F7C4B7F37")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public ProductFeatureApplicabilityKind ProductFeatureApplicabilityKind { get; set; }
 
         #region inherited methods
 
@@ -52,6 +64,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

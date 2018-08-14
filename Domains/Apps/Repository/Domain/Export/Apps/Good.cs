@@ -34,8 +34,6 @@ namespace Allors.Repository
 
         public Product ProductComplement { get; set; }
 
-        public ProductFeature[] OptionalFeatures { get; set; }
-
         public Product[] Variants { get; set; }
 
         public string Name { get; set; }
@@ -46,15 +44,11 @@ namespace Allors.Repository
 
         public Media[] ElectronicDocuments { get; set; }
 
-        public ProductFeature[] StandardFeatures { get; set; }
-
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public EstimatedProductCost[] EstimatedProductCosts { get; set; }
 
         public Product[] ProductObsolescences { get; set; }
-
-        public ProductFeature[] SelectableFeatures { get; set; }
 
         public VatRate VatRate { get; set; }
 
@@ -159,15 +153,6 @@ namespace Allors.Repository
         [Size(256)]
         [Workspace]
         public string Sku { get; set; }
-
-        #region Allors
-        [Id("989d9c6c-56d6-407a-a890-3769cb7a675e")]
-        [AssociationId("4da4bb2d-f830-4827-bdaf-1c584cdeb437")]
-        [RoleId("c31005b1-787d-4a0f-b281-f74551df7be7")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        public string ArticleNumber { get; set; }
 
         #region Allors
         [Id("5f727bd9-9c3e-421e-93eb-646c4fdf73d3")]

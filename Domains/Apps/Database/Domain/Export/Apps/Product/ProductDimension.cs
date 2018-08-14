@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Dimension.cs" company="Allors bvba">
+// <copyright file="ProductDimension.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,7 +15,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    public partial class Dimension
+
+    public partial class ProductDimension
     {
         public void AddToBasePrice(BasePrice basePrice)
         {

@@ -183,22 +183,11 @@ namespace Intranet.Tests
                 .WithProductCategory(productCategory1)
                 .Build();
 
-            var model1Brand1 = new ModelBuilder(this.session)
-                .WithName("model 1")
-                .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("model 1").WithLocale(dutchLocale).Build())
-                .Build();
-
-            var model2Brand1 = new ModelBuilder(this.session)
-                .WithName("model 1")
-                .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("model 2").WithLocale(dutchLocale).Build())
-                .Build();
-
-            var brand1 = new BrandBuilder(this.session).WithName("brand 1").WithModel(model1Brand1).WithModel(model2Brand1).Build();
+            var brand1 = new BrandBuilder(this.session).WithName("brand 1").Build();
 
             var vatRate = new VatRateBuilder(this.session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.session)
-                .WithArticleNumber("gz-1")
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
@@ -207,8 +196,13 @@ namespace Intranet.Tests
                 .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithStandardFeature(brand1)
-                .WithStandardFeature(model1Brand1)
+                .Build();
+
+            new ProductFeatureApplicabilityBuilder(this.session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithAvailableFor(good1)
+                .WithProductFeature(new BrandBuilder(this.session).WithName("brand 1").Build())
+                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
             var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.session).WithGood(good1).WithFacility(facility1).Build();
@@ -217,7 +211,6 @@ namespace Intranet.Tests
             goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.session).WithQuantity(100).WithReason(new VarianceReasons(this.session).Unknown).Build());
 
             var good2 = new GoodBuilder(this.session)
-                .WithArticleNumber("gz-2")
                 .WithName("Tiny red round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -226,15 +219,19 @@ namespace Intranet.Tests
                 .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).Serialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithStandardFeature(brand1)
-                .WithStandardFeature(model1Brand1)
                 .WithProductType(productType)
+                .Build();
+
+            new ProductFeatureApplicabilityBuilder(this.session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithAvailableFor(good2)
+                .WithProductFeature(new BrandBuilder(this.session).WithName("brand 2").Build())
+                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
             var good2InventoryItem = new SerialisedInventoryItemBuilder(this.session).WithGood(good2).WithSerialNumber("1").Build();
 
             var good3 = new GoodBuilder(this.session)
-                .WithArticleNumber("gz-3")
                 .WithName("Tiny green round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -243,8 +240,13 @@ namespace Intranet.Tests
                 .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithStandardFeature(brand1)
-                .WithStandardFeature(model1Brand1)
+                .Build();
+
+            new ProductFeatureApplicabilityBuilder(this.session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithAvailableFor(good3)
+                .WithProductFeature(new BrandBuilder(this.session).WithName("brand 3").Build())
+                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
             this.session.Derive();

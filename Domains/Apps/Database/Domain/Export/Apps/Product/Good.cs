@@ -277,7 +277,7 @@ namespace Allors.Domain
                 builder.Append($", Manufacturer: {this.ManufacturedBy.PartyName}");
             }
 
-            foreach (ProductFeature feature in this.StandardFeatures)
+            foreach (ProductFeature feature in this.ProductFeatureApplicabilitiesWhereAvailableFor)
             {
                 if (feature is Brand)
                 {

@@ -5,9 +5,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("5A0B6477-7B54-48FA-AF59-7B664587F197")]
+    [Id("E30A6B10-069B-45CB-9D74-4DA9E77DE465")]
     #endregion
-    public partial class SerialisedInventoryItemCharacteristicType : Enumeration
+    public partial class Dimension2 : Enumeration
     {
         #region inherited properties
 
@@ -25,9 +25,9 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("A141BDEF-06EF-4441-BACE-C5E3B42F755C")]
-        [AssociationId("7D8146E2-78C6-4D10-81BA-13BF6F474F0A")]
-        [RoleId("C18F7738-0988-4173-9B64-9447CC50767D")]
+        [Id("FF77D3D9-E425-4261-944C-1B0EC6C61B68")]
+        [AssociationId("D4C56919-AC49-465D-95B6-390FBA1E1869")]
+        [RoleId("30F12C0F-0B79-44F6-BCC0-A316A22CE221")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
@@ -48,7 +48,7 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("642DC9D7-E6D8-45A5-8109-B80013C6CF32")]
+        [Id("0F9165C3-32FE-48C0-A62E-8277592314B9")]
         #endregion
         [Workspace]
         public void Delete() { }

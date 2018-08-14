@@ -133,16 +133,6 @@ namespace Allors.Repository
         Product ProductComplement { get; set; }
 
         #region Allors
-        [Id("5735f671-6c52-474b-83a9-3dd8765af241")]
-        [AssociationId("4abbf18f-1f97-4fec-8e85-805432e65e53")]
-        [RoleId("c485cfba-d3fe-46c2-8495-ddb63c8b4f56")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        ProductFeature[] OptionalFeatures { get; set; }
-
-        #region Allors
         [Id("60bd113a-d6b9-4de9-bbff-2b5094ec4803")]
         [AssociationId("b5198a54-72bc-4972-aded-b8eaf0f304a0")]
         [RoleId("1c2134b2-d7ce-469a-a6e4-7e2cc741e07c")]
@@ -181,16 +171,6 @@ namespace Allors.Repository
         Media[] ElectronicDocuments { get; set; }
 
         #region Allors
-        [Id("8645a62d-b230-4378-b4a2-f7ab64c99e58")]
-        [AssociationId("f9d855e4-d16b-4d63-9654-a1b455aaa0db")]
-        [RoleId("63a361ba-030b-4c95-91a6-ce9131dede95")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        ProductFeature[] StandardFeatures { get; set; }
-
-        #region Allors
         [Id("9b66342e-48ac-4761-b375-b9b60d94b005")]
         [AssociationId("fcb1a5ad-544f-4613-a160-077d9130732f")]
         [RoleId("76542b1d-9085-451c-9110-85bfac863016")]
@@ -219,16 +199,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         Product[] ProductObsolescences { get; set; }
-
-        #region Allors
-        [Id("ecc755c1-9a64-42a2-88b6-0278c3598498")]
-        [AssociationId("d7b3ed79-4733-4d16-9b88-8c05ff684d2a")]
-        [RoleId("825e5e8f-d0ac-490e-8511-0596e2952482")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        ProductFeature[] SelectableFeatures { get; set; }
 
         #region Allors
         [Id("f26e4376-4e3f-4d7d-8814-54d19c977a76")]

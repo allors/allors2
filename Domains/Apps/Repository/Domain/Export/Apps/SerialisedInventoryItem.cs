@@ -41,6 +41,8 @@ namespace Allors.Repository
         
         public Facility Facility { get; set; }
 
+        public string ReferenceNumber { get; set; }
+
         #endregion
 
         #region ObjectStates

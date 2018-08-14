@@ -34,8 +34,6 @@ namespace Allors.Repository
 
         public Product ProductComplement { get; set; }
 
-        public ProductFeature[] OptionalFeatures { get; set; }
-
         public Product[] Variants { get; set; }
 
         public string Name { get; set; }
@@ -46,15 +44,11 @@ namespace Allors.Repository
 
         public Media[] ElectronicDocuments { get; set; }
 
-        public ProductFeature[] StandardFeatures { get; set; }
-
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         public EstimatedProductCost[] EstimatedProductCosts { get; set; }
 
         public Product[] ProductObsolescences { get; set; }
-
-        public ProductFeature[] SelectableFeatures { get; set; }
 
         public VatRate VatRate { get; set; }
 

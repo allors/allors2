@@ -183,22 +183,9 @@ namespace Allors
                 .WithProductCategory(productCategory1)
                 .Build();
 
-            var model1Brand1 = new ModelBuilder(this.Session)
-                .WithName("model 1")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 1").WithLocale(dutchLocale).Build())
-                .Build();
-
-            var model2Brand1 = new ModelBuilder(this.Session)
-                .WithName("model 1")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("model 2").WithLocale(dutchLocale).Build())
-                .Build();
-
-            var brand1 = new BrandBuilder(this.Session).WithName("brand 1").WithModel(model1Brand1).WithModel(model2Brand1).Build();
-
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var good1 = new GoodBuilder(this.Session)
-                .WithArticleNumber("gz-1")
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
@@ -207,8 +194,13 @@ namespace Allors
                 .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithStandardFeature(brand1)
-                .WithStandardFeature(model1Brand1)
+                .Build();
+
+            new ProductFeatureApplicabilityBuilder(this.Session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithAvailableFor(good1)
+                .WithProductFeature(new BrandBuilder(this.Session).WithName("brand 1").Build())
+                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
             var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).WithFacility(facility1).Build();
@@ -217,7 +209,6 @@ namespace Allors
             goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             var good2 = new GoodBuilder(this.Session)
-                .WithArticleNumber("gz-2")
                 .WithName("Tiny red round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -226,15 +217,19 @@ namespace Allors
                 .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithStandardFeature(brand1)
-                .WithStandardFeature(model1Brand1)
                 .WithProductType(productType)
+                .Build();
+
+            new ProductFeatureApplicabilityBuilder(this.Session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithAvailableFor(good2)
+                .WithProductFeature(new BrandBuilder(this.Session).WithName("brand 2").Build())
+                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
             var good2InventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithGood(good2).WithSerialNumber("1").Build();
 
             var good3 = new GoodBuilder(this.Session)
-                .WithArticleNumber("gz-3")
                 .WithName("Tiny green round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
@@ -243,8 +238,13 @@ namespace Allors
                 .WithVatRate(vatRate)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithStandardFeature(brand1)
-                .WithStandardFeature(model1Brand1)
+                .Build();
+
+            new ProductFeatureApplicabilityBuilder(this.Session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithAvailableFor(good3)
+                .WithProductFeature(new BrandBuilder(this.Session).WithName("brand 3").Build())
+                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
             this.Session.Derive();

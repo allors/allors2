@@ -30,6 +30,8 @@ namespace Allors.Repository
         public Good Good { get; set; }
         public Facility Facility { get; set; }
 
+        public string ReferenceNumber { get; set; }
+
         #endregion
 
         #region ObjectStates

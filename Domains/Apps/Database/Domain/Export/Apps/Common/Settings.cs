@@ -6,16 +6,27 @@
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            if (!this.ExistArticleNumberCounter)
+            if (!this.ExistSkuCounter)
             {
-                this.ArticleNumberCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+                this.SkuCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            }
+
+            if (!this.ExistReferenceNumberCounter)
+            {
+                this.ReferenceNumberCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
         }
 
-        public string NextArticleNumber()
+        public string NextSkuNumber()
         {
-            var articleNumber = this.ArticleNumberCounter.NextValue();
-            return string.Concat(this.ArticleNumberPrefix, articleNumber);
+            var skuNumber = this.SkuCounter.NextValue();
+            return string.Concat(this.SkuPrefix, skuNumber);
+        }
+
+        public string NextReferenceNumber()
+        {
+            var referenceNumber = this.ReferenceNumberCounter.NextValue();
+            return string.Concat(this.ReferenceNumberPrefix, referenceNumber);
         }
     }
 }
