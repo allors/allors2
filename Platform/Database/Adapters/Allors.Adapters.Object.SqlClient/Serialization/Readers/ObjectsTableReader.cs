@@ -14,14 +14,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
-using Allors.Meta;
-
 namespace Allors.Adapters.Object.SqlClient
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data.Common;
+
+    using Allors.Meta;
+
     internal class ObjectsTableReader : DbDataReader
     {
         private readonly IEnumerator<KeyValuePair<long, IObjectType>> enumerator;
@@ -33,7 +34,7 @@ namespace Allors.Adapters.Object.SqlClient
             this.enumerator = objectTypeByObjectId.GetEnumerator();
 
             this.getValueFuncs = new Func<KeyValuePair<long, IObjectType>, object>[columnNames.Length];
-            for(var i=0; i<columnNames.Length; i++)
+            for (var i = 0; i < columnNames.Length; i++)
             {
                 var columnName = columnNames[i];
 

@@ -20,8 +20,9 @@ namespace Allors.Adapters.Memory
     using System.Collections.Generic;
     using System.Xml;
 
-    using Allors.Meta;
     using Adapters;
+
+    using Allors.Meta;
 
     public class Load
     {

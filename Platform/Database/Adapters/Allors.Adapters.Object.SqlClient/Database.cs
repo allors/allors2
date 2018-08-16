@@ -240,6 +240,40 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
+        public void Load2(XmlReader reader)
+        {
+            lock (this)
+            {
+                this.Init();
+
+                using (var connection = new SqlConnection(this.ConnectionString))
+                {
+                    try
+                    {
+                        connection.Open();
+
+                        var load = new Load2(this, connection, this.ObjectNotLoaded, this.RelationNotLoaded);
+                        load.Execute(reader);
+
+                        connection.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        try
+                        {
+                            connection.Close();
+                        }
+                        finally
+                        {
+                            this.Init();
+                            throw e;
+                        }
+                    }
+                }
+            }
+        }
+
+
         public void Save(XmlWriter writer)
         {
             lock (this)
