@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("E30A6B10-069B-45CB-9D74-4DA9E77DE465")]
     #endregion
-    public partial class Dimension2 : Enumeration
+    public partial class Dimension : Enumeration
     {
         #region inherited properties
 

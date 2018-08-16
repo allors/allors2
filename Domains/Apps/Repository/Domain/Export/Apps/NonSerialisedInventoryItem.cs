@@ -18,16 +18,25 @@ namespace Allors.Repository
         public ObjectState[] ObjectStates { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public Guid UniqueId { get; set; }
+
         public InventoryItemVariance[] InventoryItemVariances { get; set; }
+
         public Part Part { get; set; }
+
         public string Name { get; set; }
+
         public Lot Lot { get; set; }
-        public string Sku { get; set; }
+
         public UnitOfMeasure UnitOfMeasure { get; set; }
+
         public ProductCategory[] DerivedProductCategories { get; set; }
+
         public Good Good { get; set; }
+
         public Facility Facility { get; set; }
 
         public string ReferenceNumber { get; set; }

@@ -57,16 +57,6 @@ namespace Allors.Domain
                 this.Name = this.Part.Name;
             }
 
-            if (!this.ExistSku && this.ExistGood && this.Good.ExistSku)
-            {
-                this.Sku = this.Good.Sku;
-            }
-
-            if (!this.ExistSku && this.ExistPart && this.Part.ExistSku)
-            {
-                this.Sku = this.Part.Sku;
-            }
-
             this.AppsOnDeriveQuantityOnHand(derivation);
             this.AppsOnDeriveQuantityCommittedOut(derivation);
             this.AppsOnDeriveQuantityExpectedIn(derivation);
@@ -84,7 +74,6 @@ namespace Allors.Domain
 
             this.AppsOnDeriveProductCategories(derivation);
 
-            this.AppsOnDeriveSku(derivation);
             this.AppsOnDeriveName(derivation);
             this.AppsOnDeriveUnitOfMeasure(derivation);
 
@@ -264,11 +253,6 @@ namespace Allors.Domain
                     salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
                 }
             }
-        }
-
-        public void AppsOnDeriveSku(IDerivation derivation)
-        {
-            this.Sku = this.ExistGood ? this.Good.Sku : string.Empty;
         }
 
         public void AppsOnDeriveName(IDerivation derivation)

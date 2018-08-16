@@ -39,7 +39,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public Dimension2 Dimension2{ get; set; }
+        public Dimension Dimension{ get; set; }
 
         #region Allors
         [Id("21E9C310-4C2F-4B51-8D8B-24FFAA00FE0F")]

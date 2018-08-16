@@ -31,8 +31,6 @@ namespace Allors.Repository
         
         public Lot Lot { get; set; }
         
-        public string Sku { get; set; }
-        
         public UnitOfMeasure UnitOfMeasure { get; set; }
         
         public ProductCategory[] DerivedProductCategories { get; set; }
@@ -212,6 +210,26 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public decimal TransportCost { get; set; }
+
+        #region Allors
+        [Id("A616AE10-EA83-4878-BCBA-377396B4357A")]
+        [AssociationId("AA15AAF5-26E7-48F8-B15F-B5B11AF516F5")]
+        [RoleId("0E159138-B2D2-429F-8DE5-ACCC5BB02C32")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Indexed]
+        [Workspace]
+        public Media PrimaryPhoto { get; set; }
+
+        #region Allors
+        [Id("2F5FF954-C9E2-463F-8DD6-BBC0701DD3EA")]
+        [AssociationId("C5A31199-527C-4AC5-A7DA-2FC72BA4C7B8")]
+        [RoleId("9D8AECED-A967-4100-BF7A-CF081E5A6002")]
+        [Indexed]
+        #endregion
+        [Workspace]
+        [Multiplicity(Multiplicity.ManyToMany)]
+        public Media[] Photos { get; set; }
 
         #region inherited methods
         public void OnBuild(){}

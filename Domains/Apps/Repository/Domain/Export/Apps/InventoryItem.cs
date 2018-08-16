@@ -49,17 +49,6 @@ namespace Allors.Repository
         Lot Lot { get; set; }
 
         #region Allors
-        [Id("7E14E5BC-0591-49F7-81DE-6D967CC01A83")]
-        [AssociationId("A60A81E6-7879-4571-871B-A95C6F4092CB")]
-        [RoleId("C4029421-3F0C-405B-AB34-7C762651B5D7")]
-        #endregion
-        [Derived]
-        [Required]
-        [Size(256)]
-        [Workspace]
-        string Sku { get; set; }
-
-        #region Allors
         [Id("D276D126-34D3-4820-884C-EC9944B5E10B")]
         [AssociationId("8AD230B1-A664-4A4D-A58C-FAFB98C11762")]
         [RoleId("730949B3-3CDE-46F7-816B-331AFFF7AEF5")]
