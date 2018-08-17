@@ -27,12 +27,18 @@ namespace Allors.Adapters.Object.SqlClient
     {
         private readonly Database database;
         private readonly Action<Guid, long> onObjectNotLoaded;
+        private readonly Dictionary<long, IClass> classByObjectId;
         private readonly XmlReader reader;
 
-        public Objects(Database database, Action<Guid, long> onObjectNotLoaded, XmlReader reader)
+        public Objects(
+            Database database,
+            Action<Guid, long> onObjectNotLoaded,
+            Dictionary<long, IClass> classByObjectId,
+            XmlReader reader)
         {
             this.database = database;
             this.onObjectNotLoaded = onObjectNotLoaded;
+            this.classByObjectId = classByObjectId;
             this.reader = reader;
         }
 
@@ -69,9 +75,10 @@ namespace Allors.Adapters.Object.SqlClient
                                         ? long.Parse(objectArray[1])
                                         : Load2.InitialVersion;
 
-                                    if (objectType is IClass)
+                                    if (objectType is IClass @class)
                                     {
-                                        yield return new object[] { objectId, objectType.Id, objectVersion };
+                                        this.classByObjectId[objectId] = @class;
+                                        yield return new object[] { objectId, @class.Id, objectVersion };
                                     }
                                     else
                                     {

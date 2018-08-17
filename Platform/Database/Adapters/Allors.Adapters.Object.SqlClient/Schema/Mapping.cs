@@ -1093,5 +1093,40 @@ AS
                     throw new Exception("Unknown Unit Type");
             }
         }
+
+        public string GetTableTypeName(IRoleType roleType)
+        {
+
+            var unitTypeTag = ((IUnit)roleType.ObjectType).UnitTag;
+            switch (unitTypeTag)
+            {
+                case UnitTags.String:
+                    return this.TableTypeNameForStringRelation;
+
+                case UnitTags.Integer:
+                    return this.TableTypeNameForIntegerRelation;
+
+                case UnitTags.Float:
+                    return this.TableTypeNameForFloatRelation;
+
+                case UnitTags.Boolean:
+                    return this.TableTypeNameForBooleanRelation;
+
+                case UnitTags.DateTime:
+                    return this.TableTypeNameForDateTimeRelation;
+
+                case UnitTags.Unique:
+                    return this.TableTypeNameForUniqueRelation;
+
+                case UnitTags.Binary:
+                    return this.TableTypeNameForBinaryRelation;
+
+                case UnitTags.Decimal:
+                    return this.TableTypeNameForDecimalRelationByScaleByPrecision[roleType.Precision.Value][roleType.Scale.Value];
+
+                default:
+                    throw new ArgumentException("Unknown Unit ObjectType: " + unitTypeTag);
+            }
+        }
     }
 }

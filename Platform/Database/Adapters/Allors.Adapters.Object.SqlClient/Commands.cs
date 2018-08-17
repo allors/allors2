@@ -343,47 +343,8 @@ namespace Allors.Adapters.Object.SqlClient
                 this.setUnitRoleByRoleTypeByClass.Add(exclusiveRootClass, commandByRoleType);
             }
 
-            string tableTypeName;
-
-            var unitTypeTag = ((IUnit)roleType.ObjectType).UnitTag;
-            switch (unitTypeTag)
-            {
-                case UnitTags.String:
-                    tableTypeName = schema.TableTypeNameForStringRelation;
-                    break;
-
-                case UnitTags.Integer:
-                    tableTypeName = schema.TableTypeNameForIntegerRelation;
-                    break;
-
-                case UnitTags.Float:
-                    tableTypeName = schema.TableTypeNameForFloatRelation;
-                    break;
-
-                case UnitTags.Boolean:
-                    tableTypeName = schema.TableTypeNameForBooleanRelation;
-                    break;
-
-                case UnitTags.DateTime:
-                    tableTypeName = schema.TableTypeNameForDateTimeRelation;
-                    break;
-
-                case UnitTags.Unique:
-                    tableTypeName = schema.TableTypeNameForUniqueRelation;
-                    break;
-
-                case UnitTags.Binary:
-                    tableTypeName = schema.TableTypeNameForBinaryRelation;
-                    break;
-
-                case UnitTags.Decimal:
-                    tableTypeName = schema.TableTypeNameForDecimalRelationByScaleByPrecision[roleType.Precision.Value][roleType.Scale.Value];
-                    break;
-
-                default:
-                    throw new ArgumentException("Unknown Unit ObjectType: " + unitTypeTag);
-            }
-
+            var tableTypeName = schema.GetTableTypeName(roleType);
+            
             Command command;
             if (!commandByRoleType.TryGetValue(roleType, out command))
             {
