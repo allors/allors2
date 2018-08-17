@@ -26,7 +26,7 @@ namespace Allors.Adapters.Object.SqlClient
 
     public class Load2
     {
-        public const long IntialVersion = 0;
+        public const long InitialVersion = 0;
 
         private readonly Database database;
         private readonly SqlConnection connection;
@@ -68,7 +68,6 @@ namespace Allors.Adapters.Object.SqlClient
                     }
                 }
             }
-
         }
 
         private void LoadPopulation(XmlReader reader)
@@ -145,72 +144,15 @@ namespace Allors.Adapters.Object.SqlClient
         {
             reader.MoveToContent();
 
-
-
-
-
-            while (reader.Read())
+            var xmlObjects = new Objects(this.database, this.OnObjectNotLoaded, reader);
+            using (var objectsReader = new ObjectsReader(xmlObjects))
             {
-                switch (reader.NodeType)
+                using (var sqlBulkCopy = new SqlBulkCopy(this.connection, SqlBulkCopyOptions.KeepIdentity, null))
                 {
-                    // eat everything but elements
-                    case XmlNodeType.Element:
-                        if (reader.Name.Equals(Serialization.ObjectType))
-                        {
-                            if (!reader.IsEmptyElement)
-                            {
-                                var objectTypeIdString = reader.GetAttribute(Serialization.Id);
-                                if (string.IsNullOrEmpty(objectTypeIdString))
-                                {
-                                    throw new Exception("object type has no id");
-                                }
-
-                                var objectTypeId = new Guid(objectTypeIdString);
-                                var objectType = this.database.ObjectFactory.GetObjectTypeForType(objectTypeId);
-
-                                var objectIdsString = reader.ReadElementContentAsString();
-                                var objectIdStringArray = objectIdsString.Split(Serialization.ObjectsSplitterCharArray);
-
-                                foreach (var objectIdString in objectIdStringArray)
-                                {
-                                    var objectArray = objectIdString.Split(Serialization.ObjectSplitterCharArray);
-
-                                    var objectId = long.Parse(objectArray[0]);
-                                    var objectVersion = objectArray.Length > 1
-                                        ? long.Parse(objectArray[1])
-                                        : IntialVersion;
-
-                                    if (objectType is IClass)
-                                    {
-                                        Console.WriteLine(objectType.Name + " " + objectId + ":" + objectVersion);
-                                        //this.session.InsertStrategy((IClass) objectType, objectId, objectVersion);
-                                    }
-                                    else
-                                    {
-                                        this.OnObjectNotLoaded(objectTypeId, objectId);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                reader.Skip();
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + reader.Name + "> in parent element <" +
-                                                Serialization.Database + ">");
-                        }
-
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        if (!reader.Name.Equals(Serialization.Database))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.Database + ">");
-                        }
-
-                        return;
+                    sqlBulkCopy.BulkCopyTimeout = 0;
+                    sqlBulkCopy.BatchSize = 5000;
+                    sqlBulkCopy.DestinationTableName = this.database.Mapping.TableNameForObjects;
+                    sqlBulkCopy.WriteToServer(objectsReader);
                 }
             }
         }

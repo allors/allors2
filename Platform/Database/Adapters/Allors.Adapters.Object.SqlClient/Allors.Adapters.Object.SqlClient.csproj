@@ -13,4 +13,8 @@
     <ProjectReference Include="..\..\Framework\Allors.Framework\Allors.Framework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Serialization2\Table\" />
+  </ItemGroup>
+
 </Project>

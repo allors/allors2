@@ -17,34 +17,44 @@
 namespace Allors.Adapters.Object.SqlClient
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
     using System.IO;
     using System.Xml;
 
     internal class ObjectsReader : IDataReader
     {
-        private readonly XmlReader reader;
+        private readonly IEnumerator<object[]> enumerable;
 
-        public ObjectsReader(XmlReader reader)
+        private object[] xmlObject;
+
+
+        public ObjectsReader(Objects xmlObjects)
         {
-            this.reader = reader;
+            this.enumerable = xmlObjects.GetEnumerator();
         }
 
         public int FieldCount => 3;
 
         public bool Read()
         {
-            while (this.reader.Read())
+            while (this.enumerable.MoveNext())
             {
+                this.xmlObject = this.enumerable.Current;
                 return true;
             }
 
+            this.xmlObject = null;
             return false;
         }
 
         public object GetValue(int i)
         {
-            return null;
+            return this.xmlObject[i];
+        }
+
+        public void Dispose()
+        {
         }
 
         #region Not Implemented
@@ -156,11 +166,6 @@ namespace Allors.Adapters.Object.SqlClient
         public object this[int i] => throw new NotImplementedException();
 
         public object this[string name] => throw new NotImplementedException();
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
 
         public void Close()
         {

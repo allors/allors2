@@ -273,7 +273,6 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-
         public void Save(XmlWriter writer)
         {
             lock (this)
