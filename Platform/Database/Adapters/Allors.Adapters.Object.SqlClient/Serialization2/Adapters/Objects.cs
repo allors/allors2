@@ -44,8 +44,11 @@ namespace Allors.Adapters.Object.SqlClient
 
         public IEnumerator<object[]> GetEnumerator()
         {
-            while (this.reader.Read())
+            var skip = false;
+            while (skip || this.reader.Read())
             {
+                skip = false;
+
                 switch (this.reader.NodeType)
                 {
                     // eat everything but elements
@@ -85,23 +88,13 @@ namespace Allors.Adapters.Object.SqlClient
                                         this.onObjectNotLoaded(objectTypeId, objectId);
                                     }
                                 }
+
+                                skip = this.reader.IsStartElement();
                             }
                             else
                             {
                                 this.reader.Skip();
                             }
-                        }
-                        else
-                        {
-                            throw new Exception("Unknown child element <" + this.reader.Name + "> in parent element <" + Serialization.Database + ">");
-                        }
-
-                        break;
-
-                    case XmlNodeType.EndElement:
-                        if (!this.reader.Name.Equals(Serialization.Database))
-                        {
-                            throw new Exception("Expected closing element </" + Serialization.Database + ">");
                         }
 
                         break;

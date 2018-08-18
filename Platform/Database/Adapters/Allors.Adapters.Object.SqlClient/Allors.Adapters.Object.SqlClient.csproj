@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Serialization2\Bulk\" />
     <Folder Include="Serialization2\Table\" />
   </ItemGroup>
 

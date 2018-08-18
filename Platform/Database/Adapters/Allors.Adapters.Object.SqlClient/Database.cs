@@ -229,7 +229,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public void Load(XmlReader reader)
+        public void Load1(XmlReader reader)
         {
             lock (this)
             {
@@ -240,7 +240,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
         }
 
-        public void Load2(XmlReader reader)
+        public void Load(XmlReader reader)
         {
             lock (this)
             {
@@ -339,12 +339,12 @@ namespace Allors.Adapters.Object.SqlClient
             return new CompositesRoleDataRecords(this.mapping, references);
         }
 
-        internal IEnumerable<SqlDataRecord> CreateRelationTable(IEnumerable<CompositeRelation> relations)
+        internal IEnumerable<SqlDataRecord> CreateCompositeRelationTable(IEnumerable<CompositeRelation> relations)
         {
             return new CompositeRoleDataRecords(this.mapping, relations);
         }
 
-        internal IEnumerable<SqlDataRecord> CreateRelationTable(IRoleType roleType, IEnumerable<UnitRelation> relations)
+        internal IEnumerable<SqlDataRecord> CreateUnitRelationTable(IRoleType roleType, IEnumerable<UnitRelation> relations)
         {
             return new UnitRoleDataRecords(this, roleType, relations);
         }

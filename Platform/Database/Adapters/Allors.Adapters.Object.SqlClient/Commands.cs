@@ -357,13 +357,13 @@ namespace Allors.Adapters.Object.SqlClient
                 sqlParameter.SqlDbType = SqlDbType.Structured;
                 sqlParameter.TypeName = tableTypeName;
                 sqlParameter.ParameterName = Mapping.ParamNameForTableType;
-                sqlParameter.Value = this.Database.CreateRelationTable(roleType, relations);
+                sqlParameter.Value = this.Database.CreateUnitRelationTable(roleType, relations);
 
                 command.Parameters.Add(sqlParameter);
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateRelationTable(roleType, relations);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateUnitRelationTable(roleType, relations);
             }
 
             command.ExecuteNonQuery();
@@ -466,18 +466,9 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void SetCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            Command command;
-            if (!this.SetCompositeRoleByRoleType.TryGetValue(roleType, out command))
+            if (!this.SetCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
-                string sql;
-                if (!roleType.RelationType.ExistExclusiveClasses)
-                {
-                    sql = this.Database.Mapping.ProcedureNameForSetRoleByRelationType[roleType.RelationType];
-                }
-                else
-                {
-                    sql = this.Database.Mapping.ProcedureNameForSetRoleByRelationType[roleType.RelationType];
-                }
+                var sql = this.Database.Mapping.ProcedureNameForSetRoleByRelationType[roleType.RelationType];
 
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
@@ -487,7 +478,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateRelationTable(relations);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateCompositeRelationTable(relations);
             }
 
             command.ExecuteNonQuery();
@@ -497,8 +488,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             var reference = roles.Reference;
 
-            Command command;
-            if (!this.GetCompositesRoleByRoleType.TryGetValue(roleType, out command))
+            if (!this.GetCompositesRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var associationType = roleType.AssociationType;
 
@@ -538,8 +528,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void AddCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            Command command;
-            if (!this.AddCompositeRoleByRoleType.TryGetValue(roleType, out command))
+            if (!this.AddCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForAddRoleByRelationType[roleType.RelationType];
                 command = this.connection.CreateCommand();
@@ -550,7 +539,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateRelationTable(relations);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateCompositeRelationTable(relations);
             }
 
             command.ExecuteNonQuery();
@@ -558,8 +547,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void RemoveCompositeRole(List<CompositeRelation> relations, IRoleType roleType)
         {
-            Command command;
-            if (!this.RemoveCompositeRoleByRoleType.TryGetValue(roleType, out command))
+            if (!this.RemoveCompositeRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForRemoveRoleByRelationType[roleType.RelationType];
                 command = this.connection.CreateCommand();
@@ -570,7 +558,7 @@ namespace Allors.Adapters.Object.SqlClient
             }
             else
             {
-                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateRelationTable(relations);
+                command.Parameters[Mapping.ParamNameForTableType].Value = this.Database.CreateCompositeRelationTable(relations);
             }
 
             command.ExecuteNonQuery();
@@ -580,8 +568,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             var sql = this.Database.Mapping.ProcedureNameForClearRoleByRelationType[roleType.RelationType];
 
-            Command command;
-            if (!this.ClearCompositeAndCompositesRoleByRoleType.TryGetValue(roleType, out command))
+            if (!this.ClearCompositeAndCompositesRoleByRoleType.TryGetValue(roleType, out var command))
             {
                 command = this.connection.CreateCommand();
                 command.CommandText = sql;
@@ -601,8 +588,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             Reference associationObject = null;
 
-            Command command;
-            if (!this.GetCompositeAssociationByAssociationType.TryGetValue(associationType, out command))
+            if (!this.GetCompositeAssociationByAssociationType.TryGetValue(associationType, out var command))
             {
                 var roleType = associationType.RoleType;
                 var sql = this.Database.Mapping.ProcedureNameForGetAssociationByRelationType[roleType.RelationType];
@@ -623,14 +609,9 @@ namespace Allors.Adapters.Object.SqlClient
             {
                 var id = this.Session.State.GetObjectIdForExistingObject(result.ToString());
 
-                if (associationType.ObjectType.ExistExclusiveClass)
-                {
-                    associationObject = this.Session.State.GetOrCreateReferenceForExistingObject(associationType.ObjectType.ExclusiveClass, id, this.Session);
-                }
-                else
-                {
-                    associationObject = this.Session.State.GetOrCreateReferenceForExistingObject(id, this.Session);
-                }
+                associationObject = associationType.ObjectType.ExistExclusiveClass ? 
+                                        this.Session.State.GetOrCreateReferenceForExistingObject(associationType.ObjectType.ExclusiveClass, id, this.Session) : 
+                                        this.Session.State.GetOrCreateReferenceForExistingObject(id, this.Session);
             }
 
             return associationObject;
@@ -638,8 +619,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal long[] GetCompositesAssociation(Strategy role, IAssociationType associationType)
         {
-            Command command;
-            if (!this.GetCompositesAssociationByAssociationType.TryGetValue(associationType, out command))
+            if (!this.GetCompositesAssociationByAssociationType.TryGetValue(associationType, out var command))
             {
                 var roleType = associationType.RoleType;
                 var sql = this.Database.Mapping.ProcedureNameForGetAssociationByRelationType[roleType.RelationType];
@@ -669,8 +649,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Reference CreateObject(IClass @class)
         {
-            Command command;
-            if (!this.CreateObjectByClass.TryGetValue(@class, out command))
+            if (!this.CreateObjectByClass.TryGetValue(@class, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForCreateObjectByClass[@class];
                 command = this.connection.CreateCommand();
@@ -691,8 +670,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal IList<Reference> CreateObjects(IClass @class, int count)
         {
-            Command command;
-            if (!this.CreateObjectsByClass.TryGetValue(@class, out command))
+            if (!this.CreateObjectsByClass.TryGetValue(@class, out var command))
             {
                 var sql = this.Database.Mapping.ProcedureNameForCreateObjectsByClass[@class];
                 command = this.connection.CreateCommand();
@@ -733,8 +711,7 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal Reference InsertObject(IClass @class, long objectId)
         {
-            Command command;
-            if (!this.InsertObjectByClass.TryGetValue(@class, out command))
+            if (!this.InsertObjectByClass.TryGetValue(@class, out var command))
             {
                 var schema = this.Database.Mapping;
 
