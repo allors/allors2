@@ -58,16 +58,6 @@ namespace Allors.Repository
         public Ownership Ownership { get; set; }
 
         #region Allors
-        [Id("4F1B3DEA-B564-433A-B6E5-BF25B699F5EE")]
-        [AssociationId("93C58E16-03AB-43BA-8DA9-014D46C428DA")]
-        [RoleId("F218BE19-5EF1-45FC-B545-8DDF16153C57")]
-        [Indexed]
-        #endregion
-        [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
-        public Organisation Owner { get; set; }
-
-        #region Allors
         [Id("839FE92E-18D5-4A05-BBAC-04C1D39E69AA")]
         [AssociationId("5B3C8DC5-2DA3-426E-B73F-88EC120E8234")]
         [RoleId("78F597ED-4990-4BE9-ADBB-2AA8960C7485")]

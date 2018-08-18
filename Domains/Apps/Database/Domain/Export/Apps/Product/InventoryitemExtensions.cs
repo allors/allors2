@@ -23,24 +23,20 @@ namespace Allors.Domain
     {
         public static void AppsOnDerive(this InventoryItem @this, ObjectOnDerive method)
         {
-            var derivation = method.Derivation;
+            var session = @this.Strategy.Session;
+            var internalOrganisations = new Organisations(session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
-            if (!@this.ExistFacility)
+            if (!@this.ExistInventoryOwnershipsWhereInventoryItem && internalOrganisations.Count() == 1)
             {
-                if (@this.Good?.VendorProductsWhereProduct.Count == 1)
-                {
-                    var internalOrganisation = @this.Good?.VendorProductsWhereProduct[0].InternalOrganisation;
-                    @this.Facility = internalOrganisation.DefaultFacility;
-                }
+                new InventoryOwnershipBuilder(session)
+                    .WithInventoryItem(@this)
+                    .WithInternalOrganisation(internalOrganisations.First())
+                    .Build();
             }
 
-            if (!@this.ExistFacility)
+            if (!@this.ExistFacility && internalOrganisations.Count() == 1)
             {
-                var internalOrganisation = @this.Part?.InternalOrganisation;
-                if (internalOrganisation != null)
-                {
-                    @this.Facility = internalOrganisation.DefaultFacility;
-                }
+                @this.Facility = internalOrganisations.First().DefaultFacility;
             }
         }
 

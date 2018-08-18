@@ -35,37 +35,16 @@ namespace Allors.Domain
                     .Build();
             }
 
-            VendorProduct activeVendorProduct = null;
-            foreach (VendorProduct vendorProduct in @this.VendorProductsWhereProduct)
-            {
-                if (vendorProduct.FromDate <= DateTime.UtcNow &&
-                    (!vendorProduct.ExistThroughDate || vendorProduct.ThroughDate >= DateTime.UtcNow))
-                {
-                    activeVendorProduct = vendorProduct;
-                    break;
-                }
-            }
-
-            if (@this.GetType() == typeof(Good))
-            {
-                var good = (Good)@this;
-                if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(session).Serialised))
-                {
-                    foreach (SerialisedInventoryItem inventoryItem in good.InventoryItemsWhereGood)
-                    {
-                        if (inventoryItem.ExistOwner && inventoryItem.Owner.IsInternalOrganisation &&
-                            activeVendorProduct != null && !object.Equals(activeVendorProduct.InternalOrganisation, inventoryItem.Owner))
-                        {
-                            activeVendorProduct.ThroughDate = DateTime.UtcNow;
-
-                            new VendorProductBuilder(session)
-                                .WithProduct(@this)
-                                .WithInternalOrganisation(inventoryItem.Owner)
-                                .Build();
-                        }
-                    }
-                }
-            }
+            //VendorProduct activeVendorProduct = null;
+            //foreach (VendorProduct vendorProduct in @this.VendorProductsWhereProduct)
+            //{
+            //    if (vendorProduct.FromDate <= DateTime.UtcNow &&
+            //        (!vendorProduct.ExistThroughDate || vendorProduct.ThroughDate >= DateTime.UtcNow))
+            //    {
+            //        activeVendorProduct = vendorProduct;
+            //        break;
+            //    }
+            //}
         }
 
         public static void AddToBasePrice(this Product @this, BasePrice basePrice)
