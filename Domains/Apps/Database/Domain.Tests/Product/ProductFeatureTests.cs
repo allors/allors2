@@ -29,7 +29,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenDimension_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new Dimension2Builder(this.Session);
+            var builder = new DimensionBuilder(this.Session);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);

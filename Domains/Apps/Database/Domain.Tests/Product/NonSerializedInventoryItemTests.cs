@@ -127,48 +127,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInventoryItemForPart_WhenDerived_ThenSkuIsEmpty()
-        {
-            var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new FinishedGoodBuilder(this.Session)
-                                .WithInternalOrganisation(this.InternalOrganisation)
-                                .WithName("part")
-                                .WithManufacturerId("10101")
-                                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                                .Build())
-                .Build();
-
-            Assert.False(item.ExistSku);
-        }
-
-        [Fact]
-        public void GivenInventoryItemForGood_WhenDerived_ThenSkuIsFromGood()
-        {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var category = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-             .WithSku("10101")
-             .WithVatRate(vatRate21)
-                .WithName("good1")
-             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-             .WithPrimaryProductCategory(category)
-             .Build();
-
-            var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithGood(good)
-                .Build();
-
-             this.Session.Derive();
-
-            Assert.Equal(good.Sku, item.Sku);
-        }
-
-        [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
             var part = new FinishedGoodBuilder(this.Session)
