@@ -1,5 +1,8 @@
 namespace Allors.Domain
 {
+		public interface AccessInterface  : DelegatedAccessControlledObject 
+		{
+		}
 		public interface Address  : Object 
 		{
 						Place Place {set;}
@@ -254,6 +257,9 @@ namespace Allors.Domain
 						SecurityToken SecurityTokens {set;}
 
 		}
+		public interface DelegatedAccessControlledObject  : AccessControlledObject 
+		{
+		}
 		public interface SecurityTokenOwner  : Object 
 		{
 						SecurityToken OwnerSecurityToken {set;}
@@ -319,6 +325,13 @@ namespace Allors.Domain
 		public interface WorkItem  : Object 
 		{
 						global::System.String WorkItemDescription {set;}
+
+		}
+		public interface AccessClass  : AccessInterface 
+		{
+						global::System.Boolean Block {set;}
+
+						global::System.String Property {set;}
 
 		}
 		public interface BadUI  : Object 

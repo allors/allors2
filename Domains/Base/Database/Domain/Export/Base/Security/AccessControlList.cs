@@ -115,29 +115,39 @@ namespace Allors.Domain
             {
                 this.deniedPermissions = this.@object.DeniedPermissions.ToArray();
 
-                SecurityToken[] securityTokens = this.@object.SecurityTokens;
-                if (securityTokens.Length == 0)
+                SecurityToken[] securityTokens;
+                if (this.@object is DelegatedAccessControlledObject)
                 {
-                    var singleton = this.session.GetSingleton();
-                    securityTokens = this.@object.Strategy.IsNewInSession ?
-                        new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
-                        new[] { singleton.DefaultSecurityToken };
+                    securityTokens = ((DelegatedAccessControlledObject)this.@object).DelegateAccess().SecurityTokens;
+                }
+                else
+                {
+                    securityTokens = this.@object.SecurityTokens;
+                    if (securityTokens.Length == 0)
+                    {
+                        var singleton = this.session.GetSingleton();
+                        securityTokens = this.@object.Strategy.IsNewInSession ?
+                                             new[] { singleton.InitialSecurityToken ?? singleton.DefaultSecurityToken } :
+                                             new[] { singleton.DefaultSecurityToken };
+                    }
                 }
 
-                var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v => v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
-                foreach (var cache in caches)
+                if (securityTokens != null)
                 {
-                    var operationsByOperandTypeIdByClassId = cache.OperationsByOperandTypeIdByClassId;
-
-                    Dictionary<Guid, Operations> operationsByClassId;
-                    if (operationsByOperandTypeIdByClassId.TryGetValue(this.classId, out operationsByClassId))
+                    var caches = securityTokens.SelectMany(v => v.AccessControls).Select(v => v.Cache).Where(v => v.EffectiveUserIds.Contains(this.user.Id));
+                    foreach (var cache in caches)
                     {
-                        if (this.operationsByOperandTypeIds == null)
-                        {
-                            this.operationsByOperandTypeIds = new List<Dictionary<Guid, Operations>>();
-                        }
+                        var operationsByOperandTypeIdByClassId = cache.OperationsByOperandTypeIdByClassId;
 
-                        this.operationsByOperandTypeIds.Add(operationsByClassId);
+                        if (operationsByOperandTypeIdByClassId.TryGetValue(this.classId, out var operationsByClassId))
+                        {
+                            if (this.operationsByOperandTypeIds == null)
+                            {
+                                this.operationsByOperandTypeIds = new List<Dictionary<Guid, Operations>>();
+                            }
+
+                            this.operationsByOperandTypeIds.Add(operationsByClassId);
+                        }
                     }
                 }
 
