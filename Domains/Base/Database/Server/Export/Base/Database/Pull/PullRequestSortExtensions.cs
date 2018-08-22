@@ -23,10 +23,11 @@ namespace Allors.Server
     using System;
 
     using Allors.Meta;
+    using Allors.Protocol.Remote.Pull;
 
     public static class PullRequestSortExtensions
     {
-        public static Sort Parse(this PullRequestSort @this, MetaPopulation metaPopulation)
+        public static Sort Parse(this PullRequestSort @this, IMetaPopulation metaPopulation)
         {
             var roleType = (RoleType)metaPopulation.Find(new Guid(@this.RT));
 

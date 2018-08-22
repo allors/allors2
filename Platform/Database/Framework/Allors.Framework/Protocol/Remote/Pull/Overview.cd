@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Protocol.Remote.Pull.PullRequest">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEiAgAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullRequest.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="E" />
+      <Property Name="I" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullTreeNode">
+    <Position X="11.5" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullTreeNode.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="N" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullPath">
+    <Position X="11.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullPath.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Next" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullExtent">
+    <Position X="5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAAAAAAAAAAAgAAAAAAQACAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullExtent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Extent" />
+      <Property Name="Arguments" />
+      <Property Name="Results" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullArgument">
+    <Position X="8.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullArgument.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Data.Extent">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAEBAAAAAAAAAAAAQAAACAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Protocol\Data\Extent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Operands" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullResult">
+    <Position X="8.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAIAAAAACAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullResult.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Include" />
+      <Property Name="Page" />
+      <Property Name="Path" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullPage">
+    <Position X="11.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACEAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Protocol.Remote.Pull.PullInstantiate">
+    <Position X="5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAgAAAAAAQACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Protocol\Remote\Pull\PullInstantiate.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Results" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -24,8 +24,10 @@ namespace Allors.Data
 
     public interface IExtent
     {
-        Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments);
+        Sort[] Sorting { get; set; }
 
-        Schema.Extent Save();
+        Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null);
+
+        Protocol.Data.Extent Save();
     }
 }

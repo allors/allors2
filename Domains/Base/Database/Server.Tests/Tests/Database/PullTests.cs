@@ -4,7 +4,8 @@ namespace Tests
     using System.Linq;
 
     using Allors.Domain;
-    using Allors.Server;
+    using Allors.Meta;
+    using Allors.Protocol.Remote.Pull;
 
     using Xunit;
 
@@ -12,74 +13,84 @@ namespace Tests
     public class PullTests : ServerTest
     {
         [Fact]
-        public async void FetchExistingObject()
+        public async void ExtentWithoutResult()
         {
             var administrator = new Users(this.Session).GetUser("administrator");
             await this.SignIn(administrator);
 
-            var organisation = new OrganisationBuilder(this.Session).Build();
+            var data = new DataBuilder(this.Session).WithString("First").Build();
+
             this.Session.Commit();
 
             var uri = new Uri(@"Pull/Pull", UriKind.Relative);
 
+            var extent = new Allors.Data.Extent(M.Data.ObjectType);
+
             var pullRequest = new PullRequest
                                   {
-                                      F = new[]
+                                      E = new[]
                                               {
-                                                  new PullRequestFetch
+                                                  new PullExtent
                                                       {
-                                                          Id = organisation.Id.ToString(),
-                                                          Name = "organisation"
+                                                          Extent = extent.Save(),
                                                       },
                                               }
                                   };
+
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
-            
-            Assert.Single(pullResponse.NamedObjects);
-            var pullNameObject = pullResponse.NamedObjects.First();
 
-            Assert.Equal("organisation", pullNameObject.Key);
-            Assert.Equal(organisation.Id.ToString(), pullNameObject.Value);
+            var organisations = pullResponse.NamedCollections["Datas"];
 
-            Assert.Single(pullResponse.Objects);
-            var pullObject = pullResponse.Objects.First();
-            Assert.Equal(organisation.Id.ToString(), pullObject[0]);
-            Assert.Equal(organisation.Strategy.ObjectVersion.ToString(), pullObject[1]);
+            Assert.Single(organisations);
+
+            var dataId = organisations.First();
+
+            Assert.Equal(data.Id.ToString(), dataId);
         }
 
         [Fact]
-        public async void DeletedObject()
+        public async void ExtentWithResult()
         {
             var administrator = new Users(this.Session).GetUser("administrator");
             await this.SignIn(administrator);
 
-            var organisation = new OrganisationBuilder(this.Session).Build();
+            var data = new DataBuilder(this.Session).WithString("First").Build();
+
             this.Session.Commit();
-            
+
             var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+
+            var extent = new Allors.Data.Extent(M.Data.ObjectType);
 
             var pullRequest = new PullRequest
                                   {
-                                      F = new[]
+                                      E = new[]
                                               {
-                                                  new PullRequestFetch
+                                                  new PullExtent
                                                       {
-                                                          Id = organisation.Id.ToString(),
-                                                          Name = "organisation"
+                                                          Extent = extent.Save(),
+                                                          Results = new[]
+                                                                        {
+                                                                            new PullResult
+                                                                                {
+                                                                                    Name = "Datas"
+                                                                                }, 
+                                                                        }
                                                       },
                                               }
                                   };
+
             var response = await this.PostAsJsonAsync(uri, pullRequest);
-
-            organisation.Strategy.Delete();
-
-            this.Session.Commit();
-
-            response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
-            
-            Assert.Empty(pullResponse.Objects);
+
+            var organisations = pullResponse.NamedCollections["Datas"];
+
+            Assert.Single(organisations);
+
+            var dataId = organisations.First();
+
+            Assert.Equal(data.Id.ToString(), dataId);
         }
     }
 }

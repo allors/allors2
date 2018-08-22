@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Protocol\**" />
-    <EmbeddedResource Remove="Protocol\**" />
-    <None Remove="Protocol\**" />
+    <Folder Include="Protocol\Meta\" />
   </ItemGroup>
 
 </Project>

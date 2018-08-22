@@ -21,10 +21,12 @@
 namespace Allors.Server
 {
     using Allors.Domain.Query;
+    using Allors.Protocol.Remote;
+    using Allors.Protocol.Remote.Pull;
 
     public static class PullRequestPageExtensions
     {
-        public static Page Parse(this PullRequestPage @this)
+        public static Page Parse(this PullPage @this)
         {
             if (@this.S.HasValue && @this.T.HasValue)
             {

@@ -45,38 +45,20 @@ namespace Allors.Meta
             }
         }
 
-        public Path(MetaPopulation metaPopulation, params string[] propertyTypeIds)
+        public Path(IMetaPopulation metaPopulation, params string[] propertyTypeIds)
             : this(propertyTypeIds.Select(x => (PropertyType)metaPopulation.Find(new Guid(x))).ToArray())
         {
         }
 
-        public bool ExistPropertyType
-        {
-            get
-            {
-                return this.PropertyType != null;
-            }
-        }
+        public bool ExistPropertyType => this.PropertyType != null;
 
         public PropertyType PropertyType { get; set; }
 
-        public bool ExistNext
-        {
-            get
-            {
-                return this.Next != null;
-            }
-        }
+        public bool ExistNext => this.Next != null;
 
         public Path Next { get; set; }
 
-        public Path End
-        {
-            get
-            {
-                return this.ExistNext ? this.Next.End : this;
-            }
-        }
+        public Path End => this.ExistNext ? this.Next.End : this;
 
         public string Name
         {
@@ -105,7 +87,7 @@ namespace Allors.Meta
             return this.Name;
         }
 
-        public ObjectType GetObjectType()
+        public IObjectType GetObjectType()
         {
             if (this.ExistNext)
             {

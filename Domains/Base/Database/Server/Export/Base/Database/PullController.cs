@@ -26,11 +26,14 @@ namespace Allors.Server.Controllers
 
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Protocol.Remote.Pull;
     using Allors.Services;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
+
+    using PullExtent = Allors.Server.PullExtent;
 
     public class PullController : Controller
     {
@@ -58,68 +61,73 @@ namespace Allors.Server.Controllers
                         {
                             using (var session = this.DatabaseService.Database.CreateSession())
                             {
-                            var response = new PullResponseBuilder(session.GetUser());
+                                var response = new PullResponseBuilder(session.GetUser());
 
-                            if (req.Q != null)
-                            {
-                                var metaPopulation = (MetaPopulation)session.Database.MetaPopulation;
-                                var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
-                                foreach (var query in queries)
+                                var pull = new Pull(session, req);
+                                pull.Resolve(response);
+
+                                #region Deprecated
+                                if (req.Q != null)
                                 {
-                                    var validation = query.Validate();
-                                    if (validation.HasErrors)
+                                    var metaPopulation = (MetaPopulation)session.Database.MetaPopulation;
+                                    var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
+                                    foreach (var query in queries)
                                     {
-                                        var message = validation.ToString();
-                                        this.Logger.LogError(message);
-                                        return this.StatusCode(400, message);
-                                    }
-
-                                    var extent = session.Query(query);
-                                    if (query.Page != null)
-                                    {
-                                        var page = query.Page;
-                                        var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
-                                        response.AddValue(query.Name + "_total", extent.Count);
-                                        response.AddCollection(query.Name, paged, query.Include);
-                                    }
-                                    else
-                                    {
-                                        response.AddCollection(query.Name, extent.ToArray(), query.Include);
-                                    }
-                                }
-                            }
-
-                            if (req.F != null)
-                            {
-                                foreach (var fetch in req.F)
-                                {
-                                    fetch.Parse(session, out IObject @object, out Path path, out Tree include);
-
-                                    if (path != null && @object != null)
-                                    {
-                                        var acls = new AccessControlListCache(session.GetUser());
-                                        var result = path.Get(@object, acls);
-                                        if (result != null)
+                                        var validation = query.Validate();
+                                        if (validation.HasErrors)
                                         {
-                                            if (result is IObject)
-                                            {
-                                                response.AddObject(fetch.Name, (IObject)result, include);
-                                            }
-                                            else
-                                            {
-                                                var objects = (result as HashSet<object>)?.Cast<IObject>() ?? ((Extent)result).ToArray();
-                                                response.AddCollection(fetch.Name, objects, include);
-                                            }
+                                            var message = validation.ToString();
+                                            this.Logger.LogError(message);
+                                            return this.StatusCode(400, message);
+                                        }
+
+                                        var extent = session.Query(query);
+                                        if (query.Page != null)
+                                        {
+                                            var page = query.Page;
+                                            var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
+                                            response.AddValue(query.Name + "_total", extent.Count);
+                                            response.AddCollection(query.Name, paged, query.Include);
+                                        }
+                                        else
+                                        {
+                                            response.AddCollection(query.Name, extent.ToArray(), query.Include);
                                         }
                                     }
-                                    else
+                                }
+
+                                if (req.F != null)
+                                {
+                                    foreach (var fetch in req.F)
                                     {
-                                        response.AddObject(fetch.Name, @object, include);
+                                        fetch.Parse(session, out IObject @object, out Path path, out Tree include);
+
+                                        if (path != null && @object != null)
+                                        {
+                                            var acls = new AccessControlListCache(session.GetUser());
+                                            var result = path.Get(@object, acls);
+                                            if (result != null)
+                                            {
+                                                if (result is IObject)
+                                                {
+                                                    response.AddObject(fetch.Name, (IObject)result, include);
+                                                }
+                                                else
+                                                {
+                                                    var objects = (result as HashSet<object>)?.Cast<IObject>() ?? ((Extent)result).ToArray();
+                                                    response.AddCollection(fetch.Name, objects, include);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            response.AddObject(fetch.Name, @object, include);
+                                        }
                                     }
                                 }
-                            }
+                                #endregion
 
-                            return this.Ok(response.Build());
+                                return this.Ok(response.Build());
                             }
                         });
             }

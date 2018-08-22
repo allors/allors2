@@ -18,11 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Schema
+namespace Allors.Protocol.Data
 {
     using System;
     using System.Linq;
 
+    using Allors.Data;
     using Allors.Meta;
 
     public class Predicate
@@ -102,7 +103,7 @@ namespace Allors.Data.Schema
                             }
                             else if (this.Value != null)
                             {
-                                var value = Convert.ToValue((IUnit)((IRoleType)propertyType)?.ObjectType, this.Value);
+                                var value = Data.Convert.ToValue((IUnit)((IRoleType)propertyType)?.ObjectType, this.Value);
                                 equals.Value = value;
                             }
 
@@ -137,7 +138,7 @@ namespace Allors.Data.Schema
                             return new Between(roleType)
                             {
                                 Parameter = this.Parameter,
-                                Values = this.Values.Select(v => Convert.ToValue((IUnit)roleType?.ObjectType, v)).ToArray()
+                                Values = this.Values.Select(v => Data.Convert.ToValue((IUnit)roleType?.ObjectType, v)).ToArray()
                             };
 
                         case PredicateKind.GreaterThan:
@@ -145,7 +146,7 @@ namespace Allors.Data.Schema
                             return new GreaterThan(roleType)
                             {
                                 Parameter = this.Parameter,
-                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, this.Value)
+                                Value = Data.Convert.ToValue((IUnit)roleType?.ObjectType, this.Value)
                             };
 
                         case PredicateKind.LessThan:
@@ -153,7 +154,7 @@ namespace Allors.Data.Schema
                             return new LessThan(roleType)
                             {
                                 Parameter = this.Parameter,
-                                Value = Convert.ToValue((IUnit)roleType?.ObjectType, this.Value)
+                                Value = Data.Convert.ToValue((IUnit)roleType?.ObjectType, this.Value)
                             };
 
                         case PredicateKind.Like:

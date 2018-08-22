@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="PredicateKind.cs" company="Allors bvba">
+// <copyright file="Sort.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,32 +18,25 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Schema
+namespace Allors.Protocol.Data
 {
-    public static class PredicateKind
+    using System;
+
+    using Allors.Meta;
+
+    public class Sort
     {
-        public const string And = "And";
+        public Guid? RoleType { get; set; }
 
-        public const string Or = "Or";
+        public bool Descending { get; set; }
 
-        public const string Not = "Not";
-
-        public const string Instanceof = "Instanceof";
-
-        public const string Exists = "Exists";
-
-        public const string Equals = "Equals";
-
-        public const string Contains = "Contains";
-
-        public const string ContainedIn = "ContainedIn";
-        
-        public const string Between = "Between";
-
-        public const string GreaterThan = "GreaterThan";
-
-        public const string LessThan = "LessThan";
-
-        public const string Like = "Like";
+        public Allors.Data.Sort Load(ISession session)
+        {
+            return new Allors.Data.Sort
+            {
+                Descending = this.Descending,
+                RoleType = this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(this.RoleType.Value) : null
+            };
+        }
     }
 }

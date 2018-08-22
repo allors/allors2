@@ -172,19 +172,7 @@ namespace Allors.Domain
                 case RelationKind.Synced:
                     check = (roleType) => roleType.RelationType.IsSynced;
                     break;
-
-                case RelationKind.Regular | RelationKind.Derived:
-                    check = (roleType) => !roleType.RelationType.IsSynced;
-                    break;
-
-                case RelationKind.Regular | RelationKind.Synced:
-                    check = (roleType) => !roleType.RelationType.IsDerived;
-                    break;
-
-                case RelationKind.Derived | RelationKind.Synced:
-                    check = (roleType) => roleType.RelationType.IsDerived || roleType.RelationType.IsSynced;
-                    break;
-
+                
                 default:
                     check = (roleType) => true;
                     break;

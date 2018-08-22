@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Extent.cs" company="Allors bvba">
+// <copyright file="Sort.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,16 +18,24 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Schema
+namespace Allors.Data
 {
-    public static class ExtentKind
+    using Allors.Meta;
+
+    public class Sort 
     {
-        public const string Predicate = "Predicate";
+        public Sort(IRoleType roleType = null)
+        {
+            this.RoleType = roleType;
+        }
 
-        public const string Union = "Union";
+        public IRoleType RoleType { get; set; }
+        
+        public bool Descending { get; set; }
 
-        public const string Intersect = "Intersect";
-
-        public const string Except = "Except";
+        public void Build(Allors.Extent extent)
+        {
+            extent.AddSort(RoleType, this.Descending ? SortDirection.Descending : SortDirection.Ascending);
+        }
     }
 }

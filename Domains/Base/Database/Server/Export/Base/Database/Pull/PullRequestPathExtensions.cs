@@ -23,10 +23,12 @@ namespace Allors.Server
     using System;
 
     using Allors.Meta;
+    using Allors.Protocol.Remote;
+    using Allors.Protocol.Remote.Pull;
 
     public static class PullRequestPathExtensions
     {
-        public static void Parse(this PullRequestPath @this, Path path, IMetaPopulation metaPopulation)
+        public static void Parse(this PullPath @this, Path path, IMetaPopulation metaPopulation)
         {
             var propertyType = (PropertyType)metaPopulation.Find(new Guid(@this.Step));
             path.PropertyType = propertyType;

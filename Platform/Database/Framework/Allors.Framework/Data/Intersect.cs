@@ -23,6 +23,8 @@ namespace Allors.Data
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Protocol.Data;
+
     public class Intersect : IExtentOperator
     {
         public Intersect(params IExtent[] operands)
@@ -32,18 +34,27 @@ namespace Allors.Data
 
         public IExtent[] Operands { get; set; }
 
+        public Sort[] Sorting { get; set; }
+
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
         {
-            return session.Intersect(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+            var extent = session.Intersect(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
+            foreach (var sort in this.Sorting)
+            {
+                sort.Build(extent);
+            }
+
+            return extent;
         }
 
-        public Schema.Extent Save()
+        public Protocol.Data.Extent Save()
         {
-            return new Schema.Extent
-                       {
-                           Kind = Schema.ExtentKind.Intersect,
-                           Operands = this.Operands.Select(v => v.Save()).ToArray()
-                       };
+            return new Protocol.Data.Extent
+            {
+                Kind = ExtentKind.Intersect,
+                Operands = this.Operands.Select(v => v.Save()).ToArray(),
+                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+            };
         }
     }
 }

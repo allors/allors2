@@ -18,11 +18,12 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Schema
+namespace Allors.Protocol.Data
 {
     using System;
     using System.Linq;
 
+    using Allors.Data;
     using Allors.Meta;
 
     public class Extent 
@@ -34,6 +35,8 @@ namespace Allors.Data.Schema
         public Guid? ObjectType { get; set; }
 
         public Predicate Predicate { get; set; }
+
+        public Data.Sort[] Sorting { get; set; }
 
         /// <summary>
         /// Loads an <see cref="Allors.Extent"/> based on this <see cref="Extent"/>.
@@ -48,6 +51,8 @@ namespace Allors.Data.Schema
         {
             Func<IExtent[]> operands = () => this.Operands.Select(v => v.Load(session)).ToArray();
 
+            IExtent extent;
+
             switch (this.Kind)
             {
                 case ExtentKind.Predicate:
@@ -57,25 +62,31 @@ namespace Allors.Data.Schema
                     }
 
                     var objectType = (IComposite)session.Database.ObjectFactory.MetaPopulation.Find(this.ObjectType.Value);
-                    var extent = new Data.Extent(objectType)
+                    extent = new Allors.Data.Extent(objectType)
                     {
                         Predicate = this.Predicate?.Load(session)
                     };
 
-                    return extent;
+                    break;
 
                 case ExtentKind.Union:
-                    return new Union(operands());
+                    extent = new Union(operands());
+                    break;
 
                 case ExtentKind.Except:
-                    return new Except(operands());
+                    extent = new Except(operands());
+                    break;
 
                 case ExtentKind.Intersect:
-                    return new Intersect(operands());
+                    extent = new Intersect(operands());
+                    break;
 
                 default:
                     throw new Exception("Unknown extent kind " + this.Kind);
             }
+
+            extent.Sorting = this.Sorting?.Select(v => v.Load(session)).ToArray();
+            return extent;
         }
     }
 }

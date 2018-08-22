@@ -18,10 +18,9 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Schema
+namespace Allors.Protocol.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Xml;
 
     using Allors.Meta;

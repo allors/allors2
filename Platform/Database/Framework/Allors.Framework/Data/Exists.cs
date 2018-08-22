@@ -22,8 +22,8 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Data.Schema;
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     public class Exists : IPropertyPredicate
     {

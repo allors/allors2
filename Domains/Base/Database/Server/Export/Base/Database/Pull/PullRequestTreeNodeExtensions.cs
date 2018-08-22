@@ -23,10 +23,11 @@ namespace Allors.Server
     using System;
 
     using Allors.Meta;
+    using Allors.Protocol.Remote.Pull;
 
     public static class PullRequestTreeNodeExtensions
     {
-        public static void Parse(this PullRequestTreeNode @this, MetaPopulation metaPopulation, out TreeNode treeNode)
+        public static void Parse(this PullTreeNode @this, IMetaPopulation metaPopulation, out TreeNode treeNode)
         {
             var roleType = (RoleType)metaPopulation.Find(new Guid(@this.RT));
             treeNode = new TreeNode(roleType);

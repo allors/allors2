@@ -21,8 +21,10 @@
 namespace Allors.Data
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     public class Extent : IExtent, IPredicateContainer
     {
@@ -35,10 +37,20 @@ namespace Allors.Data
 
         public IPredicate Predicate { get; set; }
 
+        public Sort[] Sorting { get; set; }
+
         Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments)
         {
             var extent = session.Extent(this.ObjectType);
             this.Predicate?.Build(session, arguments, extent.Filter);
+            if (this.Sorting != null)
+            {
+                foreach (var sort in this.Sorting)
+                {
+                    sort.Build(extent);
+                }
+            }
+
             return extent;
         }
 
@@ -47,13 +59,14 @@ namespace Allors.Data
             this.Predicate = predicate;
         }
 
-        public Schema.Extent Save()
+        public Protocol.Data.Extent Save()
         {
-            return new Schema.Extent
+            return new Protocol.Data.Extent
                        {
-                           Kind = Schema.ExtentKind.Predicate,
+                           Kind = ExtentKind.Predicate,
                            ObjectType = this.ObjectType?.Id,
-                           Predicate = this.Predicate?.Save()
+                           Predicate = this.Predicate?.Save(),
+                           Sorting = this.Sorting?.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
                        };
 
         }

@@ -20,15 +20,12 @@
 
 namespace Allors.Domain
 {
-    using System;
-
-    [Flags]
     public enum RelationKind
     {
-        Regular = 1,
+        Regular,
 
-        Derived = 2,
+        Derived,
 
-        Synced = 4,
+        Synced,
     }
 }
