@@ -48,9 +48,12 @@ namespace Allors.Server
 
         public void Resolve(PullResponseBuilder response)
         {
-            foreach (var pull in pullExtents)
+            if (this.pullExtents != null)
             {
-                pull.Resolve(response);
+                foreach (var pull in this.pullExtents)
+                {
+                    pull.Resolve(response);
+                }
             }
         }
     }
