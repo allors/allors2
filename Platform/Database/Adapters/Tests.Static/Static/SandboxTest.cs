@@ -24,9 +24,9 @@ namespace Allors.Adapters
 
     using Allors;
     using Allors.Data;
-    using Allors.Data.Schema;
     using Allors.Domain;
     using Allors.Meta;
+    using Allors.Protocol.Data;
 
     using Xunit;
 
@@ -146,7 +146,7 @@ namespace Allors.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
                 
-                var schemaExtent = new Data.Schema.Extent
+                var schemaExtent = new Protocol.Data.Extent
                 {
                     Kind = ExtentKind.Predicate,
                     ObjectType = M.C1.ObjectType.Id,
