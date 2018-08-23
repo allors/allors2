@@ -37,21 +37,9 @@ namespace Allors.Server
 
         public PullExtent Merge(Protocol.Remote.Pull.PullExtent pullExtent)
         {
-            IObject[] objects;
-            IComposite composite;
-
-            if (pullExtent.Extent != null)
-            {
-                var extent = pullExtent.Extent.Load(this.Session).Build(this.Session);
-                composite = extent.ObjectType;
-                objects = extent?.ToArray();
-            }
-            else
-            {
-                var @object = this.Session.Instantiate(pullExtent.Object);
-                composite = @object.Strategy.Class;
-                objects = new[] { @object };
-            }
+            var extent = pullExtent.Extent.Load(this.Session).Build(this.Session);
+            var composite = extent.ObjectType;
+            var objects = extent?.ToArray();
 
             this.results = pullExtent.Results?.Select(v => new PullResult(objects, v.Name ?? composite.PluralName, v, composite)).ToArray()
                            ?? new[] { new PullResult(objects, composite.PluralName), };

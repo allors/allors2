@@ -1,7 +1,7 @@
-import { MetaObject } from './MetaObject';
+import { PropertyType } from './PropertyType';
 import { ObjectType } from './ObjectType';
 
-export interface RoleType extends MetaObject {
+export interface RoleType extends PropertyType {
     id: string;
     name: string;
     singular: string;

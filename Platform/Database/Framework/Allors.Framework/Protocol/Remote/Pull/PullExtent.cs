@@ -28,8 +28,6 @@ namespace Allors.Protocol.Remote.Pull
 
         public string Name { get; set; }
 
-        public string Object { get; set; }
-
         public Data.Extent Extent { get; set; }
 
         public PullArgument[] Arguments { get; set; }
