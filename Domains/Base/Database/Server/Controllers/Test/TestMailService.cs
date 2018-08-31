@@ -1,9 +1,8 @@
-namespace Allors
+namespace Allors.Services
 {
     using System.Collections.Generic;
 
     using Allors.Domain;
-    using Allors.Services;
 
     public class TestMailService : IMailService
     {

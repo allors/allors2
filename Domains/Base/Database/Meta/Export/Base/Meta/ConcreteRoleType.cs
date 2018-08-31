@@ -23,11 +23,11 @@ namespace Allors.Meta
 {
     public partial class ConcreteRoleType
     {
-        public bool IsRequired => this.IsRequiredOverride ?? this.roleType.IsRequired;
+        public bool IsRequired => this.IsRequiredOverride ?? this.RoleType.IsRequired;
 
         public bool? IsRequiredOverride { get; set; }
 
-        public bool IsUnique => this.IsUniqueOverride ?? this.roleType.IsUnique;
+        public bool IsUnique => this.IsUniqueOverride ?? this.RoleType.IsUnique;
 
         public bool? IsUniqueOverride { get; set; }
     }

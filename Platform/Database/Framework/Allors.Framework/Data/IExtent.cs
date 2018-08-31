@@ -22,12 +22,16 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
+    using Allors.Meta;
+
     public interface IExtent
     {
+        IComposite ObjectType { get; }
+
         Sort[] Sorting { get; set; }
 
-        Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null);
+        Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null);
 
-        Protocol.Data.Extent Save();
+        Protocol.Extent Save();
     }
 }

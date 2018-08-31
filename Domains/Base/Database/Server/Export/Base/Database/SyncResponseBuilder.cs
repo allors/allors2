@@ -24,9 +24,9 @@ namespace Allors.Server
     using System.Linq;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Protocol.Remote;
-    using Allors.Protocol.Remote.Push;
-    using Allors.Protocol.Remote.Sync;
+    using Allors.Server.Protocol;
+    using Allors.Server.Protocol.Push;
+    using Allors.Server.Protocol.Sync;
 
     public class SyncResponseBuilder
     {

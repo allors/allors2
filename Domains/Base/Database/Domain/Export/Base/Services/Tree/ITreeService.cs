@@ -20,6 +20,7 @@
 
 namespace Allors.Services
 {
+    using Allors.Data;
     using Allors.Meta;
 
     public partial interface ITreeService : IStateful

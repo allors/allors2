@@ -75,12 +75,11 @@ namespace Allors.Meta
 
         IComposite IAssociationType.ObjectType => this.ObjectType;
 
+        IObjectType IPropertyType.ObjectType => this.objectType;
+
         public Composite ObjectType
         {
-            get
-            {
-                return this.objectType;
-            }
+            get => this.objectType;
 
             set
             {

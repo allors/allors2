@@ -24,10 +24,10 @@ namespace Allors.Server
     using System.Data.Common;
 
     using Allors.Domain;
-    using Allors.Protocol.Remote;
-    using Allors.Protocol.Remote.Invoke;
-    using Allors.Protocol.Remote.Push;
-    using Allors.Protocol.Remote.Sync;
+    using Allors.Server.Protocol;
+    using Allors.Server.Protocol.Invoke;
+    using Allors.Server.Protocol.Push;
+    using Allors.Server.Protocol.Sync;
     using Allors.Services;
 
     using Microsoft.AspNetCore.Authorization;

@@ -1,5 +1,5 @@
 import { domain, Organisation, Person } from "../../src/allors/domain";
-import { Fetch, MetaPopulation, PullRequest, Session, Workspace } from "../../src/allors/framework";
+import { Fetch, MetaPopulation, PullRequest, Session, Workspace, And } from "../../src/allors/framework";
 import { data } from "../../src/allors/meta";
 import { Database, Loaded, Scope } from "../../src/allors/promise";
 

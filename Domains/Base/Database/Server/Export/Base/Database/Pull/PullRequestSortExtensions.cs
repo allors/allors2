@@ -23,7 +23,7 @@ namespace Allors.Server
     using System;
 
     using Allors.Meta;
-    using Allors.Protocol.Remote.Pull;
+    using Allors.Server.Protocol.Pull;
 
     public static class PullRequestSortExtensions
     {

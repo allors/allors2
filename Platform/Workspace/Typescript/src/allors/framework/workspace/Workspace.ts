@@ -1,9 +1,9 @@
 import { ObjectType } from '../meta';
 import { MetaPopulation } from '../meta';
 
-import { PullResponse } from './../database/pull/PullResponse';
-import { SyncRequest } from './../database/sync/SyncRequest';
-import { SyncResponse } from './../database/sync/SyncResponse';
+import { PullResponse } from './../protocol/pull/PullResponse';
+import { SyncRequest } from './../protocol/sync/SyncRequest';
+import { SyncResponse } from './../protocol/sync/SyncResponse';
 
 import { SessionObject } from './SessionObject';
 import { WorkspaceObject } from './WorkspaceObject';

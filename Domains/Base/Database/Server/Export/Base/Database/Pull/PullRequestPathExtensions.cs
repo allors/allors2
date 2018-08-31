@@ -22,15 +22,15 @@ namespace Allors.Server
 {
     using System;
 
+    using Allors.Data;
     using Allors.Meta;
-    using Allors.Protocol.Remote;
-    using Allors.Protocol.Remote.Pull;
+    using Allors.Server.Protocol.Pull;
 
     public static class PullRequestPathExtensions
     {
         public static void Parse(this PullPath @this, Path path, IMetaPopulation metaPopulation)
         {
-            var propertyType = (PropertyType)metaPopulation.Find(new Guid(@this.Step));
+            var propertyType = (IPropertyType)metaPopulation.Find(new Guid(@this.Step));
             path.PropertyType = propertyType;
 
             if (@this.Next != null)

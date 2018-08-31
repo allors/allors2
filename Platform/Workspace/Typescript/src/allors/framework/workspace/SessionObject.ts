@@ -1,8 +1,8 @@
 ﻿import { ObjectType } from '../meta';
 
-import { PushRequestNewObject } from './../database/push/PushRequestNewObject';
-import { PushRequestObject } from './../database/push/PushRequestObject';
-import { PushRequestRole } from './../database/push/PushRequestRole';
+import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
+import { PushRequestObject } from './../protocol/push/PushRequestObject';
+import { PushRequestRole } from './../protocol/push/PushRequestRole';
 
 import { Method } from './Method';
 import { ISession } from './Session';
