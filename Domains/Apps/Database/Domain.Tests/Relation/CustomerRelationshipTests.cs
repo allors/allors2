@@ -188,6 +188,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -259,6 +260,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();

@@ -44,7 +44,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -93,7 +93,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var part = new RawMaterialBuilder(this.Session)
-                .WithName("RawMaterial")
+                .WithPartId("1")
                 .Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -139,9 +139,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -203,9 +201,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -292,9 +288,7 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 

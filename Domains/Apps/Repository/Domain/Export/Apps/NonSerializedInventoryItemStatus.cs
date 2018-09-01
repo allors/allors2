@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("700360b9-56be-4e51-9610-f1e5951dd765")]
     #endregion
-    public partial class NonSerializedInventoryItemStatus : AccessControlledObject 
+    public partial class NonSerialisedInventoryItemStatus : AccessControlledObject 
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -33,7 +33,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
 
-        public NonSerializedInventoryItemObjectState NonSerializedInventoryItemObjectState { get; set; }
+        public NonSerialisedInventoryItemObjectState NonSerialisedInventoryItemObjectState { get; set; }
 
 
         #region inherited methods

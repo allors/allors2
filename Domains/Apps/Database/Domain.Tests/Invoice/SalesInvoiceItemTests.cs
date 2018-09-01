@@ -74,9 +74,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             this.finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 

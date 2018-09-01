@@ -33,7 +33,6 @@ namespace Allors.Repository
         [RoleId("200E8E63-43F4-4AFA-9005-C92B343069B2")]
         #endregion
         [Derived]
-        [Required]
         [Size(256)]
         [Workspace]
         string Name { get; set; }
@@ -58,26 +57,6 @@ namespace Allors.Repository
         [Derived]
         [Workspace]
         UnitOfMeasure UnitOfMeasure { get; set; }
-
-        #region Allors
-        [Id("E4746E18-462E-4F81-849B-FB06A4E79CA9")]
-        [AssociationId("14628D3A-D50D-4DD8-BBA5-6475A745544B")]
-        [RoleId("253180C5-B8FF-4B5F-A41F-CD824F29FD44")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        ProductCategory[] DerivedProductCategories { get; set; }
-
-        #region Allors
-        [Id("0A32B021-6CE9-41E9-817D-366490A82271")]
-        [AssociationId("FB05D2DD-DEE9-4E42-A229-629DABA98353")]
-        [RoleId("41964ACB-6688-46EC-ADB9-3AA5F1E93819")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        Good Good { get; set; }
 
         #region Allors
         [Id("876D12FC-D379-4FAD-B6A6-2E7BE0EB22ED")]

@@ -96,8 +96,7 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithName("finishedGood")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
             
@@ -152,6 +151,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithPrimaryProductCategory(productCategory)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -173,6 +173,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithPrimaryProductCategory(productCategory)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -215,6 +216,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -273,6 +275,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -351,6 +354,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 

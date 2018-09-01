@@ -30,7 +30,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenPositiveVariance_ThenQuantityOnHandIsRaised()
         {
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 

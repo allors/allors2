@@ -37,7 +37,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("FinishedGood");
+            builder.WithPartId("1");
             finishedGood = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -47,8 +47,7 @@ namespace Allors.Domain
         public void GivenFinishedGood_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithName("FinishedGood")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -59,8 +58,7 @@ namespace Allors.Domain
         public void GivenNewFinishedGood_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithName("FinishedGood")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -80,7 +78,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("RawMaterial");
+            builder.WithPartId("1");
             deliverableBasedService = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -90,6 +88,7 @@ namespace Allors.Domain
         public void GivenRawMaterial_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var rawMaterial = new RawMaterialBuilder(this.Session)
+                .WithPartId("1")
                 .WithName("rawMaterial")
                 .Build();
 
@@ -100,6 +99,7 @@ namespace Allors.Domain
         public void GivenNewRawMaterial_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var rawMaterial = new RawMaterialBuilder(this.Session)
+                .WithPartId("1")
                 .WithName("RawMaterial")
                 .Build();
 
@@ -119,7 +119,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithName("SubAssembly");
+            builder.WithPartId("1");
             subAssembly = builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -129,6 +129,7 @@ namespace Allors.Domain
         public void GivenSubAssembly_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var subAssembly = new SubAssemblyBuilder(this.Session)
+                .WithPartId("1")
                 .WithName("subAssembly")
                 .Build();
 
@@ -139,6 +140,7 @@ namespace Allors.Domain
         public void GivenNewSubAssembly_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var subAssembly = new SubAssemblyBuilder(this.Session)
+                .WithPartId("1")
                 .WithName("SubAssembly")
                 .Build();
 

@@ -33,7 +33,6 @@ namespace Allors.Repository
         [RoleId("14272F0F-1A1A-4086-B3F0-278A58370DAB")]
         #endregion
         [Derived]
-        [Required]
         [Size(256)]
         [Workspace]
         string Name { get; set; }
@@ -69,14 +68,5 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         Facility Facility { get; set; }
-
-        #region Allors
-        [Id("D97A0CD3-9FF5-46E7-808B-569C916DECB5")]
-        [AssociationId("18FD9D91-C609-4A1C-9409-EE009B1400DF")]
-        [RoleId("31A54F32-238B-48AC-91CF-98FCA989B6D1")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        string ReferenceNumber { get; set; }
     }
 }

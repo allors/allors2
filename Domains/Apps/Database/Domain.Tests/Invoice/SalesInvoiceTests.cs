@@ -332,6 +332,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -559,9 +560,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(19).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -777,6 +776,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -832,6 +832,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -970,6 +971,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session)
@@ -1018,6 +1020,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session)
@@ -1066,6 +1069,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session)
@@ -1114,6 +1118,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session)
@@ -1246,6 +1251,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -1254,6 +1260,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var good3 = new GoodBuilder(this.Session)
@@ -1262,6 +1269,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("3").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var invoice = new SalesInvoiceBuilder(this.Session)
@@ -1336,6 +1344,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -1381,6 +1390,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -1426,6 +1436,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -1470,6 +1481,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();
@@ -1534,6 +1546,7 @@ namespace Allors.Domain
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat1)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -1542,6 +1555,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat2)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var invoice1 = new SalesInvoiceBuilder(this.Session)
@@ -1812,6 +1826,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();

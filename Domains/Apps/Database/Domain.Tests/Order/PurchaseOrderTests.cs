@@ -268,10 +268,9 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenConfirming_ThenAllValidItemsAreInConfirmedState()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
-            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new RawMaterialBuilder(this.Session).WithName("RawMaterial").Build();
+            var part = new RawMaterialBuilder(this.Session).WithPartId("1").Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)
@@ -311,10 +310,9 @@ namespace Allors.Domain
         public void GivenPurchaseOrder_WhenOrdering_ThenAllValidItemsAreInInProcessState()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("customer2").Build();
-            var internalOrganisation = this.InternalOrganisation;
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var part = new RawMaterialBuilder(this.Session).WithName("RawMaterial").Build();
+            var part = new RawMaterialBuilder(this.Session).WithPartId("1").Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(supplier)

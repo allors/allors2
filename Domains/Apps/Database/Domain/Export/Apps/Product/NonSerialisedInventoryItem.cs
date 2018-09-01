@@ -42,7 +42,7 @@ namespace Allors.Domain
             {
                 foreach (Good good in finishedGood.GoodsWhereFinishedGood)
                 {
-                    derivation.AddDependency(this, good);
+                    derivation.AddDependency(good, this);
                 }
             }
         }

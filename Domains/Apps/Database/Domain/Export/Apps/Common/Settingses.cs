@@ -17,7 +17,6 @@
         {
             var settings = new SettingsBuilder(this.Session)
                 .WithSkuCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithReferenceNumberCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithPreferredCurrency(this.Session.GetSingleton().DefaultLocale.Country.Currency)
                 .Build();
 

@@ -46,7 +46,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
 
-        public SerialisedInventoryItem SerializedInventoryItem { get; set; }
+        public SerialisedInventoryItem SerialisedInventoryItem { get; set; }
 
 
         #region inherited methods

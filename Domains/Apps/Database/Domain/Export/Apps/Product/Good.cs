@@ -16,11 +16,9 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
-    using Meta;
+    using Allors.Meta;
 
     public partial class Good
     {
@@ -48,6 +46,11 @@ namespace Allors.Domain
             var derivation = method.Derivation;
             var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
 
+            if (!this.ExistVariants)
+            {
+                derivation.Validation.AssertExists(this, M.Good.FinishedGood);
+            }
+
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {
                 this.Name = this.LocalisedNames.First(x => x.Locale.Equals(defaultLocale)).Text;
@@ -60,16 +63,21 @@ namespace Allors.Domain
 
             this.AddProductCategory(this.PrimaryProductCategory);
 
-            foreach (SupplierOffering supplierOffering in this.FinishedGood.SupplierOfferingsWherePart)
+            if (this.ExistFinishedGood)
             {
-                if (supplierOffering.FromDate <= DateTime.UtcNow && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
+                foreach (SupplierOffering supplierOffering in this.FinishedGood.SupplierOfferingsWherePart)
                 {
-                    this.AddSuppliedBy(supplierOffering.Supplier);
-                }
+                    if (supplierOffering.FromDate <= DateTime.UtcNow
+                        && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
+                    {
+                        this.AddSuppliedBy(supplierOffering.Supplier);
+                    }
 
-                if (supplierOffering.FromDate > DateTime.UtcNow || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < DateTime.UtcNow))
-                {
-                    this.RemoveSuppliedBy(supplierOffering.Supplier);
+                    if (supplierOffering.FromDate > DateTime.UtcNow
+                        || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < DateTime.UtcNow))
+                    {
+                        this.RemoveSuppliedBy(supplierOffering.Supplier);
+                    }
                 }
             }
 
@@ -139,12 +147,15 @@ namespace Allors.Domain
         {
             this.QuantityOnHand = 0;
 
-            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
+            if (this.ExistFinishedGood)
             {
-                if (inventoryItem is NonSerialisedInventoryItem)
+                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
                 {
-                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                    this.QuantityOnHand += nonSerialised.QuantityOnHand;
+                    if (inventoryItem is NonSerialisedInventoryItem)
+                    {
+                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                        this.QuantityOnHand += nonSerialised.QuantityOnHand;
+                    }
                 }
             }
         }
@@ -153,12 +164,15 @@ namespace Allors.Domain
         {
             this.AvailableToPromise = 0;
 
-            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
+            if (this.ExistFinishedGood)
             {
-                if (inventoryItem is NonSerialisedInventoryItem)
+                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
                 {
-                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                    this.AvailableToPromise += nonSerialised.AvailableToPromise;
+                    if (inventoryItem is NonSerialisedInventoryItem)
+                    {
+                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                        this.AvailableToPromise += nonSerialised.AvailableToPromise;
+                    }
                 }
             }
         }
@@ -167,12 +181,15 @@ namespace Allors.Domain
         {
             this.QuantityCommittedOut = 0;
 
-            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
+            if (this.ExistFinishedGood)
             {
-                if (inventoryItem is NonSerialisedInventoryItem)
+                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
                 {
-                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                    this.QuantityCommittedOut += nonSerialised.QuantityCommittedOut;
+                    if (inventoryItem is NonSerialisedInventoryItem)
+                    {
+                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                        this.QuantityCommittedOut += nonSerialised.QuantityCommittedOut;
+                    }
                 }
             }
         }
@@ -181,12 +198,15 @@ namespace Allors.Domain
         {
             this.QuantityExpectedIn = 0;
 
-            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
+            if (this.ExistFinishedGood)
             {
-                if (inventoryItem is NonSerialisedInventoryItem)
+                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
                 {
-                    var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                    this.QuantityExpectedIn += nonSerialised.QuantityExpectedIn;
+                    if (inventoryItem is NonSerialisedInventoryItem)
+                    {
+                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
+                        this.QuantityExpectedIn += nonSerialised.QuantityExpectedIn;
+                    }
                 }
             }
         }

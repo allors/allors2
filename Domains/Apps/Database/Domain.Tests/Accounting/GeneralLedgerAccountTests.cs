@@ -214,6 +214,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var glAccount = new GeneralLedgerAccountBuilder(this.Session)

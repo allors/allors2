@@ -110,15 +110,6 @@ namespace Allors.Repository
         public decimal QuantityReceived { get; set; }
 
         #region Allors
-        [Id("9530B17D-4ABF-45EB-8D45-8E1B4C0E770B")]
-        [AssociationId("81217277-FCC2-4388-85D7-6E19C80ABB43")]
-        [RoleId("F551BBF3-700C-4A62-9FFE-29A2F9E2A8A5")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        public Product Product { get; set; }
-
-        #region Allors
         [Id("E366DDED-1EB3-4864-B000-B3FA5BC40023")]
         [AssociationId("DEF6077A-2EC0-4085-AF52-EEBC735A6326")]
         [RoleId("025A27DA-069B-457D-8A8F-0224E45E241F")]

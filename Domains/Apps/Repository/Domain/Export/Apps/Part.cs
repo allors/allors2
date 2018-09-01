@@ -25,7 +25,6 @@ namespace Allors.Repository
         [AssociationId("6f267a60-802b-454f-9ac7-762a92746255")]
         [RoleId("a9efc713-6574-4b82-b20e-0fc22747566a")]
         #endregion
-        [Required]
         [Size(256)]
         string Name { get; set; }
 
@@ -122,6 +121,8 @@ namespace Allors.Repository
         [AssociationId("bb51ade7-37c0-4c7c-b32c-59cb06fa2c9c")]
         [RoleId("ffdc1a53-6fd9-4a21-a576-77c84fc893eb")]
         #endregion
+        [Unique]
+        [Required]
         [Size(256)]
         string PartId { get; set; }
     }

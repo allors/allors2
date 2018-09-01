@@ -16,7 +16,7 @@ namespace Allors.Repository
         public decimal TotalInvoiceAdjustment { get; set; }
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
         public InvoiceItem AdjustmentFor { get; set; }
-        public SerialisedInventoryItem SerializedInventoryItem { get; set; }
+        public SerialisedInventoryItem SerialisedInventoryItem { get; set; }
         public string Message { get; set; }
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
         public decimal AmountPaid { get; set; }

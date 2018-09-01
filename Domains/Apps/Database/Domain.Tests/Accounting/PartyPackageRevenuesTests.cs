@@ -66,12 +66,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var finishedGood1 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good1")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good2")
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -90,6 +90,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat2)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             this.Session.Derive();

@@ -89,8 +89,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
 
             this.part = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithName("part")
+                .WithPartId("99")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -113,7 +112,7 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
-                .WithProductCategory(this.productCategory)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -124,6 +123,7 @@ namespace Allors.Domain
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
@@ -132,6 +132,7 @@ namespace Allors.Domain
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)

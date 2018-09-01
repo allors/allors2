@@ -33,9 +33,7 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithInternalOrganisation(this.InternalOrganisation)
-                            .WithName("part")
-                            .WithManufacturerId("10101")
+                            .WithPartId("1")
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
                 .Build();
@@ -51,9 +49,7 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithInternalOrganisation(this.InternalOrganisation)
-                            .WithName("part")
-                            .WithManufacturerId("10101")
+                            .WithPartId("1")
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
                 .Build();
@@ -67,7 +63,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -82,9 +78,7 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithPart(new FinishedGoodBuilder(this.Session)
-                    .WithInternalOrganisation(this.InternalOrganisation)
-                    .WithName("part")
-                    .WithManufacturerId("10101")
+                    .WithPartId("2")
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                     .Build());
             item = builder.Build();
@@ -106,9 +100,7 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new FinishedGoodBuilder(this.Session)
-                                .WithInternalOrganisation(this.InternalOrganisation)
-                                .WithName("part")
-                                .WithManufacturerId("10101")
+                                .WithPartId("1")
                                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                 .Build())
                 .Build();
@@ -127,9 +119,7 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
             var part = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithName("part")
-                .WithManufacturerId("10101")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -153,7 +143,7 @@ namespace Allors.Domain
                 .Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -180,9 +170,7 @@ namespace Allors.Domain
         {
             var uom = new UnitsOfMeasure(this.Session).Centimeter;
             var part = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithName("part")
-                .WithManufacturerId("10101")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(uom)
                 .Build();
@@ -207,7 +195,7 @@ namespace Allors.Domain
                 .Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -242,7 +230,7 @@ namespace Allors.Domain
                 .Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -402,7 +390,7 @@ namespace Allors.Domain
                 .Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 

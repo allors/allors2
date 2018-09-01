@@ -88,12 +88,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var finishedGood1 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good1")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good2")
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -187,12 +187,12 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood1 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good1")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good2")
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -406,7 +406,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -506,7 +506,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -591,7 +591,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -697,7 +697,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -774,7 +774,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -860,12 +860,12 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood1 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good1")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good2")
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -994,7 +994,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1095,7 +1095,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1199,7 +1199,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1265,7 +1265,7 @@ namespace Allors.Domain
             assessable.VatRate = vatRate0;
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1346,14 +1346,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1430,14 +1428,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1586,14 +1582,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -1769,8 +1763,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2157,9 +2150,7 @@ namespace Allors.Domain
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2229,9 +2220,7 @@ namespace Allors.Domain
             var adjustment = new ShippingAndHandlingChargeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2300,9 +2289,7 @@ namespace Allors.Domain
             var adjustment = new FeeBuilder(this.Session).WithAmount(7.5M).WithVatRate(vatRate21).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2371,9 +2358,7 @@ namespace Allors.Domain
             var adjustment = new FeeBuilder(this.Session).WithPercentage(5).WithVatRate(vatRate21).Build();
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithInternalOrganisation(this.InternalOrganisation)
-                .WithManufacturerId("10101")
-                .WithName("finished good")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2439,14 +2424,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2509,14 +2492,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2586,14 +2567,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2665,14 +2644,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part1 = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var part2 = new FinishedGoodBuilder(this.Session)
-                .WithName("part2")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2738,12 +2715,12 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var finishedGood1 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good1")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good2")
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -2844,8 +2821,7 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
             var part = new FinishedGoodBuilder(this.Session)
-                .WithName("part1")
-                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -3011,17 +2987,17 @@ namespace Allors.Domain
                 .Build();
 
             var finishedGood1 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good1")
+                .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good2")
+                .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
             var finishedGood3 = new FinishedGoodBuilder(this.Session)
-                .WithName("finished good3")
+                .WithPartId("3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
