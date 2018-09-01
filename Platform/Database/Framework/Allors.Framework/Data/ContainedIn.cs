@@ -23,8 +23,8 @@ namespace Allors.Data
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Meta;
     using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class ContainedIn : IPropertyPredicate
     {
