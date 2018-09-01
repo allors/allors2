@@ -24,7 +24,6 @@ namespace Allors.Repository
 
         #endregion
 
-
         #region inherited methods
 
 
@@ -39,6 +38,5 @@ namespace Allors.Repository
         public void OnPostDerive(){}
 
         #endregion
-
     }
 }

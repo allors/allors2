@@ -34,11 +34,6 @@ namespace Allors.Domain
             {
                 Extent<SupplierOffering> offerings = null;
 
-                if (this.ExistProduct)
-                {
-                    offerings = this.Product.SupplierOfferingsWhereProduct;
-                }
-
                 if (this.ExistPart)
                 {
                     offerings = this.Part.SupplierOfferingsWherePart;
@@ -112,9 +107,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             
-            derivation.Validation.AssertAtLeastOne(this, M.PurchaseOrderItem.Product, M.PurchaseOrderItem.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.PurchaseOrderItem.Product, M.PurchaseOrderItem.Part);
-
             this.AppsDeriveVatRegime(derivation);
 
             this.AppsOnDeriveIsValidOrderItem(derivation);
@@ -137,11 +129,6 @@ namespace Allors.Domain
             if (!this.ExistDerivedVatRate && this.ExistVatRegime && this.VatRegime.ExistVatRate)
             {
                 this.DerivedVatRate = this.VatRegime.VatRate;
-            }
-
-            if (!this.ExistDerivedVatRate && this.ExistProduct)
-            {
-                this.DerivedVatRate = this.Product.VatRate;
             }
         }
 
@@ -229,7 +216,7 @@ namespace Allors.Domain
             else
             {
                 var order = this.PurchaseOrderWherePurchaseOrderItem;
-                var productPurchasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Product, this.Part);
+                var productPurchasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
                 this.UnitBasePrice = productPurchasePrice != null ? productPurchasePrice.Price : 0M;
             }
 
@@ -275,17 +262,6 @@ namespace Allors.Domain
         public void AppsOnDeriveQuantities(IDerivation derivation)
         {
             NonSerialisedInventoryItem inventoryItem = null;
-
-            if (this.ExistProduct)
-            {
-                var good = this.Product as Good;
-                if (good != null)
-                {
-                    var inventoryItems = good.InventoryItemsWhereGood;
-                    inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, this.PurchaseOrderWherePurchaseOrderItem.Facility);
-                    inventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
-                }
-            }
 
             if (this.ExistPart)
             {

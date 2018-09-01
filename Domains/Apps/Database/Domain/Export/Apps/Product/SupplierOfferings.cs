@@ -19,14 +19,13 @@ namespace Allors.Domain
 
     public partial class SupplierOfferings
     {
-        public ProductPurchasePrice PurchasePrice(Party supplier, DateTime orderDate, Product product = null, Part part = null)
+        public ProductPurchasePrice PurchasePrice(Party supplier, DateTime orderDate, Part part = null)
         {
             ProductPurchasePrice purchasePrice = null;
 
             foreach (SupplierOffering supplierOffering in supplier.SupplierOfferingsWhereSupplier)
             {
-                if ((supplierOffering.ExistProduct && supplierOffering.Product.Equals(product)) ||
-                    (supplierOffering.ExistPart && supplierOffering.Part.Equals(part)))
+                if (supplierOffering.ExistPart && supplierOffering.Part.Equals(part))
                 {
                     if (supplierOffering.FromDate <= orderDate && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= orderDate))
                     {

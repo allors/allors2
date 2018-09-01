@@ -22,12 +22,10 @@
 namespace Allors.Domain
 {
     using System;
-    using System.Security.Principal;
-    using System.Threading;
+
     using Meta;
     using Xunit;
 
-    
     public class PurchaseOrderItemTests : DomainTest
     {
         private FinishedGood finishedGood;
@@ -48,7 +46,6 @@ namespace Allors.Domain
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).BillingAddress)
                 .Build();
 
-            var internalOrganisation = this.InternalOrganisation;
             this.supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             this.supplier.AddPartyContactMechanism(supplierContactMechanism);
 
@@ -132,7 +129,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithProduct(new GoodBuilder(this.Session)
+            builder.WithPart(new FinishedGoodBuilder(this.Session)
                                         .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                         .Build());
             var orderItem = builder.Build();
@@ -150,16 +147,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate, 21))
-                .Build();
-
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -213,16 +202,8 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .WithName("good")
-                .Build();
-
             var supplierOffering = new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
                 .Build();
@@ -260,7 +241,7 @@ namespace Allors.Domain
             this.InstantiateObjects(this.Session);
 
             const decimal QuantityOrdered = 3;
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithProduct(good).WithQuantityOrdered(QuantityOrdered).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(this.finishedGood).WithQuantityOrdered(QuantityOrdered).Build();
             this.order.AddPurchaseOrderItem(item1);
 
             this.Session.Derive();
@@ -323,18 +304,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -365,18 +338,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -407,18 +372,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(20)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -430,7 +387,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)
@@ -464,18 +421,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -508,18 +457,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -551,18 +492,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -574,7 +507,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipFromParty(this.supplier).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)
@@ -608,18 +541,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -651,18 +576,10 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             this.SetIdentity("admin");
 
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(3)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -674,7 +591,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(this.supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithPart(this.finishedGood).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)
@@ -691,7 +608,7 @@ namespace Allors.Domain
 
             Assert.Equal(new PurchaseOrderItemStates(this.Session).PartiallyReceived, item.PurchaseOrderItemState);
             var acl = new AccessControlList(item, this.Session.GetUser());
-            Assert.False(acl.CanWrite(M.PurchaseOrderItem.Product));
+            Assert.False(acl.CanWrite(M.PurchaseOrderItem.Part));
         }
 
         [Fact]
@@ -699,16 +616,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(1)
                 .WithAssignedDeliveryDate(DateTime.UtcNow.AddMonths(1))
                 .Build();
@@ -725,16 +634,8 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithVatRate(new VatRates(this.Session).FindBy(M.VatRate.Rate,21))
-                .Build();
-
             var item = new PurchaseOrderItemBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(this.finishedGood)
                 .WithQuantityOrdered(1)
                 .Build();
 

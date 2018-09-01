@@ -39,31 +39,5 @@ namespace Allors.Domain
                 @this.Facility = internalOrganisations.First().DefaultFacility;
             }
         }
-
-        public static void AppsOnDeriveProductCategories(this InventoryItem @this, IDerivation derivation)
-        {
-            @this.RemoveDerivedProductCategories();
-
-            if (@this.ExistGood)
-            {
-                foreach (ProductCategory productCategory in @this.Good.ProductCategories)
-                {
-                    @this.AddDerivedProductCategory(productCategory);
-                    @this.AddParentCategories(productCategory);
-                }
-            }
-        }
-
-        private static void AddParentCategories(this InventoryItem @this, ProductCategory productCategory)
-        {
-            if (productCategory.ExistParents)
-            {
-                foreach (ProductCategory parent in productCategory.Parents)
-                {
-                    @this.AddDerivedProductCategory(parent);
-                    @this.AddParentCategories(parent);
-                }
-            }
-        }
     }
 }

@@ -33,10 +33,6 @@ namespace Allors.Repository
 
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
-        public ProductCategory[] DerivedProductCategories { get; set; }
-
-        public Good Good { get; set; }
-
         public Facility Facility { get; set; }
 
         public string ReferenceNumber { get; set; }

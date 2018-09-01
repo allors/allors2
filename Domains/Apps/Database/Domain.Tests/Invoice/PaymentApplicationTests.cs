@@ -44,7 +44,7 @@ namespace Allors.Domain
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session)
                                         .WithProduct(new GoodBuilder(this.Session)
                                                             .WithName("good")
-                                                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                                                            .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                                                             .Build())  
                                         .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                                         .WithQuantity(1)
@@ -74,8 +74,8 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();

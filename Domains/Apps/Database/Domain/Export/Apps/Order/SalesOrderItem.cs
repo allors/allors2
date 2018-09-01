@@ -153,7 +153,8 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature);
+            derivation.Validation.AssertAtLeastOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature, M.SalesOrderItem.SerialisedInventoryItem);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature, M.SalesOrderItem.SerialisedInventoryItem);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ReservedFromSerialisedInventoryItem, M.SalesOrderItem.ReservedFromNonSerialisedInventoryItem);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
@@ -177,10 +178,9 @@ namespace Allors.Domain
                 this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            if (derivation.IsCreated(this) && this.ExistProduct && this.Product is Good)
+            if (derivation.IsCreated(this) && this.ExistSerialisedInventoryItem)
             {
-                var good = (Good)this.Product;
-                this.Details = good.DeriveDetails();
+                this.Details = this.SerialisedInventoryItem.DeriveDetails();
             }
 
             this.AppsOnDeriveCurrentObjectState(derivation);
@@ -251,10 +251,9 @@ namespace Allors.Domain
                     this.PreviousProduct = this.Product;
                 }
 
-                if (this.ExistReservedFromSerialisedInventoryItem && !this.ReservedFromSerialisedInventoryItem.Good.ExistSalesDiscontinuationDate)
+                if (this.ExistReservedFromSerialisedInventoryItem)
                 {
                     this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.strategy.Session).Assigned;
-                    this.ReservedFromSerialisedInventoryItem.Good.SalesDiscontinuationDate = this.strategy.Session.Now();
                     this.QuantityReserved = 1;
                     this.QuantityRequestsShipping = 1;
                 }
@@ -270,7 +269,6 @@ namespace Allors.Domain
 
                 if (this.ExistReservedFromSerialisedInventoryItem)
                 {
-                    this.ReservedFromSerialisedInventoryItem.Good.RemoveSalesDiscontinuationDate();
                     this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.strategy.Session).Available;
                 }
             }
@@ -328,32 +326,19 @@ namespace Allors.Domain
 
             if (this.ExistProduct && internalOrganisation != null)
             {
-                var good = this.Product as Good;
-                if (good != null)
+                if (this.Product is Good good && good.ExistFinishedGood) 
                 {
-                    if (good.ExistFinishedGood)
+                    if (good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                     {
-                        if (!this.ExistReservedFromNonSerialisedInventoryItem || !this.ReservedFromNonSerialisedInventoryItem.Part.Equals(good.FinishedGood))
-                        {
-                            var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
-                            this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
-                        }
+                        var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
+                        this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
                     }
                     else
                     {
-                        if (good.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
-                        {
-                            var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
-                            this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
-                        }
-                        else
-                        {
-                            var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
-                            this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
-                        }
+                        var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
+                        this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
                 }
             }
@@ -583,14 +568,14 @@ namespace Allors.Domain
         {
             this.UnitPurchasePrice = 0;
 
-            if (this.ExistProduct &&
-                this.Product.ExistSupplierOfferingsWhereProduct &&
-                this.Product.SupplierOfferingsWhereProduct.Count == 1 &&
-                this.Product.SupplierOfferingsWhereProduct.First.ExistProductPurchasePrices)
+            if (this.Product is Good good &&
+                good.FinishedGood.ExistSupplierOfferingsWherePart &&
+                good.FinishedGood.SupplierOfferingsWherePart.Count == 1 &&
+                good.FinishedGood.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
             {
                 ProductPurchasePrice productPurchasePrice = null;
 
-                var prices = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices;
+                var prices = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices;
                 foreach (ProductPurchasePrice purchasePrice in prices)
                 {
                     if (purchasePrice.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
@@ -602,8 +587,8 @@ namespace Allors.Domain
 
                 if (productPurchasePrice == null)
                 {
-                    var index = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices.Count;
-                    var lastKownPrice = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices[index - 1];
+                    var index = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
+                    var lastKownPrice = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
                     productPurchasePrice = lastKownPrice;
                 }
 

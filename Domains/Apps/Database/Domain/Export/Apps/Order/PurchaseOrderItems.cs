@@ -39,11 +39,10 @@ namespace Allors.Domain
             var completed = new PurchaseOrderItemStates(this.Session).Completed;
             var finished = new PurchaseOrderItemStates(this.Session).Finished;
 
-            var product = this.Meta.Product;
             var part = this.Meta.Part;
 
-            config.Deny(this.ObjectType, partiallyReceived, product, part);
-            config.Deny(this.ObjectType, received, product, part);
+            config.Deny(this.ObjectType, partiallyReceived, part);
+            config.Deny(this.ObjectType, received, part);
 
             var cancel = this.Meta.Cancel;
             var reject = this.Meta.Reject;

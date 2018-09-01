@@ -109,6 +109,8 @@ namespace Allors
                     .WithIsImmediatelyPicked(false)
                     .Build();
 
+                new ProductCategoryBuilder(session).WithName("Primary Category").Build();
+
                 var customer = new OrganisationBuilder(session).WithName("customer").WithLocale(singleton.DefaultLocale).Build();
                 var supplier = new OrganisationBuilder(session).WithName("supplier").WithLocale(singleton.DefaultLocale).Build();
                 var purchaser = new PersonBuilder(session).WithLastName("purchaser").WithUserName("purchaser").Build();

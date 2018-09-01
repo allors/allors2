@@ -27,7 +27,8 @@ namespace Allors.Domain
 
     public class ReceiptTests : DomainTest
     {
-        private Singleton Singleton;
+        private Singleton singleton;
+        private FinishedGood finishedGood;
         private Good good;
         private Organisation billToCustomer;
         
@@ -35,18 +36,26 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            this.Singleton = this.Session.GetSingleton();
+            this.singleton = this.Session.GetSingleton();
             this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
 
+            this.finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithManufacturerId("10101")
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             this.good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(this.finishedGood)
                 .Build();
 
             var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -57,7 +66,7 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(this.good)
+                .WithPart(this.finishedGood)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .WithProductPurchasePrice(goodPurchasePrice)
@@ -186,8 +195,9 @@ namespace Allors.Domain
 
         private void InstantiateObjects(ISession session)
         {
+            this.finishedGood = (FinishedGood)session.Instantiate(this.finishedGood);
             this.good = (Good)session.Instantiate(this.good);
-            this.Singleton = (Singleton)session.Instantiate(this.Singleton);
+            this.singleton = (Singleton)session.Instantiate(this.singleton);
             this.billToCustomer = (Organisation)session.Instantiate(this.billToCustomer);
         }
     }

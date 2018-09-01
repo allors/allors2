@@ -136,15 +136,6 @@ namespace Allors.Domain
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
-
-            builder.WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised);
-            var good = builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            good.RemoveFinishedGood();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
@@ -160,7 +151,6 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithPrimaryProductCategory(productCategory)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
@@ -181,8 +171,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithProductCategory(productCategory)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(productCategory)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
@@ -224,7 +213,6 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .Build();
@@ -283,7 +271,6 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .Build();
@@ -362,7 +349,6 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithSku("10101")
                 .WithPrimaryProductCategory(productCategory111)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
                 .Build();

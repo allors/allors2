@@ -40,34 +40,44 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
-            var good1inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).Build();
+            var good1inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
             good1inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
 
-            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good2).Build();
+            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
             good2inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
@@ -113,9 +123,17 @@ namespace Allors.Domain
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var good1 = new GoodBuilder(this.Session)
@@ -123,7 +141,8 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -131,15 +150,16 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
-            var good1inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).Build();
+            var good1inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
             good1inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
 
-            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good2).Build();
+            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
             good2inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();

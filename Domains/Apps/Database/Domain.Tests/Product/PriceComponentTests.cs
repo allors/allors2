@@ -24,7 +24,6 @@ namespace Allors.Domain
     using System;
     using Xunit;
 
-    
     public class PriceComponentTests : DomainTest
     {
         [Fact]
@@ -35,8 +34,8 @@ namespace Allors.Domain
                 .WithName("Gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             var colorFeature = new ColourBuilder(this.Session)
@@ -95,16 +94,16 @@ namespace Allors.Domain
             var virtualGood = new GoodBuilder(this.Session)
                 .WithName("virtual gizmo")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             var physicalGood = new GoodBuilder(this.Session)
                 .WithName("real gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             virtualGood.AddVariant(physicalGood);
@@ -134,8 +133,8 @@ namespace Allors.Domain
                 .WithName("real gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             new BasePriceBuilder(this.Session)
@@ -156,8 +155,8 @@ namespace Allors.Domain
                 .WithName("gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             var colorFeature = new ColourBuilder(this.Session)
@@ -271,8 +270,8 @@ namespace Allors.Domain
                 .WithName("gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             var colorFeature = new ColourBuilder(this.Session)

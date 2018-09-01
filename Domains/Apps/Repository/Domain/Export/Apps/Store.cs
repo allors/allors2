@@ -254,6 +254,25 @@ namespace Allors.Repository
         public string SalesOrderNumberPrefix { get; set; }
 
         #region Allors
+        [Id("95637046-149C-4AB1-A10D-AD3FA9F176BE")]
+        [AssociationId("BA21500D-A7C0-46EA-B46E-692B9522EC36")]
+        [RoleId("697DBA3D-5583-4DFE-B620-F4AD99DC2183")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        public Counter WorkEffortCounter { get; set; }
+
+        #region Allors
+        [Id("E10B3C2E-FEC4-486F-A904-57A38B01D5BD")]
+        [AssociationId("409A2E64-1ADD-42E1-ACDA-58CFA17B3448")]
+        [RoleId("9E506C43-7F6B-41DA-88AA-19CC7DD59914")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string WorkEffortNumberPrefix { get; set; }
+
+        #region Allors
         [Id("85279191-9836-444B-A5CB-742A488D0467")]
         [AssociationId("E8884F9B-6D08-4092-9C0C-D98EFCA9D438")]
         [RoleId("0299E2AD-F239-41E7-9546-2FB014D98A96")]
@@ -283,25 +302,6 @@ namespace Allors.Repository
         public bool IsAutomaticallyShipped { get; set; }
 
         #region Allors
-        [Id("95637046-149C-4AB1-A10D-AD3FA9F176BE")]
-        [AssociationId("BA21500D-A7C0-46EA-B46E-692B9522EC36")]
-        [RoleId("697DBA3D-5583-4DFE-B620-F4AD99DC2183")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public Counter WorkEffortCounter { get; set; }
-
-        #region Allors
-        [Id("E10B3C2E-FEC4-486F-A904-57A38B01D5BD")]
-        [AssociationId("409A2E64-1ADD-42E1-ACDA-58CFA17B3448")]
-        [RoleId("9E506C43-7F6B-41DA-88AA-19CC7DD59914")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        public string WorkEffortNumberPrefix { get; set; }
-
-        #region Allors
         [Id("CE31A755-7053-4A27-A0AE-7C38AFA03E2F")]
         [AssociationId("AA22F139-B7D6-4F86-ABCD-7A41ED5366DA")]
         [RoleId("217207B1-5FF6-4DD2-83AF-3E728ADE0BF9")]
@@ -309,6 +309,15 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public bool UseCreditNoteSequence { get; set; }
+
+        #region Allors
+        [Id("3CECAB0B-A766-474E-9DB1-D6B93E02FF41")]
+        [AssociationId("D3D23B7D-9C30-479F-95FA-CE4BA56C90F3")]
+        [RoleId("B674A945-19BD-42B9-B925-9569D0B058D1")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool SerialisedInventoryItemStore { get; set; }
 
         #region inherited methods
 

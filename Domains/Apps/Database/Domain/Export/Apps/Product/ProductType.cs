@@ -23,9 +23,9 @@ namespace Allors.Domain
 
             if (derivation.HasChangedRole(this, this.Meta.SerialisedInventoryItemCharacteristicTypes))
             {
-                foreach (Good good in this.ProductsWhereProductType)
+                foreach (Part part in this.PartsWhereProductType)
                 {
-                    foreach (SerialisedInventoryItem serialisedInventoryItem in good.InventoryItemsWhereGood)
+                    foreach (SerialisedInventoryItem serialisedInventoryItem in part.InventoryItemsWherePart)
                     {
                         derivation.AddDependency(serialisedInventoryItem, this);
                     }

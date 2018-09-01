@@ -216,21 +216,6 @@ namespace Allors.Domain
                 purchaseOrderItem.AppsOnDerivePrices();
                 purchaseOrderItem.AppsDeriveVatRegime(derivation);
 
-
-                if (purchaseOrderItem.ExistProduct)
-                {
-                    if (!quantityOrderedByProduct.ContainsKey(purchaseOrderItem.Product))
-                    {
-                        quantityOrderedByProduct.Add(purchaseOrderItem.Product, purchaseOrderItem.QuantityOrdered);
-                        totalBasePriceByProduct.Add(purchaseOrderItem.Product, purchaseOrderItem.TotalBasePrice);
-                    }
-                    else
-                    {
-                        quantityOrderedByProduct[purchaseOrderItem.Product] += purchaseOrderItem.QuantityOrdered;
-                        totalBasePriceByProduct[purchaseOrderItem.Product] += purchaseOrderItem.TotalBasePrice;
-                    }
-                }
-
                 if (purchaseOrderItem.ExistPart)
                 {
                     if (!quantityOrderedByPart.ContainsKey(purchaseOrderItem.Part))

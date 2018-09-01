@@ -16,8 +16,7 @@
 namespace Allors.Domain
 {
     using System.Linq;
-
-    using Allors.Adapters;
+    using System.Text;
 
     using Meta;
 
@@ -39,20 +38,19 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-            derivation.AddDependency(this, this.Good);
+
+            if (this.Part is FinishedGood finishedGood)
+            {
+                foreach (Good good in finishedGood.GoodsWhereFinishedGood)
+                {
+                    derivation.AddDependency(this, good);
+                }
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.InventoryItem.Good, M.InventoryItem.Part);
-
-            if (!this.ExistName && this.ExistGood && this.Good.ExistName)
-            {
-                this.Name = this.Good.Name;
-            }
 
             if (!this.ExistName && this.ExistPart && this.Part.ExistName)
             {
@@ -60,15 +58,19 @@ namespace Allors.Domain
             }
 
             this.AppsOnDeriveProductCharacteristics(derivation);
-            this.AppsOnDeriveProductCategories(derivation);
+
+            if (derivation.IsCreated(this))
+            {
+                this.Details = this.DeriveDetails();
+            }
         }
 
         private void AppsOnDeriveProductCharacteristics(IDerivation derivation)
         {
             var characteristicsToDelete = this.SerialisedInventoryItemCharacteristics.ToList();
-            if (this.ExistGood && this.Good.ExistProductType)
+            if (this.Part.ExistProductType)
             {
-                foreach (SerialisedInventoryItemCharacteristicType characteristicType in this.Good.ProductType.SerialisedInventoryItemCharacteristicTypes)
+                foreach (SerialisedInventoryItemCharacteristicType characteristicType in this.Part.ProductType.SerialisedInventoryItemCharacteristicTypes)
                 {
                     var characteristic = this.SerialisedInventoryItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedInventoryItemCharacteristicType, characteristicType));
                     if (characteristic == null)
@@ -97,6 +99,66 @@ namespace Allors.Domain
             {
                 version.Delete();
             }
+        }
+
+        public string DeriveDetails()
+        {
+            var builder = new StringBuilder();
+
+            if (this.Part.ExistManufacturedBy)
+            {
+                builder.Append($", Manufacturer: {this.Part.ManufacturedBy.PartyName}");
+            }
+
+            //foreach (ProductFeature feature in this.ProductFeatureApplicabilitiesWhereAvailableFor)
+            //{
+            //    if (feature is Brand)
+            //    {
+            //        var brand = (Brand)feature;
+            //        builder.Append($", Brand: {brand.Name}");
+            //    }
+            //    if (feature is Model)
+            //    {
+            //        var model = (Model)feature;
+            //        builder.Append($", Model: {model.Name}");
+            //    }
+            //}
+
+            builder.Append($", SN: {this.SerialNumber}");
+
+            if (this.ExistManufacturingYear)
+            {
+                builder.Append($", YOM: {this.ManufacturingYear}");
+            }
+
+            foreach (SerialisedInventoryItemCharacteristic characteristic in this.SerialisedInventoryItemCharacteristics)
+            {
+                if (characteristic.ExistValue)
+                {
+                    var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
+                    if (characteristicType.ExistUnitOfMeasure)
+                    {
+                        var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
+                                        ? characteristicType.UnitOfMeasure.Abbreviation
+                                        : characteristicType.UnitOfMeasure.Name;
+                        builder.Append(
+                            $", {characteristicType.Name}: {characteristic.Value} {uom}");
+                    }
+                    else
+                    {
+                        builder.Append($", {characteristicType.Name}: {characteristic.Value}");
+                    }
+                }
+            }
+
+            var details = builder.ToString();
+
+            if (details.StartsWith(","))
+            {
+                details = details.Substring(2);
+            }
+
+            return details;
         }
     }
 }

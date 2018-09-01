@@ -53,7 +53,6 @@ namespace Allors.Domain
         private ProductPurchasePrice goodPurchasePrice;
         private ProductPurchasePrice virtualGoodPurchasePrice;
         private SupplierOffering goodSupplierOffering;
-        private SupplierOffering virtualgoodSupplierOffering;
         private SalesOrder order;
         private VatRate vatRate21;
         
@@ -124,7 +123,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
@@ -132,7 +131,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
@@ -141,6 +140,7 @@ namespace Allors.Domain
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -151,7 +151,7 @@ namespace Allors.Domain
                 .Build();
 
             this.goodSupplierOffering = new SupplierOfferingBuilder(this.Session)
-                .WithProduct(this.good)
+                .WithPart(this.part)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithProductPurchasePrice(this.goodPurchasePrice)
@@ -162,13 +162,6 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithPrice(8)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            this.virtualgoodSupplierOffering = new SupplierOfferingBuilder(this.Session)
-                .WithProduct(this.virtualGood)
-                .WithSupplier(this.supplier)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
-                .WithProductPurchasePrice(this.virtualGoodPurchasePrice)
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
@@ -4319,7 +4312,6 @@ namespace Allors.Domain
             this.virtualGoodPurchasePrice = (ProductPurchasePrice)session.Instantiate(this.virtualGoodPurchasePrice);
             this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
             this.goodSupplierOffering = (SupplierOffering)session.Instantiate(this.goodSupplierOffering);
-            this.virtualgoodSupplierOffering = (SupplierOffering)session.Instantiate(this.virtualgoodSupplierOffering);
             this.order = (SalesOrder)session.Instantiate(this.order);
             this.vatRate21 = (VatRate)session.Instantiate(this.vatRate21);
         }

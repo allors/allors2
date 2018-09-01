@@ -37,20 +37,19 @@ namespace Allors.Domain
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
-            derivation.AddDependency(this, this.Good);
+
+            if (this.Part is FinishedGood finishedGood)
+            {
+                foreach (Good good in finishedGood.GoodsWhereFinishedGood)
+                {
+                    derivation.AddDependency(this, good);
+                }
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, M.NonSerialisedInventoryItem.Good, M.NonSerialisedInventoryItem.Part);
-            derivation.Validation.AssertExistsAtMostOne(this, M.NonSerialisedInventoryItem.Good, M.NonSerialisedInventoryItem.Part);
-
-            if (!this.ExistName && this.ExistGood && this.Good.ExistName)
-            {
-                this.Name = this.Good.Name;
-            }
 
             if (!this.ExistName && this.ExistPart && this.Part.ExistName)
             {
@@ -72,18 +71,8 @@ namespace Allors.Domain
                 this.AppsDepleteSalesOrders(derivation);
             }
 
-            this.AppsOnDeriveProductCategories(derivation);
-
             this.AppsOnDeriveName(derivation);
             this.AppsOnDeriveUnitOfMeasure(derivation);
-
-            if (this.ExistGood)
-            {
-                this.Good.DeriveAvailableToPromise();
-                this.Good.DeriveQuantityOnHand();
-                this.Good.DeriveQuantityCommittedOut();
-                this.Good.DeriveQuantityExpectedIn();
-            }
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
         }
@@ -146,20 +135,6 @@ namespace Allors.Domain
         {
             this.QuantityExpectedIn = 0M;
 
-            if (this.ExistGood)
-            {
-                foreach (PurchaseOrderItem purchaseOrderItem in this.Good.PurchaseOrderItemsWhereProduct)
-                {
-                    if (purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Completed) ||
-                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).Finished) ||
-                        purchaseOrderItem.PurchaseOrderItemState.Equals(new PurchaseOrderItemStates(this.Strategy.Session).InProcess))
-                    {
-                        this.QuantityExpectedIn += purchaseOrderItem.QuantityOrdered;
-                        this.QuantityExpectedIn -= purchaseOrderItem.QuantityReceived;
-                    }
-                }
-            }
-
             if (this.ExistPart)
             {
                 foreach (PurchaseOrderItem purchaseOrderItem in this.Part.PurchaseOrderItemsWherePart)
@@ -191,33 +166,36 @@ namespace Allors.Domain
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
-            if (this.ExistGood)
+            var finishedGood = this.Part as FinishedGood;
+            var goods = finishedGood?.GoodsWhereFinishedGood;
+
+            if (goods != null)
             {
-                salesOrderItems.Filter.AddEquals(M.SalesOrderItem.PreviousProduct, this.Good);
-            }
+                salesOrderItems.Filter.AddContainedIn(M.SalesOrderItem.Product, (Extent)goods);
 
-            salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
+                salesOrderItems = this.Strategy.Session.Instantiate(salesOrderItems);
 
-            var extra = this.QuantityOnHand - this.PreviousQuantityOnHand;
+                var extra = this.QuantityOnHand - this.PreviousQuantityOnHand;
 
-            foreach (SalesOrderItem salesOrderItem in salesOrderItems)
-            {
-                if (extra > 0 && salesOrderItem.QuantityShortFalled > 0)
+                foreach (SalesOrderItem salesOrderItem in salesOrderItems)
                 {
-                    decimal diff;
-                    if (extra >= salesOrderItem.QuantityShortFalled)
+                    if (extra > 0 && salesOrderItem.QuantityShortFalled > 0)
                     {
-                        diff = salesOrderItem.QuantityShortFalled;
-                    }
-                    else
-                    {
-                        diff = extra;
-                    }
+                        decimal diff;
+                        if (extra >= salesOrderItem.QuantityShortFalled)
+                        {
+                            diff = salesOrderItem.QuantityShortFalled;
+                        }
+                        else
+                        {
+                            diff = extra;
+                        }
 
-                    extra -= diff;
+                        extra -= diff;
 
-                    salesOrderItem.AppsOnDeriveAddToShipping(derivation, diff);
-                    salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                        salesOrderItem.AppsOnDeriveAddToShipping(derivation, diff);
+                        salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                    }
                 }
             }
         }
@@ -257,11 +235,6 @@ namespace Allors.Domain
 
         public void AppsOnDeriveName(IDerivation derivation)
         {
-            if (this.ExistGood)
-            {
-                this.Name = this.Good.Name;
-            }
-
             if (this.ExistPart)
             {
                 this.Name = this.Part.Name;
@@ -270,11 +243,6 @@ namespace Allors.Domain
 
         public void AppsOnDeriveUnitOfMeasure(IDerivation derivation)
         {
-            if (this.ExistGood)
-            {
-                this.UnitOfMeasure = this.Good.UnitOfMeasure;
-            }
-
             if (this.ExistPart)
             {
                 this.UnitOfMeasure = this.Part.UnitOfMeasure;

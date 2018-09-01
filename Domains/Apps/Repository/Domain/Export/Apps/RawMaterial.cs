@@ -21,6 +21,8 @@ namespace Allors.Repository
 
         public Document[] Documents { get; set; }
 
+        public Party ManufacturedBy { get; set; }
+
         public string ManufacturerId { get; set; }
 
         public int ReorderLevel { get; set; }
@@ -31,7 +33,9 @@ namespace Allors.Repository
 
         public InventoryItemKind InventoryItemKind { get; set; }
 
-        public string Sku { get; set; }
+        public ProductType ProductType { get; set; }
+
+        public string PartId { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 

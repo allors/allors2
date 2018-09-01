@@ -11,9 +11,8 @@ namespace Allors.Repository
     {
         #region inherited properties
 
-        public ProductType ProductType { get; set; }
-
         public string InternalComment { get; set; }
+
         public ProductCategory PrimaryProductCategory { get; set; }
 
         public DateTime SupportDiscontinuationDate { get; set; }

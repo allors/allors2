@@ -187,6 +187,16 @@ namespace Intranet.Tests
 
             var vatRate = new VatRateBuilder(this.session).WithRate(21).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.session)
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
@@ -194,8 +204,8 @@ namespace Intranet.Tests
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate)
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.session)
@@ -205,9 +215,9 @@ namespace Intranet.Tests
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
-            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.session).WithGood(good1).WithFacility(facility1).Build();
+            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.session).WithPart(finishedGood1).WithFacility(facility1).Build();
             goodInventoryItem1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.session).WithQuantity(100).WithReason(new VarianceReasons(this.session).Unknown).Build());
-            var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.session).WithGood(good1).WithFacility(facility2).Build();
+            var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.session).WithPart(finishedGood2).WithFacility(facility2).Build();
             goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.session).WithQuantity(100).WithReason(new VarianceReasons(this.session).Unknown).Build());
 
             var good2 = new GoodBuilder(this.session)
@@ -217,9 +227,8 @@ namespace Intranet.Tests
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10102")
                 .WithVatRate(vatRate)
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).Serialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithProductType(productType)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.session)
@@ -229,7 +238,7 @@ namespace Intranet.Tests
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
-            var good2InventoryItem = new SerialisedInventoryItemBuilder(this.session).WithGood(good2).WithSerialNumber("1").Build();
+            var good2InventoryItem = new SerialisedInventoryItemBuilder(this.session).WithPart(finishedGood2).WithSerialNumber("1").Build();
 
             var good3 = new GoodBuilder(this.session)
                 .WithName("Tiny green round gizmo")
@@ -238,7 +247,6 @@ namespace Intranet.Tests
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10103")
                 .WithVatRate(vatRate)
-                .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
                 .Build();
 

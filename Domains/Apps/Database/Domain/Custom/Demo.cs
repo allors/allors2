@@ -2,7 +2,6 @@ namespace Allors
 {
     using System;
     using System.IO;
-    using System.IO.Compression;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -185,6 +184,13 @@ namespace Allors
 
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithManufacturerId("10101")
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.Session)
                 .WithName("Tiny blue round gizmo")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
@@ -192,8 +198,8 @@ namespace Allors
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10101")
                 .WithVatRate(vatRate)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
+                .WithFinishedGood(finishedGood)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.Session)
@@ -203,10 +209,17 @@ namespace Allors
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
-            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).WithFacility(facility1).Build();
+            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).WithFacility(facility1).Build();
             goodInventoryItem1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-            var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good1).WithFacility(facility2).Build();
+            var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).WithFacility(facility2).Build();
             goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                .WithProductType(productType)
+                .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithName("Tiny red round gizmo")
@@ -215,9 +228,8 @@ namespace Allors
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10102")
                 .WithVatRate(vatRate)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithProductType(productType)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.Session)
@@ -227,7 +239,13 @@ namespace Allors
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
-            var good2InventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithGood(good2).WithSerialNumber("1").Build();
+            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialNumber("1").Build();
+
+            var finishedGood3 = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(internalOrganisation)
+                .WithName("finished good3")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
             var good3 = new GoodBuilder(this.Session)
                 .WithName("Tiny green round gizmo")
@@ -236,8 +254,8 @@ namespace Allors
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
                 .WithSku("10103")
                 .WithVatRate(vatRate)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPrimaryProductCategory(productCategory3)
+                .WithFinishedGood(finishedGood3)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.Session)
