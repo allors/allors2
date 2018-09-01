@@ -17,49 +17,84 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
-        public Product Product { get; set; }
         public string InternalComment { get; set; }
+
         public SalesTerm[] SalesTerms { get; set; }
+
         public decimal TotalInvoiceAdjustment { get; set; }
+
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
+
         public InvoiceItem AdjustmentFor { get; set; }
-        public SerialisedInventoryItem SerializedInventoryItem { get; set; }
+
         public string Message { get; set; }
+
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
+
         public decimal AmountPaid { get; set; }
+
         public decimal Quantity { get; set; }
+
         public string Description { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public string Comment { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }
 
         public decimal TotalDiscountAsPercentage { get; set; }
+
         public DiscountAdjustment DiscountAdjustment { get; set; }
+
         public decimal UnitVat { get; set; }
+
         public decimal TotalVatCustomerCurrency { get; set; }
+
         public VatRegime VatRegime { get; set; }
+
         public decimal TotalVat { get; set; }
+
         public decimal UnitSurcharge { get; set; }
+
         public decimal UnitDiscount { get; set; }
+
         public decimal TotalExVatCustomerCurrency { get; set; }
+
         public VatRate DerivedVatRate { get; set; }
+
         public decimal ActualUnitPrice { get; set; }
+
         public decimal TotalIncVatCustomerCurrency { get; set; }
+
         public decimal UnitBasePrice { get; set; }
+
         public decimal CalculatedUnitPrice { get; set; }
+
         public decimal TotalSurchargeCustomerCurrency { get; set; }
+
         public decimal TotalIncVat { get; set; }
+
         public decimal TotalSurchargeAsPercentage { get; set; }
+
         public decimal TotalDiscountCustomerCurrency { get; set; }
+
         public decimal TotalDiscount { get; set; }
+
         public decimal TotalSurcharge { get; set; }
+
         public VatRegime AssignedVatRegime { get; set; }
+
         public decimal TotalBasePrice { get; set; }
+
         public decimal TotalExVat { get; set; }
+
         public decimal TotalBasePriceCustomerCurrency { get; set; }
+
         public PriceComponent[] CurrentPriceComponents { get; set; }
+
         public SurchargeAdjustment SurchargeAdjustment { get; set; }
         #endregion
 
@@ -118,6 +153,25 @@ namespace Allors.Repository
         [Workspace]
         public SalesInvoiceItemVersion[] AllVersions { get; set; }
         #endregion
+
+        #region Allors
+        [Id("D3D47236-8B21-420B-883A-C035EB0DBAE0")]
+        [AssociationId("64108AA6-8478-49D1-ACB2-34CCB7F790DB")]
+        [RoleId("490E7A59-C0CA-47FF-881B-5D2F4474BD5F")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Product Product { get; set; }
+
+        #region Allors
+        [Id("6df95cf4-115f-4f43-aaea-52313c47d824")]
+        [AssociationId("93ba1265-4050-41c1-aaf8-d09786889245")]
+        [RoleId("0abd9811-a8ac-42bf-9113-4f9760cfe9eb")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public SerialisedInventoryItem SerialisedInventoryItem { get; set; }
 
         #region Allors
         [Id("0854aece-6ca1-4b8d-99a9-6d424de8dfd4")]
@@ -260,15 +314,15 @@ namespace Allors.Repository
 
         #region inherited methods
 
-        public void OnBuild(){}
+        public void OnBuild() { }
 
-        public void OnPostBuild(){}
+        public void OnPostBuild() { }
 
-        public void OnPreDerive(){}
+        public void OnPreDerive() { }
 
-        public void OnDerive(){}
+        public void OnDerive() { }
 
-        public void OnPostDerive(){}
+        public void OnPostDerive() { }
 
         public void Delete() { }
 

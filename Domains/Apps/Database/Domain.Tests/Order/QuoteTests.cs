@@ -102,7 +102,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             var quote = new ProductQuoteBuilder(this.Session)

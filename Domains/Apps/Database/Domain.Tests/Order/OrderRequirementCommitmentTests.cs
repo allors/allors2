@@ -46,8 +46,8 @@ namespace Allors.Domain
                 .WithName("Gizmo")
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             this.Session.Derive();

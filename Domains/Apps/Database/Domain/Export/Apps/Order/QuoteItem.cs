@@ -43,10 +43,9 @@ namespace Allors.Domain
                 derivation.AddDependency(this.QuoteWhereQuoteItem, this);
             }
 
-            if (derivation.IsCreated(this) && this.ExistProduct && this.Product is Good)
+            if (derivation.IsCreated(this) && this.ExistSerialisedInventoryItem)
             {
-                var good = (Good)this.Product;
-                this.Details = good.DeriveDetails();
+                this.Details = this.SerialisedInventoryItem.DeriveDetails();
             }
         }
 
@@ -54,8 +53,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
-            derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
+            derivation.Validation.AssertAtLeastOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.SerialisedInventoryItem, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
+            derivation.Validation.AssertExistsAtMostOne(this, M.QuoteItem.Product, M.QuoteItem.ProductFeature, M.QuoteItem.SerialisedInventoryItem, M.QuoteItem.Deliverable, M.QuoteItem.WorkEffort);
 
             if (this.ExistRequestItem)
             {

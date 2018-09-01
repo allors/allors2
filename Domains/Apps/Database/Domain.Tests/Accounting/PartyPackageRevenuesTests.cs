@@ -65,20 +65,29 @@ namespace Allors.Domain
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat1)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(cat2)
                 .Build();

@@ -65,33 +65,6 @@ namespace Allors.Domain
                 var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].PurchaseOrderItem;
                 var defaultFacility = internalOrganisation?.DefaultFacility;
 
-                if (purchaseOrderItem.ExistProduct)
-                {
-                    var good = purchaseOrderItem.Product as Good;
-                    if (good != null)
-                    {
-                        if (good.ExistFinishedGood)
-                        {
-                            if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(good.FinishedGood))
-                            {
-                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
-                                this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
-                            }
-                        }
-                        else
-                        {
-                            if (!this.ExistInventoryItem || !this.InventoryItem.Good.Equals(good))
-                            {
-                                var inventoryItems = good.InventoryItemsWhereGood;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, defaultFacility);
-                                this.InventoryItem = inventoryItems.First as NonSerialisedInventoryItem ??
-                                                     new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithGood(good).Build();
-                            }
-                        }
-                    }
-                }
-
                 if (purchaseOrderItem.ExistPart)
                 {
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))

@@ -21,27 +21,30 @@
 
 namespace Allors.Domain
 {
-    using System;
-    using Meta;
     using Xunit;
 
-    
     public class InventoryItemVarianceTests : DomainTest
     {
 
         [Fact]
         public void GivenInventoryItem_WhenPositiveVariance_ThenQuantityOnHandIsRaised()
         {
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good = new GoodBuilder(this.Session)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood)
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithGood(good)
+                .WithPart(finishedGood)
                 .Build();
 
             this.Session.Derive();

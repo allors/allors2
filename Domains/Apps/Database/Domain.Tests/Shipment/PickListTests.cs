@@ -19,16 +19,12 @@
 // <summary>Defines the MediaTests type.</summary>
 //-------------------------------------------------------------------------------------------------
 
-using System.Security.Principal;
-using System.Threading;
-
 namespace Allors.Domain
 {
     using System;
     using Meta;
     using Xunit;
 
-    
     public class PickListTests : DomainTest
     {
         [Fact]
@@ -118,7 +114,6 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -129,20 +124,32 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -160,27 +167,20 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good1)
+                .WithPart(finishedGood1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good2)
-                .WithProductPurchasePrice(good2PurchasePrice)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -219,7 +219,7 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
-            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item5: only 4 out of 5 are actually picked
@@ -267,7 +267,6 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -278,20 +277,32 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -309,14 +320,14 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good1)
+                .WithPart(finishedGood1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good2)
+                .WithPart(finishedGood2)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
@@ -324,12 +335,12 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -352,7 +363,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item3: only 4 out of 5 are actually picked
@@ -398,7 +409,6 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
@@ -409,20 +419,32 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -440,14 +462,14 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good1)
+                .WithPart(finishedGood1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good2)
+                .WithPart(finishedGood2)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
@@ -455,12 +477,12 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
@@ -483,7 +505,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
             Assert.Equal(2, pickList.PickListItems.Count);
 
@@ -512,7 +534,6 @@ namespace Allors.Domain
 
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var customer = new PersonBuilder(this.Session).WithLastName("person1").WithPartyContactMechanism(shipToMechelen).Build();
-            var internalOrganisation = this.InternalOrganisation;
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
             new SupplierRelationshipBuilder(this.Session)
@@ -522,20 +543,32 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good1")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
+            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good2")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good1 = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(vatRate21)
                 .WithName("good1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
                 .WithSku("10102")
                 .WithVatRate(vatRate21)
                 .WithName("good2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -553,27 +586,27 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good1)
+                .WithPart(finishedGood1)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithFromDate(DateTime.UtcNow)
                 .WithSupplier(supplier)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good2)
+                .WithPart(finishedGood2)
                 .WithProductPurchasePrice(good2PurchasePrice)
-                .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
+                .WithSupplier(supplier)
                 .Build();
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)good1.InventoryItemsWhereGood[0];
+            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
             good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)good2.InventoryItemsWhereGood[0];
+            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
             good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
@@ -612,7 +645,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var pickList = good1.InventoryItemsWhereGood[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();

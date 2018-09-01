@@ -28,6 +28,7 @@ namespace Allors.Domain
     
     public class SalesInvoiceItemTests : DomainTest
     {
+        private FinishedGood finishedGood;
         private Good good;
         private Colour feature1;
         private Colour feature2;
@@ -72,12 +73,20 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            this.finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithManufacturerId("10101")
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             this.good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(this.finishedGood)
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
@@ -97,7 +106,7 @@ namespace Allors.Domain
                 .Build();
 
             this.goodSupplierOffering = new SupplierOfferingBuilder(this.Session)
-                .WithProduct(this.good)
+                .WithPart(this.finishedGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithProductPurchasePrice(this.goodPurchasePrice)
@@ -2441,6 +2450,7 @@ namespace Allors.Domain
         private void InstantiateObjects(ISession session)
         {
             this.good = (Good)session.Instantiate(this.good);
+            this.finishedGood = (FinishedGood)session.Instantiate(this.finishedGood);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);
             this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);

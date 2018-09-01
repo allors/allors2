@@ -25,7 +25,7 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
+
     public class NonSerialisedInventoryItemTests : DomainTest
     {
         [Fact]
@@ -66,12 +66,9 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
             this.Session.Derive();
@@ -94,7 +91,7 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithGood(good);
+            builder.WithPart(finishedGood);
             item = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -155,17 +152,22 @@ namespace Allors.Domain
                 .WithName("category")
                 .Build();
 
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good = new GoodBuilder(this.Session)
-             .WithSku("10101")
-             .WithVatRate(vatRate21)
+                .WithSku("10101")
+                .WithVatRate(vatRate21)
                 .WithName("good1")
-             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-             .WithPrimaryProductCategory(category)
-             .Build();
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
+                .Build();
 
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithGood(good)
+                .WithPart(finishedGood)
                 .Build();
 
             this.Session.Derive();
@@ -204,17 +206,22 @@ namespace Allors.Domain
                 .WithName("category")
                 .Build();
 
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good = new GoodBuilder(this.Session)
-             .WithSku("10101")
-             .WithVatRate(vatRate21)
+                .WithSku("10101")
+                .WithVatRate(vatRate21)
                 .WithName("good1")
-             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-             .WithUnitOfMeasure(uom)
-             .WithPrimaryProductCategory(category)
-             .Build();
-            
+                .WithUnitOfMeasure(uom)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
+                .Build();  
+
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithGood(good)
+                .WithPart(finishedGood)
                 .Build();
 
             this.Session.Derive();
@@ -234,16 +241,21 @@ namespace Allors.Domain
                 .WithName("category")
                 .Build();
 
-            var good = new GoodBuilder(this.Session)
-             .WithSku("10101")
-             .WithVatRate(vatRate21)
-                .WithName("good1")
-             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-             .WithPrimaryProductCategory(category)
-             .Build();
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            var good = new GoodBuilder(this.Session)
+                .WithSku("10101")
+                .WithVatRate(vatRate21)
+                .WithName("good1")
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
+                .Build();
+
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(5).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -360,22 +372,22 @@ namespace Allors.Domain
             Assert.Equal(10, item1.QuantityPendingShipment);
             Assert.Equal(10, item1.QuantityReserved);
             Assert.Equal(0, item1.QuantityShortFalled);
-                
+
             Assert.Equal(0, item2.QuantityRequestsShipping);
             Assert.Equal(20, item2.QuantityPendingShipment);
             Assert.Equal(20, item2.QuantityReserved);
             Assert.Equal(0, item2.QuantityShortFalled);
-                
+
             Assert.Equal(0, item3.QuantityRequestsShipping);
             Assert.Equal(10, item3.QuantityPendingShipment);
             Assert.Equal(10, item3.QuantityReserved);
             Assert.Equal(0, item3.QuantityShortFalled);
-                
+
             Assert.Equal(0, item4.QuantityRequestsShipping);
             Assert.Equal(20, item4.QuantityPendingShipment);
             Assert.Equal(20, item4.QuantityReserved);
             Assert.Equal(0, item4.QuantityShortFalled);
-                
+
             Assert.Equal(45, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(105, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
         }
@@ -389,16 +401,21 @@ namespace Allors.Domain
                 .WithName("category")
                 .Build();
 
-            var good = new GoodBuilder(this.Session)
-             .WithSku("10101")
-             .WithVatRate(vatRate21)
-                .WithName("good1")
-             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-             .WithPrimaryProductCategory(category)
-             .Build();
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithGood(good).Build();
+            var good = new GoodBuilder(this.Session)
+                .WithSku("10101")
+                .WithVatRate(vatRate21)
+                .WithName("good1")
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
+                .Build();
+
+            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(5).WithReason(new VarianceReasons(this.Session).Ruined).Build());
 
             this.Session.Derive();
@@ -430,9 +447,9 @@ namespace Allors.Domain
 
             var item1 = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
             order.AddSalesOrderItem(item1);
-            
+
             this.Session.Derive();
-            
+
             order.Confirm();
 
             this.Session.Derive();
@@ -451,7 +468,7 @@ namespace Allors.Domain
             Assert.Equal(10, item1.QuantityReserved);
             Assert.Equal(7, item1.QuantityShortFalled);
         }
-        
+
         //[Fact]
         //public void ReportNonSerialisedInventory()
         //{
@@ -514,33 +531,33 @@ namespace Allors.Domain
         //        .WithProductPurchasePrice(purchasePrice)
         //        .Build();
 
-            //var valueByParameter = new Dictionary<Predicate, object>();
+        //var valueByParameter = new Dictionary<Predicate, object>();
 
-            //var preparedExtent = new Reports(this.DatabaseSession).FindByName(Constants.REPORTNONSERIALIZEDINVENTORY).PreparedExtent;
-            //var parameters = preparedExtent.Parameters;
+        //var preparedExtent = new Reports(this.DatabaseSession).FindByName(Constants.REPORTNONSERIALIZEDINVENTORY).PreparedExtent;
+        //var parameters = preparedExtent.Parameters;
 
-            //var extent = preparedExtent.Execute(valueByParameter);
+        //var extent = preparedExtent.Execute(valueByParameter);
 
-            //Assert.Equal(3, extent.Count);
-            //Assert.Contains(goodItem, extent);
-            //Assert.Contains(damagedItem, extent);
-            //Assert.Contains(partItem, extent);
+        //Assert.Equal(3, extent.Count);
+        //Assert.Contains(goodItem, extent);
+        //Assert.Contains(damagedItem, extent);
+        //Assert.Contains(partItem, extent);
 
-            //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged;
+        //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged;
 
-            //extent = preparedExtent.Execute(valueByParameter);
+        //extent = preparedExtent.Execute(valueByParameter);
 
-            //Assert.Equal(1, extent.Count);
-            //Assert.Contains(damagedItem, extent);
+        //Assert.Equal(1, extent.Count);
+        //Assert.Contains(damagedItem, extent);
 
-            //valueByParameter.Clear();
-            //valueByParameter[parameters[4]] = level1;
+        //valueByParameter.Clear();
+        //valueByParameter[parameters[4]] = level1;
 
-            //extent = preparedExtent.Execute(valueByParameter);
+        //extent = preparedExtent.Execute(valueByParameter);
 
-            //Assert.Equal(2, extent.Count);
-            //Assert.Contains(goodItem, extent);
-            //Assert.Contains(damagedItem, extent);
+        //Assert.Equal(2, extent.Count);
+        //Assert.Contains(goodItem, extent);
+        //Assert.Contains(damagedItem, extent);
         //}
     }
 }

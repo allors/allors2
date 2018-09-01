@@ -34,7 +34,7 @@ namespace Allors.Domain
                 .WithInternalOrganisation(this.InternalOrganisation)
                 .WithManufacturerId("10101")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithSku("sku")
+                .WithPartId("1")
                 .Build();
 
             this.Session.Commit();
@@ -58,9 +58,8 @@ namespace Allors.Domain
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
-            builder.WithGood(new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithName("good")
+            builder.WithPart(new FinishedGoodBuilder(this.Session)
+                .WithName("finished good")
                 .Build());
 
             builder.Build();
@@ -77,7 +76,7 @@ namespace Allors.Domain
                             .WithInternalOrganisation(this.InternalOrganisation)
                             .WithName("part")
                             .WithManufacturerId("10101")
-                            .WithSku("1")
+                            .WithPartId("1")
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
                 .Build();

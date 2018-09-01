@@ -8,16 +8,6 @@ namespace Allors.Repository
     public partial interface InvoiceItem : AccessControlledObject, Transitional, Commentable, Priceable, Deletable
     {
         #region Allors
-        [Id("4daa5c18-85c6-49c0-8f23-8e419e44471c")]
-        [AssociationId("061348dc-59a2-41d1-92bb-ccf16a1f31aa")]
-        [RoleId("a037ec30-f0f4-4dda-8eb5-80a042b26399")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        Product Product { get; set; }
-
-        #region Allors
         [Id("39CB3BE2-2E0D-4124-8241-866860C2BDC0")]
         [AssociationId("1A2D792C-1453-458A-80EE-5EDE6FA5663C")]
         [RoleId("1D6A2E2B-EE3D-4F9E-9F08-905D2F6E09B9")]
@@ -68,15 +58,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         InvoiceItem AdjustmentFor { get; set; }
-
-        #region Allors
-        [Id("6df95cf4-115f-4f43-aaea-52313c47d824")]
-        [AssociationId("93ba1265-4050-41c1-aaf8-d09786889245")]
-        [RoleId("0abd9811-a8ac-42bf-9113-4f9760cfe9eb")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        SerialisedInventoryItem SerializedInventoryItem { get; set; }
 
         #region Allors
         [Id("7eed800d-c2b5-4837-a288-150803578b27")]

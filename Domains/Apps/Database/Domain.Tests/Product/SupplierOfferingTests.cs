@@ -38,14 +38,6 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithFromDate(DateTime.UtcNow)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
@@ -56,13 +48,6 @@ namespace Allors.Domain
             this.Session.Commit();
 
             var builder = new SupplierOfferingBuilder(this.Session);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithProduct(good);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -83,13 +68,6 @@ namespace Allors.Domain
 
             builder.WithPart(part);
             builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            var supplierOffering = builder.Build(); 
-            supplierOffering.RemoveProduct();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -118,16 +96,24 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
+            var finishedGood = new FinishedGoodBuilder(this.Session)
+                .WithInternalOrganisation(this.InternalOrganisation)
+                .WithManufacturerId("10101")
+                .WithName("finished good")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             var good = new GoodBuilder(this.Session)
                 .WithName("good")
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(finishedGood)
                 .WithSupplier(supplier)
                 .WithProductPurchasePrice(purchasePrice)
                 .WithFromDate(DateTime.UtcNow)
@@ -135,7 +121,7 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.Equal(2, good.InventoryItemsWhereGood.Count);
+            Assert.Equal(2, finishedGood.InventoryItemsWherePart.Count);
             Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
@@ -175,10 +161,12 @@ namespace Allors.Domain
                 .WithFinishedGood(finishedGood)
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithFinishedGood(finishedGood)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithProduct(good)
+                .WithPart(finishedGood)
                 .WithSupplier(supplier)
                 .WithProductPurchasePrice(purchasePrice)
                 .WithFromDate(DateTime.UtcNow)

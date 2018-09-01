@@ -24,52 +24,29 @@ namespace Allors.Domain
 
     public partial class Good
     {
-        private bool IsDeletable => !this.ExistDeploymentsWhereProductOffering 
-            && !this.ExistEngagementItemsWhereProduct
-            && !this.ExistGeneralLedgerAccountsWhereCostUnitsAllowed
-            && !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit
-            && !this.ExistQuoteItemsWhereProduct
-            && !this.ExistShipmentItemsWhereGood 
-            && !this.ExistWorkEffortGoodStandardsWhereGood
-            && !this.ExistMarketingPackageWhereProductsUsedIn
-            && !this.ExistMarketingPackagesWhereProduct
-            && !this.ExistOrganisationGlAccountsWhereProduct
-            && !this.ExistProductConfigurationsWhereProductsUsedIn
-            && !this.ExistProductConfigurationsWhereProduct
-            && !this.ExistPurchaseOrderItemsWhereProduct 
-            && !this.ExistRequestItemsWhereProduct
-            && !this.ExistInvoiceItemsWhereProduct
-            && !this.ExistSalesOrderItemsWhereProduct
-            && !this.ExistSupplierOfferingsWhereProduct
-            && !this.ExistWorkEffortTypesWhereProductToProduce
-            && !this.ExistEngagementItemsWhereProduct
-            && !this.ExistProductWhereVariant;
-
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            // TODO:
-            if (this.ExistInventoryItemsWhereGood)
-            {
-                foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
-                {
-                    derivation.AddDependency(inventoryItem, this);
-                }
-            }
-
-            if (derivation.HasChangedAssociation(this, this.Meta.SupplierOfferingsWhereProduct))
-            {
-                derivation.AddDerivable(this);
-            }
-        }
+        private bool IsDeletable => !this.ExistDeploymentsWhereProductOffering && 
+                                    !this.ExistEngagementItemsWhereProduct && 
+                                    !this.ExistGeneralLedgerAccountsWhereCostUnitsAllowed && 
+                                    !this.ExistGeneralLedgerAccountsWhereDefaultCostUnit && 
+                                    !this.ExistQuoteItemsWhereProduct && 
+                                    !this.ExistShipmentItemsWhereGood && 
+                                    !this.ExistWorkEffortGoodStandardsWhereGood && 
+                                    !this.ExistMarketingPackageWhereProductsUsedIn && 
+                                    !this.ExistMarketingPackagesWhereProduct && 
+                                    !this.ExistOrganisationGlAccountsWhereProduct && 
+                                    !this.ExistProductConfigurationsWhereProductsUsedIn && 
+                                    !this.ExistProductConfigurationsWhereProduct && 
+                                    !this.ExistRequestItemsWhereProduct && 
+                                    !this.ExistSalesInvoiceItemsWhereProduct && 
+                                    !this.ExistSalesOrderItemsWhereProduct && 
+                                    !this.ExistWorkEffortTypesWhereProductToProduce && 
+                                    !this.ExistEngagementItemsWhereProduct && 
+                                    !this.ExistProductWhereVariant;
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
             var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
-
-            derivation.Validation.AssertExistsAtMostOne(this, M.Good.FinishedGood, M.Good.InventoryItemKind);
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
             {
@@ -81,17 +58,9 @@ namespace Allors.Domain
                 this.Description = this.LocalisedDescriptions.First(x => x.Locale.Equals(defaultLocale)).Text;
             }
 
-            if (this.ProductCategories.Count == 1 && !this.ExistPrimaryProductCategory)
-            {
-                this.PrimaryProductCategory = this.ProductCategories.First;
-            }
+            this.AddProductCategory(this.PrimaryProductCategory);
 
-            if (this.ExistPrimaryProductCategory && !this.ExistProductCategories)
-            {
-                this.AddProductCategory(this.PrimaryProductCategory);
-            }
-
-            foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWhereProduct)
+            foreach (SupplierOffering supplierOffering in this.FinishedGood.SupplierOfferingsWherePart)
             {
                 if (supplierOffering.FromDate <= DateTime.UtcNow && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
                 {
@@ -170,7 +139,7 @@ namespace Allors.Domain
         {
             this.QuantityOnHand = 0;
 
-            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
             {
                 if (inventoryItem is NonSerialisedInventoryItem)
                 {
@@ -184,7 +153,7 @@ namespace Allors.Domain
         {
             this.AvailableToPromise = 0;
 
-            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
             {
                 if (inventoryItem is NonSerialisedInventoryItem)
                 {
@@ -198,7 +167,7 @@ namespace Allors.Domain
         {
             this.QuantityCommittedOut = 0;
 
-            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
             {
                 if (inventoryItem is NonSerialisedInventoryItem)
                 {
@@ -212,7 +181,7 @@ namespace Allors.Domain
         {
             this.QuantityExpectedIn = 0;
 
-            foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
+            foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
             {
                 if (inventoryItem is NonSerialisedInventoryItem)
                 {
@@ -260,75 +229,7 @@ namespace Allors.Domain
                 {
                     revenue.Delete();
                 }
-
-                foreach (InventoryItem inventoryItem in this.InventoryItemsWhereGood)
-                {
-                    inventoryItem.Delete();
-                }
             }
-        }
-
-        public string DeriveDetails()
-        {
-            var builder = new StringBuilder();
-
-            if (this.ExistManufacturedBy)
-            {
-                builder.Append($", Manufacturer: {this.ManufacturedBy.PartyName}");
-            }
-
-            foreach (ProductFeature feature in this.ProductFeatureApplicabilitiesWhereAvailableFor)
-            {
-                if (feature is Brand)
-                {
-                    var brand = (Brand)feature;
-                    builder.Append($", Brand: {brand.Name}");
-                }
-                if (feature is Model)
-                {
-                    var model = (Model)feature;
-                    builder.Append($", Model: {model.Name}");
-                }
-            }
-
-            if (this.InventoryItemsWhereGood.First is SerialisedInventoryItem serialisedInventoryItem)
-            {
-                builder.Append($", SN: {serialisedInventoryItem.SerialNumber}");
-
-                if (serialisedInventoryItem.ExistManufacturingYear)
-                {
-                    builder.Append($", YOM: {serialisedInventoryItem.ManufacturingYear}");
-                }
-
-                foreach (SerialisedInventoryItemCharacteristic characteristic in serialisedInventoryItem.SerialisedInventoryItemCharacteristics)
-                {
-                    if (characteristic.ExistValue)
-                    {
-                        var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
-                        if (characteristicType.ExistUnitOfMeasure)
-                        {
-                            var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
-                                          ? characteristicType.UnitOfMeasure.Abbreviation
-                                          : characteristicType.UnitOfMeasure.Name;
-                            builder.Append(
-                                $", {characteristicType.Name}: {characteristic.Value} {uom}");
-                        }
-                        else
-                        {
-                            builder.Append($", {characteristicType.Name}: {characteristic.Value}");
-                        }
-                    }
-                }
-            }
-
-            var details = builder.ToString();
-
-            if (details.StartsWith(","))
-            {
-                details = details.Substring(2);
-            }
-
-            return details;
         }
     }
 }

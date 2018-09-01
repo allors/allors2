@@ -73,16 +73,6 @@ namespace Allors.Repository
         public decimal MinimalOrderQuantity { get; set; }
         
         #region Allors
-        [Id("cd1ce1c1-222f-461b-8d9c-7d58f997d129")]
-        [AssociationId("f719728f-7def-44d7-8c68-0996f3834887")]
-        [RoleId("9204493f-f47d-4fb6-bef7-de91fb2cd53f")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Product Product { get; set; }
-        
-        #region Allors
         [Id("d2de1e9e-196f-43d7-903e-566a4858bc02")]
         [AssociationId("a78c953d-0feb-463a-a7c6-e00640db9e44")]
         [RoleId("4dfd5ba4-ebdf-4ea1-b4d4-ecff642525cb")]

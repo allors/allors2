@@ -33,10 +33,6 @@ namespace Allors.Repository
         
         public UnitOfMeasure UnitOfMeasure { get; set; }
         
-        public ProductCategory[] DerivedProductCategories { get; set; }
-        
-        public Good Good { get; set; }
-        
         public Facility Facility { get; set; }
 
         public string ReferenceNumber { get; set; }
@@ -220,6 +216,15 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.ManyToMany)]
         public Media[] Photos { get; set; }
+
+        #region Allors
+        [Id("B5D9E50B-3004-47C0-9C8D-62935DB15ECC")]
+        [AssociationId("609D27BC-96C9-48EF-9516-6B45AECBEC20")]
+        [RoleId("DAEF2150-D69C-4255-B78E-70ACFA63EA06")]
+        #endregion
+        [Size(-1)]
+        [Workspace]
+        public string Details { get; set; }
 
         #region inherited methods
         public void OnBuild(){}

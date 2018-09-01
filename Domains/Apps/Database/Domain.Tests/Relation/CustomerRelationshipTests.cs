@@ -186,8 +186,8 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             this.Session.Derive();
@@ -257,8 +257,8 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithName("good")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
             this.Session.Derive();

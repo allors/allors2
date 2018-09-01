@@ -15,20 +15,30 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
-        public Product Product { get; set; }
         public string InternalComment { get; set; }
+
         public SalesTerm[] SalesTerms { get; set; }
+
         public decimal TotalInvoiceAdjustment { get; set; }
+
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
+
         public InvoiceItem AdjustmentFor { get; set; }
-        public SerialisedInventoryItem SerializedInventoryItem { get; set; }
+
         public string Message { get; set; }
+
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
+
         public decimal AmountPaid { get; set; }
+
         public decimal Quantity { get; set; }
+
         public string Description { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public string Comment { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }
@@ -173,6 +183,15 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public Part Part { get; set; }
+
+        #region Allors
+        [Id("2E3887BF-A895-4D25-9519-9B0ADA1DE6C4")]
+        [AssociationId("D05D0646-8E5C-4853-A8D6-A857ABD91221")]
+        [RoleId("4CEEFC88-A01E-462F-A52F-D9B17D0DBF96")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        public Product Product { get; set; }
 
         #region inherited methods
 

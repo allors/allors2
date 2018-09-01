@@ -58,26 +58,6 @@ namespace Allors.Repository
         [Derived]
         [Workspace]
         UnitOfMeasure UnitOfMeasure { get; set; }
-
-        #region Allors
-        [Id("406E0951-1DAB-4053-88D1-E15AD5D1E833")]
-        [AssociationId("5D0AD2E3-D32B-4668-879D-ED663880E7BC")]
-        [RoleId("3CFD95F7-18C2-4D0A-BE0A-A46080ED5252")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Derived]
-        ProductCategory[] DerivedProductCategories { get; set; }
-
-        #region Allors
-        [Id("7DB2CA47-D31C-4489-8E53-15F702EA4DD7")]
-        [AssociationId("5A97682E-E7B4-417F-B7FB-0306C1F6A151")]
-        [RoleId("78592A7B-7599-4240-95AF-806B0C0C617E")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        Good Good { get; set; }
         
         #region Allors
         [Id("BC234CEA-DC2E-4BDC-B911-5A12D1D6F354")]

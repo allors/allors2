@@ -26,11 +26,6 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (this.Product != null)
-            {
-                derivation.AddDependency(this.Product, this);
-            }
-
             if (this.Part != null)
             {
                 derivation.AddDependency(this.Part, this);
@@ -41,62 +36,27 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.SupplierOffering.Part, M.SupplierOffering.Product);
-            derivation.Validation.AssertExistsAtMostOne(this, M.SupplierOffering.Part, M.SupplierOffering.Product);
-
             this.AppsOnDeriveInventoryItem(derivation);
         }
 
         public void AppsOnDeriveInventoryItem(IDerivation derivation)
         {
-            Good good = null;
-            if (this.ExistProduct)
+            if (this.ExistPart && this.Part.ExistInventoryItemKind &&
+                this.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
             {
-                good = this.Product as Good;
-            }
+                var internalOrganisation = this.Part.InternalOrganisation;
 
-            if (this.Supplier is Organisation && good != null)
-            {
-                if (good.ExistInventoryItemKind && good.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
+                if (internalOrganisation != null)
                 {
-                    foreach (VendorProduct vendorProduct in good.VendorProductsWhereProduct)
+                    foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
                     {
-                        foreach (Facility facility in vendorProduct.InternalOrganisation.FacilitiesWhereOwner)
+                        var inventoryItems = this.Part.InventoryItemsWherePart;
+                        inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
+                        var inventoryItem = inventoryItems.First;
+
+                        if (inventoryItem == null)
                         {
-                            var inventoryItems = good.InventoryItemsWhereGood;
-                            inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                            var inventoryItem = inventoryItems.First;
-
-                            if (inventoryItem == null)
-                            {
-                                new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                                    .WithFacility(facility)
-                                    .WithGood(good).Build();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (good.ExistFinishedGood && good.FinishedGood.ExistInventoryItemKind &&
-                        good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.Strategy.Session).NonSerialised))
-                    {
-                        var internalOrganisation = good.FinishedGood.InternalOrganisation;
-
-                        if (internalOrganisation != null)
-                        {
-                            foreach (Facility facility in internalOrganisation.FacilitiesWhereOwner)
-                            {
-                                var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
-                                inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, facility);
-                                var inventoryItem = inventoryItems.First;
-
-                                if (inventoryItem == null)
-                                {
-                                    new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility)
-                                        .WithPart(good.FinishedGood).Build();
-                                }
-                            }
+                            new NonSerialisedInventoryItemBuilder(this.Strategy.Session).WithFacility(facility).WithPart(this.Part).Build();
                         }
                     }
                 }

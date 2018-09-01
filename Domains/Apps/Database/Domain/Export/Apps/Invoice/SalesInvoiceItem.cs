@@ -83,7 +83,7 @@ namespace Allors.Domain
 
             this.AppsOnDeriveAmountPaid(derivation);
 
-            derivation.Validation.AssertExistsAtMostOne(this, this.Meta.Product, this.Meta.ProductFeature, this.Meta.TimeEntries);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesInvoiceItem.Product, M.SalesInvoiceItem.ProductFeature, M.SalesInvoiceItem.SerialisedInventoryItem, M.SalesInvoiceItem.TimeEntries);
 
             if (this.ExistInvoiceItemType && this.Quantity == 0)
             {
@@ -93,12 +93,6 @@ namespace Allors.Domain
             if (this.ExistInvoiceItemType && this.IsSubTotalItem && this.Quantity <= 0)
             {
                 derivation.Validation.AssertExists(this, this.Meta.Quantity);
-            }
-
-            if (derivation.IsCreated(this) && !this.ExistOrderItemBillingsWhereSalesInvoiceItem && this.ExistProduct && this.Product is Good)
-            {
-                var good = (Good)this.Product;
-                this.Details = good.DeriveDetails();
             }
         }
 
@@ -460,14 +454,14 @@ namespace Allors.Domain
             this.InitialProfitMargin = 0;
             this.MaintainedProfitMargin = 0;
 
-            if (this.ExistProduct &&
+            if (this.Product is Good good &&
                 this.ExistQuantity && this.Quantity > 0 &&
-                this.Product.ExistSupplierOfferingsWhereProduct &&
-                this.Product.SupplierOfferingsWhereProduct.Count == 1 &&
-                this.Product.SupplierOfferingsWhereProduct.First.ExistProductPurchasePrices)
+                good.FinishedGood.ExistSupplierOfferingsWherePart &&
+                good.FinishedGood.SupplierOfferingsWherePart.Count == 1 &&
+                good.FinishedGood.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
             {
                 ProductPurchasePrice productPurchasePrice = null;
-                var prices = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices;
+                var prices = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices;
                 foreach (ProductPurchasePrice purchasePrice in prices)
                 {
                     if (purchasePrice.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
@@ -479,8 +473,8 @@ namespace Allors.Domain
 
                 if (productPurchasePrice == null)
                 {
-                    var index = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices.Count;
-                    var lastKownPrice = this.Product.SupplierOfferingsWhereProduct.First.ProductPurchasePrices[index - 1];
+                    var index = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
+                    var lastKownPrice = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
                     productPurchasePrice = lastKownPrice;
                 }
 
