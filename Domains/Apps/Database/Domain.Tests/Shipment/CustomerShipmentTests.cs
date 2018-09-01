@@ -349,7 +349,11 @@ namespace Allors.Domain
             var acl = new AccessControlList(shipment, this.Session.GetUser());
             Assert.Equal(new CustomerShipmentStates(this.Session).Shipped, shipment.CustomerShipmentState);
             Assert.False(acl.CanExecute(M.CustomerShipment.Cancel));
+<<<<<<< HEAD
             Assert.False(acl.CanWrite(M.Shipment.HandlingInstruction));
+=======
+            Assert.False(acl.CanWrite(M.CustomerShipment.HandlingInstruction.RoleType));
+>>>>>>> 38d89a4ba6bd64e68c381d7560e2f7dd9a78280e
         }
 
         [Fact]

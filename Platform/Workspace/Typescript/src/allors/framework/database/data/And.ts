@@ -1,17 +1,17 @@
 import { Predicate } from './Predicate';
 
 export class And implements Predicate {
-  public predicates: Predicate[];
+  public operands: Predicate[];
 
   constructor(fields?: Partial<And>) {
     Object.assign(this, fields);
-    this.predicates = this.predicates ? this.predicates : [];
+    this.operands = this.operands ? this.operands : [];
   }
 
   public toJSON(): any {
     return {
-      _T: 'And',
-      ps: this.predicates,
+      kind: 'And',
+      operands: this.operands,
     };
   }
 }

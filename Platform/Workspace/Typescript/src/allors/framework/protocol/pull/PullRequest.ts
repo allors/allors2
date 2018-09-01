@@ -1,11 +1,8 @@
-import { Fetch } from "../../database/query/Fetch";
-import { Query } from "../../database/query/Query";
+import { Pull } from "../../database/data";
 
 export class PullRequest {
 
-  public fetches: Fetch[];
-
-  public queries: Query[];
+  public pulls: Pull[];
 
   constructor(fields?: Partial<PullRequest>) {
     Object.assign(this, fields);
@@ -13,8 +10,7 @@ export class PullRequest {
 
   public toJSON() {
     return {
-      f: this.fetches,
-      q: this.queries,
+      p: this.pulls,
     };
   }
 }
