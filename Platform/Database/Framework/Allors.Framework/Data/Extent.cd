@@ -68,7 +68,7 @@
       <Property Name="Operands" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAACCAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAQAACCAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Except.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -119,7 +119,7 @@
       <Property Name="Operands" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAACCAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAQAACCAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Intersect.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -168,17 +168,29 @@
       <Property Name="Operands" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAACCAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAQAACCAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Union.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Allors.Data.Extent">
+  <Class Name="Allors.Data.Filter">
     <Position X="6" Y="3.75" Width="1.5" />
+    <AssociationLine Name="Predicate" Type="Allors.Data.IPredicate" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="7.312" Y="3.75" />
+        <Point X="7.312" Y="3.125" />
+        <Point X="8.792" Y="3.125" Type="JumpStart" />
+        <Point X="8.958" Y="3.125" Type="JumpEnd" />
+        <Point X="11.25" Y="3.125" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAIAAAEAAAAAAAAAAAAAQAACAAAIAAIAAAAAAAAA=</HashCode>
-      <FileName>Data\Extent.cs</FileName>
+      <FileName>Data\Filter.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Predicate" />
+    </ShowAsAssociation>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="Allors.Data.ContainedIn">
@@ -205,7 +217,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Data.IPredicateContainer">
-    <Position X="8" Y="1.75" Width="1.5" />
+    <Position X="8" Y="1.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\IPredicateContainer.cs</FileName>

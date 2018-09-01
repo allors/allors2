@@ -22,6 +22,7 @@ namespace Allors.Server
 {
     using System.Linq;
 
+    using Allors.Data;
     using Allors.Meta;
     using Allors.Services;
 

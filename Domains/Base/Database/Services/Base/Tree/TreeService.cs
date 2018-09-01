@@ -22,6 +22,7 @@ namespace Allors.Services
 {
     using System.Collections.Concurrent;
 
+    using Allors.Data;
     using Allors.Meta;
 
     public class TreeService : ITreeService

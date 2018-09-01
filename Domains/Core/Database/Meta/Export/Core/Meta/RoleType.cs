@@ -60,12 +60,11 @@ namespace Allors.Meta
 
         IObjectType IRoleType.ObjectType => this.ObjectType;
 
+        IObjectType IPropertyType.ObjectType => this.objectType;
+
         public ObjectType ObjectType
         {
-            get
-            {
-                return this.objectType;
-            }
+            get => this.objectType;
 
             set
             {
@@ -77,10 +76,7 @@ namespace Allors.Meta
 
         public string SingularName
         {
-            get
-            {
-                return this.singularName;
-            }
+            get => this.singularName;
 
             set
             {
@@ -92,10 +88,7 @@ namespace Allors.Meta
 
         public string PluralName
         {
-            get
-            {
-                return this.pluralName;
-            }
+            get => this.pluralName;
 
             set
             {

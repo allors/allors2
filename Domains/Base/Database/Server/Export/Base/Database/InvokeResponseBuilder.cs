@@ -25,8 +25,7 @@ namespace Allors.Server
 
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Protocol.Remote;
-    using Allors.Protocol.Remote.Invoke;
+    using Allors.Server.Protocol.Invoke;
 
     public class InvokeResponseBuilder
     {

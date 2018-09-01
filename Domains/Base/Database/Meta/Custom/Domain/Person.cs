@@ -1,5 +1,7 @@
 namespace Allors.Meta
 {
+    using Allors.Data;
+
     public partial class MetaPerson
     {
         public Tree AngularHome;
@@ -13,7 +15,7 @@ namespace Allors.Meta
             this.MiddleName.RelationType.Workspace = true;
             
             var person = this;
-            this.AngularHome = new Tree(person)
+            this.AngularHome = new Tree(person.Class)
                     .Add(person.Photo);
         }
     }

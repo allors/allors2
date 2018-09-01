@@ -55,22 +55,22 @@ namespace Allors.Domain
 
         public User User => this.user;
 
-        public bool CanRead(PropertyType propertyType)
+        public bool CanRead(IPropertyType propertyType)
         {
             return this.IsPermitted(propertyType, Operations.Read);
         }
 
-        public bool CanWrite(RoleType roleType)
+        public bool CanWrite(IRoleType roleType)
         {
             return this.IsPermitted(roleType, Operations.Write);
         }
 
-        public bool CanExecute(MethodType methodType)
+        public bool CanExecute(IMethodType methodType)
         {
             return this.IsPermitted(methodType, Operations.Execute);
         }
 
-        public bool IsPermitted(OperandType operandType, Operations operation)
+        public bool IsPermitted(IOperandType operandType, Operations operation)
         {
             if (operandType.Id.ToString().ToUpper() == "0BC3A4E1-C3EB-4312-A699-D28EB778EA05")
             {

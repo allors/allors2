@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Domain.Query.Query">
+    <Position X="3.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAECQAAAAAAAUCAQAAABAgAAAAIAAAQAAAAA=</HashCode>
+      <FileName>Export\Base\Query\Query.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Except" />
+      <Property Name="Include" />
+      <Property Name="Intersect" />
+      <Property Name="ObjectType" />
+      <Property Name="Page" />
+      <Property Name="Predicate" />
+      <Property Name="Union" />
+      <Property Name="Sort" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Meta.Tree" Collapsed="true">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Allors.Meta.Composite" Collapsed="true">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Allors.Domain.Query.Page" Collapsed="true">
+    <Position X="7.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAEAA=</HashCode>
+      <FileName>Export\Base\Query\Page.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Domain.Query.Predicate" Collapsed="true">
+    <Position X="7.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAEAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Export\Base\Query\Predicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Sort" Collapsed="true">
+    <Position X="7.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

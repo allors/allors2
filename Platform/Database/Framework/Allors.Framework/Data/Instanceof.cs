@@ -23,7 +23,7 @@ namespace Allors.Data
     using System.Collections.Generic;
 
     using Allors.Meta;
-    using Allors.Protocol.Data;
+    using Allors.Data.Protocol;
 
     public class Instanceof : IPropertyPredicate
     {

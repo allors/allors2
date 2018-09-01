@@ -34,6 +34,12 @@ namespace Allors.Meta
 
         string SingularFullName { get; }
 
+        string PluralName { get; }
+
+        string PluralPropertyName { get; }
+
+        string PluralFullName { get; }
+
         IObjectType ObjectType { get; }
 
         IAssociationType AssociationType { get; }

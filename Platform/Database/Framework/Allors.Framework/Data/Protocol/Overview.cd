@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Allors.Data.Protocol.Pull">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAgAAAAAAAAAAgAAAAAAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Protocol\Pull.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Extent" />
+      <Property Name="Results" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Data.Protocol.Extent">
+    <Position X="6.25" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAEBAAAAAAAAAAAAQAAACAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Data\Protocol\Extent.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Operands" />
+      <Property Name="Predicate" />
+      <Property Name="Sorting" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Data.Protocol.Result">
+    <Position X="6.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAIAAAAACAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
+      <FileName>Data\Protocol\Result.cs</FileName>
+      <NewMemberFileName>Data\Protocol\Pull.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Path" />
+      <Property Name="Include" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Data.Protocol.Predicate">
+    <Position X="11.75" Y="0.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAIAgAAAAABAAAAgAAAAAAAAAAASAAEAAIAiAAEAAAA=</HashCode>
+      <FileName>Data\Protocol\Predicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Data.Protocol.Sort">
+    <Position X="9.25" Y="1.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Protocol\Sort.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Data.Protocol.Path">
+    <Position X="9.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Protocol\Path.cs</FileName>
+      <NewMemberFileName>Data\Protocol\Tree.cs</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Data.Protocol.TreeNode">
+    <Position X="11.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Protocol\TreeNode.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TreeNodes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Data.Protocol.Tree">
+    <Position X="9.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAABAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Protocol\Tree.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="TreeNodes" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

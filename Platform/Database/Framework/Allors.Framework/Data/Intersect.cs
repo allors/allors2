@@ -23,7 +23,8 @@ namespace Allors.Data
     using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Protocol.Data;
+    using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class Intersect : IExtentOperator
     {
@@ -31,6 +32,8 @@ namespace Allors.Data
         {
             this.Operands = operands;
         }
+
+        public IComposite ObjectType => this.Operands?[0].ObjectType;
 
         public IExtent[] Operands { get; set; }
 
@@ -47,13 +50,13 @@ namespace Allors.Data
             return extent;
         }
 
-        public Protocol.Data.Extent Save()
+        public Protocol.Extent Save()
         {
-            return new Protocol.Data.Extent
+            return new Protocol.Extent
             {
                 Kind = ExtentKind.Intersect,
                 Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                Sorting = this.Sorting.Select(v => new Protocol.Data.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                Sorting = this.Sorting.Select(v => new Protocol.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
             };
         }
     }

@@ -21,8 +21,8 @@
 namespace Allors.Server
 {
     using Allors.Domain.Query;
-    using Allors.Protocol.Remote;
-    using Allors.Protocol.Remote.Pull;
+    using Allors.Server.Protocol;
+    using Allors.Server.Protocol.Pull;
 
     public static class PullRequestPageExtensions
     {

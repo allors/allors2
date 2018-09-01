@@ -20,7 +20,10 @@
 
 namespace Allors.Domain.Query
 {
+    using Allors.Data;
     using Allors.Meta;
+
+    using Sort = Allors.Sort;
 
     public class Query
     {

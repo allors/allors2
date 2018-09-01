@@ -23,6 +23,7 @@ namespace Tests
     using System.Collections.Generic;
 
     using Allors;
+    using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
 
@@ -55,7 +56,7 @@ namespace Tests
             var path = new Path(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
 
             var aclMock = new Mock<IAccessControlList>();
-            aclMock.Setup(acl => acl.CanRead(It.IsAny<PropertyType>())).Returns(true);
+            aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
             var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
 
             var result = (ISet<object>)path.Get(c1a, acls);
@@ -91,7 +92,7 @@ namespace Tests
             var path = new Path(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
 
             var aclMock = new Mock<IAccessControlList>();
-            aclMock.Setup(acl => acl.CanRead(It.IsAny<PropertyType>())).Returns(true);
+            aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
             var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
 
             var result = (ISet<object>)path.Get(c1a, acls);
@@ -128,7 +129,7 @@ namespace Tests
             Path.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out path);
 
             var aclMock = new Mock<IAccessControlList>();
-            aclMock.Setup(acl => acl.CanRead(It.IsAny<PropertyType>())).Returns(true);
+            aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
             var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
 
             var result = (C1)path.Get(c2A, acls);

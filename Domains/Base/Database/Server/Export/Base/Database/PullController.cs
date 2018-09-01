@@ -24,16 +24,16 @@ namespace Allors.Server.Controllers
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Protocol.Remote.Pull;
+    using Allors.Server.Protocol.Pull;
     using Allors.Services;
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.Extensions.Logging;
-
-    using PullExtent = Allors.Server.PullExtent;
 
     public class PullController : Controller
     {
@@ -63,8 +63,45 @@ namespace Allors.Server.Controllers
                             {
                                 var response = new PullResponseBuilder(session.GetUser());
 
-                                var pull = new Pull(session, req);
-                                pull.Resolve(response);
+                                // TODO: Pull
+                                if (req.P != null)
+                                {
+                                    foreach (var p in req.P)
+                                    {
+                                        var pull = p.Load(session);
+                                        var extent = pull.Extent.Build(session, pull.Arguments);
+                                        if (pull.Results != null)
+                                        {
+                                            foreach (var result in pull.Results)
+                                            {
+                                                var name = result.Name ?? pull.DefaultResultName(result);
+
+                                                if (result.Skip.HasValue)
+                                                {
+                                                    var paged = extent.ToArray().Skip(result.Skip.Value);
+                                                    if (result.Take.HasValue)
+                                                    {
+                                                        paged = paged.Take(result.Take.Value);
+                                                    }
+
+                                                    paged = paged.ToArray();
+
+                                                    response.AddValue(name + "_total", extent.Count);
+                                                    response.AddCollection(name, paged, result.Include);
+                                                }
+                                                else
+                                                {
+                                                    response.AddCollection(name, extent.ToArray(), result.Include);
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var name = pull.DefaultResultName();
+                                            response.AddCollection(name, extent.ToArray());
+                                        }
+                                    }
+                                }
 
                                 #region Deprecated
                                 if (req.Q != null)

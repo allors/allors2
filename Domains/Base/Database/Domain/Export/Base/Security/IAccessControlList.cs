@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AccessControlList.cs" company="Allors bvba">
+// <copyright file="IAccessControlList.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -26,12 +26,12 @@ namespace Allors.Domain
     {
         User User { get; }
         
-        bool CanRead(PropertyType propertyType);
+        bool CanRead(IPropertyType propertyType);
 
-        bool CanWrite(RoleType roleType);
+        bool CanWrite(IRoleType roleType);
 
-        bool CanExecute(MethodType methodType);
+        bool CanExecute(IMethodType methodType);
 
-        bool IsPermitted(OperandType operandType, Operations operation);
+        bool IsPermitted(IOperandType operandType, Operations operation);
     }
 }

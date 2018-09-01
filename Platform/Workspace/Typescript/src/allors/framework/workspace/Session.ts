@@ -1,10 +1,10 @@
-import { PushRequest } from './../database/push/PushRequest';
-import { PushRequestNewObject } from './../database/push/PushRequestNewObject';
-import { PushRequestObject } from './../database/push/PushRequestObject';
-import { PushResponse } from './../database/push/PushResponse';
-import { PushResponseNewObject } from './../database/push/PushResponseNewObject';
-import { ResponseType } from './../database/ResponseType';
-import { SyncResponse } from './../database/sync/SyncResponse';
+import { PushRequest } from './../protocol/push/PushRequest';
+import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
+import { PushRequestObject } from './../protocol/push/PushRequestObject';
+import { PushResponse } from './../protocol/push/PushResponse';
+import { PushResponseNewObject } from './../protocol/push/PushResponseNewObject';
+import { ResponseType } from './../protocol/ResponseType';
+import { SyncResponse } from './../protocol/sync/SyncResponse';
 
 import { INewSessionObject, ISessionObject, SessionObject } from './SessionObject';
 import { IWorkspace } from './Workspace';
