@@ -60,42 +60,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            this.Session.Derive();
-            this.Session.Commit();
-
-            var builder = new NonSerialisedInventoryItemBuilder(this.Session);
-            var item = builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithPart(new FinishedGoodBuilder(this.Session)
-                    .WithPartId("2")
-                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                    .Build());
-            item = builder.Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-
-            builder.WithPart(finishedGood);
-            item = builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            item.RemovePart();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
@@ -133,39 +97,6 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenInventoryItemForGood_WhenDerived_ThenNameIsGoodName()
-        {
-
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var category = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(category)
-                .WithFinishedGood(finishedGood)
-                .Build();
-
-            var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(finishedGood)
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(good.Name, item.Name);
-        }
-
-        [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenUnitOfMeasureIsPartUnitOfMeasure()
         {
             var uom = new UnitsOfMeasure(this.Session).Centimeter;
@@ -182,39 +113,6 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Equal(part.UnitOfMeasure, item.UnitOfMeasure);
-        }
-
-        [Fact]
-        public void GivenInventoryItemForGood_WhenDerived_ThenUnitOfMeasureIsGoodUnitOfMeasure()
-        {
-            var uom = new UnitsOfMeasure(this.Session).Centimeter;
-
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var category = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(uom)
-                .WithPrimaryProductCategory(category)
-                .WithFinishedGood(finishedGood)
-                .Build();  
-
-            var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(finishedGood)
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(good.UnitOfMeasure, item.UnitOfMeasure);
         }
 
         [Fact]

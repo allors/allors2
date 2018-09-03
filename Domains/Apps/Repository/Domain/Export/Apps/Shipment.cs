@@ -209,5 +209,11 @@ namespace Allors.Repository
         [RoleId("8f56ce24-500e-4db9-abce-c7a301c38fe6")]
         #endregion
         DateTime EstimatedArrivalDate { get; set; }
+
+        #region Allors
+        [Id("F6B4B2D0-A896-480E-A441-F15AB11A3CC9")]
+        #endregion
+        [Workspace]
+        void Invoice();
     }
 }

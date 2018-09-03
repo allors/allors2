@@ -37,12 +37,12 @@ namespace Allors.Domain
             if (this.ExistOrderItem && this.ExistShipmentItem)
             {
                 var orderShipmentsWhereShipmentItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem;
-                orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.SalesOrderItem, this.OrderItem);
+                orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.OrderItem, this.OrderItem);
 
                 if (orderShipmentsWhereShipmentItem.First == null)
                 {
                     new OrderShipmentBuilder(this.Strategy.Session)
-                        .WithPurchaseOrderItem((PurchaseOrderItem)this.OrderItem)
+                        .WithOrderItem(this.OrderItem)
                         .WithShipmentItem(this.ShipmentItem)
                         .WithQuantity(this.QuantityAccepted)
                         .Build();
@@ -62,10 +62,10 @@ namespace Allors.Domain
             {
                 var purchaseShipment = (PurchaseShipment)this.ShipmentItem.ShipmentWhereShipmentItem;
                 var internalOrganisation = purchaseShipment.Receiver;
-                var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].PurchaseOrderItem;
+                var purchaseOrderItem = this.ShipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as PurchaseOrderItem;
                 var defaultFacility = internalOrganisation?.DefaultFacility;
 
-                if (purchaseOrderItem.ExistPart)
+                if (purchaseOrderItem != null && purchaseOrderItem.ExistPart)
                 {
                     if (!this.ExistInventoryItem || !this.InventoryItem.Part.Equals(purchaseOrderItem.Part))
                     {

@@ -222,11 +222,13 @@ namespace Allors.Domain
             var virtualService = new DeliverableBasedServiceBuilder(this.Session)
                 .WithName("virtual service")
                 .WithVatRate(vatRate21)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
                 .Build();
 
             var physicalService = new DeliverableBasedServiceBuilder(this.Session)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
                 .Build();
 
             virtualService.AddVariant(physicalService);
@@ -254,6 +256,7 @@ namespace Allors.Domain
             var physicalService = new DeliverableBasedServiceBuilder(this.Session)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
                 .Build();
 
             new DiscountComponentBuilder(this.Session)
@@ -336,11 +339,13 @@ namespace Allors.Domain
             var virtualService = new TimeAndMaterialsServiceBuilder(this.Session)
                 .WithName("virtual service")
                 .WithVatRate(vatRate21)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
                 .Build();
 
             var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
                 .Build();
 
             virtualService.AddVariant(physicalService);
@@ -368,6 +373,7 @@ namespace Allors.Domain
             var physicalService = new TimeAndMaterialsServiceBuilder(this.Session)
                 .WithName("real service")
                 .WithVatRate(vatRate21)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
                 .Build();
 
             new SurchargeComponentBuilder(this.Session)

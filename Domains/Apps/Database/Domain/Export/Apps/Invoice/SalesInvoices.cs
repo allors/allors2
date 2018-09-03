@@ -50,7 +50,7 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, readyForPosting, reopen, credit);
             config.Deny(this.ObjectType, sent, Operations.Write);
-            config.Deny(this.ObjectType, sent, send, writeOff, cancelInvoice, reopen);
+            config.Deny(this.ObjectType, sent, send, cancelInvoice);
             config.Deny(this.ObjectType, paid, Operations.Write);
             config.Deny(this.ObjectType, paid, send, writeOff, cancelInvoice, reopen);
             config.Deny(this.ObjectType, writtenOff, Operations.Write);

@@ -25,7 +25,6 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class SalesInvoiceItemTests : DomainTest
     {
         private FinishedGood finishedGood;
@@ -119,7 +118,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for good
-            new BasePriceBuilder(this.Session).WithDescription("previous good")
+            new BasePriceBuilder(this.Session).WithDescription("previous good baseprice")
                 .WithProduct(this.good)
                 .WithPrice(8)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -127,7 +126,7 @@ namespace Allors.Domain
                 .Build();
 
             this.currentGood1BasePrice = new BasePriceBuilder(this.Session)
-                .WithDescription("current good")
+                .WithDescription("current good baseprice")
                 .WithProduct(this.good)
                 .WithPrice(10)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
@@ -135,14 +134,14 @@ namespace Allors.Domain
                 .Build();
 
             // future basePrice for good
-            new BasePriceBuilder(this.Session).WithDescription("future good")
+            new BasePriceBuilder(this.Session).WithDescription("future good baseprice")
                 .WithProduct(this.good)
                 .WithPrice(11)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             // previous basePrice for feature1
-            new BasePriceBuilder(this.Session).WithDescription("previous feature1")
+            new BasePriceBuilder(this.Session).WithDescription("previous feature1 price")
                 .WithProductFeature(this.feature1)
                 .WithPrice(0.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -150,14 +149,14 @@ namespace Allors.Domain
                 .Build();
 
             // future basePrice for feature1
-            new BasePriceBuilder(this.Session).WithDescription("future feature1")
+            new BasePriceBuilder(this.Session).WithDescription("future feature1 price")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2.5M)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             this.currentFeature1BasePrice = new BasePriceBuilder(this.Session)
-                .WithDescription("current feature1")
+                .WithDescription("current feature1 price")
                 .WithProductFeature(this.feature1)
                 .WithPrice(2)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
@@ -165,7 +164,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for feature2
-            new BasePriceBuilder(this.Session).WithDescription("previous feature2")
+            new BasePriceBuilder(this.Session).WithDescription("previous feature2 price")
                 .WithProductFeature(this.feature2)
                 .WithPrice(2)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
@@ -174,14 +173,14 @@ namespace Allors.Domain
 
             // future basePrice for feature2
             new BasePriceBuilder(this.Session)
-                .WithDescription("future feature2")
+                .WithDescription("future feature2 price")
                 .WithProductFeature(this.feature2)
                 .WithPrice(4)
                 .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .Build();
 
             new BasePriceBuilder(this.Session)
-                .WithDescription("current feature2")
+                .WithDescription("current feature2 price")
                 .WithProductFeature(this.feature2)
                 .WithPrice(3)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
@@ -189,7 +188,7 @@ namespace Allors.Domain
                 .Build();
 
             // previous basePrice for good with feature1
-            new BasePriceBuilder(this.Session).WithDescription("previous good/feature1")
+            new BasePriceBuilder(this.Session).WithDescription("previous good/feature1 baseprice")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(4)
@@ -199,7 +198,7 @@ namespace Allors.Domain
 
             // future basePrice for good with feature1
             new BasePriceBuilder(this.Session)
-                .WithDescription("future good/feature1")
+                .WithDescription("future good/feature1 baseprice")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(6)
@@ -207,7 +206,7 @@ namespace Allors.Domain
                 .Build();
 
             this.currentGood1Feature1BasePrice = new BasePriceBuilder(this.Session)
-                .WithDescription("current good/feature1")
+                .WithDescription("current good/feature1 baseprice")
                 .WithProduct(this.good)
                 .WithProductFeature(this.feature1)
                 .WithPrice(5)
@@ -264,7 +263,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesInvoiceItemStates(this.Session).ReadyForPosting, item.SalesInvoiceItemState);
             Assert.Equal(item.SalesInvoiceItemState, item.LastSalesInvoiceItemState);
             Assert.Equal(0, item.AmountPaid);
-            Assert.Equal(0, item.Quantity);
+            Assert.Equal(1, item.Quantity);
         }
 
         [Fact]
@@ -2245,8 +2244,8 @@ namespace Allors.Domain
 
             var childProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("child")
-                .WithParent(parentProductCategory).
-                Build();
+                .WithParent(parentProductCategory)
+                .Build();
 
             new SalesRepRelationshipBuilder(this.Session)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
@@ -2268,7 +2267,7 @@ namespace Allors.Domain
                 .WithCustomer(this.invoice.BillToCustomer)
                 .Build();
 
-            this.good.AddProductCategory(childProductCategory);
+            this.good.PrimaryProductCategory = childProductCategory;
 
             this.Session.Derive();
 
@@ -2323,7 +2322,7 @@ namespace Allors.Domain
                 .WithCustomer(this.invoice.BillToCustomer)
                 .Build();
 
-            this.good.AddProductCategory(parentProductCategory);
+            this.good.PrimaryProductCategory = parentProductCategory;
 
             this.Session.Derive();
 

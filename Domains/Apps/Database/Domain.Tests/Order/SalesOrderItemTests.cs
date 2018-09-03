@@ -785,7 +785,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedButNotCancelledOrRejected()
+        public void GivenOrderItem_WhenObjectStateIsCreated_ThenItemMayBeDeletedCancelledOrRejected()
         {
             var administrator = new PersonBuilder(this.Session).WithFirstName("Koen").WithUserName("admin").Build();
             var administrators = new UserGroups(this.Session).Administrators;
@@ -812,8 +812,8 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).Created, item.SalesOrderItemState);
             var acl = new AccessControlList(item, this.Session.GetUser());
             Assert.True(acl.CanExecute(M.SalesOrderItem.Delete));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Cancel));
-            Assert.False(acl.CanExecute(M.SalesOrderItem.Reject));
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Cancel));
+            Assert.True(acl.CanExecute(M.SalesOrderItem.Reject));
         }
 
         [Fact]
@@ -1014,6 +1014,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            this.order.Ship();
+
+            this.Session.Derive();
+
             var shipment = (CustomerShipment)this.order.ShipToAddress.ShipmentsWhereShipToAddress[0];
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -1033,6 +1037,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             shipment.Ship();
+
+            this.Session.Derive();
+
+            shipment.SalesInvoicesWhereShipment.First.Send();
 
             this.Session.Derive();
 
@@ -1285,7 +1293,7 @@ namespace Allors.Domain
             Assert.Equal(10, item.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
             Assert.Equal(110, item.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
-            Assert.Equal(100, item.OrderShipmentsWhereSalesOrderItem[0].Quantity);
+            Assert.Equal(100, item.OrderShipmentsWhereOrderItem[0].Quantity);
         }
 
         [Fact]
@@ -1574,7 +1582,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -1614,7 +1622,7 @@ namespace Allors.Domain
 
             Assert.Equal(20, item.QuantityShortFalled);
 
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -1697,7 +1705,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(2, shipment.ShipmentItems.Count);
             Assert.Equal(5, shipment.ShipmentItems[0].Quantity);
             Assert.Equal(7, shipment.ShipmentItems[1].Quantity);
@@ -1752,7 +1760,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -1907,7 +1915,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;

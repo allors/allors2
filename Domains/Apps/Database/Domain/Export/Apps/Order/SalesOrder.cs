@@ -804,12 +804,12 @@ namespace Allors.Domain
                     }
 
                     var orderShipmentsWhereShipmentItem = shipmentItem.OrderShipmentsWhereShipmentItem;
-                    orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.SalesOrderItem, orderItem);
+                    orderShipmentsWhereShipmentItem.Filter.AddEquals(M.OrderShipment.OrderItem, orderItem);
 
                     if (orderShipmentsWhereShipmentItem.First == null)
                     {
                         new OrderShipmentBuilder(this.Strategy.Session)
-                            .WithSalesOrderItem(orderItem)
+                            .WithOrderItem(orderItem)
                             .WithShipmentItem(shipmentItem)
                             .WithQuantity(orderItem.QuantityRequestsShipping)
                             .Build();
@@ -880,6 +880,8 @@ namespace Allors.Domain
         {
             var derivation = new Derivation(this.Strategy.Session);
 
+            this.AppsDeriveCanInvoice(derivation);
+
             if (this.CanInvoice)
             {
                 this.AppsInvoiceThis(derivation);
@@ -947,7 +949,7 @@ namespace Allors.Domain
                         .WithQuantity(orderItem.QuantityOrdered)
                         .WithAmount(leftToInvoice)
                         .WithOrderItem(orderItem)
-                        .WithSalesInvoiceItem(invoiceItem)
+                        .WithInvoiceItem(invoiceItem)
                         .Build();
                 }
             }

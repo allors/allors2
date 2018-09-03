@@ -1,50 +1,48 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
-    [Id("1f14fdb3-9e0f-4cea-b7c7-3ca2ab898f56")]
+    [Id("F54CE592-6935-401C-B341-198FD2E7888D")]
     #endregion
-    public partial class OrderItemBilling : Object 
+    public partial class ShipmentItemBilling : Object 
     {
         #region inherited properties
         #endregion
 
         #region Allors
-        [Id("214988fc-b5a2-4944-9c83-93a645a96853")]
-        [AssociationId("2007bddd-e78c-40a8-9015-5d3f027586c0")]
-        [RoleId("624c3c0b-faac-4542-aeb2-466952cbf832")]
+        [Id("46852AB7-2B72-433E-B029-404607A603CE")]
+        [AssociationId("C4296EE4-9BF1-4ABB-8CB1-06DB45B66294")]
+        [RoleId("B5B4CFCE-2986-4E47-A045-3D1C4F23ABE1")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        public OrderItem OrderItem { get; set; }
+        public ShipmentItem ShipmentItem { get; set; }
 
         #region Allors
-        [Id("23a0d52d-3ec7-4ddf-a300-c0ee46edf41a")]
-        [AssociationId("03ac8386-6706-4e3f-9ad2-a64e67edf08f")]
-        [RoleId("61e3ad81-395e-46e9-837f-e48257141164")]
+        [Id("331685BD-1903-419F-A964-DF7A1F725B69")]
+        [AssociationId("6200B5D0-13BF-441B-AB8D-D3F47BC922D6")]
+        [RoleId("03BD9158-E9B2-4808-B598-C6BEF40CA705")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         public InvoiceItem InvoiceItem { get; set; }
 
         #region Allors
-        [Id("2f75bdee-46f9-4dd0-b349-00a497462fdb")]
-        [AssociationId("86dc1660-7719-4dae-93d8-ce4ca7a00f2a")]
-        [RoleId("bc0b7bb6-c77b-451d-bf95-c32967766c49")]
+        [Id("A1FB2C5B-7F15-4C4F-A790-752552114C0E")]
+        [AssociationId("2D6985FB-48D9-45D3-90F4-19F99EDAE457")]
+        [RoleId("76BF152D-CB48-42BF-8186-00F5EF292630")]
         #endregion
         [Required]
         [Precision(19)]
         [Scale(2)]
         public decimal Amount { get; set; }
-        
+
         #region Allors
-        [Id("cfff23f0-1f3c-48a1-b4a7-85bc2254dbff")]
-        [AssociationId("ed09cee4-3c01-4a2a-ab3d-6f9e8de16466")]
-        [RoleId("6193e84f-882a-4b7a-b51c-8ec93f09aff2")]
+        [Id("016E7DBF-73FA-4F3E-96CD-677A34968CE6")]
+        [AssociationId("FAA33C83-1276-4C50-B1A1-B4330ACF0A9F")]
+        [RoleId("45A2AB33-B47A-44AA-801C-60AFEF0E8113")]
         #endregion
         [Precision(19)]
         [Scale(2)]

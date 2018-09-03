@@ -28,13 +28,5 @@ namespace Allors.Domain
                 this.Quantity = 0;
             }
         }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, M.OrderShipment.SalesOrderItem, M.OrderShipment.PurchaseOrderItem);
-            derivation.Validation.AssertExistsAtMostOne(this, M.OrderShipment.SalesOrderItem, M.OrderShipment.PurchaseOrderItem);
-        }
     }
 }

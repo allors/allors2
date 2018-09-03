@@ -55,14 +55,6 @@ namespace Allors.Domain
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
-
-            builder.WithPart(new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .Build());
-
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]

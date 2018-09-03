@@ -25,7 +25,6 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class SupplierOfferingTests : DomainTest
     {
         [Fact]
@@ -124,7 +123,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenNewGoodCoredOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
+        public void GivenNewGoodBasedOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
@@ -158,7 +157,6 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)

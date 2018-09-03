@@ -126,19 +126,6 @@ namespace Allors.Domain
             order.AddPurchaseOrderItem(builder.Build());
 
             Assert.False(this.Session.Derive(false).HasErrors);
-
-            builder.WithPart(new FinishedGoodBuilder(this.Session)
-                                        .WithPartId("1")
-                                        .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                                        .Build());
-            var orderItem = builder.Build();
-            order.AddPurchaseOrderItem(orderItem);
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            orderItem.RemovePart();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]

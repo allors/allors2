@@ -263,6 +263,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            invoice1.Send();
+
             Assert.False(store.ExistSalesInvoiceCounter);
             Assert.Equal(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
             Assert.Equal("1", invoice1.InvoiceNumber);
@@ -276,16 +278,55 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
+            invoice2.Send();
+
             Assert.False(store.ExistSalesInvoiceCounter);
             Assert.Equal(DateTime.UtcNow.Year, store.FiscalYearInvoiceNumbers.First.FiscalYear);
             Assert.Equal("2", invoice2.InvoiceNumber);
         }
 
         [Fact]
-        public void GivenSalesInvoice_WhenGettingInvoiceNumberWithFormat_ThenFormattedInvoiceNumberShouldBeReturned()
+        public void GivenSalesInvoiceSend_WhenGettingInvoiceNumberWithFormat_ThenFormattedInvoiceNumberShouldBeReturned()
         {
             var store = new Stores(this.Session).Extent().First(v => Equals(v.InternalOrganisation, this.InternalOrganisation));
             store.SalesInvoiceNumberPrefix = "the format is ";
+            store.SalesInvoiceTemporaryCounter = new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(10).Build();
+
+            var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
+
+            new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+
+            var contactMechanism = new PostalAddressBuilder(this.Session)
+                .WithAddress1("Haverwerf 15")
+                .WithPostalBoundary(new PostalBoundaryBuilder(this.Session)
+                    .WithLocality("Mechelen")
+                    .WithCountry(new Countries(this.Session).FindBy(M.Country.IsoCode, "BE"))
+                    .Build())
+
+                .Build();
+
+            var invoice = new SalesInvoiceBuilder(this.Session)
+                .WithStore(store)
+                .WithBillToCustomer(customer)
+                .WithBillToContactMechanism(contactMechanism)
+                .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
+                .Build();
+
+            this.Session.Derive();
+
+            invoice.Send();
+
+            this.Session.Derive();
+
+            Assert.Equal("the format is 1", invoice.InvoiceNumber);
+        }
+
+        [Fact]
+        public void GivenSalesInvoiceNotSend_WhenGettingInvoiceNumberWithFormat_ThenTemporaryInvoiceNumberShouldBeReturned()
+        {
+            var store = new Stores(this.Session).Extent().First(v => Equals(v.InternalOrganisation, this.InternalOrganisation));
+            store.SalesInvoiceNumberPrefix = "the format is ";
+            store.SalesInvoiceTemporaryCounter = new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(10).Build();
 
             var customer = new OrganisationBuilder(this.Session).WithName("customer").Build();
 
@@ -309,7 +350,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal("the format is 1", invoice.InvoiceNumber);
+            Assert.Equal("11", invoice.InvoiceNumber);
         }
 
         [Fact]
@@ -717,10 +758,14 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
+            this.Session.Derive();
+
             invoice.Send();
 
             this.Session.Derive();
             this.Session.Commit();
+
+            Assert.Equal(new SalesInvoiceStates(this.Session).Sent, invoice.SalesInvoiceState);
 
             var acl = new AccessControlList(invoice, this.Session.GetUser());
             Assert.False(acl.CanExecute(M.SalesInvoice.Send));
@@ -896,6 +941,8 @@ namespace Allors.Domain
                 .Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+
+            this.Session.Derive();
 
             invoice.Send();
             invoice.WriteOff();
@@ -1250,7 +1297,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithPrimaryProductCategory(childProductCategory)
                 .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
@@ -1259,7 +1306,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithPrimaryProductCategory(parentProductCategory)
                 .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 

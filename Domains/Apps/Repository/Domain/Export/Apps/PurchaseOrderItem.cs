@@ -164,6 +164,7 @@ namespace Allors.Repository
         [RoleId("76ed288c-be72-44e2-8b83-0a0f5a616e52")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Indexed]
         public Part Part { get; set; }
         
@@ -196,6 +197,5 @@ namespace Allors.Repository
         [Id("10FCCE86-96CC-440F-903A-2BB909373DC0")]
         #endregion
         public void Complete() { }
-
     }
 }

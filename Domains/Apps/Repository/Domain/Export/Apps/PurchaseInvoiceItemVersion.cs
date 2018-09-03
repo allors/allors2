@@ -10,17 +10,27 @@ namespace Allors.Repository
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
+
         public SecurityToken[] SecurityTokens { get; set; }
+
         public string InternalComment { get; set; }
+
         public SalesTerm[] SalesTerms { get; set; }
+
         public decimal TotalInvoiceAdjustment { get; set; }
+
         public InvoiceVatRateItem[] InvoiceVatRateItems { get; set; }
+
         public InvoiceItem AdjustmentFor { get; set; }
-        public SerialisedInventoryItem SerialisedInventoryItem { get; set; }
+
         public string Message { get; set; }
+
         public decimal TotalInvoiceAdjustmentCustomerCurrency { get; set; }
+
         public decimal AmountPaid { get; set; }
+
         public decimal Quantity { get; set; }
+
         public string Description { get; set; }
 
         public Guid DerivationId { get; set; }

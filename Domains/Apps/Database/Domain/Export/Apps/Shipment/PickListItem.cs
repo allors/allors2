@@ -44,7 +44,7 @@ namespace Allors.Domain
                     itemIssuance.IssuanceDateTime = DateTime.UtcNow;
                     foreach (OrderShipment orderShipment in itemIssuance.ShipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (!orderShipment.Picked)
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem && !orderShipment.Picked)
                         {
                             if (diff > 0)
                             {
@@ -64,7 +64,7 @@ namespace Allors.Domain
                                 }
                             }
 
-                            orderShipment.SalesOrderItem.AppsOnDeriveOnPicked(derivation, orderShipment.Quantity);
+                            salesOrderItem.AppsOnDeriveOnPicked(derivation, orderShipment.Quantity);
                             orderShipment.Picked = true;
                         }
                     }

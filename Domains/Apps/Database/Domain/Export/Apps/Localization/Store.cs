@@ -38,6 +38,7 @@ namespace Allors.Domain
                 if (fiscalYearInvoiceNumber == null)
                 {
                     fiscalYearInvoiceNumber = new FiscalYearInvoiceNumberBuilder(this.Strategy.Session).WithFiscalYear(year).Build();
+                    fiscalYearInvoiceNumber.NextSalesInvoiceNumber = 1;
                     this.AddFiscalYearInvoiceNumber(fiscalYearInvoiceNumber);
                 }
 

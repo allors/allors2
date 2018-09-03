@@ -91,15 +91,6 @@ namespace Allors.Repository
         public ProductFeature[] ProductFeatures { get; set; }
 
         #region Allors
-        [Id("bdd8041b-b1d1-4902-980a-f085c0af166d")]
-        [AssociationId("150fd46f-8768-4210-a559-740386e7c03d")]
-        [RoleId("2fb644a8-bbd4-419e-8c30-ef10efeb07d7")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        public InvoiceItem[] InvoiceItems { get; set; }
-
-        #region Allors
         [Id("f5c0279e-5ce4-4f09-bb93-ecaeb4825bcf")]
         [AssociationId("59b2bb80-3e60-4958-a3d8-9b5f7242d95c")]
         [RoleId("fbac397f-52f2-4903-95bc-ee3f6ab3ae7b")]

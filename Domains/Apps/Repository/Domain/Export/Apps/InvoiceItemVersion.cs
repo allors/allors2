@@ -60,15 +60,6 @@ namespace Allors.Repository
         InvoiceItem AdjustmentFor { get; set; }
 
         #region Allors
-        [Id("E8E885EC-5F87-469A-9C5D-1A7F369D4D23")]
-        [AssociationId("DC6E6C8E-6D6E-43FB-A228-34F221513A52")]
-        [RoleId("6B5EB401-EF03-4824-BA5F-CDB3C162DE6E")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        SerialisedInventoryItem SerialisedInventoryItem { get; set; }
-
-        #region Allors
         [Id("8738D82C-99E0-4EAE-BC4F-77B2F8D04E8D")]
         [AssociationId("9FBDF30A-F721-4AB7-8840-9A9EAF6D93A6")]
         [RoleId("E562AE69-D37F-4CBE-8DD1-FAB2C2E5D970")]
