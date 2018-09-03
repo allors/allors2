@@ -1,10 +1,9 @@
-import { AssociationType, ObjectType, RoleType } from '../../meta';
+import { ObjectType, PropertyType } from '../../meta';
 
 import { Predicate } from './Predicate';
 
 export class Instanceof implements Predicate {
-  public associationType: AssociationType;
-  public roleType: RoleType;
+  public propertyType: PropertyType;
   public objectType: ObjectType;
 
   constructor(fields?: Partial<Instanceof>) {
@@ -13,10 +12,9 @@ export class Instanceof implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: 'Instanceof',
-      at: this.associationType ? this.associationType.id : undefined,
-      ot: this.objectType.id,
-      rt: this.roleType.id ? this.roleType.id : undefined,
+      kind: 'Instanceof',
+      propertytype: this.propertyType ? this.propertyType.id : undefined,
+      objecttype: this.objectType.id,
     };
   }
 }

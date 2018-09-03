@@ -21,6 +21,7 @@
 namespace Allors.Server.Controllers
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -61,7 +62,8 @@ namespace Allors.Server.Controllers
                         {
                             using (var session = this.DatabaseService.Database.CreateSession())
                             {
-                                var response = new PullResponseBuilder(session.GetUser());
+                                var user = session.GetUser();
+                                var response = new PullResponseBuilder(user);
 
                                 // TODO: Pull
                                 if (req.P != null)
@@ -69,36 +71,126 @@ namespace Allors.Server.Controllers
                                     foreach (var p in req.P)
                                     {
                                         var pull = p.Load(session);
-                                        var extent = pull.Extent.Build(session, pull.Arguments);
-                                        if (pull.Results != null)
+
+                                        if (pull.Object != null)
                                         {
-                                            foreach (var result in pull.Results)
+                                            var @object = session.Instantiate(pull.Object);
+                                           
+                                            if (pull.Results != null)
                                             {
-                                                var name = result.Name ?? pull.DefaultResultName(result);
-
-                                                if (result.Skip.HasValue)
+                                                foreach (var result in pull.Results)
                                                 {
-                                                    var paged = extent.ToArray().Skip(result.Skip.Value);
-                                                    if (result.Take.HasValue)
+                                                    var name = result.Name;
+
+                                                    if (result.Path != null)
                                                     {
-                                                        paged = paged.Take(result.Take.Value);
+                                                        var aclCache = new AccessControlListCache(user);
+
+                                                        var propertyType = result.Path.End.PropertyType;
+
+                                                        if (propertyType.IsOne)
+                                                        {
+                                                            name = name ?? propertyType.SingularName;
+
+                                                            @object = (IObject)result.Path.Get(@object, aclCache);
+                                                            response.AddObject(name, @object, result.Include);
+                                                        }
+                                                        else
+                                                        {
+                                                            name = name ?? propertyType.SingularName;
+
+                                                            var objects = ((Extent)result.Path.Get(@object, aclCache))
+                                                                .ToArray();
+
+                                                            if (result.Skip.HasValue)
+                                                            {
+                                                                var paged = objects.Skip(result.Skip.Value);
+                                                                if (result.Take.HasValue)
+                                                                {
+                                                                    paged = paged.Take(result.Take.Value);
+                                                                }
+
+                                                                paged = paged.ToArray();
+
+                                                                response.AddValue(name + "_total", objects.Length);
+                                                                response.AddCollection(name, paged, result.Include);
+                                                            }
+                                                            else
+                                                            {
+                                                                response.AddCollection(name, @objects, result.Include);
+                                                            }
+                                                        }
                                                     }
-
-                                                    paged = paged.ToArray();
-
-                                                    response.AddValue(name + "_total", extent.Count);
-                                                    response.AddCollection(name, paged, result.Include);
-                                                }
-                                                else
-                                                {
-                                                    response.AddCollection(name, extent.ToArray(), result.Include);
                                                 }
                                             }
+                                            else
+                                            {
+                                                var name = pull.DefaultResultName();
+                                                response.AddObject(name, @object);
+                                            }
                                         }
-                                        else
+
+                                        if (pull.Extent != null)
                                         {
-                                            var name = pull.DefaultResultName();
-                                            response.AddCollection(name, extent.ToArray());
+                                            var extent = pull.Extent.Build(session, pull.Arguments);
+                                            var objects = extent.ToArray();
+
+                                            if (pull.Results != null)
+                                            {
+                                                foreach (var result in pull.Results)
+                                                {
+                                                    var name = result.Name;
+
+                                                    if (result.Path != null)
+                                                    {
+                                                        var aclCache = new AccessControlListCache(user);
+
+                                                        var propertyType = result.Path.End.PropertyType;
+
+                                                        if (propertyType.IsOne)
+                                                        {
+                                                            objects = objects.Select(v => result.Path.Get(v, aclCache))
+                                                                .Where(v => v != null)
+                                                                .Cast<IObject>()
+                                                                .Distinct()
+                                                                .ToArray();
+                                                        }
+                                                        else
+                                                        {
+                                                            objects = objects.SelectMany(v => ((Extent)result.Path.Get(v, aclCache)).ToArray())
+                                                                .Distinct()
+                                                                .ToArray();
+                                                        }
+
+                                                        name = name ?? propertyType.PluralName;
+                                                    }
+
+                                                    name = name ?? pull.DefaultResultName(result);
+
+                                                    if (result.Skip.HasValue)
+                                                    {
+                                                        var paged = objects.Skip(result.Skip.Value);
+                                                        if (result.Take.HasValue)
+                                                        {
+                                                            paged = paged.Take(result.Take.Value);
+                                                        }
+
+                                                        paged = paged.ToArray();
+
+                                                        response.AddValue(name + "_total", extent.Count);
+                                                        response.AddCollection(name, paged, result.Include);
+                                                    }
+                                                    else
+                                                    {
+                                                        response.AddCollection(name, objects, result.Include);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                var name = pull.DefaultResultName();
+                                                response.AddCollection(name, objects);
+                                            }
                                         }
                                     }
                                 }
@@ -141,7 +233,7 @@ namespace Allors.Server.Controllers
 
                                         if (path != null && @object != null)
                                         {
-                                            var acls = new AccessControlListCache(session.GetUser());
+                                            var acls = new AccessControlListCache(user);
                                             var result = path.Get(@object, acls);
                                             if (result != null)
                                             {

@@ -11,8 +11,8 @@ export class TreeNode {
 
   public toJSON(): any {
     return {
-      n: this.nodes,
-      rt: this.roleType.id,
+      nodes: this.nodes,
+      roletype: this.roleType.id,
     };
   }
 

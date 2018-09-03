@@ -97,13 +97,7 @@ namespace Allors.Meta
         /// Gets the name.
         /// </summary>
         /// <value>The name .</value>
-        public override string Name
-        {
-            get
-            {
-                return this.FullName;
-            }
-        }
+        public override string Name => this.FullName;
 
         /// <summary>
         /// Gets the singular name when using <see cref="Where"/>.

@@ -1,7 +1,7 @@
-import { AssociationType, ObjectType, RoleType } from '../../meta';
+import { ObjectType, PropertyType } from '../../meta';
 
 export class Path {
-  public step: AssociationType | RoleType;
+  public propertyType: PropertyType;
 
   public next: Path;
 
@@ -10,35 +10,36 @@ export class Path {
   }
 
   public toJSON(): any {
+
     return {
-      next: this.next,
-      step: this.step.id,
+      propertytype: this.propertyType.id,
+      next: this.next, 
     };
   }
 
   public parse(json: any, objectType: ObjectType, stepName: string) {
-    this.step = objectType.roleTypeByName[stepName];
+    this.propertyType = objectType.roleTypeByName[stepName];
 
-    if (!this.step) {
-      this.step = objectType.associationTypeByName[stepName];
+    if (!this.propertyType) {
+      this.propertyType = objectType.associationTypeByName[stepName];
     }
 
-    if (!this.step) {
+    if (!this.propertyType) {
       const metaPopulation = objectType.metaPopulation;
-      const [subTypeName, subStepName] = stepName.split('_');
+      const [subTypeName, subStepName] = stepName.split("_");
 
       const subType = metaPopulation.objectTypeByName[subTypeName];
       if (subType) {
-        this.step = subType.roleTypeByName[subStepName];
+        this.propertyType = subType.roleTypeByName[subStepName];
 
-        if (!this.step) {
-          this.step = subType.associationTypeByName[subStepName];
+        if (!this.propertyType) {
+          this.propertyType = subType.associationTypeByName[subStepName];
         }
       }
     }
 
-    if (!this.step) {
-      throw new Error('Unknown role or association: ' + stepName);
+    if (!this.propertyType) {
+      throw new Error("Unknown role or association: " + stepName);
     }
 
     const childJson = json[stepName];
@@ -46,7 +47,7 @@ export class Path {
       this.next = Object.keys(childJson)
         .map((childStepName) => {
           const childTreeNode = new Path();
-          childTreeNode.parse(childJson, this.step.objectType, childStepName);
+          childTreeNode.parse(childJson, this.propertyType.objectType, childStepName);
           return childTreeNode;
         })[0];
     }

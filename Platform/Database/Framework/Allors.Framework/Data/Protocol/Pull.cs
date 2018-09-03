@@ -36,7 +36,7 @@ namespace Allors.Data.Protocol
             {
                 Extent = this.Extent?.Load(session),
                 Object = this.Object != null ? session.Instantiate(this.Object) : null,
-                Results = this.Results?.Select(v=> v.Load(session)).ToArray(),
+                Results = this.Results?.Select(v => v.Load(session)).ToArray(),
             };
 
             return pull;

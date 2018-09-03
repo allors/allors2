@@ -1,9 +1,8 @@
-import { AssociationType, RoleType } from '../../meta';
+import { PropertyType } from '../../meta';
 import { Predicate } from './Predicate';
 
 export class Exists implements Predicate {
-  public associationType: AssociationType;
-  public roleType: RoleType;
+  public propertyType: PropertyType;
 
   constructor(fields?: Partial<Exists>) {
     Object.assign(this, fields);
@@ -11,9 +10,8 @@ export class Exists implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: 'Exists',
-      at: this.associationType ? this.associationType.id : undefined,
-      rt: this.roleType.id ? this.roleType.id : undefined,
+      kind: 'Exists',
+      propertytype: this.propertyType ? this.propertyType.id : undefined,
     };
   }
 }

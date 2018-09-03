@@ -1,10 +1,10 @@
 import { AssociationType, ObjectType, RoleType } from "../../meta";
-import { Include } from "./Include";
+import { Tree } from "./Tree";
 
 export class Step {
   public selector: AssociationType | RoleType;
 
-  public next: Step | Include;
+  public next: Step | Tree;
 
   constructor(fields?: Partial<Step>) {
     Object.assign(this, fields);

@@ -22,8 +22,8 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Meta;
     using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class Equals : IPropertyPredicate
     {

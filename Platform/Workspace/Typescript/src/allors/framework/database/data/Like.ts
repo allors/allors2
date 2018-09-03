@@ -12,9 +12,9 @@ export class Like implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: 'Like',
-      rt: this.roleType.id,
-      v: this.value,
+      kind: 'Like',
+      roletype: this.roleType.id,
+      value: this.value,
     };
   }
 }

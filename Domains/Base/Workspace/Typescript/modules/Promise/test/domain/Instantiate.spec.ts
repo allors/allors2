@@ -1,4 +1,4 @@
-import { domain, Person, Media } from "../../src/allors/domain";
+import { domain, Person, Media, Organisation } from "../../src/allors/domain";
 import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Result, TreeNode, Tree } from "../../src/allors/framework";
 import { data, MetaDomain, TreeFactory, PathPerson, PathOrganisation } from "../../src/allors/meta";
 
@@ -8,11 +8,14 @@ import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
 import { assert } from "chai";
 import "mocha";
 
-describe("Extent",
+describe("Instantiate",
     () => {
         let metaPopulation: MetaPopulation;
         let m: MetaDomain;
         let scope: Scope;
+
+        let people: Person[] = [];
+        let organisation: Organisation[] = [];
 
         beforeEach(async () => {
             metaPopulation = new MetaPopulation(data);
@@ -24,18 +27,40 @@ describe("Extent",
             await http.login("TestAuthentication/Token", "administrator");
             const database = new Database(http);
             scope = new Scope(database, workspace);
+                
+            const pulls = [
+                new Pull({
+                    extent: new Filter({
+                        objectType: m.Person
+                    })
+                }),
+                new Pull({
+                    extent: new Filter({
+                        objectType: m.Organisation
+                    })
+                }),
+            ];
 
+            scope.session.reset();
+
+            const loaded = await scope
+                .load("Pull", new PullRequest({ pulls }));
+
+            people = loaded.collections["People"] as Person[];
+            organisation = loaded.collections["Organisations"] as Organisation[];
+
+            scope = new Scope(database, workspace);
         });
 
-        describe("People",
+        describe("Person",
             () => {
-                it("should return all people", async () => {
+                it("should return person", async () => {
+
+                    const object = people[0].id;
 
                     const pulls = [
                         new Pull({
-                            extent: new Filter({
-                                objectType: m.Person
-                            })
+                            object: object
                         }),
                     ];
 
@@ -44,17 +69,16 @@ describe("Extent",
                     const loaded = await scope
                         .load("Pull", new PullRequest({ pulls }));
 
-                    const people = loaded.collections["People"] as Person[];
+                    const person = loaded.objects["Person"] as Person;
 
-                    assert.isArray(people);
-                    assert.isNotEmpty(people);
-                    assert.equal(7, people.length);
+                    assert.isNotNull(person);
+                    assert.equal(object, person.id);
                 });
             });
 
         describe("People with include tree",
             () => {
-                it("should return all people", async () => {
+                xit("should return all people", async () => {
 
                     const pulls = [
                         new Pull({
@@ -93,7 +117,7 @@ describe("Extent",
 
         describe("People with include tree (factory)",
             () => {
-                it("should return all people", async () => {
+                xit("should return all people", async () => {
 
                     const tree = new TreeFactory(metaPopulation);
 
@@ -131,7 +155,7 @@ describe("Extent",
 
         describe("Organisation with path",
             () => {
-                it("should return all owners", async () => {
+                xit("should return all owners", async () => {
 
                     const pulls = [
                         new Pull({
@@ -163,7 +187,7 @@ describe("Extent",
 
             describe("Organisation with path",
             () => {
-                it("should return all employees", async () => {
+                xit("should return all employees", async () => {
 
                     const pulls = [
                         new Pull({

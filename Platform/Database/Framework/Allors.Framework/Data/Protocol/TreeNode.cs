@@ -32,12 +32,15 @@ namespace Allors.Data.Protocol
 
         public void Load(ISession session, Data.TreeNode treeNode)
         {
-            foreach (var childProtocolTreeNode in this.Nodes)
+            if (this.Nodes != null)
             {
-                var childRoleType = childProtocolTreeNode.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.RoleType.Value) : null;
-                var childTreeNode = new Data.TreeNode(childRoleType);
-                treeNode.Nodes.Add(childTreeNode);
-                childProtocolTreeNode.Load(session, childTreeNode);
+                foreach (var childProtocolTreeNode in this.Nodes)
+                {
+                    var childRoleType = childProtocolTreeNode.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(childProtocolTreeNode.RoleType.Value) : null;
+                    var childTreeNode = new Data.TreeNode(childRoleType);
+                    treeNode.Nodes.Add(childTreeNode);
+                    childProtocolTreeNode.Load(session, childTreeNode);
+                }
             }
         }
     }

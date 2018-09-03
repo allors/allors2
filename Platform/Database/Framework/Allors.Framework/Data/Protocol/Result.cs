@@ -36,6 +36,7 @@ namespace Allors.Data.Protocol
         {
             var result = new Data.Result
             {
+                Name = this.Name,
                 Path = this.Path?.Load(session),
                 Include = this.Include?.Load(session),
                 Skip = this.Skip,

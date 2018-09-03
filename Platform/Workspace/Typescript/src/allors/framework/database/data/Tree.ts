@@ -1,5 +1,5 @@
-import { MetaObjectType, ObjectType } from '../../meta';
-import { TreeNode } from './TreeNode';
+import { MetaObjectType, ObjectType } from "../../meta";
+import { TreeNode } from "./TreeNode";
 
 export class Tree {
 
@@ -30,7 +30,7 @@ export class Tree {
     }
 
     return {
-      composite,
+      composite: composite.id,
       nodes,
     };
   }

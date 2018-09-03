@@ -12,7 +12,7 @@
                 "--colors",
                 "--recursive",
                 "--inspect-brk",
-                "${workspaceFolder}/dist/**/Extent.spec.js",
+                "${workspaceFolder}/dist/**/Instantiate.spec.js",
             ],
             "stopOnEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
