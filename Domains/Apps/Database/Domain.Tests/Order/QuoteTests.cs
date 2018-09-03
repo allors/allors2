@@ -28,14 +28,18 @@ namespace Allors.Domain
         [Fact]
         public void GivenProductQuote_WhenDeriving_ThenRequiredRelationsMustExist()
         {
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
+            this.Session.Commit();
+
             var builder = new ProductQuoteBuilder(this.Session);
-            var productQuote = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
-            builder.WithDescription("ProductQuote");
+            builder.WithReceiver(party);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -51,14 +55,18 @@ namespace Allors.Domain
         [Fact]
         public void GivenProposal_WhenDeriving_ThenRequiredRelationsMustExist()
         {
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
+            this.Session.Commit();
+
             var builder = new ProposalBuilder(this.Session);
-            var requirement = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
-            builder.WithDescription("Proposal");
+            builder.WithReceiver(party);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -74,14 +82,18 @@ namespace Allors.Domain
         [Fact]
         public void GivenStatementOfWork_WhenDeriving_ThenRequiredRelationsMustExist()
         {
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
+            this.Session.Commit();
+
             var builder = new StatementOfWorkBuilder(this.Session);
-            var statementOfWork = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
-            builder.WithDescription("StatementOfWork");
+            builder.WithReceiver(party);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -97,6 +109,8 @@ namespace Allors.Domain
         [Fact]
         public void GivenProductQuote_WhenDeriving_ThenTotalPriceIsDerivedFromItems()
         {
+            var party = new PersonBuilder(this.Session).WithLastName("party").Build();
+
             var good = new GoodBuilder(this.Session)
                 .WithSku("10101")
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
@@ -107,8 +121,9 @@ namespace Allors.Domain
                 .Build();
 
             var quote = new ProductQuoteBuilder(this.Session)
-            .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
-            .Build();
+                .WithReceiver(party)
+                .WithFullfillContactMechanism(new WebAddressBuilder(this.Session).WithElectronicAddressString("test").Build())
+                .Build();
 
             var item1 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(1).WithUnitPrice(1000).Build();
             var item2 = new QuoteItemBuilder(this.Session).WithProduct(good).WithQuantity(3).WithUnitPrice(100).Build();

@@ -19,16 +19,16 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        public OrderItem OrderItem { get; set; }
 
-        public SalesOrderItem SalesOrderItem { get; set; }
         #region Allors
         [Id("261a25f4-672a-44a0-ad2d-1c62ba383006")]
         [AssociationId("cfaa2021-233c-4b55-b33d-65b9344adb67")]
         [RoleId("69f35130-996e-4a55-b6be-90199a2548d0")]
         #endregion
         [Required]
-
         public bool Picked { get; set; }
+
         #region Allors
         [Id("b55bbdb8-af05-4008-a6a7-b4eea78096bd")]
         [AssociationId("a4d6f79e-c204-44ca-b7db-3a0a3eacff69")]
@@ -37,8 +37,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public ShipmentItem ShipmentItem { get; set; }
+
         #region Allors
         [Id("d4725e9c-b72c-4cdf-95f9-70f9c4b57b11")]
         [AssociationId("4f4c74fc-44d8-445e-aa2e-1e79c2fd6b87")]
@@ -48,16 +48,6 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Quantity { get; set; }
-        #region Allors
-        [Id("d6c35df9-dad3-4e4c-b66e-5ccda26093d5")]
-        [AssociationId("b8ea1ed0-ba19-44c3-9e8d-5228734b3bc4")]
-        [RoleId("78bddfef-0bbe-4185-8a5a-78e5a3ba42a0")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-
-        public PurchaseOrderItem PurchaseOrderItem { get; set; }
-
 
         #region inherited methods
 
@@ -75,6 +65,5 @@ namespace Allors.Repository
 
         public void Delete(){}
         #endregion
-
     }
 }

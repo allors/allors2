@@ -263,7 +263,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item1.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item1.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
@@ -287,7 +287,7 @@ namespace Allors.Domain
             shipment.Ship();
             this.Session.Derive();
 
-            var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
+            var salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].ShipmentItemBillingsWhereShipmentItem[0].InvoiceItem;
             var invoice1 = (SalesInvoice)salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
             invoice1.Send();
 
@@ -316,7 +316,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            shipment = (CustomerShipment)item2.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            shipment = (CustomerShipment)item2.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
@@ -339,7 +339,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
+            salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].ShipmentItemBillingsWhereShipmentItem[0].InvoiceItem;
             var invoice2 = (SalesInvoice)salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
             invoice2.Send();
 
@@ -359,7 +359,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            shipment = (CustomerShipment)item3.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            shipment = (CustomerShipment)item3.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
 
             pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
@@ -382,7 +382,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            salesInvoiceitem = (SalesInvoiceItem)shipment.ShipmentItems[0].InvoiceItems[0];
+            salesInvoiceitem =
+                (SalesInvoiceItem)shipment.ShipmentItems[0].ShipmentItemBillingsWhereShipmentItem[0].InvoiceItem;
             var invoice3 = salesInvoiceitem.SalesInvoiceWhereSalesInvoiceItem;
 
             new ReceiptBuilder(this.Session)
@@ -460,7 +461,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(3, shipment.ShipmentItems[0].Quantity);
 
             var pickList1 = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -560,7 +561,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var shipment = (CustomerShipment)item.OrderShipmentsWhereSalesOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
+            var shipment = (CustomerShipment)item.OrderShipmentsWhereOrderItem[0].ShipmentItem.ShipmentWhereShipmentItem;
             Assert.Equal(10, shipment.ShipmentItems[0].Quantity);
 
             var pickList = shipment.ShipmentItems[0].ItemIssuancesWhereShipmentItem[0].PickListItem.PickListWherePickListItem;
@@ -2788,9 +2789,9 @@ namespace Allors.Domain
             var shipment = customer.ShipmentsWhereBillToParty.First;
 
             Assert.Equal(2, shipment.ShipmentItems.Count);
-            Assert.Equal(1, item1.OrderShipmentsWhereSalesOrderItem[0].Quantity);
-            Assert.Equal(2, item2.OrderShipmentsWhereSalesOrderItem[0].Quantity);
-            Assert.Equal(5, item3.OrderShipmentsWhereSalesOrderItem[0].Quantity);
+            Assert.Equal(1, item1.OrderShipmentsWhereOrderItem[0].Quantity);
+            Assert.Equal(2, item2.OrderShipmentsWhereOrderItem[0].Quantity);
+            Assert.Equal(5, item3.OrderShipmentsWhereOrderItem[0].Quantity);
         }
 
         [Fact]

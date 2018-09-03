@@ -23,7 +23,6 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
     public class ProductFeatureTests : DomainTest
     {
         [Fact]
@@ -36,11 +35,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            var unitOfMeasure = new UnitOfMeasureBuilder(this.Session)
-                .WithName("Mt")
-                .Build();
-
-            builder.WithUnitOfMeasure(unitOfMeasure);
+            builder.WithName("name");
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

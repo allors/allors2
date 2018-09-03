@@ -114,6 +114,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Required]
         [Workspace]
         Party Receiver { get; set; }
 
@@ -124,6 +125,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Required]
         [Workspace]
         ContactMechanism FullfillContactMechanism { get; set; }
 
@@ -173,6 +175,7 @@ namespace Allors.Repository
         [AssociationId("057ad29f-c245-44b2-8a95-71bd6607830b")]
         [RoleId("218e3a6e-b530-41f7-a60e-7587f8072c8c")]
         #endregion
+        [Required]
         [Size(256)]
         [Workspace]
         string QuoteNumber { get; set; }

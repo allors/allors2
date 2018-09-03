@@ -27,21 +27,21 @@ namespace Allors.Domain
     public class ProductTests : DomainTest
     {
         [Fact]
-        public void GivenDeliverableCoredService_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenDeliverableBasedService_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             this.Session.Derive();
             this.Session.Commit();
 
             var builder = new DeliverableBasedServiceBuilder(this.Session);
-            var deliverableBasedService = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithVatRate(vatRate21);
-            deliverableBasedService = builder.Build();
+            builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
 
@@ -50,11 +50,18 @@ namespace Allors.Domain
             builder.WithName("service");
             builder.Build();
 
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithProductCategory(new ProductCategoryBuilder(this.Session).WithName("category").Build());
+            builder.Build();
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
         [Fact]
-        public void GivenDeliverableCoredServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
+        public void GivenDeliverableBasedServiceWithPrimaryProductCategoryWithoutProductCategory_WhenDeriving_ThenFirstProductCategoryIsCopiedFromPrimaryCategory()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var productCategory = new ProductCategoryBuilder(this.Session)
@@ -73,7 +80,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenDeliverableCoredServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
+        public void GivenDeliverableBasedServiceWithoutPrimaryProductCategoryWithOneProductCategory_WhenDeriving_ThenPrimaryProductCategoryIsCopiedFromCategory()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var productCategory = new ProductCategoryBuilder(this.Session)
@@ -127,11 +134,18 @@ namespace Allors.Domain
             builder.WithVatRate(vatRate21);
             builder.Build();
 
-            Assert.False(this.Session.Derive(false).HasErrors);
+            Assert.True(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithFinishedGood(finishedGood);
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build());
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -398,6 +412,13 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithVatRate(vatRate21);
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build());
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);

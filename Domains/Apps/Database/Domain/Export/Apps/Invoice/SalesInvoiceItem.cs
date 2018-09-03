@@ -20,7 +20,8 @@ namespace Allors.Domain
         public decimal PriceAdjustmentAsPercentage => Math.Round(((this.TotalSurcharge - this.TotalDiscount) / this.TotalBasePrice) * 100, 2);
 
         internal bool IsDeletable =>
-            !this.ExistOrderItemBillingsWhereSalesInvoiceItem &&
+            !this.ExistOrderItemBillingsWhereInvoiceItem &&
+            !this.ExistShipmentItemBillingsWhereInvoiceItem &&
             !this.ExistWorkEffortBillingsWhereInvoiceItem &&
             !this.ExistServiceEntryBillingsWhereInvoiceItem;
 
@@ -328,13 +329,7 @@ namespace Allors.Domain
             }
 
             this.UnitVat = vat;
-            this.TotalBasePrice = 0;
-
-            if (this.IsSubTotalItem)
-            {
-                this.TotalBasePrice = price * this.Quantity;
-            }
-
+            this.TotalBasePrice = price * this.Quantity;
             this.TotalDiscount = this.UnitDiscount * this.Quantity;
             this.TotalSurcharge = this.UnitSurcharge * this.Quantity;
             this.TotalInvoiceAdjustment = (0 - discountAdjustmentAmount + surchargeAdjustmentAmount) * this.Quantity;

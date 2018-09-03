@@ -30,9 +30,9 @@ namespace Allors.Domain
     public partial class SalesInvoice
     {
         private bool IsDeletable =>
-            this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.strategy.Session).ReadyForPosting) && 
+            this.SalesInvoiceState.Equals(new SalesInvoiceStates(this.strategy.Session).ReadyForPosting) &&
             this.AllItemsDeletable() &&
-            !this.ExistSalesOrder && 
+            !this.ExistSalesOrder &&
             !this.ExistPurchaseInvoice &&
             !this.ExistRepeatingSalesInvoiceWhereSource &&
             !this.ExistShipment &&
@@ -364,7 +364,7 @@ namespace Allors.Domain
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Strategy.Session)
                     .WithBilledFrom(this.BilledFrom)
                     .WithBilledFromContactPerson(this.BilledFromContactPerson)
-                    .WithBilledTo((InternalOrganisation) this.BillToCustomer)
+                    .WithBilledTo((InternalOrganisation)this.BillToCustomer)
                     .WithBilledToContactPerson(this.BillToContactPerson)
                     .WithBillToCustomer(this.BillToEndCustomer)
                     .WithBillToCustomerContactMechanism(this.BillToEndCustomerContactMechanism)
@@ -791,12 +791,27 @@ namespace Allors.Domain
         {
             foreach (SalesInvoiceItem invoiceItem in this.SalesInvoiceItems)
             {
-                if (invoiceItem.ExistShipmentItemWhereInvoiceItem)
+                foreach (ShipmentItemBilling shipmentItemBilling in invoiceItem.ShipmentItemBillingsWhereInvoiceItem)
                 {
-                    foreach (OrderShipment orderShipment in invoiceItem.ShipmentItemWhereInvoiceItem.OrderShipmentsWhereShipmentItem)
+                    foreach (OrderShipment orderShipment in shipmentItemBilling.ShipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        orderShipment.SalesOrderItem.AppsOnDerivePaymentState(derivation);
-                        orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
+                        {
+                            salesOrderItem.AppsOnDerivePaymentState(derivation);
+                            salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                        }
+                    }
+                }
+
+                foreach (OrderItemBilling orderItemBilling in invoiceItem.OrderItemBillingsWhereInvoiceItem)
+                {
+                    foreach (OrderShipment orderShipment in orderItemBilling.OrderItem.OrderShipmentsWhereOrderItem)
+                    {
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem)
+                        {
+                            salesOrderItem.AppsOnDerivePaymentState(derivation);
+                            salesOrderItem.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
+                        }
                     }
                 }
             }
@@ -829,7 +844,8 @@ namespace Allors.Domain
                 salesInvoiceItem.AppsOnDeriveCurrentObjectState(derivation);
                 salesInvoiceItem.OnDerive(x => x.WithDerivation(derivation));
 
-                if (!salesInvoiceItem.ExistShipmentItemWhereInvoiceItem)
+                if (!salesInvoiceItem.ExistShipmentItemBillingsWhereInvoiceItem &&
+                    !salesInvoiceItem.ExistOrderItemBillingsWhereInvoiceItem)
                 {
                     invoiceFromOrder = false;
                     salesInvoiceItem.AppsOnDerivePrices(derivation, 0, 0);

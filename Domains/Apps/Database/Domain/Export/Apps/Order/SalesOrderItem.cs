@@ -4,8 +4,6 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
-    using System.Text;
 
     using Meta;
     using Resources;
@@ -536,7 +534,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (orderShipment.SalesOrderItem.Equals(this))
+                        if (orderShipment.OrderItem.Equals(this))
                         {
                             this.QuantityPendingShipment -= diff;
                             pendingShipment.AppsOnDeriveQuantityDecreased(derivation, shipmentItem, this, diff);
@@ -754,13 +752,7 @@ namespace Allors.Domain
             }
 
             this.UnitVat = vat;
-            this.TotalBasePrice = 0;
-
-            if (this.IsSubTotalItem)
-            {
-                this.TotalBasePrice = price * this.QuantityOrdered;
-            }
-
+            this.TotalBasePrice = price * this.QuantityOrdered;
             this.TotalDiscount = this.UnitDiscount * this.QuantityOrdered;
             this.TotalSurcharge = this.UnitSurcharge * this.QuantityOrdered;
             this.TotalOrderAdjustment = (0 - discountAdjustmentAmount + surchargeAdjustmentAmount) * this.QuantityOrdered;
@@ -1053,11 +1045,10 @@ namespace Allors.Domain
         public void AppsOnDerivePaymentState(IDerivation derivation)
         {
             SalesOrderItemPaymentState state = null;
-            foreach (OrderShipment orderShipment in this.OrderShipmentsWhereSalesOrderItem)
+            foreach (OrderShipment orderShipment in this.OrderShipmentsWhereOrderItem)
             {
-                foreach (SalesInvoiceItem invoiceItem in orderShipment.ShipmentItem.InvoiceItems)
+                foreach (SalesInvoiceItem invoiceItem in orderShipment.OrderItem.OrderItemBillingsWhereOrderItem)
                 {
-                    state = null;
                     if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
                     {
                         state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
@@ -1067,6 +1058,19 @@ namespace Allors.Domain
                     {
                         state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
                     }
+                }
+            }
+
+            foreach (SalesInvoiceItem invoiceItem in this.ShipmentReceiptsWhereOrderItem)
+            {
+                if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
+                {
+                    state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
+                }
+
+                if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
+                {
+                    state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
                 }
             }
 
@@ -1124,7 +1128,8 @@ namespace Allors.Domain
         }
 
         private bool AppsIsSubTotalItem =>
-            this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
-            || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem);
+            this.ExistInvoiceItemType &&
+            (this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+            || this.InvoiceItemType.Equals(new InvoiceItemTypes(this.Strategy.Session).PartItem));
     }
 }

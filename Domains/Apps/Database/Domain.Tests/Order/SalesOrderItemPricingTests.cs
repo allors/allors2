@@ -112,7 +112,7 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithPrimaryProductCategory(this.productCategory)
                 .WithFinishedGood(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -122,7 +122,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithPrimaryProductCategory(this.parentProductCategory)
                 .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
@@ -131,7 +131,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithPrimaryProductCategory(this.parentProductCategory)
                 .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
@@ -141,7 +141,7 @@ namespace Allors.Domain
                 .WithVariant(this.variantGood)
                 .WithVariant(this.variantGood2)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
+                .WithPrimaryProductCategory(this.parentProductCategory)
                 .Build();
 
             this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)

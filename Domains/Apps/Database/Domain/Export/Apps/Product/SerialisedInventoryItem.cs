@@ -68,7 +68,7 @@ namespace Allors.Domain
         private void AppsOnDeriveProductCharacteristics(IDerivation derivation)
         {
             var characteristicsToDelete = this.SerialisedInventoryItemCharacteristics.ToList();
-            if (this.Part.ExistProductType)
+            if (this.ExistPart && this.Part.ExistProductType)
             {
                 foreach (SerialisedInventoryItemCharacteristicType characteristicType in this.Part.ProductType.SerialisedInventoryItemCharacteristicTypes)
                 {
@@ -105,7 +105,7 @@ namespace Allors.Domain
         {
             var builder = new StringBuilder();
 
-            if (this.Part.ExistManufacturedBy)
+            if (this.ExistPart && this.Part.ExistManufacturedBy)
             {
                 builder.Append($", Manufacturer: {this.Part.ManufacturedBy.PartyName}");
             }

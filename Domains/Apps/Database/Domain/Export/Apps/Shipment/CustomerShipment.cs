@@ -57,7 +57,7 @@ namespace Allors.Domain
                 {
                     foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                     {
-                        if (orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).OnHold))
+                        if (orderShipment.OrderItem is SalesOrderItem salesOrderItem && salesOrderItem.SalesOrderWhereSalesOrderItem.SalesOrderState.Equals(new SalesOrderStates(this.Strategy.Session).OnHold))
                         {
                             return false;
                         }
@@ -144,14 +144,9 @@ namespace Allors.Domain
 
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    if (orderShipment.ExistSalesOrderItem && !orderShipment.SalesOrderItem.Strategy.IsNewInSession)
+                    if (orderShipment.ExistOrderItem && !orderShipment.OrderItem.Strategy.IsNewInSession)
                     {
-                        derivation.AddDependency(this, orderShipment.SalesOrderItem);
-                    }
-
-                    if (orderShipment.ExistPurchaseOrderItem && !orderShipment.PurchaseOrderItem.Strategy.IsNewInSession)
-                    {
-                        derivation.AddDependency(this, orderShipment.PurchaseOrderItem);
+                        derivation.AddDependency(this, orderShipment.OrderItem);
                     }
                 }
             }
@@ -194,12 +189,12 @@ namespace Allors.Domain
             this.AppsOnDeriveShipmentValue(derivation);
             this.AppsOnDeriveCurrentShipmentState(derivation);
 
-            this.AppsOnDeriveCurrentObjectState(derivation);
-
             if (this.CanShip && this.Store.IsAutomaticallyShipped)
             {
                 this.Ship();
             }
+
+            this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
         public void AppsOnDeriveInvoices(IDerivation derivation)
@@ -211,7 +206,8 @@ namespace Allors.Domain
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    var salesOrder = orderShipment.SalesOrderItem.SalesOrderWhereSalesOrderItem;
+                    var salesOrder = orderShipment.OrderItem.OrderWhereValidOrderItem as SalesOrder;
+                    var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
 
                     SalesInvoice salesInvoice;
                     if (!invoiceByOrder.TryGetValue(salesOrder, out salesInvoice))
@@ -259,20 +255,29 @@ namespace Allors.Domain
                         }
                     }
 
-                    var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                        .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
-                        .WithProduct(orderShipment.SalesOrderItem.Product)
-                        .WithQuantity(orderShipment.Quantity)
-                        .Build();
+                    var amountAlreadyInvoiced = shipmentItem.ShipmentItemBillingsWhereShipmentItem.Sum(v => v.Amount);
+                    var leftToInvoice = (orderShipment.OrderItem.QuantityOrdered * orderShipment.OrderItem.ActualUnitPrice) - amountAlreadyInvoiced;
 
-                    salesInvoice.AddSalesInvoiceItem(invoiceItem);
-                    shipmentItem.AddInvoiceItem(invoiceItem);
-                }
+                    if (leftToInvoice > 0)
+                    {
+                        if (salesOrderItem != null)
+                        {
+                            var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                                .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+                                .WithProduct(salesOrderItem.Product)
+                                .WithQuantity(orderShipment.Quantity)
+                                .Build();
 
-                foreach (var keyValuePair in invoiceByOrder)
-                {
-                    // TODO: put this in prepare
-                    // keyValuePair.Value.Derive(x=>x.WithDerivation(derivation));
+                            salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                            new ShipmentItemBillingBuilder(this.strategy.Session)
+                                .WithQuantity(shipmentItem.Quantity)
+                                .WithAmount(leftToInvoice)
+                                .WithShipmentItem(shipmentItem)
+                                .WithInvoiceItem(invoiceItem)
+                                .Build();
+                        }
+                    }
                 }
             }
         }
@@ -371,7 +376,7 @@ namespace Allors.Domain
 
                     if (!shipmentItem.ExistItemIssuancesWhereShipmentItem || shipmentItem.Quantity > quantityIssued)
                     {
-                        var orderItem = shipmentItem.OrderShipmentsWhereShipmentItem[0].SalesOrderItem;
+                        var salesOrderItem = shipmentItem.OrderShipmentsWhereShipmentItem[0].OrderItem as SalesOrderItem;
 
                         if (this.PendingPickList == null)
                         {
@@ -381,7 +386,7 @@ namespace Allors.Domain
                         PickListItem pickListItem = null;
                         foreach (PickListItem item in pendingPickList.PickListItems)
                         {
-                            if (item.InventoryItem.Equals(orderItem.ReservedFromNonSerialisedInventoryItem))
+                            if (salesOrderItem != null && item.InventoryItem.Equals(salesOrderItem.ReservedFromNonSerialisedInventoryItem))
                             {
                                 pickListItem = item;
                                 break;
@@ -400,23 +405,23 @@ namespace Allors.Domain
                         {
                             var quantity = shipmentItem.Quantity - quantityIssued;
                             pickListItem = new PickListItemBuilder(this.Strategy.Session)
-                                .WithInventoryItem(orderItem.ReservedFromNonSerialisedInventoryItem)
+                                .WithInventoryItem(salesOrderItem.ReservedFromNonSerialisedInventoryItem)
                                 .WithRequestedQuantity(quantity)
                                 .WithActualQuantity(quantity)
                                 .Build();
 
-                            if (orderItem.ExistReservedFromNonSerialisedInventoryItem)
+                            if (salesOrderItem.ExistReservedFromNonSerialisedInventoryItem)
                             {
-                                pickListItem.InventoryItem = orderItem.ReservedFromNonSerialisedInventoryItem;
+                                pickListItem.InventoryItem = salesOrderItem.ReservedFromNonSerialisedInventoryItem;
                             }
 
-                            if (orderItem.ExistReservedFromSerialisedInventoryItem)
+                            if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
                             {
-                                pickListItem.InventoryItem = orderItem.ReservedFromSerialisedInventoryItem;
-                                if (orderItem.ExistNewSerialisedInventoryItemState)
+                                pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
+                                if (salesOrderItem.ExistNewSerialisedInventoryItemState)
                                 {
-                                    orderItem.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState =
-                                        orderItem.NewSerialisedInventoryItemState;
+                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState =
+                                        salesOrderItem.NewSerialisedInventoryItemState;
                                 }
                             }
 
@@ -490,7 +495,8 @@ namespace Allors.Domain
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    orderShipment.SalesOrderItem.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
+                    var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
+                    salesOrderItem?.AppsOnDeriveOnShipped(derivation, orderShipment.Quantity);
                 }
             }
         }
@@ -501,7 +507,7 @@ namespace Allors.Domain
 
             foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
             {
-                if (orderShipment.SalesOrderItem.Equals(orderItem) && remainingCorrection > 0)
+                if (orderShipment.OrderItem.Equals(orderItem) && remainingCorrection > 0)
                 {
                     decimal quantity;
                     if (orderShipment.Quantity < remainingCorrection)
@@ -588,7 +594,7 @@ namespace Allors.Domain
             {
                 foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
                 {
-                    this.ShipmentValue += orderShipment.SalesOrderItem.TotalExVat;
+                    this.ShipmentValue += orderShipment.OrderItem.TotalExVat;
                 }
             }
         }
