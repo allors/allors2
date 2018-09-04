@@ -25,18 +25,18 @@ namespace Allors.Domain
     using System.Xml.Serialization;
 
     using Allors.Data;
+    using Allors.Data.Protocol;
 
-    public partial class PreparedPull
+    public partial class PreparedExtent
     {
-        public Pull Pull
+        public IExtent Extent
         {
             get
             {
                 using (TextReader reader = new StringReader(this.Content))
                 {
-                    var protocolPull = (Allors.Data.Protocol.Pull)XmlSerializer.Deserialize(reader);
-                    var pull = protocolPull.Load(this.strategy.Session);
-                    return pull;
+                    var protocolExtent = (Extent)XmlSerializer.Deserialize(reader);
+                    return protocolExtent.Load(this.strategy.Session);
                 }
             }
 
@@ -45,13 +45,12 @@ namespace Allors.Domain
                 var stringBuilder = new StringBuilder();
                 using (TextWriter writer = new StringWriter(stringBuilder))
                 {
-                    var protocolPull = value.Save();
-                    XmlSerializer.Serialize(writer, protocolPull);
+                    XmlSerializer.Serialize(writer, value.Save());
                     this.Content = stringBuilder.ToString();
                 }
             }
         }
 
-        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Allors.Data.Protocol.Pull));
+        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Extent));
     }
 }

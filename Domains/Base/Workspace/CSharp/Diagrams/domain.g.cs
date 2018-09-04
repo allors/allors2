@@ -287,9 +287,6 @@ namespace Allors.Domain
 				public interface Counter : UniquelyIdentifiable 
 				{
 				}
-				public interface PreparedPull : UniquelyIdentifiable, Deletable 
-				{
-				}
 				public interface Media : UniquelyIdentifiable, Deletable 
 				{
 								global::System.Guid? Revision {set;}
@@ -317,6 +314,12 @@ namespace Allors.Domain
 
 								global::System.Byte[] Data {set;}
 
+				}
+				public interface PreparedExtent : UniquelyIdentifiable, Deletable 
+				{
+				}
+				public interface PreparedFetch : UniquelyIdentifiable, Deletable 
+				{
 				}
 				public interface Country 
 				{

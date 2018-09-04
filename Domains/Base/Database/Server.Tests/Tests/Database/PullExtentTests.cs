@@ -71,9 +71,9 @@ namespace Tests
                                                   new Pull
                                                       {
                                                           Extent = extent.Save(),
-                                                          Results = new[]
+                                                          Fetches = new[]
                                                                         {
-                                                                            new Result
+                                                                            new Fetch
                                                                                 {
                                                                                     Name = "Datas"
                                                                                 }, 

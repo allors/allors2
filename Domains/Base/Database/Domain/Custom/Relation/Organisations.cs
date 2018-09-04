@@ -26,7 +26,7 @@ namespace Allors.Domain
 
     public partial class Organisations
     {
-        public static readonly Guid PullByName = new Guid("2A2246FD-91F8-438F-B6DB-6BA9C3481778");
+        public static readonly Guid ExtentByName = new Guid("2A2246FD-91F8-438F-B6DB-6BA9C3481778");
 
         private UniquelyIdentifiableSticky<Organisation> sticky;
 
@@ -34,17 +34,14 @@ namespace Allors.Domain
 
         protected override void CustomSetup(Setup setup)
         {
-            new PreparedPullBuilder(this.Session).WithUniqueId(PullByName).WithContent("Organisation by name").Build()
-                .Pull = new Pull
+            var extentByName = new PreparedExtentBuilder(this.Session).WithUniqueId(ExtentByName).WithContent("Organisation by name").Build();
+            extentByName.Extent = new Filter(this.Meta.Class)
+            {
+                Predicate = new Equals(this.Meta.Name)
                 {
-                    Extent = new Filter(this.Meta.Class)
-                    {
-                        Predicate = new Equals(this.Meta.Name)
-                        {
-                            Parameter = "name"
-                        }
-                    }
-                };
+                    Parameter = "name"
+                }
+            };
         }
 
         protected override void CustomSecure(Security config)

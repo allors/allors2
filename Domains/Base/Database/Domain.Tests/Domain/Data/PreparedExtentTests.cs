@@ -10,17 +10,17 @@ namespace Tests
     using Xunit;
 
     [Collection("Server")]
-    public class PreparedPullTests : DomainTest
+    public class PreparedExtentTests : DomainTest
     {
         [Fact]
         public async void WithParameter()
         {
-            var pullService = this.Session.ServiceProvider.GetRequiredService<IPullService>();
-            var organizationByName = pullService.Get(Organisations.PullByName);
+            var extentService = this.Session.ServiceProvider.GetRequiredService<IExtentService>();
+            var organizationByName = extentService.Get(Organisations.ExtentByName);
 
-            organizationByName.Arguments = new Arguments(new { name = "Acme" });
+            var arguments = new Arguments(new { name = "Acme" });
 
-            Extent<Organisation> organizations = organizationByName.Extent.Build(this.Session, organizationByName.Arguments).ToArray();
+            Extent<Organisation> organizations = organizationByName.Build(this.Session, arguments).ToArray();
 
             Assert.Single(organizations);
 

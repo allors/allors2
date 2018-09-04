@@ -46,6 +46,7 @@ namespace Allors.Data
             return new Predicate
                        {
                            Kind = PredicateKind.Equals,
+                           PropertyType = this.PropertyType.Id,
                            Object = this.Object?.Id.ToString(),
                            Value = Convert.ToString(this.Value),
                            Parameter = this.Parameter

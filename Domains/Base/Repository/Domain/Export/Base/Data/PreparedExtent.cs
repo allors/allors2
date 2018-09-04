@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Cachable.cs" company="Allors bvba">
+// <copyright file="PreparedExtent.cs" company="Allors bvba">
 // Copyright 2002-2016 Allors bvba.
 // 
 // Dual Licensed under
@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("645A4F92-F1F1-41C7-BA76-53A1CC4D2A61")]
     #endregion
-    public partial class PreparedPull : UniquelyIdentifiable, Deletable
+    public partial class PreparedExtent : UniquelyIdentifiable, Deletable
     {
         #region inherited properties
 

@@ -20,8 +20,8 @@ namespace Tests
 
             this.Session.Commit();
 
-            var pullService = this.Session.ServiceProvider.GetRequiredService<IPullService>();
-            var organizationByName = pullService.Get(Organisations.PullByName);
+            var pullService = this.Session.ServiceProvider.GetRequiredService<IExtentService>();
+            var organizationByName = pullService.Get(Organisations.ExtentByName);
 
             organizationByName.Arguments = new Arguments(new { name = "Acme" });
 

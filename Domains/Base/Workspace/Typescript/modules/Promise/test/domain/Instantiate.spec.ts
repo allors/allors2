@@ -1,5 +1,5 @@
 import { domain, Person, Media, Organisation } from "../../src/allors/domain";
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Result, TreeNode, Tree } from "../../src/allors/framework";
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree } from "../../src/allors/framework";
 import { data, MetaDomain, TreeFactory, PathPerson, PathOrganisation } from "../../src/allors/meta";
 
 import { Database, Scope } from "../../src/allors/promise";
@@ -75,18 +75,19 @@ describe("Instantiate",
                     assert.equal(object, person.id);
                 });
             });
-
-        describe("People with include tree",
+            
+/*
+         describe("People with include tree",
             () => {
-                xit("should return all people", async () => {
+                it("should return all people", async () => {
 
                     const pulls = [
                         new Pull({
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     include: new Tree({
                                         objectType: m.Person,
                                         nodes: [
@@ -117,7 +118,7 @@ describe("Instantiate",
 
         describe("People with include tree (factory)",
             () => {
-                xit("should return all people", async () => {
+                it("should return all people", async () => {
 
                     const tree = new TreeFactory(metaPopulation);
 
@@ -126,8 +127,8 @@ describe("Instantiate",
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     include: tree.Person({
                                         nodes: {
                                             Photo: {}
@@ -155,15 +156,15 @@ describe("Instantiate",
 
         describe("Organisation with path",
             () => {
-                xit("should return all owners", async () => {
+                it("should return all owners", async () => {
 
                     const pulls = [
                         new Pull({
                             extent: new Filter({
                                 objectType: m.Organisation,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     path: {
                                         Owner: {},
                                     }
@@ -187,15 +188,15 @@ describe("Instantiate",
 
             describe("Organisation with path",
             () => {
-                xit("should return all employees", async () => {
+                it("should return all employees", async () => {
 
                     const pulls = [
                         new Pull({
                             extent: new Filter({
                                 objectType: m.Organisation,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     path: {
                                         Employees: {},
                                     }
@@ -216,4 +217,5 @@ describe("Instantiate",
                     assert.equal(3, employees.length);
                 });
             });
-    });
+ */    
+});

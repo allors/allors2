@@ -20,7 +20,7 @@
 
 namespace Allors.Data
 {
-    public class Result
+    public class Fetch
     {
         public Path Path { get; set; }
 
@@ -32,9 +32,9 @@ namespace Allors.Data
 
         public int? Take { get; set; }
 
-        public Protocol.Result Save()
+        public Protocol.Fetch Save()
         {
-            return new Protocol.Result
+            return new Protocol.Fetch
             {
                 Path = this.Path?.Save(),
                 Include = this.Include.Save(),

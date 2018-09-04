@@ -21,13 +21,9 @@
 namespace Allors.Server.Controllers
 {
     using System;
-    using System.Collections;
-    using System.Collections.Generic;
     using System.Linq;
 
-    using Allors.Data;
     using Allors.Domain;
-    using Allors.Meta;
     using Allors.Server.Protocol.Pull;
     using Allors.Services;
 
@@ -37,11 +33,11 @@ namespace Allors.Server.Controllers
 
     public class PullController : Controller
     {
-        public PullController(IDatabaseService databaseService, IPolicyService policyService, IPullService pullService, ILogger<PullController> logger)
+        public PullController(IDatabaseService databaseService, IPolicyService policyService, IExtentService extentService, ILogger<PullController> logger)
         {
             this.DatabaseService = databaseService;
             this.PolicyService = policyService;
-            this.PullService = pullService;
+            this.ExtentService = extentService;
             this.Logger = logger;
         }
 
@@ -49,7 +45,7 @@ namespace Allors.Server.Controllers
 
         private IPolicyService PolicyService { get; }
 
-        private IPullService PullService { get; }
+        private IExtentService ExtentService { get; }
 
         private ILogger<PullController> Logger { get; set; }
 
@@ -74,18 +70,13 @@ namespace Allors.Server.Controllers
                                     {
                                         var pull = p.Load(session);
 
-                                        if (pull.Id.HasValue)
-                                        {
-                                            pull = this.PullService.Get(pull.Id.Value);
-                                        }
-
                                         if (pull.Object != null)
                                         {
                                             var @object = session.Instantiate(pull.Object);
                                            
-                                            if (pull.Results != null)
+                                            if (pull.Fetches != null)
                                             {
-                                                foreach (var result in pull.Results)
+                                                foreach (var result in pull.Fetches)
                                                 {
                                                     var name = result.Name;
 
@@ -137,14 +128,15 @@ namespace Allors.Server.Controllers
                                             }
                                         }
 
-                                        if (pull.Extent != null)
+                                        if (pull.Extent != null || pull.ExtentRef.HasValue)
                                         {
-                                            var extent = pull.Extent.Build(session, pull.Arguments);
-                                            var objects = extent.ToArray();
 
-                                            if (pull.Results != null)
+                                            var extent = pull.Extent ?? this.ExtentService.Get(pull.ExtentRef.Value);
+                                            var objects = extent.Build(session, pull.Arguments).ToArray();
+
+                                            if (pull.Fetches != null)
                                             {
-                                                foreach (var result in pull.Results)
+                                                foreach (var result in pull.Fetches)
                                                 {
                                                     var name = result.Name;
 
@@ -184,7 +176,7 @@ namespace Allors.Server.Controllers
 
                                                         paged = paged.ToArray();
 
-                                                        response.AddValue(name + "_total", extent.Count);
+                                                        response.AddValue(name + "_total", extent.Build(session, pull.Arguments).Count);
                                                         response.AddCollection(name, paged, result.Include);
                                                     }
                                                     else
@@ -201,68 +193,7 @@ namespace Allors.Server.Controllers
                                         }
                                     }
                                 }
-
-                                #region Deprecated
-                                if (req.Q != null)
-                                {
-                                    var metaPopulation = (MetaPopulation)session.Database.MetaPopulation;
-                                    var queries = req.Q.Select(v => v.Parse(metaPopulation)).ToArray();
-                                    foreach (var query in queries)
-                                    {
-                                        var validation = query.Validate();
-                                        if (validation.HasErrors)
-                                        {
-                                            var message = validation.ToString();
-                                            this.Logger.LogError(message);
-                                            return this.StatusCode(400, message);
-                                        }
-
-                                        var extent = session.Query(query);
-                                        if (query.Page != null)
-                                        {
-                                            var page = query.Page;
-                                            var paged = extent.ToArray().Skip(page.Skip).Take(page.Take).ToArray();
-                                            response.AddValue(query.Name + "_total", extent.Count);
-                                            response.AddCollection(query.Name, paged, query.Include);
-                                        }
-                                        else
-                                        {
-                                            response.AddCollection(query.Name, extent.ToArray(), query.Include);
-                                        }
-                                    }
-                                }
-
-                                if (req.F != null)
-                                {
-                                    foreach (var fetch in req.F)
-                                    {
-                                        fetch.Parse(session, out IObject @object, out Path path, out Tree include);
-
-                                        if (path != null && @object != null)
-                                        {
-                                            var acls = new AccessControlListCache(user);
-                                            var result = path.Get(@object, acls);
-                                            if (result != null)
-                                            {
-                                                if (result is IObject)
-                                                {
-                                                    response.AddObject(fetch.Name, (IObject)result, include);
-                                                }
-                                                else
-                                                {
-                                                    var objects = (result as HashSet<object>)?.Cast<IObject>() ?? ((Extent)result).ToArray();
-                                                    response.AddCollection(fetch.Name, objects, include);
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            response.AddObject(fetch.Name, @object, include);
-                                        }
-                                    }
-                                }
-                                #endregion
-
+                                
                                 return this.Ok(response.Build());
                             }
                         });

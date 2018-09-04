@@ -20,7 +20,7 @@
 
 namespace Allors.Data.Protocol
 {
-    public class Result 
+    public class Fetch 
     {
         public string Name { get; set; }
 
@@ -32,9 +32,9 @@ namespace Allors.Data.Protocol
 
         public int? Take { get; set; }
 
-        public Data.Result Load(ISession session)
+        public Data.Fetch Load(ISession session)
         {
-            var result = new Data.Result
+            var result = new Data.Fetch
             {
                 Name = this.Name,
                 Path = this.Path?.Load(session),

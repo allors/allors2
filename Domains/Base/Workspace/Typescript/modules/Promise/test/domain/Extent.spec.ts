@@ -1,5 +1,5 @@
 import { domain, Person, Media } from "../../src/allors/domain";
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Result, TreeNode, Tree } from "../../src/allors/framework";
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree } from "../../src/allors/framework";
 import { data, MetaDomain, TreeFactory, PathPerson, PathOrganisation } from "../../src/allors/meta";
 
 import { Database, Scope } from "../../src/allors/promise";
@@ -61,8 +61,8 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     include: new Tree({
                                         objectType: m.Person,
                                         nodes: [
@@ -102,8 +102,8 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     include: tree.Person({
                                         nodes: {
                                             Photo: {}
@@ -138,8 +138,8 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Organisation,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     path: {
                                         Owner: {},
                                     }
@@ -170,8 +170,8 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Organisation,
                             }),
-                            results: [
-                                new Result({
+                            fetches: [
+                                new Fetch({
                                     path: {
                                         Employees: {},
                                     }

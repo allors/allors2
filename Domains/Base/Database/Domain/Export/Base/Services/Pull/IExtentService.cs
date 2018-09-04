@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Page.cs" company="Allors bvba">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IPullService.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -18,12 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Domain.Query
+namespace Allors.Services
 {
-    public class Page
-    {
-        public int Skip { get; set; }
+    using System;
 
-        public int Take { get; set; }
+    using Allors.Data;
+
+    public partial interface IExtentService
+    {
+        IExtent Get(Guid id);
     }
 }

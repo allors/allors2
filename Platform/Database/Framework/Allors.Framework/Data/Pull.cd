@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Allors.Data.Result">
+  <Class Name="Allors.Data.Fetch">
     <Position X="4.75" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAIAAAAACAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
-      <FileName>Data\Result.cs</FileName>
-      <NewMemberFileName>Data\Pull.cs</NewMemberFileName>
+      <FileName>Data\Fetch.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Path" />
@@ -15,14 +14,14 @@
   <Class Name="Allors.Data.Pull">
     <Position X="1.75" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAAAIAAAAgAAAAgAAAAAAAACAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>EAACAIAAAAgAAAAgAAAAAAAAAAgAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Data\Pull.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Extent" />
       <Property Name="Object" />
       <Property Name="Arguments" />
-      <Property Name="Results" />
+      <Property Name="Fetches" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Data.Tree" Collapsed="true">

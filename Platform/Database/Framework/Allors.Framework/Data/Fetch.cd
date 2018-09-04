@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Allors.Data.Fetch">
+    <Position X="4.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAIAAAAACAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
+      <FileName>Data\Fetch.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Include" />
+      <Property Name="Path" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Allors.Data.Tree" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIoAIAAAACAAAAAABAAAAAAAAAAAAAAgBAAAAAAAAA=</HashCode>
+      <FileName>Data\Tree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Allors.Data.Path" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AoICAIAAAACAgAAEQAAgAAQAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Data\Path.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

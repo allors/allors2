@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="QueryTests.cs" company="Allors bvba">
+// <copyright file="FilterTests.cs" company="Allors bvba">
 //   Copyright 2002-2009 Allors bvba.
 // 
 // Dual Licensed under
@@ -23,25 +23,18 @@
 
 namespace Tests
 {
-    using System.Collections.Generic;
-
-    using Allors;
-    using Allors.Domain.Query;
+    using Allors.Data;
     using Allors.Meta;
 
     using Xunit;
 
-    public class QueryTests : DomainTest
+    public class FilterTests : DomainTest
     {
         [Fact]
         public void Type()
         {
-            var query = new Query
-                            {
-                                ObjectType = M.Person.ObjectType
-                            };
-
-            var queryExtent = this.Session.Query(query);
+            var query = new Filter(M.Person.ObjectType);
+            var queryExtent = query.Build(this.Session);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
 
@@ -51,17 +44,16 @@ namespace Tests
         [Fact]
         public void RoleEquals()
         {
-            var query = new Query
+            var query = new Filter(M.Person.ObjectType)
                             {
-                                ObjectType = M.Person.ObjectType,
                                 Predicate = new Equals
                                                 {
-                                                    RoleType = M.Person.FirstName,
+                                                    PropertyType = M.Person.FirstName,
                                                     Value = "John"
                                                 }
                             };
 
-            var queryExtent = this.Session.Query(query);
+            var queryExtent = query.Build(this.Session);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
             extent.Filter.AddEquals(M.Person.FirstName, "John");
@@ -73,28 +65,27 @@ namespace Tests
         public void And()
         {
             // select from Person where FirstName='John' and LastName='Doe'
-            var query = new Query
+            var query = new Filter(M.Person.ObjectType)
                             {
-                                ObjectType = M.Person.ObjectType,
                                 Predicate = new And
                                                 {
-                                                    Predicates = new List<Predicate>
+                                                    Operands = new IPredicate[]
                                                                 {
                                                                     new Equals
                                                                        {
-                                                                           RoleType = M.Person.FirstName,
+                                                                           PropertyType = M.Person.FirstName,
                                                                            Value = "John"
                                                                        },
                                                                     new Equals
                                                                         {
-                                                                            RoleType = M.Person.LastName,
+                                                                            PropertyType = M.Person.LastName,
                                                                             Value = "Doe"
                                                                         }
                                                                 }
                                 }
                             };
 
-            var queryExtent = this.Session.Query(query);
+            var queryExtent = query.Build(this.Session);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
             var and = extent.Filter.AddAnd();

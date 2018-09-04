@@ -20,5 +20,5 @@ export { Union } from './Union';
 export { Intersect } from './Intersect';
 export { Except } from './Except';
 export { Filter } from './Filter';
-export { Result } from './Result';
+export { Fetch } from './Fetch';
 export { Tree } from './Tree';

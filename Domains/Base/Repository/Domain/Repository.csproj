@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\..\..\Platform\Repository\Attributes\Export\**\*.cs"/>
-    <Compile Include="..\..\..\Core\Repository\Domain\Export\**\*.cs"/>
+    <Compile Include="..\..\..\..\Platform\Repository\Attributes\Export\**\*.cs" />
+    <Compile Include="..\..\..\Core\Repository\Domain\Export\**\*.cs" />
   </ItemGroup>
 
 </Project>

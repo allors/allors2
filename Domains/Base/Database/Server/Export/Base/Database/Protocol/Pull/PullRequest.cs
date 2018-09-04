@@ -24,16 +24,6 @@ namespace Allors.Server.Protocol.Pull
 
     public class PullRequest
     {
-        /// <summary>
-        /// Gets or sets the queries.
-        /// </summary>
-        public PullRequestQuery[] Q { get; set; }
-
-        /// <summary>
-        /// Gets or sets the fetches.
-        /// </summary>
-        public PullRequestFetch[] F { get; set; }
-        
         public Pull[] P { get; set; }
     }
 }

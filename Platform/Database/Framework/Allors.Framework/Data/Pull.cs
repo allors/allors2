@@ -25,7 +25,7 @@ namespace Allors.Data
 
     public class Pull
     {
-        public Guid? Id { get; set; }
+        public Guid? ExtentRef { get; set; }
 
         public IExtent Extent { get; set; }
 
@@ -33,11 +33,11 @@ namespace Allors.Data
 
         public Arguments Arguments { get; set; }
 
-        public Result[] Results { get; set; }
+        public Fetch[] Fetches { get; set; }
 
-        public string DefaultResultName(Result result = null)
+        public string DefaultResultName(Fetch fetch = null)
         {
-            if (result?.Path == null)
+            if (fetch?.Path == null)
             {
                 if (this.Extent != null)
                 {
@@ -56,9 +56,10 @@ namespace Allors.Data
         {
             return new Protocol.Pull
             {
+                ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Save(),
                 Object = this.Object?.Id.ToString(),
-                Results = this.Results?.Select(v => v.Save()).ToArray()
+                Fetches = this.Fetches?.Select(v => v.Save()).ToArray()
             };
         }
     }

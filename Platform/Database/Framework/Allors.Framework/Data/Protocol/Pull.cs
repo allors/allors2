@@ -22,21 +22,26 @@ using System.Linq;
 
 namespace Allors.Data.Protocol
 {
+    using System;
+
     public class Pull 
     {
+        public Guid? ExtentRef { get; set; }
+
         public Extent Extent { get; set; }
 
         public string Object { get; set; }
 
-        public Result[] Results { get; set; }
+        public Fetch[] Fetches { get; set; }
         
         public Data.Pull Load(ISession session)
         {
             var pull = new Data.Pull
             {
+                ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Load(session),
                 Object = this.Object != null ? session.Instantiate(this.Object) : null,
-                Results = this.Results?.Select(v => v.Load(session)).ToArray(),
+                Fetches = this.Fetches?.Select(v => v.Load(session)).ToArray(),
             };
 
             return pull;

@@ -3,7 +3,7 @@ import { Path } from "./Path";
 import { Tree } from "./Tree";
 import { TreeNode } from "./TreeNode";
 
-export class Result {
+export class Fetch {
   public objectType: ObjectType;
 
   public name: string;
@@ -16,7 +16,7 @@ export class Result {
 
   public include: Tree | any;
 
-  constructor(fields?: Partial<Result>) {
+  constructor(fields?: Partial<Fetch>) {
     Object.assign(this, fields);
   }
 
