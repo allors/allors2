@@ -33,21 +33,23 @@ namespace Allors.Server.Controllers
 
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.CodeAnalysis.CSharp;
     using Microsoft.Extensions.Logging;
 
     public class PullController : Controller
     {
-        public PullController(IDatabaseService databaseService, IPolicyService policyService, ILogger<PullController> logger)
+        public PullController(IDatabaseService databaseService, IPolicyService policyService, IPullService pullService, ILogger<PullController> logger)
         {
             this.DatabaseService = databaseService;
             this.PolicyService = policyService;
+            this.PullService = pullService;
             this.Logger = logger;
         }
 
         private IDatabaseService DatabaseService { get; }
 
         private IPolicyService PolicyService { get; }
+
+        private IPullService PullService { get; }
 
         private ILogger<PullController> Logger { get; set; }
 
@@ -71,6 +73,11 @@ namespace Allors.Server.Controllers
                                     foreach (var p in req.P)
                                     {
                                         var pull = p.Load(session);
+
+                                        if (pull.Id.HasValue)
+                                        {
+                                            pull = this.PullService.Get(pull.Id.Value);
+                                        }
 
                                         if (pull.Object != null)
                                         {

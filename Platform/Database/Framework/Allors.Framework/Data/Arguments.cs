@@ -39,7 +39,8 @@ namespace Allors.Data
         /// </param>
         public Arguments(object arguments)
         {
-            this.keyValuePairs = arguments.GetType().GetProperties().Select(v => new KeyValuePair<string,object>(v.Name, v.GetValue(arguments, null))).ToArray();
+            this.keyValuePairs = arguments.GetType().GetProperties()
+                .Select(v => new KeyValuePair<string, object>(v.Name, v.GetValue(arguments, null))).ToArray();
         }
 
         /// <inheritdoc/>

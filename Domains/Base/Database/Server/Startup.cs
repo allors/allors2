@@ -41,7 +41,8 @@
             services.AddAllorsEmbedded();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
-            
+            services.AddSingleton<IPullService, PullService>();
+
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .UseAllors()

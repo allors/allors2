@@ -20,10 +20,13 @@
 
 namespace Allors.Data
 {
+    using System;
     using System.Linq;
 
     public class Pull
     {
+        public Guid? Id { get; set; }
+
         public IExtent Extent { get; set; }
 
         public IObject Object { get; set; }

@@ -20,11 +20,32 @@
 
 namespace Allors.Domain
 {
+    using System;
+
+    using Allors.Data;
+
     public partial class Organisations
     {
+        public static readonly Guid PullByName = new Guid("2A2246FD-91F8-438F-B6DB-6BA9C3481778");
+
         private UniquelyIdentifiableSticky<Organisation> sticky;
 
         public UniquelyIdentifiableSticky<Organisation> Sticky => this.sticky ?? (this.sticky = new UniquelyIdentifiableSticky<Organisation>(this.Session));
+
+        protected override void CustomSetup(Setup setup)
+        {
+            new PreparedPullBuilder(this.Session).WithUniqueId(PullByName).WithContent("Organisation by name").Build()
+                .Pull = new Pull
+                {
+                    Extent = new Filter(this.Meta.Class)
+                    {
+                        Predicate = new Equals(this.Meta.Name)
+                        {
+                            Parameter = "name"
+                        }
+                    }
+                };
+        }
 
         protected override void CustomSecure(Security config)
         {

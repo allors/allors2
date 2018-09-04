@@ -881,6 +881,15 @@ namespace Allors.Domain
 						global::System.Int32 Value {set;}
 
 		}
+		public interface PreparedPull  : UniquelyIdentifiable, Deletable 
+		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						global::System.String Content {set;}
+
+		}
 		public interface Media  : UniquelyIdentifiable, AccessControlledObject, Deletable 
 		{
 						global::System.Guid? Revision {set;}

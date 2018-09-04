@@ -287,6 +287,9 @@ namespace Allors.Domain
 				public interface Counter : UniquelyIdentifiable 
 				{
 				}
+				public interface PreparedPull : UniquelyIdentifiable, Deletable 
+				{
+				}
 				public interface Media : UniquelyIdentifiable, Deletable 
 				{
 								global::System.Guid? Revision {set;}
