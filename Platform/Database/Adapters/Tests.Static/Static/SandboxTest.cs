@@ -26,7 +26,6 @@ namespace Allors.Adapters
     using Allors.Data;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Protocol.Data;
 
     using Xunit;
 
@@ -108,7 +107,7 @@ namespace Allors.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
 
-                var extent = new Data.Extent(M.C1.ObjectType)
+                var extent = new Filter(M.C1.ObjectType)
                 {
                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
                 };
@@ -127,7 +126,7 @@ namespace Allors.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
 
-                var extent = new Data.Extent(M.C1.ObjectType)
+                var extent = new Filter(M.C1.ObjectType)
                 {
                     Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
                 };
@@ -146,13 +145,13 @@ namespace Allors.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
                 
-                var schemaExtent = new Protocol.Data.Extent
+                var schemaExtent = new Data.Protocol.Extent
                 {
-                    Kind = ExtentKind.Predicate,
+                    Kind = Data.Protocol.ExtentKind.Filter,
                     ObjectType = M.C1.ObjectType.Id,
-                    Predicate = new Predicate
+                    Predicate = new Data.Protocol.Predicate
                     {
-                        Kind = PredicateKind.Equals,
+                        Kind = Data.Protocol.PredicateKind.Equals,
                         PropertyType = M.C1.C1AllorsString.Id,
                         Value = "ᴀbra"
                     }
@@ -174,7 +173,7 @@ namespace Allors.Adapters
                 init();
                 var population = new TestPopulation(this.Session);
 
-                var extent = new Data.Extent(M.C1.ObjectType)
+                var extent = new Filter(M.C1.ObjectType)
                                  {
                                      Predicate = new Equals(M.C1.C1AllorsString) { Parameter = "pString" }
                                  };
@@ -184,12 +183,12 @@ namespace Allors.Adapters
 
                 Assert.NotNull(schemaExtent);
 
-                Assert.Equal(ExtentKind.Predicate, schemaExtent.Kind);
+                Assert.Equal(Data.Protocol.ExtentKind.Filter, schemaExtent.Kind);
 
                 var predicate = schemaExtent.Predicate;
 
                 Assert.NotNull(predicate);
-                Assert.Equal(PredicateKind.Equals, predicate.Kind);
+                Assert.Equal(Data.Protocol.PredicateKind.Equals, predicate.Kind);
                 Assert.Equal("pString", predicate.Parameter);
             }
         }
