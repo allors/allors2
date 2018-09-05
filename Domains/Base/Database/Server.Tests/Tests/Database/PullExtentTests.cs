@@ -1,4 +1,4 @@
-namespace Tests
+namespace Server.Tests
 {
     using System;
     using System.Linq;
@@ -28,15 +28,15 @@ namespace Tests
             var extent = new Allors.Data.Filter(M.Data.ObjectType);
 
             var pullRequest = new PullRequest
-                                  {
-                                      P = new[]
-                                              {
-                                                  new Pull
-                                                      {
-                                                          Extent = extent.Save(),
-                                                      },
-                                              }
-                                  };
+            {
+                P = new[]
+                      {
+                          new Pull
+                              {
+                                  Extent = extent.Save(),
+                              },
+                      }
+            };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
@@ -71,14 +71,8 @@ namespace Tests
                                                   new Pull
                                                       {
                                                           Extent = extent.Save(),
-                                                          Fetches = new[]
-                                                                        {
-                                                                            new Fetch
-                                                                                {
-                                                                                    Name = "Datas"
-                                                                                }, 
-                                                                        }
-                                                      },
+                                                          Results = new[] { new Result { Name = "Datas" } },
+                                                      }
                                               }
                                   };
 

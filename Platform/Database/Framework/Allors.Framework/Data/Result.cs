@@ -1,5 +1,5 @@
 //------------------------------------------------------------------------------------------------- 
-// <copyright file="Fetch.cs" company="Allors bvba">
+// <copyright file="Result.cs" company="Allors bvba">
 // Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -20,18 +20,29 @@
 
 namespace Allors.Data
 {
-    public class Fetch
+    using System;
+
+    public class Result
     {
-        public Path Path { get; set; }
+        public Guid? FetchRef { get; set; }
 
-        public Tree Include { get; set; }
+        public Fetch Fetch { get; set; }
 
-        public Protocol.Fetch Save()
+        public string Name { get; set; }
+
+        public int? Skip { get; set; }
+
+        public int? Take { get; set; }
+
+        public Protocol.Result Save()
         {
-            return new Protocol.Fetch
+            return new Protocol.Result
             {
-                Path = this.Path?.Save(),
-                Include = this.Include.Save(),
+                FetchRef = this.FetchRef,
+                Fetch = this.Fetch?.Save(),
+                Name = this.Name,
+                Skip = this.Skip,
+                Take = this.Take
             };
         }
     }

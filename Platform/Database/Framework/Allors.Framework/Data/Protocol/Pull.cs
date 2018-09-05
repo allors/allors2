@@ -32,7 +32,7 @@ namespace Allors.Data.Protocol
 
         public string Object { get; set; }
 
-        public Fetch[] Fetches { get; set; }
+        public Result[] Results { get; set; }
         
         public Data.Pull Load(ISession session)
         {
@@ -41,7 +41,7 @@ namespace Allors.Data.Protocol
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Load(session),
                 Object = this.Object != null ? session.Instantiate(this.Object) : null,
-                Fetches = this.Fetches?.Select(v => v.Load(session)).ToArray(),
+                Results = this.Results?.Select(v => v.Load(session)).ToArray(),
             };
 
             return pull;

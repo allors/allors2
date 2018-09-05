@@ -33,7 +33,7 @@ namespace Allors.Data
 
         public Arguments Arguments { get; set; }
 
-        public Fetch[] Fetches { get; set; }
+        public Result[] Results { get; set; }
 
         public string DefaultResultName(Fetch fetch = null)
         {
@@ -59,7 +59,7 @@ namespace Allors.Data
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Save(),
                 Object = this.Object?.Id.ToString(),
-                Fetches = this.Fetches?.Select(v => v.Save()).ToArray()
+                Results = this.Results?.Select(v => v.Save()).ToArray()
             };
         }
     }

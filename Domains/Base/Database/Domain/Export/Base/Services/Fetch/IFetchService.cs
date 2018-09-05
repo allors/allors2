@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IPullService.cs" company="Allors bvba">
+// <copyright file="IFetchService.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -24,8 +24,8 @@ namespace Allors.Services
 
     using Allors.Data;
 
-    public partial interface IExtentService
+    public partial interface IFetchService
     {
-        IExtent Get(Guid id);
+        Fetch Get(Guid id);
     }
 }
