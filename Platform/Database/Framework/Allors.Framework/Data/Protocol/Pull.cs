@@ -23,6 +23,7 @@ using System.Linq;
 namespace Allors.Data.Protocol
 {
     using System;
+    using System.Collections.Generic;
 
     public class Pull 
     {
@@ -33,6 +34,8 @@ namespace Allors.Data.Protocol
         public string Object { get; set; }
 
         public Result[] Results { get; set; }
+
+        public IDictionary<string, string> Arguments { get; set; }
         
         public Data.Pull Load(ISession session)
         {
@@ -42,6 +45,7 @@ namespace Allors.Data.Protocol
                 Extent = this.Extent?.Load(session),
                 Object = this.Object != null ? session.Instantiate(this.Object) : null,
                 Results = this.Results?.Select(v => v.Load(session)).ToArray(),
+                Arguments = this.Arguments != null ? new Arguments(this.Arguments) : null
             };
 
             return pull;

@@ -56,6 +56,11 @@ namespace Allors.Server
                     var name = result.Name;
 
                     var fetch = result.Fetch;
+                    if (fetch == null && result.FetchRef.HasValue)
+                    {
+                        fetch = this.fetchService.Get(result.FetchRef.Value);
+                    }
+
                     if (fetch != null)
                     {
                         if (fetch.Path != null)
@@ -98,20 +103,20 @@ namespace Allors.Server
                         }
                         else
                         {
-                            name = name ?? this.pull.DefaultResultName();
+                            name = name ?? @object.Strategy.Class.SingularName;
                             response.AddObject(name, @object, fetch.Include);
                         }
                     }
                     else
                     {
-                        name = name ?? this.pull.DefaultResultName();
+                        name = name ?? @object.Strategy.Class.SingularName;
                         response.AddObject(name, @object);
                     }
                 }
             }
             else
             {
-                var name = this.pull.DefaultResultName();
+                var name = @object.Strategy.Class.SingularName;
                 response.AddObject(name, @object);
             }
         }

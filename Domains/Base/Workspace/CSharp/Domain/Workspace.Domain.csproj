@@ -64,6 +64,7 @@
     <Compile Include="generated\Counter.g.cs" />
     <Compile Include="generated\Country.g.cs" />
     <Compile Include="generated\Currency.g.cs" />
+    <Compile Include="generated\Data.g.cs" />
     <Compile Include="generated\Deletable.g.cs" />
     <Compile Include="generated\Dependent.g.cs" />
     <Compile Include="generated\Enumeration.g.cs" />
@@ -90,6 +91,8 @@
     <Compile Include="generated\PaymentState.g.cs" />
     <Compile Include="generated\Permission.g.cs" />
     <Compile Include="generated\Person.g.cs" />
+    <Compile Include="generated\PreparedExtent.g.cs" />
+    <Compile Include="generated\PreparedFetch.g.cs" />
     <Compile Include="generated\Role.g.cs" />
     <Compile Include="generated\S1.g.cs" />
     <Compile Include="generated\SecurityToken.g.cs" />

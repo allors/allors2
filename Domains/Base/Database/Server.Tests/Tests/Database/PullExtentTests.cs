@@ -1,6 +1,7 @@
 namespace Server.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Data.Protocol;
@@ -65,8 +66,8 @@ namespace Server.Tests
             var extent = new Allors.Data.Filter(M.Data.ObjectType);
 
             var pullRequest = new PullRequest
-                                  {
-                                      P = new[]
+            {
+                P = new[]
                                               {
                                                   new Pull
                                                       {
@@ -74,7 +75,7 @@ namespace Server.Tests
                                                           Results = new[] { new Result { Name = "Datas" } },
                                                       }
                                               }
-                                  };
+            };
 
             var response = await this.PostAsJsonAsync(uri, pullRequest);
             var pullResponse = await this.ReadAsAsync<PullResponse>(response);
@@ -86,6 +87,68 @@ namespace Server.Tests
             var dataId = organisations.First();
 
             Assert.Equal(data.Id.ToString(), dataId);
+        }
+
+
+        [Fact]
+        public async void WithExtentRef()
+        {
+            var administrator = new Users(this.Session).GetUser("administrator");
+            await this.SignIn(administrator);
+
+            this.Session.Commit();
+
+            var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+
+            var pullRequest = new PullRequest
+            {
+                P = new[]
+                  {
+                      new Pull
+                          {
+                              ExtentRef = Organisations.ExtentByName,
+                              Arguments = new Dictionary<string, string> { ["name"] = "Acme" },
+                          }
+                  }
+            };
+
+            var response = await this.PostAsJsonAsync(uri, pullRequest);
+            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
+
+            var organisations = pullResponse.NamedCollections["Organisations"];
+
+            Assert.Single(organisations);
+        }
+
+        [Fact]
+        public async void WithFetchRef()
+        {
+            var administrator = new Users(this.Session).GetUser("administrator");
+            await this.SignIn(administrator);
+
+            this.Session.Commit();
+
+            var uri = new Uri(@"Pull/Pull", UriKind.Relative);
+
+            var pullRequest = new PullRequest
+            {
+                P = new[]
+                  {
+                      new Pull
+                          {
+                              ExtentRef = Organisations.ExtentByName,
+                              Arguments = new Dictionary<string, string> { ["name"] = "Acme" },
+                              Results = new[] { new Result() }
+                          }
+                  }
+            };
+
+            var response = await this.PostAsJsonAsync(uri, pullRequest);
+            var pullResponse = await this.ReadAsAsync<PullResponse>(response);
+
+            var organisations = pullResponse.NamedCollections["Organisations"];
+
+            Assert.Single(organisations);
         }
     }
 }

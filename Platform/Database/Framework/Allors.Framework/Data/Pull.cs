@@ -34,24 +34,7 @@ namespace Allors.Data
         public Arguments Arguments { get; set; }
 
         public Result[] Results { get; set; }
-
-        public string DefaultResultName(Fetch fetch = null)
-        {
-            if (fetch?.Path == null)
-            {
-                if (this.Extent != null)
-                {
-                    return this.Extent.ObjectType.PluralName;
-                }
-                else
-                {
-                    return this.Object.Strategy.Class.SingularName;
-                }
-            }
-
-            return null;
-        }
-
+        
         public Protocol.Pull Save()
         {
             return new Protocol.Pull
