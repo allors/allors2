@@ -2,6 +2,7 @@ import { Extent } from './Extent';
 import { Fetch } from './Fetch';
 import { ISessionObject } from '../../workspace';
 import { MetaObjectType } from '../../meta';
+import { Result } from './result';
 
 export class Pull {
 
@@ -9,7 +10,7 @@ export class Pull {
 
   public object: ISessionObject | string;
 
-  public fetches: Fetch[];
+  public results: Result[];
 
   constructor(fields?: Partial<Pull>) {
     Object.assign(this, fields);
@@ -28,7 +29,7 @@ export class Pull {
     return {
       extent: this.extent,
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
-      fetches: this.fetches && this.fetches.map(v => new Fetch(Object.assign({}, v, {objectType}))),
+      results: this.results && this.results.map(v => new Result(Object.assign({}, v, {objectType}))),
     };
   }
 }

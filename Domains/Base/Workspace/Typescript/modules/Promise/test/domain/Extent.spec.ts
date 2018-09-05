@@ -1,5 +1,5 @@
 import { domain, Person, Media } from "../../src/allors/domain";
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree } from "../../src/allors/framework";
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from "../../src/allors/framework";
 import { data, MetaDomain, TreeFactory, PathPerson, PathOrganisation } from "../../src/allors/meta";
 
 import { Database, Scope } from "../../src/allors/promise";
@@ -61,15 +61,17 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            fetches: [
-                                new Fetch({
-                                    include: new Tree({
-                                        objectType: m.Person,
-                                        nodes: [
-                                            new TreeNode({
-                                                roleType: m.Person.Photo,
-                                            }),
-                                        ]
+                            results: [
+                                new Result({
+                                    fetch: new Fetch({
+                                        include: new Tree({
+                                            objectType: m.Person,
+                                            nodes: [
+                                                new TreeNode({
+                                                    roleType: m.Person.Photo,
+                                                }),
+                                            ]
+                                        })
                                     })
                                 })
                             ]
@@ -102,12 +104,14 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            fetches: [
-                                new Fetch({
-                                    include: tree.Person({
-                                        nodes: {
-                                            Photo: {}
-                                        }
+                            results: [
+                                new Result({
+                                    fetch: new Fetch({
+                                        include: tree.Person({
+                                            nodes: {
+                                                Photo: {}
+                                            }
+                                        })
                                     })
                                 })
                             ]
@@ -138,11 +142,13 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Organisation,
                             }),
-                            fetches: [
-                                new Fetch({
-                                    path: {
-                                        Owner: {},
-                                    }
+                            results: [
+                                new Result({
+                                    fetch: new Fetch({
+                                        path: {
+                                            Owner: {},
+                                        }
+                                    })
                                 })
                             ]
                         })
@@ -161,7 +167,7 @@ describe("Extent",
                 });
             });
 
-            describe("Organisation with path",
+        describe("Organisation with path",
             () => {
                 it("should return all employees", async () => {
 
@@ -170,11 +176,13 @@ describe("Extent",
                             extent: new Filter({
                                 objectType: m.Organisation,
                             }),
-                            fetches: [
-                                new Fetch({
-                                    path: {
-                                        Employees: {},
-                                    }
+                            results: [
+                                new Result({
+                                    fetch: new Fetch({
+                                        path: {
+                                            Employees: {},
+                                        }
+                                    })
                                 })
                             ]
                         })

@@ -22,3 +22,4 @@ export { Except } from './Except';
 export { Filter } from './Filter';
 export { Fetch } from './Fetch';
 export { Tree } from './Tree';
+export { Result } from './Result';
