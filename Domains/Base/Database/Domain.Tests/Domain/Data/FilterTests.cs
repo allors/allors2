@@ -44,7 +44,7 @@ namespace Tests
         [Fact]
         public void RoleEquals()
         {
-            var query = new Filter(M.Person.ObjectType)
+            var filter = new Filter(M.Person.ObjectType)
                             {
                                 Predicate = new Equals
                                                 {
@@ -53,7 +53,7 @@ namespace Tests
                                                 }
                             };
 
-            var queryExtent = query.Build(this.Session);
+            var queryExtent = filter.Build(this.Session);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
             extent.Filter.AddEquals(M.Person.FirstName, "John");
@@ -65,27 +65,27 @@ namespace Tests
         public void And()
         {
             // select from Person where FirstName='John' and LastName='Doe'
-            var query = new Filter(M.Person.ObjectType)
-                            {
-                                Predicate = new And
-                                                {
-                                                    Operands = new IPredicate[]
-                                                                {
-                                                                    new Equals
-                                                                       {
-                                                                           PropertyType = M.Person.FirstName,
-                                                                           Value = "John"
-                                                                       },
-                                                                    new Equals
-                                                                        {
-                                                                            PropertyType = M.Person.LastName,
-                                                                            Value = "Doe"
-                                                                        }
-                                                                }
-                                }
-                            };
+            var filter = new Filter(M.Person.ObjectType)
+                             {
+                                 Predicate = new And
+                                                 {
+                                                     Operands = new IPredicate[]
+                                                                    {
+                                                                        new Equals
+                                                                            {
+                                                                                PropertyType = M.Person.FirstName,
+                                                                                Value = "John"
+                                                                            },
+                                                                        new Equals
+                                                                            {
+                                                                                PropertyType = M.Person.LastName,
+                                                                                Value = "Doe"
+                                                                            }
+                                                                    }
+                                                 }
+                             };
 
-            var queryExtent = query.Build(this.Session);
+            var queryExtent = filter.Build(this.Session);
 
             var extent = this.Session.Extent(M.Person.ObjectType);
             var and = extent.Filter.AddAnd();

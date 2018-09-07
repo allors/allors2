@@ -1,6 +1,6 @@
-import { domain, Person, Media } from "../../src/allors/domain";
+import { domain, Person, Media, Organisation } from "../../src/allors/domain";
 import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from "../../src/allors/framework";
-import { data, MetaDomain, TreeFactory, PathPerson, PathOrganisation } from "../../src/allors/meta";
+import { data, MetaDomain, PathOrganisation, TreeFactory, PathFactory } from "../../src/allors/meta";
 
 import { Database, Scope } from "../../src/allors/promise";
 import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
@@ -13,6 +13,8 @@ describe("Extent",
         let metaPopulation: MetaPopulation;
         let m: MetaDomain;
         let scope: Scope;
+        let tree: TreeFactory;
+        let path: PathFactory;
 
         beforeEach(async () => {
             metaPopulation = new MetaPopulation(data);
@@ -25,6 +27,8 @@ describe("Extent",
             const database = new Database(http);
             scope = new Scope(database, workspace);
 
+            tree = new TreeFactory(metaPopulation);
+            path = new PathFactory(metaPopulation);
         });
 
         describe("People",
@@ -93,24 +97,20 @@ describe("Extent",
                 });
             });
 
-        describe("People with include tree (factory)",
+        describe("Organisation with tree builder",
             () => {
-                it("should return all people", async () => {
-
-                    const tree = new TreeFactory(metaPopulation);
+                it("should return all organisations", async () => {
 
                     const pulls = [
                         new Pull({
                             extent: new Filter({
-                                objectType: m.Person,
+                                objectType: m.Organisation,
                             }),
                             results: [
                                 new Result({
                                     fetch: new Fetch({
-                                        include: tree.Person({
-                                            nodes: {
-                                                Photo: {}
-                                            }
+                                        include: tree.Organisation({
+                                            Owner: {}
                                         })
                                     })
                                 })
@@ -123,12 +123,15 @@ describe("Extent",
                     const loaded = await scope
                         .load("Pull", new PullRequest({ pulls }));
 
-                    const people = loaded.collections["People"] as Person[];
+                    const organisations = loaded.collections["Organisations"] as Organisation[];
 
-                    assert.isArray(people);
-                    assert.isNotEmpty(people);
+                    assert.isArray(organisations);
+                    assert.isNotEmpty(organisations);
 
-                    people.forEach((person) => {
+                    organisations.forEach((organisation) => {
+                        let owner = organisation.Owner;
+                        if (owner) {
+                        }
                     });
                 });
             });
@@ -145,9 +148,9 @@ describe("Extent",
                             results: [
                                 new Result({
                                     fetch: new Fetch({
-                                        path: {
+                                        path: path.Organisation({
                                             Owner: {},
-                                        }
+                                        })
                                     })
                                 })
                             ]
@@ -165,10 +168,7 @@ describe("Extent",
                     assert.isNotEmpty(owners);
                     assert.equal(2, owners.length);
                 });
-            });
 
-        describe("Organisation with path",
-            () => {
                 it("should return all employees", async () => {
 
                     const pulls = [
@@ -179,9 +179,41 @@ describe("Extent",
                             results: [
                                 new Result({
                                     fetch: new Fetch({
-                                        path: {
+                                        path: path.Organisation({
                                             Employees: {},
-                                        }
+                                        })
+                                    })
+                                })
+                            ]
+                        })
+                    ];
+
+                    scope.session.reset();
+
+                    const loaded = await scope
+                        .load("Pull", new PullRequest({ pulls }));
+
+                    const employees = loaded.collections["Employees"] as Media[];
+
+                    assert.isArray(employees);
+                    assert.isNotEmpty(employees);
+                    assert.equal(3, employees.length);
+                });
+            });
+
+        describe("Organisation with typesafe path",
+            () => {
+                it("should return all employees", async () => {
+
+                    const pulls = [
+                        new Pull({
+                            extent: new Filter(m.Organisation),
+                            results: [
+                                new Result({
+                                    fetch: new Fetch({
+                                        path: path.Organisation({
+                                            Employees: {},
+                                        })
                                     })
                                 })
                             ]

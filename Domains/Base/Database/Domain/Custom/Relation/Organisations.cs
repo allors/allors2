@@ -37,7 +37,7 @@ namespace Allors.Domain
 
         protected override void CustomSetup(Setup setup)
         {
-            var extentByName = new PreparedExtentBuilder(this.Session).WithUniqueId(ExtentByName).WithContent("Organisation by name").Build();
+            var extentByName = new PreparedExtentBuilder(this.Session).WithUniqueId(ExtentByName).WithDescription("Organisation by name").Build();
             extentByName.Extent = new Filter(this.Meta.Class)
             {
                 Predicate = new Equals(this.Meta.Name)
@@ -46,7 +46,7 @@ namespace Allors.Domain
                 }
             };
 
-            var fetchPeople = new PreparedFetchBuilder(this.Session).WithUniqueId(FetchPeople).WithContent("Fetch associated people").Build();
+            var fetchPeople = new PreparedFetchBuilder(this.Session).WithUniqueId(FetchPeople).WithDescription("Fetch associated people").Build();
             fetchPeople.Fetch = new Fetch
             {
                 Include = new Tree(M.Organisation.Class)

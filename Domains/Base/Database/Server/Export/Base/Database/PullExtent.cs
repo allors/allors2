@@ -36,12 +36,7 @@ namespace Allors.Server
         private readonly IExtentService extentService;
         private readonly IFetchService fetchService;
 
-        public PullExtent(
-            ISession session,
-            Pull pull,
-            User user,
-            IExtentService extentService,
-            IFetchService fetchService)
+        public PullExtent(ISession session, Pull pull, User user, IExtentService extentService, IFetchService fetchService)
         {
             this.session = session;
             this.pull = pull;
