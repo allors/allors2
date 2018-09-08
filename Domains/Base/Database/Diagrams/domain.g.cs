@@ -903,6 +903,24 @@ namespace Allors.Domain
 						global::System.Byte[] Data {set;}
 
 		}
+		public interface PreparedExtent  : UniquelyIdentifiable, Deletable 
+		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						global::System.String Content {set;}
+
+		}
+		public interface PreparedFetch  : UniquelyIdentifiable, Deletable 
+		{
+						global::System.String Name {set;}
+
+						global::System.String Description {set;}
+
+						global::System.String Content {set;}
+
+		}
 		public interface Country  : AccessControlledObject 
 		{
 						Currency Currency {set;}

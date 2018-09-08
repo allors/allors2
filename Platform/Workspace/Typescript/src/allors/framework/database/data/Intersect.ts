@@ -1,10 +1,15 @@
 import { Sort } from './Sort';
 import { Extent } from './Extent';
+import { ObjectType, MetaObjectType } from '../../meta';
 
 export class Intersect {
   public operands: Extent[];
 
   public sort: Sort[];
+
+  public get objectType(): ObjectType | MetaObjectType {
+    return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
+  } 
 
   constructor(fields?: Partial<Intersect>) {
     Object.assign(this, fields);
@@ -14,6 +19,7 @@ export class Intersect {
     return {
       kind: "Intersect",
       operands: this.operands,
+      sorting: this.sort,
     };
   }
 }

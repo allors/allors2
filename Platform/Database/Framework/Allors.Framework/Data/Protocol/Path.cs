@@ -21,14 +21,19 @@
 namespace Allors.Data.Protocol
 {
     using System;
-
+  
     public class Path
     {
-        public Guid[] PropetyTypes { get; set; }
+        public Guid PropertyType { get; set; }
+
+        public Path Next { get; set; }
 
         public Data.Path Load(ISession session)
         {
-            return new Data.Path(session.Database.MetaPopulation, this.PropetyTypes);
+            return new Data.Path(session.Database.MetaPopulation, this.PropertyType)
+                       {
+                           Next = this.Next?.Load(session)
+                       };
         }
     }
 }

@@ -20,13 +20,15 @@
 
 namespace Allors.Data.Protocol
 {
+    using System;
+
     public class Result 
     {
+        public Guid? FetchRef { get; set; }
+
+        public Fetch Fetch { get; set; }
+
         public string Name { get; set; }
-
-        public Path Path { get; set; }
-
-        public Tree Include { get; set; }
 
         public int? Skip { get; set; }
 
@@ -36,8 +38,9 @@ namespace Allors.Data.Protocol
         {
             var result = new Data.Result
             {
-                Path = this.Path?.Load(session),
-                Include = this.Include?.Load(session),
+                FetchRef = this.FetchRef,
+                Fetch = this.Fetch?.Load(session),
+                Name = this.Name,
                 Skip = this.Skip,
                 Take = this.Take,
             };

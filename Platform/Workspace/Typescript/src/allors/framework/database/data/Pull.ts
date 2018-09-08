@@ -1,12 +1,15 @@
 import { Extent } from './Extent';
-import { Result } from './Result';
 import { ISessionObject } from '../../workspace';
+import { MetaObjectType } from '../../meta';
+import { Result } from './result';
 
 export class Pull {
 
+  public extentRef: string;
+
   public extent: Extent;
 
-  public object: ISessionObject;
+  public object: ISessionObject | string;
 
   public results: Result[];
 
@@ -15,9 +18,13 @@ export class Pull {
   }
 
   public toJSON(): any {
+
+    const sessionObject = this.object as ISessionObject;
+
     return {
+      extentRef: this.extentRef,
       extent: this.extent,
-      object: this.object ? this.object.id : undefined,
+      object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
       results: this.results,
     };
   }

@@ -1,4 +1,4 @@
-namespace Tests
+namespace Server.Tests
 {
     using System;
 

@@ -12,9 +12,9 @@ export class GreaterThan implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: 'GreaterThan',
-      rt: this.roleType.id,
-      v: this.value,
+      kind: 'GreaterThan',
+      roletype: this.roleType.id,
+      value: this.value,
     };
   }
 }

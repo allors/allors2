@@ -1,16 +1,15 @@
-import { Path } from './Path';
-import { Tree } from './Tree';
+import { Fetch } from "./Fetch";
 
 export class Result {
+  public fetchRef: string
+
+  public fetch: Fetch;
+
   public name: string;
 
   public skip: number;
 
   public take: number;
-
-  public path: Path | any;
-
-  public include: Tree;
 
   constructor(fields?: Partial<Result>) {
     Object.assign(this, fields);
@@ -22,8 +21,9 @@ export class Result {
       name: this.name,
       skip: this.skip,
       take: this.take,
-      path: this.path,
-      include: this.include
+      fetchRef: this.fetchRef,
+      fetch: this.fetch,
     };
+    
   }
 }

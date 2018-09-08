@@ -18,25 +18,33 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Data.Protocol
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class Pull 
     {
+        public Guid? ExtentRef { get; set; }
+
         public Extent Extent { get; set; }
 
         public string Object { get; set; }
 
         public Result[] Results { get; set; }
+
+        public IDictionary<string, string> Arguments { get; set; }
         
         public Data.Pull Load(ISession session)
         {
             var pull = new Data.Pull
             {
+                ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Load(session),
                 Object = this.Object != null ? session.Instantiate(this.Object) : null,
-                Results = this.Results?.Select(v=> v.Load(session)).ToArray(),
+                Results = this.Results?.Select(v => v.Load(session)).ToArray(),
+                Arguments = this.Arguments != null ? new Arguments(this.Arguments) : null
             };
 
             return pull;

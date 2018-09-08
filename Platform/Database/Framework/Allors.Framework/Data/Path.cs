@@ -87,19 +87,11 @@ namespace Allors.Data
 
         public Protocol.Path Save()
         {
-            var propertyTypeIds = new List<Guid> { this.PropertyType.Id };
-
-            var path = this;
-            while (path.Next != null)
-            {
-                path = path.Next;
-                propertyTypeIds.Add(path.PropertyType.Id);
-            }
-
             return new Protocol.Path
-            {
-                PropetyTypes = propertyTypeIds.ToArray()
-            };
+                       {
+                           PropertyType = this.PropertyType.Id,
+                           Next = this.Next.Save()
+                       };
         }
 
         public IObjectType GetObjectType()

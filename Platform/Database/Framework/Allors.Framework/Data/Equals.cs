@@ -22,8 +22,8 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Meta;
     using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class Equals : IPropertyPredicate
     {
@@ -46,6 +46,7 @@ namespace Allors.Data
             return new Predicate
                        {
                            Kind = PredicateKind.Equals,
+                           PropertyType = this.PropertyType.Id,
                            Object = this.Object?.Id.ToString(),
                            Value = Convert.ToString(this.Value),
                            Parameter = this.Parameter

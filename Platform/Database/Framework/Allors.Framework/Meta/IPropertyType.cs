@@ -30,7 +30,15 @@ namespace Allors.Meta
     {
         string Name { get; }
 
+        string SingularName { get; }
+
+        string PluralName { get; }
+
         IObjectType ObjectType { get; }
+
+        bool IsOne { get; }
+
+        bool IsMany { get; }
 
         object Get(IStrategy strategy);
     }

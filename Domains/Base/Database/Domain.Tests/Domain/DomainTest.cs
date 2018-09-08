@@ -72,14 +72,16 @@ namespace Tests
                 Directory = new DirectoryInfo("."),
                 ApplicationName = ApplicationName
             });
-            var serviceProvider = services.BuildServiceProvider();
 
+            var serviceProvider = services.BuildServiceProvider();
+            
             var configuration = new Configuration
                                     {
                                         ObjectFactory = this.ObjectFactory,
                                     };
 
             var database = new Database(serviceProvider, configuration);
+            serviceProvider.GetRequiredService<IDatabaseService>().Database = database;
             this.Setup(database, populate);
         }
 

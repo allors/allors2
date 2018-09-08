@@ -131,6 +131,8 @@ namespace Allors.Services
             services.AddSingleton<IStateService, StateService>();
             services.AddSingleton<ITimeService, TimeService>();
             services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IExtentService, ExtentService>();
+            services.AddSingleton<IFetchService, FetchService>();
 
             services.AddScoped<ISessionService, SessionService>();
         }

@@ -315,6 +315,12 @@ namespace Allors.Domain
 								global::System.Byte[] Data {set;}
 
 				}
+				public interface PreparedExtent : UniquelyIdentifiable, Deletable 
+				{
+				}
+				public interface PreparedFetch : UniquelyIdentifiable, Deletable 
+				{
+				}
 				public interface Country 
 				{
 								Currency Currency {set;}

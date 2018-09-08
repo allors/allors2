@@ -20,11 +20,13 @@
 
 namespace Allors.Data
 {
+    using System;
+
     public class Result
     {
-        public Path Path { get; set; }
+        public Guid? FetchRef { get; set; }
 
-        public Tree Include { get; set; }
+        public Fetch Fetch { get; set; }
 
         public string Name { get; set; }
 
@@ -36,8 +38,8 @@ namespace Allors.Data
         {
             return new Protocol.Result
             {
-                Path = this.Path?.Save(),
-                Include = this.Include.Save(),
+                FetchRef = this.FetchRef,
+                Fetch = this.Fetch?.Save(),
                 Name = this.Name,
                 Skip = this.Skip,
                 Take = this.Take

@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Allors.Data.Result">
-    <Position X="4.75" Y="3" Width="1.5" />
+  <Class Name="Allors.Data.Fetch">
+    <Position X="6.5" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAIAAAAAAAAIAAAAACAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
-      <FileName>Data\Result.cs</FileName>
-      <NewMemberFileName>Data\Pull.cs</NewMemberFileName>
+      <HashCode>AAAAAIAAAAAAAAIAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Fetch.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Path" />
@@ -13,9 +12,9 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Data.Pull">
-    <Position X="1.75" Y="2.25" Width="1.5" />
+    <Position X="1" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAAAIAAAAgAAAAgAAAAAAAACAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>EAAAAIAAAAAAAAAgAAAAAAAACAAAAAAAIAAACAAAAAA=</HashCode>
       <FileName>Data\Pull.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -26,36 +25,46 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Data.Tree" Collapsed="true">
-    <Position X="7.5" Y="4" Width="1.5" />
+    <Position X="9.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIoAIAAAACAAAAAABAAAAAAAAAAAAAAgBAAAAAAAAA=</HashCode>
       <FileName>Data\Tree.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Data.Path" Collapsed="true">
-    <Position X="7.5" Y="3" Width="1.5" />
+    <Position X="9.25" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AoICAIAAAACAgAAEQAAgAAQAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Data\Path.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Data.Arguments" Collapsed="true">
-    <Position X="4.75" Y="5.5" Width="1.5" />
+    <Position X="4" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>CAAAAAAAAAAFABAACAAAAAQAAAAAAAAEAAAgAAAAAAA=</HashCode>
       <FileName>Data\Arguments.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="Allors.Data.Result">
+    <Position X="4" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAEgAAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
+      <FileName>Data\Result.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Fetch" />
+    </ShowAsAssociation>
+  </Class>
   <Interface Name="Allors.Data.IExtent" Collapsed="true">
-    <Position X="4.75" Y="1.25" Width="1.5" />
+    <Position X="4" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAAAAAAAAAAAAAAAAQAAAAgAAAAIAAAAAAAAA=</HashCode>
       <FileName>Data\IExtent.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.IObject" Collapsed="true">
-    <Position X="4.75" Y="2" Width="1.5" />
+    <Position X="4" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>IObject.cs</FileName>

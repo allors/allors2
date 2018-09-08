@@ -12,9 +12,9 @@ export class LessThan implements Predicate {
 
   public toJSON(): any {
     return {
-      _T: 'LessThan',
-      rt: this.roleType.id,
-      v: this.value,
+      kind: 'LessThan',
+      roletype: this.roleType.id,
+      value: this.value,
     };
   }
 }

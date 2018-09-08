@@ -173,7 +173,7 @@ namespace Allors.Adapters
                 {
                     session.Commit();
                 }
-                catch(Exception e)
+                catch
                 {
                     exceptionThrown = true;
                 }

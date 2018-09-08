@@ -20,10 +20,13 @@
 
 namespace Allors.Data
 {
+    using System;
     using System.Linq;
 
     public class Pull
     {
+        public Guid? ExtentRef { get; set; }
+
         public IExtent Extent { get; set; }
 
         public IObject Object { get; set; }
@@ -31,28 +34,12 @@ namespace Allors.Data
         public Arguments Arguments { get; set; }
 
         public Result[] Results { get; set; }
-
-        public string DefaultResultName(Result result = null)
-        {
-            if (result?.Path == null)
-            {
-                if (this.Extent != null)
-                {
-                    return this.Extent.ObjectType.PluralName;
-                }
-                else
-                {
-                    return this.Object.Strategy.Class.SingularName;
-                }
-            }
-
-            return null;
-        }
-
+        
         public Protocol.Pull Save()
         {
             return new Protocol.Pull
             {
+                ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Save(),
                 Object = this.Object?.Id.ToString(),
                 Results = this.Results?.Select(v => v.Save()).ToArray()
