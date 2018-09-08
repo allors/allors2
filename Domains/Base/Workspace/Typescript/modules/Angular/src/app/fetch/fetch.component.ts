@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { ActivatedRoute } from "@angular/router";
-import { Observable, Subject, Subscription } from "rxjs/Rx";
+import { Subscription } from "rxjs/Rx";
 
 import { Loaded, Scope, WorkspaceService } from "../../allors/angular";
 import { Organisation } from "../../allors/domain";
-import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from "../../allors/framework";
+import { Fetch, PullRequest, Pull } from "../../allors/framework";
+import { Result } from '../../allors/framework/database/data/Result';
+import { TreeFactory, PathFactory, MetaDomain } from "../../allors/meta";
 
 @Component({
   templateUrl: "./fetch.component.html",
@@ -36,39 +38,45 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.workspaceService.metaPopulation.metaDomain;
+    const metaPopulation = this.workspaceService.metaPopulation;
+    const m = metaPopulation.metaDomain as MetaDomain;
+    const tree = new TreeFactory(metaPopulation);
+    const path = new PathFactory(metaPopulation);
 
     const id = this.route.snapshot.paramMap.get("id");
 
     // tslint:disable:object-literal-sort-keys
-    const fetches = [new Fetch(
-      {
-        name: "organisation",
-        id,
-        include: [new TreeNode(
-          {
-            roleType: m.Organisation.Owner,
-          })],
-      }),
-    new Fetch({
-      name: "organisations",
-      id,
-      path: new Path({
-        step: m.Organisation.Owner,
-        next: new Path({
-          step: m.Person.OrganisationsWhereOwner,
-        }),
-      }),
-      include: [new TreeNode(
+    const pulls = [
+      new Pull(
         {
-          roleType: m.Organisation.Owner,
-        })],
-    })];
+          object: id,
+          results: [
+            new Result({
+              name: "organisation",
+              fetch: new Fetch({
+                include: tree.Organisation({
+                  Owner: {}
+                })
+              })
+            }),
+            new Result({
+              name: "organisations",
+              fetch: new Fetch({
+                path: path.Organisation({
+                  Owner: {
+                    OrganisationsWhereOwner: {}
+                  }
+                })
+              })
+            })
+          ]
+        }),
+    ];
 
     this.scope.session.reset();
     this.subscription = this.scope
       .load("Pull", new PullRequest({
-        fetches,
+        pulls,
       }))
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.organisation as Organisation;

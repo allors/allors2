@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { Observable, Subject, Subscription } from "rxjs/Rx";
+import { Subscription } from "rxjs/Rx";
 
 import { Loaded, Scope, WorkspaceService } from "../../allors/angular";
-import { Organisation, Person } from "../../allors/domain";
-import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from "../../allors/framework";
+import { Organisation } from "../../allors/domain";
+import { Like, PullRequest, Pull, Sort, Filter, Result, Fetch } from "../../allors/framework";
+import { TreeFactory, MetaDomain } from "../../allors/meta";
 
 @Component({
   templateUrl: "./query.component.html",
@@ -34,36 +35,45 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const m = this.workspaceService.metaPopulation.metaDomain;
+    const metaPopulation = this.workspaceService.metaPopulation;
+    const m = metaPopulation.metaDomain as MetaDomain;
+    const tree = new TreeFactory(metaPopulation);
 
     // tslint:disable:object-literal-sort-keys
-    const queries = [new Query(
-      {
-        name: "organisations",
-        objectType: m.Organisation,
-        predicate: new Like(
-          {
-            roleType: m.Organisation.Name,
-            value: "Org%",
+    const pulls = [
+      new Pull(
+        {
+          extent: new Filter({
+            objectType: m.Organisation,
+            predicate: new Like(
+              {
+                roleType: m.Organisation.Name,
+                value: "Org%",
+              }),
+            sort: [
+              new Sort(
+                {
+                  roleType: m.Organisation.Name,
+                })],
           }),
-        include: [new TreeNode(
-          {
-            roleType: m.Organisation.Owner,
-          })],
-        sort: [new Sort(
-          {
-            roleType: m.Organisation.Name,
-            direction: "Asc",
-          })],
-        page: new Page({
-          skip: this.skip || 0,
-          take: this.take || 10,
-        }),
-      })];
+          results: [
+            new Result({
+              name: "organisations",
+              fetch: new Fetch({
+                include: tree.Organisation(
+                  {
+                    Owner: {},
+                  }),
+              }),
+              skip: this.skip || 0,
+              take: this.take || 10,
+            })
+          ],
+        })];
 
     this.scope.session.reset();
     this.subscription = this.scope
-      .load("Pull", new PullRequest({queries}))
+      .load("Pull", new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
         this.organisations = loaded.collections.organisations as Organisation[];
         this.organisationCount = loaded.values.organisations_count;

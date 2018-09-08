@@ -2,7 +2,7 @@
 
 import 'rxjs/add/observable/empty';
 
-import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Query, RoleType, Sort } from '../../../framework';
+import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort, Filter, Result } from '../../../framework';
 
 import { Loaded } from '../framework/responses/Loaded';
 import { Scope } from '../framework/Scope';
@@ -30,23 +30,23 @@ export class FilterFactory {
 
       if (this.options.existRoletypes) {
         this.options.existRoletypes.forEach((roleType: RoleType) => {
-          and.predicates.push(new Exists({ roleType }));
+          and.operands.push(new Exists({ propertyType: roleType }));
         });
       }
 
       if (this.options.notExistRoletypes) {
         this.options.notExistRoletypes.forEach((roleType: RoleType) => {
           const not = new Not();
-          and.predicates.push(not);
-          not.predicate = new Exists({ roleType });
+          and.operands.push(not);
+          not.operand = new Exists({ propertyType: roleType });
         });
       }
 
       terms.forEach((term: string) => {
         const or: Or = new Or();
-        and.predicates.push(or);
+        and.operands.push(or);
         this.options.roleTypes.forEach((roleType: RoleType) => {
-          or.predicates.push(new Like({ roleType, value: term + '%' }));
+          or.operands.push(new Like({ roleType, value: term + '%' }));
         });
       });
 
@@ -54,17 +54,23 @@ export class FilterFactory {
         this.options.post(and);
       }
 
-      const queries = [
-        new Query({
-          name: 'results',
-          objectType: this.options.objectType,
-          predicate: and,
-          sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
+      const pulls = [
+        new Pull({
+          extent: new Filter({
+            objectType: this.options.objectType,
+            predicate: and,
+            sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
+            }),
+          results: [
+            new Result({
+              name: 'results',
+            })
+          ]
         }),
       ];
 
       return scope
-        .load('Pull', new PullRequest({ queries }))
+        .load('Pull', new PullRequest({ pulls }))
         .map((loaded: Loaded) => loaded.collections.results);
     };
   }
