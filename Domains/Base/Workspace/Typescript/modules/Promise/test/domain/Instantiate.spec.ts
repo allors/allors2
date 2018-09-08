@@ -1,6 +1,6 @@
-import { domain, Person, Media, Organisation } from "../../src/allors/domain";
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree } from "../../src/allors/framework";
-import { data, MetaDomain, TreeFactory, PathPerson, PathOrganisation } from "../../src/allors/meta";
+import { domain, Person, Organisation } from "../../src/allors/domain";
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from "../../src/allors/framework";
+import { data, MetaDomain } from "../../src/allors/meta";
 
 import { Database, Scope } from "../../src/allors/promise";
 import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
@@ -15,7 +15,6 @@ describe("Instantiate",
         let scope: Scope;
 
         let people: Person[] = [];
-        let organisation: Organisation[] = [];
 
         beforeEach(async () => {
             metaPopulation = new MetaPopulation(data);
@@ -27,7 +26,7 @@ describe("Instantiate",
             await http.login("TestAuthentication/Token", "administrator");
             const database = new Database(http);
             scope = new Scope(database, workspace);
-                
+
             const pulls = [
                 new Pull({
                     extent: new Filter({
@@ -47,14 +46,13 @@ describe("Instantiate",
                 .load("Pull", new PullRequest({ pulls }));
 
             people = loaded.collections["People"] as Person[];
-            organisation = loaded.collections["Organisations"] as Organisation[];
 
             scope = new Scope(database, workspace);
         });
 
         describe("Person",
             () => {
-                it("should return person", async () => {
+                xit("should return person", async () => {
 
                     const object = people[0].id;
 
@@ -75,9 +73,9 @@ describe("Instantiate",
                     assert.equal(object, person.id);
                 });
             });
-            
-/*
-         describe("People with include tree",
+
+
+        describe("People with include tree",
             () => {
                 it("should return all people", async () => {
 
@@ -86,15 +84,17 @@ describe("Instantiate",
                             extent: new Filter({
                                 objectType: m.Person,
                             }),
-                            fetches: [
-                                new Fetch({
-                                    include: new Tree({
-                                        objectType: m.Person,
-                                        nodes: [
-                                            new TreeNode({
-                                                roleType: m.Person.Photo,
-                                            }),
-                                        ]
+                            results: [
+                                new Result({
+                                    fetch: new Fetch({
+                                        include: new Tree({
+                                            objectType: m.Person,
+                                            nodes: [
+                                                new TreeNode({
+                                                    roleType: m.Person.Photo,
+                                                }),
+                                            ]
+                                        })
                                     })
                                 })
                             ]
@@ -111,11 +111,11 @@ describe("Instantiate",
                     assert.isArray(people);
                     assert.isNotEmpty(people);
 
-                    people.forEach((person) => {
+                    people.forEach(() => {
                     });
                 });
             });
-
+/*
         describe("People with include tree (factory)",
             () => {
                 it("should return all people", async () => {
@@ -186,7 +186,7 @@ describe("Instantiate",
                 });
             });
 
-            describe("Organisation with path",
+        describe("Organisation with path",
             () => {
                 it("should return all employees", async () => {
 
@@ -218,4 +218,4 @@ describe("Instantiate",
                 });
             });
  */    
-});
+    });

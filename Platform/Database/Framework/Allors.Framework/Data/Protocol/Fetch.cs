@@ -23,7 +23,7 @@ namespace Allors.Data.Protocol
     public class Fetch
     {
         public Path Path { get; set; }
-
+       
         public Tree Include { get; set; }
 
         public Data.Fetch Load(ISession session)

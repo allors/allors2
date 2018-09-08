@@ -8,8 +8,11 @@ export class Tree {
   public nodes: TreeNode[] | any;
 
   constructor(fields?: Partial<Tree> | MetaObjectType | ObjectType) {
-    if ((fields as MetaObjectType)._objectType) {
-      this.objectType = fields as any;
+    if(fields instanceof ObjectType){
+      this.objectType = fields;
+    }
+    else if((fields as MetaObjectType)._objectType) {
+      this.objectType = (fields as MetaObjectType)._objectType;
     } else {
       Object.assign(this, fields);
     }

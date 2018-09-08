@@ -72,7 +72,10 @@ namespace Server.Tests
                                                   new Pull
                                                       {
                                                           Extent = extent.Save(),
-                                                          Results = new[] { new Result { Name = "Datas" } },
+                                                          Results = new[]
+                                                                        {
+                                                                            new Result { Name = "Datas" },
+                                                                        },
                                                       }
                                               }
             };
@@ -138,7 +141,6 @@ namespace Server.Tests
                           {
                               ExtentRef = Organisations.ExtentByName,
                               Arguments = new Dictionary<string, string> { ["name"] = "Acme" },
-                              Results = new[] { new Result() }
                           }
                   }
             };

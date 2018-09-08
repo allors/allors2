@@ -18,12 +18,11 @@
 // </copyright>
 //-------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Data.Protocol
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Pull 
     {
