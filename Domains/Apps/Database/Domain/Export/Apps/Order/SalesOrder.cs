@@ -188,12 +188,7 @@ namespace Allors.Domain
 
             if (!this.ExistTakenByContactMechanism)
             {
-                this.TakenByContactMechanism = this.TakenBy.ExistBillingAddress ? this.TakenBy.BillingAddress : this.TakenBy.GeneralCorrespondence;
-            }
-
-            if (!this.ExistTakenByContactMechanism)
-            {
-                this.TakenByContactMechanism = this.TakenBy.ExistOrderAddress ? this.TakenBy.OrderAddress : this.TakenBy.GeneralCorrespondence;
+                this.TakenByContactMechanism = this.TakenBy.ExistOrderAddress ? this.TakenBy.OrderAddress : this.TakenBy.ExistBillingAddress ? this.TakenBy.BillingAddress : this.TakenBy.GeneralCorrespondence;
             }
 
             if (!this.ExistBillToContactMechanism && this.ExistBillToCustomer)
@@ -291,7 +286,7 @@ namespace Allors.Domain
             this.AppsDeriveCanShip(derivation);
             this.AppsDeriveCanInvoice(derivation);
 
-            if (Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems) && this.CanShip)
+            if (this.CanShip)
             {
                 this.AppsShipThis(derivation);
             }
@@ -1009,8 +1004,8 @@ namespace Allors.Domain
                 salesOrderItem.AppsCalculatePurchasePrice(derivation);
                 salesOrderItem.AppsCalculateUnitPrice(derivation);
                 salesOrderItem.AppsOnDerivePrices(derivation, 0, 0);
-                salesOrderItem.AppsOnDeriveShipmentState(derivation);
                 salesOrderItem.AppsOnDeriveInvoiceState(derivation);
+                salesOrderItem.AppsOnDeriveShipmentState(derivation);
                 salesOrderItem.AppsOnDerivePaymentState(derivation);
 
                 // for the second time, because unitbaseprice might not be set

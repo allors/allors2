@@ -35,7 +35,6 @@ namespace Allors.Domain
             !this.ExistSalesOrder &&
             !this.ExistPurchaseInvoice &&
             !this.ExistRepeatingSalesInvoiceWhereSource &&
-            !this.ExistShipment &&
             !this.IsRepeatingInvoice;
 
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =

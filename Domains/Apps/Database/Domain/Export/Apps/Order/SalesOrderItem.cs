@@ -136,11 +136,6 @@ namespace Allors.Domain
                 derivation.Validation.AssertExists(this, M.SalesOrderItem.ProductFeature);
             }
 
-            if (this.ExistInvoiceItemType && this.QuantityOrdered == 0)
-            {
-                this.QuantityOrdered = 1;
-            }
-
             if (this.ExistProduct && this.ExistQuantityOrdered && this.QuantityOrdered < this.QuantityShipped)
             {
                 derivation.Validation.AddError(this, M.SalesOrderItem.QuantityOrdered, ErrorMessages.SalesOrderItemLessThanAlreadeyShipped);
@@ -1059,18 +1054,22 @@ namespace Allors.Domain
                         state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
                     }
                 }
-            }
 
-            foreach (SalesInvoiceItem invoiceItem in this.ShipmentReceiptsWhereOrderItem)
-            {
-                if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
+                foreach (ShipmentItemBilling shipmentItemBilling in orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
                 {
-                    state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
-                }
+                    var salesInvoiceItem = shipmentItemBilling.InvoiceItem as SalesInvoiceItem;
+                    if (salesInvoiceItem != null)
+                    {
+                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
+                        {
+                            state = new SalesOrderItemPaymentStates(this.Strategy.Session).Paid;
+                        }
 
-                if (invoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
-                {
-                    state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
+                        if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).PartiallyPaid))
+                        {
+                            state = new SalesOrderItemPaymentStates(this.Strategy.Session).PartiallyPaid;
+                        }
+                    }
                 }
             }
 
@@ -1110,7 +1109,17 @@ namespace Allors.Domain
 
         public void AppsOnDeriveInvoiceState(IDerivation derivation)
         {
-            var amountAlreadyInvoiced = this.OrderItemBillingsWhereOrderItem.Sum(v => v.Amount);
+            var amountAlreadyInvoiced = this.OrderItemBillingsWhereOrderItem?.Sum(v => v.Amount);
+            if (amountAlreadyInvoiced == 0)
+            {
+                foreach (OrderShipment orderShipment in OrderShipmentsWhereOrderItem)
+                {
+                    foreach (ShipmentItemBilling shipmentItemBilling in orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
+                    {
+                        amountAlreadyInvoiced += shipmentItemBilling.Amount;
+                    }
+                }
+            }
 
             var leftToInvoice = (this.QuantityOrdered * this.ActualUnitPrice) - amountAlreadyInvoiced;
 
@@ -1119,7 +1128,7 @@ namespace Allors.Domain
                 this.SalesOrderItemInvoiceState = new SalesOrderItemInvoiceStates(this.Strategy.Session).PartiallyInvoiced;
             }
 
-            if (amountAlreadyInvoiced > 0 && leftToInvoice == 0)
+            if (amountAlreadyInvoiced > 0 && leftToInvoice <= 0)
             {
                 this.SalesOrderItemInvoiceState = new SalesOrderItemInvoiceStates(this.Strategy.Session).Invoiced;
             }

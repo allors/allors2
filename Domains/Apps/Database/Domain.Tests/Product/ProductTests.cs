@@ -23,7 +23,6 @@ namespace Allors.Domain
 {
     using Xunit;
 
-    
     public class ProductTests : DomainTest
     {
         [Fact]

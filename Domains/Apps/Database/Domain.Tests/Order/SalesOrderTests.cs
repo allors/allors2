@@ -115,13 +115,10 @@ namespace Allors.Domain
                 .WithFinishedGood(finishedGood2)
                 .Build();
 
-            var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-
             this.Session.Derive();
 
-            var good2InventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
-            good2InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -179,6 +176,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).Completed, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).Completed, item3.SalesOrderItemState);
         }
+
         [Fact]
         public void GivenSalesOrderShippedInMultipleParts_WhenPaymentsAreReceived_ThenObjectStateCorrespondingSalesOrderIsUpdated()
         {
@@ -298,10 +296,10 @@ namespace Allors.Domain
                 .Build();
 
 
-            var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
-            derivation.Derive();
+            //var derivation = new Allors.Domain.Logging.Derivation(this.Session, new DerivationConfig { DerivationLogFunc = () => new DerivationLog() });
+            //derivation.Derive();
 
-            var list = ((DerivationLog)derivation.DerivationLog).List;
+            //var list = ((DerivationLog)derivation.DerivationLog).List;
             //list.RemoveAll(v => !v.StartsWith("Dependency"));
 
 
@@ -879,8 +877,9 @@ namespace Allors.Domain
                 .WithFinishedGood(finishedGood1)
                 .Build();
 
-            var inventoryGood1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            inventoryGood1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            this.Session.Derive();
+
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -893,8 +892,7 @@ namespace Allors.Domain
                 .WithFinishedGood(finishedGood2)
                 .Build();
 
-            var inventoryGood2 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
-            inventoryGood2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -952,7 +950,7 @@ namespace Allors.Domain
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityShortFalled);
 
-            inventoryGood1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -966,7 +964,7 @@ namespace Allors.Domain
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityShortFalled);
 
-            inventoryGood2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -2743,13 +2741,10 @@ namespace Allors.Domain
                 .WithFinishedGood(finishedGood2)
                 .Build();
 
-            var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            good1InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-
             this.Session.Derive();
 
-            var good2InventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
-            good2InventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
