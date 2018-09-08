@@ -2,6 +2,12 @@
 generated/
 out-tsc/
 
+# Mac
+.DS_Store
+
+# Jetbrains
+.idea
+
 # Ignore node modules
 node_modules/
 
