@@ -1040,7 +1040,11 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            shipment.SalesInvoicesWhereShipment.First.Send();
+            shipment.Invoice();
+
+            this.Session.Derive();
+
+            ((SalesInvoiceItem)shipment.ShipmentItems[0].ShipmentItemBillingsWhereShipmentItem[0].InvoiceItem).SalesInvoiceWhereSalesInvoiceItem.Send();
 
             this.Session.Derive();
 

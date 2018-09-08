@@ -391,17 +391,6 @@ namespace Allors.Repository
         public Person[] SalesReps { get; set; }
 
         #region Allors
-        [Id("6e2b9a8a-9d59-4041-a9ea-f3f8286f110c")]
-        [AssociationId("ee7aba21-39d6-4a4c-8b18-c7c141c8abdc")]
-        [RoleId("12db3958-c666-475e-85db-124c6549664d")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        [Indexed]
-        [Workspace]
-        public Shipment Shipment { get; set; }
-
-        #region Allors
         [Id("76982824-9c87-4f93-b2c1-ae312b200bdb")]
         [AssociationId("a2832845-c225-4c46-8ce5-c17b9cdcb04b")]
         [RoleId("d097a56f-225e-46be-9474-b35872532e52")]

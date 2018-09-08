@@ -76,6 +76,19 @@ namespace Allors.Domain
                     derivation.AddDependency(this, paymentApplication);
                 }
             }
+
+            foreach (OrderItemBilling orderItemBilling in this.OrderItemBillingsWhereInvoiceItem)
+            {
+                derivation.AddDependency(orderItemBilling.OrderItem, this);
+            }
+
+            foreach (ShipmentItemBilling shipmentItemBilling in this.ShipmentItemBillingsWhereInvoiceItem)
+            {
+                foreach (OrderShipment orderShipment in shipmentItemBilling.ShipmentItem.OrderShipmentsWhereShipmentItem)
+                {
+                    derivation.AddDependency(orderShipment.OrderItem, this);
+                }
+            }
         }
 
         public void AppsOnDerive(ObjectOnDerive method)

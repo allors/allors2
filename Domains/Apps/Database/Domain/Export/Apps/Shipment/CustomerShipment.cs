@@ -20,6 +20,9 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+
+    using Allors.Domain.NonLogging;
+
     using Meta;
 
     public partial class CustomerShipment
@@ -197,91 +200,6 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentObjectState(derivation);
         }
 
-        public void AppsOnDeriveInvoices(IDerivation derivation)
-        {
-            var invoiceByOrder = new Dictionary<SalesOrder, SalesInvoice>();
-            var costsInvoiced = false;
-
-            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
-            {
-                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
-                {
-                    var salesOrder = orderShipment.OrderItem.OrderWhereValidOrderItem as SalesOrder;
-                    var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
-
-                    SalesInvoice salesInvoice;
-                    if (!invoiceByOrder.TryGetValue(salesOrder, out salesInvoice))
-                    {
-                        salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
-                            .WithStore(salesOrder.Store)
-                            .WithSalesOrder(salesOrder)
-                            .WithBilledFrom(salesOrder.TakenBy)
-                            .WithBilledFromContactMechanism(salesOrder.TakenByContactMechanism)
-                            .WithBilledFromContactPerson(salesOrder.TakenByContactPerson)
-                            .WithBillToCustomer(salesOrder.BillToCustomer)
-                            .WithBillToContactMechanism(salesOrder.BillToContactMechanism)
-                            .WithBillToContactPerson(salesOrder.BillToContactPerson)
-                            .WithBillToEndCustomer(salesOrder.BillToEndCustomer)
-                            .WithBillToEndCustomerContactMechanism(salesOrder.BillToEndCustomerContactMechanism)
-                            .WithBillToEndCustomerContactPerson(salesOrder.BillToEndCustomerContactPerson)
-                            .WithShipToCustomer(salesOrder.ShipToCustomer)
-                            .WithShipToAddress(salesOrder.ShipToAddress)
-                            .WithShipToContactPerson(salesOrder.ShipToContactPerson)
-                            .WithShipToEndCustomer(salesOrder.ShipToEndCustomer)
-                            .WithShipToEndCustomerAddress(salesOrder.ShipToEndCustomerAddress)
-                            .WithShipToEndCustomerContactPerson(salesOrder.ShipToEndCustomerContactPerson)
-                            .WithInvoiceDate(DateTime.UtcNow)
-                            .WithSalesChannel(salesOrder.SalesChannel)
-                            .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
-                            .WithVatRegime(salesOrder.VatRegime)
-                            .WithDiscountAdjustment(salesOrder.DiscountAdjustment)
-                            .WithSurchargeAdjustment(salesOrder.SurchargeAdjustment)
-                            .WithShippingAndHandlingCharge(salesOrder.ShippingAndHandlingCharge)
-                            .WithFee(salesOrder.Fee)
-                            .WithCustomerReference(salesOrder.CustomerReference)
-                            .WithPaymentMethod(this.PaymentMethod)
-                            .Build();
-
-                        invoiceByOrder.Add(salesOrder, salesInvoice);
-
-                        if (!costsInvoiced)
-                        {
-                            var costs = this.AppsOnDeriveShippingAndHandlingCharges(derivation);
-                            if (costs > 0)
-                            {
-                                salesInvoice.ShippingAndHandlingCharge = new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build();
-                                costsInvoiced = true;
-                            }
-                        }
-                    }
-
-                    var amountAlreadyInvoiced = shipmentItem.ShipmentItemBillingsWhereShipmentItem.Sum(v => v.Amount);
-                    var leftToInvoice = (orderShipment.OrderItem.QuantityOrdered * orderShipment.OrderItem.ActualUnitPrice) - amountAlreadyInvoiced;
-
-                    if (leftToInvoice > 0)
-                    {
-                        if (salesOrderItem != null)
-                        {
-                            var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
-                                .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
-                                .WithProduct(salesOrderItem.Product)
-                                .WithQuantity(orderShipment.Quantity)
-                                .Build();
-
-                            salesInvoice.AddSalesInvoiceItem(invoiceItem);
-
-                            new ShipmentItemBillingBuilder(this.strategy.Session)
-                                .WithQuantity(shipmentItem.Quantity)
-                                .WithAmount(leftToInvoice)
-                                .WithShipmentItem(shipmentItem)
-                                .WithInvoiceItem(invoiceItem)
-                                .Build();
-                        }
-                    }
-                }
-            }
-        }
-
         public void AppsCancel(CustomerShipmentCancel method)
         {
             this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Cancelled;
@@ -343,6 +261,131 @@ namespace Allors.Domain
             {
                 this.CustomerShipmentState = new CustomerShipmentStates(this.Strategy.Session).Shipped;
                 this.EstimatedShipDate = DateTime.UtcNow.Date;
+            }
+        }
+
+        public void AppsInvoice(CustomerShipmentInvoice method)
+        {
+            var derivation = new Derivation(this.Strategy.Session);
+
+            if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped) &&
+                Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
+            {
+                this.AppsInvoiceThis(derivation);
+            }
+        }
+
+        public void AppsInvoiceThis(IDerivation derivation)
+        {
+            var invoiceByOrder = new Dictionary<SalesOrder, SalesInvoice>();
+            var costsInvoiced = false;
+
+            foreach (ShipmentItem shipmentItem in this.ShipmentItems)
+            {
+                foreach (OrderShipment orderShipment in shipmentItem.OrderShipmentsWhereShipmentItem)
+                {
+                    var salesOrder = orderShipment.OrderItem.OrderWhereValidOrderItem as SalesOrder;
+                    var salesOrderItem = orderShipment.OrderItem as SalesOrderItem;
+
+                    if (!invoiceByOrder.TryGetValue(salesOrder, out var salesInvoice))
+                    {
+                        salesInvoice = new SalesInvoiceBuilder(this.Strategy.Session)
+                            .WithStore(salesOrder.Store)
+                            .WithSalesOrder(salesOrder)
+                            .WithBilledFrom(salesOrder.TakenBy)
+                            .WithBilledFromContactMechanism(salesOrder.TakenByContactMechanism)
+                            .WithBilledFromContactPerson(salesOrder.TakenByContactPerson)
+                            .WithBillToCustomer(salesOrder.BillToCustomer)
+                            .WithBillToContactMechanism(salesOrder.BillToContactMechanism)
+                            .WithBillToContactPerson(salesOrder.BillToContactPerson)
+                            .WithBillToEndCustomer(salesOrder.BillToEndCustomer)
+                            .WithBillToEndCustomerContactMechanism(salesOrder.BillToEndCustomerContactMechanism)
+                            .WithBillToEndCustomerContactPerson(salesOrder.BillToEndCustomerContactPerson)
+                            .WithShipToCustomer(salesOrder.ShipToCustomer)
+                            .WithShipToAddress(salesOrder.ShipToAddress)
+                            .WithShipToContactPerson(salesOrder.ShipToContactPerson)
+                            .WithShipToEndCustomer(salesOrder.ShipToEndCustomer)
+                            .WithShipToEndCustomerAddress(salesOrder.ShipToEndCustomerAddress)
+                            .WithShipToEndCustomerContactPerson(salesOrder.ShipToEndCustomerContactPerson)
+                            .WithInvoiceDate(DateTime.UtcNow)
+                            .WithSalesChannel(salesOrder.SalesChannel)
+                            .WithSalesInvoiceType(new SalesInvoiceTypes(this.Strategy.Session).SalesInvoice)
+                            .WithVatRegime(salesOrder.VatRegime)
+                            .WithDiscountAdjustment(salesOrder.DiscountAdjustment)
+                            .WithSurchargeAdjustment(salesOrder.SurchargeAdjustment)
+                            .WithShippingAndHandlingCharge(salesOrder.ShippingAndHandlingCharge)
+                            .WithFee(salesOrder.Fee)
+                            .WithCustomerReference(salesOrder.CustomerReference)
+                            .WithPaymentMethod(this.PaymentMethod)
+                            .Build();
+
+                        invoiceByOrder.Add(salesOrder, salesInvoice);
+
+                        if (!costsInvoiced)
+                        {
+                            var costs = this.AppsOnDeriveShippingAndHandlingCharges(derivation);
+                            if (costs > 0)
+                            {
+                                salesInvoice.ShippingAndHandlingCharge = new ShippingAndHandlingChargeBuilder(this.Strategy.Session).WithAmount(costs).Build();
+                                costsInvoiced = true;
+                            }
+                        }
+
+                        foreach (SalesTerm salesTerm in salesOrder.SalesTerms)
+                        {
+                            if (salesTerm.GetType().Name == typeof(IncoTerm).Name)
+                            {
+                                salesInvoice.AddSalesTerm(new IncoTermBuilder(this.strategy.Session)
+                                    .WithTermType(salesTerm.TermType)
+                                    .WithTermValue(salesTerm.TermValue)
+                                    .WithDescription(salesTerm.Description)
+                                    .Build());
+                            }
+
+                            if (salesTerm.GetType().Name == typeof(InvoiceTerm).Name)
+                            {
+                                salesInvoice.AddSalesTerm(new InvoiceTermBuilder(this.strategy.Session)
+                                    .WithTermType(salesTerm.TermType)
+                                    .WithTermValue(salesTerm.TermValue)
+                                    .WithDescription(salesTerm.Description)
+                                    .Build());
+                            }
+
+                            if (salesTerm.GetType().Name == typeof(OrderTerm).Name)
+                            {
+                                salesInvoice.AddSalesTerm(new OrderTermBuilder(this.strategy.Session)
+                                    .WithTermType(salesTerm.TermType)
+                                    .WithTermValue(salesTerm.TermValue)
+                                    .WithDescription(salesTerm.Description)
+                                    .Build());
+                            }
+                        }
+                    }
+
+                    var amountAlreadyInvoiced = shipmentItem.ShipmentItemBillingsWhereShipmentItem.Sum(v => v.Amount);
+                    var leftToInvoice = (orderShipment.OrderItem.QuantityOrdered * orderShipment.OrderItem.ActualUnitPrice) - amountAlreadyInvoiced;
+
+                    if (leftToInvoice > 0)
+                    {
+                        if (salesOrderItem != null)
+                        {
+                            var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
+                                .WithInvoiceItemType(new InvoiceItemTypes(this.Strategy.Session).ProductItem)
+                                .WithProduct(salesOrderItem.Product)
+                                .WithQuantity(orderShipment.Quantity)
+                                .Build();
+
+                            salesInvoice.AddSalesInvoiceItem(invoiceItem);
+
+                            new ShipmentItemBillingBuilder(this.strategy.Session)
+                                .WithQuantity(shipmentItem.Quantity)
+                                .WithAmount(leftToInvoice)
+                                .WithShipmentItem(shipmentItem)
+                                .WithInvoiceItem(invoiceItem)
+                                .Build();
+                        }
+                    }
+                }
             }
         }
 
@@ -685,17 +728,15 @@ namespace Allors.Domain
 
         public void AppsOnDeriveCurrentObjectState(IDerivation derivation)
         {
-            if (this.ExistCustomerShipmentState && !this.CustomerShipmentState.Equals(this.LastCustomerShipmentState))
+            if (this.ExistCustomerShipmentState && !this.CustomerShipmentState.Equals(this.LastCustomerShipmentState) &&
+                this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
             {
-                if (this.CustomerShipmentState.Equals(new CustomerShipmentStates(this.Strategy.Session).Shipped))
+                if (Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
                 {
-                    if (Equals(this.Store.BillingProcess, new BillingProcesses(this.strategy.Session).BillingForShipmentItems))
-                    {
-                        this.AppsOnDeriveInvoices(derivation);
-                    }
-
-                    this.AppsOnDeriveOrderItemQuantityShipped(derivation);
+                    this.Invoice();
                 }
+
+                this.AppsOnDeriveOrderItemQuantityShipped(derivation);
             }
         }
     }
