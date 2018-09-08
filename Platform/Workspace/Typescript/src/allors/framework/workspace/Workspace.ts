@@ -1,4 +1,3 @@
-import { ObjectType } from '../meta';
 import { MetaPopulation } from '../meta';
 
 import { PullResponse } from './../protocol/pull/PullResponse';

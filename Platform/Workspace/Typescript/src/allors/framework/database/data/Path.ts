@@ -12,7 +12,7 @@ export class Path {
   public toJSON(): any {
 
     return {
-      propertytype: this.propertyType.id,
+      propertytype: this.propertyType ? this.propertyType.id : undefined,
       next: this.next, 
     };
   }
