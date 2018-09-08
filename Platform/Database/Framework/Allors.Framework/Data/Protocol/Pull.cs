@@ -34,7 +34,7 @@ namespace Allors.Data.Protocol
 
         public Result[] Results { get; set; }
 
-        public IDictionary<string, string> Arguments { get; set; }
+        public IDictionary<string, object> Arguments { get; set; }
         
         public Data.Pull Load(ISession session)
         {

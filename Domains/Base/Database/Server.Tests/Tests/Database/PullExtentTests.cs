@@ -110,7 +110,7 @@ namespace Server.Tests
                       new Pull
                           {
                               ExtentRef = Organisations.ExtentByName,
-                              Arguments = new Dictionary<string, string> { ["name"] = "Acme" },
+                              Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
                           }
                   }
             };
@@ -140,7 +140,7 @@ namespace Server.Tests
                       new Pull
                           {
                               ExtentRef = Organisations.ExtentByName,
-                              Arguments = new Dictionary<string, string> { ["name"] = "Acme" },
+                              Arguments = new Dictionary<string, object> { ["name"] = "Acme" },
                           }
                   }
             };
