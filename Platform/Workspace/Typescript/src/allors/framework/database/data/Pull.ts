@@ -1,6 +1,5 @@
 import { Extent } from './Extent';
 import { ISessionObject } from '../../workspace';
-import { MetaObjectType } from '../../meta';
 import { Result } from './result';
 
 export class Pull {

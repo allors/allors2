@@ -1,5 +1,5 @@
-import { domain, Person } from "../../src/allors/domain";
-import { Fetch, MetaPopulation, PullRequest, Session, Workspace } from "../../src/allors/framework";
+import { domain } from "../../src/allors/domain";
+import { MetaPopulation, Workspace } from "../../src/allors/framework";
 import { data, PathFactory } from "../../src/allors/meta";
 
 import { assert } from "chai";
@@ -90,9 +90,6 @@ describe("Path",
                 it("should throw exception", () => {
 
                     assert.throw(() => {
-                        const original = factory.Organisation({
-                            Oops: {},
-                        } as any);
                         }, Error);
                 });
             });

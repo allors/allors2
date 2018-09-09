@@ -1,13 +1,10 @@
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {
-  AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output,
-  QueryList, ViewChildren, ViewChild, ElementRef
+  Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output,
+  ViewChild, ElementRef
 } from '@angular/core';
-import { NgForm, NgModel, FormControl, FormGroup } from '@angular/forms';
+import { NgForm, FormControl } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -16,7 +13,7 @@ import 'rxjs/add/operator/do';
 import { ISessionObject } from '../../../../framework';
 
 import { Field } from '../../../../angular';
-import { MatAutocompleteSelectedEvent, MatChipInputEvent, MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
   selector: 'a-mat-chips',
@@ -100,7 +97,7 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
     this.searchInput.nativeElement.value = '';
   }
 
-  public focusout(event: any): void {
+  public focusout(): void {
     if (this.searchControl.value && this.trigger.autocomplete.options.length === 1) {
       const option = this.trigger.autocomplete.options.first.value;
       this.add(option);

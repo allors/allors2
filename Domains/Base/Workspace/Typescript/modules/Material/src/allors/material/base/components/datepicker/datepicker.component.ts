@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, Input, Optional, QueryList, ViewChildren } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
+import { Component, Optional } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Field } from '../../../../angular';
 

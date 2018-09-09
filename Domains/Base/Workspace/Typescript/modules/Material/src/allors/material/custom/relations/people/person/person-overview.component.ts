@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
-import { Locale, Organisation, Person } from '../../../../../domain';
-import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Locale, Person } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
+import { MetaDomain, PullFactory } from '../../../../../meta';
 
 @Component({
   templateUrl: './person-overview.component.html',
@@ -36,26 +36,28 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
 
   public ngOnInit(): void {
 
+    const x = {};
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+
     this.subscription = this.route.url
       .switchMap((url: any) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
 
-        const fetches = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Person.Photo }),
-            ],
-            name: 'person',
-          }),
+        const pulls = [
+          pull.Person({
+            object: id,
+            include: {
+              Photo: x,
+            }
+          })
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetches }));
+          .load('Pull', new PullRequest({ pulls }));
       })
       .subscribe((loaded: Loaded) => {
         this.person = loaded.objects.person as Person;

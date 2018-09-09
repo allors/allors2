@@ -1,14 +1,14 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { Enumeration, Locale, Organisation, Person } from '../../../../../domain';
-import { Equals, Fetch, Like, Page, Path, PullRequest, PushResponse, Query, Sort, TreeNode } from '../../../../../framework';
+import { Locale, Person } from '../../../../../domain';
+import { PullRequest, Pull } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { PullFactory } from '../../../../../meta/generated/pull.g';
 
 @Component({
   templateUrl: './person.component.html',
@@ -37,43 +37,30 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
-
-        const id: string = this.route.snapshot.paramMap.get('id');
-
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: this.m.Person.Photo }),
-              new TreeNode({ roleType: this.m.Person.Pictures }),
-            ],
-            name: 'person',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'locales',
-              objectType: this.m.Locale,
+      .switchMap(() => {
+          const x = {};
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const pulls: Pull[] = [
+            pull.Person({
+              object: id,
+              include: {
+                Photo: x,
+                Pictures: x,
+              }
             }),
-        ];
-
-        this.scope.session.reset();
-
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+            pull.Locale()
+          ];
+          this.scope.session.reset();
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
       .subscribe((loaded: Loaded) => {
 
-        this.person = loaded.objects.person as Person;
-        if (!this.person) {
-          this.person = this.scope.session.create('Person') as Person;
-        }
-
-        this.locales = loaded.collections.locales as Locale[];
+        this.person = loaded.objects.Person as Person || this.scope.session.create('Person') as Person;
+        this.locales = loaded.collections.Locales as Locale[];
       },
       (error: any) => {
         this.errorService.handle(error);
@@ -95,9 +82,9 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope
       .save()
-      .subscribe((saved: Saved) => {
-        this.goBack();
-      },
+      .subscribe(() => {
+          this.goBack();
+        },
       (error: Error) => {
         this.errorService.handle(error);
       });

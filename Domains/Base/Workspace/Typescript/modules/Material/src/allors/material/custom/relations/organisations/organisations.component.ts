@@ -1,12 +1,12 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../angular';
 import { Organisation } from '../../../../domain';
-import { MetaDomain } from '../../../../meta';
-import { Query, TreeNode, PullRequest } from '../../../../framework';
+import { MetaDomain, PullFactory } from '../../../../meta';
+import { PullRequest } from '../../../../framework';
 
 @Component({
   templateUrl: './organisations.component.html',
@@ -23,7 +23,6 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
-    private errorService: ErrorService,
     private titleService: Title,
     private router: Router) {
 
@@ -47,28 +46,29 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public search(criteria?: string): void {
+  public search(): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    const queries = [new Query(
-      {
-        include: [
-          new TreeNode({ roleType: this.m.Organisation.Owner }),
-          new TreeNode({ roleType: this.m.Organisation.Employees }),
-        ],
-        name: 'organisations',
-        objectType: this.m.Organisation,
-      })];
+    const x = {};
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+
+    const pulls = [
+      pull.Organisation({
+        include: {
+          Owner: x,
+          Employees: x,
+      }})
+    ];
 
     this.scope.session.reset();
 
     this.subscription = this.scope
-      .load('Pull', new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.organisations as Organisation[];
+        this.data = loaded.collections.Organisations as Organisation[];
       },
       (error: any) => {
         alert(error);
@@ -76,7 +76,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  public delete(organisation: Organisation): void {
+  public delete(): void {
 /*     this.dialogService
       .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
       .afterClosed().subscribe((confirm: boolean) => {

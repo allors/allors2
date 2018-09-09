@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, Input, Optional, Output, QueryList, ViewChildren } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
+import { Component, EventEmitter, Input, Optional, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { ISessionObject } from '../../../../framework';
 

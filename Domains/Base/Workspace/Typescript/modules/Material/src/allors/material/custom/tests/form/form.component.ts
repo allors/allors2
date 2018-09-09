@@ -2,15 +2,14 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
-import { Enumeration, Locale, Organisation, Person, Data } from '../../../../domain';
-import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse,
-         Query, RoleType, Sort, TreeNode } from '../../../../framework';
+import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
+import { Person, Data } from '../../../../domain';
+import { PullRequest } from '../../../../framework';
 import { MetaDomain } from '../../../../meta';
-import { QueryFactory } from '../../../../meta/generated/query.g';
 import { RadioGroupOption } from '../../../base/components/radiogroup/radiogroup.component';
+import { PullFactory } from '../../../../meta/generated/pull.g';
 
 @Component({
   templateUrl: './form.component.html',
@@ -28,9 +27,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   public peopleFilter: FilterFactory;
 
   public radioGroupOptions: RadioGroupOption[] = [
-    {label: "One", value: "one"},
-    {label: "Two", value: "two"},
-    {label: "Three", value: "three"},
+    { label: "One", value: "one" },
+    { label: "Two", value: "two" },
+    { label: "Three", value: "three" },
   ];
 
   private refresh$: BehaviorSubject<Date>;
@@ -41,7 +40,6 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,
-    private router: Router,
     private route: ActivatedRoute,
   ) {
 
@@ -50,7 +48,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
-    this.peopleFilter = new FilterFactory({objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
+    this.peopleFilter = new FilterFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -59,28 +57,29 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     const route$: Observable<UrlSegment[]> = this.route.url;
     const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
 
+    const x = {};
     const metaPopulation = this.workspaceService.metaPopulation;
-    const query = new QueryFactory(metaPopulation);
+    const pull = new PullFactory(metaPopulation);
 
     this.subscription = combined$
-        .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+      .switchMap(([]: [UrlSegment[], Date]) => {
 
-        const fetches = [
-        ];
-
-        const queries = [
-          query.Datas({include: {
-            AutocompleteFilter: {},
-            AutocompleteOptions: {},
-            Chips: {},
-            File: {},
-            MultipleFiles: {}
-          }}),
-          query.People(),
+        const pulls = [
+          pull.Data(
+            {
+              include: {
+                AutocompleteFilter: x,
+                AutocompleteOptions: x,
+                Chips: x,
+                File: x,
+                MultipleFiles: x
+              }
+            }),
+          pull.Person(),
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
+          .load('Pull', new PullRequest({ pulls }));
       })
       .subscribe((loaded: Loaded) => {
 
@@ -88,18 +87,18 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.people = loaded.collections.People as Person[];
         var datas = loaded.collections.Datas as Data[];
-        
-        if(datas && datas.length > 0){
+
+        if (datas && datas.length > 0) {
           this.data = datas[0];
-        } else{
+        } else {
           this.data = this.scope.session.create("Data") as Data;
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngAfterViewInit(): void {
@@ -119,13 +118,13 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope
       .save()
-      .subscribe((saved: Saved) => {
+      .subscribe(() => {
         this.data = undefined;
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

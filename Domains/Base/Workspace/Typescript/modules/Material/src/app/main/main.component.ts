@@ -10,7 +10,6 @@ import { map } from 'rxjs/operators';
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
 import { MenuService, WorkspaceService, Loaded, Scope } from '../../allors/angular';
 import { MetaDomain } from '../../allors/meta';
-import { Fetch, Query, Equals, PullRequest } from '../../allors/framework';
 import { Organisation } from '../../allors/domain';
 
 @Component({

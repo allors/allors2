@@ -1,6 +1,17 @@
 import { MetaObjectType, ObjectType } from "../../meta";
 import { TreeNode } from "./TreeNode";
 
+export function tree(objectType: ObjectType, literal): Tree {
+  var tree = new Tree(objectType);
+  tree.nodes = Object.keys(literal)
+      .map((roleName) => {
+          const treeNode = new TreeNode();
+          treeNode.parse(literal, objectType, roleName);
+          return treeNode;
+      });
+  return tree;
+}
+
 export class Tree {
 
   public objectType: ObjectType | MetaObjectType;

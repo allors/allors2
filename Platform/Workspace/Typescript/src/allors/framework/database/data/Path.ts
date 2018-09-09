@@ -1,5 +1,14 @@
 import { ObjectType, PropertyType } from '../../meta';
 
+export function path(objectType: ObjectType, literal): Path {
+  return new Path(Object.keys(literal)
+      .map((roleName) => {
+          const rolePath = new Path();
+          rolePath.parse(literal, objectType, roleName);
+          return rolePath;
+      })[0]);
+}
+
 export class Path {
   public propertyType: PropertyType;
 

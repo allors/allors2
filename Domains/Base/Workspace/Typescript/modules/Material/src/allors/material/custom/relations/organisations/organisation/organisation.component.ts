@@ -1,15 +1,13 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject, combineLatest, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { Enumeration, Locale, Organisation, Person } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Or, Page, Path, PullRequest, PushResponse,
-         Query, RoleType, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Organisation, Person } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
+import { MetaDomain, PullFactory } from '../../../../../meta';
 
 @Component({
   templateUrl: './organisation.component.html',
@@ -35,7 +33,6 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,
-    private router: Router,
     private route: ActivatedRoute,
   ) {
 
@@ -53,39 +50,29 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     const route$: Observable<UrlSegment[]> = this.route.url;
     const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
 
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+
     this.subscription = combined$
-        .switchMap(([urlSegments, date]: [UrlSegment[], Date]) => {
+        .switchMap(([]: [UrlSegment[], Date]) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches = [
-          new Fetch({
-            id,
-            name: 'organisation',
+        const pulls = [
+          pull.Organisation({
+            object: id
           }),
-        ];
-
-        const queries = [
-          new Query(
-            {
-              name: 'people',
-              objectType: this.m.Person,
-            }),
+          pull.Person()
         ];
 
         return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
+          .load('Pull', new PullRequest({ pulls }));
       })
       .subscribe((loaded: Loaded) => {
 
         this.scope.session.reset();
 
-        this.organisation = loaded.objects.organisation as Organisation;
-        if (!this.organisation) {
-          this.organisation = this.scope.session.create('Organisation') as Organisation;
-        }
-
-        this.people = loaded.collections.people as Person[];
+        this.organisation = loaded.objects.Organisation as Organisation ||  this.scope.session.create('Organisation') as Organisation;
+        this.people = loaded.collections.People as Person[];
       },
       (error: any) => {
         this.errorService.handle(error);
@@ -110,9 +97,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   public toggleCanWrite() {
     this.scope
     .invoke(this.organisation.ToggleCanWrite)
-    .subscribe((invoded: Invoked) => {
-      this.refresh();
-    },
+    .subscribe(() => {
+        this.refresh();
+      },
     (error: Error) => {
       this.errorService.handle(error);
     });
@@ -122,9 +109,9 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.scope
       .save()
-      .subscribe((saved: Saved) => {
-        this.goBack();
-      },
+      .subscribe(() => {
+          this.goBack();
+        },
       (error: Error) => {
         this.errorService.handle(error);
       });

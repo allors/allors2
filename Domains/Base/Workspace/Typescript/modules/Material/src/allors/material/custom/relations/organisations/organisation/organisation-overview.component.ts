@@ -1,11 +1,11 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-import { Locale, Organisation, Person } from '../../../../../domain';
-import { Equals, Fetch, Like, Page, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Locale, Organisation } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
+import { MetaDomain, PullFactory } from '../../../../../meta';
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
 
@@ -38,30 +38,32 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
 
   public ngOnInit(): void {
 
+    const x = {};
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+
     this.subscription = this.route.url
       .switchMap((url) => {
 
         const id: string = this.route.snapshot.paramMap.get('id');
         const m: MetaDomain = this.m;
 
-        const fetches = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Organisation.Owner }),
-              new TreeNode({ roleType: m.Organisation.Employees }),
-            ],
-            name: 'organisation',
-          }),
+        const pulls = [
+          pull.Organisation({
+            object: id,
+            include: {
+              Owner: x,
+              Employees: x,
+            }
+          })
         ];
 
         this.scope.session.reset();
 
         return this.scope
-          .load('Pull', new PullRequest({ fetches }));
+          .load('Pull', new PullRequest({ pulls }));
       })
       .subscribe((loaded: Loaded) => {
-        this.organisation = loaded.objects.organisation as Organisation;
+        this.organisation = loaded.objects.Organisation as Organisation;
       },
       (error: any) => {
         this.errorService.handle(error);

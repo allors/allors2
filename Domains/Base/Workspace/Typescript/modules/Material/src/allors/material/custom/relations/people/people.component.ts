@@ -5,8 +5,9 @@ import { Observable, Subject, Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../angular';
 import { Person } from '../../../../domain';
-import { Equals, Like, Page, PullRequest, Query, Sort, TreeNode } from '../../../../framework';
+import { Equals, Like, PullRequest, Sort, TreeNode } from '../../../../framework';
 import { MetaDomain } from '../../../../meta';
+import { PullFactory } from '../../../../meta/generated/pull.g';
 
 @Component({
   templateUrl: './people.component.html',
@@ -53,16 +54,13 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const queries = [new Query(
-      {
-        name: 'people',
-        objectType: this.m.Person,
-      })];
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+    const pulls = [pull.Person()];
 
     this.scope.session.reset();
 
     this.subscription = this.scope
-      .load('Pull', new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
         this.data = loaded.collections.people as Person[];
       },
