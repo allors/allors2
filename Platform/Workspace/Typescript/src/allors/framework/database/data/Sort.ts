@@ -8,7 +8,7 @@ export class Sort {
     constructor(fields?: Partial<Sort>) {
       Object.assign(this, fields);
     }
-    
+
     public toJSON(): any {
       return {
         roletype: this.roleType.id,

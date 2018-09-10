@@ -1,5 +1,5 @@
-import { Path } from "./Path";
-import { Tree } from "./Tree";
+import { Path } from './Path';
+import { Tree } from './Tree';
 
 export class Fetch {
 

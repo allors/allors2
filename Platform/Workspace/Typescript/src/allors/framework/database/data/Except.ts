@@ -9,7 +9,7 @@ export class Except {
 
   public get objectType(): ObjectType | MetaObjectType {
     return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
-  } 
+  }
 
   constructor(fields?: Partial<Except>) {
     Object.assign(this, fields);
@@ -17,7 +17,7 @@ export class Except {
 
   public toJSON(): any {
     return {
-      kind: "Except",
+      kind: 'Except',
       operands: this.operands,
       sorting: this.sort,
     };

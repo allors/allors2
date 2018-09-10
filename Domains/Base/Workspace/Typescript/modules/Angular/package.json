@@ -11,6 +11,7 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
+    "lint-fix": "tslint --fix --project ./src/tsconfig.app.json",
     "e2e": "ng e2e",
     "tc:test": "ng test --watch=false --reporters=teamcity"
   },

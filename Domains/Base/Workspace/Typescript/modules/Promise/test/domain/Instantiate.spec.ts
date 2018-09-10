@@ -1,14 +1,14 @@
-import { domain, Person, Organisation } from "../../src/allors/domain";
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from "../../src/allors/framework";
-import { data, MetaDomain } from "../../src/allors/meta";
+import { domain, Person, Organisation } from '../../src/allors/domain';
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from '../../src/allors/framework';
+import { data, MetaDomain } from '../../src/allors/meta';
 
-import { Database, Scope } from "../../src/allors/promise";
-import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
+import { Database, Scope } from '../../src/allors/promise';
+import { AxiosHttp } from '../../src/allors/promise/base/http/AxiosHttp';
 
-import { assert } from "chai";
-import "mocha";
+import { assert } from 'chai';
+import 'mocha';
 
-describe("Instantiate",
+describe('Instantiate',
     () => {
         let metaPopulation: MetaPopulation;
         let m: MetaDomain;
@@ -22,8 +22,8 @@ describe("Instantiate",
             const workspace = new Workspace(metaPopulation);
             domain.apply(workspace);
 
-            const http = new AxiosHttp("http://localhost:5000/");
-            await http.login("TestAuthentication/Token", "administrator");
+            const http = new AxiosHttp('http://localhost:5000/');
+            await http.login('TestAuthentication/Token', 'administrator');
             const database = new Database(http);
             scope = new Scope(database, workspace);
 
@@ -43,16 +43,16 @@ describe("Instantiate",
             scope.session.reset();
 
             const loaded = await scope
-                .load("Pull", new PullRequest({ pulls }));
+                .load('Pull', new PullRequest({ pulls }));
 
-            people = loaded.collections["People"] as Person[];
+            people = loaded.collections['People'] as Person[];
 
             scope = new Scope(database, workspace);
         });
 
-        describe("Person",
+        describe('Person',
             () => {
-                xit("should return person", async () => {
+                it('should return person', async () => {
 
                     const object = people[0].id;
 
@@ -65,9 +65,9 @@ describe("Instantiate",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const person = loaded.objects["Person"] as Person;
+                    const person = loaded.objects['Person'] as Person;
 
                     assert.isNotNull(person);
                     assert.equal(object, person.id);
@@ -75,9 +75,9 @@ describe("Instantiate",
             });
 
 
-        describe("People with include tree",
+        describe('People with include tree',
             () => {
-                it("should return all people", async () => {
+                it('should return all people', async () => {
 
                     const pulls = [
                         new Pull({
@@ -104,9 +104,9 @@ describe("Instantiate",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const people = loaded.collections["People"] as Person[];
+                    people = loaded.collections['People'] as Person[];
 
                     assert.isArray(people);
                     assert.isNotEmpty(people);
@@ -217,5 +217,5 @@ describe("Instantiate",
                     assert.equal(3, employees.length);
                 });
             });
- */    
+ */
     });

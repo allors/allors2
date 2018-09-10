@@ -1,5 +1,5 @@
 export const environment = {
-  authenticationUrl: "Authentication/Token",
+  authenticationUrl: 'Authentication/Token',
   production: true,
-  url: "https://base.allors.com/",
+  url: 'https://base.allors.com/',
 };

@@ -9,7 +9,7 @@ export class Intersect {
 
   public get objectType(): ObjectType | MetaObjectType {
     return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
-  } 
+  }
 
   constructor(fields?: Partial<Intersect>) {
     Object.assign(this, fields);
@@ -17,7 +17,7 @@ export class Intersect {
 
   public toJSON(): any {
     return {
-      kind: "Intersect",
+      kind: 'Intersect',
       operands: this.operands,
       sorting: this.sort,
     };

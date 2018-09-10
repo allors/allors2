@@ -10,7 +10,7 @@ export class Union {
 
   public get objectType(): ObjectType | MetaObjectType {
     return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
-  } 
+  }
 
   constructor(fields?: Partial<Union>) {
     Object.assign(this, fields);
@@ -18,7 +18,7 @@ export class Union {
 
   public toJSON(): any {
     return {
-      kind: "Union",
+      kind: 'Union',
       operands: this.operands,
       sorting: this.sort,
     };

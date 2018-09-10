@@ -23,12 +23,12 @@ GNU General Public License for more details.
 For more information visit http://www.allors.com/legal
 !$
 <generations>
-	<generation template="index" output="index.ts"/> 
-	<generation template="domain" output="domain.g.ts"/> 
-	<generation template="tree" output="tree.g.ts"/> 
-	<generation template="path" output="path.g.ts"/> 
-	<generation template="pull" output="pull.g.ts"/> 
-	<generation template="population" output="population.g.ts"/> 
+    <generation template="index" output="index.ts"/> 
+    <generation template="domain" output="domain.g.ts"/> 
+    <generation template="tree" output="tree.g.ts"/> 
+    <generation template="path" output="path.g.ts"/> 
+    <generation template="pull" output="pull.g.ts"/> 
+    <generation template="population" output="population.g.ts"/> 
 </generations>
 >>
 
@@ -38,8 +38,8 @@ index(meta) ::= <<
 /* tslint:disable */
 
 export { 
-	MetaDomain, 
-	$meta.WorkspaceComposites:{composite|	Meta$composite$}; separator=",\n"$ 
+    MetaDomain, 
+    $meta.WorkspaceComposites:{composite|	Meta$composite$}; separator=",\n"$ 
 } from "./domain.g";
 
 export { data } from "./population.g";
@@ -76,7 +76,7 @@ tree(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { Tree, tree, MetaPopulation, ObjectType, TreeNode } from "../../framework";
+import { Tree, MetaPopulation, ObjectType, TreeNode } from "../../framework";
 
 export class TreeFactory {
     constructor(private metaPopulation: MetaPopulation){
@@ -90,9 +90,9 @@ $meta.WorkspaceComposites:{composite|$treeComposite(composite)$}; separator="\n\
 >>
 
 treeFactory(composite) ::= <<
-	public $composite.Name$(literal: Tree$composite.Name$): Tree {
-		return tree(this.metaPopulation.objectTypeByName["$composite.SingularName$"], literal);
-	}
+    public $composite.Name$(literal: Tree$composite.Name$): Tree {
+        return new Tree(this.metaPopulation.objectTypeByName["$composite.SingularName$"], literal);
+    }
 >>
 
 treeComposite(composite) ::= <<
@@ -117,7 +117,7 @@ path(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { MetaPopulation, Path, path } from "../../framework";
+import { MetaPopulation, Path } from "../../framework";
 
 export class PathFactory {
     constructor(private metaPopulation: MetaPopulation){
@@ -131,9 +131,9 @@ $meta.WorkspaceComposites:{composite|$pathComposite(composite)$}; separator="\n\
 >>
 
 pathFactory(composite) ::= <<
-	public $composite.Name$(literal: Path$composite.Name$): Path {
-		return path(this.metaPopulation.objectTypeByName["$composite.SingularName$"], literal);
-	}
+    public $composite.Name$(literal: Path$composite.Name$): Path {
+        return new Path(this.metaPopulation.objectTypeByName["$composite.SingularName$"], literal);
+    }
 >>
 
 pathComposite(composite) ::= <<
@@ -161,7 +161,7 @@ pull(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { MetaPopulation, Pull, FlatPull, pull, Path, Tree } from "../../framework";
+import { MetaPopulation, Pull, FlatPull, Path, Tree } from "../../framework";
 
 import { $meta.WorkspaceComposites:{composite|Path$composite.Name$}; separator=", "$ } from "./path.g";
 import { $meta.WorkspaceComposites:{composite|Tree$composite.Name$}; separator=", "$ } from "./tree.g";
@@ -178,14 +178,14 @@ $meta.WorkspaceComposites:{composite|$pullComposite(composite)$}; separator="\n\
 >>
 
 pullFactory(composite) ::= <<
-	public $composite.Name$(literal?: Pull$composite.Name$): Pull {
-		return pull(this.metaPopulation.objectTypeByName["$composite.SingularName$"], literal);
-	}
+    public $composite.Name$(literal?: Pull$composite.Name$): Pull {
+        return new Pull(this.metaPopulation.objectTypeByName["$composite.SingularName$"], literal);
+    }
 >>
 
 pullComposite(composite) ::= <<
 export interface Pull$composite.SingularName$ extends FlatPull {
-	path?: Path | Path$composite.SingularName$;
+    path?: Path | Path$composite.SingularName$;
   
     include?: Tree | Tree$composite.SingularName$;
 }

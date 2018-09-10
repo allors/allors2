@@ -1,3 +1,3 @@
-export * from "./generated";
+export * from './generated';
 
-export { domain } from "./domain";
+export { domain } from './domain';

@@ -23,7 +23,7 @@ export class Filter {
     const objectType = metaObjectType._objectType ? metaObjectType._objectType : this.objectType as ObjectType;
 
     return {
-      kind: "Filter",
+      kind: 'Filter',
       objecttype: objectType.id,
       predicate: this.predicate,
       sorting: this.sort,

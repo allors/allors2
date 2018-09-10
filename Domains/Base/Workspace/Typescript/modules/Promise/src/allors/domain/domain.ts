@@ -1,4 +1,4 @@
-import { Workspace } from "../framework";
+import { Workspace } from '../framework';
 
 class Domain {
 

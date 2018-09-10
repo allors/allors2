@@ -4,9 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  authenticationUrl: "TestAuthentication/Token",
+  authenticationUrl: 'TestAuthentication/Token',
   production: false,
-  url: "http://localhost:5000/",
+  url: 'http://localhost:5000/',
 };
 
 /*
@@ -16,4 +16,4 @@ export const environment = {
  * This import should be commented out in production mode because it will have a negative impact
  * on performance if an error is thrown.
  */
-// import 'zone.js/dist/zone-error';  // Included with Angular CLI.
+import 'zone.js/dist/zone-error';  // Included with Angular CLI.

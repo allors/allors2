@@ -1,14 +1,14 @@
-import { domain, Person, Media, Organisation } from "../../src/allors/domain";
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from "../../src/allors/framework";
-import { data, MetaDomain, PathOrganisation, TreeFactory, PathFactory } from "../../src/allors/meta";
+import { domain, Person, Media, Organisation } from '../../src/allors/domain';
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from '../../src/allors/framework';
+import { data, MetaDomain, PathOrganisation, TreeFactory, PathFactory } from '../../src/allors/meta';
 
-import { Database, Scope } from "../../src/allors/promise";
-import { AxiosHttp } from "../../src/allors/promise/base/http/AxiosHttp";
+import { Database, Scope } from '../../src/allors/promise';
+import { AxiosHttp } from '../../src/allors/promise/base/http/AxiosHttp';
 
-import { assert } from "chai";
-import "mocha";
+import { assert } from 'chai';
+import 'mocha';
 
-describe("Extent",
+describe('Extent',
     () => {
         let metaPopulation: MetaPopulation;
         let m: MetaDomain;
@@ -22,8 +22,8 @@ describe("Extent",
             const workspace = new Workspace(metaPopulation);
             domain.apply(workspace);
 
-            const http = new AxiosHttp("http://localhost:5000/");
-            await http.login("TestAuthentication/Token", "administrator");
+            const http = new AxiosHttp('http://localhost:5000/');
+            await http.login('TestAuthentication/Token', 'administrator');
             const database = new Database(http);
             scope = new Scope(database, workspace);
 
@@ -31,9 +31,9 @@ describe("Extent",
             path = new PathFactory(metaPopulation);
         });
 
-        describe("People",
+        describe('People',
             () => {
-                it("should return all people", async () => {
+                it('should return all people', async () => {
 
                     const pulls = [
                         new Pull({
@@ -46,9 +46,9 @@ describe("Extent",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const people = loaded.collections["People"] as Person[];
+                    const people = loaded.collections['People'] as Person[];
 
                     assert.isArray(people);
                     assert.isNotEmpty(people);
@@ -56,9 +56,9 @@ describe("Extent",
                 });
             });
 
-        describe("People with include tree",
+        describe('People with include tree',
             () => {
-                it("should return all people", async () => {
+                it('should return all people', async () => {
 
                     const pulls = [
                         new Pull({
@@ -85,9 +85,9 @@ describe("Extent",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const people = loaded.collections["People"] as Person[];
+                    const people = loaded.collections['People'] as Person[];
 
                     assert.isArray(people);
                     assert.isNotEmpty(people);
@@ -97,9 +97,9 @@ describe("Extent",
                 });
             });
 
-        describe("Organisation with tree builder",
+        describe('Organisation with tree builder',
             () => {
-                it("should return all organisations", async () => {
+                it('should return all organisations', async () => {
 
                     const pulls = [
                         new Pull({
@@ -121,24 +121,24 @@ describe("Extent",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const organisations = loaded.collections["Organisations"] as Organisation[];
+                    const organisations = loaded.collections['Organisations'] as Organisation[];
 
                     assert.isArray(organisations);
                     assert.isNotEmpty(organisations);
 
                     organisations.forEach((organisation) => {
-                        let owner = organisation.Owner;
+                        const owner = organisation.Owner;
                         if (owner) {
                         }
                     });
                 });
             });
 
-        describe("Organisation with path",
+        describe('Organisation with path',
             () => {
-                it("should return all owners", async () => {
+                it('should return all owners', async () => {
 
                     const pulls = [
                         new Pull({
@@ -160,16 +160,16 @@ describe("Extent",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const owners = loaded.collections["Owners"] as Media[];
+                    const owners = loaded.collections['Owners'] as Media[];
 
                     assert.isArray(owners);
                     assert.isNotEmpty(owners);
                     assert.equal(2, owners.length);
                 });
 
-                it("should return all employees", async () => {
+                it('should return all employees', async () => {
 
                     const pulls = [
                         new Pull({
@@ -191,9 +191,9 @@ describe("Extent",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const employees = loaded.collections["Employees"] as Media[];
+                    const employees = loaded.collections['Employees'] as Media[];
 
                     assert.isArray(employees);
                     assert.isNotEmpty(employees);
@@ -201,9 +201,9 @@ describe("Extent",
                 });
             });
 
-        describe("Organisation with typesafe path",
+        describe('Organisation with typesafe path',
             () => {
-                it("should return all employees", async () => {
+                it('should return all employees', async () => {
 
                     const pulls = [
                         new Pull({
@@ -223,9 +223,9 @@ describe("Extent",
                     scope.session.reset();
 
                     const loaded = await scope
-                        .load("Pull", new PullRequest({ pulls }));
+                        .load('Pull', new PullRequest({ pulls }));
 
-                    const employees = loaded.collections["Employees"] as Media[];
+                    const employees = loaded.collections['Employees'] as Media[];
 
                     assert.isArray(employees);
                     assert.isNotEmpty(employees);

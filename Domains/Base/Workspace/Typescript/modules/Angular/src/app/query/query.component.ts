@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Title } from "@angular/platform-browser";
-import { Subscription } from "rxjs/Rx";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { Subscription } from 'rxjs/Rx';
 
-import { Loaded, Scope, WorkspaceService } from "../../allors/angular";
-import { Organisation } from "../../allors/domain";
-import { Like, PullRequest, Pull, Sort, Filter, Result, Fetch } from "../../allors/framework";
-import { TreeFactory, MetaDomain } from "../../allors/meta";
+import { Loaded, Scope, WorkspaceService } from '../../allors/angular';
+import { Organisation } from '../../allors/domain';
+import { Like, PullRequest, Pull, Sort, Filter, Result, Fetch } from '../../allors/framework';
+import { TreeFactory, MetaDomain } from '../../allors/meta';
 
 @Component({
-  templateUrl: "./query.component.html",
+  templateUrl: './query.component.html',
 })
 export class QueryComponent implements OnInit, OnDestroy {
 
@@ -26,7 +26,7 @@ export class QueryComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.title.setTitle("Query");
+    this.title.setTitle('Query');
     this.query();
   }
 
@@ -48,7 +48,7 @@ export class QueryComponent implements OnInit, OnDestroy {
             predicate: new Like(
               {
                 roleType: m.Organisation.Name,
-                value: "Org%",
+                value: 'Org%',
               }),
             sort: [
               new Sort(
@@ -58,7 +58,7 @@ export class QueryComponent implements OnInit, OnDestroy {
           }),
           results: [
             new Result({
-              name: "organisations",
+              name: 'organisations',
               fetch: new Fetch({
                 include: tree.Organisation(
                   {
@@ -73,7 +73,7 @@ export class QueryComponent implements OnInit, OnDestroy {
 
     this.scope.session.reset();
     this.subscription = this.scope
-      .load("Pull", new PullRequest({ pulls }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
         this.organisations = loaded.collections.organisations as Organisation[];
         this.organisationCount = loaded.values.organisations_count;

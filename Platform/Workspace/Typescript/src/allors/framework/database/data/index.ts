@@ -1,6 +1,5 @@
 export { TreeNode } from './TreeNode';
 export { Path } from './Path';
-export { path } from './Path';
 export { Extent } from './Extent';
 export { Sort } from './Sort';
 export { Predicate } from './Predicate';
@@ -23,7 +22,5 @@ export { Except } from './Except';
 export { Filter } from './Filter';
 export { Fetch } from './Fetch';
 export { Tree } from './Tree';
-export { tree } from './Tree';
 export { Result } from './Result';
 export { FlatPull } from './FlatPull';
-export { pull } from './FlatPull';

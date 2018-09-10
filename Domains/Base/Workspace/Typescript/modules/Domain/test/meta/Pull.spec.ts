@@ -1,13 +1,13 @@
 
 
-import { domain } from "../../src/allors/domain";
-import { MetaPopulation, Workspace } from "../../src/allors/framework";
-import { data, PullFactory } from "../../src/allors/meta";
+import { domain } from '../../src/allors/domain';
+import { MetaPopulation, Workspace } from '../../src/allors/framework';
+import { data, PullFactory } from '../../src/allors/meta';
 
-import { assert } from "chai";
-import "mocha";
+import { assert } from 'chai';
+import 'mocha';
 
-describe("Pull",
+describe('Pull',
     () => {
         let metaPopulation: MetaPopulation;
         let pull: PullFactory;
@@ -20,12 +20,12 @@ describe("Pull",
             pull = new PullFactory(metaPopulation);
         });
 
-        describe("with empty flatPull",
+        describe('with empty flatPull',
             () => {
-                it("should serialize to correct json", () => {
+                it('should serialize to correct json', () => {
 
                     const original = pull.Organisation({
-                        
+
                     });
 
                     const json = JSON.stringify(original);

@@ -1,16 +1,5 @@
-import { MetaObjectType, ObjectType } from "../../meta";
-import { TreeNode } from "./TreeNode";
-
-export function tree(objectType: ObjectType, literal): Tree {
-  var tree = new Tree(objectType);
-  tree.nodes = Object.keys(literal)
-      .map((roleName) => {
-          const treeNode = new TreeNode();
-          treeNode.parse(literal, objectType, roleName);
-          return treeNode;
-      });
-  return tree;
-}
+import { MetaObjectType, ObjectType } from '../../meta';
+import { TreeNode } from './TreeNode';
 
 export class Tree {
 
@@ -18,12 +7,19 @@ export class Tree {
 
   public nodes: TreeNode[] | any;
 
-  constructor(fields?: Partial<Tree> | MetaObjectType | ObjectType) {
-    if(fields instanceof ObjectType){
-      this.objectType = fields;
-    }
-    else if((fields as MetaObjectType)._objectType) {
-      this.objectType = (fields as MetaObjectType)._objectType;
+  constructor(fields?: Partial<Tree> | MetaObjectType | ObjectType, literal?) {
+    if (fields instanceof ObjectType || fields && (fields as MetaObjectType)._objectType) {
+      const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+      this.objectType = objectType;
+
+      if (literal) {
+        this.nodes = Object.keys(literal)
+          .map((roleName) => {
+            const treeNode = new TreeNode();
+            treeNode.parse(literal, this.objectType as ObjectType, roleName);
+            return treeNode;
+          });
+      }
     } else {
       Object.assign(this, fields);
     }

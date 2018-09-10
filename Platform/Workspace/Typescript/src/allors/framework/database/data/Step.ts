@@ -1,5 +1,5 @@
-import { AssociationType, ObjectType, RoleType } from "../../meta";
-import { Tree } from "./Tree";
+import { AssociationType, ObjectType, RoleType } from '../../meta';
+import { Tree } from './Tree';
 
 export class Step {
   public selector: AssociationType | RoleType;

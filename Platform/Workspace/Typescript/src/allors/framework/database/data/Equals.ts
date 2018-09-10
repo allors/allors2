@@ -7,22 +7,22 @@ export class Equals implements Predicate {
   public value: ISessionObject | string | Date | boolean | number;
 
   constructor(fields?: Partial<Equals> | PropertyType, value?: any) {
-    if((fields as PropertyType).objectType){
+    if ((fields as PropertyType).objectType) {
       this.propertyType = fields as PropertyType;
       this.value = value;
-    } else{
+    } else {
       Object.assign(this, fields);
     }
   }
 
   public toJSON(): any {
 
-    var value = this.value;
+    let value = this.value;
 
     if (!this.propertyType.objectType.isUnit) {
-      var object = value as ISessionObject;
+      const object = value as ISessionObject;
       if (object && object.id) {
-        value = object.id
+        value = object.id;
       }
     }
 

@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
 
-import { AuthenticationService } from "../../allors/angular";
+import { AuthenticationService } from '../../allors/angular';
 
 @Injectable()
 export class AuthorizationService implements CanActivate {
@@ -14,7 +14,7 @@ export class AuthorizationService implements CanActivate {
     if (this.authenticationService.token) {
       return true;
     } else {
-      this.router.navigate(["login"]);
+      this.router.navigate(['login']);
       return false;
     }
   }

@@ -4,7 +4,7 @@ import { Predicate } from './Predicate';
 export class Between implements Predicate {
   public roleType: RoleType;
   public values: any[];
- 
+
   constructor(fields?: Partial<Between>) {
     Object.assign(this, fields);
   }

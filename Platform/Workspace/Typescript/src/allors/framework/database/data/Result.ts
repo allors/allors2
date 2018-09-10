@@ -1,7 +1,7 @@
-import { Fetch } from "./Fetch";
+import { Fetch } from './Fetch';
 
 export class Result {
-  public fetchRef: string
+  public fetchRef: string;
 
   public fetch: Fetch;
 
@@ -24,6 +24,6 @@ export class Result {
       fetchRef: this.fetchRef,
       fetch: this.fetch,
     };
-    
+
   }
 }

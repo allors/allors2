@@ -1,1 +1,1 @@
-import "./Person";
+import './Person';

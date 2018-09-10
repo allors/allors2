@@ -1,28 +1,33 @@
-import { ObjectType, PropertyType } from '../../meta';
-
-export function path(objectType: ObjectType, literal): Path {
-  return new Path(Object.keys(literal)
-      .map((roleName) => {
-          const rolePath = new Path();
-          rolePath.parse(literal, objectType, roleName);
-          return rolePath;
-      })[0]);
-}
+import { ObjectType, PropertyType, MetaObjectType } from '../../meta';
 
 export class Path {
   public propertyType: PropertyType;
 
   public next: Path;
 
-  constructor(fields?: Partial<Path>) {
-    Object.assign(this, fields);
+  constructor(fields?: Partial<Path> | ObjectType | MetaObjectType, literal?) {
+
+    if (fields instanceof ObjectType || fields && (fields as MetaObjectType)._objectType) {
+      const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+
+      if (literal) {
+        const keys = Object.keys(literal);
+        if (keys.length > 0) {
+          const roleName = keys[0];
+          this.parse(literal, objectType, roleName);
+        }
+      }
+
+    } else {
+      Object.assign(this, fields);
+    }
   }
 
   public toJSON(): any {
 
     return {
       propertytype: this.propertyType ? this.propertyType.id : undefined,
-      next: this.next, 
+      next: this.next,
     };
   }
 
@@ -35,7 +40,7 @@ export class Path {
 
     if (!this.propertyType) {
       const metaPopulation = objectType.metaPopulation;
-      const [subTypeName, subStepName] = stepName.split("_");
+      const [subTypeName, subStepName] = stepName.split('_');
 
       const subType = metaPopulation.objectTypeByName[subTypeName];
       if (subType) {
@@ -48,7 +53,7 @@ export class Path {
     }
 
     if (!this.propertyType) {
-      throw new Error("Unknown role or association: " + stepName);
+      throw new Error('Unknown role or association: ' + stepName);
     }
 
     const childJson = json[stepName];
