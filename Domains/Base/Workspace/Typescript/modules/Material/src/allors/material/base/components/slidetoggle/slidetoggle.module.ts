@@ -17,7 +17,7 @@ export { AllorsMaterialSlideToggleComponent } from './slidetoggle.component';
     AllorsMaterialSlideToggleComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

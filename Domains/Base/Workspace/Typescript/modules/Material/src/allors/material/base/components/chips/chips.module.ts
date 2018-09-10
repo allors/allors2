@@ -17,7 +17,7 @@ export { AllorsMaterialChipsComponent } from './chips.component';
   ],
   imports: [
     CommonModule,
-    
+
     FormsModule,
     ReactiveFormsModule,
     MatAutocompleteModule,

@@ -47,7 +47,7 @@ const routes: Routes = [
         path: 'tests', data: { type: 'module', title: 'Tests', icon: 'build' },
         children: [
           {
-            path: 'form', component: tests.FormComponent, data: { type: 'page', title: 'Form' } 
+            path: 'form', component: tests.FormComponent, data: { type: 'page', title: 'Form' }
           },
         ],
       },

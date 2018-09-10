@@ -1,4 +1,3 @@
-import { MetaObject } from './MetaObject';
 import { MetaPopulation } from './MetaPopulation';
 import { MethodType } from './MethodType';
 

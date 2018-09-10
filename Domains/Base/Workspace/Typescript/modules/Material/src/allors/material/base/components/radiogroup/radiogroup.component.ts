@@ -9,6 +9,7 @@ export interface RadioGroupOption {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-radiogroup',
   templateUrl: './radiogroup.component.html',
 })

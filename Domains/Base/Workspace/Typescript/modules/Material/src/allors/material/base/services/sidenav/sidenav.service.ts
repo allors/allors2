@@ -12,15 +12,15 @@ export class AllorsMaterialSideNavService {
   private closeSource = new Subject<void>();
   public close$ = this.closeSource.asObservable();
 
-  public toggle(){
+  public toggle() {
     this.toggleSource.next();
   }
 
-  public open(){
+  public open() {
     this.openSource.next();
   }
 
-  public close(){
+  public close() {
     this.closeSource.next();
   }
 }

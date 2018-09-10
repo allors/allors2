@@ -17,7 +17,7 @@ export { AllorsMaterialLocalisedTextComponent } from './localisedtext.component'
     AllorsMaterialLocalisedTextComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

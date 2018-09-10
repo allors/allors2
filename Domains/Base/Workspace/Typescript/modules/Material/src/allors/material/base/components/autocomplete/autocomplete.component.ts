@@ -13,6 +13,7 @@ import { ISessionObject } from '../../../../framework';
 import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-autocomplete',
   templateUrl: './autocomplete.component.html',
 })

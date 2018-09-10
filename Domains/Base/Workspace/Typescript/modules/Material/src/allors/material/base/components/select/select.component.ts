@@ -6,6 +6,7 @@ import { ISessionObject } from '../../../../framework';
 import { Field } from '../../../../angular';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-select',
   templateUrl: './select.component.html',
 })

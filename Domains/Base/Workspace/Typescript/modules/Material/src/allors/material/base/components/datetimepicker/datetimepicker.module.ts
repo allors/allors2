@@ -17,7 +17,7 @@ export { AllorsMaterialDatetimepickerComponent } from './datetimepicker.componen
     AllorsMaterialDatetimepickerComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

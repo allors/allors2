@@ -1,5 +1,4 @@
 import { ExclusiveMethodType } from './ExclusiveMethodType';
-import { MetaObject } from './MetaObject';
 import { MethodType } from './MethodType';
 import { MetaPopulation } from './MetaPopulation';
 

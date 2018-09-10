@@ -27,9 +27,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   public peopleFilter: FilterFactory;
 
   public radioGroupOptions: RadioGroupOption[] = [
-    { label: "One", value: "one" },
-    { label: "Two", value: "two" },
-    { label: "Three", value: "three" },
+    { label: 'One', value: 'one' },
+    { label: 'Two', value: 'two' },
+    { label: 'Three', value: 'three' },
   ];
 
   private refresh$: BehaviorSubject<Date>;
@@ -86,12 +86,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         this.scope.session.reset();
 
         this.people = loaded.collections.People as Person[];
-        var datas = loaded.collections.Datas as Data[];
+        const datas = loaded.collections.Datas as Data[];
 
         if (datas && datas.length > 0) {
           this.data = datas[0];
         } else {
-          this.data = this.scope.session.create("Data") as Data;
+          this.data = this.scope.session.create('Data') as Data;
         }
       },
         (error: any) => {

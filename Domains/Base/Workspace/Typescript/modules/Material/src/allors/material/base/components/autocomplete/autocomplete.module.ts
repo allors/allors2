@@ -15,7 +15,7 @@ export { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
   ],
   imports: [
     CommonModule,
-    
+
     FormsModule,
     MatAutocompleteModule,
     MatInputModule,

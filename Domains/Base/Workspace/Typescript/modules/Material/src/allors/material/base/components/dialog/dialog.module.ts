@@ -22,7 +22,7 @@ export { AllorsMaterialDialogComponent };
   imports: [
     CommonModule,
     FormsModule,
-    
+
     MatButtonModule,
     MatDialogModule,
     MatInputModule,

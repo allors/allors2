@@ -17,7 +17,7 @@ export { TextareaComponent } from './textarea.component';
     TextareaComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

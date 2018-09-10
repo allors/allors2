@@ -16,9 +16,9 @@ export class AllorsMaterialDialogService {
     const data: DialogData = {
       alert: true,
       config
-    }
+    };
 
-    data.config.title = data.config.title || "Alert";
+    data.config.title = data.config.title || 'Alert';
 
     const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
     return dialogRef.afterClosed();
@@ -29,9 +29,9 @@ export class AllorsMaterialDialogService {
     const data: DialogData = {
       confirmation: true,
       config
-    }
+    };
 
-    data.config.title = data.config.title || "Confirm";
+    data.config.title = data.config.title || 'Confirm';
 
     const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
     return dialogRef.afterClosed();
@@ -42,9 +42,9 @@ export class AllorsMaterialDialogService {
     const data: DialogData = {
       prompt: true,
       config
-    }
+    };
 
-    data.config.title = data.config.title || "Prompt";
+    data.config.title = data.config.title || 'Prompt';
 
     const dialogRef = this.dialog.open(AllorsMaterialDialogComponent, { data });
     return dialogRef.afterClosed();

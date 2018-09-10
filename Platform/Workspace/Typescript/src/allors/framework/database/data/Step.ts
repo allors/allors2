@@ -1,4 +1,4 @@
-import { AssociationType, ObjectType, RoleType } from '../../meta';
+import { AssociationType, RoleType } from '../../meta';
 import { Tree } from './Tree';
 
 export class Step {

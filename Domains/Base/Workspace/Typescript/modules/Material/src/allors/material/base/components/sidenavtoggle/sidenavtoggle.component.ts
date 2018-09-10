@@ -11,7 +11,7 @@ export class AllorsMaterialSideNavToggleComponent {
   constructor(private sideNavService: AllorsMaterialSideNavService) {
   }
 
-  public toggle(){
+  public toggle() {
     this.sideNavService.toggle();
   }
 }

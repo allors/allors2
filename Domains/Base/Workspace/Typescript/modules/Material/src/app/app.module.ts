@@ -42,9 +42,9 @@ import {
 } from '../allors/angular';
 
 import {
-  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialFileModule, 
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialFileModule,
   AllorsMaterialFilesModule, AllorsMaterialInputModule, AllorsMaterialLocalisedTextModule,
-  AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSliderModule,AllorsMaterialSlideToggleModule,
+  AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule,
   AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent,
   MomentUtcDateAdapter,
   AllorsMaterialSideNavService,
@@ -57,8 +57,8 @@ import { DefaultLoggingService } from './app.logging.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const BASE_MATERIAL_MODULES: any[] = [
-  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, 
-  AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, 
+  AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule,
+  AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule,
   AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule,
   AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
 ];
@@ -75,7 +75,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     CDK_MODULES,
     MATERIAL_MODULES,
     BASE_MATERIAL_MODULES,
-    
+
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,

@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Field } from '../../../../angular';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-static',
   templateUrl: './static.component.html',
 })

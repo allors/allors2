@@ -17,7 +17,7 @@ export { AllorsMaterialStaticComponent } from './static.component';
     AllorsMaterialStaticComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

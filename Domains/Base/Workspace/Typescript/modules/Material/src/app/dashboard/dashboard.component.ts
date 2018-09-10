@@ -7,7 +7,7 @@ import { ErrorService } from '../../allors/angular';
 })
 export class DashboardComponent {
 
-  public title: string = "Home";
+  public title = 'Home';
 
   constructor(private titleService: Title, private errorService: ErrorService) {
     this.titleService.setTitle('Dashboard');

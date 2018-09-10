@@ -6,6 +6,7 @@ import { Media } from '../../../../domain';
 import { ISession, ISessionObject } from '../../../../framework';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-file',
   templateUrl: './file.component.html',
 })

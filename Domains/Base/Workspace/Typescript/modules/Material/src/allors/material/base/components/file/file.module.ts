@@ -17,7 +17,7 @@ export { AllorsMaterialFileComponent } from './file.component';
   ],
   imports: [
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

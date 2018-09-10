@@ -16,6 +16,7 @@ import { Field } from '../../../../angular';
 import { MatAutocompleteTrigger } from '@angular/material';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-chips',
   templateUrl: './chips.component.html',
 })

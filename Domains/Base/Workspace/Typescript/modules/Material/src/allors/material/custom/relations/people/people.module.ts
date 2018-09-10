@@ -28,7 +28,7 @@ export { PeopleComponent } from './people.component';
     MatListModule,
     MatMenuModule,
     MatToolbarModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialStaticModule,

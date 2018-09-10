@@ -1,6 +1,5 @@
 ﻿import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/empty';
+import { EMPTY } from 'rxjs';
 
 import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort, Filter, Result } from '../../../framework';
 
@@ -21,7 +20,7 @@ export class FilterFactory {
   public create(scope: Scope): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
       if (!search.trim) {
-        return Observable.empty();
+        return EMPTY;
       }
 
       const terms: string[] = search.trim().split(' ');

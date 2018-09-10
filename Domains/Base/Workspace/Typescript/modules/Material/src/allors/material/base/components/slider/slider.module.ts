@@ -17,7 +17,7 @@ export { AllorsMaterialSliderComponent } from './slider.component';
     AllorsMaterialSliderComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

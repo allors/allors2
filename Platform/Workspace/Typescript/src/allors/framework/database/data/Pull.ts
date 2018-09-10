@@ -1,6 +1,6 @@
 import { Extent } from './Extent';
 import { ISessionObject } from '../../workspace';
-import { Result } from './result';
+import { Result } from './Result';
 import { FlatPull } from './FlatPull';
 import { ObjectType } from '../../meta/ObjectType';
 import { MetaObjectType } from '../../meta';

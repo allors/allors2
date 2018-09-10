@@ -17,7 +17,7 @@ export { AllorsMaterialRadioGroupComponent } from './radiogroup.component';
     AllorsMaterialRadioGroupComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

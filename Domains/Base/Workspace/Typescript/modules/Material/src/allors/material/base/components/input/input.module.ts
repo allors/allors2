@@ -17,7 +17,7 @@ export { AllorsMaterialInputComponent } from './input.component';
     AllorsMaterialInputComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatInputModule,

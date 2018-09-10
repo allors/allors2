@@ -20,7 +20,7 @@ export { SideMenuItem } from './sidemenuitem';
   ],
   imports: [
     CommonModule,
-    
+
     FormsModule,
     MatAutocompleteModule,
     MatInputModule,

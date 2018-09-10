@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { throwError } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/operator/catch';
@@ -24,7 +25,7 @@ export class AuthenticationService {
   constructor(
     private http: HttpClient,
     private authenticationConfig: AuthenticationConfig,
-  ) {}
+  ) { }
 
   public login$(userName: string, password: string): any {
     const url = this.authenticationConfig.url;
@@ -45,7 +46,7 @@ export class AuthenticationService {
           : error.status
             ? `${error.status} - ${error.statusText}`
             : 'Server error';
-        return Observable.throw(errMsg);
+        return throwError(errMsg);
       });
   }
 }

@@ -13,23 +13,10 @@ import { MetaDomain } from '../../allors/meta';
 import { Organisation } from '../../allors/domain';
 
 @Component({
-  styleUrls: ["main.component.scss"],
+  styleUrls: ['main.component.scss'],
   templateUrl: './main.component.html'
 })
 export class MainComponent implements OnInit, OnDestroy {
-
-  sideMenuItems: SideMenuItem[] = [];
-
-  m: MetaDomain;
-
-  private subscription: Subscription;
-  private toggleSubscription;
-
-  private scope: Scope;
-  
-  @ViewChild('drawer') private sidenav: MatSidenav;
-
-  private handsetSubscription: Subscription;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -39,20 +26,20 @@ export class MainComponent implements OnInit, OnDestroy {
     private sideNavService: AllorsMaterialSideNavService) {
 
     this.m = workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope(); 
+    this.scope = this.workspaceService.createScope();
 
     menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,
         title: module.title,
-        link: !module.children || module.children.length == 0 ? module.link : undefined,
+        link: !module.children || module.children.length === 0 ? module.link : undefined,
         children: pages.map((page) => {
           return {
             title: page.title,
             link: page.link,
           };
         }),
-      }
+      };
 
       this.sideMenuItems.push(sideMenuItem);
     });
@@ -61,7 +48,7 @@ export class MainComponent implements OnInit, OnDestroy {
       if (this.sidenav) {
         this.sidenav.toggle();
       }
-    })
+    });
 
     this.handsetSubscription = this.breakpointObserver.observe(Breakpoints.Handset)
       .pipe(
@@ -77,19 +64,32 @@ export class MainComponent implements OnInit, OnDestroy {
       });
   }
 
-  public ngOnInit(): void {
+  get title(): string {
+    return this.titleService.getTitle();
   }
 
-  ngOnDestroy(): void {
-    this.handsetSubscription.unsubscribe;
-  }
+  sideMenuItems: SideMenuItem[] = [];
+
+  m: MetaDomain;
+
+  private subscription: Subscription;
+  private toggleSubscription;
+
+  private scope: Scope;
+
+  @ViewChild('drawer') private sidenav: MatSidenav;
+
+  private handsetSubscription: Subscription;
 
   isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches)
     );
-    
-  get title(): string {
-    return this.titleService.getTitle();
+
+  public ngOnInit(): void {
+  }
+
+  ngOnDestroy(): void {
+    this.handsetSubscription.unsubscribe();
   }
 }

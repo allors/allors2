@@ -4,8 +4,9 @@ import { NgForm } from '@angular/forms';
 import { Field } from '../../../../angular';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-datepicker',
-  styleUrls: ["./datepicker.component.scss"],
+  styleUrls: ['./datepicker.component.scss'],
   templateUrl: './datepicker.component.html',
 })
 export class AllorsMaterialDatepickerComponent extends Field {

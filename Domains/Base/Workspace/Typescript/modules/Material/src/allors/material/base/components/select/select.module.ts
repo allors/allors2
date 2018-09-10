@@ -17,7 +17,7 @@ export { AllorsMaterialSelectComponent } from './select.component';
     AllorsMaterialSelectComponent,
   ],
   imports: [
-    
+
     FormsModule,
     CommonModule,
     MatSelectModule,

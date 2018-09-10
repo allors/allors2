@@ -5,6 +5,7 @@ import { Field } from '../../../../angular';
 import { Locale, LocalisedText } from '../../../../domain';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'a-mat-localised-text',
   templateUrl: './localisedtext.component.html',
 })
