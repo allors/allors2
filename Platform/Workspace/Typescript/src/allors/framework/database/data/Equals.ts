@@ -6,8 +6,13 @@ export class Equals implements Predicate {
   public propertyType: PropertyType;
   public value: ISessionObject | string | Date | boolean | number;
 
-  constructor(fields?: Partial<Equals>) {
-    Object.assign(this, fields);
+  constructor(fields?: Partial<Equals> | PropertyType, value?: any) {
+    if((fields as PropertyType).objectType){
+      this.propertyType = fields as PropertyType;
+      this.value = value;
+    } else{
+      Object.assign(this, fields);
+    }
   }
 
   public toJSON(): any {
