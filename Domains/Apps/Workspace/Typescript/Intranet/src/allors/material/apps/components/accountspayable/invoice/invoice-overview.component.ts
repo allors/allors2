@@ -2,15 +2,14 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Fetch, Path, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
+import { MetaDomain, PullFactory } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoice-overview.component.html',
@@ -28,7 +27,6 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -60,90 +58,71 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain; 
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PurchaseInvoiceItem.Product }),
-                  new TreeNode({ roleType: m.PurchaseInvoiceItem.InvoiceItemType }),
-                ],
-                roleType: m.PurchaseInvoice.PurchaseInvoiceItems,
-              }),
-              new TreeNode({ roleType: m.PurchaseInvoice.BilledFrom }),
-              new TreeNode({ roleType: m.PurchaseInvoice.BilledFromContactPerson }),
-              new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomerContactPerson }),
-              new TreeNode({ roleType: m.PurchaseInvoice.ShipToEndCustomer }),
-              new TreeNode({ roleType: m.PurchaseInvoice.ShipToEndCustomerContactPerson }),
-              new TreeNode({ roleType: m.PurchaseInvoice.PurchaseInvoiceState }),
-              new TreeNode({ roleType: m.PurchaseInvoice.CreatedBy }),
-              new TreeNode({ roleType: m.PurchaseInvoice.LastModifiedBy }),
-              new TreeNode({ roleType: m.PurchaseInvoice.PurchaseOrder }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.PurchaseInvoice.BillToCustomerContactMechanism,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.PurchaseInvoice.ShipToEndCustomerAddress,
-              }),
-            ],
-            name: 'invoice',
-          }),
-          new Fetch({
-            id,
-            name: 'order',
-            path: new Path({ step: m.PurchaseInvoice.PurchaseOrder }),
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const x = {};
+          const pull = new PullFactory(this.workspaceService.metaPopulation);
 
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'goods',
-              objectType: m.Good,
-              sort: [
-                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.PurchaseInvoice({
+              object: id,
+              include: {
+                PurchaseInvoiceItems: {
+                  Product: x,
+                  InvoiceItemType: x
+                },
+                BilledFrom: x,
+                BilledFromContactPerson: x,
+                BillToCustomer: x,
+                BillToCustomerContactPerson: x,
+                ShipToEndCustomer: x,
+                ShipToEndCustomerContactPerson: x,
+                PurchaseInvoiceState: x,
+                Auditable_CreatedBy: x,
+                Auditable_LastModifiedBy: x,
+                PurchaseOrder: x,
+                BillToCustomerContactMechanism: {
+                    PostalAddress_Country : {
+                    }
+                },
+                ShipToEndCustomerAddress : {
+                  PostalBoundary: {
+                    Country: x
+                  }
+                }
+              },
             }),
-        ];
+            pull.PurchaseInvoice({
+              object: id,
+              path: {
+                PurchaseOrder: x
+              }
+            }),
+            pull.Good({
+              sort: new Sort(m.Good.Name)
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.goods = loaded.collections.goods as Good[];
-        this.order = loaded.objects.order as PurchaseOrder;
-        this.invoice = loaded.objects.invoice as PurchaseInvoice;
+        this.goods = loaded.collections.Goods as Good[];
+        this.order = loaded.objects.Order as PurchaseOrder;
+        this.invoice = loaded.objects.Invoice as PurchaseInvoice;
       },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public ngOnDestroy(): void {
@@ -214,9 +193,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 approveFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             approveFn();
           }
@@ -227,37 +206,37 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   }
 
   public finish(invoice: PurchaseInvoice): void {
-      this.dialogService
-       .confirm({ message: 'Are you sure you want to finish this invoice?' })
-       .subscribe((confirm: boolean) => {
-         if (confirm) {
-           this.scope.invoke(invoice.Finish)
-             .subscribe((invoked: Invoked) => {
-               this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-               this.refresh();
-             },
-             (error: Error) => {
-               this.errorService.handle(error);
-             });
-         }
-       });
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to finish this invoice?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(invoice.Finish)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 
   public deleteInvoiceItem(invoiceItem: PurchaseInvoiceItem): void {
-      this.dialogService
-       .confirm({ message: 'Are you sure you want to delete this item?' })
-       .subscribe((confirm: boolean) => {
-         if (confirm) {
-           this.scope.invoke(invoiceItem.Delete)
-             .subscribe((invoked: Invoked) => {
-               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-               this.refresh();
-             },
-             (error: Error) => {
-               this.errorService.handle(error);
-             });
-         }
-       });
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this item?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(invoiceItem.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 
   public createInvoice(): void {

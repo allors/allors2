@@ -3,6 +3,7 @@
 "search.exclude": {
         ".vscode/chrome": true,
         "lib": true,
+        "dist": true,
         "**/.git": true,
         "**/node_modules": true,
         "**/bower_components": true,
