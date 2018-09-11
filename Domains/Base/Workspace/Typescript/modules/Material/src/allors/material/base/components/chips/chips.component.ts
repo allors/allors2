@@ -1,14 +1,7 @@
-import {
-  Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output,
-  ViewChild, ElementRef
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, ElementRef } from '@angular/core';
 import { NgForm, FormControl } from '@angular/forms';
-
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/do';
+import { Observable, of } from 'rxjs';
+import { concat, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 
 import { ISessionObject } from '../../../../framework';
 
@@ -45,40 +38,49 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
 
   public ngOnInit(): void {
     if (this.filter) {
-      this.filteredOptions = Observable.of(new Array<ISessionObject>()).concat(
-        this.searchControl.valueChanges
-          .debounceTime(this.debounceTime)
-          .distinctUntilChanged()
-          .switchMap((search: string) => {
-            return this.filter(search);
-          }),
-      );
+      this.filteredOptions = of(new Array<ISessionObject>())
+        .pipe(
+          concat(
+            this.searchControl.valueChanges
+              .pipe(
+                debounceTime(this.debounceTime),
+                distinctUntilChanged(),
+                switchMap((search: string) => {
+                  return this.filter(search);
+                })
+              ),
+          ));
     } else {
-      this.filteredOptions = Observable.of(new Array<ISessionObject>()).concat(
-        this.searchControl.valueChanges
-          .debounceTime(this.debounceTime)
-          .distinctUntilChanged()
-          .map((search: string) => {
-            if (search) {
-              const lowerCaseSearch: string = search.trim ? search.trim().toLowerCase() : '';
-              return this.options
-                .filter((v: ISessionObject) => {
-                  const optionDisplay: string = v[this.display]
-                    ? v[this.display].toString().toLowerCase()
-                    : undefined;
-                  if (optionDisplay) {
-                    return optionDisplay.indexOf(lowerCaseSearch) !== -1;
+      this.filteredOptions = of(new Array<ISessionObject>())
+        .pipe(
+          concat(
+            this.searchControl.valueChanges
+              .pipe(
+                debounceTime(this.debounceTime),
+                distinctUntilChanged(),
+                map((search: string) => {
+                  if (search) {
+                    const lowerCaseSearch: string = search.trim ? search.trim().toLowerCase() : '';
+                    return this.options
+                      .filter((v: ISessionObject) => {
+                        const optionDisplay: string = v[this.display]
+                          ? v[this.display].toString().toLowerCase()
+                          : undefined;
+                        if (optionDisplay) {
+                          return optionDisplay.indexOf(lowerCaseSearch) !== -1;
+                        }
+                      })
+                      .sort(
+                        (a: ISessionObject, b: ISessionObject) =>
+                          a[this.display] !== b[this.display]
+                            ? a[this.display] < b[this.display] ? -1 : 1
+                            : 0,
+                      );
                   }
                 })
-                .sort(
-                  (a: ISessionObject, b: ISessionObject) =>
-                    a[this.display] !== b[this.display]
-                      ? a[this.display] < b[this.display] ? -1 : 1
-                      : 0,
-              );
-            }
-          }),
-      );
+              )
+          )
+        );
     }
   }
 

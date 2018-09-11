@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { Locale, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
@@ -42,34 +43,36 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     const pull = new PullFactory(this.workspaceService.metaPopulation);
 
     this.subscription = this.route.url
-      .switchMap((url) => {
+      .pipe(
+        switchMap((url) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const m: MetaDomain = this.m;
 
-        const pulls = [
-          pull.Organisation({
-            object: id,
-            include: {
-              Owner: x,
-              Employees: x,
-            }
-          })
-        ];
+          const pulls = [
+            pull.Organisation({
+              object: id,
+              include: {
+                Owner: x,
+                Employees: x,
+              }
+            })
+          ];
 
-        this.scope.session.reset();
+          this.scope.session.reset();
 
-        return this.scope
-          .load('Pull', new PullRequest({ pulls }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded: Loaded) => {
         this.organisation = loaded.objects.Organisation as Organisation;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngAfterViewInit(): void {

@@ -1,8 +1,5 @@
 import { ChangeDetectorRef , Injectable } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 
 import { MenuItem } from './MenuItem';
 

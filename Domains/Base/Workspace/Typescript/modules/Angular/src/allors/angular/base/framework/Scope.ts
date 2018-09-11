@@ -1,7 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/switchMap';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import {
   InvokeResponse, ISession, ISessionObject, Method, PullResponse,
@@ -26,22 +24,25 @@ export class Scope {
 
     return this.database
       .pull(service, params)
-      .switchMap((pullResponse: PullResponse) => {
-        const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
+      .pipe(
+        switchMap((pullResponse: PullResponse) => {
+          const requireLoadIds: SyncRequest = this.workspace.diff(pullResponse);
 
-        if (requireLoadIds.objects.length > 0) {
-          return this.database
-            .sync(requireLoadIds)
-            .map((syncResponse: SyncResponse) => {
-              this.workspace.sync(syncResponse);
-              const loaded: Loaded = new Loaded(this.session, pullResponse);
-              return loaded;
-            });
-        } else {
-          const loaded: Loaded = new Loaded(this.session, pullResponse);
-          return Observable.of(loaded);
-        }
-      });
+          if (requireLoadIds.objects.length > 0) {
+            return this.database
+              .sync(requireLoadIds)
+              .pipe(
+                map((syncResponse: SyncResponse) => {
+                  this.workspace.sync(syncResponse);
+                  const loaded: Loaded = new Loaded(this.session, pullResponse);
+                  return loaded;
+                }));
+          } else {
+            const loaded: Loaded = new Loaded(this.session, pullResponse);
+            return of(loaded);
+          }
+        })
+      );
   }
 
   public save(): Observable<Saved> {
@@ -49,25 +50,29 @@ export class Scope {
     const pushRequest: PushRequest = this.session.pushRequest();
     return this.database
       .push(pushRequest)
-      .switchMap((pushResponse: PushResponse) => {
+      .pipe(
+        switchMap((pushResponse: PushResponse) => {
 
-        this.session.pushResponse(pushResponse);
-        const syncRequest: SyncRequest = new SyncRequest();
-        syncRequest.objects = pushRequest.objects.map((v: PushRequestObject) => v.i);
-        if (pushResponse.newObjects) {
-          for (const newObject of pushResponse.newObjects) {
-            syncRequest.objects.push(newObject.i);
+          this.session.pushResponse(pushResponse);
+          const syncRequest: SyncRequest = new SyncRequest();
+          syncRequest.objects = pushRequest.objects.map((v: PushRequestObject) => v.i);
+          if (pushResponse.newObjects) {
+            for (const newObject of pushResponse.newObjects) {
+              syncRequest.objects.push(newObject.i);
+            }
           }
-        }
 
-        return this.database
-          .sync(syncRequest)
-          .map((syncResponse: SyncResponse) => {
-            this.workspace.sync(syncResponse);
-            const saved: Saved = new Saved(this.session, pushResponse);
-            return saved;
-          });
-      });
+          return this.database
+            .sync(syncRequest)
+            .pipe(
+              map((syncResponse: SyncResponse) => {
+                this.workspace.sync(syncResponse);
+                const saved: Saved = new Saved(this.session, pushResponse);
+                return saved;
+              })
+            );
+        })
+      );
   }
 
   public invoke(method: Method): Observable<Invoked>;
@@ -76,6 +81,8 @@ export class Scope {
 
     return this.database
       .invoke(methodOrService as any, args)
-      .map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse));
+      .pipe(
+        map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse))
+      );
   }
 }

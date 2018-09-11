@@ -5,6 +5,7 @@ import { Fetch } from './Fetch';
 import { Path } from './Path';
 import { Tree } from './Tree';
 import { Predicate } from './Predicate';
+import { Sort } from './Sort';
 
 export interface FlatPull {
 
@@ -13,6 +14,8 @@ export interface FlatPull {
     extent?: Extent;
 
     predicate?: Predicate;
+
+    sort?: Sort | Sort[];
 
     object?: ISessionObject | string;
 

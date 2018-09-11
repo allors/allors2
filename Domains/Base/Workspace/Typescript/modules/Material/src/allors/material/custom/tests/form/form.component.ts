@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
 import { Person, Data } from '../../../../domain';
@@ -62,25 +63,26 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     const pull = new PullFactory(metaPopulation);
 
     this.subscription = combined$
-      .switchMap(([]: [UrlSegment[], Date]) => {
+      .pipe(
+        switchMap(([]: [UrlSegment[], Date]) => {
 
-        const pulls = [
-          pull.Data(
-            {
-              include: {
-                AutocompleteFilter: x,
-                AutocompleteOptions: x,
-                Chips: x,
-                File: x,
-                MultipleFiles: x
-              }
-            }),
-          pull.Person(),
-        ];
+          const pulls = [
+            pull.Data(
+              {
+                include: {
+                  AutocompleteFilter: x,
+                  AutocompleteOptions: x,
+                  Chips: x,
+                  File: x,
+                  MultipleFiles: x
+                }
+              }),
+            pull.Person(),
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ pulls }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        }))
       .subscribe((loaded: Loaded) => {
 
         this.scope.session.reset();

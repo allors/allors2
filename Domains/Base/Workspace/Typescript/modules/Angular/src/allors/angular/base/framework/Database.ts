@@ -1,9 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-
-import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from '../../../framework';
 import { Method } from '../../../framework';
@@ -18,10 +15,12 @@ export class Database {
 
     return this.http
       .post<PullResponse>(serviceName, params)
-      .map((pullResponse) => {
-        pullResponse.responseType = ResponseType.Pull;
-        return pullResponse;
-      });
+      .pipe(
+        map((pullResponse) => {
+          pullResponse.responseType = ResponseType.Pull;
+          return pullResponse;
+        })
+      );
   }
 
   public sync(syncRequest: SyncRequest): Observable<SyncResponse> {
@@ -29,10 +28,12 @@ export class Database {
     const serviceName: string = this.fullyQualifiedUrl('Database/Sync');
     return this.http
       .post<SyncResponse>(serviceName, syncRequest)
-      .map((syncResponse) => {
-        syncResponse.responseType = ResponseType.Sync;
-        return syncResponse;
-      });
+      .pipe(
+        map((syncResponse) => {
+          syncResponse.responseType = ResponseType.Sync;
+          return syncResponse;
+        })
+      );
   }
 
   public push(pushRequest: PushRequest): Observable<PushResponse> {
@@ -40,15 +41,17 @@ export class Database {
     const serviceName: string = this.fullyQualifiedUrl('Database/Push');
     return this.http
       .post<PushResponse>(serviceName, pushRequest)
-      .map((pushResponse) => {
-        pushResponse.responseType = ResponseType.Sync;
+      .pipe(
+        map((pushResponse) => {
+          pushResponse.responseType = ResponseType.Sync;
 
-        if (pushResponse.hasErrors) {
-          throw new ResponseError(pushResponse);
-        }
+          if (pushResponse.hasErrors) {
+            throw new ResponseError(pushResponse);
+          }
 
-        return pushResponse;
-      });
+          return pushResponse;
+        })
+      );
   }
 
   public invoke(method: Method): Observable<InvokeResponse>;
@@ -72,31 +75,33 @@ export class Database {
     const serviceName: string = this.fullyQualifiedUrl('Database/Invoke');
     return this.http
       .post<InvokeResponse>(serviceName, invokeRequest)
-      .map((invokeResponse) => {
-        invokeResponse.responseType = ResponseType.Invoke;
+      .pipe(
+        map((invokeResponse) => {
+          invokeResponse.responseType = ResponseType.Invoke;
 
-        if (invokeResponse.hasErrors) {
-          throw new ResponseError(invokeResponse);
-        }
+          if (invokeResponse.hasErrors) {
+            throw new ResponseError(invokeResponse);
+          }
 
-        return invokeResponse;
-      });
+          return invokeResponse;
+        }));
   }
 
   private invokeService(methodOrService: string, args?: any): Observable<InvokeResponse> {
     const service: string = this.fullyQualifiedUrl(methodOrService + '/Pull');
     return this.http
       .post<InvokeResponse>(service, args)
-      .map((invokeResponse) => {
-        invokeResponse.responseType = ResponseType.Invoke;
+      .pipe(
+        map((invokeResponse) => {
+          invokeResponse.responseType = ResponseType.Invoke;
 
-        if (invokeResponse.hasErrors) {
-          throw new ResponseError(invokeResponse);
-        }
+          if (invokeResponse.hasErrors) {
+            throw new ResponseError(invokeResponse);
+          }
 
-        return invokeResponse;
-      });
-
+          return invokeResponse;
+        })
+      );
   }
 
   private fullyQualifiedUrl(localUrl: string): string {

@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Media } from '../../../domain';
+import { Injectable } from '@angular/core';
 import { DatabaseConfig } from '../framework/DatabaseConfig';
+import { Media } from '../../../domain';
 
 @Injectable()
 export class MediaService {

@@ -2,7 +2,8 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
@@ -41,7 +42,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
-    this.peopleFilter = new FilterFactory({objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName]});
+    this.peopleFilter = new FilterFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -53,32 +54,34 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     const pull = new PullFactory(this.workspaceService.metaPopulation);
 
     this.subscription = combined$
-        .switchMap(([]: [UrlSegment[], Date]) => {
+      .pipe(
+        switchMap(([]: [UrlSegment[], Date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const pulls = [
-          pull.Organisation({
-            object: id
-          }),
-          pull.Person()
-        ];
+          const pulls = [
+            pull.Organisation({
+              object: id
+            }),
+            pull.Person()
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ pulls }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded: Loaded) => {
 
         this.scope.session.reset();
 
-        this.organisation = loaded.objects.Organisation as Organisation ||  this.scope.session.create('Organisation') as Organisation;
+        this.organisation = loaded.objects.Organisation as Organisation || this.scope.session.create('Organisation') as Organisation;
         this.people = loaded.collections.People as Person[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngAfterViewInit(): void {
@@ -96,13 +99,13 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public toggleCanWrite() {
     this.scope
-    .invoke(this.organisation.ToggleCanWrite)
-    .subscribe(() => {
+      .invoke(this.organisation.ToggleCanWrite)
+      .subscribe(() => {
         this.refresh();
       },
-    (error: Error) => {
-      this.errorService.handle(error);
-    });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public save(): void {
@@ -110,11 +113,11 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope
       .save()
       .subscribe(() => {
-          this.goBack();
-        },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        this.goBack();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

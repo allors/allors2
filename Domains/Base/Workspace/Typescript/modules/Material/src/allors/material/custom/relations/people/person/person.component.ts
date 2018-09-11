@@ -2,12 +2,12 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
 import { PullFactory } from '../../../../../meta/generated/pull.g';
 
 @Component({
@@ -40,7 +40,8 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     const pull = new PullFactory(this.workspaceService.metaPopulation);
 
     this.subscription = this.route.url
-      .switchMap(() => {
+      .pipe(
+        switchMap(() => {
           const x = {};
           const id: string = this.route.snapshot.paramMap.get('id');
           const pulls: Pull[] = [
@@ -57,16 +58,17 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
           return this.scope
             .load('Pull', new PullRequest({ pulls }));
         })
+      )
       .subscribe((loaded: Loaded) => {
 
         this.person = loaded.objects.Person as Person || this.scope.session.create('Person') as Person;
         this.locales = loaded.collections.Locales as Locale[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngAfterViewInit(): void {
@@ -83,11 +85,11 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope
       .save()
       .subscribe(() => {
-          this.goBack();
-        },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        this.goBack();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

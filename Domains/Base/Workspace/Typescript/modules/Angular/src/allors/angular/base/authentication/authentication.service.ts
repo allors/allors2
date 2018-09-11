@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
 
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { map, catchError } from 'rxjs/operators';
 
 import { AuthenticationConfig } from './authentication.config';
 import { AuthenticationTokenRequest } from './AuthenticationTokenRequest';
 import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
+import { throwError } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -33,20 +31,22 @@ export class AuthenticationService {
 
     return this.http
       .post<AuthenticationTokenResponse>(url, request)
-      .map((result) => {
-        if (result.authenticated) {
-          this.token = result.token;
-        }
+      .pipe(
+        map((result) => {
+          if (result.authenticated) {
+            this.token = result.token;
+          }
 
-        return result;
-      })
-      .catch((error: any) => {
-        const errMsg = error.message
-          ? error.message
-          : error.status
-            ? `${error.status} - ${error.statusText}`
-            : 'Server error';
-        return throwError(errMsg);
-      });
+          return result;
+        }),
+        catchError((error: any) => {
+          const errMsg = error.message
+            ? error.message
+            : error.status
+              ? `${error.status} - ${error.statusText}`
+              : 'Server error';
+          return throwError(errMsg);
+        })
+      );
   }
 }

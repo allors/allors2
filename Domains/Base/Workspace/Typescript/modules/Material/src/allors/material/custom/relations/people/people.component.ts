@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../angular';
 import { Person } from '../../../../domain';
-import { Equals, Like, PullRequest, Sort, TreeNode } from '../../../../framework';
+import { PullRequest } from '../../../../framework';
 import { MetaDomain } from '../../../../meta';
 import { PullFactory } from '../../../../meta/generated/pull.g';
 
@@ -23,10 +23,10 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
   private scope: Scope;
 
   constructor(
+    public router: Router,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
-    private titleService: Title,
-    private router: Router) {
+    private titleService: Title) {
 
     this.title = 'People';
     this.titleService.setTitle(this.title);
@@ -48,29 +48,30 @@ export class PeopleComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  public search(criteria?: string): void {
+  public search(): void {
 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
     const pull = new PullFactory(this.workspaceService.metaPopulation);
-    const pulls = [pull.Person()];
+    const pulls = [
+      pull.Person()
+    ];
 
     this.scope.session.reset();
 
     this.subscription = this.scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.people as Person[];
+        this.data = loaded.collections.People as Person[];
       },
-      (error: any) => {
-        alert(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error).subscribe(() => this.goBack());
+        });
   }
 
-  public delete(person: Person): void {
+  public delete(): void {
     /* this.dialogService
       .openConfirm({ message: 'Are you sure you want to delete this person?' })
       .afterClosed().subscribe((confirm: boolean) => {

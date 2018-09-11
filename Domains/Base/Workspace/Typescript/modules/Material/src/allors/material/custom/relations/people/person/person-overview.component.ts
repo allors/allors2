@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
 import { Locale, Person } from '../../../../../domain';
@@ -40,33 +41,34 @@ export class PersonOverviewComponent implements OnInit, AfterViewInit, OnDestroy
     const pull = new PullFactory(this.workspaceService.metaPopulation);
 
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const pulls = [
-          pull.Person({
-            object: id,
-            include: {
-              Photo: x,
-            }
-          })
-        ];
+          const pulls = [
+            pull.Person({
+              object: id,
+              include: {
+                Photo: x,
+              }
+            })
+          ];
 
-        this.scope.session.reset();
+          this.scope.session.reset();
 
-        return this.scope
-          .load('Pull', new PullRequest({ pulls }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded: Loaded) => {
-        this.person = loaded.objects.person as Person;
+        this.person = loaded.objects.Person as Person;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngAfterViewInit(): void {

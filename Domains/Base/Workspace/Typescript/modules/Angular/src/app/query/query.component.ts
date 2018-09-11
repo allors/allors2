@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 import { Loaded, Scope, WorkspaceService } from '../../allors/angular';
-import { Organisation } from '../../allors/domain';
-import { Like, PullRequest, Pull, Sort, Filter, Result, Fetch } from '../../allors/framework';
-import { TreeFactory, MetaDomain } from '../../allors/meta';
+import { Organisation, Person } from '../../allors/domain';
+import { Equals, Like, PullRequest, Pull, Sort, TreeNode } from '../../allors/framework';
+import { PullFactory, MetaDomain } from '../../allors/meta';
 
 @Component({
   templateUrl: './query.component.html',
@@ -35,48 +35,31 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const metaPopulation = this.workspaceService.metaPopulation;
-    const m = metaPopulation.metaDomain as MetaDomain;
-    const tree = new TreeFactory(metaPopulation);
+    const x = {};
+    const pull = new PullFactory(this.workspaceService.metaPopulation);
+    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
     // tslint:disable:object-literal-sort-keys
     const pulls = [
-      new Pull(
-        {
-          extent: new Filter({
-            objectType: m.Organisation,
-            predicate: new Like(
-              {
-                roleType: m.Organisation.Name,
-                value: 'Org%',
-              }),
-            sort: [
-              new Sort(
-                {
-                  roleType: m.Organisation.Name,
-                })],
+      pull.Organisation({
+        predicate: new Like(
+          {
+            roleType: m.Organisation.Name,
+            value: 'Org%',
           }),
-          results: [
-            new Result({
-              name: 'organisations',
-              fetch: new Fetch({
-                include: tree.Organisation(
-                  {
-                    Owner: {},
-                  }),
-              }),
-              skip: this.skip || 0,
-              take: this.take || 10,
-            })
-          ],
-        })];
+        include: { Owner: x },
+        sort: new Sort(m.Organisation.Name),
+        skip: this.skip || 0,
+        take: this.take || 10,
+      })
+    ];
 
     this.scope.session.reset();
     this.subscription = this.scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
-        this.organisations = loaded.collections.organisations as Organisation[];
-        this.organisationCount = loaded.values.organisations_count;
+        this.organisations = loaded.collections.Organisations as Organisation[];
+        this.organisationCount = loaded.values.Organisations_count;
       },
         (error) => {
           alert(error);

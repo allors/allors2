@@ -25,15 +25,13 @@
           <mat-list-item *ngFor="let person of data; let last = last" [attr.data-allors-id]="person.id" (click)="router.navigate(['/relations/people/' + person.id + '/overview'])" style="cursor: pointer;">
 
             <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
-            <img *ngIf="person.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{person.Picture.UniqueId}}?revision={{person.Picture.Revision}}" />
+            <img *ngIf="person.Photo" mat-list-avatar src="http://localhost:5000/Media/Download/{{person.Photo.UniqueId}}?revision={{person.Photo.Revision}}" />
 
             <h3 mat-line>{{person.FirstName}} {{person.LastName}}</h3>
             <p mat-line> {{person.UserName}} </p>
-            <p mat-line hide-gt-md class="mat-caption"> last login: {{ person.LastAccess | date }} </p>
 
             <span>
-              <div class="mat-caption"> {{ person.Created | date }} </div>
-              <div class="mat-caption"> {{ person.LastAccess | date }} </div>
+              Extra info
             </span>
 
             <div (click)="$event.stopPropagation()">

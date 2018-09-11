@@ -1,10 +1,8 @@
-﻿import { Observable } from 'rxjs/Observable';
-import { EMPTY } from 'rxjs';
+﻿import { Observable, EMPTY } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort, Filter, Result } from '../../../framework';
-
-import { Loaded } from '../framework/responses/Loaded';
-import { Scope } from '../framework/Scope';
+import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
+import { Loaded, Scope } from '../framework';
 
 export interface FilterOptions {
   objectType: ObjectType | MetaObjectType;
@@ -54,23 +52,16 @@ export class FilterFactory {
       }
 
       const pulls = [
-        new Pull({
-          extent: new Filter({
-            objectType: this.options.objectType,
-            predicate: and,
-            sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
-            }),
-          results: [
-            new Result({
-              name: 'results',
-            })
-          ]
+        new Pull(this.options.objectType, {
+          name: 'results',
+          predicate: and,
+          sort: this.options.roleTypes.map((roleType: RoleType) => new Sort({ roleType })),
         }),
       ];
 
       return scope
         .load('Pull', new PullRequest({ pulls }))
-        .map((loaded: Loaded) => loaded.collections.results);
+        .pipe(map((loaded: Loaded) => loaded.collections.results));
     };
   }
 }

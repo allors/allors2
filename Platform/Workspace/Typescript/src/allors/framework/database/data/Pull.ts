@@ -8,6 +8,7 @@ import { Filter } from './Filter';
 import { Fetch } from './Fetch';
 import { Path } from './Path';
 import { Tree } from './Tree';
+import { Sort } from './Sort';
 
 export class Pull {
 
@@ -23,47 +24,60 @@ export class Pull {
     if (fields instanceof ObjectType || (fields as MetaObjectType)._objectType) {
       const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
 
-      if (flat.predicate) {
-        if (this.extent || this.extentRef) {
-          throw new Error('predicate conflicts with extent/extentRef');
-        }
+      if (!flat) {
+        this.extent = new Filter({ objectType: objectType });
+      } else {
+        this.object = flat.object;
+        this.extent = flat.extent;
+        this.extentRef = flat.extentRef;
 
-        this.extent = new Filter({ objectType: objectType, predicate: flat.predicate });
-      }
+        const sort = flat.sort instanceof Sort ? [flat.sort] : flat.sort;
 
-      if (flat.fetchRef || flat.fetch || flat.name || flat.skip || flat.take || flat.path || flat.include) {
-        const result = new Result({
-          fetchRef: flat.fetchRef,
-          fetch: flat.fetch,
-          name: flat.name,
-          skip: flat.skip,
-          take: flat.take
-        });
-
-
-        if (flat.path || flat.include) {
-          if (!result.fetch) {
-            result.fetch = new Fetch();
+        if (flat.predicate) {
+          if (this.object || this.extent || this.extentRef) {
+            throw new Error('predicate conflicts with object/extent/extentRef');
           }
 
-          const fetch = result.fetch;
+          this.extent = new Filter({ objectType: objectType, predicate: flat.predicate, sort });
+        }
 
-          if (flat.path) {
-            fetch.path = flat.path instanceof Path ? flat.path : new Path(objectType, flat.path);
-            if (flat.include) {
-              if (!(flat.include instanceof Tree)) {
-                throw new Error('literal include conflicts with path');
-              }
+        if (!this.object && !this.extent && !this.extentRef) {
+          this.extent = new Filter({ objectType: objectType, sort });
+        }
 
-              fetch.include = flat.include;
+        if (flat.fetchRef || flat.fetch || flat.name || flat.skip || flat.take || flat.path || flat.include) {
+          const result = new Result({
+            fetchRef: flat.fetchRef,
+            fetch: flat.fetch,
+            name: flat.name,
+            skip: flat.skip,
+            take: flat.take
+          });
+
+          if (flat.path || flat.include) {
+            if (!result.fetch) {
+              result.fetch = new Fetch();
             }
-          } else {
-            fetch.include = flat.include instanceof Tree ? flat.include : new Tree(objectType, flat.include);
-          }
-        }
 
-        this.results = this.results || [];
-        this.results.push(result);
+            const fetch = result.fetch;
+
+            if (flat.path) {
+              fetch.path = flat.path instanceof Path ? flat.path : new Path(objectType, flat.path);
+              if (flat.include) {
+                if (!(flat.include instanceof Tree)) {
+                  throw new Error('literal include conflicts with path');
+                }
+
+                fetch.include = flat.include;
+              }
+            } else {
+              fetch.include = flat.include instanceof Tree ? flat.include : new Tree(objectType, flat.include);
+            }
+          }
+
+          this.results = this.results || [];
+          this.results.push(result);
+        }
       }
     } else {
       Object.assign(this, fields);
