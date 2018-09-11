@@ -21,15 +21,15 @@
     "@angular/forms": "^6.1.0",
     "@angular/http": "^6.1.0",
     "@angular/material": "^6.4.7",
+    "@angular/material-moment-adapter": "^6.2.1",
     "@angular/platform-browser": "^6.1.0",
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
-    "core-js": "^2.5.4",
-    "rxjs": "~6.2.0",
-    "zone.js": "~0.8.26",
     "bootstrap": "^4.1.2",
+    "core-js": "^2.5.4",
     "moment": "^2.22.2",
-    "@angular/material-moment-adapter": "^6.2.1"
+    "rxjs": "~6.2.0",
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.8.0",
@@ -52,6 +52,7 @@
     "tslint": "~5.11.0",
     "typescript": "~2.9.2",
     "karma-teamcity-reporter": "^1.1.0",
-    "lnk": "^1.1.0"
+    "lnk": "^1.1.0",
+    "forever": "^0.15.3"
   }
 }
