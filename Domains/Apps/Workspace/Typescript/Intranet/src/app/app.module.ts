@@ -1,5 +1,5 @@
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,7 +42,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, DataService
 } from '../allors/angular';
 
 import {
@@ -75,7 +75,6 @@ import { ConfigService } from './app.config.service';
     CDK_MODULES,
     MATERIAL_MODULES,
     ALLORS_MATERIAL_MODULES,
-    
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
@@ -107,11 +106,12 @@ import { ConfigService } from './app.config.service';
     AuthorizationService,
     ConfigService,
     DatabaseService,
-    MediaService, 
+    WorkspaceService,
+    DataService,
+    MediaService,
     MenuService,
     PdfService,
     Title,
-    WorkspaceService,
   ],
 })
 export class AppModule { }

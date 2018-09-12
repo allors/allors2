@@ -1,48 +1,51 @@
-import { Fetch, Path, TreeNode } from '../../../framework';
-import { MetaDomain } from '../../../meta';
+import { Pull } from '../../../framework';
 import { StateService } from '../services/StateService';
+import { DataService, x } from '../../../angular';
 
 export class Fetcher {
 
-  constructor(private stateService: StateService, private m: MetaDomain) {
+  constructor(private state: StateService, private data: DataService) {
   }
 
-  public get internalOrganisation(): Fetch {
-    return new Fetch({
-      id: this.stateService.internalOrganisationId,
-      include: [
-        new TreeNode({ roleType: this.m.InternalOrganisation.DefaultFacility}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.DefaultCollectionMethod}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.DefaultPaymentMethod}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.DefaultShipmentMethod}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.PaymentMethods}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveCollectionMethods}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveCustomers}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveEmployees}),
-        new TreeNode({ roleType: this.m.InternalOrganisation.ActiveSuppliers}),
-      ],
-      name: 'internalOrganisation',
+  public get internalOrganisation(): Pull {
+    const { pull } = this.data;
+
+    return pull.InternalOrganisation({
+      object: this.state.internalOrganisationId,
+      include: {
+        Party_DefaultPaymentMethod: x,
+        Party_DefaultShipmentMethod: x,
+        DefaultFacility: x,
+        DefaultCollectionMethod: x,
+        PaymentMethods: x,
+        ActiveCollectionMethods: x,
+        ActiveCustomers: x,
+        ActiveEmployees: x,
+        ActiveSuppliers: x
+      }
     });
   }
 
-  public get categories(): Fetch {
-    return new Fetch({
-      id: this.stateService.internalOrganisationId,
-      name: 'categories',
-      path: new Path({ step: this.m.InternalOrganisation.ProductCategoriesWhereInternalOrganisation }),
+  public get categories(): Pull {
+    const { pull } = this.data;
+
+    return pull.Organisation({
+      object: this.state.internalOrganisationId,
+      path: { ProductCategoriesWhereInternalOrganisation: x },
     });
   }
 
-  public get locales(): Fetch {
-    return new Fetch({
-      id: this.stateService.singletonId,
-      include: [
-        new TreeNode({ roleType: this.m.Locale.Language}),
-        new TreeNode({ roleType: this.m.Locale.Country}),
-      ],
-      path: new Path({ step: this.m.Singleton.AdditionalLocales }),
-      name: 'locales',
+  public get locales(): Pull {
+
+    const { pull, tree } = this.data;
+
+    return pull.Singleton({
+      object: this.state.singletonId,
+      path: { AdditionalLocales: x },
+      include: tree.Locale({
+        Language: x,
+        Country: x
+      })
     });
   }
-
 }

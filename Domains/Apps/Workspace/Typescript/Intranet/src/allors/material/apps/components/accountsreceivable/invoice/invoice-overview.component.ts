@@ -2,14 +2,12 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -31,8 +29,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -58,128 +56,89 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesInvoiceItem.Product }),
-                  new TreeNode({ roleType: m.SalesInvoiceItem.InvoiceItemType }),
-                ],
-                roleType: m.SalesInvoice.SalesInvoiceItems,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesTerm.TermType }),
-                ],
-                roleType: m.SalesInvoice.SalesTerms,
-              }),
-              new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.BillToContactPerson }),
-              new TreeNode({ roleType: m.SalesInvoice.ShipToCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.ShipToContactPerson }),
-              new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomer }),
-              new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomerContactPerson }),
-              new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
-              new TreeNode({ roleType: m.SalesInvoice.CreatedBy }),
-              new TreeNode({ roleType: m.SalesInvoice.LastModifiedBy }),
-              new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesInvoice.BillToContactMechanism,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesInvoice.ShipToAddress,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesInvoice.BillToEndCustomerContactMechanism,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesInvoice.ShipToEndCustomerAddress,
-              }),
-            ],
-            name: 'invoice',
-          }),
-          new Fetch({
-            id,
-            name: 'order',
-            path: new Path({ step: m.SalesInvoice.SalesOrder }),
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
-        predicates.push(new Equals({ roleType: m.RepeatingSalesInvoice.Source, value: id }));
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'goods',
-              objectType: m.Good,
-              sort: [
-                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.SalesInvoice({
+              object: id,
+              include: {
+                SalesInvoiceItems: {
+                  Product: x,
+                  InvoiceItemType: x,
+                },
+                SalesTerms: {
+                  TermType: x,
+                },
+                BillToCustomer: x,
+                BillToContactPerson: x,
+                ShipToCustomer: x,
+                ShipToContactPerson: x,
+                ShipToEndCustomer: x,
+                ShipToEndCustomerContactPerson: x,
+                SalesInvoiceState: x,
+                CreatedBy: x,
+                LastModifiedBy: x,
+                SalesOrder: x,
+                BillToContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                },
+                ShipToAddress: {
+                  PostalBoundary: {
+                    Country: x
+                  }
+                },
+                BillToEndCustomerContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                },
+                ShipToEndCustomerAddress: {
+                  PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
             }),
-          new Query(
-            {
-              name: 'repeatingInvoices',
-              include: [
-                new TreeNode({ roleType: this.m.RepeatingSalesInvoice.Frequency }),
-                new TreeNode({ roleType: this.m.RepeatingSalesInvoice.DayOfWeek }),
-              ],
-              objectType: m.RepeatingSalesInvoice,
-              predicate,
+            pull.SalesInvoice({
+              object: id,
+              path: {
+                SalesOrder: x
+              }
             }),
+            pull.Good(
+              {
+                sort: new Sort(m.Good.Name),
+              }),
+            pull.RepeatingSalesInvoice(
+              {
+                predicate: new Equals({ propertyType: m.RepeatingSalesInvoice.Source, value: id }),
+                include: {
+                  Frequency: x,
+                  DayOfWeek: x
+                }
+              }),
           ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
@@ -192,11 +151,11 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
           this.repeatingInvoice = undefined;
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public print() {
@@ -219,9 +178,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public cancel(): void {
@@ -230,9 +189,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public writeOff(): void {
@@ -241,9 +200,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public reopen(): void {
@@ -252,9 +211,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public credit(): void {
@@ -263,9 +222,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public copy(): void {
@@ -274,13 +233,13 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully copied.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public deleteInvoiceItem(invoiceItem: SalesInvoiceItem): void {
-      this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -289,15 +248,15 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public deleteSalesTerm(salesTerm: SalesTerm): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this order term?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -306,9 +265,9 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }

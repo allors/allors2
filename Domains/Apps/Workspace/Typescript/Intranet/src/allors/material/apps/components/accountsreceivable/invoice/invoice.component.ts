@@ -1,17 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Field, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { Equals, Fetch, Path, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -90,8 +86,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -103,80 +99,78 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const rolesQuery: Query[] = [
-          new Query(m.VatRate),
-          new Query(m.VatRegime),
-          new Query(
-            {
-              name: 'currencies',
-              objectType: this.m.Currency,
-              sort: [
-                new Sort({ roleType: m.Currency.Name, direction: 'Asc' }),
-              ],
+          const id: string = this.route.snapshot.paramMap.get('id');
+
+          const pulls = [
+            pull.VatRate(),
+            pull.VatRegime(),
+            pull.Currency({
+              sort: new Sort(m.Currency.Name),
             }),
-          new Query(
-            {
-              name: 'internalOrganisations',
-              objectType: this.m.Organisation,
-              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            pull.Organisation({
+              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: [
-                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+                new Sort(m.Organisation.PartyName),
               ],
-            }),
-        ];
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ queries: rolesQuery }))
-          .switchMap((loaded) => {
-            this.scope.session.reset();
-            this.vatRates = loaded.collections.VatRates as VatRate[];
-            this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-            this.currencies = loaded.collections.currencies as Currency[];
-            this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.scope.session.reset();
+                this.vatRates = loaded.collections.VatRates as VatRate[];
+                this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+                this.currencies = loaded.collections.currencies as Currency[];
+                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
-            const fetches: Fetch[] = [
-              this.fetcher.internalOrganisation,
-              new Fetch({
-                id,
-                include: [
-                  new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-                  new TreeNode({ roleType: m.SalesInvoice.BillToContactMechanism }),
-                  new TreeNode({ roleType: m.SalesInvoice.BillToContactPerson }),
-                  new TreeNode({ roleType: m.SalesInvoice.ShipToCustomer }),
-                  new TreeNode({ roleType: m.SalesInvoice.ShipToAddress }),
-                  new TreeNode({ roleType: m.SalesInvoice.ShipToContactPerson }),
-                  new TreeNode({ roleType: m.SalesInvoice.BillToEndCustomer }),
-                  new TreeNode({ roleType: m.SalesInvoice.BillToEndCustomerContactMechanism }),
-                  new TreeNode({ roleType: m.SalesInvoice.BillToEndCustomerContactPerson }),
-                  new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomer }),
-                  new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomerAddress }),
-                  new TreeNode({ roleType: m.SalesInvoice.ShipToEndCustomerContactPerson }),
-                  new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
-                  new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
-                ],
-                name: 'salesInvoice',
-              }),
-              new Fetch({
-                id,
-                name: 'order',
-                path: new Path({ step: m.SalesInvoice.SalesOrder }),
-              }),
-            ];
+                const fetches = [
+                  this.fetcher.internalOrganisation,
+                  pull.SalesInvoice({
+                    object: id,
+                    include: {
+                      BillToCustomer: x,
+                      BillToContactMechanism: x,
+                      BillToContactPerson: x,
+                      ShipToCustomer: x,
+                      ShipToAddress: x,
+                      ShipToContactPerson: x,
+                      BillToEndCustomer: x,
+                      BillToEndCustomerContactMechanism: x,
+                      BillToEndCustomerContactPerson: x,
+                      ShipToEndCustomer: x,
+                      ShipToEndCustomerAddress: x,
+                      ShipToEndCustomerContactPerson: x,
+                      SalesInvoiceState: x,
+                      SalesOrder: x,
+                    },
+                  }),
+                  pull.SalesInvoice({
+                    object: id,
+                    path: {
+                      SalesOrder: x
+                    }
+                  })
+                ];
 
-            return this.scope.load('Pull', new PullRequest({ fetches }));
-          });
-      })
+                return this.scope.load('Pull', new PullRequest({ pulls: fetches }));
+              })
+            );
+        })
+
+      )
       .subscribe((loaded) => {
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.order = loaded.objects.order as SalesOrder;
@@ -216,7 +210,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public billToContactPersonCancelled(): void {
@@ -383,23 +377,23 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
-         .confirm({ message: 'Save changes?' })
-         .subscribe((confirm: boolean) => {
-           if (confirm) {
-             this.scope
-               .save()
-               .subscribe((saved: Saved) => {
-                 this.scope.session.reset();
-                 cancelFn();
-               },
-               (error: Error) => {
-                 this.errorService.handle(error);
-               });
-           } else {
-             cancelFn();
-           }
-         });
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            cancelFn();
+          }
+        });
     } else {
       cancelFn();
     }
@@ -418,23 +412,23 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
-         .confirm({ message: 'Save changes?' })
-         .subscribe((confirm: boolean) => {
-           if (confirm) {
-             this.scope
-               .save()
-               .subscribe((saved: Saved) => {
-                 this.scope.session.reset();
-                 writeOffFn();
-               },
-               (error: Error) => {
-                 this.errorService.handle(error);
-               });
-           } else {
-             writeOffFn();
-           }
-         });
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                writeOffFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            writeOffFn();
+          }
+        });
     } else {
       writeOffFn();
     }
@@ -453,23 +447,23 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
-         .confirm({ message: 'Save changes?' })
-         .subscribe((confirm: boolean) => {
-           if (confirm) {
-             this.scope
-               .save()
-               .subscribe((saved: Saved) => {
-                 this.scope.session.reset();
-                 reopenFn();
-               },
-               (error: Error) => {
-                 this.errorService.handle(error);
-               });
-           } else {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe((saved: Saved) => {
+                this.scope.session.reset();
+                reopenFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
             reopenFn();
-           }
-         });
+          }
+        });
     } else {
       reopenFn();
     }
@@ -527,34 +521,31 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateShipToCustomer(party: Party): void {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+    const { pull, tree } = this.dataService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        path: {
+          PartyContactMechanisms: x
+        },
+        include: tree.PartyContactMechanism ({
+          ContactMechanism: {
+            PostalAddress_PostalBoundary: {
+              Country: x
+            }
+          }
+        })
       }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+      pull.Party({
+        path: {
+          CurrentContacts: x
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToCustomer !== this.previousShipToCustomer) {
@@ -576,39 +567,39 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   private updateBillToCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+    const { pull, tree } = this.dataService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        path: {
+          CurrentPartyContactMechanisms: x
+        },
+        include: tree.PartyContactMechanism(
+          {
+            ContactMechanism: {
+              PostalAddress_PostalBoundary: {
+                Country: x
+              }
+            }
+          }
+        )
       }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+      pull.Party({
+        object: party.id,
+        path: {
+          CurrentContacts: x
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.BillToCustomer !== this.previousBillToCustomer) {
@@ -630,39 +621,38 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   private updateBillToEndCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+    const { pull, tree } = this.dataService;
+
+    const pulls = [
+      pull.Party({
+        object: party.id,
+        path: {
+          CurrentPartyContactMechanisms: x,
+        },
+        include: tree.PartyContactMechanism(
+          {
+            ContactMechanism: {
+              PostalAddress_PostalBoundary: {
+                Country: x
+              }
+            }
+          }
+        )
       }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+      pull.Party({
+        path: {
+          CurrentContacts: x
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.BillToEndCustomer !== this.previousBillToEndCustomer) {
@@ -684,39 +674,35 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   private updateShipToEndCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+    const { pull, tree } = this.dataService;
+
+    const pulls = [
+      pull.Party({
+        object: party,
+        path: {
+          CurrentPartyContactMechanisms: x
+        },
+        include: tree.PartyContactMechanism({
+          ContactMechanism: {
+            PostalAddress_PostalBoundary: {
+              Country: x
+            }
+          }
+        })
       }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
+      pull.Party({
+        object: party,
+        path: { CurrentContacts : x}
       }),
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {
@@ -738,6 +724,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 }

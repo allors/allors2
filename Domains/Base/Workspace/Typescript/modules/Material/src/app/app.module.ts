@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CdkAccordionModule, CdkAccordionItem } from '@angular/cdk/accordion';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -38,7 +38,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, DataService
 } from '../allors/angular';
 
 import {
@@ -101,6 +101,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     MenuService,
     DatabaseService,
     WorkspaceService,
+    DataService,
     AuthenticationService,
     AuthorizationService,
     MediaService

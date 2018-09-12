@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService } from '../../allors/angular';
+import { Loaded, Scope, WorkspaceService, DataService, x } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
-import { Equals, Fetch, Like, Path, PullRequest, Pull, Sort, TreeNode } from '../../allors/framework';
-import { PullFactory, TreeFactory } from '../../allors/meta';
+import { PullRequest } from '../../allors/framework';
 
 @Component({
   templateUrl: './fetch.component.html',
@@ -22,9 +21,11 @@ export class FetchComponent implements OnInit, OnDestroy {
   constructor(
     private title: Title,
     private route: ActivatedRoute,
-    private workspaceService: WorkspaceService) {
+    private data: DataService,
+    workspace: WorkspaceService
+  ) {
 
-    this.scope = workspaceService.createScope();
+    this.scope = workspace.createScope();
   }
 
   public ngOnInit() {
@@ -37,13 +38,9 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const x = {};
-    const pull = new PullFactory(this.workspaceService.metaPopulation);
-    const tree = new TreeFactory(this.workspaceService.metaPopulation);
-
+    const { pull, tree } = this.data;
     const id = this.route.snapshot.paramMap.get('id');
 
-    // tslint:disable:object-literal-sort-keys
     const pulls = [
       pull.Organisation({ object: id, include: { Owner: x } }),
       pull.Organisation({ object: id, path: { Owner: { OrganisationsWhereOwner: x } }, include: tree.Organisation({ Owner: x }) })

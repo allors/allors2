@@ -4,10 +4,10 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
 import { Fetch, Path, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain, PullFactory } from '../../../../../meta';
+import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
@@ -28,6 +28,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -58,15 +59,13 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain; 
+    const { m, pull } = this.dataService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
         switchMap(([urlSegments, date]) => {
 
           const id: string = this.route.snapshot.paramMap.get('id');
-          const x = {};
-          const pull = new PullFactory(this.workspaceService.metaPopulation);
 
           const pulls = [
             pull.PurchaseInvoice({
@@ -83,8 +82,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
                 ShipToEndCustomer: x,
                 ShipToEndCustomerContactPerson: x,
                 PurchaseInvoiceState: x,
-                Auditable_CreatedBy: x,
-                Auditable_LastModifiedBy: x,
+                CreatedBy: x,
+                LastModifiedBy: x,
                 PurchaseOrder: x,
                 BillToCustomerContactMechanism: {
                     PostalAddress_Country : {
@@ -253,13 +252,16 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public gotoInvoice(): void {
 
-    const fetches: Fetch[] = [new Fetch({
+    const { pull } = this.dataService;
+
+    const pulls = [
+      new Fetch({
       id: this.invoice.id,
       name: 'invoice',
       path: new Path({ step: this.m.PurchaseInvoice.SalesInvoiceWherePurchaseInvoice }),
     })];
 
-    this.scope.load('Pull', new PullRequest({ fetches }))
+    this.scope.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const invoice = loaded.objects.invoice as SalesInvoice;
         this.router.navigate(['/accountsreceivable/invoice/' + invoice.id]);

@@ -1,1 +1,0 @@
-export { FilterFactory } from './FilterFactory';

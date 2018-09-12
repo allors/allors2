@@ -97,19 +97,19 @@ treeFactory(composite) ::= <<
 
 treeComposite(composite) ::= <<
 export interface Tree$composite.SingularName$ {
-$composite.WorkspaceExclusiveCompositeRoleTypes:{role|    $role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
+$composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
 
-$composite.WorkspaceSupertypes:{type|$treeHierarchy(type)$}$
-$composite.WorkspaceSubtypes:{type|$treeHierarchy(type)$}$
+$composite.WorkspaceSubtypes:{type|$treeSubType(type)$}$
 }
 
 >>
 
-treeHierarchy(type) ::= <<
+treeSubType(type) ::= <<
 
 $type.WorkspaceExclusiveCompositeRoleTypes:{role|    $type.Name$_$role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
 
 >>
+
 
 path(meta) ::= <<
 // Allors generated file.

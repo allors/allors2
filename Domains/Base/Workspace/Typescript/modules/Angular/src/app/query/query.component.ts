@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Observable, Subject, Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService } from '../../allors/angular';
+import { Loaded, Scope, WorkspaceService, DataService, x } from '../../allors/angular';
 import { Organisation, Person } from '../../allors/domain';
 import { Equals, Like, PullRequest, Pull, Sort, TreeNode } from '../../allors/framework';
 import { PullFactory, MetaDomain } from '../../allors/meta';
@@ -21,7 +21,11 @@ export class QueryComponent implements OnInit, OnDestroy {
   private scope: Scope;
   private subscription: Subscription;
 
-  constructor(private title: Title, private workspaceService: WorkspaceService) {
+  constructor(
+    private title: Title,
+    private data: DataService,
+    private workspaceService: WorkspaceService
+  ) {
     this.scope = workspaceService.createScope();
   }
 
@@ -35,11 +39,8 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const x = {};
-    const pull = new PullFactory(this.workspaceService.metaPopulation);
-    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+    const { m, pull } = this.data;
 
-    // tslint:disable:object-literal-sort-keys
     const pulls = [
       pull.Organisation({
         predicate: new Like(

@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
 import { Loaded, Scope } from '../framework';
 
-export interface FilterOptions {
+export interface SearchOptions {
   objectType: ObjectType | MetaObjectType;
   roleTypes: RoleType[];
   existRoletypes?: RoleType[];
@@ -12,8 +12,8 @@ export interface FilterOptions {
   post?: (and: And) => void;
 }
 
-export class FilterFactory {
-  constructor(private options: FilterOptions) { }
+export class SearchFactory {
+  constructor(private options: SearchOptions) { }
 
   public create(scope: Scope): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {

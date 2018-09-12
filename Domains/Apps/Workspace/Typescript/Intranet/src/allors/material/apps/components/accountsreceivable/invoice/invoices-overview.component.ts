@@ -3,15 +3,12 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Invoked, Saved } from '../../../../../angular';
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Invoked, Saved, DataService, x } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -55,8 +52,8 @@ export class InvoicesOverviewComponent implements OnDestroy {
   private page$: BehaviorSubject<number>;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -84,138 +81,137 @@ export class InvoicesOverviewComponent implements OnDestroy {
     this.page$ = new BehaviorSubject<number>(50);
 
     const search$ = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({})
+      );
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-          date,
-          internalOrganisationId,
-        ];
-      }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+          return [
+            data,
+            data !== previousData ? 50 : take,
+            date,
+            internalOrganisationId,
+          ];
+        }, [])
+      );
 
-    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+    const { m, pull } = this.dataService;
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .pipe(
+        switchMap(([data, take, , internalOrganisationId]) => {
 
-        const internalOrganisationsQuery: Query[] = [
-          new Query(
-            {
-              name: 'salesinvoiceStates',
-              objectType: m.SalesInvoiceState,
-              sort: [
-                new Sort({ roleType: m.SalesInvoiceState.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.SalesInvoiceState({
+              sort: new Sort(m.SalesInvoiceState.Name),
             }),
-          new Query(
-            {
-              name: 'internalOrganisations',
-              objectType: m.Organisation,
-              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            pull.Organisation({
+              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: [
-                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+                new Sort(m.Organisation.PartyName),
               ],
-            }),
-        ];
+            })
+          ];
 
-        return this.scope
-        .load('Pull', new PullRequest({ queries: internalOrganisationsQuery }))
-        .switchMap((loaded: Loaded) => {
-          this.salesInvoiceStates = loaded.collections.salesinvoiceStates as SalesInvoiceState[];
-          this.salesInvoiceState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.Name === data.state);
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded: Loaded) => {
+                this.salesInvoiceStates = loaded.collections.salesinvoiceStates as SalesInvoiceState[];
+                this.salesInvoiceState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.Name === data.state);
 
-          this.readyForPostingState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.UniqueId.toUpperCase() === '488F61FF-F474-44BA-9925-49AF7BCB0CD0');
+                this.readyForPostingState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.UniqueId.toUpperCase() === '488F61FF-F474-44BA-9925-49AF7BCB0CD0');
 
-          this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
-          this.billToInternalOrganisation = this.internalOrganisations.find(
-            (v) => v.PartyName === data.internalOrganisation,
-          );
+                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+                this.billToInternalOrganisation = this.internalOrganisations.find(
+                  (v) => v.PartyName === data.internalOrganisation,
+                );
 
-          const predicate: And = new And();
-          const predicates: Predicate[] = predicate.predicates;
+                const predicate: And = new And();
+                const predicates: Predicate[] = predicate.operands;
 
-          predicates.push(new Equals({ roleType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }));
+                predicates.push(new Equals({ propertyType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }));
 
-          if (data.invoiceNumber) {
-            const like: string = '%' + data.invoiceNumber + '%';
-            predicates.push(new Like({ roleType: m.SalesInvoice.InvoiceNumber, value: like }));
-          }
+                if (data.invoiceNumber) {
+                  const like: string = '%' + data.invoiceNumber + '%';
+                  predicates.push(new Like({ roleType: m.SalesInvoice.InvoiceNumber, value: like }));
+                }
 
-          if (data.company) {
-            const partyQuery: Query = new Query({
-              objectType: m.Party, predicate: new Like({
-                roleType: m.Party.PartyName, value: data.company.replace('*', '%') + '%',
-              }),
-            });
+                if (data.company) {
+                  const partyFilter = new Filter({
+                    objectType: m.Party,
+                    predicate: new Like({
+                      roleType: m.Party.PartyName, value: data.company.replace('*', '%') + '%',
+                    }),
+                  });
 
-            const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesInvoice.BillToCustomer, query: partyQuery });
-            predicates.push(containedIn);
-          }
+                  const containedIn: ContainedIn = new ContainedIn({ propertyType: m.SalesInvoice.BillToCustomer, extent: partyFilter });
+                  predicates.push(containedIn);
+                }
 
-          if (data.product) {
-            const productQuery: Query = new Query({
-              objectType: m.Good,
-              predicate: new Like({
-                roleType: m.Good.Name, value: data.company.replace('*', '%') + '%',
-              }),
-            });
+                if (data.product) {
+                  const productFilter = new Filter({
+                    objectType: m.Good,
+                    predicate: new Like({
+                      roleType: m.Good.Name, value: data.company.replace('*', '%') + '%',
+                    }),
+                  });
 
-            const containedIn: ContainedIn = new ContainedIn({ roleType: m.SalesInvoiceItem.Product, query: productQuery });
-            predicates.push(containedIn);
-          }
+                  const containedIn: ContainedIn = new ContainedIn({ propertyType: m.SalesInvoiceItem.Product, extent: productFilter });
+                  predicates.push(containedIn);
+                }
 
-          if (data.internalOrganisation) {
-            predicates.push(
-              new Equals({
-                roleType: m.SalesInvoice.BillToCustomer,
-                value: this.billToInternalOrganisation,
-              }),
-            );
-          }
+                if (data.internalOrganisation) {
+                  predicates.push(
+                    new Equals({
+                      propertyType: m.SalesInvoice.BillToCustomer,
+                      value: this.billToInternalOrganisation,
+                    }),
+                  );
+                }
 
-          if (data.reference) {
-            const like: string = data.reference.replace('*', '%') + '%';
-            predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
-          }
+                if (data.reference) {
+                  const like: string = data.reference.replace('*', '%') + '%';
+                  predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
+                }
 
-          if (data.repeating) {
-            predicates.push(new Equals({ roleType: m.SalesInvoice.IsRepeatingInvoice, value: true }));
-          }
+                if (data.repeating) {
+                  predicates.push(new Equals({ propertyType: m.SalesInvoice.IsRepeatingInvoice, value: true }));
+                }
 
-          if (data.state) {
-            predicates.push(new Equals({ roleType: m.SalesInvoice.SalesInvoiceState, value: this.salesInvoiceState }));
-          }
+                if (data.state) {
+                  predicates.push(new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, value: this.salesInvoiceState }));
+                }
 
-          const queries: Query[] = [new Query(
-            {
-              include: [
-                new TreeNode({ roleType: m.SalesInvoice.BillToCustomer }),
-                new TreeNode({ roleType: m.SalesInvoice.SalesInvoiceState }),
-                new TreeNode({ roleType: m.SalesInvoice.SalesOrder }),
-              ],
-              name: 'invoices',
-              objectType: m.SalesInvoice,
-              page: new Page({ skip: 0, take }),
-              predicate,
-              sort: [new Sort({ roleType: m.SalesInvoice.InvoiceNumber, direction: 'Desc' })],
-            })];
+                const queries = [
+                  pull.SalesInvoice({
+                    predicate,
+                    include: {
+                      BillToCustomer: x,
+                      SalesInvoiceState: x,
+                      SalesOrder: x,
+                    },
+                    sort: [new Sort(m.SalesInvoice.InvoiceNumber)],
+                    skip: 0, take
+                  })
+                ];
 
-          return this.scope.load('Pull', new PullRequest({ queries }));
-        });
-      })
+                return this.scope.load('Pull', new PullRequest({ pulls: queries }));
+              }));
+        })
+      )
       .subscribe((loaded) => {
         this.data = loaded.collections.invoices as SalesInvoice[];
         this.total = loaded.values.invoices_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public print(invoice: SalesInvoice) {

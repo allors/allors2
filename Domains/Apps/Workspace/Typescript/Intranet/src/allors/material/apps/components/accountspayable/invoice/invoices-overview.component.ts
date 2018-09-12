@@ -1,18 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -50,8 +46,8 @@ export class InvoicesOverviewComponent implements OnDestroy {
   private page$: BehaviorSubject<number>;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -75,120 +71,119 @@ export class InvoicesOverviewComponent implements OnDestroy {
     this.page$ = new BehaviorSubject<number>(50);
 
     const search$ = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
 
-    const combined$ = Observable.combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-        return [
-          data,
-          data !== previousData ? 50 : take,
-          date,
-          internalOrganisationId,
-        ];
-      }, [] as [SearchData, number, Date, InternalOrganisation]);
+    const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+          return [
+            data,
+            data !== previousData ? 50 : take,
+            date,
+            internalOrganisationId,
+          ];
+        }, [])
+      );
 
-    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+    const { m, pull } = this.dataService;
 
     this.subscription = combined$
-      .switchMap(([data, take, , internalOrganisationId]) => {
+      .pipe(
+        switchMap(([data, take, , internalOrganisationId]) => {
 
-        const internalOrganisationsQuery: Query[] = [
-          new Query(
-            {
-              name: 'purchaseinvoiceStates',
-              objectType: m.PurchaseInvoiceState,
-              sort: [
-                new Sort({ roleType: m.PurchaseInvoiceState.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.PurchaseInvoiceItemState({
+              sort: new Sort(m.PurchaseInvoiceItemState.Name)
             }),
-          new Query(
-            {
-              name: 'internalOrganisations',
-              objectType: m.Organisation,
-              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
+            pull.InternalOrganisation({
+              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
               sort: [
-                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
+                new Sort(m.Organisation.PartyName),
               ],
-            }),
-        ];
+            })
+          ];
 
-        return this.scope
-        .load('Pull', new PullRequest({ queries: internalOrganisationsQuery }))
-        .switchMap((loaded: Loaded) => {
-          this.purchaseInvoiceStates = loaded.collections.purchaseinvoiceStates as PurchaseInvoiceState[];
-          this.purchaseInvoiceState = this.purchaseInvoiceStates.find((v: PurchaseInvoiceState) => v.Name === data.state);
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded: Loaded) => {
+                this.purchaseInvoiceStates = loaded.collections.purchaseinvoiceStates as PurchaseInvoiceState[];
+                this.purchaseInvoiceState = this.purchaseInvoiceStates.find((v: PurchaseInvoiceState) => v.Name === data.state);
 
-          this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
-          this.billedFromInternalOrganisation = this.internalOrganisations.find(
-            (v) => v.PartyName === data.internalOrganisation,
-          );
+                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+                this.billedFromInternalOrganisation = this.internalOrganisations.find(
+                  (v) => v.PartyName === data.internalOrganisation,
+                );
 
-          const predicate: And = new And();
-          const predicates: Predicate[] = predicate.predicates;
+                const predicate: And = new And();
+                const predicates: Predicate[] = predicate.operands;
 
-          predicates.push(new Equals({ roleType: m.PurchaseInvoice.BilledTo, value: internalOrganisationId }));
+                predicates.push(new Equals({ propertyType: m.PurchaseInvoice.BilledTo, value: internalOrganisationId }));
 
-          if (data.invoiceNumber) {
-            const like: string = '%' + data.invoiceNumber + '%';
-            predicates.push(new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, value: like }));
-          }
+                if (data.invoiceNumber) {
+                  const like: string = '%' + data.invoiceNumber + '%';
+                  predicates.push(new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, value: like }));
+                }
 
-          if (data.supplier) {
-            const partyQuery: Query = new Query({
-              objectType: m.Party, predicate: new Like({
-                roleType: m.Party.PartyName, value: data.supplier.replace('*', '%') + '%',
-              }),
-            });
+                if (data.supplier) {
+                  const containedIn: ContainedIn = new ContainedIn({
+                    propertyType: m.PurchaseInvoice.BilledFrom, extent: new Filter({
+                      objectType: m.Party,
+                      predicate: new Like({
+                        roleType: m.Party.PartyName, value: data.supplier.replace('*', '%') + '%',
+                      })
+                    })
+                  });
+                  predicates.push(containedIn);
+                }
 
-            const containedIn: ContainedIn = new ContainedIn({ roleType: m.PurchaseInvoice.BilledFrom, query: partyQuery });
-            predicates.push(containedIn);
-          }
+                if (data.internalOrganisation) {
+                  predicates.push(
+                    new Equals({
+                      propertyType: m.PurchaseInvoice.BilledFrom,
+                      value: this.billedFromInternalOrganisation,
+                    }),
+                  );
+                }
 
-          if (data.internalOrganisation) {
-            predicates.push(
-              new Equals({
-                roleType: m.PurchaseInvoice.BilledFrom,
-                value: this.billedFromInternalOrganisation,
-              }),
+                if (data.reference) {
+                  const like: string = data.reference.replace('*', '%') + '%';
+                  predicates.push(new Like({ roleType: m.PurchaseInvoice.CustomerReference, value: like }));
+                }
+
+                if (data.state) {
+                  predicates.push(new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceState, value: this.purchaseInvoiceState }));
+                }
+
+                const queries = [
+                  pull.PurchaseInvoice({
+                    predicate,
+                    include: {
+                      BilledFrom: x,
+                      BillToCustomer: x,
+                      PurchaseInvoiceState: x
+                    },
+                    sort: [new Sort({ roleType: m.PurchaseInvoice.InvoiceNumber, descending: true })],
+                    skip: 0, take
+                  })];
+
+                return this.scope.load('Pull', new PullRequest({ pulls: queries }));
+              })
             );
-          }
-
-          if (data.reference) {
-            const like: string = data.reference.replace('*', '%') + '%';
-            predicates.push(new Like({ roleType: m.PurchaseInvoice.CustomerReference, value: like }));
-          }
-
-          if (data.state) {
-            predicates.push(new Equals({ roleType: m.PurchaseInvoice.PurchaseInvoiceState, value: this.purchaseInvoiceState }));
-          }
-
-          const queries: Query[] = [new Query(
-          {
-            include: [
-              new TreeNode({ roleType: m.PurchaseInvoice.BilledFrom }),
-              new TreeNode({ roleType: m.PurchaseInvoice.BillToCustomer }),
-              new TreeNode({ roleType: m.PurchaseInvoice.PurchaseInvoiceState }),
-            ],
-            name: 'invoices',
-            objectType: m.PurchaseInvoice,
-            page: new Page({ skip: 0, take }),
-            predicate,
-            sort: [new Sort({ roleType: m.PurchaseInvoice.InvoiceNumber, direction: 'Desc' })],
-          })];
-
-          return this.scope.load('Pull', new PullRequest({ queries }));
-        });
-      })
+        })
+      )
       .subscribe((loaded) => {
-        this.data = loaded.collections.invoices as PurchaseInvoice[];
-        this.total = loaded.values.invoices_total;
+        this.data = loaded.collections.PurchaseInvoice as PurchaseInvoice[];
+        this.total = loaded.values.PurchaseInvoices_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public goBack(): void {
