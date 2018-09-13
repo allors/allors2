@@ -21,37 +21,37 @@
 namespace Allors.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
 
     using Allors.Meta;
 
-    public class Path
+    public class Step
     {
-        public Path()
+        public Step()
         {
         }
 
-        public Path(params IPropertyType[] propertyTypes)
+        internal Step(IPropertyType[] propertyTypes, int index)
         {
-            if (propertyTypes.Length > 0)
+            this.PropertyType = propertyTypes[index];
+
+            var nextIndex = index + 1;
+            if (nextIndex < propertyTypes.Length)
             {
-                var index = 0;
-                var step = new Step(propertyTypes, index);
+                this.Next = new Step(propertyTypes, nextIndex);
             }
-        }
-
-        public Path(IMetaPopulation metaPopulation, params Guid[] propertyTypeIds)
-            : this(propertyTypeIds.Select(v => (IPropertyType)metaPopulation.Find(v)).ToArray())
-        {
         }
 
         public Tree Tree { get; set; }
 
-        public Step Step { get; set; }
+        public IPropertyType PropertyType { get; set; }
 
-        public Step End => this.Step?.End;
+        public bool ExistNext => this.Next != null;
+
+        public Step Next { get; set; }
+
+        public Step End => this.ExistNext ? this.Next.End : this;
 
         public static bool TryParse(IComposite composite, string pathString, out Path path)
         {
@@ -63,20 +63,33 @@ namespace Allors.Data
         public Protocol.Path Save()
         {
             return new Protocol.Path
-                       {
-                           Tree = this.Tree?.Save(),
-                           Step = this.Step.Save()
-                       };
+            {
+                Tree = this.Tree?.Save(),
+                PropertyType = this.PropertyType.Id,
+                Next = this.Next.Save()
+            };
         }
 
         public IObjectType GetObjectType()
         {
             if (this.ExistNext)
             {
-                return this.Step.GetObjectType();
+                return this.Next.GetObjectType();
             }
 
             return this.PropertyType.ObjectType;
+        }
+
+        public override string ToString()
+        {
+            var name = new StringBuilder();
+            name.Append(this.PropertyType.Name);
+            if (this.ExistNext)
+            {
+                this.Next.AppendToName(name);
+            }
+
+            return name.ToString();
         }
 
         private static IPropertyType Resolve(IComposite composite, string propertyName)
@@ -109,5 +122,16 @@ namespace Allors.Data
 
             return null;
         }
+
+        private void AppendToName(StringBuilder name)
+        {
+            name.Append("." + this.PropertyType.Name);
+
+            if (this.ExistNext)
+            {
+                this.Next.AppendToName(name);
+            }
+        }
+
     }
 }

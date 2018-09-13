@@ -32,12 +32,12 @@ namespace Allors.Server.Controllers
 
     public class PullController : Controller
     {
-        public PullController(IDatabaseService databaseService, IPolicyService policyService, IExtentService extentService, IFetchService fetchService, ILogger<PullController> logger)
+        public PullController(IDatabaseService databaseService, IPolicyService policyService, IExtentService extentService, IPathService pathService, ILogger<PullController> logger)
         {
             this.DatabaseService = databaseService;
             this.PolicyService = policyService;
             this.ExtentService = extentService;
-            this.FetchService = fetchService;
+            this.PathService = pathService;
             this.Logger = logger;
         }
 
@@ -47,7 +47,7 @@ namespace Allors.Server.Controllers
 
         private IExtentService ExtentService { get; }
 
-        private IFetchService FetchService { get; }
+        private IPathService PathService { get; }
 
         private ILogger<PullController> Logger { get; set; }
 
@@ -73,12 +73,12 @@ namespace Allors.Server.Controllers
 
                                         if (pull.Object != null)
                                         {
-                                            var pullInstantiate = new PullInstantiate(session, pull, user, this.FetchService);
+                                            var pullInstantiate = new PullInstantiate(session, pull, user, this.PathService);
                                             pullInstantiate.Execute(response);
                                         }
                                         else
                                         {
-                                            var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.FetchService);
+                                            var pullExtent = new PullExtent(session, pull, user, this.ExtentService, this.PathService);
                                             pullExtent.Execute(response);
                                         }
                                     }

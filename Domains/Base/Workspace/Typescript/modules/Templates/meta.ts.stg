@@ -118,6 +118,7 @@ path(meta) ::= <<
 // tslint:disable:no-consecutive-blank-lines
 
 import { MetaPopulation, Path } from "../../framework";
+import { $meta.WorkspaceComposites:{composite|Tree$composite.Name$}; separator=", "$ } from "./tree.g";
 
 export class PathFactory {
     constructor(private metaPopulation: MetaPopulation){
@@ -144,6 +145,7 @@ $composite.WorkspaceAssociationTypes:{association|    $association.PropertyName$
 
 $composite.WorkspaceSubtypes:{subtype|$pathSubtype(subtype)$}$
 
+	include?: Tree$composite.SingularName$;
 }
 >>
 

@@ -35,14 +35,14 @@ namespace Allors.Server
 
         private readonly User user;
 
-        private readonly IFetchService fetchService;
+        private readonly IPathService pathService;
 
-        public PullInstantiate(ISession session, Pull pull, User user, IFetchService fetchService)
+        public PullInstantiate(ISession session, Pull pull, User user, IPathService pathService)
         {
             this.session = session;
             this.pull = pull;
             this.user = user;
-            this.fetchService = fetchService;
+            this.pathService = pathService;
         }
 
         public void Execute(PullResponseBuilder response)
@@ -55,10 +55,10 @@ namespace Allors.Server
                 {
                     var name = result.Name;
 
-                    var fetch = result.Fetch;
-                    if (fetch == null && result.FetchRef.HasValue)
+                    var fetch = result.Path;
+                    if (fetch == null && result.PathRef.HasValue)
                     {
-                        fetch = this.fetchService.Get(result.FetchRef.Value);
+                        fetch = this.pathService.Get(result.PathRef.Value);
                     }
 
                     if (fetch != null)

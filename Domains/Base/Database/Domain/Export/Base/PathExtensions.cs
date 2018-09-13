@@ -42,13 +42,13 @@ namespace Allors.Domain
                     {
                         if (currentValue is IObject)
                         {
-                            return path.Next.Get((IObject)currentValue, aclFactory);
+                            return path.Step.Get((IObject)currentValue, aclFactory);
                         }
 
                         var results = new HashSet<object>();
                         foreach (var item in (IEnumerable)currentValue)
                         {
-                            var nextValueResult = path.Next.Get((IObject)item, aclFactory);
+                            var nextValueResult = path.Step.Get((IObject)item, aclFactory);
                             if (nextValueResult is HashSet<object>)
                             {
                                 results.UnionWith((HashSet<object>)nextValueResult);
@@ -82,7 +82,7 @@ namespace Allors.Domain
                     var property = path.PropertyType.Get(allorsObject.Strategy) as IObject;
                     if (property != null)
                     {
-                        path.Next.Set(property, aclFactory, value);
+                        path.Step.Set(property, aclFactory, value);
                         return true;
                     }
                 }
@@ -134,7 +134,7 @@ namespace Allors.Domain
                             var next = role as IObject;
                             if (next != null)
                             {
-                                path.Next.Ensure(next, aclFactory);
+                                path.Step.Ensure(next, aclFactory);
                             }
                         }
                     }
@@ -155,7 +155,7 @@ namespace Allors.Domain
                     {
                         if (path.ExistNext)
                         {
-                            path.Next.Ensure(association, aclFactory);
+                            path.Step.Ensure(association, aclFactory);
                         }
                     }
                 }

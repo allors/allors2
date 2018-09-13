@@ -318,7 +318,7 @@ namespace Allors.Domain
 				public interface PreparedExtent : UniquelyIdentifiable, Deletable 
 				{
 				}
-				public interface PreparedFetch : UniquelyIdentifiable, Deletable 
+				public interface PreparedPath : UniquelyIdentifiable, Deletable 
 				{
 				}
 				public interface Country 

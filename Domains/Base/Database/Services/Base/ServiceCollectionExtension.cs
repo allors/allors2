@@ -132,7 +132,7 @@ namespace Allors.Services
             services.AddSingleton<ITimeService, TimeService>();
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IExtentService, ExtentService>();
-            services.AddSingleton<IFetchService, FetchService>();
+            services.AddSingleton<IPathService, PathService>();
 
             services.AddScoped<ISessionService, SessionService>();
         }

@@ -24,8 +24,8 @@ namespace Allors.Services
 
     using Allors.Data;
 
-    public partial interface IFetchService
+    public partial interface IPathService
     {
-        Fetch Get(Guid id);
+        Path Get(Guid id);
     }
 }

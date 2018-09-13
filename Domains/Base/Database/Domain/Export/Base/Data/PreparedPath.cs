@@ -18,23 +18,24 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.IO;
+
 namespace Allors.Domain
 {
-    using System.IO;
     using System.Text;
     using System.Xml.Serialization;
 
     using Allors.Data;
 
-    public partial class PreparedFetch
+    public partial class PreparedPath
     {
-        public Fetch Fetch
+        public Path Path
         {
             get
             {
                 using (TextReader reader = new StringReader(this.Content))
                 {
-                    var protocolFetch = (Allors.Data.Protocol.Fetch)XmlSerializer.Deserialize(reader);
+                    var protocolFetch = (Allors.Data.Protocol.Path)XmlSerializer.Deserialize(reader);
                     return protocolFetch.Load(this.strategy.Session);
                 }
             }
@@ -50,6 +51,6 @@ namespace Allors.Domain
             }
         }
 
-        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Allors.Data.Protocol.Fetch));
+        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Allors.Data.Protocol.Path));
     }
 }

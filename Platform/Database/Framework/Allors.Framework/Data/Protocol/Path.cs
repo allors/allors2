@@ -28,11 +28,14 @@ namespace Allors.Data.Protocol
 
         public Path Next { get; set; }
 
+        public Tree Tree { get; set; }
+
         public Data.Path Load(ISession session)
         {
             return new Data.Path(session.Database.MetaPopulation, this.PropertyType)
                        {
-                           Next = this.Next?.Load(session)
+                           Step = this.Next?.Load(session),
+                           Tree = this.Tree?.Load(session)
                        };
         }
     }
