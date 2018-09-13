@@ -8,7 +8,7 @@ import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from '
 
 import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 

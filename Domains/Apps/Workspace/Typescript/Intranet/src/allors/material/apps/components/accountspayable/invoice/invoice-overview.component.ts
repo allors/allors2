@@ -98,7 +98,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
             }),
             pull.PurchaseInvoice({
               object: id,
-              path: {
+              fetch: {
                 PurchaseOrder: x
               }
             }),

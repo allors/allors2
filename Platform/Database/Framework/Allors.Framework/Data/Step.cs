@@ -41,7 +41,7 @@ namespace Allors.Data
             }
         }
 
-        public Tree Tree { get; set; }
+        public Tree Include { get; set; }
 
         public IPropertyType PropertyType { get; set; }
 
@@ -55,7 +55,7 @@ namespace Allors.Data
         {
             return new Protocol.Step
             {
-                Tree = this.Tree?.Save(),
+                Include = this.Include?.Save(),
                 PropertyType = this.PropertyType.Id,
                 Next = this.Next.Save()
             };

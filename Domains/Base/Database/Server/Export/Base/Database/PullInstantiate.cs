@@ -63,7 +63,7 @@ namespace Allors.Server
 
                     if (fetch != null)
                     {
-                        var include = fetch.Include ?? fetch.Step?.End.Tree;
+                        var include = fetch.Include ?? fetch.Step?.End.Include;
 
                         if (fetch.Step != null)
                         {

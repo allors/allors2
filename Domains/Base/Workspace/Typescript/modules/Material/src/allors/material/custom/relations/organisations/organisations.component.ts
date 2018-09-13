@@ -3,10 +3,10 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../angular';
-import { Organisation } from '../../../../domain';
+import { ErrorService, Loaded, Scope, WorkspaceService, x, DataService } from '../../../../angular';
+import { Organisation, Person } from '../../../../domain';
 import { MetaDomain, PullFactory } from '../../../../meta';
-import { PullRequest } from '../../../../framework';
+import { PullRequest, Equals } from '../../../../framework';
 
 @Component({
   templateUrl: './organisations.component.html',
@@ -23,14 +23,15 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private titleService: Title,
     private router: Router) {
 
-      this.title = 'Organisations';
-      this.titleService.setTitle(this.title);
-      this.scope = this.workspaceService.createScope();
-      this.m = this.workspaceService.metaPopulation.metaDomain;
-    }
+    this.title = 'Organisations';
+    this.titleService.setTitle(this.title);
+    this.scope = this.workspaceService.createScope();
+    this.m = this.workspaceService.metaPopulation.metaDomain;
+  }
 
   public goBack(): void {
     this.router.navigate(['/']);
@@ -48,19 +49,22 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
   public search(): void {
 
+    const name = 'FASDFSFDSDSDFSD';
+
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
 
-    const x = {};
-    const pull = new PullFactory(this.workspaceService.metaPopulation);
+    const { m, pull } = this.dataService;
 
     const pulls = [
+
       pull.Organisation({
         include: {
           Owner: x,
           Employees: x,
-      }})
+        }
+      })
     ];
 
     this.scope.session.reset();
@@ -70,20 +74,20 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       .subscribe((loaded: Loaded) => {
         this.data = loaded.collections.Organisations as Organisation[];
       },
-      (error: any) => {
-        alert(error);
-        this.goBack();
-      });
+        (error: any) => {
+          alert(error);
+          this.goBack();
+        });
   }
 
   public delete(): void {
-/*     this.dialogService
-      .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
-      .afterClosed().subscribe((confirm: boolean) => {
-        if (confirm) {
-          // TODO: Logical, physical or workflow delete
-        }
-      }); */
+    /*     this.dialogService
+          .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
+          .afterClosed().subscribe((confirm: boolean) => {
+            if (confirm) {
+              // TODO: Logical, physical or workflow delete
+            }
+          }); */
   }
 
   public onView(organisation: Organisation): void {

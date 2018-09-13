@@ -30,7 +30,7 @@ namespace Allors.Data.Protocol
 
         public Step Next { get; set; }
 
-        public Tree Tree { get; set; }
+        public Tree Include { get; set; }
 
         public Data.Step Load(ISession session)
         {
@@ -38,7 +38,7 @@ namespace Allors.Data.Protocol
             {
                 PropertyType = this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(this.PropertyType.Value) : null,
                 Next = this.Next?.Load(session),
-                Tree = this.Tree?.Load(session)
+                Include = this.Include?.Load(session)
             };
         }
     }

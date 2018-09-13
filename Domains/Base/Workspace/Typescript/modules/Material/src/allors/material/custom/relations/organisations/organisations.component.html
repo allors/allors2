@@ -24,7 +24,7 @@
           <mat-list-item *ngFor="let organisation of data; let last = last" [attr.data-allors-id]="organisation.id" (click)="router.navigate(['/relations/organisations/' + organisation.id + '/overview'])" style="cursor: pointer;">
 
             <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>business_center</mat-icon>
-            <img *ngIf="organisation.Picture" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Picture.UniqueId}}?revision={{organisation.Picture.Revision}}" />
+            <img *ngIf="organisation.Photo" mat-list-avatar src="http://localhost:5000/Media/Download/{{organisation.Photo.UniqueId}}?revision={{organisation.Photo.Revision}}" />
 
             <h3 mat-line>{{organisation.Name}}</h3>
             <p mat-line> {{organisation.Owner?.UserName}} </p>
