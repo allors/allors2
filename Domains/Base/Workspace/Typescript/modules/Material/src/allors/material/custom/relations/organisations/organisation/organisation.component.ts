@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Field, SearchFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain, PullFactory } from '../../../../../meta';
@@ -24,7 +24,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public organisation: Organisation;
 
-  public peopleFilter: FilterFactory;
+  public peopleFilter: SearchFactory;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -42,7 +42,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
-    this.peopleFilter = new FilterFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
+    this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }

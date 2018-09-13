@@ -1,5 +1,5 @@
 import { domain, Person, Organisation } from '../../src/allors/domain';
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from '../../src/allors/framework';
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
 import { data, MetaDomain } from '../../src/allors/meta';
 
 import { Database, Scope } from '../../src/allors/promise';

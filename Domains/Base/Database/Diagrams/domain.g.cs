@@ -912,7 +912,7 @@ namespace Allors.Domain
 						global::System.String Content {set;}
 
 		}
-		public interface PreparedPath  : UniquelyIdentifiable, Deletable 
+		public interface PreparedFetch  : UniquelyIdentifiable, Deletable 
 		{
 						global::System.String Name {set;}
 

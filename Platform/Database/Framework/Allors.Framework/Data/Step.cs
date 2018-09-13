@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Path.cs" company="Allors bvba">
+// <copyright file="Step.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,8 +20,6 @@
 
 namespace Allors.Data
 {
-    using System;
-    using System.Linq;
     using System.Text;
 
     using Allors.Meta;
@@ -47,22 +45,15 @@ namespace Allors.Data
 
         public IPropertyType PropertyType { get; set; }
 
-        public bool ExistNext => this.Next != null;
-
         public Step Next { get; set; }
+
+        public bool ExistNext => this.Next != null;
 
         public Step End => this.ExistNext ? this.Next.End : this;
 
-        public static bool TryParse(IComposite composite, string pathString, out Path path)
+        public Protocol.Step Save()
         {
-            var propertyType = Resolve(composite, pathString);
-            path = propertyType == null ? null : new Path(propertyType);
-            return path != null;
-        }
-
-        public Protocol.Path Save()
-        {
-            return new Protocol.Path
+            return new Protocol.Step
             {
                 Tree = this.Tree?.Save(),
                 PropertyType = this.PropertyType.Id,
@@ -90,37 +81,6 @@ namespace Allors.Data
             }
 
             return name.ToString();
-        }
-
-        private static IPropertyType Resolve(IComposite composite, string propertyName)
-        {
-            var lowerCasePropertyName = propertyName.ToLowerInvariant();
-
-            foreach (var roleType in composite.RoleTypes)
-            {
-                if (roleType.SingularName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    roleType.SingularFullName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    roleType.PluralName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    roleType.PluralFullName.ToLowerInvariant().Equals(lowerCasePropertyName))
-                {
-                    return roleType;
-                }
-            }
-
-            foreach (var associationType in composite.AssociationTypes)
-            {
-                if (associationType.SingularName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    associationType.SingularFullName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    associationType.SingularPropertyName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    associationType.PluralName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    associationType.PluralFullName.ToLowerInvariant().Equals(lowerCasePropertyName) ||
-                    associationType.PluralPropertyName.ToLowerInvariant().Equals(lowerCasePropertyName))
-                {
-                    return associationType;
-                }
-            }
-
-            return null;
         }
 
         private void AppendToName(StringBuilder name)

@@ -7,33 +7,33 @@
     using Allors.Domain;
     using Allors.Meta;
 
-    public class PathService : IPathService
+    public class FetchService : IFetchService
     {
         private readonly IDatabaseService databaseService;
 
-        private readonly ConcurrentDictionary<Guid, Path> fetchById;
+        private readonly ConcurrentDictionary<Guid, Fetch> fetchById;
 
-        public PathService(IDatabaseService databaseService)
+        public FetchService(IDatabaseService databaseService)
         {
             this.databaseService = databaseService;
-            this.fetchById = new ConcurrentDictionary<Guid, Path>();
+            this.fetchById = new ConcurrentDictionary<Guid, Fetch>();
         }
 
-        public Path Get(Guid id)
+        public Fetch Get(Guid id)
         {
             if (!this.fetchById.TryGetValue(id, out var fetch))
             {
                 using (var session = this.databaseService.Database.CreateSession())
                 {
-                    var filter = new Filter(M.PreparedPath.Class)
+                    var filter = new Filter(M.PreparedFetch.Class)
                                      {
-                                         Predicate = new Equals(M.PreparedPath.UniqueId.RoleType) { Value = id }
+                                         Predicate = new Equals(M.PreparedFetch.UniqueId.RoleType) { Value = id }
                                      };
 
-                    var preparedFetch = (PreparedPath)filter.Build(session).First;
+                    var preparedFetch = (PreparedFetch)filter.Build(session).First;
                     if (preparedFetch != null)
                     {
-                        fetch = preparedFetch.Path;
+                        fetch = preparedFetch.Fetch;
                         this.fetchById[id] = fetch;
                     }
                 }

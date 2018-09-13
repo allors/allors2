@@ -6,9 +6,8 @@ import { ObjectType } from '../../meta/ObjectType';
 import { MetaObjectType } from '../../meta';
 import { Filter } from './Filter';
 import { Fetch } from './Fetch';
-import { Path } from './Path';
-import { Tree } from './Tree';
 import { Sort } from './Sort';
+import { Tree } from './Tree';
 
 export class Pull {
 
@@ -45,33 +44,26 @@ export class Pull {
           this.extent = new Filter({ objectType: objectType, sort });
         }
 
-        if (flat.fetchRef || flat.fetch || flat.name || flat.skip || flat.take || flat.path || flat.include) {
+        if (flat.fetchRef || flat.fetch || flat.include || flat.name || flat.skip || flat.take) {
           const result = new Result({
             fetchRef: flat.fetchRef,
-            fetch: flat.fetch,
+            fetch: flat.fetch ? flat.fetch instanceof Fetch ? flat.fetch : new Fetch(objectType, flat.fetch) : undefined,
             name: flat.name,
             skip: flat.skip,
             take: flat.take
           });
 
-          if (flat.path || flat.include) {
-            if (!result.fetch) {
-              result.fetch = new Fetch();
-            }
+          if (flat.include) {
+            const include = flat.include instanceof Tree ? flat.include : new Tree(objectType, flat.include);
 
-            const fetch = result.fetch;
-
-            if (flat.path) {
-              fetch.path = flat.path instanceof Path ? flat.path : new Path(objectType, flat.path);
-              if (flat.include) {
-                if (!(flat.include instanceof Tree)) {
-                  throw new Error('literal include conflicts with path');
-                }
-
-                fetch.include = flat.include;
+            if (result.fetch) {
+              if (result.fetch.step) {
+                throw new Error('include conflicts with fetch step');
               }
+
+              result.fetch.include = include;
             } else {
-              fetch.include = flat.include instanceof Tree ? flat.include : new Tree(objectType, flat.include);
+              result.fetch = new Fetch({ include });
             }
           }
 

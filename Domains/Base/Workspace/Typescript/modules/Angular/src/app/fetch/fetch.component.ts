@@ -43,7 +43,17 @@ export class FetchComponent implements OnInit, OnDestroy {
 
     const pulls = [
       pull.Organisation({ object: id, include: { Owner: x } }),
-      pull.Organisation({ object: id, path: { Owner: { OrganisationsWhereOwner: x } }, include: tree.Organisation({ Owner: x }) })
+      pull.Organisation({
+        object: id, fetch: {
+          Owner: {
+            OrganisationsWhereOwner: {
+              include: {
+                Owner: x,
+              }
+            }
+          }
+        }
+      })
     ];
 
     this.scope.session.reset();

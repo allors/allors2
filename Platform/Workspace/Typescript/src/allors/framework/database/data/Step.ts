@@ -1,19 +1,67 @@
-import { AssociationType, RoleType } from '../../meta';
+import { AssociationType, RoleType, ObjectType, MetaObjectType } from '../../meta';
 import { Tree } from './Tree';
 
+const includeKey = 'include';
+
 export class Step {
-  public selector: AssociationType | RoleType;
+  public tree: Tree;
+
+  public propertyType: AssociationType | RoleType;
 
   public next: Step | Tree;
 
-  constructor(fields?: Partial<Step>) {
-    Object.assign(this, fields);
+  constructor(fields?: Partial<Step> | ObjectType | MetaObjectType, stepName?: string, literal?) {
+    if (fields instanceof ObjectType || fields && (fields as MetaObjectType)._objectType) {
+      const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+
+      this.propertyType = objectType.roleTypeByName[stepName];
+      if (!this.propertyType) {
+        this.propertyType = objectType.associationTypeByName[stepName];
+      }
+
+      if (!this.propertyType) {
+        const metaPopulation = objectType.metaPopulation;
+        const [subTypeName, subStepName] = stepName.split('_');
+
+        const subType = metaPopulation.objectTypeByName[subTypeName];
+        if (subType) {
+          this.propertyType = subType.roleTypeByName[subStepName];
+
+          if (!this.propertyType) {
+            this.propertyType = subType.associationTypeByName[subStepName];
+          }
+        }
+      }
+
+      if (!this.propertyType) {
+        throw new Error('Unknown role or association: ' + stepName);
+      }
+
+      if (literal) {
+        const keys = Object.keys(literal);
+
+        if (keys.find(v => v === includeKey)) {
+          const treeLiteral = literal[includeKey];
+          this.tree = new Tree(this.propertyType.objectType, treeLiteral);
+        }
+
+        const nextStepName = keys.find(v => v !== includeKey);
+        if (nextStepName) {
+          const nextStepLiteral = literal[nextStepName];
+          this.next = new Step(this.propertyType.objectType, nextStepName, nextStepLiteral);
+        }
+      }
+
+    } else {
+      Object.assign(this, fields);
+    }
   }
 
   public toJSON(): any {
 
     return {
-      selector: this.selector.id,
+      tree: this.tree,
+      propertytype: this.propertyType.id,
       next: this.next,
     };
   }

@@ -1,5 +1,5 @@
 export { TreeNode } from './TreeNode';
-export { Path } from './Path';
+export { Fetch } from './Fetch';
 export { Extent } from './Extent';
 export { Sort } from './Sort';
 export { Predicate } from './Predicate';
@@ -20,7 +20,6 @@ export { Union } from './Union';
 export { Intersect } from './Intersect';
 export { Except } from './Except';
 export { Filter } from './Filter';
-export { Fetch } from './Fetch';
 export { Tree } from './Tree';
 export { Result } from './Result';
 export { FlatPull } from './FlatPull';

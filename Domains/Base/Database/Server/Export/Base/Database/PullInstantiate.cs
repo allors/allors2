@@ -35,14 +35,14 @@ namespace Allors.Server
 
         private readonly User user;
 
-        private readonly IPathService pathService;
+        private readonly IFetchService fetchService;
 
-        public PullInstantiate(ISession session, Pull pull, User user, IPathService pathService)
+        public PullInstantiate(ISession session, Pull pull, User user, IFetchService fetchService)
         {
             this.session = session;
             this.pull = pull;
             this.user = user;
-            this.pathService = pathService;
+            this.fetchService = fetchService;
         }
 
         public void Execute(PullResponseBuilder response)
@@ -55,32 +55,34 @@ namespace Allors.Server
                 {
                     var name = result.Name;
 
-                    var fetch = result.Path;
-                    if (fetch == null && result.PathRef.HasValue)
+                    var fetch = result.Fetch;
+                    if (fetch == null && result.FetchRef.HasValue)
                     {
-                        fetch = this.pathService.Get(result.PathRef.Value);
+                        fetch = this.fetchService.Get(result.FetchRef.Value);
                     }
 
                     if (fetch != null)
                     {
-                        if (fetch.Path != null)
+                        var include = fetch.Include ?? fetch.Step?.End.Tree;
+
+                        if (fetch.Step != null)
                         {
                             var aclCache = new AccessControlListCache(this.user);
 
-                            var propertyType = fetch.Path.End.PropertyType;
+                            var propertyType = fetch.Step.End.PropertyType;
 
                             if (propertyType.IsOne)
                             {
                                 name = name ?? propertyType.SingularName;
 
-                                @object = (IObject)fetch.Path.Get(@object, aclCache);
-                                response.AddObject(name, @object, fetch.Include);
+                                @object = (IObject)fetch.Step.Get(@object, aclCache);
+                                response.AddObject(name, @object, include);
                             }
                             else
                             {
                                 name = name ?? propertyType.SingularName;
 
-                                var objects = ((Extent)fetch.Path.Get(@object, aclCache)).ToArray();
+                                var objects = ((Extent)fetch.Step.Get(@object, aclCache)).ToArray();
 
                                 if (result.Skip.HasValue)
                                 {
@@ -93,18 +95,18 @@ namespace Allors.Server
                                     paged = paged.ToArray();
 
                                     response.AddValue(name + "_total", objects.Length);
-                                    response.AddCollection(name, paged, fetch.Include);
+                                    response.AddCollection(name, paged, include);
                                 }
                                 else
                                 {
-                                    response.AddCollection(name, objects, fetch.Include);
+                                    response.AddCollection(name, objects, include);
                                 }
                             }
                         }
                         else
                         {
                             name = name ?? @object.Strategy.Class.SingularName;
-                            response.AddObject(name, @object, fetch.Include);
+                            response.AddObject(name, @object, include);
                         }
                     }
                     else

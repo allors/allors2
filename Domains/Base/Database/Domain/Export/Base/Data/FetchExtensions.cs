@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Path.cs" company="Allors bvba">
+// <copyright file="FetchExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -18,25 +18,25 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Data.Protocol
+namespace Allors.Domain
 {
-    using System;
-  
-    public class Path
+    using Allors.Data;
+
+    public static class FetchExtensions
     {
-        public Guid PropertyType { get; set; }
-
-        public Path Next { get; set; }
-
-        public Tree Tree { get; set; }
-
-        public Data.Path Load(ISession session)
+        public static object Get(this Fetch fetch, IObject allorsObject, IAccessControlListFactory aclFactory)
         {
-            return new Data.Path(session.Database.MetaPopulation, this.PropertyType)
-                       {
-                           Step = this.Next?.Load(session),
-                           Tree = this.Tree?.Load(session)
-                       };
+            return fetch.Step == null ? allorsObject : fetch.Step.Get(allorsObject, aclFactory);
+        }
+
+        public static bool Set(this Fetch fetch, IObject allorsObject, IAccessControlListFactory aclFactory, object value)
+        {
+            return fetch.Step != null && fetch.Step.Set(allorsObject, aclFactory, value);
+        }
+
+        public static void Ensure(this Fetch fetch, IObject allorsObject, IAccessControlListFactory aclFactory)
+        {
+            fetch.Step.Ensure(allorsObject, aclFactory);
         }
     }
 }

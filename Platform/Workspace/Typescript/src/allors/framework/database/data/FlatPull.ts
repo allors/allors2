@@ -2,10 +2,9 @@ import { Extent } from './Extent';
 import { ISessionObject } from '../../workspace';
 import { Result } from './Result';
 import { Fetch } from './Fetch';
-import { Path } from './Path';
-import { Tree } from './Tree';
 import { Predicate } from './Predicate';
 import { Sort } from './Sort';
+import { Tree } from './Tree';
 
 export interface FlatPull {
 
@@ -23,15 +22,13 @@ export interface FlatPull {
 
     fetchRef?: string;
 
-    fetch?: Fetch;
+    fetch?: Fetch | any;
+
+    include?: Tree | any;
 
     name?: string;
 
     skip?: number;
 
     take?: number;
-
-    path?: Path | any;
-
-    include?: Tree | any;
 }

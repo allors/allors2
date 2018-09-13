@@ -27,15 +27,15 @@ namespace Allors.Domain
 
     using Allors.Data;
 
-    public partial class PreparedPath
+    public partial class PreparedFetch
     {
-        public Path Path
+        public Fetch Fetch
         {
             get
             {
                 using (TextReader reader = new StringReader(this.Content))
                 {
-                    var protocolFetch = (Allors.Data.Protocol.Path)XmlSerializer.Deserialize(reader);
+                    var protocolFetch = (Allors.Data.Protocol.Fetch)XmlSerializer.Deserialize(reader);
                     return protocolFetch.Load(this.strategy.Session);
                 }
             }
@@ -51,6 +51,6 @@ namespace Allors.Domain
             }
         }
 
-        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Allors.Data.Protocol.Path));
+        private static XmlSerializer XmlSerializer => new XmlSerializer(typeof(Allors.Data.Protocol.Fetch));
     }
 }

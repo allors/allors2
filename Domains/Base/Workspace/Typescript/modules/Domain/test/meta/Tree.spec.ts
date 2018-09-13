@@ -1,5 +1,5 @@
 import { domain, Organisation, Person } from '../../src/allors/domain';
-import { Fetch, MetaPopulation, PullRequest, Session, Workspace } from '../../src/allors/framework';
+import { MetaPopulation, PullRequest, Session, Workspace } from '../../src/allors/framework';
 import { data, TreeFactory } from '../../src/allors/meta';
 
 import { assert } from 'chai';

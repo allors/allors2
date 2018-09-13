@@ -1,6 +1,6 @@
 import { domain, Person, Media, Organisation } from '../../src/allors/domain';
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, Fetch, TreeNode, Tree, Result } from '../../src/allors/framework';
-import { data, MetaDomain, PathOrganisation, TreeFactory, PathFactory } from '../../src/allors/meta';
+import { MetaPopulation, PullRequest, Workspace, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
+import { data, MetaDomain, FetchOrganisation, TreeFactory, FetchFactory } from '../../src/allors/meta';
 
 import { Database, Scope } from '../../src/allors/promise';
 import { AxiosHttp } from '../../src/allors/promise/base/http/AxiosHttp';
@@ -14,7 +14,7 @@ describe('Extent',
         let m: MetaDomain;
         let scope: Scope;
         let tree: TreeFactory;
-        let path: PathFactory;
+        let fetch: FetchFactory;
 
         beforeEach(async () => {
             metaPopulation = new MetaPopulation(data);
@@ -28,7 +28,7 @@ describe('Extent',
             scope = new Scope(database, workspace);
 
             tree = new TreeFactory(metaPopulation);
-            path = new PathFactory(metaPopulation);
+            fetch = new FetchFactory(metaPopulation);
         });
 
         describe('People',
@@ -147,10 +147,8 @@ describe('Extent',
                             }),
                             results: [
                                 new Result({
-                                    fetch: new Fetch({
-                                        path: path.Organisation({
-                                            Owner: {},
-                                        })
+                                    fetch: fetch.Organisation({
+                                        Owner: {},
                                     })
                                 })
                             ]
@@ -178,10 +176,8 @@ describe('Extent',
                             }),
                             results: [
                                 new Result({
-                                    fetch: new Fetch({
-                                        path: path.Organisation({
-                                            Employees: {},
-                                        })
+                                    fetch: fetch.Organisation({
+                                        Employees: {},
                                     })
                                 })
                             ]
@@ -210,10 +206,8 @@ describe('Extent',
                             extent: new Filter(m.Organisation),
                             results: [
                                 new Result({
-                                    fetch: new Fetch({
-                                        path: path.Organisation({
-                                            Employees: {},
-                                        })
+                                    fetch: fetch.Organisation({
+                                        Employees: {},
                                     })
                                 })
                             ]
@@ -225,11 +219,47 @@ describe('Extent',
                     const loaded = await scope
                         .load('Pull', new PullRequest({ pulls }));
 
-                    const employees = loaded.collections['Employees'] as Media[];
+                    const employees = loaded.collections['Employees'] as Person[];
 
                     assert.isArray(employees);
                     assert.isNotEmpty(employees);
                     assert.equal(3, employees.length);
+                });
+            });
+
+        describe('Organisation with typesafe path and tree',
+            () => {
+                it('should return all people', async () => {
+
+                    const pulls = [
+                        new Pull({
+                            extent: new Filter(m.Organisation),
+                            results: [
+                                new Result({
+                                    fetch: fetch.Organisation({
+                                        Owner: {
+                                            include: {
+                                                Photo: {}
+                                            }
+                                        },
+                                    })
+                                })
+                            ]
+                        })
+                    ];
+
+                    scope.session.reset();
+
+                    const loaded = await scope
+                        .load('Pull', new PullRequest({ pulls }));
+
+                    const owners = loaded.collections['Owners'] as Person[];
+
+                    owners.forEach(v => v.Photo);
+
+                    assert.isArray(owners);
+                    assert.isNotEmpty(owners);
+                    assert.equal(2, owners.length);
                 });
             });
     });

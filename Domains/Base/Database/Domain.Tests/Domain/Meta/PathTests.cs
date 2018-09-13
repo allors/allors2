@@ -53,7 +53,7 @@ namespace Tests
 
             this.Session.Derive(true);
 
-            var path = new Path(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
+            var path = new Fetch(M.C1.C1C2One2Manies, M.C2.C2AllorsString);
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
@@ -89,7 +89,7 @@ namespace Tests
 
             this.Session.Derive(true);
 
-            var path = new Path(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
+            var path = new Fetch(MetaC1.Instance.C1C2One2Manies, MetaC2.Instance.C2AllorsString);
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
@@ -125,17 +125,17 @@ namespace Tests
 
             this.Session.Derive(true);
 
-            Path path;
-            Path.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out path);
+            Fetch fetch;
+            Fetch.TryParse(M.C2.ObjectType, "C1WhereC1C2One2Many", out fetch);
 
             var aclMock = new Mock<IAccessControlList>();
             aclMock.Setup(acl => acl.CanRead(It.IsAny<IPropertyType>())).Returns(true);
             var acls = new AccessControlListCache(null, (allorsObject, user) => aclMock.Object);
 
-            var result = (C1)path.Get(c2A, acls);
+            var result = (C1)fetch.Get(c2A, acls);
             Assert.Equal(result, c1A);
             
-            result = (C1)path.Get(c2B, acls);
+            result = (C1)fetch.Get(c2B, acls);
             Assert.Equal(result, c1B);
         }
     }

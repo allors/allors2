@@ -18,12 +18,11 @@ export class Result {
   public toJSON(): any {
 
     return {
+      fetchRef: this.fetchRef,
+      fetch: this.fetch,
       name: this.name,
       skip: this.skip,
       take: this.take,
-      fetchRef: this.fetchRef,
-      fetch: this.fetch,
     };
-
   }
 }

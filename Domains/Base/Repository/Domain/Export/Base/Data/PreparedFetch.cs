@@ -28,7 +28,7 @@ namespace Allors.Repository
     #region Allors
     [Id("02C7569C-8F54-4F8D-AC09-1BACD9528F1F")]
     #endregion
-    public partial class PreparedPath : UniquelyIdentifiable, Deletable
+    public partial class PreparedFetch : UniquelyIdentifiable, Deletable
     {
         #region inherited properties
 

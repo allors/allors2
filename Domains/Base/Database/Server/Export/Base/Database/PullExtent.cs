@@ -34,15 +34,15 @@ namespace Allors.Server
         private readonly Pull pull;
         private readonly User user;
         private readonly IExtentService extentService;
-        private readonly IPathService pathService;
+        private readonly IFetchService fetchService;
 
-        public PullExtent(ISession session, Pull pull, User user, IExtentService extentService, IPathService pathService)
+        public PullExtent(ISession session, Pull pull, User user, IExtentService extentService, IFetchService fetchService)
         {
             this.session = session;
             this.pull = pull;
             this.user = user;
             this.extentService = extentService;
-            this.pathService = pathService;
+            this.fetchService = fetchService;
         }
 
         public void Execute(PullResponseBuilder response)
@@ -61,30 +61,25 @@ namespace Allors.Server
                 {
                     var name = result.Name;
 
-                    var path = result.Path;
-                    if (path == null && result.PathRef.HasValue)
+                    var fetch = result.Fetch;
+                    if (fetch == null && result.FetchRef.HasValue)
                     {
-                        path = this.pathService.Get(result.PathRef.Value);
+                        fetch = this.fetchService.Get(result.FetchRef.Value);
                     }
 
-                    if (path != null)
+                    if (fetch != null)
                     {
-                        if (path.PropertyType != null)
+                        var include = fetch.Include ?? fetch.Step?.End.Tree;
+
+                        if (fetch.Step != null)
                         {
                             var aclCache = new AccessControlListCache(this.user);
 
-                            var propertyType = path.Path.End.PropertyType;
+                            var propertyType = fetch.Step.End.PropertyType;
 
-                            if (propertyType.IsOne)
-                            {
-                                objects = objects.Select(v => path.Path.Get(v, aclCache)).Where(v => v != null).Cast<IObject>()
-                                    .Distinct().ToArray();
-                            }
-                            else
-                            {
-                                objects = objects.SelectMany(v => ((Extent)path.Path.Get(v, aclCache)).ToArray()).Distinct()
-                                    .ToArray();
-                            }
+                            objects = propertyType.IsOne ? 
+                                          objects.Select(v => fetch.Step.Get(v, aclCache)).Where(v => v != null).Cast<IObject>().Distinct().ToArray() : 
+                                          objects.SelectMany(v => ((Extent)fetch.Step.Get(v, aclCache)).ToArray()).Distinct().ToArray();
 
                             name = name ?? propertyType.PluralName;
                         }
@@ -102,11 +97,11 @@ namespace Allors.Server
                             paged = paged.ToArray();
 
                             response.AddValue(name + "_total", extent.Build(this.session, this.pull.Arguments).Count);
-                            response.AddCollection(name, paged, path.Include);
+                            response.AddCollection(name, paged, include);
                         }
                         else
                         {
-                            response.AddCollection(name, objects, path.Include);
+                            response.AddCollection(name, objects, include);
                         }
                     }
                     else

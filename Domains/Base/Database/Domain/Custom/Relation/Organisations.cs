@@ -46,10 +46,10 @@ namespace Allors.Domain
                 }
             };
 
-            var fetchPeople = new PreparedPathBuilder(this.Session).WithUniqueId(FetchPeople).WithDescription("Fetch associated people").Build();
-            fetchPeople.Path = new Path
+            var fetchPeople = new PreparedFetchBuilder(this.Session).WithUniqueId(FetchPeople).WithDescription("Fetch People").Build();
+            fetchPeople.Fetch = new Fetch
             {
-                Tree = new Tree(M.Organisation.Class)
+                Include = new Tree(M.Organisation.Class)
                     .Add(M.Organisation.Owner)
                     .Add(M.Organisation.Employees)
             };

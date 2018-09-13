@@ -12,7 +12,7 @@
               "--colors",
               "--recursive",
               "--inspect-brk",
-              "${workspaceFolder}/dist/**/Pull.spec.js",
+              "${workspaceFolder}/dist/**/Fetch.spec.js",
           ],
           "stopOnEntry": false,
           "internalConsoleOptions": "openOnSessionStart",

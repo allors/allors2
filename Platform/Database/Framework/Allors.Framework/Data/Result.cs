@@ -24,9 +24,9 @@ namespace Allors.Data
 
     public class Result
     {
-        public Guid? PathRef { get; set; }
+        public Guid? FetchRef { get; set; }
 
-        public Path Path { get; set; }
+        public Fetch Fetch { get; set; }
 
         public string Name { get; set; }
 
@@ -38,8 +38,8 @@ namespace Allors.Data
         {
             return new Protocol.Result
             {
-                PathRef = this.PathRef,
-                Path = this.Path?.Save(),
+                FetchRef = this.FetchRef,
+                Fetch = this.Fetch?.Save(),
                 Name = this.Name,
                 Skip = this.Skip,
                 Take = this.Take

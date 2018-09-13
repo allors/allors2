@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Path.cs" company="Allors bvba">
+// <copyright file="Fetch.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -21,62 +21,49 @@
 namespace Allors.Data
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     using Allors.Meta;
 
-    public class Path
+    public class Fetch
     {
-        public Path()
+        public Fetch()
         {
         }
 
-        public Path(params IPropertyType[] propertyTypes)
+        public Fetch(params IPropertyType[] propertyTypes)
         {
             if (propertyTypes.Length > 0)
             {
-                var index = 0;
-                var step = new Step(propertyTypes, index);
+                this.Step = new Step(propertyTypes, 0);
             }
         }
 
-        public Path(IMetaPopulation metaPopulation, params Guid[] propertyTypeIds)
+        public Fetch(IMetaPopulation metaPopulation, params Guid[] propertyTypeIds)
             : this(propertyTypeIds.Select(v => (IPropertyType)metaPopulation.Find(v)).ToArray())
         {
         }
 
-        public Tree Tree { get; set; }
+        public Tree Include { get; set; }
 
         public Step Step { get; set; }
 
-        public Step End => this.Step?.End;
+        public IObjectType ObjectType => this.Step?.GetObjectType() ?? this.Include.Composite;
 
-        public static bool TryParse(IComposite composite, string pathString, out Path path)
+        public static bool TryParse(IComposite composite, string fetchString, out Fetch fetch)
         {
-            var propertyType = Resolve(composite, pathString);
-            path = propertyType == null ? null : new Path(propertyType);
-            return path != null;
+            var propertyType = Resolve(composite, fetchString);
+            fetch = propertyType == null ? null : new Fetch(propertyType);
+            return fetch != null;
         }
 
-        public Protocol.Path Save()
+        public Protocol.Fetch Save()
         {
-            return new Protocol.Path
+            return new Protocol.Fetch
                        {
-                           Tree = this.Tree?.Save(),
-                           Step = this.Step.Save()
+                           Step = this.Step?.Save(),
+                           Include = this.Include?.Save()
                        };
-        }
-
-        public IObjectType GetObjectType()
-        {
-            if (this.ExistNext)
-            {
-                return this.Step.GetObjectType();
-            }
-
-            return this.PropertyType.ObjectType;
         }
 
         private static IPropertyType Resolve(IComposite composite, string propertyName)

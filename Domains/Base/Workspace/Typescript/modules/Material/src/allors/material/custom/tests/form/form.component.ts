@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
+import { ErrorService, SearchFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
 import { Person, Data } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
 import { MetaDomain } from '../../../../meta';
@@ -25,7 +25,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public people: Person[];
 
-  public peopleFilter: FilterFactory;
+  public peopleFilter: SearchFactory;
 
   public radioGroupOptions: RadioGroupOption[] = [
     { label: 'One', value: 'one' },
@@ -49,7 +49,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
-    this.peopleFilter = new FilterFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
+    this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }

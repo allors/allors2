@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Path.cs" company="Allors bvba">
+// <copyright file="StepExtensions.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -27,28 +27,28 @@ namespace Allors.Domain
     using Allors.Data;
     using Allors.Meta;
 
-    public static class PathExtensions
+    public static class StepExtensions
     {
-        public static object Get(this Path path, IObject allorsObject, IAccessControlListFactory aclFactory)
+        public static object Get(this Step step, IObject allorsObject, IAccessControlListFactory aclFactory)
         {
             var acl = aclFactory.Create(allorsObject);
-            if (acl.CanRead(path.PropertyType))
+            if (acl.CanRead(step.PropertyType))
             {
-                if (path.ExistNext)
+                if (step.ExistNext)
                 {
-                    var currentValue = path.PropertyType.Get(allorsObject.Strategy);
+                    var currentValue = step.PropertyType.Get(allorsObject.Strategy);
 
                     if (currentValue != null)
                     {
                         if (currentValue is IObject)
                         {
-                            return path.Step.Get((IObject)currentValue, aclFactory);
+                            return step.Next.Get((IObject)currentValue, aclFactory);
                         }
 
                         var results = new HashSet<object>();
                         foreach (var item in (IEnumerable)currentValue)
                         {
-                            var nextValueResult = path.Step.Get((IObject)item, aclFactory);
+                            var nextValueResult = step.Next.Get((IObject)item, aclFactory);
                             if (nextValueResult is HashSet<object>)
                             {
                                 results.UnionWith((HashSet<object>)nextValueResult);
@@ -63,26 +63,23 @@ namespace Allors.Domain
                     }
                 }
 
-                if (path.ExistPropertyType)
-                {
-                    return path.PropertyType.Get(allorsObject.Strategy);
-                }
+                return step.PropertyType.Get(allorsObject.Strategy);
             }
 
             return null;
         }
 
-        public static bool Set(this Path path, IObject allorsObject, IAccessControlListFactory aclFactory, object value)
+        public static bool Set(this Step step, IObject allorsObject, IAccessControlListFactory aclFactory, object value)
         {
             var acl = aclFactory.Create(allorsObject);
-            if (path.ExistNext)
+            if (step.ExistNext)
             {
-                if (acl.CanRead(path.PropertyType))
+                if (acl.CanRead(step.PropertyType))
                 {
-                    var property = path.PropertyType.Get(allorsObject.Strategy) as IObject;
+                    var property = step.PropertyType.Get(allorsObject.Strategy) as IObject;
                     if (property != null)
                     {
-                        path.Step.Set(property, aclFactory, value);
+                        step.Next.Set(property, aclFactory, value);
                         return true;
                     }
                 }
@@ -90,7 +87,7 @@ namespace Allors.Domain
                 return false;
             }
 
-            var roleType = path.PropertyType as RoleType;
+            var roleType = step.PropertyType as RoleType;
             if (roleType != null)
             {
                 if (acl.CanWrite(roleType))
@@ -103,11 +100,11 @@ namespace Allors.Domain
             return false;
         }
 
-        public static void Ensure(this Path path, IObject allorsObject, IAccessControlListFactory aclFactory)
+        public static void Ensure(this Step step, IObject allorsObject, IAccessControlListFactory aclFactory)
         {
             var acl = aclFactory.Create(allorsObject);
 
-            var roleType = path.PropertyType as RoleType;
+            var roleType = step.PropertyType as RoleType;
             if (roleType != null)
             {
                 if (roleType.IsMany)
@@ -129,12 +126,12 @@ namespace Allors.Domain
                             }
                         }
 
-                        if (path.ExistNext)
+                        if (step.ExistNext)
                         {
                             var next = role as IObject;
                             if (next != null)
                             {
-                                path.Step.Ensure(next, aclFactory);
+                                step.Next.Ensure(next, aclFactory);
                             }
                         }
                     }
@@ -142,7 +139,7 @@ namespace Allors.Domain
             }
             else
             {
-                var associationType = (AssociationType)path.PropertyType;
+                var associationType = (AssociationType)step.PropertyType;
                 if (associationType.IsMany)
                 {
                     throw new NotSupportedException("AssociationType with muliplicity many");
@@ -153,9 +150,9 @@ namespace Allors.Domain
                     var association = associationType.Get(allorsObject.Strategy) as IObject;
                     if (association != null)
                     {
-                        if (path.ExistNext)
+                        if (step.ExistNext)
                         {
-                            path.Step.Ensure(association, aclFactory);
+                            step.Next.Ensure(association, aclFactory);
                         }
                     }
                 }
