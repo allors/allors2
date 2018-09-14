@@ -3,17 +3,16 @@ import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Field, SearchFactory, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
+import { PullRequest, Fetch, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './repeatinginvoice.component.html',
@@ -34,8 +33,8 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -49,46 +48,37 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const { pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const repeatingInvoiceId: string = this.route.snapshot.paramMap.get('repeatingInvoiceId');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            name: 'salesInvoice',
-          }),
-          new Fetch({
-            id: repeatingInvoiceId,
-            include: [
-              new TreeNode({ roleType: this.m.RepeatingSalesInvoice.Frequency }),
-              new TreeNode({ roleType: this.m.RepeatingSalesInvoice.DayOfWeek }),
-          ],
-            name: 'repeatingInvoice',
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const repeatingInvoiceId: string = this.route.snapshot.paramMap.get('repeatingInvoiceId');
+          const m: MetaDomain = this.m;
 
-        const queries: Query[] = [
-          new Query({
-            name: 'frequencies',
-            objectType: m.TimeFrequency,
-            predicate: new Equals({ roleType: m.TimeFrequency.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.TimeFrequency.Name, direction: 'Asc' }),
-            ],
-        }),
-          new Query({
-            name: 'daysOfWeek',
-            objectType: m.DayOfWeek,
-          }),
-        ];
+          const pulls = [
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+            pull.SalesInvoice({object: id}),
+            pull.RepeatingSalesInvoice({
+              object: id,
+              include: {
+                Frequency: x,
+                DayOfWeek: x,
+              }
+            }),
+            pull.TimeFrequency({
+              predicate: new Equals({ propertyType: m.TimeFrequency.IsActive, value: true }),
+              sort: new Sort(m.TimeFrequency.Name),
+            }),
+            pull.DayOfWeek()
+          ];
+
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
@@ -102,11 +92,11 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
           this.repeatinginvoice.Source = this.invoice;
         }
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -121,9 +111,9 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {

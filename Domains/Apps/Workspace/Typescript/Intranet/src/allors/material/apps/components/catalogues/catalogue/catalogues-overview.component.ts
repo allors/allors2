@@ -4,18 +4,15 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
 import { Catalogue, InternalOrganisation } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Page, Path, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 interface SearchData {
   name: string;
@@ -60,53 +57,58 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const search$ = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
 
-    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
-    .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-      return [data, date, internalOrganisationId];
-    }, [] as [SearchData, Date, InternalOrganisation]);
+    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+          return [data, date, internalOrganisationId];
+        }, [])
+      );
 
     this.subscription = combined$
-      .switchMap(([data, , internalOrganisationId]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data, , internalOrganisationId]) => {
+          const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+          const predicate: And = new And();
+          const operands: Predicate[] = predicate.operands;
 
-        predicates.push(new Equals({ roleType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }));
+          operands.push(new Equals({ propertyType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }));
 
-        if (data.name) {
-          const like: string = data.name.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.Catalogue.Name, value: like }));
-        }
+          if (data.name) {
+            const like: string = data.name.replace('*', '%') + '%';
+            operands.push(new Like({ roleType: m.Catalogue.Name, value: like }));
+          }
 
-        const queries: Query[] = [new Query(
-          {
-            name: 'catalogues',
-            objectType: m.Catalogue,
-            predicate,
-            include: [
-              new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
-              new TreeNode({ roleType: m.Catalogue.ProductCategories }),
-            ],
-            sort: [
-              new Sort({ roleType: m.Catalogue.Name, direction: 'Asc' }),
-            ],
-          })];
+          const pulls = [
+            new Query(
+            {
+              name: 'catalogues',
+              objectType: m.Catalogue,
+              predicate,
+              include: [
+                new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
+                new TreeNode({ roleType: m.Catalogue.ProductCategories }),
+              ],
+              sort: new Sort(m.Catalogue.Name),
+            })];
 
-        return this.scope.load('Pull', new PullRequest({ queries }));
-    })
+          return this.scope.load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.data = loaded.collections.catalogues as Catalogue[];
         this.total = loaded.values.catalogues_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public ngOnDestroy(): void {
@@ -124,7 +126,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(catalogue: Catalogue): void {
-      this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this catalogue?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -133,9 +135,9 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }

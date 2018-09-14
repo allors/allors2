@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Scope, WorkspaceService } from '../../../../../angular';
 import { Brand } from '../../../../../domain';
-import { PullRequest, Query } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'brand-inline',
   templateUrl: './brand-inline.component.html',
 })

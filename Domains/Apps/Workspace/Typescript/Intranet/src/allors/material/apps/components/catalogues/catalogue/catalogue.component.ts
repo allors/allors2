@@ -1,22 +1,17 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { interval } from 'rxjs/observable/interval';
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
-import { Equals, Fetch, Path, PullRequest, Query, TreeNode } from '../../../../../framework';
+import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './catalogue.component.html',
@@ -43,8 +38,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -55,42 +50,41 @@ export class CatalogueComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const fetches: Fetch[] = [
-          this.fetcher.categories,
-          this.fetcher.locales,
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Catalogue.CatalogueImage}),
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
-                roleType: m.Catalogue.LocalisedNames,
-               }),
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
-                roleType: m.Catalogue.LocalisedDescriptions,
-               }),
-            ],
-            name: 'catalogue',
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const queries: Query[] = [ new Query(this.m.CatScope) ];
+          const pulls = [
+            this.fetcher.categories,
+            this.fetcher.locales,
+            this.fetcher.internalOrganisation,
+            pull.Catalogue({
+              object: id,
+              include: {
+                CatalogueImage: x,
+                LocalisedNames: {
+                  Locale: x,
+                },
+                LocalisedDescriptions: {
+                  Locale: x
+                }
+              }
+            })
+            ,
+            pull.CatScope()];
 
-        return this.scope.load('Pull', new PullRequest({ fetches, queries }));
+          return this.scope.load('Pull', new PullRequest({ pulls }));
         })
+      )
       .subscribe((loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
@@ -106,11 +100,11 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
         this.title = this.catalogue.Name;
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -131,9 +125,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public update(): void {
@@ -144,9 +138,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {
