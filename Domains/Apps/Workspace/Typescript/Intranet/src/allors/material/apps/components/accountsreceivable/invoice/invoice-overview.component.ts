@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Path, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
+import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -116,7 +116,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
             }),
             pull.SalesInvoice({
               object: id,
-              path: {
+              fetch: {
                 SalesOrder: x
               }
             }),

@@ -1,18 +1,17 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import 'rxjs/add/observable/combineLatest';
-import { ErrorService, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, SearchFactory, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { And, ContainedIn, Equals, Fetch, PullRequest, TreeNode, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceitem.component.html',
@@ -35,15 +34,15 @@ export class InvoiceItemEditComponent
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
   public facilities: Facility[];
-  public goodsFacilityFilter: FilterFactory;
+  public goodsFacilityFilter: SearchFactory;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -53,93 +52,76 @@ export class InvoiceItemEditComponent
 
   ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
+
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.goodsFacilityFilter = new FilterFactory({
+    this.goodsFacilityFilter = new SearchFactory({
       objectType: this.m.Good,
       roleTypes: [this.m.Good.Name],
       post: (predicate: And) => {
-          const query = new Query({
+          const extent = new Filter({
               objectType: this.m.VendorProduct,
-              predicate: new Equals({ roleType: this.m.VendorProduct.InternalOrganisation, value: this.stateService.internalOrganisationId }),
+              predicate: new Equals({ propertyType: this.m.VendorProduct.InternalOrganisation, value: this.stateService.internalOrganisationId }),
           });
 
-          predicate.predicates.push(new ContainedIn({ associationType: this.m.Product.VendorProductsWhereProduct, query }));
+          predicate.operands.push(new ContainedIn({ propertyType: this.m.Product.VendorProductsWhereProduct, extent }));
       },
     });
 }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const { m, pull } = this.dataService;
+
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+    .pipe(
+      switchMap(([urlSegments, date]) => {
         const id: string = this.route.snapshot.paramMap.get('id');
         const itemId: string = this.route.snapshot.paramMap.get('itemId');
-        const m: MetaDomain = this.m;
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.SalesInvoice.VatRegime }),
-            ],
-            name: 'salesInvoice',
+        const pulls = [
+          pull.SalesInvoice({
+            object: id,
+            include: {
+              VatRegime: x,
+            }
           }),
-          new Fetch({
-            id: itemId,
-            include: [
-              new TreeNode({
-                roleType: m.SalesInvoiceItem.SalesInvoiceItemState,
-              }),
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.Facility.Owner })],
-                roleType: m.SalesInvoiceItem.Facility,
-              }),
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
-                roleType: m.SalesInvoiceItem.VatRegime,
-              }),
-            ],
-            name: 'invoiceItem',
+          pull.InvoiceItem({
+            object: itemId,
+            include:
+            {
+              SalesInvoiceItem_SalesInvoiceItemState: x,
+              SalesInvoiceItem_Facility: {
+                Owner: x,
+              },
+              VatRegime: {
+                VatRate: x,
+              }
+            }
           }),
+          pull.Good({
+            sort: [
+              new Sort(m.Good.Name),
+            ],
+          }),
+          pull.InvoiceItemType({
+            predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+          }),
+          pull.VatRate(),
+          pull.VatRegime(),
+          pull.Facility({
+            include: {
+              Owner: x
+            },
+            sort: [
+              new Sort(m.Facility.Name),
+            ],
+          })
         ];
 
-        const queries: Query[] = [
-          new Query({
-            name: 'goods',
-            objectType: m.Good,
-            sort: [
-              new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
-            ],
-          }),
-          new Query({
-            name: 'invoiceItemTypes',
-            objectType: m.InvoiceItemType,
-            predicate: new Equals({ roleType: m.InvoiceItemType.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
-            ],
-          }),
-          new Query({
-            name: 'vatRates',
-            objectType: m.VatRate,
-          }),
-          new Query({
-            name: 'vatRegimes',
-            objectType: m.VatRegime,
-          }),
-          new Query({
-            include: [ new TreeNode({ roleType: m.Facility.Owner }) ],
-            name: 'facilities',
-            objectType: m.Facility,
-            sort: [
-              new Sort({ roleType: m.Facility.Name, direction: 'Asc' }),
-            ],
-        }),
-        ];
-
-        return this.scope.load('Pull', new PullRequest({ fetches, queries }));
+        return this.scope.load('Pull', new PullRequest({ pulls }));
       })
+    )
       .subscribe((loaded) => {
           this.scope.session.reset();
 
@@ -183,15 +165,19 @@ export class InvoiceItemEditComponent
   public goodSelected(product: Product): void {
     this.invoiceItem.InvoiceItemType = this.productItemType;
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: product.id,
-        name: 'inventoryItem',
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-      }),
+    const { pull } = this.dataService;
+
+    const pulls = [
+      pull.Good({
+        object: product.id,
+        fetch: {
+          // TODO:
+          // InventoryItemsWhereGood
+        }
+      })
     ];
 
-    this.scope.load('Pull', new PullRequest({ fetches })).subscribe(
+    this.scope.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.inventoryItems = loaded.collections
           .inventoryItem as InventoryItem[];
@@ -214,16 +200,16 @@ export class InvoiceItemEditComponent
   public facilitySelected(facility: Facility): void {
 
     if (facility !== undefined) {
-      this.goodsFacilityFilter = new FilterFactory({
+      this.goodsFacilityFilter = new SearchFactory({
         objectType: this.m.Good,
         roleTypes: [this.m.Good.Name],
         post: (predicate: And) => {
-            const query = new Query({
+            const extent = new Filter({
                 objectType: this.m.VendorProduct,
-                predicate: new Equals({ roleType: this.m.VendorProduct.InternalOrganisation, value: facility.Owner }),
+                predicate: new Equals({ propertyType: this.m.VendorProduct.InternalOrganisation, value: facility.Owner }),
             });
 
-            predicate.predicates.push(new ContainedIn({ associationType: this.m.Product.VendorProductsWhereProduct, query }));
+            predicate.operands.push(new ContainedIn({ propertyType: this.m.Product.VendorProductsWhereProduct, extent }));
         },
       });
     }

@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Field, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
-import { Equals, Fetch, Path, PullRequest, TreeNode, Sort } from '../../../../../framework';
+import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -159,7 +159,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                   }),
                   pull.SalesInvoice({
                     object: id,
-                    path: {
+                    fetch: {
                       SalesOrder: x
                     }
                   })
@@ -526,7 +526,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     const pulls = [
       pull.Party({
         object: party.id,
-        path: {
+        fetch: {
           PartyContactMechanisms: x
         },
         include: tree.PartyContactMechanism ({
@@ -538,7 +538,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         })
       }),
       pull.Party({
-        path: {
+        fetch: {
           CurrentContacts: x
         }
       })
@@ -577,7 +577,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     const pulls = [
       pull.Party({
         object: party.id,
-        path: {
+        fetch: {
           CurrentPartyContactMechanisms: x
         },
         include: tree.PartyContactMechanism(
@@ -592,7 +592,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       }),
       pull.Party({
         object: party.id,
-        path: {
+        fetch: {
           CurrentContacts: x
         }
       })
@@ -631,7 +631,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     const pulls = [
       pull.Party({
         object: party.id,
-        path: {
+        fetch: {
           CurrentPartyContactMechanisms: x,
         },
         include: tree.PartyContactMechanism(
@@ -645,7 +645,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         )
       }),
       pull.Party({
-        path: {
+        fetch: {
           CurrentContacts: x
         }
       })

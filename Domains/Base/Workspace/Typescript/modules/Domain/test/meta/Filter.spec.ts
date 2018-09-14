@@ -1,5 +1,3 @@
-
-
 import { domain } from '../../src/allors/domain';
 import { MetaPopulation, Workspace } from '../../src/allors/framework';
 import { data, PullFactory } from '../../src/allors/meta';
@@ -7,10 +5,10 @@ import { data, PullFactory } from '../../src/allors/meta';
 import { assert } from 'chai';
 import 'mocha';
 
-describe('Pull',
+describe('Filter',
     () => {
         let metaPopulation: MetaPopulation;
-        let factory: PullFactory;
+        let factory: FilterFactory;
 
         beforeEach(async () => {
             metaPopulation = new MetaPopulation(data);

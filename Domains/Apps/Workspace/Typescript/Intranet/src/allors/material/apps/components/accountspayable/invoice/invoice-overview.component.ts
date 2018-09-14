@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
+import { Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
@@ -255,15 +255,16 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
     const { pull } = this.dataService;
 
     const pulls = [
-      new Fetch({
-      id: this.invoice.id,
-      name: 'invoice',
-      path: new Path({ step: this.m.PurchaseInvoice.SalesInvoiceWherePurchaseInvoice }),
-    })];
+      pull.PurchaseInvoice({
+        fetch: {
+          SalesInvoiceWherePurchaseInvoice: x,
+        }
+      })
+    ];
 
     this.scope.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        const invoice = loaded.objects.invoice as SalesInvoice;
+        const invoice = loaded.objects.SalesInvoiceWherePurchaseInvoice as SalesInvoice;
         this.router.navigate(['/accountsreceivable/invoice/' + invoice.id]);
       },
         (error: any) => {

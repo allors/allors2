@@ -414,35 +414,37 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { pull, tree } = this.dataService;
+    const { pull } = this.dataService;
 
     const pulls = [
       pull.Party({
-        path: {
-          CurrentPartyContactMechanisms: x
-        },
-        include: tree.PartyContactMechanism({
-          ContactMechanism: {
-            PostalAddress_PostalBoundary: x
-          }
-        })
-      }),
-      pull.Party({
-        object: party.id,
-        path: {
-          PartyContactMechanisms: x
-        },
-        include: tree.PartyContactMechanism({
-          ContactMechanism: {
-            PostalAddress_PostalBoundary: {
-              Country: x
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: x
+              }
             }
           }
-        })
+        }
       }),
       pull.Party({
         object: party.id,
-        path: { CurrentContacts: x }
+        fetch: {
+          PartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x
+                }
+              }
+            }
+          }
+        }
+      }),
+      pull.Party({
+        object: party.id,
+        fetch: { CurrentContacts: x }
       })
     ];
 
