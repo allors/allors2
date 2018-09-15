@@ -4,17 +4,15 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
-import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { UnitOfMeasure } from '../../../../../domain/generated/UnitOfMeasure.g';
 
 interface SearchData {
   name: string;
@@ -38,6 +36,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -56,43 +55,47 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
   }
 
   ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     const search$ = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
 
     const combined$ = Observable.combineLatest(search$, this.refresh$)
-      .scan(([previousData, previousDate], [data, date]) => {
-        return [data, date];
-      }, [] as [SearchData, Date]);
+      .pipe(
+        scan(([previousData, previousDate], [data, date]) => {
+          return [data, date];
+        }, [])
+      );
 
     this.subscription = combined$
-      .switchMap(([data]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data]) => {
+          const predicate = new And();
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+          if (data.name) {
+            const like: string = data.name.replace('*', '%') + '%';
+            predicate.operands.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
+          }
 
-        if (data.name) {
-          const like: string = data.name.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
-        }
+          const pulls = [
+            pull.SerialisedInventoryItemCharacteristicType({
+              predicate,
+              include: {
+                LocalisedNames: x,
+                UnitOfMeasure: x,
+              },
+              sort: new Sort(m.SerialisedInventoryItemCharacteristicType.Name),
+            })];
 
-        const queries: Query[] = [new Query(
-          {
-            include: [
-              new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.LocalisedNames }),
-              new TreeNode({ roleType: m.SerialisedInventoryItemCharacteristicType.UnitOfMeasure }),
-            ],
-            name: 'productCharacteristics',
-            objectType: m.SerialisedInventoryItemCharacteristicType,
-            predicate,
-            sort: [new Sort({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, direction: 'Asc' })],
-          })];
+          return this.scope.load('Pull', new PullRequest({ pulls }));
 
-        return this.scope.load('Pull', new PullRequest({ queries }));
-
-      })
+        })
+      )
       .subscribe((loaded) => {
         this.data = loaded.collections.productCharacteristics as SerialisedInventoryItemCharacteristicType[];
         this.total = loaded.values.productCharacteristics_total;

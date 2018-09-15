@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'newgood-dialog',
   templateUrl: './newgood-dialog-component.html',
 })

@@ -1,17 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, SearchFactory, DataService, x } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -35,13 +31,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   public goods: Good[];
   public unitsOfMeasure: UnitOfMeasure[];
 
-  public goodsFilter: FilterFactory;
+  public goodsFilter: SearchFactory;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -57,54 +54,53 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const itemId: string = this.route.snapshot.paramMap.get('itemId');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const itemId: string = this.route.snapshot.paramMap.get('itemId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            name: 'productQuote',
-          }),
-          new Fetch({
-            id: itemId,
-            include: [
-              new TreeNode({ roleType: m.QuoteItem.QuoteItemState }),
-              new TreeNode({ roleType: m.QuoteItem.RequestItem }),
-            ],
-            name: 'quoteItem',
-          }),
-          new Fetch({
-            id: itemId,
-            name: 'requestItem',
-            path: new Path({ step: m.QuoteItem.RequestItem }),
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'goods',
-              objectType: m.Good,
-              sort: [new Sort({ roleType: m.Good.Name, direction: 'Asc' })],
+          const pulls = [
+            pull.ProductQuote({
+              object: id
             }),
-          new Query(
-            {
-              name: 'unitsOfMeasure',
-              objectType: m.UnitOfMeasure,
-              predicate: new Equals({ roleType: m.UnitOfMeasure.IsActive, value: true }),
+            pull.QuoteItem(
+              {
+                object: itemId,
+                include: {
+                  QuoteItemState: x,
+                  RequestItem: x,
+                }
+              }
+            ),
+            pull.QuoteItem(
+              {
+                object: itemId,
+                fetch: {
+                  RequestItem: x
+                }
+              }
+            ),
+            pull.Good(
+              {
+                sort: new Sort(m.Good.Name),
+              }
+            ),
+            pull.UnitOfMeasure({
+              predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: [
-                new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
+                new Sort(m.UnitOfMeasure.Name),
               ],
-            }),
+            })
           ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.quote = loaded.objects.productQuote as ProductQuote;
@@ -123,11 +119,11 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.update(this.quoteItem.Product);
         }
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -149,13 +145,13 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -165,9 +161,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 submitFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             submitFn();
           }
@@ -184,13 +180,13 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -200,9 +196,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 cancelFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
@@ -219,9 +215,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/productQuote/' + this.quote.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {
@@ -234,25 +230,31 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   private update(product: Product) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: product.id,
-        name: 'inventoryItem',
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-      }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Good(
+        {
+          object: product,
+          // TODO:
+          // fetch: {
+          //   InventoryItemsWhereGood: x
+          // }
+        }
+      )
     ];
 
     this.scope
-        .load('Pull', new PullRequest({ fetches }))
-        .subscribe((loaded) => {
-          this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-          if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-            this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-          }
-          if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-            this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-          }
-        },
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+        this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+        if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
+          this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+        }
+        if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
+          this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+        }
+      },
         (error: Error) => {
           this.errorService.handle(error);
           this.goBack();

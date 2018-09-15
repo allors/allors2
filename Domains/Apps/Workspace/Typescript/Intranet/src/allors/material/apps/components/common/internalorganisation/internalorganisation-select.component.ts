@@ -2,19 +2,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../services/StateService';
-import { WorkspaceService, Loaded, ErrorService } from '../../../../../angular';
-import { MetaDomain } from '../../../../../meta';
-import { Query, Equals, PullRequest, Sort } from '../../../../../framework';
+import { WorkspaceService, Loaded, ErrorService, DataService } from '../../../../../angular';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'internalorganisation-select',
   templateUrl: './internalorganisation-select.component.html',
 })
 export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
   public get internalOrganisation() {
-    var internalOrganisation = this.internalOrganisations.find(v => v.id === this.stateService.internalOrganisationId);
+    const internalOrganisation = this.internalOrganisations.find(v => v.id === this.stateService.internalOrganisationId);
     return internalOrganisation;
   }
 
@@ -28,6 +28,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private stateService: StateService,
     private errorService: ErrorService) { }
 
@@ -35,27 +36,26 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
     const scope = this.workspaceService.createScope();
 
-    const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
-    const queries = [
-      new Query({
-        name: "internalOrganisations",
-        objectType: m.Organisation,
-        predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
-        sort: [
-          new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
-        ],
-      })
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Organisation(
+        {
+          predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
+          sort: new Sort(m.Organisation.PartyName)
+        }
+      )
     ];
 
     this.subscription = scope
-      .load("Pull", new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisations = loaded.collections.internalOrganisations as Organisation[];
       },
         (error: any) => {
           this.errorService.handle(error);
         },
-    );
+      );
   }
 
   ngOnDestroy(): void {

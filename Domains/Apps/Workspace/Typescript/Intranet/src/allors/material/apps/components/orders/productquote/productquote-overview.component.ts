@@ -1,17 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, PdfService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -32,8 +28,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -58,87 +54,75 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.QuoteItem.Product }),
-                  new TreeNode({ roleType: m.QuoteItem.QuoteItemState }),
-                ],
-                roleType: m.Quote.QuoteItems,
-              }),
-              new TreeNode({ roleType: m.Quote.Receiver }),
-              new TreeNode({ roleType: m.Quote.ContactPerson }),
-              new TreeNode({ roleType: m.Quote.QuoteState }),
-              new TreeNode({ roleType: m.Quote.CreatedBy }),
-              new TreeNode({ roleType: m.Quote.LastModifiedBy }),
-              new TreeNode({ roleType: m.Quote.Request }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.Quote.FullfillContactMechanism,
-              }),
-            ],
-            name: 'quote',
-          }),
-        ];
+          const pulls = [
+            pull.Quote(
+              {
+                object: id,
+                include: {
+                  QuoteItems: {
+                    Product: x,
+                    QuoteItemState: x,
+                  },
+                  Receiver: x,
+                  ContactPerson: x,
+                  QuoteState: x,
+                  CreatedBy: x,
+                  LastModifiedBy: x,
+                  Request: x,
+                  FullfillContactMechanism: {
+                    PostalAddress_PostalBoundary: {
+                      Country: x,
+                    }
+                  }
+                }
+              }
+            ),
+            pull.Good({ sort: new Sort(m.Good.Name) })
+          ];
 
-        const salesOrderFetch: Fetch = new Fetch({
-          id,
-          name: 'salesOrder',
-          path: new Path({ step: m.ProductQuote.SalesOrderWhereQuote }),
-        });
+          if (id != null) {
+            pulls.push(
+              pull.ProductQuote(
+                {
+                  object: id,
+                  fetch: {
+                    SalesOrderWhereQuote: x,
+                  }
+                }
+              )
+            );
+          }
 
-        if (id != null) {
-          fetches.push(salesOrderFetch);
-        }
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'goods',
-              objectType: m.Good,
-              sort: [
-                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
-              ],
-            }),
-        ];
-
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public print() {
@@ -161,9 +145,9 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public reject(): void {
@@ -172,9 +156,9 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public Order(): void {
@@ -184,9 +168,9 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Order successfully created.', 'close', { duration: 5000 });
         this.gotoOrder();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public cancelQuoteItem(quoteItem: QuoteItem): void {
@@ -195,13 +179,13 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Quote Item successfully cancelled.', 'close', { duration: 5000 });
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public deleteQuoteItem(quoteItem: QuoteItem): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -210,29 +194,34 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Quote Item successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public gotoOrder(): void {
 
-    const fetches: Fetch[] = [new Fetch({
-      id: this.quote.id,
-      name: 'order',
-      path: new Path({ step: this.m.ProductQuote.SalesOrderWhereQuote }),
-    })];
+    const { m, pull } = this.dataService;
 
-    this.scope.load('Pull', new PullRequest({ fetches }))
+    const pulls = [
+      pull.ProductQuote({
+        object: this.quote,
+        fetch: {
+          SalesOrderWhereQuote: x
+        }
+      })
+    ];
+
+    this.scope.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const order = loaded.objects.order as SalesOrder;
         this.router.navigate(['/orders/salesOrder/' + order.id]);
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 }

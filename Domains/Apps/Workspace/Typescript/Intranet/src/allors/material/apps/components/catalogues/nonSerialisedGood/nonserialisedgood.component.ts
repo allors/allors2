@@ -1,17 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, FilterFactory, Loaded, MediaService, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, LocalisedText, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { ErrorService, MediaService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from '../../../../../domain';
+import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -58,177 +54,158 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
+    private stateService: StateService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    public mediaService: MediaService,
-    public stateService: StateService) {
+    public mediaService: MediaService) {
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([, , internalOrganisationId]) => {
+      .pipe(
+        switchMap(([, , internalOrganisationId]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          this.fetcher.locales,
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Good.PrimaryPhoto }),
-              new TreeNode({ roleType: m.Good.Photos }),
-              new TreeNode({ roleType: m.Good.ElectronicDocuments }),
-              new TreeNode({ roleType: m.Good.LocalisedNames, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Good.LocalisedDescriptions, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Good.LocalisedComments, nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })] }),
-              new TreeNode({ roleType: m.Good.ProductCategories }),
-              new TreeNode({ roleType: m.Good.InventoryItemKind }),
-              new TreeNode({ roleType: m.Good.SuppliedBy }),
-              new TreeNode({ roleType: m.Good.ManufacturedBy }),
-              new TreeNode({ roleType: m.Good.StandardFeatures }),
-            ],
-            name: 'good',
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                roleType: m.InventoryItem.InventoryItemVariances,
-              }),
-            ],
-            name: 'inventoryItems',
-            path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-          }),
-          new Fetch({
-            id,
-            name: 'supplierOfferings',
-            path: new Path({ step: this.m.Product.SupplierOfferingsWhereProduct }),
-          }),
-        ];
+          const pulls = [
+            this.fetcher.locales,
+            this.fetcher.internalOrganisation,
 
-        const queries: Query[] = [
-          new Query(this.m.VatRate),
-          new Query({
-            name: 'varianceReasons',
-            objectType: m.VarianceReason,
-            predicate: new Equals({ roleType: m.VarianceReason.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.VarianceReason.Name, direction: 'Asc' }),
-            ],
-          }),
-          new Query({
-            name: 'inventoryItemKinds',
-            objectType: m.InventoryItemKind,
-            sort: [
-              new Sort({ roleType: m.InventoryItemKind.Name, direction: 'Asc' }),
-            ],
-          }),
-          new Query({
-            name: 'nonSerialisedInventoryItemStates',
-            objectType: m.NonSerialisedInventoryItemState,
-            sort: [
-              new Sort({ roleType: m.NonSerialisedInventoryItemState.Name, direction: 'Asc' }),
-            ],
-          }),
-          new Query(
-            {
-              name: 'productCategories',
-              objectType: this.m.ProductCategory,
-              sort: [new Sort({ roleType: m.ProductCategory.Name, direction: 'Asc' })],
+            // TODO: Add to pull.Good
+            // InventoryItemKind: x,
+            // ManufacturedBy: x,
+            // StandardFeatures: x,
+            pull.Good({
+              object: id,
+              include: {
+                PrimaryPhoto: x,
+                Photos: x,
+                ElectronicDocuments: x,
+                LocalisedNames: {
+                  Locale: x,
+                },
+                LocalisedDescriptions: {
+                  Locale: x,
+                },
+                LocalisedComments: {
+                  Locale: x,
+                },
+                ProductCategories: x,
+                SuppliedBy: x,
+              }
             }),
-          new Query(
-            {
-              name: 'productTypes',
-              objectType: this.m.ProductType,
-              sort: [new Sort({ roleType: m.ProductType.Name, direction: 'Asc' })],
-            }),
-          new Query(
-            {
-              name: 'brands',
-              objectType: this.m.Brand,
-              sort: [new Sort({ roleType: m.Brand.Name, direction: 'Asc' })],
-            }),
-        ];
+            // TODO:
+            // new Fetch({
+            //   id,
+            //   include: [
+            //     new TreeNode({
+            //       roleType: m.InventoryItem.InventoryItemVariances,
+            //     }),
+            //   ],
+            //   name: 'inventoryItems',
+            //   path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
+            // }),
+            // new Fetch({
+            //   id,
+            //   name: 'supplierOfferings',
+            //   path: new Path({ step: this.m.Product.SupplierOfferingsWhereProduct }),
+            // }),
+            pull.VatRate(),
+            pull.VarianceReason(
+              {
+                predicate: new Equals({ propertyType: m.VarianceReason.IsActive, value: true }),
+                sort: new Sort(m.VarianceReason.Name),
+              }
+            ),
+            pull.InventoryItemKind({ sort: new Sort(m.InventoryItemKind.Name) }),
+            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
+            pull.ProductCategory(),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.Brand({ sort: new Sort(m.Brand.Name) })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }))
-          .switchMap((loaded) => {
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
 
-            this.good = loaded.objects.good as Good;
-            this.categories = loaded.collections.productCategories as ProductCategory[];
-            this.productTypes = loaded.collections.productTypes as ProductType[];
-            this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
-            this.vatRates = loaded.collections.VatRates as VatRate[];
-            this.brands = loaded.collections.brands as Brand[];
-            this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
-            this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
-            this.locales = loaded.collections.locales as Locale[];
-            const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-            this.facility = internalOrganisation.DefaultFacility;
-            this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
-            this.activeSuppliers = this.activeSuppliers.sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0))
+                this.good = loaded.objects.good as Good;
+                this.categories = loaded.collections.productCategories as ProductCategory[];
+                this.productTypes = loaded.collections.productTypes as ProductType[];
+                this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
+                this.vatRates = loaded.collections.VatRates as VatRate[];
+                this.brands = loaded.collections.brands as Brand[];
+                this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
+                this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
+                this.locales = loaded.collections.locales as Locale[];
+                const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+                this.facility = internalOrganisation.DefaultFacility;
+                this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+                this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
-            const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-            const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === 'eaa6c331-0dd9-4bb1-8245-12a673304468');
+                const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
+                const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === 'eaa6c331-0dd9-4bb1-8245-12a673304468');
 
-            if (this.good === undefined) {
-              this.good = this.scope.session.create('Good') as Good;
-              this.good.VatRate = vatRateZero;
-              this.good.Sku = '';
+                if (this.good === undefined) {
+                  this.good = this.scope.session.create('Good') as Good;
+                  this.good.VatRate = vatRateZero;
+                  this.good.Sku = '';
 
-              this.inventoryItem = this.scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
-              this.good.InventoryItemKind = inventoryItemKindNonSerialised;
-              this.inventoryItem.Good = this.good;
-              this.inventoryItem.Facility = this.facility;
+                  this.inventoryItem = this.scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
+                  // TODO:
+                  // this.good.InventoryItemKind = inventoryItemKindNonSerialised;
+                  // this.inventoryItem.Good = this.good;
+                  this.inventoryItem.Facility = this.facility;
 
-              this.vendorProduct = this.scope.session.create('VendorProduct') as VendorProduct;
-              this.vendorProduct.Product = this.good;
-              this.vendorProduct.InternalOrganisation = internalOrganisation;
-            } else {
-              this.suppliers = this.good.SuppliedBy as Organisation[];
-              this.selectedSuppliers = this.suppliers;
-              this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
-              this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
-              this.inventoryItem = this.inventoryItems[0];
-              this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-                if (feature.objectType.name === 'Brand') {
-                  this.selectedBrand = feature as Brand;
-                  this.brandSelected(this.selectedBrand);
+                  this.vendorProduct = this.scope.session.create('VendorProduct') as VendorProduct;
+                  this.vendorProduct.Product = this.good;
+                  this.vendorProduct.InternalOrganisation = internalOrganisation;
+                } else {
+                  this.suppliers = this.good.SuppliedBy as Organisation[];
+                  this.selectedSuppliers = this.suppliers;
+                  this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
+                  this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
+                  this.inventoryItem = this.inventoryItems[0];
+                  // TODO:
+                  // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+                  //   if (feature.objectType.name === 'Brand') {
+                  //     this.selectedBrand = feature as Brand;
+                  //     this.brandSelected(this.selectedBrand);
+                  //   }
+                  //   if (feature.objectType.name === 'Model') {
+                  //     this.selectedModel = feature as Model;
+                  //   }
+                  // });
                 }
-                if (feature.objectType.name === 'Model') {
-                  this.selectedModel = feature as Model;
-                }
-              });
-            }
 
-            this.title = this.good.Name;
-            this.subTitle = 'Non Serialised';
-            this.actualQuantityOnHand = this.good.QuantityOnHand;
+                this.title = this.good.Name;
+                this.subTitle = 'Non Serialised';
+                this.actualQuantityOnHand = this.good.QuantityOnHand;
 
-            const Query2: Query[] = [
-              new Query(
-                {
-                  name: 'manufacturers',
-                  objectType: m.Organisation,
-                  predicate: new Equals({ roleType: m.Organisation.IsManufacturer, value: true }),
-                  sort: [new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' })],
-                }),
-            ];
+                const queries2 = [
+                  pull.Organisation({
+                    predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
+                    sort: new Sort(m.Organisation.PartyName),
+                  })
+                ];
 
-            return this.scope.load('Pull', new PullRequest({ queries: Query2 }));
-          });
-      })
+                return this.scope.load('Pull', new PullRequest({ pulls: queries2 }));
+              })
+            )
+            ;
+        })
+      )
       .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
       },
@@ -236,7 +213,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public brandAdded(brand: Brand): void {
@@ -247,34 +224,37 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public modelAdded(model: Model): void {
-    this.selectedBrand.AddModel(model);
-    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    // TODO:
+    // this.selectedBrand.AddModel(model);
+    // this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
     this.selectedModel = model;
   }
 
   public brandSelected(brand: Brand): void {
 
-    const fetches: Fetch[] = [
-      new Fetch(
+    const { m, pull } = this.dataService;
+
+    // TODO: include Model
+    const pulls = [
+      pull.Brand(
         {
-          id: brand.id,
-          include: [new TreeNode({ roleType: this.m.Brand.Models })],
-          name: 'selectedbrand',
-        }),
+          object: brand,
+        }
+      )
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         const selectedBrand = loaded.objects.selectedbrand as Brand;
-        this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        // this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       },
         (error: Error) => {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public ngOnDestroy(): void {
@@ -289,17 +269,18 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-      this.good.RemoveStandardFeature(feature);
-    });
+    // TODO:
+    // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+    //   this.good.RemoveStandardFeature(feature);
+    // });
 
-    if (this.selectedBrand != null) {
-      this.good.AddStandardFeature(this.selectedBrand);
-    }
+    // if (this.selectedBrand != null) {
+    //   this.good.AddStandardFeature(this.selectedBrand);
+    // }
 
-    if (this.selectedModel != null) {
-      this.good.AddStandardFeature(this.selectedModel);
-    }
+    // if (this.selectedModel != null) {
+    //   this.good.AddStandardFeature(this.selectedModel);
+    // }
 
     if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
       const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === 'Unknown');
@@ -364,7 +345,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
     const supplierOffering = this.scope.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
-    supplierOffering.Product = good;
+    // TODO:
+    // supplierOffering.Product = good;
     return supplierOffering;
   }
 }

@@ -1,18 +1,21 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState} from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../framework';
+import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, DatabaseService, DataService, x } from '../../../../../angular';
+import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState } from '../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { Product } from '../../../../../domain/generated/Product.g';
+import { SalesTerm } from '../../../../../domain/generated/SalesTerm.g';
+import { TermType } from '../../../../../domain/generated/TermType.g';
+import { PostalBoundary } from '../../../../../domain/generated/PostalBoundary.g';
+import { Country } from '../../../../../domain/generated/Country.g';
+import { PostalAddress } from '../../../../../domain/generated/PostalAddress.g';
 
 @Component({
   templateUrl: './salesorder-overview.component.html',
@@ -35,8 +38,8 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -62,144 +65,93 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+      .pipe(
+        switchMap(([urlSegments, date]) => {
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesOrderItem.Product }),
-                  new TreeNode({ roleType: m.SalesOrderItem.InvoiceItemType }),
-                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
-                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemShipmentState }),
-                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemPaymentState }),
-                  new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemInvoiceState }),
-                ],
-                roleType: m.SalesOrder.SalesOrderItems,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.SalesTerm.TermType }),
-                ],
-                roleType: m.SalesOrder.SalesTerms,
-              }),
-              new TreeNode({ roleType: m.SalesOrder.BillToCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.BillToContactPerson }),
-              new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.ShipToContactPerson }),
-              new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomerContactPerson }),
-              new TreeNode({ roleType: m.SalesOrder.BillToEndCustomer }),
-              new TreeNode({ roleType: m.SalesOrder.BillToEndCustomerContactPerson }),
-              new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
-              new TreeNode({ roleType: m.SalesOrder.SalesOrderShipmentState }),
-              new TreeNode({ roleType: m.SalesOrder.SalesOrderInvoiceState }),
-              new TreeNode({ roleType: m.SalesOrder.SalesOrderPaymentState }),
-              new TreeNode({ roleType: m.SalesOrder.CreatedBy }),
-              new TreeNode({ roleType: m.SalesOrder.LastModifiedBy }),
-              new TreeNode({ roleType: m.SalesOrder.Quote }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesOrder.ShipToAddress,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesOrder.BillToEndCustomerContactMechanism,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesOrder.ShipToEndCustomerAddress,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.SalesOrder.BillToContactMechanism,
-              }),
-            ],
-            name: 'order',
-          }),
-        ];
-
-        const salesInvoiceFetch: Fetch = new Fetch({
-          id,
-          name: 'salesInvoice',
-          path: new Path({ step: m.SalesOrder.SalesInvoicesWhereSalesOrder }),
-        });
-
-        if (id != null) {
-          fetches.push(salesInvoiceFetch);
-        }
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'goods',
-              objectType: m.Good,
-              sort: [
-                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.SalesOrder({
+              object: id,
+              include: {
+                SalesOrderItems: {
+                  Product: x,
+                  InvoiceItemType: x,
+                  SalesOrderItemState: x,
+                  SalesOrderItemShipmentState: x,
+                  SalesOrderItemPaymentState: x,
+                  SalesOrderItemInvoiceState: x,
+                },
+                SalesTerms: {
+                  TermType: x,
+                },
+                BillToCustomer: x,
+                BillToContactPerson: x,
+                ShipToCustomer: x,
+                ShipToContactPerson: x,
+                ShipToEndCustomer: x,
+                ShipToEndCustomerContactPerson: x,
+                BillToEndCustomer: x,
+                BillToEndCustomerContactPerson: x,
+                SalesOrderState: x,
+                SalesOrderShipmentState: x,
+                SalesOrderInvoiceState: x,
+                SalesOrderPaymentState: x,
+                CreatedBy: x,
+                LastModifiedBy: x,
+                Quote: x,
+                ShipToAddress: {
+                  PostalBoundary: {
+                    Country: x,
+                  }
+                },
+                BillToEndCustomerContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                },
+                ShipToEndCustomerAddress: {
+                  PostalBoundary: {
+                    Country: x,
+                  }
+                },
+                BillToContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
             }),
-          new Query(
-            {
-              name: 'billingProcesses',
-              objectType: m.BillingProcess,
-              sort: [
-                new Sort({ roleType: m.BillingProcess.Name, direction: 'Asc' }),
-              ],
-            }),
-          new Query(
-            {
-              name: 'serialisedInventoryItemStates',
-              objectType: m.SerialisedInventoryItemState,
-              predicate: new Equals({ roleType: m.SerialisedInventoryItemState.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
-              ],
-            }),
-        ];
+            pull.Good({ sort: new Sort(m.Good.Name) }),
+            pull.BillingProcess({ sort: new Sort(m.BillingProcess.Name) }),
+            pull.SerialisedInventoryItemState({
+              predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
+              sort: new Sort(m.SerialisedInventoryItemState.Name)
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          const salesInvoiceFetch = pull.SalesOrder({
+            object: id,
+            fetch: { SalesInvoicesWhereSalesOrder: x }
+          });
+
+          if (id != null) {
+            pulls.push(salesInvoiceFetch);
+          }
+
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.goods = loaded.collections.goods as Good[];
@@ -213,11 +165,11 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
           this.orderItems = this.order.SalesOrderItems;
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -235,11 +187,11 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   }
 
   public approve(): void {
-      this.scope.invoke(this.order.Approve)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-        },
+    this.scope.invoke(this.order.Approve)
+      .subscribe((invoked: Invoked) => {
+        this.refresh();
+        this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
@@ -251,9 +203,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public reject(): void {
@@ -262,9 +214,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public hold(): void {
@@ -273,9 +225,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public continue(): void {
@@ -284,9 +236,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public confirm(): void {
@@ -295,9 +247,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public finish(): void {
@@ -306,9 +258,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public cancelOrderItem(orderItem: SalesOrderItem): void {
@@ -317,9 +269,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Order Item successfully cancelled.', 'close', { duration: 5000 });
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public rejectOrderItem(orderItem: SalesOrderItem): void {
@@ -328,13 +280,13 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Order Item successfully rejected.', 'close', { duration: 5000 });
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public deleteOrderItem(orderItem: SalesOrderItem): void {
-      this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -343,15 +295,15 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public deleteSalesTerm(salesTerm: SalesTerm): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this order term?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -360,9 +312,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
@@ -374,9 +326,9 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Customer Shipment successfully created.', 'close', { duration: 5000 });
         this.refresh();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public createInvoice(): void {
@@ -386,29 +338,32 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         this.snackBar.open('Invoice successfully created.', 'close', { duration: 5000 });
         this.gotoInvoice();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public gotoInvoice(): void {
 
-      const fetches: Fetch[] = [new Fetch({
-        id: this.order.id,
-        name: 'invoices',
-        path: new Path({ step: this.m.SalesOrder.SalesInvoicesWhereSalesOrder }),
-      })];
+    const { m, pull } = this.dataService;
 
-      this.scope.load('Pull', new PullRequest({ fetches }))
-        .subscribe((loaded) => {
-          const invoices = loaded.collections.invoices as SalesInvoice[];
-          if (invoices.length === 1) {
-            this.router.navigate(['/accountsreceivable/invoice/' + invoices[0].id]);
-          }
-        },
+    const pulls = [
+      pull.SalesOrder({
+        object: this.order,
+        fetch: { SalesInvoicesWhereSalesOrder: x }
+      })
+    ];
+
+    this.scope.load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+        const invoices = loaded.collections.invoices as SalesInvoice[];
+        if (invoices.length === 1) {
+          this.router.navigate(['/accountsreceivable/invoice/' + invoices[0].id]);
+        }
+      },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         });
-    }
   }
+}

@@ -1,21 +1,17 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
-import { InternalOrganisation, ProductCategory } from '../../../../../domain';
-import { And, Equals, Like, Page, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ProductCategory } from '../../../../../domain';
+import { And, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { debounceTime, distinctUntilChanged, startWith, switchMap, scan } from 'rxjs/operators';
 
 interface SearchData {
   name: string;
@@ -28,7 +24,8 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Categories';
   public total: number;
-  public searchForm: FormGroup; public advancedSearch: boolean;
+  public searchForm: FormGroup;
+  public advancedSearch: boolean;
   public data: ProductCategory[];
   public filtered: ProductCategory[];
 
@@ -38,8 +35,8 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -61,48 +58,53 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     const search$ = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
 
     const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
-      .scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-        return [data, date, internalOrganisationId];
-      }, [] as [SearchData, Date, InternalOrganisation]);
+      .pipe(
+        scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
+          return [data, date, internalOrganisationId];
+        }, [])
+      );
 
     this.subscription = combined$
-      .switchMap(([data, , internalOrganisationId]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data, , internalOrganisationId]) => {
+          const predicate: And = new And();
+          const operands: Predicate[] = predicate.operands;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+          operands.push(new Equals({ propertyType: m.ProductCategory.InternalOrganisation, value: internalOrganisationId }));
 
-        predicates.push(new Equals({ roleType: m.ProductCategory.InternalOrganisation, value: internalOrganisationId }));
+          if (data.name) {
+            const like: string = data.name.replace('*', '%') + '%';
+            operands.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
+          }
 
-        if (data.name) {
-          const like: string = data.name.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
-        }
+          const pulls = [
+            pull.ProductCategory(
+              {
+                predicate,
+                include: {
+                  CategoryImage: x,
+                  LocalisedNames: x,
+                  LocalisedDescriptions: x,
+                },
+                sort: new Sort(m.ProductCategory.Name),
+              }
+            )];
 
-        const queries: Query[] = [new Query(
-          {
-            include: [
-              new TreeNode({ roleType: m.ProductCategory.CategoryImage }),
-              new TreeNode({ roleType: m.ProductCategory.LocalisedNames }),
-              new TreeNode({ roleType: m.ProductCategory.LocalisedDescriptions }),
-            ],
-            name: 'categories',
-            objectType: m.ProductCategory,
-            predicate,
-            sort: [
-              new Sort({ roleType: m.ProductCategory.Name, direction: 'Asc' }),
-            ],
-          })];
+          return this.scope.load('Pull', new PullRequest({ pulls }));
 
-        return this.scope.load('Pull', new PullRequest({ queries }));
-
-      })
+        })
+      )
       .subscribe((loaded) => {
         this.data = loaded.collections.categories as ProductCategory[];
         this.total = loaded.values.categories_total;

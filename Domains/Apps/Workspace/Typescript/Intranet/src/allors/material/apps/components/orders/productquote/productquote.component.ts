@@ -1,16 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -49,8 +46,8 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -62,51 +59,52 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([, , internalOrganisationId]) => {
+      .pipe(
+        switchMap(([, , internalOrganisationId]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const rolesQuery: Query[] = [
-          new Query(
-            {
-              name: 'currencies',
-              objectType: m.Currency,
-              sort: [
-                new Sort({ roleType: m.Currency.Name, direction: 'Asc' }),
-              ],
-            }),
+          const pulls = [
+            pull.Currency(
+              {
+                sort: new Sort(m.Currency.Name),
+              }
+            )
           ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ queries: rolesQuery }))
-          .switchMap((loaded) => {
-            this.scope.session.reset();
-            this.currencies = loaded.collections.currencies as Currency[];
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.scope.session.reset();
+                this.currencies = loaded.collections.currencies as Currency[];
 
-            const fetches: Fetch[] = [
-              this.fetcher.internalOrganisation,
-              new Fetch({
-                id,
-                include: [
-                  new TreeNode({ roleType: m.ProductQuote.Receiver }),
-                  new TreeNode({ roleType: m.ProductQuote.FullfillContactMechanism }),
-                  new TreeNode({ roleType: m.ProductQuote.QuoteState }),
-                  new TreeNode({ roleType: m.ProductQuote.Request }),
-                ],
-                name: 'productQuote',
-              }),
-            ];
+                const pulls2 = [
+                  this.fetcher.internalOrganisation,
+                  pull.ProductQuote({
+                    object: id,
+                    include: {
+                      Receiver: x,
+                      FullfillContactMechanism: x,
+                      QuoteState: x,
+                      Request: x,
+                    }
+                  })
+                ];
 
-            return this.scope.load('Pull', new PullRequest({ fetches }));
-          });
-      })
+                return this.scope.load('Pull', new PullRequest({ pulls: pulls2 }));
+              })
+            );
+        })
+      )
       .subscribe((loaded) => {
         this.quote = loaded.objects.productQuote as ProductQuote;
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
@@ -128,11 +126,11 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
 
         this.previousReceiver = this.quote.Receiver;
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public personCancelled(): void {
@@ -171,13 +169,13 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -187,9 +185,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 submitFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             submitFn();
           }
@@ -206,13 +204,13 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -222,9 +220,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 rejectFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             rejectFn();
           }
@@ -241,13 +239,13 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('SalesOrder successfully created.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -257,9 +255,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 rejectFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             rejectFn();
           }
@@ -282,9 +280,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/productQuote/' + this.quote.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public receiverSelected(party: Party): void {
@@ -302,34 +300,36 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   }
 
   private update(party: Party) {
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.quote.Receiver !== this.previousReceiver) {
@@ -342,11 +342,11 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.currentContacts as Person[];
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
 
   }
 }

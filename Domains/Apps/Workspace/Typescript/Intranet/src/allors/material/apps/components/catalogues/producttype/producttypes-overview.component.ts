@@ -1,20 +1,17 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ProductType } from '../../../../../domain';
-import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 interface SearchData {
   name: string;
@@ -38,6 +35,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -45,7 +43,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
     private router: Router,
     private dialogService: AllorsMaterialDialogService) {
 
-      titleService.setTitle(this.title);
+    titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -56,44 +54,49 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const search$: Observable<SearchData> = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+
+    const { m, pull } = this.dataService;
+
+    const search$ = this.searchForm.valueChanges
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
 
     const combined$: Observable<any> = Observable.combineLatest(search$, this.refresh$)
-      .scan(([previousData, previousDate], [data, date]) => {
-        return [data,date];
-      }, [] as [SearchData, Date]);
+      .pipe(
+        scan(([previousData, previousDate], [data, date]) => {
+          return [data, date];
+        }, [])
+      );
 
     this.subscription = combined$
-      .switchMap(([data]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data]) => {
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.operands;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+          if (data.name) {
+            const like: string = data.name.replace('*', '%') + '%';
+            predicates.push(new Like({ roleType: m.ProductType.Name, value: like }));
+          }
 
-        if (data.name) {
-          const like: string = data.name.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.ProductType.Name, value: like }));
-        }
+          const pulls = [
+            pull.ProductType(
+              {
+                predicate,
+                include: {
+                  SerialisedInventoryItemCharacteristicTypes: x,
+                },
+                sort: new Sort(m.ProductType.Name),
+              }
+            )
+          ];
 
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'productTypes',
-              objectType: m.ProductType,
-              predicate,
-              include: [
-                new TreeNode({ roleType: m.ProductType.SerialisedInventoryItemCharacteristicTypes }),
-              ],
-              sort: [new Sort({ roleType: m.ProductType.Name, direction: 'Asc' })],
-            }),
-        ];
-
-        return this.scope.load('Pull', new PullRequest({ queries }));
-
-      })
+          return this.scope.load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.data = loaded.collections.productTypes as ProductType[];
         this.total = loaded.values.productTypes_total;

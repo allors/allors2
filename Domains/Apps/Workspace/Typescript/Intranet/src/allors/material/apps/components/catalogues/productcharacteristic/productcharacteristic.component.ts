@@ -1,12 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { Subscription } from 'rxjs/Subscription';
-
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedInventoryItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
-import { Fetch, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../framework';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
 
@@ -32,72 +32,62 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     titleService: Title) {
 
-      titleService.setTitle(this.title);
+    titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
   public ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            name: 'productCharacteristic',
-            id,
-            include: [
-              new TreeNode({  roleType: m.SerialisedInventoryItemCharacteristicType.LocalisedNames,
-                              nodes: [
-                                        new TreeNode({ roleType: m.LocalisedText.Locale}),
-                                      ] }),
-            ],
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'singletons',
-              objectType: this.m.Singleton,
-              include: [
-                new TreeNode({ roleType: m.Singleton.AdditionalLocales,
-                   nodes: [ new TreeNode({ roleType: m.Locale.Language}) ],
-                  }),
-                ],
+          const pulls = [
+            pull.SerialisedInventoryItemCharacteristic(
+              {
+                object: id,
+                include: {
+                  SerialisedInventoryItemCharacteristicType: {
+                    LocalisedNames: {
+                      Locale: x,
+                    }
+                  }
+                }
+              }
+            ),
+            pull.Singleton({
+              include: {
+                AdditionalLocales: {
+                  Language: x,
+                }
+              }
             }),
-            new Query(
-              {
-                name: 'uoms',
-                objectType: this.m.UnitOfMeasure,
-                predicate: new Equals({ roleType: m.UnitOfMeasure.IsActive, value: true }),
-                sort: [
-                  new Sort({ roleType: m.UnitOfMeasure.Name, direction: 'Asc' }),
-                ],
-              }),
-            new Query(
-              {
-                name: 'timeFrequencies',
-                objectType: this.m.TimeFrequency,
-                predicate: new Equals({ roleType: m.TimeFrequency.IsActive, value: true }),
-                sort: [
-                  new Sort({ roleType: m.TimeFrequency.Name, direction: 'Asc' }),
-                ],
-              }),
-            ];
+            pull.UnitOfMeasure({
+              predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
+              sort: new Sort(m.UnitOfMeasure.Name),
+            }),
+            pull.TimeFrequency({
+              predicate: new Equals({ propertyType: m.TimeFrequency.IsActive, value: true }),
+              sort: new Sort(m.TimeFrequency.Name),
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedInventoryItemCharacteristicType;
@@ -109,13 +99,13 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
         this.locales = this.singleton.AdditionalLocales;
         this.uoms = loaded.collections.uoms as UnitOfMeasure[];
         this.timeFrequencies = loaded.collections.timeFrequencies as TimeFrequency[];
-        this.allUoms = this.uoms.concat(this.timeFrequencies).sort( (a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        this.allUoms = this.uoms.concat(this.timeFrequencies).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -131,9 +121,9 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

@@ -1,16 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, RequestForQuote } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, RequestForQuote } from '../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -48,8 +45,8 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -61,61 +58,56 @@ export class RequestEditComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const rolesQuery: Query[] = [
-          new Query(
-            {
-              name: 'currencies',
-              objectType: m.Currency,
-              sort: [
-                new Sort({ roleType: m.Currency.Name, direction: 'Asc' }),
-              ],
-            }),
-        ];
+          const pulls = [
+            pull.Currency({ sort: new Sort(m.Currency.Name) })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ queries: rolesQuery }))
-          .switchMap((loaded) => {
-            this.scope.session.reset();
-            this.currencies = loaded.collections.currencies as Currency[];
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.scope.session.reset();
+                this.currencies = loaded.collections.currencies as Currency[];
 
-            const fetches: Fetch[] = [
-              this.fetcher.internalOrganisation,
-              new Fetch({
-                id,
-                include: [
-                  new TreeNode({ roleType: m.Request.Currency }),
-                  new TreeNode({ roleType: m.Request.Originator }),
-                  new TreeNode({ roleType: m.Request.ContactPerson }),
-                  new TreeNode({ roleType: m.Request.RequestState }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.Request.FullfillContactMechanism,
-                  })],
-                name: 'requestForQuote',
-              }),
-            ];
+                const fetches = [
+                  this.fetcher.internalOrganisation,
+                  pull.RequestForQuote(
+                    {
+                      object: id,
+                      include: {
+                        Currency: x,
+                        Originator: x,
+                        ContactPerson: x,
+                        RequestState: x,
+                        FullfillContactMechanism: {
+                          PostalAddress_PostalBoundary: {
+                            Country: x,
+                          }
+                        }
+                      }
+                    }
+                  ),
+                ];
 
-            return this.scope.load('Pull', new PullRequest({ fetches }));
-          });
-      })
+                return this.scope.load('Pull', new PullRequest({ pulls: fetches }));
+              })
+            );
+        })
+      )
+
       .subscribe((loaded) => {
 
         this.request = loaded.objects.requestForQuote as RequestForQuote;
@@ -137,11 +129,11 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
         this.previousOriginator = this.request.Originator;
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public submit(): void {
@@ -151,13 +143,13 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -167,9 +159,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 submitFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             submitFn();
           }
@@ -186,13 +178,13 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -202,9 +194,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 cancelFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
@@ -221,13 +213,13 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -237,9 +229,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 holdFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             holdFn();
           }
@@ -256,13 +248,13 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           this.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -272,9 +264,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 rejectFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             rejectFn();
           }
@@ -326,9 +318,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/request/' + this.request.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public originatorSelected(party: Party): void {
@@ -347,50 +339,49 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
   private update(party: Party): void {
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id: party.id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                    ],
-                    roleType: this.m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: this.m.PartyContactMechanism.ContactMechanism,
-              }),
-            ],
-            name: 'partyContactMechanisms',
-            path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-          }),
-          new Fetch({
-            id: party.id,
-            name: 'currentContacts',
-            path: new Path({ step: this.m.Party.CurrentContacts }),
-          }),
-        ];
+    const { m, pull } = this.dataService;
 
-        this.scope
-          .load('Pull', new PullRequest({ fetches }))
-          .subscribe((loaded) => {
-
-            if (this.request.Originator !== this.previousOriginator) {
-              this.request.ContactPerson = null;
-              this.request.FullfillContactMechanism = null;
-              this.previousOriginator = this.request.Originator;
+    const pulls = [
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x
+                }
+              }
             }
+          }
+        }
+      }),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x
+        }
+      })
+    ];
 
-            const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
-            this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-            this.contacts = loaded.collections.currentContacts as Person[];
-          },
-          (error: Error) => {
-            this.errorService.handle(error);
-            this.goBack();
-          },
-        );
-      }
-    }
+    this.scope
+      .load('Pull', new PullRequest({ pulls }))
+      .subscribe((loaded) => {
+
+        if (this.request.Originator !== this.previousOriginator) {
+          this.request.ContactPerson = null;
+          this.request.FullfillContactMechanism = null;
+          this.previousOriginator = this.request.Originator;
+        }
+
+        const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
+        this.contacts = loaded.collections.currentContacts as Person[];
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
+  }
+}

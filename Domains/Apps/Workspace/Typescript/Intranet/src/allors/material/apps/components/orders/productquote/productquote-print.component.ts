@@ -1,12 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, DataService } from '../../../../../angular';
 import { ProductQuote } from '../../../../../domain';
 import { Fetch, PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -29,6 +27,7 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -39,22 +38,24 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            name: 'quote',
-          }),
-        ];
+          const pulls = [
+            pull.Quote(
+              { object: id }
+            )
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.quote = loaded.objects.quote as ProductQuote;
         const htmlContent = this.quote.HtmlContent;
@@ -63,11 +64,11 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
         wrapper.innerHTML = htmlContent;
         this.body = wrapper.querySelector('#dataContainer').innerHTML;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {

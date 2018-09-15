@@ -2,19 +2,17 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
+import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
 
 @Component({
   templateUrl: './category.component.html',
@@ -39,8 +37,8 @@ export class CategoryComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -50,49 +48,45 @@ export class CategoryComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          this.fetcher.locales,
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
-                roleType: m.ProductCategory.LocalisedNames,
-              }),
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.LocalisedText.Locale })],
-                roleType: m.ProductCategory.LocalisedDescriptions,
-              }),
-            ],
-            name: 'category',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(this.m.CatScope),
-          new Query(
-            {
-              name: 'categories',
-              objectType: this.m.ProductCategory,
-              sort: [new Sort({ roleType: m.ProductCategory.Name, direction: 'Asc' })],
+          const pulls = [
+            this.fetcher.locales,
+            this.fetcher.internalOrganisation,
+            pull.ProductCategory(
+              {
+                object: id,
+                include: {
+                  LocalisedNames: {
+                    Locale: x,
+                  },
+                  LocalisedDescriptions: {
+                    Locale: x,
+                  }
+                }
+              }
+            ),
+            pull.CatScope(),
+            pull.ProductCategory({
+              sort: new Sort(m.ProductCategory.Name),
             }),
-        ];
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
@@ -109,11 +103,11 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.title = 'Category';
         this.subTitle = this.category.Name;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -129,9 +123,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {

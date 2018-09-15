@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Catalogue, InternalOrganisation } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -36,6 +36,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -56,6 +57,9 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    const { pull } = this.dataService;
+
     const search$ = this.searchForm.valueChanges
       .pipe(
         debounceTime(400),
@@ -86,17 +90,15 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
           }
 
           const pulls = [
-            new Query(
-            {
-              name: 'catalogues',
-              objectType: m.Catalogue,
-              predicate,
-              include: [
-                new TreeNode({ roleType: m.Catalogue.CatalogueImage }),
-                new TreeNode({ roleType: m.Catalogue.ProductCategories }),
-              ],
-              sort: new Sort(m.Catalogue.Name),
-            })];
+            pull.Catalogue(
+              {
+                include: {
+                  CatalogueImage: x,
+                  ProductCategories: x,
+                },
+                sort: new Sort(m.Catalogue.Name),
+              }
+            )];
 
           return this.scope.load('Pull', new PullRequest({ pulls }));
         })
