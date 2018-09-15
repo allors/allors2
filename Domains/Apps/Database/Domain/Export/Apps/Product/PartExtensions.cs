@@ -57,7 +57,7 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveInventoryItem(this Part @this, IDerivation derivation)
         {
-            if (@this.ExistInventoryItemKind && @this.InventoryItemKind.Equals(new InventoryItemKinds(@this.Strategy.Session).NonSerialised))
+            if (@this.ExistInternalOrganisation && @this.ExistInventoryItemKind && @this.InventoryItemKind.Equals(new InventoryItemKinds(@this.Strategy.Session).NonSerialised))
             {
                 if (!@this.ExistInventoryItemsWherePart )
                 {
