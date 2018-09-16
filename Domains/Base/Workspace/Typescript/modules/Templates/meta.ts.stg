@@ -117,7 +117,7 @@ fetch(meta) ::= <<
 // tslint:disable:no-empty-interface
 // tslint:disable:no-consecutive-blank-lines
 
-import { MetaPopulation, Fetch } from '../../framework';
+import { MetaPopulation, Fetch, Tree } from '../../framework';
 import { $meta.WorkspaceComposites:{composite|Tree$composite.Name$}; separator=", "$ } from './tree.g';
 
 export class FetchFactory {

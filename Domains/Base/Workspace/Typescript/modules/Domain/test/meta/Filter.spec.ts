@@ -8,7 +8,7 @@ import 'mocha';
 describe('Filter',
     () => {
         let metaPopulation: MetaPopulation;
-        let factory: FilterFactory;
+        let factory: PullFactory;
 
         beforeEach(async () => {
             metaPopulation = new MetaPopulation(data);
