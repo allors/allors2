@@ -97,7 +97,7 @@ treeFactory(composite) ::= <<
 
 treeComposite(composite) ::= <<
 export interface Tree$composite.SingularName$ {
-$composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Tree$role.ObjectType.Name$;}; separator="\n"$
+$composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Tree | Tree$role.ObjectType.Name$;}; separator="\n"$
 
 $composite.WorkspaceSubtypes:{type|$treeSubType(type)$}$
 }
@@ -139,21 +139,21 @@ fetchFactory(composite) ::= <<
 
 fetchComposite(composite) ::= <<
 export interface Fetch$composite.SingularName$ {
-$composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Fetch$role.ObjectType.Name$;}; separator="\n"$
+$composite.WorkspaceCompositeRoleTypes:{role|    $role.Name$?: Fetch | Fetch$role.ObjectType.Name$;}; separator="\n"$
 
-$composite.WorkspaceAssociationTypes:{association|    $association.PropertyName$?: Fetch$association.ObjectType.Name$;}; separator="\n"$
+$composite.WorkspaceAssociationTypes:{association|    $association.PropertyName$?: Fetch | Fetch$association.ObjectType.Name$;}; separator="\n"$
 
 $composite.WorkspaceSubtypes:{subtype|$fetchSubtype(subtype)$}$
 
-   include?: Tree$composite.SingularName$;
+   include?: Tree | Tree$composite.SingularName$;
 }
 >>
 
 fetchSubtype(subtype) ::= <<
 
-$subtype.WorkspaceExclusiveCompositeRoleTypes:{role|    $subtype.Name$_$role.Name$?: Fetch$role.ObjectType.Name$;}; separator="\n"$
+$subtype.WorkspaceExclusiveCompositeRoleTypes:{role|    $subtype.Name$_$role.Name$?: Fetch | Fetch$role.ObjectType.Name$;}; separator="\n"$
 
-$subtype.WorkspaceExclusiveAssociationTypes:{association|    $subtype.Name$_$association.PropertyName$?: Fetch$association.ObjectType.Name$;}; separator="\n"$
+$subtype.WorkspaceExclusiveAssociationTypes:{association|    $subtype.Name$_$association.PropertyName$?: Fetch | Fetch$association.ObjectType.Name$;}; separator="\n"$
 
 >>
 

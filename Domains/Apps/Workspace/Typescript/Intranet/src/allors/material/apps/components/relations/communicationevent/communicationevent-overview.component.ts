@@ -1,19 +1,16 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './communicationevent-overview.component.html',
@@ -52,8 +49,8 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -69,144 +66,120 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id: roleId,
-            name: 'communicationEventPrefetch',
-          }),
-          new Fetch({
-            id,
-            name: 'party',
-          }),
-        ];
+          const pulls = [
+            pull.CommunicationEvent({ object: id }),
+            pull.Party({ object: id })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches }))
-          .switchMap((loaded) => {
-            this.communicationEventPrefetch = loaded.objects.communicationEventPrefetch as CommunicationEvent;
-            this.party = loaded.objects.party as Party;
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.communicationEventPrefetch = loaded.objects.communicationEventPrefetch as CommunicationEvent;
+                this.party = loaded.objects.party as Party;
 
-            const fetchEmail: Fetch[] = [
-              new Fetch({
-                id: roleId,
-                include: [
-                  new TreeNode({ roleType: m.EmailCommunication.Originator }),
-                  new TreeNode({ roleType: m.EmailCommunication.Addressees }),
-                  new TreeNode({ roleType: m.EmailCommunication.EmailTemplate }),
-                  new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                      new TreeNode({ roleType: m.WorkEffort.Priority }),
-                    ],
-                    roleType: m.CommunicationEvent.WorkEfforts,
-                  }),
-                ],
-                name: 'communicationEvent',
-              }),
-            ];
+                const fetchEmail = [
+                  pull.CommunicationEvent({
+                    object: roleId,
+                    include: {
+                      EmailCommunication_Originator: x,
+                      EmailCommunication_Addressees: x,
+                      EmailCommunication_EmailTemplate: x,
+                      EventPurposes: x,
+                      CommunicationEventState: x,
+                      ContactMechanisms: x,
+                      WorkEfforts: {
+                        WorkEffortState: x,
+                        Priority: x,
+                      }
+                    }
+                  })
+                ];
 
-            const fetchLetter: Fetch[] = [
-              new Fetch({
-                id: roleId,
-                include: [
-                  new TreeNode({ roleType: m.LetterCorrespondence.Originators }),
-                  new TreeNode({ roleType: m.LetterCorrespondence.Receivers }),
-                  new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                      new TreeNode({ roleType: m.WorkEffort.Priority }),
-                    ],
-                    roleType: m.CommunicationEvent.WorkEfforts,
-                  }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.LetterCorrespondence.PostalAddresses,
-                  }),
-                ],
-                name: 'communicationEvent',
-              }),
-            ];
+                const fetchLetter = [
+                  pull.CommunicationEvent({
+                    object: roleId,
+                    include: {
+                      LetterCorrespondence_Originators: x,
+                      LetterCorrespondence_Receivers: x,
+                      EventPurposes: x,
+                      CommunicationEventState: x,
+                      ContactMechanisms: x,
+                      WorkEfforts: {
+                        WorkEffortState: x,
+                        Priority: x,
+                      },
+                      LetterCorrespondence_PostalAddresses: {
+                        PostalBoundary: {
+                          Country: x,
+                        }
+                      }
+                    }
+                  })
+                ];
 
-            const fetchMeeting: Fetch[] = [
-              new Fetch({
-                id: roleId,
-                include: [
-                  new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-                  new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-                  new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                      new TreeNode({ roleType: m.WorkEffort.Priority }),
-                    ],
-                    roleType: m.CommunicationEvent.WorkEfforts,
-                  }),
-                ],
-                name: 'communicationEvent',
-              }),
-            ];
+                const fetchMeeting = [
+                  pull.CommunicationEvent({
+                    object: id,
+                    include: {
+                      FromParties: x,
+                      ToParties: x,
+                      EventPurposes: x,
+                      CommunicationEventState: x,
+                      ContactMechanisms: x,
+                      WorkEfforts: {
+                        WorkEffortState: x,
+                        Priority: x,
+                      }
+                    }
+                  })
+                ];
 
-            const fetchPhone: Fetch[] = [
-              new Fetch({
-                id: roleId,
-                include: [
-                  new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-                  new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-                  new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-                  new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-                  new TreeNode({ roleType: m.CommunicationEvent.ContactMechanisms }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                      new TreeNode({ roleType: m.WorkEffort.Priority }),
-                    ],
-                    roleType: m.CommunicationEvent.WorkEfforts,
-                  }),
-                ],
-                name: 'communicationEvent',
-              }),
-            ];
+                const fetchPhone = [
+                  pull.CommunicationEvent({
+                    object: roleId,
+                    include: {
+                      FromParties: x,
+                      ToParties: x,
+                      EventPurposes: x,
+                      CommunicationEventState: x,
+                      ContactMechanisms: x,
+                      WorkEfforts: {
+                        WorkEffortState: x,
+                        Priority: x
+                      }
+                    }
+                  })
+                ];
 
-            if (this.isEmail) {
-              return this.scope.load('Pull', new PullRequest({ fetches: fetchEmail }));
-            }
+                if (this.isEmail) {
+                  return this.scope.load('Pull', new PullRequest({ pulls: fetchEmail }));
+                }
 
-            if (this.isMeeting) {
-              return this.scope.load('Pull', new PullRequest({ fetches: fetchMeeting }));
-            }
+                if (this.isMeeting) {
+                  return this.scope.load('Pull', new PullRequest({ pulls: fetchMeeting }));
+                }
 
-            if (this.isLetter) {
-              return this.scope.load('Pull', new PullRequest({ fetches: fetchLetter }));
-            }
+                if (this.isLetter) {
+                  return this.scope.load('Pull', new PullRequest({ pulls: fetchLetter }));
+                }
 
-            if (this.isPhone) {
-              return this.scope.load('Pull', new PullRequest({ fetches: fetchPhone }));
-            }
-          });
-      })
+                if (this.isPhone) {
+                  return this.scope.load('Pull', new PullRequest({ pulls: fetchPhone }));
+                }
+              })
+            );
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.communicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
@@ -238,15 +211,15 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
           }
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public deleteWorkEffort(worktask: WorkTask): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -255,11 +228,11 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
-      }); 
+      });
   }
 
   public ngOnDestroy(): void {

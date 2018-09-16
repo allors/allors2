@@ -1,20 +1,16 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Path, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
-import { NewGoodDialogComponent } from '../../catalogues';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './salesorderitem.component.html',
@@ -47,6 +43,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -61,75 +58,55 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const itemId: string = this.route.snapshot.paramMap.get('itemId');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const itemId: string = this.route.snapshot.paramMap.get('itemId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            name: 'salesOrder',
-          }),
-          new Fetch({
-            id: itemId,
-            include: [
-              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemState }),
-              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemShipmentState }),
-              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemInvoiceState }),
-              new TreeNode({ roleType: m.SalesOrderItem.SalesOrderItemPaymentState }),
-              new TreeNode({ roleType: m.SalesOrderItem.ReservedFromNonSerialisedInventoryItem }),
-              new TreeNode({ roleType: m.SalesOrderItem.ReservedFromSerialisedInventoryItem }),
-              new TreeNode({ roleType: m.SalesOrderItem.NewSerialisedInventoryItemState }),
-              new TreeNode({ roleType: m.SalesOrderItem.QuoteItem }),
-              new TreeNode({ roleType: m.SalesOrderItem.DiscountAdjustment }),
-              new TreeNode({ roleType: m.SalesOrderItem.SurchargeAdjustment }),
-              new TreeNode({ roleType: m.SalesOrderItem.DerivedVatRate }),
-              new TreeNode({
-                nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
-                roleType: m.SalesOrderItem.VatRegime,
-              }),
-            ],
-            name: 'orderItem',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(m.VatRate),
-          new Query(m.VatRegime),
-          new Query(
-            {
-              name: 'goods',
-              objectType: m.Good,
-              sort: [
-                new Sort({ roleType: m.Good.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.SalesOrder({ object: id }),
+            pull.SalesOrderItem({
+              object: itemId,
+              include: {
+                SalesOrderItemState: x,
+                SalesOrderItemShipmentState: x,
+                SalesOrderItemInvoiceState: x,
+                SalesOrderItemPaymentState: x,
+                ReservedFromNonSerialisedInventoryItem: x,
+                ReservedFromSerialisedInventoryItem: x,
+                NewSerialisedInventoryItemState: x,
+                QuoteItem: x,
+                DiscountAdjustment: x,
+                SurchargeAdjustment: x,
+                DerivedVatRate: x,
+                VatRegime: {
+                  VatRate: x,
+                }
+              }
             }),
-          new Query(
-            {
-              name: 'invoiceItemTypes',
-              objectType: m.InvoiceItemType,
-              predicate: new Equals({ roleType: m.InvoiceItemType.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
-              ],
+            pull.VatRate(),
+            pull.VatRegime(),
+            pull.Good({ sort: new Sort(m.Good.Name) }),
+            pull.InvoiceItemType({
+              predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: new Sort(m.InvoiceItemType.Name),
             }),
-          new Query(
-            {
-              name: 'serialisedInventoryItemStates',
-              objectType: m.SerialisedInventoryItemState,
-              predicate: new Equals({ roleType: m.SerialisedInventoryItemState.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.SerialisedInventoryItemState.Name, direction: 'Asc' }),
-              ],
-            }),
-        ];
+            pull.SalesInvoiceItemState(
+              {
+                predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
+                sort: new Sort(m.SerialisedInventoryItemState.Name),
+              }
+            ),
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
 
@@ -172,7 +149,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public ngOnDestroy(): void {
@@ -250,7 +227,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -285,7 +262,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -309,16 +286,19 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   private refreshInventory(product: Product): void {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: product.id,
-        name: 'inventoryItem',
-        path: new Path({ step: this.m.Good.InventoryItemsWhereGood }),
-      }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.({
+        object: product,
+        fetch: {
+          InventoryItemsWhereGood: x,
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
         if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
@@ -333,6 +313,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 }

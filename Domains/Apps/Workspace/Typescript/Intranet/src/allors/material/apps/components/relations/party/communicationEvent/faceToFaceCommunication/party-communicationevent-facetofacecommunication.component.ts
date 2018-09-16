@@ -2,18 +2,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals} from '../../../../../../../framework';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-communicationevent-facetofacecommunication.component.html',
@@ -40,16 +37,14 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-
     private stateService: StateService,
   ) {
-
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -61,72 +56,56 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([,, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([, , internalOrganisationId]) => {
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Party.CurrentContacts }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                ],
-                roleType: m.Party.CurrentPartyContactMechanisms,
-              }),
-            ],
-            name: 'party',
-          }),
-          new Fetch({
-            id: roleId,
-            include: [
-              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-            ],
-            name: 'communicationEvent',
-          }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                    ],
-                    roleType: m.Party.CurrentPartyContactMechanisms,
-                  }),
-                ],
-                roleType: m.InternalOrganisation.ActiveEmployees,
-              }),
-            ],
-            name: 'internalOrganisation',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'purposes',
-              objectType: this.m.CommunicationEventPurpose,
-              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.Party(
+              {
+                object: id,
+                include: {
+                  CurrentContacts: x,
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x,
+                  }
+                }
+              }
+            ),
+            pull.CommunicationEvent({
+              object: id,
+              include: {
+                FromParties: x,
+                ToParties: x,
+                EventPurposes: x,
+                CommunicationEventState: x,
+              }
             }),
-        ];
+            pull.Organisation({
+              object: internalOrganisationId,
+              include: {
+                ActiveEmployees: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x,
+                  }
+                }
+              }
+            }),
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name)
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.scope.session.reset();
@@ -154,11 +133,11 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           this.contacts = this.contacts.concat(this.party.CurrentContacts);
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public participantCancelled(): void {
@@ -186,28 +165,28 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Cancel)
         .subscribe(() => {
-            this.refresh();
-            this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-          },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          this.refresh();
+          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
               .subscribe(() => {
-                  this.scope.session.reset();
-                  cancelFn();
-                },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
@@ -221,28 +200,28 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Close)
         .subscribe(() => {
-            this.refresh();
-            this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
-          },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          this.refresh();
+          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
               .subscribe(() => {
-                  this.scope.session.reset();
-                  cancelFn();
-                },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
@@ -256,28 +235,28 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     const cancelFn = () => {
       this.scope.invoke(this.communicationEvent.Reopen)
         .subscribe(() => {
-            this.refresh();
-            this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-          },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          this.refresh();
+          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope
               .save()
               .subscribe(() => {
-                  this.scope.session.reset();
-                  cancelFn();
-                },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
@@ -292,11 +271,11 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     this.scope
       .save()
       .subscribe(() => {
-          this.goBack();
-        },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        this.goBack();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {

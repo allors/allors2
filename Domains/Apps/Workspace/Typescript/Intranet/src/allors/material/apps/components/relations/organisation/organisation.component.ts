@@ -1,20 +1,17 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
-import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, TreeNode, Sort } from '../../../../../framework';
+import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './organisation.component.html',
@@ -51,8 +48,8 @@ export class OrganisationComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
@@ -63,92 +60,71 @@ export class OrganisationComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
-        const id: string = this.route.snapshot.paramMap.get('id');
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const fetches: Fetch[] = [
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            name: 'organisation',
-            id,
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const queries: Query[] = [
-          new Query(this.m.OrganisationRole),
-          new Query(
-            {
-              name: 'locales',
-              objectType: m.Locale,
-              sort: [
-                new Sort({ roleType: m.Locale.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Organisation({ object: id }),
+            pull.OrganisationRole(),
+            pull.Locale({
+              sort: new Sort(m.Locale.Name)
             }),
-          new Query(
-            {
-              name: 'customOrganisationClassifications',
-              objectType: m.CustomOrganisationClassification,
-              sort: [
-                new Sort({ roleType: m.CustomOrganisationClassification.Name, direction: 'Asc' }),
-              ],
+            pull.CustomOrganisationClassification({
+              sort: new Sort(m.CustomOrganisationClassification.Name)
             }),
-          new Query(
-            {
-              name: 'industryClassifications',
-              objectType: m.IndustryClassification,
-              sort: [
-                new Sort({ roleType: m.IndustryClassification.Name, direction: 'Asc' }),
-              ],
-            }),
+            pull.IndustryClassification({
+              sort: new Sort(m.IndustryClassification.Name)
+            })
           ];
 
-        if (id != null) {
-          const customerRelationshipPredicate: And = new And();
-          const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.predicates;
+          if (id != null) {
 
-          customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.Customer, value: id }));
-          customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
-          const not1 = new Not();
-          customerRelationshipPredicates.push(not1);
+            pulls.push(
+              pull.CustomerRelationship(
+                {
+                  predicate: new And({
+                    operands: [
+                      new Equals({ propertyType: m.CustomerRelationship.Customer, value: id }),
+                      new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }),
+                      new Not({
+                        operand: new Exists({ propertyType: m.CustomerRelationship.ThroughDate }),
+                      }),
+                    ]
+                  }),
+                }),
+            );
 
-          not1.predicate = new Exists({ roleType: m.CustomerRelationship.ThroughDate });
-          const supplierRelationshipPredicate: And = new And();
-          const supplierRelationshipPredicates: Predicate[] = supplierRelationshipPredicate.predicates;
+            pulls.push(
+              pull.SupplierRelationship(
+                {
+                  predicate: new And({
+                    operands: [
+                      new Equals({ propertyType: m.SupplierRelationship.Supplier, value: id }),
+                      new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation, value: internalOrganisationId }),
+                      new Not({
+                        operand: new Exists({ propertyType: m.SupplierRelationship.ThroughDate }),
+                      })
+                    ]
+                  }),
+                }),
+            );
+          }
 
-          supplierRelationshipPredicates.push(new Equals({ roleType: m.SupplierRelationship.Supplier, value: id }));
-          supplierRelationshipPredicates.push(new Equals({ roleType: m.SupplierRelationship.InternalOrganisation, value: internalOrganisationId }));
-          const not2 = new Not();
-          customerRelationshipPredicates.push(not2);
-          not2.predicate = new Exists({ roleType: m.SupplierRelationship.ThroughDate });
-
-          queries.push(new Query(
-            {
-              name: 'customerRelationships',
-              objectType: m.CustomerRelationship,
-              predicate: customerRelationshipPredicate,
-            }),
-          );
-
-          queries.push(new Query(
-            {
-              name: 'supplierRelationships',
-              objectType: m.SupplierRelationship,
-              predicate: supplierRelationshipPredicate,
-          }),
-          );
-        }
-
-        return this.scope
-        .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.subTitle = 'edit organisation';
@@ -188,11 +164,11 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           this.activeRoles.push(this.manufacturerRole);
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -209,7 +185,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
 
-    if (this.activeRoles.indexOf(this.customerRole) > -1  && this.customerRelationship) {
+    if (this.activeRoles.indexOf(this.customerRole) > -1 && this.customerRelationship) {
       this.customerRelationship.ThroughDate = null;
     }
 
@@ -236,9 +212,9 @@ export class OrganisationComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

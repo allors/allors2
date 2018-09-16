@@ -1,19 +1,15 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
 import { InvoiceTermType, SalesOrder, SalesTerm } from '../../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../framework';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceterm.component.html',
@@ -34,6 +30,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -47,41 +44,35 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const termId: string = this.route.snapshot.paramMap.get('termId');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const termId: string = this.route.snapshot.paramMap.get('termId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            name: 'salesOrder',
-          }),
-          new Fetch({
-            id: termId,
-            include: [
-              new TreeNode({ roleType: m.SalesTerm.TermType }),
-            ],
-            name: 'salesTerm',
-          }),
-        ];
+          const pulls = [
+            pull.SalesOrder({ object: id }),
+            pull.SalesTerm({
+              object: termId,
+              include: {
+                TermType: x,
+              }
+            }),
+            pull.InvoiceItemType({
+              predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
+              sort: [
+                new Sort(m.InvoiceItemType.Name),
+              ],
+            })
+          ];
 
-        const queries: Query[] = [
-          new Query({
-            name: 'invoiceTermTypes',
-            objectType: m.InvoiceTermType,
-            predicate: new Equals({ roleType: m.InvoiceItemType.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.InvoiceItemType.Name, direction: 'Asc' }),
-            ],
-          }),
-        ];
-
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.order = loaded.objects.salesOrder as SalesOrder;
@@ -94,11 +85,11 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
           this.order.AddSalesTerm(this.salesTerm);
         }
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -113,9 +104,9 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {

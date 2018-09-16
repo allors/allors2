@@ -1,11 +1,12 @@
-import { Component, EventEmitter, OnInit , Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { Enumeration, Locale, Person, Organisation } from '../../../../../domain';
-import { PullRequest, Query, Sort, Equals } from '../../../../../framework';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../angular';
+import { Organisation } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'organisation-inline',
   templateUrl: './organisation-inline.component.html',
 })
@@ -24,8 +25,8 @@ export class OrganisationInlineComponent implements OnInit {
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService) {
 
     this.scope = this.workspaceService.createScope();
@@ -35,14 +36,14 @@ export class OrganisationInlineComponent implements OnInit {
   public ngOnInit(): void {
 
     this.scope
-      .load('Pull', new PullRequest({ }))
+      .load('Pull', new PullRequest({}))
       .subscribe((loaded) => {
         this.organisation = this.scope.session.create('Organisation') as Organisation;
       },
-      (error: any) => {
-        this.cancelled.emit();
-      },
-    );
+        (error: any) => {
+          this.cancelled.emit();
+        },
+      );
   }
 
   public cancel(): void {
@@ -55,8 +56,8 @@ export class OrganisationInlineComponent implements OnInit {
       .subscribe((saved: Saved) => {
         this.saved.emit(this.organisation.id);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 }

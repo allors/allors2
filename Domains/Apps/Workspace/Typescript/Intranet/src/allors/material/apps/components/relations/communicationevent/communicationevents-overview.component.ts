@@ -1,18 +1,15 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from '../../../../../domain';
-import { And, Contains, Equals, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, Contains, Equals, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
@@ -54,6 +51,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -75,104 +73,96 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const search$: Observable<SearchData> = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.refresh$)
-    .scan(([previousData, previousDate], [data, date]) => {
-      return [data, date];
-    }, [] as [SearchData, Date]);
+    const { m, pull } = this.dataService;
+
+    const search$ = this.searchForm.valueChanges
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
+
+    const combined$: Observable<any> = combineLatest(search$, this.refresh$)
+      .pipe(
+        scan(([previousData, previousDate], [data, date]) => {
+          return [data, date];
+        }, [])
+      );
 
     this.subscription = combined$
-      .switchMap(([data, take]: [SearchData, number]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data, take]: [SearchData, number]) => {
 
-        const objectStatesQuery: Query[] = [
-          new Query(
-            {
-              name: 'communicationEventStates',
-              objectType: m.CommunicationEventState,
-              sort: [
-                new Sort({ roleType: m.CommunicationEventState.Name, direction: 'Asc' }),
-              ],
-          }),
-          new Query(
-            {
-              name: 'purposes',
-              objectType: m.CommunicationEventPurpose,
-              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.CommunicationEventState(
+              {
+                sort: new Sort(m.CommunicationEventState.Name),
+              }
+            ),
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name),
             }),
-          new Query(
-            {
-              name: 'persons',
-              objectType: m.Person,
-              sort: [
-                new Sort({ roleType: m.Person.PartyName, direction: 'Asc' }),
-              ],
-            }),
-        ];
+            pull.Person({
+              sort: new Sort(m.Person.PartyName),
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ queries: objectStatesQuery }))
-          .switchMap((loaded) => {
-            this.communicationEventStates = loaded.collections.communicationEventStates as CommunicationEventState[];
-            this.communicationEventState = this.communicationEventStates.find((v: CommunicationEventState) => v.Name === data.state);
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.communicationEventStates = loaded.collections.communicationEventStates as CommunicationEventState[];
+                this.communicationEventState = this.communicationEventStates.find((v: CommunicationEventState) => v.Name === data.state);
 
-            this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
-            this.purpose = this.purposes.find((v: CommunicationEventPurpose) => v.Name === data.purpose);
+                this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
+                this.purpose = this.purposes.find((v: CommunicationEventPurpose) => v.Name === data.purpose);
 
-            this.people = loaded.collections.persons as Person[];
-            this.involved = this.people.find((v: Person) => v.displayName === data.involved);
+                this.people = loaded.collections.persons as Person[];
+                this.involved = this.people.find((v: Person) => v.displayName === data.involved);
 
-            const predicate: And = new And();
-            const predicates: Predicate[] = predicate.predicates;
+                const predicate: And = new And();
+                const predicates: Predicate[] = predicate.operands;
 
-            if (data.subject) {
-              const like: string = '%' + data.subject + '%';
-              predicates.push(new Like({ roleType: m.CommunicationEvent.Subject, value: like }));
-            }
+                if (data.subject) {
+                  const like: string = '%' + data.subject + '%';
+                  predicates.push(new Like({ roleType: m.CommunicationEvent.Subject, value: like }));
+                }
 
-            if (data.state) {
-              predicates.push(new Equals({ roleType: m.CommunicationEvent.CommunicationEventState, value: this.communicationEventState }));
-            }
+                if (data.state) {
+                  predicates.push(new Equals({ propertyType: m.CommunicationEvent.CommunicationEventState, value: this.communicationEventState }));
+                }
 
-            if (data.purpose) {
-              predicates.push(new Contains({ roleType: m.CommunicationEvent.EventPurposes, object: this.purpose }));
-            }
+                if (data.purpose) {
+                  predicates.push(new Contains({ propertyType: m.CommunicationEvent.EventPurposes, object: this.purpose }));
+                }
 
-            if (data.involved) {
-              predicates.push(new Contains({ roleType: m.CommunicationEvent.InvolvedParties, object: this.involved }));
-            }
+                if (data.involved) {
+                  predicates.push(new Contains({ propertyType: m.CommunicationEvent.InvolvedParties, object: this.involved }));
+                }
 
-            const communicationsQuery: Query[] = [
-              new Query(
-                {
-                  include: [
-                    new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-                    new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-                    new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-                    new TreeNode({ roleType: m.CommunicationEvent.InvolvedParties }),
-                  ],
-                  name: 'communicationEvents',
-                  objectType: m.CommunicationEvent,
-                  page: new Page({ skip: 0, take }),
-                  predicate,
-                  sort: [
-                    new Sort({ roleType: m.CommunicationEvent.ScheduledEnd, direction: 'Desc' }),
-                  ],
-                }),
-            ];
+                const pulls2 = [
+                  pull.CommunicationEvent({
+                    predicate,
+                    include: {
+                      CommunicationEventState: x,
+                      FromParties: x,
+                      ToParties: x,
+                      InvolvedParties: x,
+                    },
+                    sort: new Sort(m.CommunicationEvent.ScheduledEnd),
+                    skip: 0,
+                    take,
+                  })
+                ];
 
-            return this.scope
-              .load('Pull', new PullRequest({ queries: communicationsQuery }));
-          });
-      })
+                return this.scope
+                  .load('Pull', new PullRequest({ pulls: pulls2 }));
+              })
+            );
+        })
+      )
       .subscribe((loaded) => {
 
         this.scope.session.reset();
@@ -180,10 +170,10 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
         this.data = loaded.collections.communicationEvents as CommunicationEvent[];
         this.total = loaded.values.communicationEvents_total;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public ngOnDestroy(): void {
@@ -201,7 +191,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancel(communicationEvent: CommunicationEvent): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -210,15 +200,15 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public close(communicationEvent: CommunicationEvent): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -227,15 +217,15 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public reopen(communicationEvent: CommunicationEvent): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -244,15 +234,15 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }
 
   public delete(communicationEvent: CommunicationEvent): void {
-     this.dialogService
+    this.dialogService
       .confirm({ message: 'Are you sure you want to delete this communication event?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
@@ -261,9 +251,9 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },
-            (error: Error) => {
-              this.errorService.handle(error);
-            });
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
         }
       });
   }

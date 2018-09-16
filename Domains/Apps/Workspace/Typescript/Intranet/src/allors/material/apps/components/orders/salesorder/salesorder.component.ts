@@ -2,19 +2,16 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Field, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   styles: [`
@@ -96,8 +93,8 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -109,88 +106,73 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const queries: Query[] = [
-          new Query(m.VatRate),
-          new Query(m.VatRegime),
-          new Query(
-            {
-              name: 'currencies',
-              objectType: m.Currency,
-              sort: [
-                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
-              ],
+          const id: string = this.route.snapshot.paramMap.get('id');
+
+          const pulls = [
+            pull.VatRate(),
+            pull.VatRegime(),
+            pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
+            pull.Store({
+              predicate: new Equals({ propertyType: m.Store.InternalOrganisation, value: internalOrganisationId }),
+              include: { BillingProcess: x },
+              sort: new Sort(m.Store.Name)
             }),
-          new Query(
-            {
-              include: [new TreeNode({ roleType: m.Store.BillingProcess })],
-              name: 'stores',
-              objectType: m.Store,
-              predicate: new Equals({ roleType: m.Store.InternalOrganisation, value: internalOrganisationId }),
-              sort: [
-                new Sort({ roleType: m.Store.Name, direction: 'Asc' }),
-              ],
-            }),
-          new Query(
-            {
-              name: 'internalOrganisations',
-              objectType: this.m.Organisation,
-              predicate: new Equals({ roleType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: [
-                new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' }),
-              ],
-            }),
-        ];
+            pull.Organisation({
+              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
+              sort: new Sort(m.Organisation.PartyName),
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ queries }))
-          .switchMap((loaded) => {
-            this.scope.session.reset();
-            this.vatRates = loaded.collections.VatRates as VatRate[];
-            this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-            this.stores = loaded.collections.stores as Store[];
-            this.currencies = loaded.collections.currencies as Currency[];
-            this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.scope.session.reset();
+                this.vatRates = loaded.collections.VatRates as VatRate[];
+                this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+                this.stores = loaded.collections.stores as Store[];
+                this.currencies = loaded.collections.currencies as Currency[];
+                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
-            const fetches: Fetch[] = [
-              this.fetcher.internalOrganisation,
-              new Fetch({
-                id,
-                include: [
-                  new TreeNode({ roleType: m.SalesOrder.ShipToCustomer }),
-                  new TreeNode({ roleType: m.SalesOrder.ShipToAddress }),
-                  new TreeNode({ roleType: m.SalesOrder.ShipToContactPerson }),
-                  new TreeNode({ roleType: m.SalesOrder.SalesOrderState }),
-                  new TreeNode({ roleType: m.SalesOrder.BillToContactMechanism }),
-                  new TreeNode({ roleType: m.SalesOrder.BillToContactPerson }),
-                  new TreeNode({ roleType: m.SalesOrder.BillToEndCustomerContactMechanism }),
-                  new TreeNode({ roleType: m.SalesOrder.BillToEndCustomerContactPerson }),
-                  new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomer }),
-                  new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomerAddress }),
-                  new TreeNode({ roleType: m.SalesOrder.ShipToEndCustomerContactPerson }),
-                  new TreeNode({ roleType: m.SalesOrder.Quote }),
-                  new TreeNode({
-                    nodes: [new TreeNode({ roleType: m.VatRegime.VatRate })],
-                    roleType: m.SalesOrder.VatRegime,
-                  }),
-                ],
-                name: 'salesOrder',
-              }),
-            ];
+                const pulls2 = [
+                  this.fetcher.internalOrganisation,
+                  pull.SalesOrder({
+                    object: id,
+                    include: {
+                      ShipToCustomer: x,
+                      ShipToAddress: x,
+                      ShipToContactPerson: x,
+                      SalesOrderState: x,
+                      BillToContactMechanism: x,
+                      BillToContactPerson: x,
+                      BillToEndCustomerContactMechanism: x,
+                      BillToEndCustomerContactPerson: x,
+                      ShipToEndCustomer: x,
+                      ShipToEndCustomerAddress: x,
+                      ShipToEndCustomerContactPerson: x,
+                      VatRegime: {
+                        VatRate: x,
+                      }
+                    }
+                  })
+                ];
 
-            return this.scope.load('Pull', new PullRequest({ fetches }));
-          });
-      })
+                return this.scope.load('Pull', new PullRequest({ pulls: pulls2 }));
+              })
+            );
+        })
+      )
       .subscribe((loaded) => {
         this.order = loaded.objects.salesOrder as SalesOrder;
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
@@ -233,7 +215,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public billToContactPersonCancelled(): void {
@@ -400,7 +382,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -410,9 +392,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 cancelFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             cancelFn();
           }
@@ -435,7 +417,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -445,9 +427,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 rejectFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             rejectFn();
           }
@@ -470,7 +452,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-       this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -480,9 +462,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 holdFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             holdFn();
           }
@@ -505,7 +487,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -515,9 +497,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 continueFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             continueFn();
           }
@@ -540,7 +522,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -550,9 +532,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 confirmFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             confirmFn();
           }
@@ -575,7 +557,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     };
 
     if (this.scope.session.hasChanges) {
-        this.dialogService
+      this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -585,9 +567,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                 this.scope.session.reset();
                 finishFn();
               },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
           } else {
             finishFn();
           }
@@ -643,34 +625,35 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private updateShipToCustomer(party: Party): void {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
       }),
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.ShipToCustomer !== this.previousShipToCustomer) {
@@ -692,39 +675,42 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   private updateBillToCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentContacts: x,
+          }
+        }
+      )
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.BillToCustomer !== this.previousBillToCustomer) {
@@ -746,39 +732,42 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   private updateBillToEndCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentContacts: x
+          }
+        }
+      )
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.BillToEndCustomer !== this.previousBillToEndCustomer) {
@@ -800,39 +789,40 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   private updateShipToEndCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
-      }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party(
+        {
+          object: party,
+          fetch: {
+            CurrentPartyContactMechanisms: {
+              include: {
+                ContactMechanism: {
+                  PostalAddress_PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }
+          }
+        }
+      ),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.order.ShipToEndCustomer !== this.previousShipToEndCustomer) {
@@ -854,6 +844,6 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 }

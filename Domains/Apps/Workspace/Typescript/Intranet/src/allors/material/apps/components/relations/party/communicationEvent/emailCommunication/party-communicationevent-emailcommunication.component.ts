@@ -8,12 +8,13 @@ import { Subscription } from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/combineLatest';
 
-import { ErrorService, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-communicationevent-emailcommunication.component.html',
@@ -41,8 +42,8 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
@@ -56,75 +57,50 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
 
   public ngOnInit(): void {
 
+    const { m, pull } = this.dataService;
+
     this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([,, internalOrganisationId]) => {
+      .pipe(
+        switchMap(([, , internalOrganisationId]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
-
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Party.GeneralEmail }),
-            ],
-            name: 'party',
-          }),
-          new Fetch({
-            id: roleId,
-            include: [
-              new TreeNode({ roleType: m.EmailCommunication.Originator }),
-              new TreeNode({ roleType: m.EmailCommunication.Addressees }),
-              new TreeNode({ roleType: m.EmailCommunication.EmailTemplate }),
-              new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-            ],
-            name: 'communicationEvent',
-          }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                    ],
-                    roleType: m.Party.CurrentPartyContactMechanisms,
-                  }),
-                ],
-                roleType: m.InternalOrganisation.ActiveEmployees,
-              }),
-            ],
-            name: 'internalOrganisation',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'purposes',
-              objectType: this.m.CommunicationEventPurpose,
-              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.Party({ object: id, include: { GeneralEmail: x } }),
+            pull.CommunicationEvent({
+              object: roleId,
+              include: {
+                EmailCommunication_Originator: x,
+                EmailCommunication_Addressees: x,
+                EmailCommunication_EmailTemplate: x,
+                EventPurposes: x,
+                CommunicationEventState: x
+              }
             }),
-          new Query(
-            {
-              name: 'emailAddresses',
-              objectType: this.m.EmailAddress,
-              sort: [
-                new Sort({ roleType: m.EmailAddress.ElectronicAddressString, direction: 'Asc' }),
-              ],
+            pull.InternalOrganisation({
+              object: id,
+              include: {
+                ActiveEmployees: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x,
+                  }
+                }
+              }
             }),
-        ];
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name),
+            }),
+            pull.EmailAddress({
+              sort: new Sort(m.EmailAddress.ElectronicAddressString)
+            }),
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.scope.session.reset();
@@ -157,7 +133,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public ngOnDestroy(): void {
@@ -170,79 +146,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
     const cancelFn: () => void = () => {
       this.scope.invoke(this.communicationEvent.Cancel)
         .subscribe(() => {
-            this.refresh();
-            this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-          },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.scope.session.hasChanges) {
-        this.dialogService
-         .confirm({ message: 'Save changes?' })
-         .subscribe((confirm: boolean) => {
-           if (confirm) {
-             this.scope
-               .save()
-               .subscribe(() => {
-                   this.scope.session.reset();
-                   cancelFn();
-                 },
-               (error: Error) => {
-                 this.errorService.handle(error);
-               });
-           } else {
-             cancelFn();
-           }
-         });
-    } else {
-      cancelFn();
-    }
-  }
-
-  public close(): void {
-    const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Close)
-        .subscribe(() => {
-            this.refresh();
-            this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
-          },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.scope.session.hasChanges) {
-        this.dialogService
-         .confirm({ message: 'Save changes?' })
-         .subscribe((confirm: boolean) => {
-           if (confirm) {
-             this.scope
-               .save()
-               .subscribe(() => {
-                   this.scope.session.reset();
-                   cancelFn();
-                 },
-               (error: Error) => {
-                 this.errorService.handle(error);
-               });
-           } else {
-             cancelFn();
-           }
-         });
-    } else {
-      cancelFn();
-    }
-  }
-
-  public reopen(): void {
-    const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Reopen)
-        .subscribe(() => {
-            this.refresh();
-            this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-          },
+          this.refresh();
+          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+        },
           (error: Error) => {
             this.errorService.handle(error);
           });
@@ -256,9 +162,79 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
             this.scope
               .save()
               .subscribe(() => {
-                  this.scope.session.reset();
-                  cancelFn();
-                },
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  public close(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.communicationEvent.Close)
+        .subscribe(() => {
+          this.refresh();
+          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe(() => {
+                this.scope.session.reset();
+                cancelFn();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          } else {
+            cancelFn();
+          }
+        });
+    } else {
+      cancelFn();
+    }
+  }
+
+  public reopen(): void {
+    const cancelFn: () => void = () => {
+      this.scope.invoke(this.communicationEvent.Reopen)
+        .subscribe(() => {
+          this.refresh();
+          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
+        },
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
+    };
+
+    if (this.scope.session.hasChanges) {
+      this.dialogService
+        .confirm({ message: 'Save changes?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope
+              .save()
+              .subscribe(() => {
+                this.scope.session.reset();
+                cancelFn();
+              },
                 (error: Error) => {
                   this.errorService.handle(error);
                 });
@@ -276,8 +252,8 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
     this.scope
       .save()
       .subscribe(() => {
-          this.goBack();
-        },
+        this.goBack();
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });

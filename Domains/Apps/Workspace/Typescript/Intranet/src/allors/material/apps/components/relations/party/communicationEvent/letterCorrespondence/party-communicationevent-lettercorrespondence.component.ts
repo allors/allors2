@@ -1,59 +1,24 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit
-} from "@angular/core";
-import { MatSnackBar } from "@angular/material";
-import { ActivatedRoute, UrlSegment } from "@angular/router";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import "rxjs/add/observable/combineLatest";
-
-import {
-  ErrorService,
-  Invoked,
-  Loaded,
-  Saved,
-  Scope,
-  WorkspaceService,
-} from "../../../../../../../angular";
-import {
-  CommunicationEventPurpose,
-  ContactMechanism,
-  InternalOrganisation,
-  LetterCorrespondence,
-  Organisation,
-  OrganisationContactRelationship,
-  Party,
-  PartyContactMechanism,
-  Person,
-  PostalAddress,
-  Singleton
-} from "../../../../../../../domain";
-import {
-  Fetch,
-  PullRequest,
-  Query,
-  TreeNode,
-  Sort,
-  Equals
-} from "../../../../../../../framework";
-import { MetaDomain } from "../../../../../../../meta";
-import { StateService } from "../../../../../services/StateService";
-import { AllorsMaterialDialogService } from "../../../../../../base/services/dialog";
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from '../../../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
+import { MetaDomain } from '../../../../../../../meta';
+import { StateService } from '../../../../../services/StateService';
+import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: "./party-communicationevent-lettercorrespondence.component.html"
+  templateUrl: './party-communicationevent-lettercorrespondence.component.html'
 })
 export class PartyCommunicationEventLetterCorrespondenceComponent
   implements OnInit, OnDestroy {
   public scope: Scope;
-  public title = "Letter Correspondence";
+  public title = 'Letter Correspondence';
   public subTitle: string;
 
   public addSender = false;
@@ -73,8 +38,8 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   private subscription: Subscription;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
@@ -87,148 +52,99 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   get PartyIsOrganisation(): boolean {
-    return this.party.objectType.name === "Organisation";
+    return this.party.objectType.name === 'Organisation';
   }
 
   public ngOnInit(): void {
-    this.subscription = Observable.combineLatest(
-      this.route.url,
-      this.refresh$,
-      this.stateService.internalOrganisationId$
-    )
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
-        const id: string = this.route.snapshot.paramMap.get("id");
-        const roleId: string = this.route.snapshot.paramMap.get("roleId");
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+    const { m, pull } = this.dataService;
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Party.CurrentContacts }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country })
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary
-                      })
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism
-                  })
-                ],
-                roleType: m.Party.CurrentPartyContactMechanisms
-              })
-            ],
-            name: "party"
-          }),
-          new Fetch({
-            id: roleId,
-            include: [
-              new TreeNode({ roleType: m.LetterCorrespondence.Originators }),
-              new TreeNode({ roleType: m.LetterCorrespondence.Receivers }),
-              new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-              new TreeNode({
-                roleType: m.CommunicationEvent.CommunicationEventState
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country })
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary
-                  })
-                ],
-                roleType: m.LetterCorrespondence.PostalAddresses
-              })
-            ],
-            name: "communicationEvent"
-          }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({
-                            nodes: [
-                              new TreeNode({
-                                roleType: m.PostalBoundary.Country
-                              })
-                            ],
-                            roleType: m.PostalAddress.PostalBoundary
-                          })
-                        ],
-                        roleType: m.PartyContactMechanism.ContactMechanism
-                      })
-                    ],
-                    roleType: m.Party.CurrentPartyContactMechanisms
-                  })
-                ],
-                roleType: m.InternalOrganisation.ActiveEmployees
-              })
-            ],
-            name: "internalOrganisation"
-          })
-        ];
+    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const queries: Query[] = [
-          new Query({
-            name: "purposes",
-            objectType: this.m.CommunicationEventPurpose,
-            predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
-            ],
+          const pulls = [
+            pull.Party({
+              object: id,
+              include: {
+                CurrentContacts: x,
+                CurrentPartyContactMechanisms: {
+                  ContactMechanism: {
+                    PostalAddress_PostalBoundary: {
+                      Country: x,
+                    }
+                  }
+                }
+              }
+            }),
+            pull.CommunicationEvent({
+              object: id,
+              include: {
+                LetterCorrespondence_Originators: x,
+                LetterCorrespondence_Receivers: x,
+                EventPurposes: x,
+                CommunicationEventState: x,
+                LetterCorrespondence_PostalAddresses: {
+                  PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }),
+            pull.InternalOrganisation(
+              {
+                object: internalOrganisationId,
+                include: {
+                  ActiveEmployees: {
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: {
+                        PostalAddress_PostalBoundary: {
+                          Country: x,
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ),
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name),
+            })
+          ];
+
+          return this.scope.load('Pull', new PullRequest({ pulls }));
         })
-        ];
-
-        return this.scope.load("Pull", new PullRequest({ fetches, queries }));
-      })
+      )
       .subscribe(
         loaded => {
           this.scope.session.reset();
 
           this.party = loaded.objects.party as Party;
-          const internalOrganisation: InternalOrganisation = loaded.objects
-            .internalOrganisation as InternalOrganisation;
+          const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
           this.employees = internalOrganisation.ActiveEmployees;
-          this.purposes = loaded.collections
-            .purposes as CommunicationEventPurpose[];
-          this.communicationEvent = loaded.objects
-            .communicationEvent as LetterCorrespondence;
+          this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
+          this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
 
           if (!this.communicationEvent) {
-            this.communicationEvent = this.scope.session.create(
-              "LetterCorrespondence"
-            ) as LetterCorrespondence;
+            this.communicationEvent = this.scope.session.create('LetterCorrespondence') as LetterCorrespondence;
             this.communicationEvent.IncomingLetter = true;
           }
 
           for (const employee of this.employees) {
-            const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map(
-              (v: PartyContactMechanism) => v.ContactMechanism
-            );
+            const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
             for (const contactMechanism of employeeContactMechanisms) {
-              if (contactMechanism.objectType.name === "PostalAddress") {
+              if (contactMechanism.objectType.name === 'PostalAddress') {
                 this.postalAddresses.push(contactMechanism);
               }
             }
           }
 
-          const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map(
-            (v: PartyContactMechanism) => v.ContactMechanism
-          );
+          const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
           for (const contactMechanism of contactMechanisms) {
-            if (contactMechanism.objectType.name === "PostalAddress") {
+            if (contactMechanism.objectType.name === 'PostalAddress') {
               this.postalAddresses.push(contactMechanism);
             }
           }
@@ -271,9 +187,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
     this.addSender = false;
 
     const sender: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create(
-      "OrganisationContactRelationship"
-    ) as OrganisationContactRelationship;
+    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = sender;
     relationShip.Organisation = this.party as Organisation;
 
@@ -284,9 +198,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
     this.addReceiver = false;
 
     const receiver: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create(
-      "OrganisationContactRelationship"
-    ) as OrganisationContactRelationship;
+    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = receiver;
     relationShip.Organisation = this.party as Organisation;
 
@@ -308,7 +220,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
       this.scope.invoke(this.communicationEvent.Cancel).subscribe(
         (invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open("Successfully cancelled.", "close", {
+          this.snackBar.open('Successfully cancelled.', 'close', {
             duration: 5000
           });
         },
@@ -320,7 +232,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .confirm({ message: "Save changes?" })
+        .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope.save().subscribe(
@@ -346,7 +258,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
       this.scope.invoke(this.communicationEvent.Close).subscribe(
         (invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open("Successfully closed.", "close", {
+          this.snackBar.open('Successfully closed.', 'close', {
             duration: 5000
           });
         },
@@ -358,7 +270,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .confirm({ message: "Save changes?" })
+        .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope.save().subscribe(
@@ -384,7 +296,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
       this.scope.invoke(this.communicationEvent.Reopen).subscribe(
         (invoked: Invoked) => {
           this.refresh();
-          this.snackBar.open("Successfully reopened.", "close", {
+          this.snackBar.open('Successfully reopened.', 'close', {
             duration: 5000
           });
         },
@@ -396,7 +308,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
 
     if (this.scope.session.hasChanges) {
       this.dialogService
-        .confirm({ message: "Save changes?" })
+        .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             this.scope.save().subscribe(

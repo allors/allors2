@@ -1,19 +1,15 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Field, FilterFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
 import { IncoTermType, SalesOrder, SalesTerm } from '../../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../framework';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './incoterm.component.html',
@@ -34,6 +30,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -47,41 +44,37 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const termId: string = this.route.snapshot.paramMap.get('termId');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            name: 'salesOrder',
-          }),
-          new Fetch({
-            id: termId,
-            include: [
-              new TreeNode({ roleType: m.SalesTerm.TermType }),
-            ],
-            name: 'salesTerm',
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const termId: string = this.route.snapshot.paramMap.get('termId');
 
-        const queries: Query[] = [
-          new Query({
-            name: 'incoTermTypes',
-            objectType: m.IncoTermType,
-            predicate: new Equals({ roleType: m.IncoTermType.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.IncoTermType.Name, direction: 'Asc' }),
-            ],
-          }),
-        ];
+          const pulls = [
+            pull.SalesOrder({
+              object: id
+            }),
+            pull.SalesTerm({
+              object: id,
+              include: {
+                TermType: x,
+              }
+            }),
+            pull.IncoTermType({
+              predicate: new Equals({ propertyType: m.IncoTermType.IsActive, value: true }),
+              sort: [
+                new Sort(m.IncoTermType.Name),
+              ],
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.order = loaded.objects.salesOrder as SalesOrder;
@@ -94,11 +87,11 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
           this.order.AddSalesTerm(this.salesTerm);
         }
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: Error) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -113,9 +106,9 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {
