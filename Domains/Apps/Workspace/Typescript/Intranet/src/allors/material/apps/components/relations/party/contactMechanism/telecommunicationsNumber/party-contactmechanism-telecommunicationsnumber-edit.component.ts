@@ -1,13 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, x, DataService } from '../../../../../../../angular';
 import { Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-contactmechanism-telecommunicationsnumber.html',
@@ -29,6 +30,7 @@ export class PartyContactMechanismTelecommunicationsNumberEditComponent implemen
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -38,50 +40,36 @@ export class PartyContactMechanismTelecommunicationsNumberEditComponent implemen
   }
 
   public ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
-        const m: MetaDomain = this.m;
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            name: 'partyContactMechanism',
-            id: roleId,
-            include: [
-              new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-              new TreeNode({
-                roleType: m.PartyContactMechanism.ContactMechanism,
-                nodes: [new TreeNode({ roleType: m.ContactMechanism.ContactMechanismType })],
-              }),
-            ],
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'contactMechanismPurposes',
-              objectType: this.m.ContactMechanismPurpose,
-              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.PartyContactMechanism({
+              ContactPurposes: x,
+              ContactMechanism: {
+                ContactMechanismType: x,
+              }
             }),
-          new Query(
-            {
-              name: 'contactMechanismTypes',
-              objectType: this.m.ContactMechanismType,
-              predicate: new Equals({ roleType: m.ContactMechanismType.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: this.m.ContactMechanismType.Name, direction: 'Asc' }),
-              ],
+            pull.ContactMechanismPurpose({
+              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismPurpose.Name),
             }),
-        ];
+            pull.ContactMechanismType({
+              predicate: new Equals({ propertyType: m.ContactMechanismType.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismType.Name),
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
@@ -89,11 +77,11 @@ export class PartyContactMechanismTelecommunicationsNumberEditComponent implemen
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as Enumeration[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -109,9 +97,9 @@ export class PartyContactMechanismTelecommunicationsNumberEditComponent implemen
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

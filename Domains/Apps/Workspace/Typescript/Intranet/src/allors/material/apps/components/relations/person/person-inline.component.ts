@@ -1,11 +1,12 @@
 import { Component, EventEmitter, OnInit , Output } from '@angular/core';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
-import { PullRequest, Query, Sort, Equals } from '../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'person-inline',
   templateUrl: './person-inline.component.html',
 })
@@ -28,8 +29,8 @@ export class PersonInlineComponent implements OnInit {
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService) {
 
     this.scope = this.workspaceService.createScope();
@@ -37,37 +38,25 @@ export class PersonInlineComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const queries: Query[] = [
-      new Query(
-        {
-          name: 'locales',
-          objectType: this.m.Locale,
-          sort: [
-            new Sort({ roleType: this.m.Locale.Name, direction: 'Asc' }),
-          ],
+
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Locale({
+        sort: new Sort(this.m.Locale.Name)
       }),
-      new Query(
-        {
-          name: 'genders',
-          objectType: this.m.GenderType,
-          predicate: new Equals({ roleType: this.m.GenderType.IsActive, value: true }),
-          sort: [
-            new Sort({ roleType: this.m.GenderType.Name, direction: 'Asc' }),
-          ],
+      pull.GenderType({
+        predicate: new Equals({ propertyType: this.m.GenderType.IsActive, value: true }),
+        sort: new Sort(this.m.GenderType.Name),
       }),
-      new Query(
-      {
-        name: 'salutations',
-        objectType: this.m.Salutation,
-        predicate: new Equals({ roleType: this.m.Salutation.IsActive, value: true }),
-        sort: [
-          new Sort({ roleType: this.m.Salutation.Name, direction: 'Asc' }),
-        ],
-      }),
+      pull.Salutation({
+        predicate: new Equals({ propertyType: this.m.Salutation.IsActive, value: true }),
+        sort: new Sort(this.m.Salutation.Name)
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.locales = loaded.collections.locales as Locale[];
         this.genders = loaded.collections.genders as Enumeration[];

@@ -4,19 +4,16 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import * as Papa from 'papaparse';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Person } from '../../../../../domain';
-import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 interface SearchData {
   firstName: string;
@@ -46,6 +43,7 @@ export class PeopleExportComponent implements OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -65,54 +63,58 @@ export class PeopleExportComponent implements OnDestroy {
 
     this.page$ = new BehaviorSubject<number>(50);
 
-    const search$: Observable<SearchData> = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
+    const search$ = this.searchForm.valueChanges
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
 
-    const combined$: Observable<any> = Observable
-    .combineLatest(search$, this.page$, this.refresh$)
-    .scan(([previousData, previousTake, previousDate]: [SearchData, number, Date], [data, take, date]: [SearchData, number, Date]): [SearchData, number, Date] => {
-      return [
-        data,
-        data !== previousData ? 50 : take,
-        date,
-      ];
-    }, [] as [SearchData, number, Date]);
+    const combined$: Observable<any> = combineLatest(search$, this.page$, this.refresh$)
+      .pipe(
+        scan(([previousData, previousTake, previousDate], [data, take, date]): [SearchData, number, Date] => {
+          return [
+            data,
+            data !== previousData ? 50 : take,
+            date,
+          ];
+        }, [])
+      );
+
+
+    const { m, pull } = this.dataService;
 
     this.subscription = combined$
-      .switchMap(([data, take]: [SearchData, number]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data, take]: [SearchData, number]) => {
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.operands;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+          if (data.firstName) {
+            const like: string = '%' + data.firstName + '%';
+            predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
+          }
 
-        if (data.firstName) {
-          const like: string = '%' + data.firstName + '%';
-          predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
-        }
+          if (data.lastName) {
+            const like: string = data.lastName.replace('*', '%') + '%';
+            predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
+          }
 
-        if (data.lastName) {
-          const like: string = data.lastName.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
-        }
+          const pulls = [
+            pull.Person({
+              predicate,
+              include: {
+                Picture: x,
+                GeneralPhoneNumber: x,
+              },
+              sort: new Sort(m.Person.FirstName),
+              skip: 0,
+              take
+            })];
 
-        const queries: Query[] = [new Query(
-          {
-            name: 'people',
-            objectType: m.Person,
-            predicate,
-            page: new Page({ skip: 0, take }),
-            include: [
-              new TreeNode({ roleType: m.Person.Picture }),
-              new TreeNode({ roleType: m.Person.GeneralPhoneNumber }),
-            ],
-            sort: [new Sort({ roleType: m.Person.FirstName })],
-          })];
-
-        return this.scope.load('Pull', new PullRequest({ queries }));
-
-      })
+          return this.scope.load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.scope.session.reset();
@@ -125,10 +127,10 @@ export class PeopleExportComponent implements OnDestroy {
           data: this.data.map((v: Person) => ([v.FirstName, v.LastName])),
         });
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      });
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        });
   }
 
   public copy(): void {

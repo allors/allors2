@@ -2,11 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
@@ -59,7 +55,7 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
 
     const { m, pull } = this.dataService;
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([, , internalOrganisationId]) => {
 

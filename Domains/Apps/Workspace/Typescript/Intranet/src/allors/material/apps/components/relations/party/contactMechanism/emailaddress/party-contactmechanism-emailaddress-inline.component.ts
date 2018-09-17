@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, DataService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../../../domain';
-import { PullRequest, Query, Sort, Equals } from '../../../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-emailAddress',
   templateUrl: './party-contactmechanism-emailaddress-inline.component.html',
 })
@@ -26,26 +27,27 @@ export class PartyContactMechanismEmailAddressInlineComponent
   public m: MetaDomain;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
   ) {
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
   public ngOnInit(): void {
-    const queries: Query[] = [
-      new Query({
-        name: 'contactMechanismPurposes',
-        objectType: this.m.ContactMechanismPurpose,
-        predicate: new Equals({ roleType: this.m.ContactMechanismPurpose.IsActive, value: true }),
-        sort: [
-          new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-        ],
-      }),
+
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.ContactMechanismPurpose(
+        {
+          predicate: new Equals({ propertyType: this.m.ContactMechanismPurpose.IsActive, value: true }),
+          sort: new Sort(this.m.ContactMechanismPurpose.Name)
+        }
+      )
     ];
 
-    this.scope.load('Pull', new PullRequest({ queries })).subscribe(
+    this.scope.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 

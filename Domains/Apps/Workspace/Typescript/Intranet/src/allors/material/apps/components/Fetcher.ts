@@ -13,8 +13,8 @@ export class Fetcher {
     return pull.InternalOrganisation({
       object: this.state.internalOrganisationId,
       include: {
-        Party_DefaultPaymentMethod: x,
-        Party_DefaultShipmentMethod: x,
+        DefaultPaymentMethod: x,
+        DefaultShipmentMethod: x,
         DefaultFacility: x,
         DefaultCollectionMethod: x,
         PaymentMethods: x,
@@ -31,7 +31,7 @@ export class Fetcher {
 
     return pull.Organisation({
       object: this.state.internalOrganisationId,
-      path: { ProductCategoriesWhereInternalOrganisation: x },
+      fetch: { ProductCategoriesWhereInternalOrganisation: x },
     });
   }
 
@@ -41,11 +41,14 @@ export class Fetcher {
 
     return pull.Singleton({
       object: this.state.singletonId,
-      path: { AdditionalLocales: x },
-      include: tree.Locale({
-        Language: x,
-        Country: x
-      })
+      fetch: {
+        AdditionalLocales: {
+          include: {
+            Language: x,
+            Country: x
+          }
+        }
+      },
     });
   }
 }

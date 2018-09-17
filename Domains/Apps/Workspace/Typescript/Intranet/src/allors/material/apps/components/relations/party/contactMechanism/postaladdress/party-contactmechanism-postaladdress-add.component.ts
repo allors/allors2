@@ -1,11 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { Country, Enumeration, Party, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../../framework';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
@@ -31,6 +32,7 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -40,59 +42,46 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
   }
 
   public ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            name: 'party',
-            id,
-            include: [
-              new TreeNode({
-                roleType: m.Party.PartyContactMechanisms,
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                    nodes: [
-                      new TreeNode({
-                        roleType: m.PostalAddress.PostalBoundary,
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                      }),
-                    ],
-                  }),
-                ],
-              }),
-            ],
-          }),
-        ];
+          const pulls = [
+            pull.Party(
+              {
+                object: id,
+                include: {
+                  PartyContactMechanisms: {
+                    ContactPurposes: x,
+                    ContactMechanisms: {
+                      PostalBoundary: {
+                        Country: x,
+                      }
+                    }
+                  }
+                }
+              }
+            ),
+            pull.ContactMechanismPurpose(
+              {
+                predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+                sort: new Sort(m.ContactMechanismPurpose.Name),
+              }
+            ),
+            pull.Country({
+              sort: new Sort(m.Country.Name),
+            })
+          ];
 
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'contactMechanismPurposes',
-              objectType: this.m.ContactMechanismPurpose,
-              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-              ],
-            }),
-          new Query(
-            {
-              name: 'countries',
-              objectType: this.m.Country,
-              sort: [new Sort({ roleType: m.Country.Name, direction: 'Asc' })],
-            }),
-        ];
-
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.party = loaded.objects.party as Party;
@@ -112,11 +101,11 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
         this.countries = loaded.collections.countries as Country[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -132,9 +121,9 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

@@ -1,19 +1,17 @@
-import { Component, OnDestroy , OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
-import { And, Equals, Exists, Fetch, Not, Path, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, Equals, Exists, Fetch, Not, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './person.component.html',
@@ -55,8 +53,8 @@ export class PersonComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private titleService: Title,
@@ -67,187 +65,155 @@ export class PersonComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.titleService.setTitle(this.title);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const organisationId: string = this.route.snapshot.paramMap.get('organisationId');
+    const { m, pull } = this.dataService;
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const fetches: Fetch[] = [
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Person.Picture }),
-            ],
-            name: 'person',
-          }),
-          new Fetch({
-            id: organisationId,
-            name: 'organisation',
-          }),
-          new Fetch({
-            id,
-            name: 'organisationContactRelationships',
-            path: new Path({ step: this.m.Person.OrganisationContactRelationshipsWhereContact }),
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const organisationId: string = this.route.snapshot.paramMap.get('organisationId');
 
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'locales',
-              objectType: this.m.Locale,
-              sort: [
-                new Sort({ roleType: m.Locale.Name, direction: 'Asc' }),
-              ],
-          }),
-          new Query(
-            {
-              name: 'genderTypes',
-              objectType: this.m.GenderType,
-              predicate: new Equals({ roleType: m.GenderType.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.GenderType.Name, direction: 'Asc' }),
-              ],
-          }),
-          new Query(
-            {
-              name: 'salutations',
-              objectType: this.m.Salutation,
-              predicate: new Equals({ roleType: m.Salutation.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.Salutation.Name, direction: 'Asc' }),
-              ],
-          }),
-          new Query(
-            {
-              name: 'personRoles',
-              objectType: this.m.PersonRole,
-              sort: [
-                new Sort({ roleType: m.PersonRole.Name, direction: 'Asc' }),
-              ],
-          }),
-          new Query(
-            {
-              name: 'organisationContactKinds',
-              objectType: this.m.OrganisationContactKind,
-              sort: [
-                new Sort({ roleType: m.OrganisationContactKind.Description, direction: 'Asc' }),
-              ],
-          }),
-        ];
-
-        if (id != null) {
-          const customerRelationshipPredicate: And = new And();
-          const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.predicates;
-
-          customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.Customer, value: id }));
-          customerRelationshipPredicates.push(new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
-          const not1 = new Not();
-          customerRelationshipPredicates.push(not1);
-
-          not1.predicate = new Exists({ roleType: m.CustomerRelationship.ThroughDate });
-
-          const employmentPredicate: And = new And();
-          const employmentPredicates: Predicate[] = employmentPredicate.predicates;
-
-          employmentPredicates.push(new Equals({ roleType: m.Employment.Employee, value: id }));
-          employmentPredicates.push(new Equals({ roleType: m.Employment.Employer, value: internalOrganisationId }));
-          const not2 = new Not();
-          employmentPredicates.push(not2);
-          not2.predicate = new Exists({ roleType: m.Employment.ThroughDate });
-
-          queries.push(new Query(
-            {
-              name: 'customerRelationships',
-              objectType: m.CustomerRelationship,
-              predicate: customerRelationshipPredicate,
+          const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Person({
+              object: id,
+              include: { Picture: x, }
             }),
-          );
+            pull.Organisation({
+              object: organisationId,
+            }),
+            pull.Person({
+              object: id,
+              fetch: {
+                OrganisationContactRelationshipsWhereContact: x
+              }
+            }),
+            pull.Locale({
+              sort: new Sort(m.Locale.Name)
+            }),
+            pull.GenderType({
+              predicate: new Equals(m.GenderType.IsActive),
+              sort: new Sort(m.GenderType.Name),
+            }),
+            pull.Salutation({
+              predicate: new Equals({ propertyType: m.Salutation.IsActive, value: true }),
+              sort: new Sort(m.Salutation.Name),
+            }),
+            pull.PersonRole({
+              sort: new Sort(m.PersonRole.Name)
+            }),
+            pull.OrganisationContactKind({
+              sort: new Sort(m.OrganisationContactKind.Description),
+            })
+          ];
 
-          queries.push(new Query(
-            {
-              name: 'employments',
-              objectType: m.Employment,
-              predicate: employmentPredicate,
-          }),
-          );
-        }
+          if (id != null) {
+            const customerRelationshipPredicate: And = new And();
+            const customerRelationshipPredicates: Predicate[] = customerRelationshipPredicate.operands;
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }))
-          .switchMap((loaded) => {
-            this.scope.session.reset();
+            customerRelationshipPredicates.push(new Equals({ propertyType: m.CustomerRelationship.Customer, value: id }));
+            customerRelationshipPredicates.push(new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }));
+            const not1 = new Not();
+            customerRelationshipPredicates.push(not1);
 
-            this.subTitle = 'edit person';
-            this.person = loaded.objects.person as Person;
-            this.organisation = loaded.objects.organisation as Organisation;
-            this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+            not1.operand = new Exists({ propertyType: m.CustomerRelationship.ThroughDate });
 
-            if (this.person) {
-              this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
-              this.employment = loaded.collections.employments[0] as Employment;
-            } else {
-              this.subTitle = 'add a new person';
-              this.person = this.scope.session.create('Person') as Person;
-            }
+            const employmentPredicate: And = new And();
+            const employmentPredicates: Predicate[] = employmentPredicate.operands;
 
-            this.locales = loaded.collections.locales as Locale[];
-            this.genders = loaded.collections.genderTypes as Enumeration[];
-            this.salutations = loaded.collections.salutations as Enumeration[];
-            this.roles = loaded.collections.personRoles as PersonRole[];
-            this.organisationContactKinds = loaded.collections.organisationContactKinds as OrganisationContactKind[];
+            employmentPredicates.push(new Equals({ propertyType: m.Employment.Employee, value: id }));
+            employmentPredicates.push(new Equals({ propertyType: m.Employment.Employer, value: internalOrganisationId }));
+            const not2 = new Not();
+            employmentPredicates.push(not2);
+            not2.operand = new Exists({ propertyType: m.Employment.ThroughDate });
 
-            if(loaded.collections.organisationContactRelationships && loaded.collections.organisationContactRelationships.length > 0) {
-              this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;
-              this.organisation = this.organisationContactRelationship.Organisation;
-            }
+            pulls.push(
+              pull.CustomerRelationship({
+                predicate: customerRelationshipPredicate,
+              })
+            );
 
-            this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
-            this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'DB06A3E1-6146-4C18-A60D-DD10E19F7243');
-            this.selectableRoles.push(this.customerRole);
-            this.selectableRoles.push(this.employeeRole);
+            pulls.push(
+              pull.Employment({
+                predicate: employmentPredicate,
+              })
+            );
+          }
 
-            if (this.internalOrganisation.ActiveCustomers.includes(this.person)) {
-              this.isActiveCustomer = true;
-              this.activeRoles.push(this.customerRole);
-            }
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.scope.session.reset();
 
-            if (this.internalOrganisation.ActiveEmployees.includes(this.person)) {
-              this.isActiveEmployee = true;
-              this.activeRoles.push(this.employeeRole);
-            }
+                this.subTitle = 'edit person';
+                this.person = loaded.objects.person as Person;
+                this.organisation = loaded.objects.organisation as Organisation;
+                this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
-            const organisationQuery: Query[] = [];
-            if (this.organisationContactRelationship === undefined && this.organisation === undefined) {
-              organisationQuery.push(
-                new Query(
-                  {
-                    name: 'organisations',
-                    objectType: m.Organisation,
-                    sort: [new Sort({ roleType: m.Organisation.PartyName, direction: 'Asc' })],
-                  }),
-              );
-            }
-            return this.scope.load('Pull', new PullRequest({ queries: organisationQuery }));
-          });
-      })
+                if (this.person) {
+                  this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
+                  this.employment = loaded.collections.employments[0] as Employment;
+                } else {
+                  this.subTitle = 'add a new person';
+                  this.person = this.scope.session.create('Person') as Person;
+                }
+
+                this.locales = loaded.collections.locales as Locale[];
+                this.genders = loaded.collections.genderTypes as Enumeration[];
+                this.salutations = loaded.collections.salutations as Enumeration[];
+                this.roles = loaded.collections.personRoles as PersonRole[];
+                this.organisationContactKinds = loaded.collections.organisationContactKinds as OrganisationContactKind[];
+
+                if (loaded.collections.organisationContactRelationships && loaded.collections.organisationContactRelationships.length > 0) {
+                  this.organisationContactRelationship = loaded.collections.organisationContactRelationships[0] as OrganisationContactRelationship;
+                  this.organisation = this.organisationContactRelationship.Organisation;
+                }
+
+                this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
+                this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'DB06A3E1-6146-4C18-A60D-DD10E19F7243');
+                this.selectableRoles.push(this.customerRole);
+                this.selectableRoles.push(this.employeeRole);
+
+                if (this.internalOrganisation.ActiveCustomers.includes(this.person)) {
+                  this.isActiveCustomer = true;
+                  this.activeRoles.push(this.customerRole);
+                }
+
+                if (this.internalOrganisation.ActiveEmployees.includes(this.person)) {
+                  this.isActiveEmployee = true;
+                  this.activeRoles.push(this.employeeRole);
+                }
+
+                const organisationQuery = [];
+                if (this.organisationContactRelationship === undefined && this.organisation === undefined) {
+                  organisationQuery.push(
+                    pull.Organisation({
+                      sort: new Sort(m.Organisation.PartyName)
+                    })
+                  );
+                }
+                return this.scope.load('Pull', new PullRequest({ pulls: organisationQuery }));
+              })
+
+            );
+        })
+      )
       .subscribe((loaded) => {
         this.organisations = loaded.collections.organisations as Organisation[];
         this.loaded = true;
       },
-      (error: any) => {
-         this.errorService.handle(error);
-         this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -264,7 +230,7 @@ export class PersonComponent implements OnInit, OnDestroy {
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
 
-    if (this.activeRoles.indexOf(this.customerRole) > -1  && this.customerRelationship) {
+    if (this.activeRoles.indexOf(this.customerRole) > -1 && this.customerRelationship) {
       this.customerRelationship.ThroughDate = null;
     }
 
@@ -297,9 +263,9 @@ export class PersonComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

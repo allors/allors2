@@ -1,13 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy , OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { EmailAddress, Enumeration, PartyContactMechanism } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-contactmechanism-emailaddress.html',
@@ -27,8 +28,8 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -38,37 +39,28 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
   }
 
   public ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
-        const m: MetaDomain = this.m;
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            name: 'partyContactMechanism',
-            id: roleId,
-            include: [
-              new TreeNode({roleType: m.PartyContactMechanism.ContactPurposes}),
-            ],
-          }),
-        ];
+          const pulls = [
+            pull.PartyContactMechanism({
+              object: roleId,
+              include: {
+                ContactPurposes: x,
+              }
+            })
+          ];
 
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'contactMechanismPurposes',
-              objectType: this.m.ContactMechanismPurpose,
-              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-              ],
-            }),
-        ];
-
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
@@ -79,7 +71,7 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
         this.errorService.handle(error);
         this.goBack();
       },
-    );
+      );
   }
 
   public ngOnDestroy(): void {
@@ -95,9 +87,9 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

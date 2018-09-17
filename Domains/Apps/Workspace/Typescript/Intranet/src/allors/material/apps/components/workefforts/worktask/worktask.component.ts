@@ -1,51 +1,15 @@
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import {
-  ErrorService,
-  FilterFactory,
-  Loaded,
-  Saved,
-  Scope,
-  WorkspaceService,
-} from '../../../../../angular';
-import {
-  ContactMechanism,
-  InternalOrganisation,
-  Organisation,
-  OrganisationContactRelationship,
-  Party,
-  PartyContactMechanism,
-  Person,
-  Priority,
-  Singleton,
-  WorkEffortAssignment,
-  WorkEffortPurpose,
-  WorkEffortState,
-  WorkTask,
-} from '../../../../../domain';
-import {
-  Fetch,
-  Path,
-  PullRequest,
-  Query,
-  TreeNode,
-  Sort,
-  Equals,
-} from '../../../../../framework';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './worktask.component.html',
@@ -77,8 +41,8 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public stateService: StateService,
@@ -87,104 +51,93 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   public ngOnInit(): void {
-    this.subscription = Observable.combineLatest(
+
+    const { m, pull } = this.dataService;
+
+    this.subscription = combineLatest(
       this.route.url,
       this.refresh$,
       this.stateService.internalOrganisationId$,
     )
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
-              new TreeNode({ roleType: m.WorkTask.ContactPerson }),
-              new TreeNode({ roleType: m.WorkTask.CreatedBy }),
-            ],
-            name: 'worktask',
-          }),
-        ];
+          const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.WorkTask({
+              object: id,
+              include: {
+                FullfillContactMechanism: x,
+                ContactPerson: x,
+                CreatedBy: x,
+              }
+            }),
+            pull.WorkEffortState({
+              sort: new Sort(m.WorkEffortState.Name)
+            }),
+            pull.Priority({
+              predicate: new Equals({ propertyType: m.Priority.IsActive, value: true }),
+              sort: new Sort(m.Priority.Name),
+            }),
+            pull.WorkEffortPurpose({
+              predicate: new Equals({ propertyType: this.m.WorkEffortPurpose.IsActive, value: true }),
+              sort: new Sort(m.WorkEffortPurpose.Name),
+            })
+          ];
 
-        const queries: Query[] = [
-          new Query({
-            name: 'workEffortStates',
-            objectType: this.m.WorkEffortState,
-            sort: [
-              new Sort({ roleType: m.WorkEffortState.Name, direction: 'Asc' }),
-            ],
-        }),
-          new Query({
-            name: 'priorities',
-            objectType: this.m.Priority,
-            predicate: new Equals({ roleType: m.Priority.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
-            ],
-        }),
-          new Query({
-            name: 'workEffortPurposes',
-            objectType: this.m.WorkEffortPurpose,
-            predicate: new Equals({ roleType: this.m.WorkEffortPurpose.IsActive, value: true }),
-            sort: [
-              new Sort({ roleType: m.WorkEffortPurpose.Name, direction: 'Asc' }),
-            ],
-        }),
-        ];
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              switchMap((loaded) => {
+                this.subTitle = 'edit work task';
+                this.workTask = loaded.objects.worktask as WorkTask;
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }))
-          .switchMap((loaded) => {
-            this.subTitle = 'edit work task';
-            this.workTask = loaded.objects.worktask as WorkTask;
+                const addMode: boolean = !this.workTask;
 
-            const addMode: boolean = !this.workTask;
+                if (addMode) {
+                  this.subTitle = 'add a new work task';
+                  this.workTask = this.scope.session.create('WorkTask') as WorkTask;
+                }
 
-            if (addMode) {
-              this.subTitle = 'add a new work task';
-              this.workTask = this.scope.session.create('WorkTask') as WorkTask;
-            }
+                this.workEffortStates = loaded.collections
+                  .workEffortStates as WorkEffortState[];
+                this.priorities = loaded.collections.priorities as Priority[];
+                this.workEffortPurposes = loaded.collections
+                  .workEffortPurposes as WorkEffortPurpose[];
+                const internalOrganisation: InternalOrganisation = loaded.objects
+                  .internalOrganisation as InternalOrganisation;
+                this.employees = internalOrganisation.ActiveEmployees;
 
-            this.workEffortStates = loaded.collections
-              .workEffortStates as WorkEffortState[];
-            this.priorities = loaded.collections.priorities as Priority[];
-            this.workEffortPurposes = loaded.collections
-              .workEffortPurposes as WorkEffortPurpose[];
-            const internalOrganisation: InternalOrganisation = loaded.objects
-              .internalOrganisation as InternalOrganisation;
-            this.employees = internalOrganisation.ActiveEmployees;
+                const assignmentsFetch = [
+                  pull.WorkTask({
+                    object: id,
+                    fetch: {
+                      WorkEffortAssignmentsWhereAssignment: x,
+                    }
+                  })
+                ];
 
-            const assignmentsFetch: Fetch[] = [
-              new Fetch({
-                id,
-                name: 'workEffortAssignments',
-                path: new Path({
-                  step: m.WorkEffort.WorkEffortAssignmentsWhereAssignment,
-                }),
-              }),
-            ];
+                if (this.workTask.Customer) {
+                  this.updateCustomer(this.workTask.Customer);
+                }
 
-            if (this.workTask.Customer) {
-              this.updateCustomer(this.workTask.Customer);
-            }
-
-            if (addMode) {
-              return this.scope.load('Pull', new PullRequest({}));
-            } else {
-              return this.scope.load(
-                'Pull',
-                new PullRequest({ fetches: assignmentsFetch }),
-              );
-            }
-          });
-      })
+                if (addMode) {
+                  return this.scope.load('Pull', new PullRequest({}));
+                } else {
+                  return this.scope.load(
+                    'Pull',
+                    new PullRequest({ pulls: assignmentsFetch }),
+                  );
+                }
+              })
+            );
+        })
+      )
       .subscribe(
         (loaded) => {
           this.workEffortAssignments = loaded.collections
@@ -202,7 +155,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public customerSelected(customer: Party) {
@@ -273,33 +226,33 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   private updateCustomer(party: Party) {
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country })
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x,
+                }
+              }
+            }
+          }
+        }
       }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      })
     ];
 
-    this.scope.load('Pull', new PullRequest({ fetches })).subscribe(
+    this.scope.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         const partyContactMechanisms: PartyContactMechanism[] = loaded
           .collections.partyContactMechanisms as PartyContactMechanism[];

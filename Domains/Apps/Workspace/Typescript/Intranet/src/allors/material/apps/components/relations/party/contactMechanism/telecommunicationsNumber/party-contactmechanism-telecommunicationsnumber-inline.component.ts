@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, DataService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../../domain';
-import { PullRequest, Query, Sort, Equals } from '../../../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-telecommunicationsnumber',
   templateUrl: './party-contactmechanism-telecommunicationsnumber-inline.component.html',
 })
@@ -27,35 +28,31 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
   public m: MetaDomain;
 
-  constructor(private workspaceService: WorkspaceService, private errorService: ErrorService) {
+  constructor(
+    private workspaceService: WorkspaceService,
+    private dataService: DataService,
+    private errorService: ErrorService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
   public ngOnInit(): void {
-    const queries: Query[] = [
-      new Query(
-        {
-          name: 'contactMechanismPurposes',
-          objectType: this.m.ContactMechanismPurpose,
-          predicate: new Equals({ roleType: this.m.ContactMechanismPurpose.IsActive, value: true }),
-          sort: [
-            new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-          ],
-        }),
-          new Query(
-            {
-              name: 'contactMechanismTypes',
-              objectType: this.m.ContactMechanismType,
-              predicate: new Equals({ roleType: this.m.ContactMechanismType.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: this.m.ContactMechanismType.Name, direction: 'Asc' }),
-              ],
-        }),
-      ];
+
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.ContactMechanismPurpose({
+        predicate: new Equals({ propertyType: this.m.ContactMechanismPurpose.IsActive, value: true }),
+        sort: new Sort(this.m.ContactMechanismPurpose.Name),
+      }),
+      pull.ContactMechanismType({
+        predicate: new Equals({ propertyType: this.m.ContactMechanismType.IsActive, value: true }),
+        sort: new Sort(this.m.ContactMechanismType.Name),
+      })
+    ];
 
     this.scope
-      .load('Pull', new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
@@ -64,10 +61,10 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
         this.telecommunicationsNumber = this.scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
         this.partyContactMechanism.ContactMechanism = this.telecommunicationsNumber;
       },
-      (error: any) => {
-        this.cancelled.emit();
-      },
-    );
+        (error: any) => {
+          this.cancelled.emit();
+        },
+      );
   }
 
   public ngOnDestroy(): void {

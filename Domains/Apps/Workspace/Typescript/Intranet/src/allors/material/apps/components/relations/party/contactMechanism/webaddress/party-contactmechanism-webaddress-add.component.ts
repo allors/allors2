@@ -1,11 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { Enumeration, Party, PartyContactMechanism, WebAddress } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../../framework';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
@@ -29,6 +30,7 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -38,43 +40,35 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
   }
 
   public ngOnInit(): void {
+
+    const {m, pull} = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            name: 'party',
-            id,
-            include: [
-              new TreeNode({
-                roleType: m.Party.PartyContactMechanisms,
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                ],
-              }),
-            ],
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'contactMechanismPurposes',
-              objectType: this.m.ContactMechanismPurpose,
-              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.Party({
+              object: id,
+              include: {
+                PartyContactMechanisms: {
+                  ContactPurposes: x,
+                  ContactMechanism: x,
+                }
+              }
             }),
-        ];
+            pull.ContactMechanismPurpose({
+              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: new Sort(m.ContactMechanismPurpose.Name)
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.party = loaded.objects.party as Party;
@@ -91,11 +85,11 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
 
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -111,9 +105,9 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

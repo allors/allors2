@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, DataService } from '../../../../../../../angular';
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../../domain';
-import { PullRequest, Query, Sort, Equals } from '../../../../../../../framework';
+import { PullRequest, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-postaladdress',
   templateUrl: './party-contactmechanism-postaladdress-inline.component.html',
 })
@@ -28,32 +29,30 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   public m: MetaDomain;
 
-  constructor(private workspaceService: WorkspaceService, private errorService: ErrorService) {
+  constructor(
+    private workspaceService: WorkspaceService,
+    private dataService: DataService,
+    private errorService: ErrorService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }
 
   public ngOnInit(): void {
-    const queries: Query[] = [
-      new Query(
-        {
-          name: 'countries',
-          objectType: this.m.Country,
-          sort: [new Sort({ roleType: this.m.Country.Name, direction: 'Asc' })],
-        }),
-      new Query(
-        {
-          name: 'contactMechanismPurposes',
-          objectType: this.m.ContactMechanismPurpose,
-          predicate: new Equals({ roleType: this.m.ContactMechanismPurpose.IsActive, value: true }),
-          sort: [
-            new Sort({ roleType: this.m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-          ],
-        }),
-      ];
+
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Country({
+        sort: new Sort(this.m.Country.Name)
+      }),
+      pull.ContactMechanismPurpose({
+        predicate: new Equals({ propertyType: this.m.ContactMechanismPurpose.IsActive, value: true }),
+        sort: new Sort(this.m.ContactMechanismPurpose.Name)
+      })
+    ];
 
     this.scope
-      .load('Pull', new PullRequest({ queries }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.countries = loaded.collections.countries as Country[];
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
@@ -64,10 +63,10 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
         this.postalAddress.PostalBoundary = this.postalBoundary;
       },
-      (error: any) => {
-        this.cancelled.emit();
-      },
-    );
+        (error: any) => {
+          this.cancelled.emit();
+        },
+      );
   }
 
   public ngOnDestroy(): void {

@@ -3,19 +3,16 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, TreeNode, ISessionObject } from '../../../../../framework';
+import { Fetch, PullRequest, TreeNode, ISessionObject } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './person-overview.component.html',
@@ -53,8 +50,8 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -68,7 +65,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.m);
+    this.fetcher = new Fetcher(this.stateService, this.dataService);
   }
 
   get contactMechanisms(): any {
@@ -86,137 +83,81 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable
-      .combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull, tree } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const fetches: Fetch[] = [
-          this.fetcher.internalOrganisation,
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Party.Locale }),
-              // new TreeNode({ roleType: m.Person.PersonRoles }),
-              new TreeNode({ roleType: m.Person.LastModifiedBy }),
-              new TreeNode({ roleType: m.Person.Salutation }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                ],
-                roleType: m.Party.PartyContactMechanisms,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                  }),
-                ],
-                roleType: m.Party.PartyContactMechanisms,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                  }),
-                ],
-                roleType: m.Party.CurrentPartyContactMechanisms,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({
-                        nodes: [
-                          new TreeNode({ roleType: m.PostalBoundary.Country }),
-                        ],
-                        roleType: m.PostalAddress.PostalBoundary,
-                      }),
-                    ],
-                    roleType: m.PartyContactMechanism.ContactMechanism,
-                  }),
-                ],
-                roleType: m.Party.InactivePartyContactMechanisms,
-              }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PostalBoundary.Country }),
-                    ],
-                    roleType: m.PostalAddress.PostalBoundary,
-                  }),
-                ],
-                roleType: m.Person.GeneralCorrespondence,
-              }),
-            ],
-            name: 'person',
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.InvolvedParties }),
-            ],
-            name: 'communicationEvents',
-            path: new Path({ step: m.Party.CommunicationEventsWhereInvolvedParty }),
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                  new TreeNode({ roleType: m.WorkEffort.Priority }),
-                ],
-                roleType: m.WorkEffortAssignment.Assignment,
-              }),
-            ],
-            name: 'workEffortAssignments',
-            path: new Path({ step: m.Person.WorkEffortAssignmentsWhereProfessional }),
-          }),
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.OrganisationContactRelationship.Organisation }),
-              new TreeNode({ roleType: m.OrganisationContactRelationship.ContactKinds }),
-            ],
-            name: 'organisationContactRelationships',
-            path: new Path({ step: m.Person.OrganisationContactRelationshipsWhereContact }),
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const queries: Query[] = [
-          new Query(this.m.PersonRole),
-        ];
+          const partyContactMechanismTree = tree.PartyContactMechanism({
+            ContactPurposes: x,
+            ContactMechanism: {
+              PostalAddress_PostalBoundary: {
+                Country: x,
+              }
+            },
+          });
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          const pulls = [
+            this.fetcher.internalOrganisation,
+            pull.Person({
+              object: id,
+              include: {
+                Locale: x,
+                LastModifiedBy: x,
+                Salutation: x,
+                PartyContactMechanisms: partyContactMechanismTree,
+                CurrentPartyContactMechanisms: partyContactMechanismTree,
+                InactivePartyContactMechanisms: partyContactMechanismTree,
+                GeneralCorrespondence: {
+                  PostalBoundary: {
+                    Country: x,
+                  }
+                }
+              }
+            }),
+            pull.Party({
+              object: id,
+              fetch: {
+                CommunicationEventsWhereInvolvedParty: {
+                  CommunicationEventState: x,
+                  FromParties: x,
+                  ToParties: x,
+                  InvolvedParties: x,
+                }
+              }
+            }),
+            pull.Person({
+              object: id,
+              fetch: {
+                WorkEffortAssignmentsWhereProfessional: {
+                  include: {
+                    Assignment: {
+                      WorkEffortState: x,
+                      Priority: x,
+                    }
+                  }
+                }
+              }
+            }),
+            pull.Person({
+              object: id,
+              fetch: {
+                OrganisationContactRelationshipsWhereContact: {
+                  Organisation: x,
+                  ContactKinds: x,
+                }
+              }
+            }),
+            pull.PersonRole()
+          ];
+
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
@@ -224,7 +165,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.person = loaded.objects.person as Person;
         const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
-        this.contactKindsText = organisationContactRelationships.length > 0 ?  organisationContactRelationships[0].ContactKinds
+        this.contactKindsText = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].ContactKinds
           .map((v: OrganisationContactKind) => v.Description)
           .reduce((acc: string, cur: string) => acc + ', ' + cur) : undefined;
         this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
@@ -265,7 +206,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
           this.errorService.handle(error);
           this.goBack();
         },
-    );
+      );
   }
 
   public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {

@@ -1,11 +1,12 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { Enumeration, PartyContactMechanism, WebAddress } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, Sort, TreeNode, Equals } from '../../../../../../../framework';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
 
@@ -28,6 +29,7 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnD
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -37,48 +39,43 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnD
   }
 
   public ngOnInit(): void {
+
+    const { m, pull } = this.dataService;
+
     this.subscription = this.route.url
-      .switchMap((url: any) => {
+      .pipe(
+        switchMap((url: any) => {
 
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
-        const m: MetaDomain = this.m;
+          const roleId = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            name: 'partyContactMechanism',
-            id: roleId,
-            include: [
-              new TreeNode({ roleType: m.PartyContactMechanism.ContactPurposes }),
-            ],
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'contactMechanismPurposes',
-              objectType: this.m.ContactMechanismPurpose,
-              predicate: new Equals({ roleType: m.ContactMechanismPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.ContactMechanismPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.PartyContactMechanism({
+              object: roleId,
+              include: {
+                ContactPurposes: x,
+              }
             }),
-        ];
+            pull.ContactMechanismPurpose({
+              predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
+              sort: new Sort(m.ContactMechanismPurpose.Name),
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.partyContactMechanism = loaded.objects.partyContactMechanism as PartyContactMechanism;
         this.contactMechanism = this.partyContactMechanism.ContactMechanism as WebAddress;
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -94,9 +91,9 @@ export class PartyContactMechanismEditWebAddressComponent implements OnInit, OnD
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public goBack(): void {

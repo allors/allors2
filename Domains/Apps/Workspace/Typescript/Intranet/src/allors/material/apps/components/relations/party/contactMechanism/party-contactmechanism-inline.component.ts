@@ -1,11 +1,10 @@
-import { Component, EventEmitter, Input, OnInit , Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../../angular';
-import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from '../../../../../../domain';
-import { PullRequest, Query } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Scope } from '../../../../../../angular';
+import { PartyContactMechanism } from '../../../../../../domain';
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism',
   templateUrl: './party-contactmechanism-inline.component.html',
 })

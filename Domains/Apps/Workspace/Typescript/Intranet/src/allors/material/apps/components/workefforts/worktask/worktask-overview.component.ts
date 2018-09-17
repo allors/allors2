@@ -1,19 +1,15 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService } from '../../../../../angular';
-import { WorkEffort, WorkTask } from '../../../../../domain';
-import { Fetch, Path, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { ErrorService, Invoked, MediaService, PdfService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { WorkTask } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './worktask-overview.component.html',
@@ -30,8 +26,8 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -46,41 +42,40 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
-      .switchMap(([urlSegments, date]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const m: MetaDomain = this.m;
+    this.subscription = combineLatest(this.route.url, this.refresh$)
+      .pipe(
+        switchMap(([urlSegments, date]) => {
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.WorkTask.WorkEffortState }),
-              new TreeNode({ roleType: m.WorkTask.Customer }),
-              new TreeNode({ roleType: m.WorkTask.FullfillContactMechanism }),
-              new TreeNode({ roleType: m.WorkTask.ContactPerson }),
-              new TreeNode({ roleType: m.WorkTask.CreatedBy }),
-            ],
-            name: 'task',
-          }),
-        ];
+          const id: string = this.route.snapshot.paramMap.get('id');
 
-        const queries: Query[] = [
-        ];
+          const pulls = [
+            pull.WorkTask({
+              object: id,
+              include: {
+                WorkEffortState: x,
+                Customer: x,
+                FullfillContactMechanism: x,
+                ContactPerson: x,
+                CreatedBy: x,
+              }
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
         })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.task = loaded.objects.task as WorkTask;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public cancel(): void {
@@ -89,9 +84,9 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public print() {

@@ -4,17 +4,14 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Person } from '../../../../../domain';
-import { And, Like, Page, Predicate, PullRequest, Query, Sort, TreeNode } from '../../../../../framework';
+import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 interface SearchData {
   firstName: string;
@@ -37,8 +34,9 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
-    public mediaService: MediaService,
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
+    public mediaService: MediaService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -57,51 +55,54 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    const search$ = this.searchForm.valueChanges
-      .debounceTime(400)
-      .distinctUntilChanged()
-      .startWith({});
 
-    const combined$ = Observable
-      .combineLatest(search$, this.refresh$)
-      .scan(([previousData, previousDate], [data, date]) => {
-        return [data, date];
-      }, [] as [SearchData, Date]);
+    const { m, pull } = this.dataService;
+
+    const search$ = this.searchForm.valueChanges
+      .pipe(
+        debounceTime(400),
+        distinctUntilChanged(),
+        startWith({}),
+      );
+
+    const combined$ = combineLatest(search$, this.refresh$)
+      .pipe(
+        scan(([previousData, previousDate], [data, date]) => {
+          return [data, date];
+        }, [])
+      );
 
     this.subscription = combined$
-      .switchMap(([data, take]) => {
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+      .pipe(
+        switchMap(([data, take]) => {
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.operands;
 
-        const predicate: And = new And();
-        const predicates: Predicate[] = predicate.predicates;
+          if (data.firstName) {
+            const like: string = '%' + data.firstName + '%';
+            predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
+          }
 
-        if (data.firstName) {
-          const like: string = '%' + data.firstName + '%';
-          predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
-        }
+          if (data.lastName) {
+            const like: string = data.lastName.replace('*', '%') + '%';
+            predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
+          }
 
-        if (data.lastName) {
-          const like: string = data.lastName.replace('*', '%') + '%';
-          predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
-        }
+          const pulls = [
+            pull.Person({
+              predicate,
+              include: {
+                Salutation: x,
+                Picture: x,
+                GeneralPhoneNumber: x,
+              },
+              sort: new Sort(m.Person.PartyName),
+            })];
 
-        const queries: Query[] = [new Query(
-          {
-            name: 'people',
-            objectType: m.Person,
-            predicate,
-            page: new Page({ skip: 0, take }),
-            include: [
-              new TreeNode({ roleType: m.Person.Salutation }),
-              new TreeNode({ roleType: m.Person.Picture }),
-              new TreeNode({ roleType: m.Person.GeneralPhoneNumber }),
-            ],
-            sort: [new Sort({ roleType: m.Person.PartyName })],
-          })];
+          return this.scope.load('Pull', new PullRequest({ pulls }));
 
-        return this.scope.load('Pull', new PullRequest({ queries }));
-
-      })
+        })
+      )
       .subscribe((loaded) => {
         this.scope.session.reset();
         this.data = loaded.collections.people as Person[];
