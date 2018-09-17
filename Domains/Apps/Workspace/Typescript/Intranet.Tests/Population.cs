@@ -189,11 +189,13 @@ namespace Intranet.Tests
 
             var finishedGood1 = new FinishedGoodBuilder(this.session)
                 .WithName("finished good1")
+                .WithPartId("1-1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new FinishedGoodBuilder(this.session)
                 .WithName("finished good2")
+                .WithPartId("1-2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .Build();
 

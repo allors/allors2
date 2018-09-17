@@ -186,7 +186,7 @@ namespace Allors
 
             var finishedGood = new FinishedGoodBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
-                .WithManufacturerId("10101")
+                .WithPartId("10101")
                 .WithName("finished good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -216,6 +216,7 @@ namespace Allors
 
             var finishedGood2 = new FinishedGoodBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
+                .WithPartId("2-2")
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
@@ -243,6 +244,7 @@ namespace Allors
 
             var finishedGood3 = new FinishedGoodBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
+                .WithPartId("3-3")
                 .WithName("finished good3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
