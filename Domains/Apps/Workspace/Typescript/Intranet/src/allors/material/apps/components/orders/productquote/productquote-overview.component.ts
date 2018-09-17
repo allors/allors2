@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, MediaService, PdfService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
@@ -63,7 +63,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
     const { m, pull } = this.dataService;
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
         switchMap(([urlSegments, date]) => {
 

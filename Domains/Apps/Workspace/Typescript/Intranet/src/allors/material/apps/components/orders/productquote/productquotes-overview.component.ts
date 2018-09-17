@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from '../../../../../angular';
@@ -78,7 +78,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
         startWith({}),
       );
 
-    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
           return [data, date, internalOrganisationId];

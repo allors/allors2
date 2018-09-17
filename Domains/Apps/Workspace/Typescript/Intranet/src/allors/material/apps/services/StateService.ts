@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { FilterFactory } from '../../../angular';
+import { Observable } from 'rxjs';
+import { SearchFactory } from '../../../angular';
 import { Organisation } from '../../../domain';
 
 export abstract class StateService {
@@ -8,7 +8,7 @@ export abstract class StateService {
     public internalOrganisationId: string;
     public internalOrganisationId$: Observable<string>;
 
-    public goodsFilter: FilterFactory;
-    public customersFilter: FilterFactory;
-    public organisationsFilter: FilterFactory;
+    public goodsFilter: SearchFactory;
+    public customersFilter: SearchFactory;
+    public organisationsFilter: SearchFactory;
 }

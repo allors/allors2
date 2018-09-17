@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, Loaded, MediaService, PdfService, Saved, Scope, WorkspaceService, DatabaseService, DataService, x } from '../../../../../angular';
@@ -10,12 +10,6 @@ import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrde
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Product } from '../../../../../domain/generated/Product.g';
-import { SalesTerm } from '../../../../../domain/generated/SalesTerm.g';
-import { TermType } from '../../../../../domain/generated/TermType.g';
-import { PostalBoundary } from '../../../../../domain/generated/PostalBoundary.g';
-import { Country } from '../../../../../domain/generated/Country.g';
-import { PostalAddress } from '../../../../../domain/generated/PostalAddress.g';
 
 @Component({
   templateUrl: './salesorder-overview.component.html',
@@ -74,7 +68,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
     const { m, pull } = this.dataService;
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
         switchMap(([urlSegments, date]) => {
           const id: string = this.route.snapshot.paramMap.get('id');

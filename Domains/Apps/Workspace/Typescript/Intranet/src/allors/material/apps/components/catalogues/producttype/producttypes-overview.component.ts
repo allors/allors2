@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ProductType } from '../../../../../domain';
@@ -64,7 +64,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
         startWith({}),
       );
 
-    const combined$: Observable<any> = Observable.combineLatest(search$, this.refresh$)
+    const combined$: Observable<any> = combineLatest(search$, this.refresh$)
       .pipe(
         scan(([previousData, previousDate], [data, date]) => {
           return [data, date];

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
@@ -65,7 +65,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
         startWith({}),
       );
 
-    const combined$ = Observable.combineLatest(search$, this.refresh$)
+    const combined$ = combineLatest(search$, this.refresh$)
       .pipe(
         scan(([previousData, previousDate], [data, date]) => {
           return [data, date];

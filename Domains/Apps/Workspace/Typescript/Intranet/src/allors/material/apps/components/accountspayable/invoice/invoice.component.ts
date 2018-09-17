@@ -6,7 +6,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
-import { Contains, Equals, Fetch, Path, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
+import { Contains, Equals, Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain, PullFactory } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -130,7 +130,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                   }),
                   pull.PurchaseInvoice({
                     object: id,
-                    path: {
+                    fetch: {
                       PurchaseOrder: x,
                     }
                   })
@@ -390,7 +390,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     const pulls = [
       pull.Party({
         object: party.id,
-        path: { CurrentContacts: x }
+        fetch: { CurrentContacts: x }
       })
     ];
 
@@ -476,34 +476,33 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const fetches: Fetch[] = [
-      new Fetch({
-        id: party.id,
-        include: [
-          new TreeNode({
-            nodes: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: this.m.PostalBoundary.Country }),
-                ],
-                roleType: this.m.PostalAddress.PostalBoundary,
-              }),
-            ],
-            roleType: this.m.PartyContactMechanism.ContactMechanism,
-          }),
-        ],
-        name: 'partyContactMechanisms',
-        path: new Path({ step: this.m.Party.CurrentPartyContactMechanisms }),
+    const { m, pull } = this.dataService;
+
+    const pulls = [
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x,
+                }
+              }
+            }
+          }
+        }
       }),
-      new Fetch({
-        id: party.id,
-        name: 'currentContacts',
-        path: new Path({ step: this.m.Party.CurrentContacts }),
-      }),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      })
     ];
 
     this.scope
-      .load('Pull', new PullRequest({ fetches }))
+      .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
         if (this.invoice.ShipToEndCustomer !== this.previousShipToEndCustomer) {

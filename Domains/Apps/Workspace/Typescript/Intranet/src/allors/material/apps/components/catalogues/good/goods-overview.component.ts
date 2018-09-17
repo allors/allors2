@@ -4,7 +4,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Brand, Good, InternalOrganisation, InventoryItemKind, Model, Organisation, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState, SerialisedInventoryItem, NonSerialisedInventoryItem, Media } from '../../../../../domain';
@@ -155,7 +155,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
         startWith({}),
       );
 
-    const combined$ = Observable.combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
           return [data, date, internalOrganisationId];
@@ -570,6 +570,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
     //       v.UniqueId.toUpperCase() === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE',
     //   )
     // );
+    return false;
   }
 
   public goBack(): void {

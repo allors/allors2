@@ -1,18 +1,18 @@
-import { Component, OnDestroy } from "@angular/core";
-import { FormBuilder, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { Subscription } from "rxjs/Subscription";
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-import { AuthenticationService } from "../../allors/angular";
-import { ConfigService } from "../app.config.service";
+import { AuthenticationService } from '../../allors/angular';
+import { ConfigService } from '../app.config.service';
 
 @Component({
-  templateUrl: "./login.component.html",
+  templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnDestroy {
   public loginForm = this.formBuilder.group({
-    password: ["", Validators.required],
-    userName: ["", Validators.required],
+    password: ['', Validators.required],
+    userName: ['', Validators.required],
   });
 
   private subscription: Subscription;
@@ -39,11 +39,11 @@ export class LoginComponent implements OnDestroy {
         if (result.authenticated) {
           this.configService.setup()
             .subscribe(() => {
-              this.router.navigate(["/"]);
+              this.router.navigate(['/']);
             },
-            (error) => alert("Error during setup. Please restart."));
+            (error) => alert('Error during setup. Please restart.'));
         } else {
-          alert("Could not log in");
+          alert('Could not log in');
         }
       },
       (error) => alert(JSON.stringify(error)),

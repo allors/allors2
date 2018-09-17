@@ -2,18 +2,14 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, Singleton, TelecommunicationsNumber } from '../../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../../framework';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
 import { StateService } from '../../../../../services/StateService';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-communicationevent-phonecommunication.component.html',
@@ -41,8 +37,8 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   private scope: Scope;
 
   constructor(
-    
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -59,72 +55,54 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [
-              new TreeNode({ roleType: m.Party.CurrentContacts }),
-              new TreeNode({
-                nodes: [
-                  new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                ],
-                roleType: m.Party.CurrentPartyContactMechanisms,
-              }),
-            ],
-            name: 'party',
-          }),
-          new Fetch({
-            id: roleId,
-            include: [
-              new TreeNode({ roleType: m.CommunicationEvent.FromParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.ToParties }),
-              new TreeNode({ roleType: m.CommunicationEvent.EventPurposes }),
-              new TreeNode({ roleType: m.CommunicationEvent.CommunicationEventState }),
-            ],
-            name: 'communicationEvent',
-          }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                nodes: [
-                  new TreeNode({
-                    nodes: [
-                      new TreeNode({ roleType: m.PartyContactMechanism.ContactMechanism }),
-                    ],
-                    roleType: m.Party.CurrentPartyContactMechanisms,
-                  }),
-                ],
-                roleType: m.InternalOrganisation.ActiveEmployees,
-              }),
-            ],
-            name: 'internalOrganisation',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'purposes',
-              objectType: this.m.CommunicationEventPurpose,
-              predicate: new Equals({ roleType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.CommunicationEventPurpose.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.Party({
+              object: id,
+              include: {
+                CurrentContacts: x,
+                CurrentPartyContactMechanisms: {
+                  ContactMechanism: x,
+                }
+              }
             }),
-        ];
+            pull.CommunicationEvent({
+              object: id,
+              include: {
+                FromParties: x,
+                ToParties: x,
+                EventPurposes: x,
+                CommunicationEventState: x,
+              }
+            }),
+            pull.Organisation({
+              object: internalOrganisationId,
+              include: {
+                ActiveEmployees: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x,
+                  }
+                }
+              }
+            }),
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name)
+            })
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
 
         this.scope.session.reset();
@@ -152,11 +130,11 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           this.contacts = this.contacts.concat(this.party.CurrentContacts);
         }
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -216,9 +194,9 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
@@ -252,9 +230,9 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
@@ -288,30 +266,30 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
         },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+          (error: Error) => {
+            this.errorService.handle(error);
+          });
     };
 
     if (this.scope.session.hasChanges) {
       // TODO:
-     /*  this.dialogService
-        .openConfirm({ message: 'Save changes?' })
-        .afterClosed().subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.scope
-              .save()
-              .subscribe((saved: Saved) => {
-                this.scope.session.reset();
-                cancelFn();
-              },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-          } else {
-            cancelFn();
-          }
-        }); */
+      /*  this.dialogService
+         .openConfirm({ message: 'Save changes?' })
+         .afterClosed().subscribe((confirm: boolean) => {
+           if (confirm) {
+             this.scope
+               .save()
+               .subscribe((saved: Saved) => {
+                 this.scope.session.reset();
+                 cancelFn();
+               },
+               (error: Error) => {
+                 this.errorService.handle(error);
+               });
+           } else {
+             cancelFn();
+           }
+         }); */
     } else {
       cancelFn();
     }
@@ -324,9 +302,9 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {

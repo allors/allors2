@@ -51,9 +51,11 @@ export class PartyContactMechanismTelecommunicationsNumberEditComponent implemen
 
           const pulls = [
             pull.PartyContactMechanism({
-              ContactPurposes: x,
-              ContactMechanism: {
-                ContactMechanismType: x,
+              include: {
+                ContactPurposes: x,
+                ContactMechanism: {
+                  ContactMechanismType: x,
+                }
               }
             }),
             pull.ContactMechanismPurpose({

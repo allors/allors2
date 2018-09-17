@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { FilterFactory, WorkspaceService } from '../../../angular';
+import { BehaviorSubject } from 'rxjs';
+import { SearchFactory, WorkspaceService } from '../../../angular';
 import { Organisation } from '../../../domain';
-import { And, ContainedIn, Equals, Query } from '../../../framework';
+import { And, ContainedIn, Equals, Filter } from '../../../framework';
 import { MetaDomain } from '../../../meta';
 import { StateService } from './StateService';
 
@@ -23,33 +23,35 @@ export class DefaultStateService extends StateService {
 
         const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
 
-        this.goodsFilter = new FilterFactory({
+        this.goodsFilter = new SearchFactory({
             objectType: m.Good,
             roleTypes: [m.Good.Name],
             post: (predicate: And) => {
-                const query = new Query({
-                    objectType: m.VendorProduct,
-                    predicate: new Equals({ roleType: m.VendorProduct.InternalOrganisation, value: this.internalOrganisationId }),
-                });
-
-                predicate.predicates.push(new ContainedIn({ associationType: m.Product.VendorProductsWhereProduct, query }));
+                predicate.operands.push(new ContainedIn({
+                    propertyType: m.Product.VendorProductsWhereProduct,
+                    extent: new Filter({
+                        objectType: m.VendorProduct,
+                        predicate: new Equals({ propertyType: m.VendorProduct.InternalOrganisation, value: this.internalOrganisationId }),
+                    })
+                }));
             },
         });
 
-        this.customersFilter = new FilterFactory({
+        this.customersFilter = new SearchFactory({
             objectType: m.Party,
             roleTypes: [m.Party.PartyName],
             post: (predicate: And) => {
-                const query = new Query({
-                    objectType: m.CustomerRelationship,
-                    predicate: new Equals({ roleType: m.CustomerRelationship.InternalOrganisation, value: this.internalOrganisationId }),
-                });
-
-                predicate.predicates.push(new ContainedIn({ associationType: m.Party.CustomerRelationshipsWhereCustomer, query }));
+                predicate.operands.push(new ContainedIn({
+                    propertyType: m.Party.CustomerRelationshipsWhereCustomer, 
+                    extent: new Filter({
+                        objectType: m.CustomerRelationship,
+                        predicate: new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, value: this.internalOrganisationId }),
+                    })
+                }));
             },
         });
 
-        this.organisationsFilter = new FilterFactory({
+        this.organisationsFilter = new SearchFactory({
             objectType: m.Organisation,
             roleTypes: [m.Organisation.PartyName],
         });

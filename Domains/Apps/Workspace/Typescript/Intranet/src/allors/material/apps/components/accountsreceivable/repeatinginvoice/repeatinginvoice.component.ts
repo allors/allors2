@@ -2,10 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
-
-import 'rxjs/add/observable/combineLatest';
 
 import { ErrorService, Field, SearchFactory, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';

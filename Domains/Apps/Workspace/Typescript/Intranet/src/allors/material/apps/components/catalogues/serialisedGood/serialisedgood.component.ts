@@ -2,11 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
-import 'rxjs/add/observable/combineLatest';
+import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { isType } from '@angular/core/src/type';
 import { forEach } from '@angular/router/src/utils/collection';
@@ -17,12 +13,6 @@ import { FetchFactory, MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { switchMap } from 'rxjs/operators';
-import { ElectronicAddress } from '../../../../../domain/generated/ElectronicAddress.g';
-import { InventoryItemKind } from '../../../../../domain/generated/InventoryItemKind.g';
-import { Ownership } from '../../../../../domain/generated/Ownership.g';
-import { SerialisedInventoryItem } from '../../../../../domain/generated/SerialisedInventoryItem.g';
-import { UnitOfMeasure } from '../../../../../domain/generated/UnitOfMeasure.g';
-import { InvoiceItem } from '../../../../../domain/generated/InvoiceItem.g';
 
 @Component({
   templateUrl: './serialisedgood.component.html',
@@ -93,7 +83,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
     const { m, pull } = this.dataService;
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 

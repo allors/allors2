@@ -684,7 +684,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     const pulls = [
       pull.Party({
         object: party,
-        path: {
+        fetch: {
           CurrentPartyContactMechanisms: x
         },
         include: tree.PartyContactMechanism({
@@ -697,7 +697,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       }),
       pull.Party({
         object: party,
-        path: { CurrentContacts : x}
+        fetch: { CurrentContacts : x}
       }),
     ];
 

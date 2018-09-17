@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
-import { Fetch, Path, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -113,7 +113,8 @@ export class InvoiceItemEditComponent
           if (
             this.invoiceItem.InvoiceItemType === this.productItemType
           ) {
-            this.goodSelected(this.invoiceItem.Product);
+            // TODO:
+            // this.goodSelected(this.invoiceItem.Product);
           }
         }
       },
@@ -138,7 +139,8 @@ export class InvoiceItemEditComponent
     const pulls = [
       pull.Product({
         object: product.id,
-        path: { TODO  }
+        // TODO:
+        // fetch: {   }
       })
     ];
 

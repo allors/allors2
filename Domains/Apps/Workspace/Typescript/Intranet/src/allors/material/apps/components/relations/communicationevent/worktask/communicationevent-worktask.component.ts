@@ -2,18 +2,16 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import 'rxjs/add/observable/combineLatest';
-
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService } from '../../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
-import { Fetch, PullRequest, Query, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { Title } from '../../../../../../../../node_modules/@angular/platform-browser';
+import { combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './communicationevent-worktask.component.html',
@@ -40,12 +38,13 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
   constructor(
     private workspaceService: WorkspaceService,
+    private dataService: DataService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,    
+    private snackBar: MatSnackBar,
     private stateService: StateService,
-    titleService: Title,) {
+    titleService: Title) {
 
     titleService.setTitle(this.title);
 
@@ -56,71 +55,45 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    this.subscription = Observable.combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .switchMap(([urlSegments, date, internalOrganisationId]) => {
+    const { m, pull } = this.dataService;
 
-        const id: string = this.route.snapshot.paramMap.get('id');
-        const roleId: string = this.route.snapshot.paramMap.get('roleId');
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+      .pipe(
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+          const id: string = this.route.snapshot.paramMap.get('id');
+          const roleId: string = this.route.snapshot.paramMap.get('roleId');
 
-        const fetches: Fetch[] = [
-          new Fetch({
-            id,
-            include: [new TreeNode({ roleType: this.m.CommunicationEvent.CommunicationEventState })],
-            name: 'communicationEvent',
-          }),
-          new Fetch({
-            id: roleId,
-            name: 'worktask',
-          }),
-          new Fetch({
-            id: internalOrganisationId,
-            include: [
-              new TreeNode({
-                roleType: m.InternalOrganisation.ActiveEmployees }),
-            ],
-            name: 'internalOrganisation',
-          }),
-        ];
-
-        const queries: Query[] = [
-          new Query(
-            {
-              name: 'workEffortStates',
-              objectType: this.m.WorkEffortState,
-              sort: [
-                new Sort({ roleType: m.WorkEffortState.Name, direction: 'Asc' }),
-              ],
+          const pulls = [
+            pull.CommunicationEvent({
+              object: id,
+              include: { CommunicationEventState: x }
             }),
-          new Query(
-            {
-              name: 'priorities',
-              objectType: this.m.Priority,
-              predicate: new Equals({ roleType: m.Priority.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.Priority.Name, direction: 'Asc' }),
-              ],
+            pull.WorkTask({
+              object: roleId,
             }),
-          new Query(
-            {
-              name: 'workEffortPurposes',
-              objectType: this.m.WorkEffortPurpose,
-              predicate: new Equals({ roleType: m.WorkEffortPurpose.IsActive, value: true }),
-              sort: [
-                new Sort({ roleType: m.WorkEffortPurpose.Name, direction: 'Asc' }),
-              ],
+            pull.InternalOrganisation({
+              object: id,
+              include: { ActiveEmployees: x }
             }),
-          new Query(
-            {
-              name: 'workEffortAssingments',
-              objectType: this.m.WorkEffortAssignment,
+            pull.WorkEffortState({
+              sort: new Sort(m.WorkEffortState.Name)
             }),
-        ];
+            pull.Priority({
+              predicate: new Equals({ propertyType: m.Priority.IsActive, value: true }),
+              sort: new Sort(m.Priority.Name),
+            }),
+            pull.WorkEffortPurpose({
+              predicate: new Equals({ propertyType: m.WorkEffortPurpose.IsActive, value: true }),
+              sort: new Sort( m.WorkEffortPurpose.Name),
+            }),
+            pull.WorkEffortAssignment()
+          ];
 
-        return this.scope
-          .load('Pull', new PullRequest({ fetches, queries }));
-      })
+          return this.scope
+            .load('Pull', new PullRequest({ pulls }));
+        })
+      )
       .subscribe((loaded) => {
         this.subTitle = 'edit work task';
         this.workTask = loaded.objects.worktask as WorkTask;
@@ -138,11 +111,11 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
-    );
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
+      );
   }
 
   public ngOnDestroy(): void {
@@ -163,16 +136,16 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
       .subscribe((saved: Saved) => {
         this.goBack();
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 
   public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  public  goBack(): void {
+  public goBack(): void {
     window.history.back();
   }
 }

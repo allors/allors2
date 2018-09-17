@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Scope, WorkspaceService, DataService } from '../../../../../angular';

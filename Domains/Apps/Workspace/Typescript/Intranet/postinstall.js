@@ -14,6 +14,5 @@ link ('../../../../../Platform/Workspace/Typescript/src/allors/framework', 'src/
 
 link ('../../../../Base/Workspace/Typescript/modules/Angular/src/allors/angular/base', 'src/allors/angular');
 link ('../../../../Base/Workspace/Typescript/modules/Material/src/allors/material/base', 'src/allors/material');
-link ('../../../../Base/Workspace/Typescript/modules/Promise/src/allors/promise/base', 'src/allors/promise');
 
 link ('../Domain/src/allors/domain/apps', 'src/allors/domain');

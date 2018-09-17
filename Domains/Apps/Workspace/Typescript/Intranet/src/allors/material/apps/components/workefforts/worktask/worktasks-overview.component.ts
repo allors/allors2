@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService, DataService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -150,20 +150,18 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
                   predicates.push(new Equals({ propertyType: m.WorkTask.Priority, value: this.priority }));
                 }
 
-                const workTasksQuery: Query = new Query(
-                  {
-                    name: 'worktasks',
-                    objectType: m.WorkTask,
+                const pulls2 = [
+                  pull.WorkTask({
                     predicate,
-                    include: [
-                      new TreeNode({ roleType: m.WorkEffort.WorkEffortState }),
-                      new TreeNode({ roleType: m.WorkEffort.Priority }),
-                      new TreeNode({ roleType: m.WorkEffort.CreatedBy }),
-                    ],
-                  });
+                    include: {
+                      WorkEffortState: x,
+                      Priority: x,
+                      CreatedBy: x,
+                    }
+                  })];
 
                 return this.scope
-                  .load('Pull', new PullRequest({ pulls: [workTasksQuery] }));
+                  .load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
         })
