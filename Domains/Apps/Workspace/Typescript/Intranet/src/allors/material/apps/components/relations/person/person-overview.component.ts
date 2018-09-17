@@ -1,13 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, ISessionObject } from '../../../../../framework';
+import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
@@ -109,8 +109,8 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
                 LastModifiedBy: x,
                 Salutation: x,
                 PartyContactMechanisms: partyContactMechanismTree,
-                CurrentPartyContactMechanisms: partyContactMechanismTree,
-                InactivePartyContactMechanisms: partyContactMechanismTree,
+                // CurrentPartyContactMechanisms: partyContactMechanismTree,
+                // InactivePartyContactMechanisms: partyContactMechanismTree,
                 GeneralCorrespondence: {
                   PostalBoundary: {
                     Country: x,
@@ -122,10 +122,12 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
               object: id,
               fetch: {
                 CommunicationEventsWhereInvolvedParty: {
-                  CommunicationEventState: x,
-                  FromParties: x,
-                  ToParties: x,
-                  InvolvedParties: x,
+                  include: {
+                    CommunicationEventState: x,
+                    FromParties: x,
+                    ToParties: x,
+                    InvolvedParties: x,
+                  }
                 }
               }
             }),
@@ -146,8 +148,10 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
               object: id,
               fetch: {
                 OrganisationContactRelationshipsWhereContact: {
-                  Organisation: x,
-                  ContactKinds: x,
+                  include: {
+                    Organisation: x,
+                    ContactKinds: x,
+                  }
                 }
               }
             }),
@@ -160,16 +164,18 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
-        this.person = loaded.objects.person as Person;
-        const organisationContactRelationships: OrganisationContactRelationship[] = loaded.collections.organisationContactRelationships as OrganisationContactRelationship[];
+        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.person = loaded.objects.Person as Person;
+
+        const organisationContactRelationships = loaded.collections.OrganisationContactRelationshipsWhereContact as OrganisationContactRelationship[];
         this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
         this.contactKindsText = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].ContactKinds
           .map((v: OrganisationContactKind) => v.Description)
           .reduce((acc: string, cur: string) => acc + ', ' + cur) : undefined;
-        this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
-        this.workEffortAssignments = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
+
+        this.communicationEvents = loaded.collections.CommunicationEventsWhereInvolvedParty as CommunicationEvent[];
+        this.workEffortAssignments = loaded.collections.WorkEffortAssignmentsWhereProfessional as WorkEffortAssignment[];
 
         this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];

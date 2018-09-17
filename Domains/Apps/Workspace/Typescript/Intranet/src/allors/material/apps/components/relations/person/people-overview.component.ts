@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -9,13 +10,12 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Person } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-interface SearchData {
-  firstName: string;
-  lastName: string;
+interface SearchData{
+  firstName: String;
+  lastName: String;
 }
 
 @Component({
@@ -34,14 +34,15 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
   private scope: Scope;
 
   constructor(
+    public mediaService: MediaService,
+    private router: Router,
     private workspaceService: WorkspaceService,
     private dataService: DataService,
-    public mediaService: MediaService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private router: Router,
     private dialogService: AllorsMaterialDialogService,
+    private location: Location,
     titleService: Title) {
 
     titleService.setTitle(this.title);
@@ -62,30 +63,24 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        startWith({}),
+        startWith({} as SearchData),
       );
 
-    const combined$ = combineLatest(search$, this.refresh$)
+    this.subscription = combineLatest(search$, this.refresh$)
       .pipe(
-        scan(([previousData, previousDate], [data, date]) => {
-          return [data, date];
-        }, [])
-      );
-
-    this.subscription = combined$
-      .pipe(
-        switchMap(([data, take]) => {
+        switchMap(([data, refresh]) => {
           const predicate: And = new And();
-          const predicates: Predicate[] = predicate.operands;
 
           if (data.firstName) {
+            // TODO: should be a shared function
             const like: string = '%' + data.firstName + '%';
-            predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
+            predicate.operands.push(new Like({ roleType: m.Person.FirstName, value: like }));
           }
 
           if (data.lastName) {
+            // TODO: should be a shared function
             const like: string = data.lastName.replace('*', '%') + '%';
-            predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
+            predicate.operands.push(new Like({ roleType: m.Person.LastName, value: like }));
           }
 
           const pulls = [
@@ -100,13 +95,12 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
             })];
 
           return this.scope.load('Pull', new PullRequest({ pulls }));
-
         })
       )
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.data = loaded.collections.people as Person[];
-        this.total = loaded.values.people_total;
+        this.data = loaded.collections.People as Person[];
+        this.total = loaded.values.People_total;
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -121,7 +115,7 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
   }
 
   public goBack(): void {
-    window.history.back();
+    this.location.back();
   }
 
   public refresh(): void {
@@ -146,6 +140,6 @@ export class PeopleOverviewComponent implements OnInit, OnDestroy {
   }
 
   public onView(person: Person): void {
-    this.router.navigate(['/relations/peson/' + person.id]);
+    this.router.navigate(['/relations/person/' + person.id]);
   }
 }

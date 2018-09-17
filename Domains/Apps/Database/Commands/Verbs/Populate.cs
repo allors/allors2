@@ -73,7 +73,6 @@ namespace Commands.Verbs
                     session.Derive();
                     session.Commit();
 
-                    // new Initial(session, directoryInfo).Execute();
                     new Demo(session, directoryInfo).Execute();
 
                     session.Derive();

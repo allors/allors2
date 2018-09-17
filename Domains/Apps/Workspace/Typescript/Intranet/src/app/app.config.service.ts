@@ -35,7 +35,7 @@ export class ConfigService {
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
                 tap((loaded: Loaded) => {
-                    const internalOrganisations = loaded.collections.internalOrganisations as Organisation[];
+                    const internalOrganisations = loaded.collections.Organisations as Organisation[];
 
                     if (internalOrganisations && internalOrganisations.length > 0) {
                         const organisation = internalOrganisations.find(v => v.id === this.stateService.internalOrganisationId);
@@ -44,7 +44,7 @@ export class ConfigService {
                         }
                     }
 
-                    const singletons = loaded.collections.singletons as Singleton[];
+                    const singletons = loaded.collections.Singletons as Singleton[];
                     this.stateService.singletonId = singletons[0].id;
                 })
             );

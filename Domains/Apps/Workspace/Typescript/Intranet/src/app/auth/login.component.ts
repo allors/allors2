@@ -41,7 +41,9 @@ export class LoginComponent implements OnDestroy {
             .subscribe(() => {
               this.router.navigate(['/']);
             },
-            (error) => alert('Error during setup. Please restart.'));
+            (error) => {
+              alert('Error during setup. Please restart.');
+            });
         } else {
           alert('Could not log in');
         }

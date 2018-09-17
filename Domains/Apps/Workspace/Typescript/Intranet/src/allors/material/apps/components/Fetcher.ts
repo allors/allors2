@@ -4,14 +4,14 @@ import { DataService, x } from '../../../angular';
 
 export class Fetcher {
 
-  constructor(private state: StateService, private data: DataService) {
+  constructor(private stateService: StateService, private dataService: DataService) {
   }
 
   public get internalOrganisation(): Pull {
-    const { pull } = this.data;
+    const { pull } = this.dataService;
 
     return pull.InternalOrganisation({
-      object: this.state.internalOrganisationId,
+      object: this.stateService.internalOrganisationId,
       include: {
         DefaultPaymentMethod: x,
         DefaultShipmentMethod: x,
@@ -27,20 +27,20 @@ export class Fetcher {
   }
 
   public get categories(): Pull {
-    const { pull } = this.data;
+    const { pull } = this.dataService;
 
     return pull.Organisation({
-      object: this.state.internalOrganisationId,
+      object: this.stateService.internalOrganisationId,
       fetch: { ProductCategoriesWhereInternalOrganisation: x },
     });
   }
 
   public get locales(): Pull {
 
-    const { pull, tree } = this.data;
+    const { pull, tree } = this.dataService;
 
     return pull.Singleton({
-      object: this.state.singletonId,
+      object: this.stateService.singletonId,
       fetch: {
         AdditionalLocales: {
           include: {

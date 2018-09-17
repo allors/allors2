@@ -33,12 +33,14 @@ export class TreeNode {
       throw new Error('Unknown role: ' + roleTypeName);
     }
 
-    const childJson = json[roleTypeName];
-    if (childJson) {
-      const nodes = Object.keys(childJson)
+    const role = json[roleTypeName];
+    if (role.nodes) {
+      this.nodes = role.nodes;
+    } else if (role) {
+      const nodes = Object.keys(role)
         .map((childRoleName) => {
           const childTreeNode = new TreeNode();
-          childTreeNode.parse(childJson, this.roleType.objectType, childRoleName);
+          childTreeNode.parse(role, this.roleType.objectType, childRoleName);
           return childTreeNode;
         });
 
