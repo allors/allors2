@@ -26,30 +26,29 @@
   <Class Name="Allors.Data.Protocol.Predicate">
     <Position X="11.75" Y="0.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>EAIAgAAAAABAAAAgAAAAAAAAAAASAAEAAIAiAAEAAAA=</HashCode>
+      <HashCode>EAAAgAAAAABAAAAAAAAAAAAAAAASAAAAAIAiAAEAAAA=</HashCode>
       <FileName>Data\Protocol\Predicate.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Data.Protocol.Sort">
-    <Position X="9.25" Y="1.5" Width="1.75" />
+    <Position X="9" Y="1.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAIAgAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Protocol\Sort.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Allors.Data.Protocol.Step">
-    <Position X="8.75" Y="4.25" Width="1.5" />
+    <Position X="9" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AgAAgAAAAACAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <HashCode>AgAAgAAAAAAAAAAAAAAACAAAAAAAAAAAAAACAAAAAAA=</HashCode>
       <FileName>Data\Protocol\Step.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Next" />
-      <Property Name="Tree" />
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Data.Protocol.TreeNode">
-    <Position X="11.5" Y="6.75" Width="1.5" />
+    <Position X="11.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIggAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Protocol\TreeNode.cs</FileName>
@@ -59,7 +58,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Allors.Data.Protocol.Tree">
-    <Position X="8.75" Y="6.75" Width="1.5" />
+    <Position X="9" Y="6.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAggAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Data\Protocol\Tree.cs</FileName>
@@ -71,7 +70,7 @@
   <Class Name="Allors.Data.Protocol.Result">
     <Position X="3.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAAAAAIAAAAEAAAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
+      <HashCode>AAAAgAAAAAAAAAAAAAEgAAQAAAAAAAAAAAEAAAAAEAA=</HashCode>
       <FileName>Data\Protocol\Result.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -85,8 +84,8 @@
       <FileName>Data\Protocol\Fetch.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Include" />
       <Property Name="Step" />
+      <Property Name="Include" />
     </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />

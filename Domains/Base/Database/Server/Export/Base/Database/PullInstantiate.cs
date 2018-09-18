@@ -80,7 +80,7 @@ namespace Allors.Server
                             }
                             else
                             {
-                                name = name ?? propertyType.SingularName;
+                                name = name ?? propertyType.PluralName;
 
                                 var objects = ((Extent)fetch.Step.Get(@object, aclCache)).ToArray();
 

@@ -43,7 +43,7 @@ namespace Allors.Data
             return new Predicate
                        {
                            Kind = PredicateKind.Like,
-                           RoleType = this.RoleType?.Id,
+                           PropertyType = this.RoleType?.Id,
                            Value = Convert.ToString(this.Value),
                            Parameter = this.Parameter
                        };

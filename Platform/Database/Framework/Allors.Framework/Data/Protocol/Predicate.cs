@@ -32,8 +32,6 @@ namespace Allors.Data.Protocol
 
         public Guid? PropertyType { get; set; }
 
-        public Guid? RoleType { get; set; }
-
         public Guid? ObjectType { get; set; }
 
         public string Parameter { get; set; }
@@ -41,10 +39,6 @@ namespace Allors.Data.Protocol
         public Predicate Operand { get; set; }
 
         public Predicate[] Operands { get; set; }
-
-        public string Object { get; set; }
-
-        public string[] Objects { get; set; }
 
         public string Value { get; set; }
 
@@ -75,8 +69,13 @@ namespace Allors.Data.Protocol
                     };
 
                 default:
-                    var propertyType = this.PropertyType != null ? (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(this.PropertyType.Value) : null;
-                    var roleType = this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(this.RoleType.Value) : null;
+                    if (!this.PropertyType.HasValue)
+                    {
+                        throw new Exception("Missing PropertyType");
+                    }
+
+                    var propertyType = (IPropertyType)session.Database.ObjectFactory.MetaPopulation.Find(this.PropertyType.Value);
+                    var roleType = propertyType as IRoleType;
 
                     switch (this.Kind)
                     {
@@ -97,14 +96,17 @@ namespace Allors.Data.Protocol
                         case PredicateKind.Equals:
 
                             var equals = new Equals(propertyType) { Parameter = this.Parameter };
-                            if (this.Object != null)
+                            if (this.Value != null)
                             {
-                                equals.Object = session.Instantiate(this.Object);
-                            }
-                            else if (this.Value != null)
-                            {
-                                var value = Convert.ToValue((IUnit)((IRoleType)propertyType)?.ObjectType, this.Value);
-                                equals.Value = value;
+                                if (propertyType.ObjectType.IsUnit)
+                                {
+                                    var value = Convert.ToValue((IUnit)((IRoleType)propertyType)?.ObjectType, this.Value);
+                                    equals.Value = value;
+                                }
+                                else
+                                {
+                                    equals.Object = session.Instantiate(this.Value);
+                                }
                             }
 
                             return equals;
@@ -115,15 +117,15 @@ namespace Allors.Data.Protocol
                             {
                                 PropertyType = propertyType,
                                 Parameter = this.Parameter,
-                                Object = session.Instantiate(this.Object)
+                                Object = session.Instantiate(this.Value)
                             };
 
                         case PredicateKind.ContainedIn:
 
                             var containedIn = new ContainedIn(propertyType) { Parameter = this.Parameter };
-                            if (this.Objects != null)
+                            if (this.Value != null)
                             {
-                                containedIn.Objects = this.Objects.Select(session.Instantiate).ToArray();
+                                containedIn.Objects = this.Values.Select(session.Instantiate).ToArray();
                             }
                             else if (this.Extent != null)
                             {

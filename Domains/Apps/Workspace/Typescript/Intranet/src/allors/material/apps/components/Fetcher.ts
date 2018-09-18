@@ -11,6 +11,7 @@ export class Fetcher {
     const { pull } = this.dataService;
 
     return pull.InternalOrganisation({
+      name: 'InternalOrganisation',
       object: this.stateService.internalOrganisationId,
       include: {
         DefaultPaymentMethod: x,
