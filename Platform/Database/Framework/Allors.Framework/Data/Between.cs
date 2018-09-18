@@ -44,7 +44,7 @@ namespace Allors.Data
             return new Predicate
                        {
                            Kind = PredicateKind.Between,
-                           PropertyType = this.RoleType?.Id,
+                           RoleType = this.RoleType?.Id,
                            Values = this.Values.Select(Convert.ToString).ToArray(),
                            Parameter = this.Parameter
                        };

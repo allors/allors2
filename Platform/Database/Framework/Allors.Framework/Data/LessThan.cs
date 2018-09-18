@@ -43,7 +43,7 @@ namespace Allors.Data
             return new Predicate
                        {
                            Kind = PredicateKind.LessThan,
-                           PropertyType = this.RoleType?.Id,
+                           RoleType = this.RoleType?.Id,
                            Value = Convert.ToString(this.Value),
                            Parameter = this.Parameter
                        };

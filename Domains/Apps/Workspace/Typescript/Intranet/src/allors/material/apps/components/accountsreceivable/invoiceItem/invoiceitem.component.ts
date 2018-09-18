@@ -205,7 +205,7 @@ export class InvoiceItemEditComponent
         post: (predicate: And) => {
             const extent = new Filter({
                 objectType: this.m.VendorProduct,
-                predicate: new Equals({ propertyType: this.m.VendorProduct.InternalOrganisation, value: facility.Owner }),
+                predicate: new Equals({ propertyType: this.m.VendorProduct.InternalOrganisation, object: facility.Owner }),
             });
 
             predicate.operands.push(new ContainedIn({ propertyType: this.m.Product.VendorProductsWhereProduct, extent }));

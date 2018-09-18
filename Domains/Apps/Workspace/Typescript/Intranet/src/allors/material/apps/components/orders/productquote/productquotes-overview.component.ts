@@ -137,7 +137,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
                 }
 
                 if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.ProductQuote.QuoteState, value: this.quoteState }));
+                  predicates.push(new Equals({ propertyType: m.ProductQuote.QuoteState, object: this.quoteState }));
                 }
 
                 const queries = [

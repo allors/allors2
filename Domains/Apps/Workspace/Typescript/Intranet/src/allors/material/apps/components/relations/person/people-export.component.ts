@@ -1,18 +1,14 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import * as Papa from 'papaparse';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { Person } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 interface SearchData {
@@ -46,11 +42,7 @@ export class PeopleExportComponent implements OnDestroy {
     private dataService: DataService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
-    private titleService: Title,
-    private snackBar: MatSnackBar,
-    private router: Router,
-    private snackBarService: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService) {
+    titleService: Title) {
 
     titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
@@ -81,23 +73,22 @@ export class PeopleExportComponent implements OnDestroy {
         }, [])
       );
 
-
     const { m, pull } = this.dataService;
 
     this.subscription = combined$
       .pipe(
         switchMap(([data, take]: [SearchData, number]) => {
-          const predicate: And = new And();
-          const predicates: Predicate[] = predicate.operands;
+          const predicate = new And();
+          const operands = predicate.operands;
 
           if (data.firstName) {
-            const like: string = '%' + data.firstName + '%';
-            predicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
+            const like = '%' + data.firstName + '%';
+            operands.push(new Like(m.Person.FirstName, like));
           }
 
           if (data.lastName) {
-            const like: string = data.lastName.replace('*', '%') + '%';
-            predicates.push(new Like({ roleType: m.Person.LastName, value: like }));
+            const like = data.lastName.replace('*', '%') + '%';
+            operands.push(new Like(m.Person.LastName, like));
           }
 
           const pulls = [

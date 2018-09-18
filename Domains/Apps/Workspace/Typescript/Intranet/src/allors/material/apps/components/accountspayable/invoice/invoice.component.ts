@@ -97,7 +97,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               sort: new Sort(m.Currency.Name),
             }),
             pull.PurchaseInvoiceType({
-              predicate: new Equals({ propertyType: m.PurchaseInvoiceType.IsActive, value: true }),
+              predicate: new Equals(m.PurchaseInvoiceType.IsActive, true),
               sort: new Sort(m.PurchaseInvoiceType.Name),
             })
           ];

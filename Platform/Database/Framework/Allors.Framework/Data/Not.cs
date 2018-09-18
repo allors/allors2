@@ -42,7 +42,7 @@ namespace Allors.Data
         {
             return new Predicate()
             {
-                Kind = PredicateKind.And,
+                Kind = PredicateKind.Not,
                 Operand = this.Operand?.Save()
             };
         }

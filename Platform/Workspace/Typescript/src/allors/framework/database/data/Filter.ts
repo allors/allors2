@@ -12,7 +12,9 @@ export class Filter {
 
   constructor(fields?: Partial<Filter> | MetaObjectType | ObjectType) {
     if ((fields as MetaObjectType)._objectType) {
-      this.objectType = fields as any;
+      this.objectType = fields as MetaObjectType;
+    } else if (fields instanceof ObjectType) {
+      this.objectType = fields;
     } else {
       Object.assign(this, fields);
     }

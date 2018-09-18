@@ -4,12 +4,17 @@ import { Predicate } from './Predicate';
 
 export class Equals implements Predicate {
   public propertyType: PropertyType;
-  public value: ISessionObject | string | Date | boolean | number;
+  public value: string | Date | boolean | number;
+  public object: ISessionObject | string;
 
-  constructor(fields?: Partial<Equals> | PropertyType, value?: any) {
+  constructor(fields?: Partial<Equals> | PropertyType, valueOrObject?: ISessionObject | string | Date | boolean | number) {
     if ((fields as PropertyType).objectType) {
       this.propertyType = fields as PropertyType;
-      this.value = value;
+      if (this.propertyType.objectType.isUnit) {
+        this.value = valueOrObject as any;
+      } else {
+        this.object = valueOrObject as any;
+      }
     } else {
       Object.assign(this, fields);
     }
@@ -17,19 +22,11 @@ export class Equals implements Predicate {
 
   public toJSON(): any {
 
-    let value = this.value;
-
-    if (!this.propertyType.objectType.isUnit) {
-      const object = value as ISessionObject;
-      if (object && object.id) {
-        value = object.id;
-      }
-    }
-
     return {
       kind: 'Equals',
-      propertytype: this.propertyType ? this.propertyType.id : undefined,
-      value,
+      propertytype: this.propertyType.id,
+      value: this.value,
+      object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object
     };
   }
 }

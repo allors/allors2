@@ -166,10 +166,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
                 if (data.internalOrganisation) {
                   predicates.push(
-                    new Equals({
-                      propertyType: m.SalesInvoice.BillToCustomer,
-                      value: this.billToInternalOrganisation,
-                    }),
+                    new Equals({ propertyType: m.SalesInvoice.BillToCustomer, object: this.billToInternalOrganisation }),
                   );
                 }
 
@@ -183,7 +180,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
                 }
 
                 if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, value: this.salesInvoiceState }));
+                  predicates.push(new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, object: this.salesInvoiceState }));
                 }
 
                 const queries = [

@@ -147,7 +147,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
                 if (data.internalOrganisation) {
                   predicates.push(
-                    new Equals({ propertyType: m.SalesOrder.BillToCustomer, value: this.billToInternalOrganisation })
+                    new Equals({ propertyType: m.SalesOrder.BillToCustomer, object: this.billToInternalOrganisation })
                   );
                 }
 
@@ -160,7 +160,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
                 if (data.state) {
                   predicates.push(
-                    new Equals({ propertyType: m.SalesOrder.SalesOrderState, value: this.orderState })
+                    new Equals({ propertyType: m.SalesOrder.SalesOrderState, object: this.orderState })
                   );
                 }
 

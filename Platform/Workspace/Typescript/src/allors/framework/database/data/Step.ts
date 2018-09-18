@@ -61,7 +61,7 @@ export class Step {
 
     return {
       tree: this.tree,
-      propertytype: this.propertyType.id,
+      propertyType: this.propertyType.id,
       next: this.next,
     };
   }

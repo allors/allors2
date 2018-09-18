@@ -143,11 +143,11 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
                 }
 
                 if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.WorkTask.WorkEffortState, value: this.workEffortState }));
+                  predicates.push(new Equals({ propertyType: m.WorkTask.WorkEffortState, object: this.workEffortState }));
                 }
 
                 if (data.priority) {
-                  predicates.push(new Equals({ propertyType: m.WorkTask.Priority, value: this.priority }));
+                  predicates.push(new Equals({ propertyType: m.WorkTask.Priority, object: this.priority }));
                 }
 
                 const pulls2 = [

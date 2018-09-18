@@ -153,11 +153,11 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
                 }
 
                 if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.WorkTask.WorkEffortState, value: this.workEffortState }));
+                  predicates.push(new Equals({ propertyType: m.WorkTask.WorkEffortState, object: this.workEffortState }));
                 }
 
                 if (data.priority) {
-                  predicates.push(new Equals({ propertyType: m.WorkTask.Priority, value: this.priority }));
+                  predicates.push(new Equals({ propertyType: m.WorkTask.Priority, object: this.priority }));
                 }
 
                 const workTasksExtent = new Filter(
@@ -172,7 +172,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
                 assignmentPredicates.push(new ContainedIn({ propertyType: m.WorkEffortAssignment.Assignment, extent: workTasksExtent }));
 
                 if (data.assignee) {
-                  assignmentPredicates.push(new Equals({ propertyType: m.WorkEffortAssignment.Professional, value: this.assignee }));
+                  assignmentPredicates.push(new Equals({ propertyType: m.WorkEffortAssignment.Professional, object: this.assignee }));
                 }
 
                 const assignmentsQuery = [

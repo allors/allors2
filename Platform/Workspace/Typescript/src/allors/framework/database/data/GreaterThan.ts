@@ -4,16 +4,21 @@ import { Predicate } from './Predicate';
 
 export class GreaterThan implements Predicate {
   public roleType: RoleType;
-  public value: any;
+  public value: string | Date | boolean | number;
 
-  constructor(fields?: Partial<GreaterThan>) {
-    Object.assign(this, fields);
+  constructor(fields?: Partial<GreaterThan> | RoleType, value?: string | Date | boolean | number) {
+    if ((fields as RoleType).objectType) {
+      this.roleType = fields as RoleType;
+      this.value = value;
+    } else {
+      Object.assign(this, fields);
+    }
   }
 
   public toJSON(): any {
     return {
       kind: 'GreaterThan',
-      roletype: this.roleType.id,
+      roleType: this.roleType.id,
       value: this.value,
     };
   }

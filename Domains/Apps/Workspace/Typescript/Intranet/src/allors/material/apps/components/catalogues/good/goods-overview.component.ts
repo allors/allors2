@@ -350,7 +350,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
                     inventoryPredicates.push(
                       new Equals({
                         propertyType: m.SerialisedInventoryItem.Ownership,
-                        value: this.ownership,
+                        object: this.ownership,
                       }),
                     );
                   }
@@ -369,7 +369,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
                     inventoryPredicates.push(
                       new Equals({
                         propertyType: m.SerialisedInventoryItem.SerialisedInventoryItemState,
-                        value: this.serialisedInventoryItemState,
+                        object: this.serialisedInventoryItemState,
                       }),
                     );
                   }

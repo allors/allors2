@@ -131,7 +131,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
                 }
 
                 if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.CommunicationEvent.CommunicationEventState, value: this.communicationEventState }));
+                  predicates.push(new Equals({ propertyType: m.CommunicationEvent.CommunicationEventState, object: this.communicationEventState }));
                 }
 
                 if (data.purpose) {

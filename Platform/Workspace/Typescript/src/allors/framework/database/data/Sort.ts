@@ -15,7 +15,7 @@ export class Sort {
 
   public toJSON(): any {
     return {
-      roletype: this.roleType.id,
+      roleType: this.roleType.id,
       descending: this.descending,
     };
   }

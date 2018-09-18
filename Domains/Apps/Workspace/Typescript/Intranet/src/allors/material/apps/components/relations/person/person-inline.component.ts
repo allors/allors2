@@ -39,18 +39,18 @@ export class PersonInlineComponent implements OnInit {
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { pull } = this.dataService;
 
     const pulls = [
       pull.Locale({
         sort: new Sort(this.m.Locale.Name)
       }),
       pull.GenderType({
-        predicate: new Equals({ propertyType: this.m.GenderType.IsActive, value: true }),
+        predicate: new Equals(this.m.GenderType.IsActive, true ),
         sort: new Sort(this.m.GenderType.Name),
       }),
       pull.Salutation({
-        predicate: new Equals({ propertyType: this.m.Salutation.IsActive, value: true }),
+        predicate: new Equals(this.m.Salutation.IsActive, true),
         sort: new Sort(this.m.Salutation.Name)
       })
     ];

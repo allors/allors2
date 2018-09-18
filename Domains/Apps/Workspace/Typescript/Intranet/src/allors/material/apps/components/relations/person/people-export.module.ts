@@ -37,12 +37,11 @@ export { PeopleExportComponent } from './people-export.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
     FormsModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -56,4 +55,4 @@ export { PeopleExportComponent } from './people-export.component';
     RouterModule,
   ],
 })
-export class PeopleExportModule {}
+export class PeopleExportModule { }

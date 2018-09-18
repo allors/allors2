@@ -47,7 +47,8 @@ namespace Allors.Data
                        {
                            Kind = PredicateKind.Equals,
                            PropertyType = this.PropertyType.Id,
-                           Value = this.Object?.Id.ToString() ?? Convert.ToString(this.Value),
+                           Object = this.Object?.Id.ToString(),
+                           Value = Convert.ToString(this.Value),
                            Parameter = this.Parameter
                        };
         }

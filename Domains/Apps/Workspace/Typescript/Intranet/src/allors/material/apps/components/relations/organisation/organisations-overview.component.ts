@@ -179,7 +179,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
                 const postalBoundaryPredicates: Predicate[] = postalBoundaryPredicate.operands;
 
                 if (data.country) {
-                  postalBoundaryPredicates.push(new Equals({ propertyType: m.PostalBoundary.Country, value: this.country }));
+                  postalBoundaryPredicates.push(new Equals({ propertyType: m.PostalBoundary.Country, object: this.country }));
                 }
 
                 const postalBoundaryQuery = new Filter(

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -109,8 +109,8 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
                 LastModifiedBy: x,
                 Salutation: x,
                 PartyContactMechanisms: partyContactMechanismTree,
-                // CurrentPartyContactMechanisms: partyContactMechanismTree,
-                // InactivePartyContactMechanisms: partyContactMechanismTree,
+                CurrentPartyContactMechanisms: partyContactMechanismTree,
+                InactivePartyContactMechanisms: partyContactMechanismTree,
                 GeneralCorrespondence: {
                   PostalBoundary: {
                     Country: x,

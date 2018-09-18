@@ -100,7 +100,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
               sort: new Sort(m.PurchaseInvoiceItemState.Name)
             }),
             pull.InternalOrganisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
+              predicate: new Equals(m.Organisation.IsInternalOrganisation, true),
               sort: [
                 new Sort(m.Organisation.PartyName),
               ],
@@ -122,11 +122,11 @@ export class InvoicesOverviewComponent implements OnDestroy {
                 const predicate: And = new And();
                 const predicates: Predicate[] = predicate.operands;
 
-                predicates.push(new Equals({ propertyType: m.PurchaseInvoice.BilledTo, value: internalOrganisationId }));
+                predicates.push(new Equals(m.PurchaseInvoice.BilledTo, internalOrganisationId));
 
                 if (data.invoiceNumber) {
                   const like: string = '%' + data.invoiceNumber + '%';
-                  predicates.push(new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, value: like }));
+                  predicates.push(new Like(m.PurchaseInvoice.InvoiceNumber, like));
                 }
 
                 if (data.supplier) {
@@ -143,10 +143,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
                 if (data.internalOrganisation) {
                   predicates.push(
-                    new Equals({
-                      propertyType: m.PurchaseInvoice.BilledFrom,
-                      value: this.billedFromInternalOrganisation,
-                    }),
+                    new Equals(m.PurchaseInvoice.BilledFrom, this.billedFromInternalOrganisation),
                   );
                 }
 
@@ -156,7 +153,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
                 }
 
                 if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceState, value: this.purchaseInvoiceState }));
+                  predicates.push(new Equals({ propertyType: m.PurchaseInvoice.PurchaseInvoiceState, object: this.purchaseInvoiceState }));
                 }
 
                 const queries = [

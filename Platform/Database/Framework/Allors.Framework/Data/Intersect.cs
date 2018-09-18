@@ -39,7 +39,17 @@ namespace Allors.Data
 
         public Sort[] Sorting { get; set; }
 
-        public Allors.Extent Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
+        public Extent Save()
+        {
+            return new Extent
+                       {
+                           Kind = ExtentKind.Intersect,
+                           Operands = this.Operands.Select(v => v.Save()).ToArray(),
+                           Sorting = this.Sorting.Select(v => new Protocol.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
+                       };
+        }
+
+        Allors.Extent IExtent.Build(ISession session, IReadOnlyDictionary<string, object> arguments = null)
         {
             var extent = session.Intersect(Operands[0].Build(session, arguments), Operands[1].Build(session, arguments));
             foreach (var sort in this.Sorting)
@@ -48,16 +58,6 @@ namespace Allors.Data
             }
 
             return extent;
-        }
-
-        public Protocol.Extent Save()
-        {
-            return new Protocol.Extent
-            {
-                Kind = ExtentKind.Intersect,
-                Operands = this.Operands.Select(v => v.Save()).ToArray(),
-                Sorting = this.Sorting.Select(v => new Protocol.Sort { Descending = v.Descending, RoleType = v.RoleType?.Id }).ToArray()
-            };
         }
     }
 }

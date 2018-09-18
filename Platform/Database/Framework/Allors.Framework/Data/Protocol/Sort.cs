@@ -30,9 +30,9 @@ namespace Allors.Data.Protocol
 
         public bool Descending { get; set; }
 
-        public Allors.Data.Sort Load(ISession session)
+        public Data.Sort Load(ISession session)
         {
-            return new Allors.Data.Sort
+            return new Data.Sort
             {
                 Descending = this.Descending,
                 RoleType = this.RoleType != null ? (IRoleType)session.Database.ObjectFactory.MetaPopulation.Find(this.RoleType.Value) : null

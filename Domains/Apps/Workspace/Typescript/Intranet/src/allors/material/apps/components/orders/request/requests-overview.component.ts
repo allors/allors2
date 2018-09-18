@@ -153,10 +153,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
 
                 if (data.state) {
                   predicates.push(
-                    new Equals({
-                      propertyType: m.Request.RequestState,
-                      value: this.requestState
-                    })
+                    new Equals({propertyType: m.Request.RequestState, object: this.requestState})
                   );
                 }
 
