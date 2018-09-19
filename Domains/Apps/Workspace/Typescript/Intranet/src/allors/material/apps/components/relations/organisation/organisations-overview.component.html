@@ -16,7 +16,7 @@
 
           <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
             <mat-label>Search by Name</mat-label>
-            <input matInput autocomplete="off" formControlName="name">
+            <input matInput formControlName="name">
             <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
               <mat-icon>expand_more</mat-icon>
             </button>
@@ -29,25 +29,25 @@
 
           <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Country</mat-label>
-            <mat-select formControlName="country" name="country" [(ngModel)]="selectedCountry">
+            <mat-select formControlName="country" name="country">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let country of countries" [value]="country.Name">{{ country.Name }}</mat-option>
+              <mat-option *ngFor="let country of countries" [value]="country">{{ country.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Role</mat-label>
-            <mat-select formControlName="role" name="role" [(ngModel)]="selectedRole">
+            <mat-select formControlName="role" name="role">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let role of roles" [value]="role.Name">{{ role.Name }}</mat-option>
+              <mat-option *ngFor="let role of roles" [value]="role">{{ role.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
           <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
             <mat-label>Classification</mat-label>
-            <mat-select formControlName="classification" name="classification" [(ngModel)]="selectedClassification">
+            <mat-select formControlName="classification" name="classification">
               <mat-option>None</mat-option>
-              <mat-option *ngFor="let classification of classifications" [value]="classification.Name">{{ classification.Name }}</mat-option>
+              <mat-option *ngFor="let classification of classifications" [value]="classification">{{ classification.Name }}</mat-option>
             </mat-select>
           </mat-form-field>
 
@@ -78,7 +78,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let row of rows; let last = last" [attr.data-allors-id]="row.object.id" (click)="router.navigate(['/relations/organisation/', row.object.id])" style="cursor: pointer;">
+          <mat-list-item *ngFor="let row of rows; let last = last" [attr.data-allors-id]="row.object.id" (click)="onView(row.object)" style="cursor: pointer;">
 
             <mat-icon  *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
             <img  *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
@@ -91,7 +91,7 @@
             <p mat-line>{{row.phone}}</p>
 
             <div >last&nbsp;modified:
-              <br>{{ row.object.LastModifiedDate | date : shortDate }}
+              <br>{{ row.object.LastModifiedDate | date : 'shortDate' }}
             </div>
 
             <div (click)="$event.stopPropagation()">
@@ -99,7 +99,7 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a [routerLink]="['/relations/organisation/' + row.object.id]" mat-menu-item>Details</a>
+                <a (click)="onView(row.object)" mat-menu-item>Details</a>
                 <button mat-menu-item (click)="delete(row.object)" [disabled]="!row.object.CanExecuteDelete">Delete</button>
               </mat-menu>
             </div>

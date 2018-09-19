@@ -4,14 +4,12 @@ import { MatSnackBar, MatSort, MatPaginator } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
-import { Country, CustomOrganisationClassification, InternalOrganisation, Organisation, OrganisationRole, Media } from '../../../../../domain';
+import { Country, CustomOrganisationClassification, Organisation, OrganisationRole, Media } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
-import { trigger, state, style, transition, animate } from '@angular/animations';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
@@ -26,14 +24,16 @@ interface Row {
   address3: string;
 }
 
-interface SearchData {
-  name: string;
-  country: string;
-  role: string;
-  classifications: string;
-  contactFirstName: string;
-  contactLastName: string;
-}
+const searchConfig = {
+  name: [''],
+  country: [''],
+  role: [''],
+  classification: [''],
+  contactFirstName: [''],
+  contactLastName: [''],
+};
+
+type SearchValues = Record<keyof typeof searchConfig, any>;
 
 @Component({
   templateUrl: './organisations-overview.component.html',
@@ -41,26 +41,16 @@ interface SearchData {
 export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Organisations';
-  public total: number;
-  public searchForm: FormGroup; public advancedSearch: boolean;
 
-  public data: Organisation[];
-
-  public columns = [{ prop: 'name' }, { prop: 'classification' }, { prop: 'phone' }, { prop: 'address' }, { prop: 'country' }, { prop: 'actions' }];
-  public rows: Row[] = [];
-  public selected: Row[] = [];
+  public searchForm: FormGroup;
+  public advancedSearch: boolean;
 
   public countries: Country[];
-  public selectedCountry: Country;
-  public country: Country;
-
   public roles: OrganisationRole[];
-  public selectedRole: OrganisationRole;
-  public role: OrganisationRole;
-
   public classifications: CustomOrganisationClassification[];
-  public selectedClassification: CustomOrganisationClassification;
-  public classification: CustomOrganisationClassification;
+
+  public data: Organisation[];
+  public rows: Row[] = [];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -86,14 +76,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    this.searchForm = this.formBuilder.group({
-      name: [''],
-      country: [''],
-      role: [''],
-      classification: [''],
-      contactFirstName: [''],
-      contactLastName: [''],
-    });
+    this.searchForm = this.formBuilder.group(searchConfig);
   }
 
   ngOnInit(): void {
@@ -104,148 +87,114 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        startWith({}),
+        startWith({} as SearchValues),
       );
 
-    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-          return [data, date, internalOrganisationId];
-        }, []));
+        switchMap(([data, refresh, internalOrganisationId]) => {
 
-    this.subscription = combined$
-      .pipe(
-        switchMap(([data, take, , internalOrganisationId]) => {
+          const predicate: And = new And();
+          const predicates: Predicate[] = predicate.operands;
+
+          if (data.role) {
+            const role = data.role as OrganisationRole;
+            if (role.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661') {
+              predicates.push(new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }));
+            }
+          }
+
+          if (data.classification) {
+            predicates.push(new Contains({ propertyType: m.Organisation.OrganisationClassifications, object: data.classification }));
+          }
+
+          if (data.country) {
+            const postalAddressQuery = new Filter(
+              {
+                objectType: m.PostalAddress,
+                predicate: new ContainedIn({
+                  propertyType: m.PostalAddress.PostalBoundary,
+                  extent: new Filter(
+                    {
+                      objectType: m.PostalBoundary,
+                      predicate: new Equals({ propertyType: m.PostalBoundary.Country, object: data.country }),
+                    })
+                }),
+              });
+
+            predicates.push(new ContainedIn({ propertyType: m.Organisation.GeneralCorrespondence, extent: postalAddressQuery }));
+          }
+
+          if (data.contactFirstName || data.contactLastName) {
+            const contactPredicate: And = new And();
+            const contactOperands: Predicate[] = contactPredicate.operands;
+
+            if (data.contactFirstName) {
+              const like: string = '%' + data.contactFirstName + '%';
+              contactOperands.push(new Like({ roleType: m.Person.FirstName, value: like }));
+            }
+
+            if (data.contactLastName) {
+              const like: string = '%' + data.contactLastName + '%';
+              contactOperands.push(new Like({ roleType: m.Person.LastName, value: like }));
+            }
+
+            predicates.push(new ContainedIn({
+              propertyType: m.Organisation.CurrentOrganisationContactRelationships,
+              extent: new Filter(
+                {
+                  objectType: m.OrganisationContactRelationship,
+                  predicate: new ContainedIn({
+                    propertyType: m.OrganisationContactRelationship.Contact,
+                    extent: new Filter(
+                      {
+                        objectType: m.Person,
+                        predicate: contactPredicate,
+                      })
+                  }),
+                })
+            }));
+          }
+
+          if (data.name) {
+            const like: string = data.name.replace('*', '%') + '%';
+            predicates.push(new Like({ roleType: m.Organisation.Name, value: like }));
+          }
 
           const pulls = [
-            pull.OrganisationRole(
-              {
-                sort: new Sort(m.OrganisationRole.Name)
-              }
-            ),
+            pull.OrganisationRole({
+              sort: new Sort(m.OrganisationRole.Name)
+            }),
             pull.CustomOrganisationClassification({
               sort: new Sort(m.CustomOrganisationClassification.Name)
             }),
             pull.Country({
               sort: new Sort(m.Country.Name)
-            })
+            }),
+            pull.Organisation(
+              {
+                predicate,
+                include: {
+                  LogoImage: x,
+                  OrganisationClassifications: x,
+                  GeneralPhoneNumber: x,
+                  GeneralCorrespondence: {
+                    PostalBoundary: {
+                      Country: x
+                    }
+                  }
+                }
+              }
+            )
           ];
+
 
           return this.scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                this.roles = loaded.collections.organisationRoles as OrganisationRole[];
-                this.role = this.roles.find((v: OrganisationRole) => v.Name === data.role);
-
-                this.countries = loaded.collections.countries as Country[];
-                this.country = this.countries.find((v: Country) => v.Name === data.country);
-
-                this.classifications = loaded.collections.classifications as CustomOrganisationClassification[];
-                this.classification = this.classifications.find((v: CustomOrganisationClassification) => v.Name === data.classification);
-
-                const contactPredicate: And = new And();
-                const contactPredicates: Predicate[] = contactPredicate.operands;
-
-                if (data.contactFirstName) {
-                  const like: string = '%' + data.contactFirstName + '%';
-                  contactPredicates.push(new Like({ roleType: m.Person.FirstName, value: like }));
-                }
-
-                if (data.contactLastName) {
-                  const like: string = '%' + data.contactLastName + '%';
-                  contactPredicates.push(new Like({ roleType: m.Person.LastName, value: like }));
-                }
-
-                const contactQuery = new Filter(
-                  {
-                    name: 'contacts',
-                    objectType: m.Person,
-                    predicate: contactPredicate,
-                  });
-
-                const organisationContactRelationshipPredicate: And = new And();
-                const organisationContactRelationshipPredicates: Predicate[] = organisationContactRelationshipPredicate.operands;
-                organisationContactRelationshipPredicates.push(new ContainedIn({ propertyType: m.OrganisationContactRelationship.Contact, extent: contactQuery }));
-
-                const organisationContactRelationshipQuery = new Filter(
-                  {
-                    name: 'organisationContactRelationships',
-                    objectType: m.OrganisationContactRelationship,
-                    predicate: organisationContactRelationshipPredicate,
-                  });
-
-                const postalBoundaryPredicate: And = new And();
-                const postalBoundaryPredicates: Predicate[] = postalBoundaryPredicate.operands;
-
-                if (data.country) {
-                  postalBoundaryPredicates.push(new Equals({ propertyType: m.PostalBoundary.Country, object: this.country }));
-                }
-
-                const postalBoundaryQuery = new Filter(
-                  {
-                    name: 'postalBoundaries',
-                    objectType: m.PostalBoundary,
-                    predicate: postalBoundaryPredicate,
-                  });
-
-                const postalAddressPredicate: And = new And();
-                const postalAddressPredicates: Predicate[] = postalAddressPredicate.operands;
-                postalAddressPredicates.push(new ContainedIn({ propertyType: m.PostalAddress.PostalBoundary, extent: postalBoundaryQuery }));
-
-                const postalAddressQuery = new Filter(
-                  {
-                    name: 'postalAddresses',
-                    objectType: m.PostalAddress,
-                    predicate: postalAddressPredicate,
-                  });
-
-                const predicate: And = new And();
-                const predicates: Predicate[] = predicate.operands;
-
-                if (data.role) {
-                  if (this.role.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661') {
-                    predicates.push(new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }));
-                  }
-                }
-
-                if (data.classification) {
-                  predicates.push(new Contains({ propertyType: m.Organisation.OrganisationClassifications, object: this.classification }));
-                }
-
-                if (data.country) {
-                  predicates.push(new ContainedIn({ propertyType: m.Organisation.GeneralCorrespondence, extent: postalAddressQuery }));
-                }
-
-                if (data.contactFirstName || data.contactLastName) {
-                  predicates.push(new ContainedIn({ propertyType: m.Organisation.CurrentOrganisationContactRelationships, extent: organisationContactRelationshipQuery }));
-                }
-
-                if (data.name) {
-                  const like: string = data.name.replace('*', '%') + '%';
-                  predicates.push(new Like({ roleType: m.Organisation.Name, value: like }));
-                }
-
-                const queries = [
-                  pull.Organisation(
-                    {
-                      predicate,
-                      include: {
-                        LogoImage: x,
-                        OrganisationClassifications: x,
-                        GeneralPhoneNumber: x,
-                        GeneralCorrespondence: {
-                          PostalBoundary: {
-                            Country: x
-                          }
-                        }
-                      }
-                    }
-                  )
-                ];
-
                 return this.scope
-                  .load('Pull', new PullRequest({ pulls: queries }));
+                  .load('Pull', new PullRequest({ pulls }));
               })
             );
         })
@@ -253,7 +202,11 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.scope.session.reset();
 
-        this.data = loaded.collections.organisations as Organisation[];
+        this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
+        this.countries = loaded.collections.Countries as Country[];
+        this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
+
+        this.data = loaded.collections.Organisations as Organisation[];
         this.rows = this.data.map<Row>((v: Organisation) => {
           return {
             object: v,

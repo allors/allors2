@@ -133,9 +133,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
                   const containedIn: ContainedIn = new ContainedIn({
                     propertyType: m.PurchaseInvoice.BilledFrom, extent: new Filter({
                       objectType: m.Party,
-                      predicate: new Like({
-                        roleType: m.Party.PartyName, value: data.supplier.replace('*', '%') + '%',
-                      })
+                      predicate: new Like(m.Party.PartyName, data.supplier.replace('*', '%') + '%')
                     })
                   });
                   predicates.push(containedIn);
@@ -149,7 +147,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
                 if (data.reference) {
                   const like: string = data.reference.replace('*', '%') + '%';
-                  predicates.push(new Like({ roleType: m.PurchaseInvoice.CustomerReference, value: like }));
+                  predicates.push(new Like(m.PurchaseInvoice.CustomerReference, like ));
                 }
 
                 if (data.state) {

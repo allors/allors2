@@ -26,7 +26,6 @@ export { PeopleOverviewComponent } from './people-overview.component';
   ],
   exports: [
     PeopleOverviewComponent,
-    
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -43,7 +42,7 @@ export { PeopleOverviewComponent } from './people-overview.component';
     MatCheckboxModule,
     MatChipsModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
@@ -58,4 +57,4 @@ export { PeopleOverviewComponent } from './people-overview.component';
     RouterModule,
   ],
 })
-export class PeopleOverviewModule {}
+export class PeopleOverviewModule { }
