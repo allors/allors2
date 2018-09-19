@@ -1,7 +1,7 @@
 <div class="a-master">
 
   <mat-toolbar class="a-header">
-    <mat-toolbar-row >
+    <mat-toolbar-row>
       <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
       <h1>{{title}}</h1>
       <span class="col"></span>
@@ -62,8 +62,7 @@
           </mat-form-field>
 
           <div class="col-1 pt-2" *ngIf="advancedSearch">
-            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;"
-              title="Reset Search">
+            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
               <mat-icon>close</mat-icon>
             </button>
           </div>
@@ -73,25 +72,25 @@
 
       <mat-card-content class="container-fluid a-list">
 
-        <div *ngIf="rows?.length === 0">
+        <div *ngIf="organisations?.length === 0">
           <h3>No organisations to display.</h3>
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let row of rows; let last = last" [attr.data-allors-id]="row.object.id" (click)="onView(row.object)" style="cursor: pointer;">
+          <mat-list-item *ngFor="let organisation of organisations; let last = last" [attr.data-allors-id]="organisation.id" (click)="onView(organisation)" style="cursor: pointer;">
 
-            <mat-icon  *ngIf="!row.logo" mat-list-avatar>insert_photo</mat-icon>
-            <img  *ngIf="row.logo" mat-list-avatar [src]="mediaService.url(row.logo)" />
+            <mat-icon *ngIf="!organisation.LogoImage" mat-list-avatar>insert_photo</mat-icon>
+            <img *ngIf="organisation.LogoImage" mat-list-avatar [src]="mediaService.url(organisation.LogoImage)" />
 
-            <h3 mat-line>{{row.name}}</h3>
-            <p mat-line>{{row.classification}}</p>
-            <p mat-line>{{row.address}}</p>
-            <p mat-line>{{row.address2}}</p>
-            <p mat-line>{{row.address3}}</p>
-            <p mat-line>{{row.phone}}</p>
+            <h3 mat-line>{{organisation.displayName}}</h3>
+            <p mat-line>{{organisation.displayClassification}}</p>
+            <p mat-line>{{organisation.displayAddress}}</p>
+            <p mat-line>{{organisation.displayAddress2}}</p>
+            <p mat-line>{{organisation.displayAddress3}}</p>
+            <p mat-line>{{organisation.displayPhone}}</p>
 
-            <div >last&nbsp;modified:
-              <br>{{ row.object.LastModifiedDate | date : 'shortDate' }}
+            <div>last&nbsp;modified:
+              <br>{{ organisation.LastModifiedDate | date : 'shortDate' }}
             </div>
 
             <div (click)="$event.stopPropagation()">
@@ -99,8 +98,8 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a (click)="onView(row.object)" mat-menu-item>Details</a>
-                <button mat-menu-item (click)="delete(row.object)" [disabled]="!row.object.CanExecuteDelete">Delete</button>
+                <a (click)="onView(organisation)" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(organisation)" [disabled]="!organisation.CanExecuteDelete">Delete</button>
               </mat-menu>
             </div>
 
@@ -112,7 +111,7 @@
     </mat-card>
   </div>
 
-  <mat-toolbar >
+  <mat-toolbar>
     <span class="col"></span>
     <a mat-raised-button [routerLink]="['/organisation']">
       Add New

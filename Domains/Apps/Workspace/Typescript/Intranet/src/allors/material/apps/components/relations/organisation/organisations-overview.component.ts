@@ -13,17 +13,6 @@ import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-interface Row {
-  object: Organisation;
-  logo: Media;
-  name: string;
-  classification: string;
-  phone: string;
-  address: string;
-  address2: string;
-  address3: string;
-}
-
 const searchConfig = {
   name: [''],
   country: [''],
@@ -48,16 +37,11 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
   public countries: Country[];
   public roles: OrganisationRole[];
   public classifications: CustomOrganisationClassification[];
-
-  public data: Organisation[];
-  public rows: Row[] = [];
+  public organisations: Organisation[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
-
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -188,15 +172,8 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
             )
           ];
 
-
           return this.scope
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded) => {
-                return this.scope
-                  .load('Pull', new PullRequest({ pulls }));
-              })
-            );
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -205,20 +182,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.countries = loaded.collections.Countries as Country[];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
-
-        this.data = loaded.collections.Organisations as Organisation[];
-        this.rows = this.data.map<Row>((v: Organisation) => {
-          return {
-            object: v,
-            logo: v.LogoImage,
-            name: v.PartyName,
-            classification: v.OrganisationClassifications.map(w => w.Name).join(', '),
-            phone: `${v.GeneralPhoneNumber ? v.GeneralPhoneNumber.CountryCode : ''} ${v.GeneralPhoneNumber ? v.GeneralPhoneNumber.AreaCode : ''} ${v.GeneralPhoneNumber ? v.GeneralPhoneNumber.ContactNumber : ''}`,
-            address: `${v.GeneralCorrespondence && v.GeneralCorrespondence.Address1 ? v.GeneralCorrespondence.Address1 : ''} ${v.GeneralCorrespondence && v.GeneralCorrespondence.Address2 ? v.GeneralCorrespondence.Address2 : ''} ${v.GeneralCorrespondence && v.GeneralCorrespondence.Address3 ? v.GeneralCorrespondence.Address3 : ''}`,
-            address2: `${v.GeneralCorrespondence && v.GeneralCorrespondence.PostalBoundary ? v.GeneralCorrespondence.PostalBoundary.PostalCode : ''} ${v.GeneralCorrespondence && v.GeneralCorrespondence.PostalBoundary ? v.GeneralCorrespondence.PostalBoundary.Locality : ''}`,
-            address3: `${v.GeneralCorrespondence && v.GeneralCorrespondence.PostalBoundary.Country ? v.GeneralCorrespondence.PostalBoundary.Country.Name : ''}`
-          };
-        });
+        this.organisations = loaded.collections.Organisations as Organisation[];
       },
         (error: any) => {
           this.errorService.handle(error);
