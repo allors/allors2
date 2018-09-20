@@ -1,28 +1,25 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar, MatSort, MatPaginator } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
-import { Country, CustomOrganisationClassification, Organisation, OrganisationRole, Media } from '../../../../../domain';
+import { Country, CustomOrganisationClassification, Organisation, OrganisationRole, Media, OrganisationClassification } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, startWith, scan, switchMap, tap } from 'rxjs/operators';
 
-const searchConfig = {
-  name: [''],
-  country: [''],
-  role: [''],
-  classification: [''],
-  contactFirstName: [''],
-  contactLastName: [''],
-};
-
-type SearchValues = Record<keyof typeof searchConfig, any>;
+interface SearchData {
+  name?: string;
+  country?: Country;
+  role?: OrganisationRole;
+  classification?: OrganisationClassification;
+  contactFirstName?: string;
+  contactLastName?: string;
+}
 
 @Component({
   templateUrl: './organisations-overview.component.html',
@@ -31,15 +28,13 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Organisations';
 
-  public searchForm: FormGroup;
-  public advancedSearch: boolean;
-
   public countries: Country[];
   public roles: OrganisationRole[];
   public classifications: CustomOrganisationClassification[];
   public organisations: Organisation[];
 
-  private refresh$: BehaviorSubject<Date>;
+  public search$: BehaviorSubject<SearchData>;
+  public refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private scope: Scope;
 
@@ -48,7 +43,6 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
     private dataService: DataService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
@@ -58,20 +52,18 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
     this.titleService.setTitle('Organisations');
 
     this.scope = this.workspaceService.createScope();
+    this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
-    this.searchForm = this.formBuilder.group(searchConfig);
   }
 
   ngOnInit(): void {
 
     const { m, pull } = this.dataService;
 
-    const search$ = this.searchForm.valueChanges
+    const search$ = this.search$
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        startWith({} as SearchValues),
       );
 
     this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
@@ -82,8 +74,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
           const predicates: Predicate[] = predicate.operands;
 
           if (data.role) {
-            const role = data.role as OrganisationRole;
-            if (role.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661') {
+            if (data.role.UniqueId.toUpperCase() === '32E74BEF-2D79-4427-8902-B093AFA81661') {
               predicates.push(new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }));
             }
           }
@@ -167,7 +158,7 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
                       Country: x
                     }
                   }
-                }
+                },
               }
             )
           ];

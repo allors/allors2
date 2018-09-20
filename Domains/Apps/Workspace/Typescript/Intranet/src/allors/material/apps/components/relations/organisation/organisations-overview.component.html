@@ -12,63 +12,15 @@
   <div>
     <mat-card>
       <mat-card-content class="container-fluid a-search">
-        <form class="row" novalidate [formGroup]="searchForm">
-
-          <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
-            <mat-label>Search by Name</mat-label>
-            <input matInput formControlName="name">
-            <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
-              <mat-icon>expand_more</mat-icon>
-            </button>
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Search by Name</mat-label>
-            <input matInput formControlName="name">
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Country</mat-label>
-            <mat-select formControlName="country" name="country">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let country of countries" [value]="country">{{ country.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Role</mat-label>
-            <mat-select formControlName="role" name="role">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let role of roles" [value]="role">{{ role.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Classification</mat-label>
-            <mat-select formControlName="classification" name="classification">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let classification of classifications" [value]="classification">{{ classification.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="contactFirstName">
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="contactLastName">
-          </mat-form-field>
-
-          <div class="col-1 pt-2" *ngIf="advancedSearch">
-            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;" title="Reset Search">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-
-        </form>
-      </mat-card-content>
+        <a-mat-search (values)="search$.next($event)">
+            <a-mat-search-input name="name"></a-mat-search-input>
+            <a-mat-search-select name="country" [options]="countries" display="Name"></a-mat-search-select>
+            <a-mat-search-select name="role" [options]="roles" display="Name"></a-mat-search-select>
+            <a-mat-search-select name="classification" [options]="classifications" display="Name"></a-mat-search-select>
+            <a-mat-search-input name="contactFirstName"></a-mat-search-input>
+            <a-mat-search-input name="contactLastName"></a-mat-search-input>
+        </a-mat-search>
+    </mat-card-content>
 
       <mat-card-content class="container-fluid a-list">
 

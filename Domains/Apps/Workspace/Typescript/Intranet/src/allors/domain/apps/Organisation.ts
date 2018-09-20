@@ -44,7 +44,7 @@ domain.extend((workspace) => {
         },
         displayPhone: {
             get(this: Organisation): string {
-                return `${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.CountryCode : ''} ${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.AreaCode : ''} ${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.ContactNumber : ''}`;
+                return `${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.CountryCode : ''} ${this.GeneralPhoneNumber && this.GeneralPhoneNumber.AreaCode ? this.GeneralPhoneNumber.AreaCode : ''} ${this.GeneralPhoneNumber ? this.GeneralPhoneNumber.ContactNumber : ''}`;
             },
         },
     });

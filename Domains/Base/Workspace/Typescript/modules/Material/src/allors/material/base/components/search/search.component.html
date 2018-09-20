@@ -1,0 +1,10 @@
+<form class="row" novalidate [formGroup]="searchService.formGroup">
+    <ng-content></ng-content>
+
+    <div class="col-1 pt-2" *ngIf="searchService.advancedSearch">
+        <button mat-icon-button type="button" class="mat-icon-button" (click)="searchService.formGroup.reset(); searchService.advancedSearch = !searchService.advancedSearch;" title="Reset Search">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+</form>
