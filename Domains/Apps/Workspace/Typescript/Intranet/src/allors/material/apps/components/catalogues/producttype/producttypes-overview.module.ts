@@ -4,14 +4,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
 
-
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
+import { AllorsMaterialSearchModule } from '../../../../base/components/search';
+import { AllorsMaterialSearchInputModule } from '../../../../base/components/search/input';
+import { AllorsMaterialSearchSelectModule } from '../../../../base/components/search/select';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -34,19 +32,21 @@ export { ProductTypesOverviewComponent } from './producttypes-overview.component
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
+    AllorsMaterialSearchModule,
+    AllorsMaterialSearchInputModule,
+    AllorsMaterialSearchSelectModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
     FormsModule,
     InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

@@ -50,7 +50,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
     this.subscription = scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.internalOrganisations = loaded.collections.internalOrganisations as Organisation[];
+        this.internalOrganisations = loaded.collections.Organisations as Organisation[];
       },
         (error: any) => {
           this.errorService.handle(error);

@@ -138,11 +138,6 @@ namespace Intranet.Tests
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();
 
-            var kg = new UnitOfMeasureBuilder(this.session)
-                .WithName("Kilograms")
-                .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Kg").WithLocale(dutchLocale).Build())
-                .Build();
-
             var productType = new ProductTypeBuilder(this.session)
                 .WithName($"Gizmo Serialized")
                 .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.session)
@@ -152,7 +147,7 @@ namespace Intranet.Tests
                 .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.session)
                                             .WithName("Weight")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Gewicht").WithLocale(dutchLocale).Build())
-                                            .WithUnitOfMeasure(kg)
+                                            .WithUnitOfMeasure(new UnitsOfMeasure(this.session).Kilogram)
                                             .Build())
                 .Build();
 

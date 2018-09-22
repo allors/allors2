@@ -1,10 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
 import { ProductCategory } from '../../../../../domain';
@@ -14,7 +13,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, switchMap, scan } from 'rxjs/operators';
 
 interface SearchData {
-  name: string;
+  name?: string;
 }
 
 @Component({
@@ -23,14 +22,11 @@ interface SearchData {
 export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Categories';
-  public total: number;
-  public searchForm: FormGroup;
-  public advancedSearch: boolean;
   public data: ProductCategory[];
   public filtered: ProductCategory[];
 
+  public search$: BehaviorSubject<SearchData>;
   private refresh$: BehaviorSubject<Date>;
-
   private subscription: Subscription;
   private scope: Scope;
 
@@ -38,7 +34,6 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private dataService: DataService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
@@ -49,43 +44,31 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
     this.titleService.setTitle('Categories');
 
     this.scope = this.workspaceService.createScope();
+    this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
-    this.searchForm = this.formBuilder.group({
-      name: [''],
-    });
-
   }
 
   ngOnInit(): void {
 
     const { m, pull } = this.dataService;
 
-    const search$ = this.searchForm.valueChanges
+    const search$ = this.search$
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        startWith({}),
       );
 
-    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+      this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-          return [data, date, internalOrganisationId];
-        }, [])
-      );
-
-    this.subscription = combined$
-      .pipe(
-        switchMap(([data, , internalOrganisationId]) => {
+        switchMap(([data, refresh, internalOrganisationId]) => {
           const predicate: And = new And();
-          const operands: Predicate[] = predicate.operands;
+          const predicates: Predicate[] = predicate.operands;
 
-          operands.push(new Equals({ propertyType: m.ProductCategory.InternalOrganisation, value: internalOrganisationId }));
+          predicates.push(new Equals({ propertyType: m.ProductCategory.InternalOrganisation, object: internalOrganisationId }));
 
           if (data.name) {
             const like: string = data.name.replace('*', '%') + '%';
-            operands.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
+            predicates.push(new Like({ roleType: m.ProductCategory.Name, value: like }));
           }
 
           const pulls = [
@@ -102,31 +85,15 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
             )];
 
           return this.scope.load('Pull', new PullRequest({ pulls }));
-
         })
       )
       .subscribe((loaded) => {
-        this.data = loaded.collections.categories as ProductCategory[];
-        this.total = loaded.values.categories_total;
+        this.data = loaded.collections.ProductCategories as ProductCategory[];
       },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         });
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public delete(category: ProductCategory): void {
@@ -144,6 +111,20 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
               });
         }
       });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  public goBack(): void {
+    window.history.back();
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   public onView(category: ProductCategory): void {

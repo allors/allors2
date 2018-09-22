@@ -4,6 +4,7 @@ import './Organisation';
 import './Person';
 import './PostalAddress';
 import './SerialisedInventoryItem';
+import './SerialisedInventoryItemCharacteristicType';
 import './TelecommunicationsNumber';
 import './User';
 import './WebAddress';

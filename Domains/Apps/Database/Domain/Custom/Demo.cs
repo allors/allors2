@@ -137,11 +137,6 @@ namespace Allors
                 .WithInternalOrganisation(internalOrganisation)
                 .Build();
 
-            var kg = new UnitOfMeasureBuilder(this.Session)
-                .WithName("Kilograms")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Kg").WithLocale(dutchLocale).Build())
-                .Build();
-
             var productType = new ProductTypeBuilder(this.Session)
                 .WithName($"Gizmo Serialized")
                 .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
@@ -151,7 +146,7 @@ namespace Allors
                 .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Weight")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gewicht").WithLocale(dutchLocale).Build())
-                                            .WithUnitOfMeasure(kg)
+                                            .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Kilogram)
                                             .Build())
                 .Build();
 

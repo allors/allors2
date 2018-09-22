@@ -1,21 +1,19 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
-import { Catalogue, InternalOrganisation } from '../../../../../domain';
-import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { Catalogue } from '../../../../../domain';
+import { And, Like, Predicate, PullRequest, Sort, Equals } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 interface SearchData {
-  name: string;
+  name?: string;
 }
 
 @Component({
@@ -24,13 +22,11 @@ interface SearchData {
 export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Catalogues';
-  public total: number;
-  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: Catalogue[];
   public filtered: Catalogue[];
 
+  public search$: BehaviorSubject<SearchData>;
   private refresh$: BehaviorSubject<Date>;
-
   private subscription: Subscription;
   private scope: Scope;
 
@@ -38,7 +34,6 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private dataService: DataService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
@@ -49,49 +44,38 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     this.titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
+    this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
-    this.searchForm = this.formBuilder.group({
-      name: [''],
-    });
   }
 
   ngOnInit(): void {
 
-    const { pull } = this.dataService;
+    const { m, pull } = this.dataService;
 
-    const search$ = this.searchForm.valueChanges
+    const search$ = this.search$
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        startWith({}),
       );
 
-    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-          return [data, date, internalOrganisationId];
-        }, [])
-      );
-
-    this.subscription = combined$
-      .pipe(
-        switchMap(([data, , internalOrganisationId]) => {
-          const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
+        switchMap(([data, refresh, internalOrganisationId]) => {
 
           const predicate: And = new And();
-          const operands: Predicate[] = predicate.operands;
+          const predicates: Predicate[] = predicate.operands;
 
-          operands.push(new Equals({ propertyType: m.Catalogue.InternalOrganisation, value: internalOrganisationId }));
+          predicates.push(new Equals({ propertyType: m.Catalogue.InternalOrganisation, object: internalOrganisationId }));
 
           if (data.name) {
             const like: string = data.name.replace('*', '%') + '%';
-            operands.push(new Like({ roleType: m.Catalogue.Name, value: like }));
+            predicates.push(new Like({ roleType: m.Catalogue.Name, value: like }));
           }
 
           const pulls = [
             pull.Catalogue(
               {
+                predicate,
                 include: {
                   CatalogueImage: x,
                   ProductCategories: x,
@@ -104,27 +88,13 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
-        this.data = loaded.collections.catalogues as Catalogue[];
-        this.total = loaded.values.catalogues_total;
+        this.scope.session.reset();
+        this.data = loaded.collections.Catalogues as Catalogue[];
       },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         });
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public delete(catalogue: Catalogue): void {
@@ -142,6 +112,20 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
               });
         }
       });
+  }
+
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  public goBack(): void {
+    window.history.back();
+  }
+
+  public refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   public onView(catalogue: Catalogue): void {

@@ -10,15 +10,11 @@
   </mat-toolbar>
 
   <div>
-
     <mat-card>
       <mat-card-content class="container-fluid a-search">
-        <form class="row" novalidate [formGroup]="searchForm">
-          <mat-form-field class="col" appearance="outline">
-            <input matInput placeholder="Name" formControlName="name">
-            <mat-icon matSuffix>search</mat-icon>
-          </mat-form-field>
-        </form>
+        <a-mat-search (values)="search$.next($event)">
+          <a-mat-search-input name="name"></a-mat-search-input>
+        </a-mat-search>
       </mat-card-content>
 
       <mat-card-content class="container-fluid a-list">
@@ -28,7 +24,7 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let catalogue of data; let last = last" [attr.data-allors-id]="catalogue.id" (click)="router.navigate(['/catalogue/', catalogue.id])" style="cursor: pointer;">
+          <mat-list-item *ngFor="let catalogue of data; let last = last" [attr.data-allors-id]="catalogue.id" (click)="onView(catalogue)" style="cursor: pointer;">
 
             <mat-icon *ngIf="!catalogue.CatalogueImage" mat-list-avatar>photo_camera</mat-icon>
             <img *ngIf="catalogue.CatalogueImage" mat-list-avatar [src]="mediaService.url(catalogue.CatalogueImage)" />
@@ -41,8 +37,8 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a [routerLink]="'/catalogue/' +[catalogue.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="delete(catalogue)">Delete</button>
+                <a (click)="onView(catalogue)" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(catalogue)" [disabled]="!catalogue.CanExecuteDelete">Delete</button>
               </mat-menu>
             </div>
             <mat-divider *ngIf="!last" mat-inset></mat-divider>

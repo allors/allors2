@@ -239,7 +239,7 @@ namespace Allors.Domain
                 .WithName("metric ton")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("ton").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("t")
-                .WithUniqueId(KilogramId)
+                .WithUniqueId(MetricTonId)
                 .WithIsActive(true)
                 .Build();
 

@@ -1,21 +1,19 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, DataService, x, Invoked } from '../../../../../angular';
 import { SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
-import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { UnitOfMeasure } from '../../../../../domain/generated/UnitOfMeasure.g';
+import { StateService } from '../../../services/StateService';
 
 interface SearchData {
-  name: string;
+  name?: string;
 }
 
 @Component({
@@ -24,13 +22,11 @@ interface SearchData {
 export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Product Characteristics';
-  public total: number;
-  public searchForm: FormGroup; public advancedSearch: boolean;
   public data: SerialisedInventoryItemCharacteristicType[];
   public filtered: SerialisedInventoryItemCharacteristicType[];
 
+  public search$: BehaviorSubject<SearchData>;
   private refresh$: BehaviorSubject<Date>;
-
   private subscription: Subscription;
   private scope: Scope;
 
@@ -38,48 +34,38 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
     private workspaceService: WorkspaceService,
     private dataService: DataService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
     private titleService: Title,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dialogService: AllorsMaterialDialogService) {
+    private dialogService: AllorsMaterialDialogService,
+    private stateService: StateService) {
 
     titleService.setTitle(this.title);
 
     this.scope = this.workspaceService.createScope();
+    this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
-    this.searchForm = this.formBuilder.group({
-      name: [''],
-    });
   }
 
   ngOnInit(): void {
 
     const { m, pull } = this.dataService;
 
-    const search$ = this.searchForm.valueChanges
+    const search$ = this.search$
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        startWith({}),
       );
 
-    const combined$ = combineLatest(search$, this.refresh$)
+    this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, previousDate], [data, date]) => {
-          return [data, date];
-        }, [])
-      );
-
-    this.subscription = combined$
-      .pipe(
-        switchMap(([data]) => {
+        switchMap(([data, refresh, internalOrganisationId]) => {
           const predicate = new And();
+          const predicates: Predicate[] = predicate.operands;
 
           if (data.name) {
             const like: string = data.name.replace('*', '%') + '%';
-            predicate.operands.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
+            predicates.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
           }
 
           const pulls = [
@@ -97,13 +83,29 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
         })
       )
       .subscribe((loaded) => {
-        this.data = loaded.collections.productCharacteristics as SerialisedInventoryItemCharacteristicType[];
-        this.total = loaded.values.productCharacteristics_total;
+        this.data = loaded.collections.SerialisedInventoryItemCharacteristicTypes as SerialisedInventoryItemCharacteristicType[];
       },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
         });
+  }
+
+  public delete(characteristicType: SerialisedInventoryItemCharacteristicType): void {
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this characteristic?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          this.scope.invoke(characteristicType.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 
   public ngOnDestroy(): void {
@@ -116,14 +118,8 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
     window.history.back();
   }
 
-  public delete(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this characteristic?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          // TODO: Logical, physical or workflow delete
-        }
-      });
+  public refresh(): void {
+    this.refresh$.next(new Date());
   }
 
   public onView(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {

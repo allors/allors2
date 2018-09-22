@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("6451E06E-747E-4F58-98F5-2F9DC5D787B5")]
     #endregion
-    public partial class ProductType : UniquelyIdentifiable, AccessControlledObject
+    public partial class ProductType : UniquelyIdentifiable, AccessControlledObject, Deletable
     {
         #region inherited properties
         public Guid UniqueId { get; set; }
@@ -42,27 +42,26 @@ namespace Allors.Repository
 
         public void OnBuild()
         {
-            throw new NotImplementedException();
         }
 
         public void OnPostBuild()
         {
-            throw new NotImplementedException();
         }
 
         public void OnPreDerive()
         {
-            throw new NotImplementedException();
         }
 
         public void OnDerive()
         {
-            throw new NotImplementedException();
         }
 
         public void OnPostDerive()
         {
-            throw new NotImplementedException();
+        }
+
+        public void Delete()
+        {
         }
 
         #endregion

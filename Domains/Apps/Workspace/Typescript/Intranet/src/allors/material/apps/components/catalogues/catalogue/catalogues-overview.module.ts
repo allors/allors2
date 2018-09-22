@@ -6,13 +6,11 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
+import { AllorsMaterialSearchModule } from '../../../../base/components/search';
+import { AllorsMaterialSearchInputModule } from '../../../../base/components/search/input';
+import { AllorsMaterialSearchSelectModule } from '../../../../base/components/search/select';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -34,6 +32,9 @@ export { CataloguesOverviewComponent } from './catalogues-overview.component';
   imports: [
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
+    AllorsMaterialSearchModule,
+    AllorsMaterialSearchInputModule,
+    AllorsMaterialSearchSelectModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
@@ -41,13 +42,12 @@ export { CataloguesOverviewComponent } from './catalogues-overview.component';
     AllorsMaterialTextAreaModule,
     CommonModule,
     CdkTableModule,
-    
     FormsModule,
     InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

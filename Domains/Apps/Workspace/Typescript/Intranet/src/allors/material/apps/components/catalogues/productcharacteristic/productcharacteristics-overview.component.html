@@ -12,12 +12,9 @@
   <div>
     <mat-card>
       <mat-card-content class="container-fluid a-search">
-        <form class="row" novalidate [formGroup]="searchForm">
-          <mat-form-field class="col" appearance="outline">
-            <mat-label>Search by Name</mat-label>
-            <input matInput formControlName="name">
-          </mat-form-field>
-        </form>
+        <a-mat-search (values)="search$.next($event)">
+          <a-mat-search-input name="name"></a-mat-search-input>
+        </a-mat-search>
       </mat-card-content>
 
       <mat-card-content class="container-fluid a-list">
@@ -27,18 +24,17 @@
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let characteristic of data; let last = last" [attr.data-allors-id]="characteristic.id" (click)="router.navigate(['/productCharacteristic/', characteristic.id])" style="cursor: pointer;">
+          <mat-list-item *ngFor="let characteristicType of data; let last = last" [attr.data-allors-id]="characteristicType.id" (click)="onView(characteristicType)" style="cursor: pointer;">
 
-            <h3 *ngIf="characteristic.UnitOfMeasure" mat-line>{{characteristic.Name}} ({{characteristic.UnitOfMeasure.Name}})</h3>
-            <h3 *ngIf="!characteristic.UnitOfMeasure" mat-line>{{characteristic.Name}}</h3>
+            <h3 mat-line>{{characteristicType.displayName}}</h3>
 
             <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a [routerLink]="'/productCharacteristic/' + [characteristic.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="delete(characteristic)">Delete</button>
+                <a (click)="onView(characteristicType)" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(characteristicType)" [disabled]="!characteristicType.CanExecuteDelete">Delete</button>
               </mat-menu>
             </div>
             <mat-divider *ngIf="!last" mat-inset></mat-divider>

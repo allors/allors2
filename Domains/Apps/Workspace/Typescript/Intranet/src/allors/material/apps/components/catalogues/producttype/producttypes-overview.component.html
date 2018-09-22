@@ -11,15 +11,10 @@
 
   <div>
     <mat-card>
-
       <mat-card-content class="container-fluid a-search">
-        <form class="row" novalidate [formGroup]="searchForm">
-
-          <mat-form-field class="col" appearance="outline">
-            <input matInput placeholder="Name" formControlName="name">
-          </mat-form-field>
-
-        </form>
+        <a-mat-search (values)="search$.next($event)">
+          <a-mat-search-input name="name"></a-mat-search-input>
+        </a-mat-search>
       </mat-card-content>
 
       <mat-card-content class="container-fluid a-list">
@@ -28,17 +23,17 @@
             <h3>No product types to display.</h3>
           </div>
 
-          <mat-list-item *ngFor="let productType of data; let last = last" [attr.data-allors-id]="productType.id">
+          <mat-list-item *ngFor="let productType of data; let last = last" [attr.data-allors-id]="productType.id" (click)="onView(productType)" style="cursor: pointer;">
 
-            <h3 mat-line [routerLink]="['/productType/' + productType.id]"> {{productType.Name}}</h3>
+            <h3 mat-line> {{productType.Name}}</h3>
 
             <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a [routerLink]="['/productType/' + productType.id]" mat-menu-item>Edit</a>
-                <button mat-menu-item (click)="delete(productType)">Delete</button>
+                <a  (click)="onView(productType)" mat-menu-item>Edit</a>
+                <button mat-menu-item (click)="delete(productType)" [disabled]="!productType.CanExecuteDelete">Delete</button>
               </mat-menu>
             </div>
 
