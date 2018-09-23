@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Saved, x, Allors } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,15 +15,14 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './person.component.html',
+  providers: [Allors]
 })
 export class PersonComponent implements OnInit, OnDestroy {
 
-  public title = 'Person';
+  public readonly m: MetaDomain;
+
+  public readonly title = 'Person';
   public subTitle: string;
-
-  public m: MetaDomain;
-
-  public loaded: boolean;
 
   public internalOrganisation: InternalOrganisation;
   public person: Person;
@@ -47,30 +46,27 @@ export class PersonComponent implements OnInit, OnDestroy {
   private isActiveCustomer: boolean;
   private isActiveEmployee: boolean;
   private subscription: Subscription;
-  public scope: Scope;
-  private refresh$: BehaviorSubject<Date>;
 
-  private fetcher: Fetcher;
+  private readonly refresh$: BehaviorSubject<Date>;
+  private readonly fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() public allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private titleService: Title,
     private location: Location,
     private stateService: StateService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.titleService.setTitle(this.title);
+    this.m = allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService);
+    this.fetcher = new Fetcher(this.stateService, allors.pull);
+    this.titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { scope, m, pull } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -150,12 +146,12 @@ export class PersonComponent implements OnInit, OnDestroy {
             ]);
           }
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
@@ -193,14 +189,13 @@ export class PersonComponent implements OnInit, OnDestroy {
 
         } else {
           this.subTitle = 'add a new person';
-          this.person = this.scope.session.create('Person') as Person;
+          this.person = scope.session.create('Person') as Person;
         }
 
-        this.loaded = true;
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.goBack();
+          this.location.back();
         },
       );
   }
@@ -213,8 +208,10 @@ export class PersonComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
+    const { scope } = this.allors;
+
     if (this.activeRoles.indexOf(this.customerRole) > -1 && !this.isActiveCustomer) {
-      const customerRelationship = this.scope.session.create('CustomerRelationship') as CustomerRelationship;
+      const customerRelationship = scope.session.create('CustomerRelationship') as CustomerRelationship;
       customerRelationship.Customer = this.person;
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
@@ -228,7 +225,7 @@ export class PersonComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.employeeRole) > -1 && !this.isActiveEmployee) {
-      const employment = this.scope.session.create('Employment') as Employment;
+      const employment = scope.session.create('Employment') as Employment;
       employment.Employee = this.person;
       employment.Employer = this.internalOrganisation;
     }
@@ -242,22 +239,18 @@ export class PersonComponent implements OnInit, OnDestroy {
     }
 
     if (this.organisationContactRelationship === undefined && this.organisation !== undefined) {
-      const organisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
       organisationContactRelationship.Contact = this.person;
       organisationContactRelationship.Organisation = this.organisation;
     }
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        this.location.back();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public goBack(): void {
-    this.location.back();
   }
 }

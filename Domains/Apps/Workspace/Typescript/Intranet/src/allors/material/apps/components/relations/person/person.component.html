@@ -50,9 +50,6 @@
     </mat-card>
   </div>
 
-  <a-mat-footer>
-    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-    <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid && !scope.session.hasChanges">SAVE</button>
-  </a-mat-footer>
+  <a-mat-footer-save-cancel></a-mat-footer-save-cancel>
 
 </form>

@@ -99,7 +99,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService);
+    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
   }
 
   public ngOnInit(): void {

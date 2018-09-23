@@ -72,7 +72,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService);
+    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
 
     this.searchForm = this.formBuilder.group({
       assignee: [''],

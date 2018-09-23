@@ -76,7 +76,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
       roleTypes: [this.m.Organisation.Name],
     });
 
-    this.fetcher = new Fetcher(this.stateService, this.dataService);
+    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
   }
 
   public ngOnInit(): void {

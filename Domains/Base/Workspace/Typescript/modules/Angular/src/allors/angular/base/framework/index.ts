@@ -8,3 +8,5 @@ export { LoggingService } from './LoggingService';
 export { Loaded } from './responses/Loaded';
 export { Saved } from './responses/Saved';
 export { Invoked } from './responses/Invoked';
+
+export { Allors } from './AllorsService';

@@ -65,7 +65,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService);
+    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
   }
 
   get contactMechanisms(): any {

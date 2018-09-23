@@ -1,16 +1,16 @@
 import { Pull } from '../../../framework';
 import { StateService } from '../services/StateService';
-import { DataService, x } from '../../../angular';
+import { PullFactory } from '../../../meta';
+import { x } from '../../../angular';
 
 export class Fetcher {
 
-  constructor(private stateService: StateService, private dataService: DataService) {
+  constructor(private stateService: StateService, private pull: PullFactory) {
   }
 
   public get internalOrganisation(): Pull {
-    const { pull } = this.dataService;
 
-    return pull.InternalOrganisation({
+    return this.pull.InternalOrganisation({
       name: 'InternalOrganisation',
       object: this.stateService.internalOrganisationId,
       include: {
@@ -28,9 +28,8 @@ export class Fetcher {
   }
 
   public get categories(): Pull {
-    const { pull } = this.dataService;
 
-    return pull.Organisation({
+    return this.pull.Organisation({
       object: this.stateService.internalOrganisationId,
       fetch: { ProductCategoriesWhereInternalOrganisation: x },
     });
@@ -38,9 +37,7 @@ export class Fetcher {
 
   public get locales(): Pull {
 
-    const { pull, tree } = this.dataService;
-
-    return pull.Singleton({
+    return this.pull.Singleton({
       object: this.stateService.singletonId,
       fetch: {
         AdditionalLocales: {

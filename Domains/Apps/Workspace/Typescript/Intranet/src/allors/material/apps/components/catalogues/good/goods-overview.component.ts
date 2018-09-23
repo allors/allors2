@@ -125,7 +125,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
     this.chosenGood = 'Serialised';
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.fetcher = new Fetcher(this.stateService, this.dataService);
+    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
 
     this.searchForm = this.formBuilder.group({
       articleNumber: [''],

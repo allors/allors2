@@ -42,7 +42,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, DataService
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, DataService, Allors
 } from '../allors/angular';
 
 import {
@@ -100,6 +100,7 @@ import { ConfigService } from './app.config.service';
     { provide: StateService, useClass: DefaultStateService },
     { provide: LoggingService, useClass: DefaultLoggingService },
     { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
+    Allors,
     AllorsMaterialSideNavService,
     AllorsMaterialDialogService,
     AuthenticationService,

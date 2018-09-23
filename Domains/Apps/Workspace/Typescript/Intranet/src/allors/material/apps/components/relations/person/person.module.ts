@@ -12,9 +12,9 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialFooterSaveCancelModule } from '../../../../base/components/footer/savecancel';
 
 import { PersonComponent } from './person.component';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 export { PersonComponent } from './person.component';
 
 @NgModule({
@@ -27,7 +27,7 @@ export { PersonComponent } from './person.component';
   imports: [
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
-    AllorsMaterialFooterModule,
+    AllorsMaterialFooterSaveCancelModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
