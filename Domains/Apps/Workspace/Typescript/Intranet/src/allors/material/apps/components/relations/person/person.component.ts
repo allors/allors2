@@ -47,7 +47,7 @@ export class PersonComponent implements OnInit, OnDestroy {
   private isActiveCustomer: boolean;
   private isActiveEmployee: boolean;
   private subscription: Subscription;
-  private scope: Scope;
+  public scope: Scope;
   private refresh$: BehaviorSubject<Date>;
 
   private fetcher: Fetcher;

@@ -1,66 +1,58 @@
 <form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <a-mat-header [title]="title"></a-mat-header>
 
-  <div>
-    <mat-card *ngIf="loaded">
-      <mat-card-content class="container-fluid">
+  <div class="a-body">
+    <mat-card *ngIf="person">
+      <mat-card-content>
+        <div class="container-fluid">
 
-        <div class="row">
-          <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
-          <a-mat-input  class="col-md" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
-          <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
-          <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+          <div class="row">
+            <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name"></a-mat-select>
+            <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
+            <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
+            <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <mat-form-field class="col-md">
+              <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
+                <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <a-mat-select class="col-md" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds" display="Description" multiple="true"></a-mat-select>
+          </div>
+
+          <div class="row">
+            <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
+            <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
+          </div>
+
+          <div class="row">
+            <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
+            <mat-form-field class="col-md" *ngIf="!organisationContactRelationship && !organisation">
+              <mat-select name="role" [(ngModel)]="organisation" placeholder="Organisations">
+                <mat-option *ngFor="let organisation of organisations" [value]="organisation">{{ organisation.Name }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="col-md" *ngIf="(!organisationContactRelationship && organisation) || (organisationContactRelationship && !person.IsNew)">
+              <input matInput type="type" [ngModel]="organisation.Name" name="Organisation" placeholder="Organisation" readonly="true">
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <a-mat-textarea class="col-md-12" [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
+            <a-mat-file class="col-md-12" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-file>
+          </div>
+
         </div>
-
-        <div class="row">
-          <mat-form-field class="col-md">
-            <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
-              <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <a-mat-select class="col-md" [object]="organisationContactRelationship" [roleType]="m.OrganisationContactRelationship.ContactKinds" [options]="organisationContactKinds"
-            display="Description" multiple="true"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Gender" [options]="genders" display="Name"></a-mat-select>
-          <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Locale" [options]="locales" display="Name"></a-mat-select>
-        </div>
-
-        <div class="row">
-          <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.Function"></a-mat-input>
-          <mat-form-field class="col-md" *ngIf="!organisationContactRelationship && !organisation">
-            <mat-select name="role" [(ngModel)]="organisation" placeholder="Organisations">
-              <mat-option *ngFor="let organisation of organisations" [value]="organisation">{{ organisation.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="col-md" *ngIf="(!organisationContactRelationship && organisation) || (organisationContactRelationship && !person.IsNew)">
-            <input matInput type="type" [ngModel]="organisation.Name" name="Organisation" placeholder="Organisation" readonly="true">
-          </mat-form-field>
-        </div>
-
-        <div class="row">
-          <a-mat-textarea class="col-md-12" [object]="person" [roleType]="m.Person.Comment"></a-mat-textarea>
-          <a-mat-file class="col-md-12" [object]="person" [roleType]="m.Person.Picture" accept="image/*"></a-mat-file>
-        </div>
-
       </mat-card-content>
     </mat-card>
   </div>
 
-  <mat-toolbar class="a-footer">
-    <mat-toolbar-row class="row">
-      <span class="col"></span>
-      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <a-mat-footer>
+    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
+    <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid && !scope.session.hasChanges">SAVE</button>
+  </a-mat-footer>
 
 </form>
