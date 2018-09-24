@@ -18,7 +18,7 @@ mat-sidenav-content > div {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      background-color: lightgray;
+      background-color:#eeeeee;
       > .a-breadcrumb {
         flex: 0 0 auto;
         background-color: white;
@@ -61,6 +61,22 @@ mat-sidenav-content > div {
       }
     }
   }
+}
+
+table {
+  width: 100%;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+.mat-header-row {
+  background-color: #eeeeee !important;
+}
+
+.mat-row:hover {
+  background-color: #eeeeee;
 }
 
 .a-list,

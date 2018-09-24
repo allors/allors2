@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatTableModule, MatSortModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
@@ -50,6 +50,8 @@ export { PersonListComponent } from './person-list.component';
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    MatTableModule,
+    MatSortModule,
     ReactiveFormsModule,
     RouterModule,
   ],

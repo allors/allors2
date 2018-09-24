@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatSort } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
@@ -12,6 +12,7 @@ import { Person } from '../../../../../../domain';
 import { And, Like, PullRequest, Sort } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { SelectionModel } from '@angular/cdk/collections';
 
 interface SearchData {
   firstName: String;
@@ -23,11 +24,17 @@ interface SearchData {
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
+  displayedColumns = ['select', 'name', 'email', 'phone', 'lastModified', 'menu'];
+  dataSource = new MatTableDataSource<Person>();
+  selection = new SelectionModel<Person>(true, []);
+
   public title = 'People';
   public total: number;
   public searchForm: FormGroup; public advancedSearch: boolean;
 
   public data: Person[];
+
+  @ViewChild(MatSort) sort: MatSort;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -35,7 +42,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   constructor(
     public mediaService: MediaService,
-    private router: Router,
+    public router: Router,
     private workspaceService: WorkspaceService,
     private dataService: DataService,
     private errorService: ErrorService,
@@ -56,6 +63,14 @@ export class PersonListComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = ((item: Person, id: string) => {
+      switch (id) {
+        case 'name':
+          return item.displayName;
+      }
+    });
 
     const { m, pull } = this.dataService;
 
@@ -101,6 +116,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
         this.scope.session.reset();
         this.data = loaded.collections.People as Person[];
         this.total = loaded.values.People_total;
+
+        this.dataSource.data = this.data;
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -113,6 +130,21 @@ export class PersonListComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  public isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  public masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
 
   public goBack(): void {
     this.location.back();

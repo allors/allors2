@@ -1,6 +1,6 @@
 <div class="a-main">
 
-  <div class="a-breadcrumb container-fluid">
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">People</div>
     </div>
@@ -8,7 +8,7 @@
 
   <div class="a-body">
 
-    <div class="a-content">
+    <div class="a-content mat-elevation-z8">
 
       <div class="a-header d-flex justify-content-between">
         <div>
@@ -51,38 +51,75 @@
         </form>
       </div>
 
-      <div class="container-fluid a-items">
+      <div class="a-items">
 
         <div *ngIf="data?.length === 0">
           <h3>No people to display.</h3>
         </div>
 
-        <mat-list>
-          <mat-list-item *ngFor="let person of data; let last = last" [attr.data-allors-id]="person.id" (click)="onView(person)" style="cursor: pointer;">
+        <table mat-table matSort [dataSource]="dataSource">
 
-            <mat-icon *ngIf="!person.Picture" mat-list-avatar>person</mat-icon>
-            <img *ngIf="person.Picture" mat-list-avatar [src]="mediaService.url(person.Picture)" />
+          <!-- Checkbox Column -->
+          <ng-container matColumnDef="select" sticky>
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
 
-            <h3 mat-line>{{person.Salutation?.Name}} {{person.PartyName}} </h3>
-            <p *ngIf="person.GeneralPhoneNumber" mat-line>{{person.GeneralPhoneNumber.CountryCode}} {{person.GeneralPhoneNumber.AreaCode}} {{person.GeneralPhoneNumber.ContactNumber}}</p>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let element">
+              <img *ngIf="!element.Picture" style="width: 40px; height: 40px; border-radius: 50%" [src]="'https://dummyimage.com/40x40/000/fff.png&text=x'" />
+              <img *ngIf="element.Picture" style="width: 40px; height: 40px; border-radius: 50%" [src]="mediaService.url(element.Picture)" />
+              {{element.displayName}}
+            </td>
+          </ng-container>
 
-            <caption class="d-none d-md-block text-nowrap">last modified: {{ person.LastModifiedDate | date : shortDate }}
-            </caption>
+          <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+              <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.GeneralPhoneNumber">{{element.GeneralPhoneNumber.CountryCode}} {{element.GeneralPhoneNumber.AreaCode}} {{element.GeneralPhoneNumber.ContactNumber}}</span>
+              </td>
+            </ng-container>
+  
+          <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.GeneralPhoneNumber">{{element.GeneralPhoneNumber.CountryCode}} {{element.GeneralPhoneNumber.AreaCode}} {{element.GeneralPhoneNumber.ContactNumber}}</span>
+            </td>
+          </ng-container>
 
-            <div (click)="$event.stopPropagation()">
-              <button type="button" mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <a [routerLink]="['/relations/person/' + person.id]" mat-menu-item>Details</a>
-                <button mat-menu-item (click)="delete(person)" [disabled]="!person.CanExecuteDelete">Delete</button>
-              </mat-menu>
-            </div>
+          <ng-container matColumnDef="lastModified">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Modified </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.LastModifiedDate | date }}
+            </td>
+          </ng-container>
 
-            <mat-divider *ngIf="!last" mat-inset></mat-divider>
+          <ng-container matColumnDef="menu" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef> </th>
+            <td mat-cell *matCellDef="let element">
+              <div (click)="$event.stopPropagation()">
+                <button type="button" mat-icon-button [mat-menu-trigger-for]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <a [routerLink]="['/relations/person/' + element.id]" mat-menu-item>Details</a>
+                  <button mat-menu-item (click)="delete(element)" [disabled]="!element.CanExecuteDelete">Delete</button>
+                </mat-menu>
+              </div>
+            </td>
+          </ng-container>
 
-          </mat-list-item>
-        </mat-list>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onView(row)" style="cursor: pointer;">
+          </tr>
+        </table>
 
       </div>
 
