@@ -32,7 +32,7 @@ export const routes: Routes = [
       {
         path: 'relations', data: { type: 'module', title: 'Relations', icon: 'dashboard' },
         children: [
-          { path: 'people', component: relations.PeopleOverviewComponent, data: { type: 'page', title: 'People', icon: 'people' }},
+          { path: 'people', component: relations.PersonListComponent, data: { type: 'page', title: 'People', icon: 'people' }},
           { path: 'person/:id', component: relations.PersonOverviewComponent },
           { path: 'organisations', component: relations.OrganisationsOverviewComponent, data: { type: 'page', title: 'Organisations', icon: 'business' } },
           { path: 'organisation/:id', component: relations.OrganisationOverviewComponent },
@@ -43,15 +43,15 @@ export const routes: Routes = [
       {
         path: 'person',
         children: [
-          { path: '', component: relations.PersonComponent },
-          { path: ':id', component: relations.PersonComponent },
-          { path: 'organisation/:organisationId', component: relations.PersonComponent },
+          { path: '', component: relations.PersonEditComponent },
+          { path: ':id', component: relations.PersonEditComponent },
+          { path: 'organisation/:organisationId', component: relations.PersonEditComponent },
         ],
       },
       {
         path: 'export',
         children: [
-          { path: 'people', component: relations.PeopleExportComponent },
+          { path: 'people', component: relations.PersonExportComponent },
         ],
       },
       {

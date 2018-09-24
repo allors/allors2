@@ -16,7 +16,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../../base/componen
 import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/textarea';
 
-import { PersonInlineModule } from '../../../person/person-inline.module';
+import { PersonInlineModule } from '../../../person/inline/person-inline.module';
 
 import { PartyCommunicationEventFaceToFaceCommunicationComponent } from './party-communicationevent-facetofacecommunication.component';
 export { PartyCommunicationEventFaceToFaceCommunicationComponent } from './party-communicationevent-facetofacecommunication.component';

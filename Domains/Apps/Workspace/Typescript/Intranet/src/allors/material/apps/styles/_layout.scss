@@ -1,3 +1,69 @@
+mat-sidenav-content > div {
+  height: 100vh;
+  min-height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  > mat-toolbar {
+    flex: 0 0 auto;
+  }
+  > ng-component {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    .a-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      background-color: lightgray;
+      > .a-breadcrumb {
+        flex: 0 0 auto;
+        background-color: white;
+        > .row {
+          padding-left: 12px;
+          padding-top: 0.5rem;
+          padding-bottom: 0.5rem;
+        }
+      }
+      > .a-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding-top: 2rem;
+        padding-left: 2rem;
+        padding-right: 2rem;
+        > .a-content {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          background-color: white;
+          > mat-toolbar {
+            flex: 0 0 auto;
+          }
+          > .a-search {
+            flex: 0 0 auto;
+            padding-top: 1rem;
+          }
+          > .a-items {
+            flex: 1 1 0;
+            overflow: auto;
+            mat-list-item {
+              padding-top: 1rem;
+              padding-bottom: 1rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.a-list,
 .a-master {
   height: 100vh;
   min-height: 100vh;
@@ -11,22 +77,22 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    padding: 1rem;
-    > mat-card {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      > mat-card-content.a-search {
-        flex: 0 0 auto;
-      }
-      > mat-card-content.a-list {
-        flex: 1 1 0;
-        overflow: auto;
+    > .a-search {
+      flex: 0 0 auto;
+      padding-top: 1rem;
+    }
+    > .a-items {
+      flex: 1 1 0;
+      overflow: auto;
+      mat-list-item {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
       }
     }
   }
 }
 
+.a-overview,
 .a-detail {
   height: 100vh;
   min-height: 100vh;

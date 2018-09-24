@@ -6,9 +6,9 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import * as Papa from 'papaparse';
 
-import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
-import { Person } from '../../../../../domain';
-import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
+import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
+import { Person } from '../../../../../../domain';
+import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../../framework';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
 interface SearchData {
@@ -17,9 +17,9 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: './people-export.component.html',
+  templateUrl: './person-export.component.html',
 })
-export class PeopleExportComponent implements OnDestroy {
+export class PersonExportComponent implements OnDestroy {
 
   public total: number;
 

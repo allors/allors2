@@ -20,7 +20,7 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { PersonInlineModule } from '../../relations/person/person-inline.module';
+import { PersonInlineModule } from '../../relations/person/inline/person-inline.module';
 import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
 
 import { WorkTaskEditComponent } from './worktask.component';

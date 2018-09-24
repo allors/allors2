@@ -1,38 +1,47 @@
-import { Component, AfterViewInit, ViewChild, OnDestroy, OnInit } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Title } from '@angular/platform-browser';
+import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 
 import { Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { switchMap, filter, tap } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, WorkspaceService, Loaded, Scope, DataService } from '../../allors/angular';
-import { MetaDomain } from '../../allors/meta';
-import { Fetch, Equals, PullRequest } from '../../allors/framework';
+import { MenuService, Loaded, Allors } from '../../allors/angular';
+import { Equals, PullRequest } from '../../allors/framework';
 import { StateService } from '../../allors/material/apps/services/StateService';
 import { Organisation } from '../../allors/domain';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   styleUrls: ['main.component.scss'],
-  templateUrl: './main.component.html'
+  templateUrl: './main.component.html',
+  providers: [Allors]
 })
 export class MainComponent implements OnInit, OnDestroy {
 
+  selectedInternalOrganisation: Organisation;
+  internalOriganisations: Organisation[];
+
+  sideMenuItems: SideMenuItem[] = [];
+
+  private subscription: Subscription;
+  private toggleSubscription;
+  private openSubscription;
+  private closeSubscription;
+
+  @ViewChild('drawer') private sidenav: MatSidenav;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private stateService: StateService,
-    private breakpointObserver: BreakpointObserver,
-    private titleService: Title,
+    private router: Router,
+    private sideNavService: AllorsMaterialSideNavService,
     private menuService: MenuService,
-    private sideNavService: AllorsMaterialSideNavService) {
+  ) {
+  }
 
-    this.m = workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+  public ngOnInit(): void {
 
-    menuService.pagesByModule.forEach((pages, module) => {
+    this.menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,
         title: module.title,
@@ -48,55 +57,29 @@ export class MainComponent implements OnInit, OnDestroy {
       this.sideMenuItems.push(sideMenuItem);
     });
 
-    this.toggleSubscription = sideNavService.toggle$.subscribe(() => {
-      if (this.sidenav) {
-        this.sidenav.toggle();
-      }
-    });
-
-    this.handsetSubscription = this.breakpointObserver.observe(Breakpoints.Handset)
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.events
       .pipe(
-        map(result => result.matches)
-      ).subscribe((result) => {
+        filter((v) => v instanceof NavigationEnd)
+      ).subscribe(() => {
         if (this.sidenav) {
-          if (result) {
-            this.sidenav.close();
-          } else {
-            this.sidenav.open();
-          }
+          this.sidenav.close();
         }
       });
-  }
 
-  get title(): string {
-    return this.titleService.getTitle();
-  }
+    this.toggleSubscription = this.sideNavService.toggle$.subscribe(() => {
+      this.sidenav.toggle();
+    });
 
-  selectedInternalOrganisation: Organisation;
-  internalOriganisations: Organisation[];
+    this.openSubscription = this.sideNavService.open$.subscribe(() => {
+      this.sidenav.open();
+    });
 
-  sideMenuItems: SideMenuItem[] = [];
+    this.closeSubscription = this.sideNavService.close$.subscribe(() => {
+      this.sidenav.close();
+    });
 
-  m: MetaDomain;
-
-  private subscription: Subscription;
-  private toggleSubscription;
-
-  private scope: Scope;
-
-  @ViewChild('drawer') private sidenav: MatSidenav;
-
-  private handsetSubscription: Subscription;
-
-  isHandset$ = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
-
-  public ngOnInit(): void {
-
-    const { m, pull } = this.dataService;
+    const { scope, m, pull } = this.allors;
 
     this.subscription = this.stateService.internalOrganisationId$
       .pipe(
@@ -107,22 +90,29 @@ export class MainComponent implements OnInit, OnDestroy {
               object: internalOrganisationId,
             }),
             pull.Organisation({
-              predicate: new Equals({ propertyType: this.m.Organisation.IsInternalOrganisation, value: true }),
+              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
         this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
         this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
       });
   }
 
   ngOnDestroy(): void {
-    this.handsetSubscription.unsubscribe();
+    this.subscription.unsubscribe();
+    this.toggleSubscription.unsubscribe();
+    this.openSubscription.unsubscribe();
+    this.closeSubscription.unsubscribe();
+  }
+
+  public toggle() {
+    this.sideNavService.toggle();
   }
 }

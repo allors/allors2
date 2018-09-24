@@ -6,18 +6,18 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors } from '../../../../../angular';
-import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
-import { Fetcher } from '../../Fetcher';
+import { ErrorService, Saved, x, Allors } from '../../../../../../angular';
+import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../../domain';
+import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { Fetcher } from '../../../Fetcher';
 
 @Component({
-  templateUrl: './person.component.html',
+  templateUrl: './person-edit.component.html',
   providers: [Allors]
 })
-export class PersonComponent implements OnInit, OnDestroy {
+export class PersonEditComponent implements OnInit, OnDestroy {
 
   public readonly m: MetaDomain;
 

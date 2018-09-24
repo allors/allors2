@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit , Output } from '@angular/core';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../angular';
-import { Enumeration, Locale, Person } from '../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../../angular';
+import { Enumeration, Locale, Person } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector

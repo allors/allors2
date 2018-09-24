@@ -1,7 +1,7 @@
-export * from './person/person-overview.module';
-export * from './person/person.module';
-export * from './person/people-export.module';
-export * from './person/people-overview.module';
+export * from './person/overview/person-overview.module';
+export * from './person/edit/person-edit.module';
+export * from './person/export/person-export.module';
+export * from './person/list/person-list.module';
 
 export * from './organisation/organisations-overview.module';
 export * from './organisation/organisation-overview.module';
@@ -25,10 +25,10 @@ export * from './communicationevent/communicationevent-overview.module';
 export * from './communicationevent/communicationevents-overview.module';
 export * from './communicationevent/worktask/communicationevent-worktask.module';
 
-import { PeopleExportModule } from './person/people-export.module';
-import { PeopleOverviewModule } from './person/people-overview.module';
-import { PersonOverviewModule } from './person/person-overview.module';
-import { PersonModule } from './person/person.module';
+import { PeopleExportModule } from './person/export/person-export.module';
+import { PeopleOverviewModule } from './person/list/person-list.module';
+import { PersonOverviewModule } from './person/overview/person-overview.module';
+import { PersonModule } from './person/edit/person-edit.module';
 
 import { OrganisationOverviewModule } from './organisation/organisation-overview.module';
 import { OrganisationModule } from './organisation/organisation.module';
@@ -47,7 +47,6 @@ import { PartyCommunicationEventEmailCommunicationModule } from './party/communi
 import { PartyCommunicationEventFaceToFaceCommunicationModule } from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
 import { PartyCommunicationEventLetterCorrespondenceModule } from './party/communicationevent/lettercorrespondence/party-communicationevent-lettercorrespondence.module';
 import { PartyCommunicationEventPhoneCommunicationModule } from './party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module';
-
 
 import { CommunicationEventOverviewModule } from './communicationevent/communicationevent-overview.module';
 import { CommunicationEventsOverviewModule } from './communicationevent/communicationevents-overview.module';

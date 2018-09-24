@@ -11,7 +11,7 @@ import { Allors } from '../../../../../angular';
 })
 export class AllorsMaterialFooterSaveCancelComponent {
 
-  constructor(@Optional() public form: NgForm, public allors: Allors, public location: Location) {
+  constructor(public form: NgForm, public allors: Allors, public location: Location) {
   }
 
 }

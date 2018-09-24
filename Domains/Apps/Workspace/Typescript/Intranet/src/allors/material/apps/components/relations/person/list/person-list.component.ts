@@ -7,21 +7,21 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
-import { Person } from '../../../../../domain';
-import { And, Like, PullRequest, Sort } from '../../../../../framework';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
+import { Person } from '../../../../../../domain';
+import { And, Like, PullRequest, Sort } from '../../../../../../framework';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-interface SearchData{
+interface SearchData {
   firstName: String;
   lastName: String;
 }
 
 @Component({
-  templateUrl: './people-overview.component.html',
+  templateUrl: './person-list.component.html',
 })
-export class PeopleOverviewComponent implements OnInit, OnDestroy {
+export class PersonListComponent implements OnInit, OnDestroy {
 
   public title = 'People';
   public total: number;

@@ -1,56 +1,45 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-
-import { AllorsMaterialChipsModule } from '../../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
-import { AllorsMaterialDatetimepickerModule } from '../../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../..';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
+import { AllorsMaterialFooterSaveCancelModule } from '../../../../../base/components/footer/savecancel';
 
-import { PersonInlineModule } from '../../person/inline/person-inline.module';
-
-import { CommunicationEventWorkTaskComponent } from './communicationevent-worktask.component';
-export { CommunicationEventWorkTaskComponent } from './communicationevent-worktask.component';
+import { PersonEditComponent } from './person-edit.component';
+export { PersonEditComponent } from './person-edit.component';
 
 @NgModule({
   declarations: [
-    CommunicationEventWorkTaskComponent,
+    PersonEditComponent,
   ],
   exports: [
-    CommunicationEventWorkTaskComponent,
+    PersonEditComponent,
   ],
   imports: [
-    AllorsMaterialChipsModule,
-    AllorsMaterialDatepickerModule,
-    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
+    AllorsMaterialHeaderModule,
+    AllorsMaterialFooterSaveCancelModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-
-    PersonInlineModule,
-
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -60,6 +49,8 @@ export { CommunicationEventWorkTaskComponent } from './communicationevent-workta
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    ReactiveFormsModule,
+    RouterModule,
   ],
 })
-export class CommunicationEventWorkTaskModule {}
+export class PersonModule { }
