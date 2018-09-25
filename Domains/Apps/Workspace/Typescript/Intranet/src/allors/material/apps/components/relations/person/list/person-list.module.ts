@@ -12,6 +12,7 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../../base/component
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
+import { AllorsMaterialSearchModule } from '../../../../../base/components/search';
 
 import { PersonListComponent } from './person-list.component';
 export { PersonListComponent } from './person-list.component';
@@ -32,6 +33,7 @@ export { PersonListComponent } from './person-list.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+    AllorsMaterialSearchModule,
     CommonModule,
     FormsModule,
     MatButtonModule,

@@ -20,8 +20,6 @@ export * from './base/components/slidetoggle';
 export * from './base/components/static';
 export * from './base/components/textarea';
 export * from './base/components/search';
-export * from './base/components/search/input';
-export * from './base/components/search/select';
 export * from './base/components/header';
 export * from './base/components/footer';
 

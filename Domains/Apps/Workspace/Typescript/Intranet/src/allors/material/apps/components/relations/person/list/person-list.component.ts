@@ -1,18 +1,17 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar, MatTableDataSource, MatSort } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatTableDataSource, MatSort } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
 import { Person } from '../../../../../../domain';
-import { And, Like, PullRequest, Sort } from '../../../../../../framework';
+import { PullRequest, Sort } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
-import { SelectionModel } from '@angular/cdk/collections';
 
 interface Row {
   person: Person;
@@ -25,11 +24,11 @@ interface Row {
 const title = 'People';
 
 @Component({
-  templateUrl: './person-list.component.html',
+  templateUrl: './person-list.component.html'
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
-  public displayedColumns = ['select', 'name', 'email', 'phone', 'lastModified', 'menu'];
+  public displayedColumns = ['select', 'name', 'email', 'phone', 'lastModifiedDate', 'menu'];
   public dataSource = new MatTableDataSource<Row>();
   public selection = new SelectionModel<Row>(true, []);
 
@@ -47,7 +46,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private dataService: DataService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
@@ -62,7 +60,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     this.dataSource.sort = this.sort;
 
-    const { m, pull } = this.dataService;
+    const { pull } = this.dataService;
 
     this.subscription = this.refresh$
       .pipe(
@@ -73,8 +71,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
                 Salutation: x,
                 Picture: x,
                 GeneralPhoneNumber: x,
+                GeneralEmail: x,
               },
-              sort: new Sort(m.Person.PartyName),
             })];
 
           return this.scope.load('Pull', new PullRequest({ pulls }));
@@ -107,18 +105,20 @@ export class PersonListComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
   public isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   public goBack(): void {

@@ -1,7 +1,0 @@
-<mat-form-field *ngIf="visible" class="col" appearance="outline" [formGroup]="formGroup">
-  <mat-label>Search by {{label}}</mat-label>
-  <input matInput [formControlName]="name">
-  <button *ngIf="!first && !searchService.advancedSearch" matSuffix mat-icon-button (click)="searchService.advancedSearch = !searchService.advancedSearch" title="Advanced Search">
-    <mat-icon>expand_more</mat-icon>
-  </button>
-</mat-form-field>

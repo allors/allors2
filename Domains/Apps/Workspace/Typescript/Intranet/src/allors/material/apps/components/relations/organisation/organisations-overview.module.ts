@@ -14,8 +14,6 @@ import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
 import { AllorsMaterialSearchModule } from '../../../../base/components/search';
-import { AllorsMaterialSearchInputModule } from '../../../../base/components/search/input';
-import { AllorsMaterialSearchSelectModule } from '../../../../base/components/search/select';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -25,7 +23,6 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 import { InternalOrganisationSelectModule } from '../../common/internalorganisation/internalorganisation-select.module';
 
 import { OrganisationsOverviewComponent } from './organisations-overview.component';
-import { AllorsMaterialSearchService } from '../../../../base/components/search/search.service';
 export { OrganisationsOverviewComponent } from './organisations-overview.component';
 
 @NgModule({
@@ -39,8 +36,6 @@ export { OrganisationsOverviewComponent } from './organisations-overview.compone
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSearchModule,
-    AllorsMaterialSearchInputModule,
-    AllorsMaterialSearchSelectModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
