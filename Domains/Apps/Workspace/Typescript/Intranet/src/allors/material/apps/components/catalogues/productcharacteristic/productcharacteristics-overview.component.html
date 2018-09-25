@@ -19,12 +19,12 @@
 
       <mat-card-content class="container-fluid a-list">
 
-        <div *ngIf="data?.length === 0">
+        <div *ngIf="characteristicTypes?.length === 0">
           <h3>No characteristics to display.</h3>
         </div>
 
         <mat-list>
-          <mat-list-item *ngFor="let characteristicType of data; let last = last" [attr.data-allors-id]="characteristicType.id" (click)="onView(characteristicType)" style="cursor: pointer;">
+          <mat-list-item *ngFor="let characteristicType of characteristicTypes; let last = last" [attr.data-allors-id]="characteristicType.id" (click)="onView(characteristicType)" style="cursor: pointer;">
 
             <h3 mat-line>{{characteristicType.displayName}}</h3>
 
