@@ -18,7 +18,7 @@ mat-sidenav-content > div {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      background-color:#eeeeee;
+      background-color: #eeeeee;
       > .a-breadcrumb {
         flex: 0 0 auto;
         background-color: white;
@@ -77,6 +77,13 @@ th.mat-sort-header-sorted {
 
 .mat-row:hover {
   background-color: #eeeeee;
+}
+
+th.mat-table-sticky,
+td.mat-table-sticky {
+  width: 60px !important;
+  min-width: 60px !important;
+  max-width: 60px !important;
 }
 
 .a-list,

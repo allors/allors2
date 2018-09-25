@@ -4,6 +4,8 @@ import { Person } from '../generated/Person.g';
 declare module '../generated/Person.g' {
     interface Person {
         displayName;
+        displayEmail;
+        displayPhone;
     }
 }
 
@@ -41,9 +43,25 @@ domain.extend((workspace) => {
             if (this.UserName) {
                 return this.UserName;
             }
-
-            return 'N/A';
         },
     });
 
+    Object.defineProperty(obj, 'displayEmail', {
+        get(this: Person): string {
+            const email = this.GeneralEmail;
+            if (email) {
+                return email.ElectronicAddressString;
+            }
+        },
+    });
+
+    Object.defineProperty(obj, 'displayPhone', {
+        get(this: Person): string {
+
+            const phone = this.GeneralPhoneNumber;
+            if (phone) {
+                return `${phone.CountryCode} ${phone.AreaCode} ${phone.ContactNumber}`;
+            }
+        },
+    });
 });

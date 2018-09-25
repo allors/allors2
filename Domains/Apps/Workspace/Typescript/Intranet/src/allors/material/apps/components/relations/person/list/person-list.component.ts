@@ -14,25 +14,26 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 
-interface SearchData {
-  firstName: String;
-  lastName: String;
+interface Row {
+  person: Person;
+  name: string;
+  email: string;
+  phone: string;
+  lastModifiedDate: Date;
 }
+
+const title = 'People';
 
 @Component({
   templateUrl: './person-list.component.html',
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
-  displayedColumns = ['select', 'name', 'email', 'phone', 'lastModified', 'menu'];
-  dataSource = new MatTableDataSource<Person>();
-  selection = new SelectionModel<Person>(true, []);
+  public displayedColumns = ['select', 'name', 'email', 'phone', 'lastModified', 'menu'];
+  public dataSource = new MatTableDataSource<Row>();
+  public selection = new SelectionModel<Row>(true, []);
 
-  public title = 'People';
-  public total: number;
-  public searchForm: FormGroup; public advancedSearch: boolean;
-
-  public data: Person[];
+  public data: Row[];
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -52,55 +53,22 @@ export class PersonListComponent implements OnInit, OnDestroy {
     private location: Location,
     titleService: Title) {
 
-    titleService.setTitle(this.title);
+    titleService.setTitle(title);
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
-    this.searchForm = this.formBuilder.group({
-      firstName: [''],
-      lastName: [''],
-    });
   }
 
   public ngOnInit(): void {
 
     this.dataSource.sort = this.sort;
-    this.dataSource.sortingDataAccessor = ((item: Person, id: string) => {
-      switch (id) {
-        case 'name':
-          return item.displayName;
-      }
-    });
 
     const { m, pull } = this.dataService;
 
-    const search$ = this.searchForm.valueChanges
+    this.subscription = this.refresh$
       .pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        startWith({} as SearchData),
-      );
-
-    this.subscription = combineLatest(search$, this.refresh$)
-      .pipe(
-        switchMap(([data, refresh]) => {
-          const predicate: And = new And();
-
-          if (data.firstName) {
-            // TODO: should be a shared function
-            const like: string = '%' + data.firstName + '%';
-            predicate.operands.push(new Like({ roleType: m.Person.FirstName, value: like }));
-          }
-
-          if (data.lastName) {
-            // TODO: should be a shared function
-            const like: string = data.lastName.replace('*', '%') + '%';
-            predicate.operands.push(new Like({ roleType: m.Person.LastName, value: like }));
-          }
-
+        switchMap((refresh) => {
           const pulls = [
             pull.Person({
-              predicate,
               include: {
                 Salutation: x,
                 Picture: x,
@@ -114,8 +82,16 @@ export class PersonListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.data = loaded.collections.People as Person[];
-        this.total = loaded.values.People_total;
+        const people = loaded.collections.People as Person[];
+        this.data = people.map((v) => {
+          return {
+            person: v,
+            name: v.displayName,
+            email: v.displayEmail,
+            phone: v.displayPhone,
+            lastModifiedDate: v.LastModifiedDate,
+          } as Row;
+        });
 
         this.dataSource.data = this.data;
       },
@@ -144,7 +120,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
-
 
   public goBack(): void {
     this.location.back();
