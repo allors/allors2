@@ -22,7 +22,7 @@ interface SearchData {
 export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Product Characteristics';
-  public data: SerialisedInventoryItemCharacteristicType[];
+  public characteristicTypes: SerialisedInventoryItemCharacteristicType[];
   public filtered: SerialisedInventoryItemCharacteristicType[];
 
   public search$: BehaviorSubject<SearchData>;
@@ -83,7 +83,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
         })
       )
       .subscribe((loaded) => {
-        this.data = loaded.collections.SerialisedInventoryItemCharacteristicTypes as SerialisedInventoryItemCharacteristicType[];
+        this.characteristicTypes = loaded.collections.SerialisedInventoryItemCharacteristicTypes as SerialisedInventoryItemCharacteristicType[];
       },
         (error: any) => {
           this.errorService.handle(error);

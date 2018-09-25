@@ -104,6 +104,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         InventoryItemKind InventoryItemKind { get; set; }
 
         #region Allors

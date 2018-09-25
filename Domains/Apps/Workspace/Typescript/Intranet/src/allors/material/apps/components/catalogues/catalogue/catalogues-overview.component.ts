@@ -22,7 +22,7 @@ interface SearchData {
 export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Catalogues';
-  public data: Catalogue[];
+  public catalogues: Catalogue[];
   public filtered: Catalogue[];
 
   public search$: BehaviorSubject<SearchData>;
@@ -89,7 +89,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.scope.session.reset();
-        this.data = loaded.collections.Catalogues as Catalogue[];
+        this.catalogues = loaded.collections.Catalogues as Catalogue[];
       },
         (error: any) => {
           this.errorService.handle(error);

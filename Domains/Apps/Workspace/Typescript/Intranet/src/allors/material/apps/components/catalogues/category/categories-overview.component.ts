@@ -22,7 +22,7 @@ interface SearchData {
 export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Categories';
-  public data: ProductCategory[];
+  public productCategories: ProductCategory[];
   public filtered: ProductCategory[];
 
   public search$: BehaviorSubject<SearchData>;
@@ -88,7 +88,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((loaded) => {
-        this.data = loaded.collections.ProductCategories as ProductCategory[];
+        this.productCategories = loaded.collections.ProductCategories as ProductCategory[];
       },
         (error: any) => {
           this.errorService.handle(error);
