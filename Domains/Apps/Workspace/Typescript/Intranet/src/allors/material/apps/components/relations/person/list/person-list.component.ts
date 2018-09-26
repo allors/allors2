@@ -21,12 +21,12 @@ interface Row {
   lastModifiedDate: Date;
 }
 
-const title = 'People';
-
 @Component({
   templateUrl: './person-list.component.html'
 })
 export class PersonListComponent implements OnInit, OnDestroy {
+
+  public title = 'People';
 
   public displayedColumns = ['select', 'name', 'email', 'phone', 'lastModifiedDate', 'menu'];
   public dataSource = new MatTableDataSource<Row>();
@@ -51,7 +51,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     private location: Location,
     titleService: Title) {
 
-    titleService.setTitle(title);
+    titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
@@ -127,6 +127,25 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public refresh(): void {
     this.refresh$.next(new Date());
+  }
+
+  public deleteSelection(person: Person): void {
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete these people?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          const people = this.selection.selected.map((v) => v.person).filter((v) => v.CanExecuteDelete);
+
+          this.scope.invoke(person.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 
   public delete(person: Person): void {
