@@ -10,7 +10,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
 import { Person } from '../../../../../../domain';
-import { PullRequest, Sort } from '../../../../../../framework';
+import { PullRequest, Sort, SessionObject } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 interface Row {
@@ -105,6 +105,18 @@ export class PersonListComponent implements OnInit, OnDestroy {
     }
   }
 
+  public get hasSelection() {
+    return !this.selection.isEmpty();
+  }
+
+  public get hasDeleteSelection() {
+    return this.selectedPeople.filter((v) => v.CanExecuteDelete).length > 0;
+  }
+
+  public get selectedPeople() {
+    return this.selection.selected.map(v => v.person);
+  }
+
   public isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -129,40 +141,30 @@ export class PersonListComponent implements OnInit, OnDestroy {
     this.refresh$.next(new Date());
   }
 
-  public deleteSelection(person: Person): void {
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete these people?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          const people = this.selection.selected.map((v) => v.person).filter((v) => v.CanExecuteDelete);
+  public delete(person: Person | Person[]): void {
 
-          this.scope.invoke(person.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
+    const people = person instanceof SessionObject ? [person as Person] : person instanceof Array ? person : [];
+    const methods = people.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
-  public delete(person: Person): void {
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this person?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.scope.invoke(person.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
+    if (methods.length > 0) {
+      this.dialogService
+        .confirm(
+          methods.length === 1 ?
+            { message: 'Are you sure you want to delete this person?' } :
+            { message: 'Are you sure you want to delete these people?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            this.scope.invokeAll(methods)
+              .subscribe((invoked: Invoked) => {
+                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                this.refresh();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          }
+        });
+    }
   }
 
   public onView(person: Person): void {

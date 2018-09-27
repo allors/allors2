@@ -15,11 +15,11 @@
           <mat-toolbar-row>
             <div class="mr-auto">{{title}}</div>
             <div>
-              <button [disabled]="selection.isEmpty()" mat-icon-button matTooltip="Delete" (click)="deleteSelection()">
+              <button [disabled]="!hasDeleteSelection" mat-icon-button matTooltip="Delete" (click)="delete(selectedPeople)">
                 <mat-icon>delete</mat-icon>
               </button>
 
-              <button [disabled]="selection.isEmpty()" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/people']">
+              <button [disabled]="!hasSelection" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/people']">
                 <mat-icon>save_alt</mat-icon>
               </button>
             </div>

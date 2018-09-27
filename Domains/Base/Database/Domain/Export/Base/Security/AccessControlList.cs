@@ -150,6 +150,10 @@ namespace Allors.Domain
                         }
                     }
                 }
+                else
+                {
+                    // TODO (after pulling security to core): throw exception 
+                }
 
                 this.lazyLoaded = true;
             }

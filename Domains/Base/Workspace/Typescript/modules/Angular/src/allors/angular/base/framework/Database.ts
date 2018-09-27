@@ -104,6 +104,30 @@ export class Database {
       );
   }
 
+  public invokeAll(methods: Method[]): Observable<InvokeResponse> {
+    const invokeRequests: InvokeRequest[] = methods.map(v => {
+      return {
+        i: v.object.id,
+        m: v.name,
+        v: v.object.version,
+      };
+    });
+
+    const serviceName: string = this.fullyQualifiedUrl('Database/InvokeAll');
+    return this.http
+      .post<InvokeResponse>(serviceName, invokeRequests)
+      .pipe(
+        map((invokeResponse) => {
+          invokeResponse.responseType = ResponseType.Invoke;
+
+          if (invokeResponse.hasErrors) {
+            throw new ResponseError(invokeResponse);
+          }
+
+          return invokeResponse;
+        }));
+  }
+
   private fullyQualifiedUrl(localUrl: string): string {
     return this.url + localUrl;
   }

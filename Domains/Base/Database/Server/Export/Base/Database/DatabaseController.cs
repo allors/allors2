@@ -126,5 +126,30 @@ namespace Allors.Server
                 return this.StatusCode(500, e.Message);
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        [AllowAnonymous]
+        public IActionResult InvokeAll([FromBody]InvokeRequest[] invokeRequests)
+        {
+            try
+            {
+                return this.PolicyService.InvokePolicy.Execute(
+                    () =>
+                        {
+                            using (var session = this.DatabaseService.Database.CreateSession())
+                            {
+                                var responseBuilder = new InvokeAllResponseBuilder(session, session.GetUser(), invokeRequests);
+                                var response = responseBuilder.Build();
+                                return this.Ok(response);
+                            }
+                        });
+            }
+            catch (Exception e)
+            {
+                this.Logger.LogError(e, "Exception");
+                return this.StatusCode(500, e.Message);
+            }
+        }
     }
 }

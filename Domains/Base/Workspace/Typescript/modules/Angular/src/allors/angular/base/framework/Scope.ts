@@ -85,4 +85,13 @@ export class Scope {
         map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse))
       );
   }
+
+  public invokeAll(methods: Method[]): Observable<Invoked> {
+
+    return this.database
+      .invokeAll(methods)
+      .pipe(
+        map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse))
+      );
+  }
 }

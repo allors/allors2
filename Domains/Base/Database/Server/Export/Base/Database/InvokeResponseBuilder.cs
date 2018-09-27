@@ -31,7 +31,7 @@ namespace Allors.Server
     {
         private readonly ISession session;
         private readonly InvokeRequest invokeRequest;
-        private User user;
+        private readonly User user;
 
         public InvokeResponseBuilder(ISession session, User user, InvokeRequest invokeRequest)
         {

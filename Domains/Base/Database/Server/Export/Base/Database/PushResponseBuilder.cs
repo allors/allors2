@@ -27,7 +27,6 @@ namespace Allors.Server
     using Allors.Adapters;
     using Allors.Domain;
     using Allors.Meta;
-    using Allors.Server.Protocol;
     using Allors.Server.Protocol.Push;
 
     public class PushResponseBuilder
@@ -97,24 +96,46 @@ namespace Allors.Server
 
             if (objectByNewId != null && !pushResponse.HasErrors)
             {
-                foreach (var pushRequestNewObject in this.pushRequest.NewObjects)
+                var countOutstandingRoles = 0;
+                int previousCountOutstandingRoles;
+                do
                 {
-                    var obj = objectByNewId[pushRequestNewObject.NI];
-                    var pushRequestRoles = pushRequestNewObject.Roles;
-                    if (pushRequestRoles != null)
+                    previousCountOutstandingRoles = countOutstandingRoles;
+                    countOutstandingRoles = 0;
+
+                    foreach (var pushRequestNewObject in this.pushRequest.NewObjects)
                     {
-                        this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId);
+                        var obj = objectByNewId[pushRequestNewObject.NI];
+                        var pushRequestRoles = pushRequestNewObject.Roles;
+                        if (pushRequestRoles != null)
+                        {
+                            countOutstandingRoles += this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId, true);
+                        }
+                    }
+                } 
+                while (countOutstandingRoles != previousCountOutstandingRoles);
+
+                if (countOutstandingRoles > 0)
+                {
+                    foreach (var pushRequestNewObject in this.pushRequest.NewObjects)
+                    {
+                        var obj = objectByNewId[pushRequestNewObject.NI];
+                        var pushRequestRoles = pushRequestNewObject.Roles;
+                        if (pushRequestRoles != null)
+                        {
+                            this.PushRequestRoles(pushRequestRoles, obj, pushResponse, objectByNewId);
+                        }
                     }
                 }
 
-                foreach (Allors.Domain.Object newObject in objectByNewId.Values)
+                foreach (var newObject in objectByNewId.Values)
                 {
-                    newObject.OnBuild();
+                    ((Allors.Domain.Object)newObject).OnBuild();
                 }
 
-                foreach (Allors.Domain.Object newObject in objectByNewId.Values)
+                foreach (var newObject in objectByNewId.Values)
                 {
-                    newObject.OnPostBuild();
+                    ((Allors.Domain.Object)newObject).OnPostBuild();
                 }
             }
 
@@ -152,8 +173,9 @@ namespace Allors.Server
             }
         }
 
-        private void PushRequestRoles(IList<PushRequestRole> pushRequestRoles, IObject obj, PushResponse pushResponse, Dictionary<string, IObject> objectByNewId)
+         private int PushRequestRoles(IList<PushRequestRole> pushRequestRoles, IObject obj, PushResponse pushResponse, Dictionary<string, IObject> objectByNewId, bool ignore = false)
         {
+            var countOutstandingRoles = 0;
             foreach (var pushRequestRole in pushRequestRoles)
             {
                 var composite = (Composite)obj.Strategy.Class;
@@ -254,16 +276,24 @@ namespace Allors.Server
                     }
                     else
                     {
-                        pushResponse.AddAccessError(obj);
+                        if (!ignore)
+                        {
+                            pushResponse.AddAccessError(obj);
+                        }
+                        else
+                        {
+                            countOutstandingRoles++;
+                        }
                     }
                 }
             }
+
+            return countOutstandingRoles;
         }
 
         private IObject GetRole(string roleId, Dictionary<string, IObject> objectByNewId)
         {
-            IObject role;
-            if (objectByNewId == null || !objectByNewId.TryGetValue(roleId, out role))
+            if (objectByNewId == null || !objectByNewId.TryGetValue(roleId, out var role))
             {
                 role = this.session.Instantiate(roleId);
             }
@@ -282,8 +312,7 @@ namespace Allors.Server
             List<string> existingRoleIds = null;
             foreach (var roleId in roleIds)
             {
-                IObject role;
-                if (objectByNewId.TryGetValue(roleId, out role))
+                if (objectByNewId.TryGetValue(roleId, out var role))
                 {
                     roles.Add(role);
                 }
