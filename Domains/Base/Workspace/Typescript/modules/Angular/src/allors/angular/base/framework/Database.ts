@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse } from '../../../framework';
+import { InvokeRequest, InvokeResponse, PullResponse, PushRequest, PushResponse, ResponseError, ResponseType, SyncRequest, SyncResponse, InvokeOptions } from '../../../framework';
 import { Method } from '../../../framework';
 
 export class Database {
@@ -55,21 +55,29 @@ export class Database {
   }
 
   public invoke(method: Method): Observable<InvokeResponse>;
+  public invoke(methods: Method[], options: InvokeOptions): Observable<InvokeResponse>;
   public invoke(service: string, args?: any): Observable<InvokeResponse>;
-  public invoke(methodOrService: Method | string, args?: any): Observable<InvokeResponse> {
+  public invoke(methodOrService: Method | Method[] | string, args?: any): Observable<InvokeResponse> {
 
     if (methodOrService instanceof Method) {
-      return this.invokeMethod(methodOrService);
+      return this.invokeMethods([methodOrService]);
+    } else if (methodOrService instanceof Array) {
+      return this.invokeMethods(methodOrService, args);
     } else {
       return this.invokeService(methodOrService, args);
     }
   }
 
-  private invokeMethod(method: Method): Observable<InvokeResponse> {
+  public invokeMethods(methods: Method[], options?: InvokeOptions): Observable<InvokeResponse> {
     const invokeRequest: InvokeRequest = {
-      i: method.object.id,
-      m: method.name,
-      v: method.object.version,
+      i: methods.map(v => {
+        return {
+          i: v.object.id,
+          m: v.name,
+          v: v.object.version,
+        };
+      }),
+      o: options
     };
 
     const serviceName: string = this.fullyQualifiedUrl('Database/Invoke');
@@ -104,29 +112,6 @@ export class Database {
       );
   }
 
-  public invokeAll(methods: Method[]): Observable<InvokeResponse> {
-    const invokeRequests: InvokeRequest[] = methods.map(v => {
-      return {
-        i: v.object.id,
-        m: v.name,
-        v: v.object.version,
-      };
-    });
-
-    const serviceName: string = this.fullyQualifiedUrl('Database/InvokeAll');
-    return this.http
-      .post<InvokeResponse>(serviceName, invokeRequests)
-      .pipe(
-        map((invokeResponse) => {
-          invokeResponse.responseType = ResponseType.Invoke;
-
-          if (invokeResponse.hasErrors) {
-            throw new ResponseError(invokeResponse);
-          }
-
-          return invokeResponse;
-        }));
-  }
 
   private fullyQualifiedUrl(localUrl: string): string {
     return this.url + localUrl;

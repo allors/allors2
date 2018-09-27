@@ -1,6 +1,7 @@
 ﻿namespace Allors.Workspace.Client
 {
     using System;
+    using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
     using System.Text;
@@ -64,12 +65,22 @@
 
         public async Task<InvokeResponse> Invoke(Method method)
         {
+            return await this.Invoke(new[] { method });
+        }
+
+        public async Task<InvokeResponse> Invoke(Method[] methods, InvokeOptions options = null)
+        {
             var invokeRequest = new InvokeRequest
                                     {
-                                        I = method.Object.Id.ToString(),
-                                        V = method.Object.Version.ToString(),
-                                        M = method.Name,
-                                    };
+                                        I = methods.Select(v => new Invocation
+                                                                   {
+                                                                       I = v.Object.Id.ToString(),
+                                                                       V = v.Object.Version.ToString(),
+                                                                       M = v.Name,
+                                                                   }).ToArray(),
+                                        O = options
+                                    }; 
+                
 
             var uri = new Uri("Database/Invoke", UriKind.Relative);
             var response = await this.PostAsJsonAsync(uri, invokeRequest);

@@ -30,78 +30,143 @@ namespace Allors.Server
     public class InvokeResponseBuilder
     {
         private readonly ISession session;
-        private readonly InvokeRequest invokeRequest;
         private readonly User user;
+        private readonly Invocation[] invocations;
+
+        private readonly bool isolated;
+        private readonly bool continueOnError;
 
         public InvokeResponseBuilder(ISession session, User user, InvokeRequest invokeRequest)
         {
             this.session = session;
             this.user = user;
-            this.invokeRequest = invokeRequest;
+            this.invocations = invokeRequest.I;
+            this.isolated = invokeRequest.O?.I ?? false;
+            this.continueOnError = invokeRequest.O?.C ?? false;
         }
 
         public InvokeResponse Build()
         {
-            if (this.invokeRequest.M == null || this.invokeRequest.I == null || this.invokeRequest.V == null)
-            {
-                throw new ArgumentException();
-            }
-
-            var obj = this.session.Instantiate(this.invokeRequest.I);
-            var composite = (Composite)obj.Strategy.Class;
-            var methodTypes = composite.WorkspaceMethodTypes;
-            var methodType = methodTypes.FirstOrDefault(x => x.Name.Equals(this.invokeRequest.M));
-
-            if (methodType == null)
-            {
-                throw new Exception("Method " + this.invokeRequest.M + " not found.");   
-            }
-            
             var invokeResponse = new InvokeResponse();
 
-            if (!this.invokeRequest.V.Equals(obj.Strategy.ObjectVersion.ToString()))
+            if (this.isolated)
             {
-                invokeResponse.AddVersionError(obj);
-            }
-            else
-            {
-                var acl = new AccessControlList(obj, this.user);
-                if (acl.CanExecute(methodType))
+                foreach (var invocation in this.invocations)
                 {
-                    var method = obj.GetType().GetMethod(methodType.Name, new Type[] { });
-
-                    try
+                    var error = this.Invoke(invocation, invokeResponse);
+                    if (!error)
                     {
-                        method.Invoke(obj, null);
-                    }
-                    catch (Exception e)
-                    {
-                        var innerException = e;
-                        while (innerException.InnerException != null)
+                        var validation = this.session.Derive(false);
+                        if (validation.HasErrors)
                         {
-                            innerException = innerException.InnerException;
+                            error = true;
+                            invokeResponse.AddDerivationErrors(validation);
                         }
-
-                        invokeResponse.ErrorMessage = innerException.Message;
                     }
 
-                    var validation = this.session.Derive(false);
-                    if (!validation.HasErrors)
+                    if (error)
                     {
-                        this.session.Commit();
+                        this.session.Rollback();
+                        if (!this.continueOnError)
+                        {
+                            break;
+                        }
                     }
                     else
                     {
-                        invokeResponse.AddDerivationErrors(validation);
+                        this.session.Commit();
                     }
+                }
+            }
+            else
+            {
+                var error = false;
+                foreach (var invocation in this.invocations)
+                {
+                    error = this.Invoke(invocation, invokeResponse);
+                    if (error)
+                    {
+                        break;
+                    }
+                }
+
+                if (error)
+                {
+                    this.session.Rollback();
                 }
                 else
                 {
-                    invokeResponse.AddAccessError(obj);
+                    var validation = this.session.Derive(false);
+                    if (validation.HasErrors)
+                    {
+                        invokeResponse.AddDerivationErrors(validation);
+                    }
+                    else
+                    {
+                        this.session.Commit();
+                    }
                 }
             }
 
             return invokeResponse;
+        }
+
+        private bool Invoke(Invocation invocation, InvokeResponse invokeResponse)
+        {
+            if (invocation.M == null || invocation.I == null || invocation.V == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var obj = this.session.Instantiate(invocation.I);
+            var composite = (Composite)obj.Strategy.Class;
+            var methodTypes = composite.WorkspaceMethodTypes;
+            var methodType = methodTypes.FirstOrDefault(x => x.Name.Equals(invocation.M));
+
+            if (methodType == null)
+            {
+                throw new Exception("Method " + invocation.M + " not found.");
+            }
+
+            if (!invocation.V.Equals(obj.Strategy.ObjectVersion.ToString()))
+            {
+                invokeResponse.AddVersionError(obj);
+                return true;
+            }
+
+            var acl = new AccessControlList(obj, this.user);
+            if (!acl.CanExecute(methodType))
+            {
+                invokeResponse.AddAccessError(obj);
+                return true;
+            }
+
+            var method = obj.GetType().GetMethod(methodType.Name, new Type[] { });
+
+            try
+            {
+                method.Invoke(obj, null);
+            }
+            catch (Exception e)
+            {
+                var innerException = e;
+                while (innerException.InnerException != null)
+                {
+                    innerException = innerException.InnerException;
+                }
+
+                invokeResponse.ErrorMessage = innerException.Message;
+                return true;
+            }
+
+            var validation = this.session.Derive(false);
+            if (validation.HasErrors)
+            {
+                invokeResponse.AddDerivationErrors(validation);
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InvokeRequest.cs" company="Allors bvba">
+// <copyright file="Invocation.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -20,16 +20,21 @@
 
 namespace Allors.Server.Protocol.Invoke
 {
-    public class InvokeRequest
+    public class Invocation
     {
         /// <summary>
         /// The id.
         /// </summary>
-        public Invocation[] I { get; set; }
+        public string I { get; set; }
 
         /// <summary>
         /// The version.
         /// </summary>
-        public InvokeOptions O { get; set; }
+        public string V { get; set; }
+
+        /// <summary>
+        /// The method.
+        /// </summary>
+        public string M { get; set; }
     }
 }

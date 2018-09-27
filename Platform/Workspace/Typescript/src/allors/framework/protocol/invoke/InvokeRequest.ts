@@ -1,5 +1,7 @@
-﻿export class InvokeRequest {
-    public i: string;
-    public v: string;
-    public m: string;
+﻿import { Invocation } from './Invocation';
+import { InvokeOptions } from './InvokeOptions';
+
+export class InvokeRequest {
+    public i: Invocation[];
+    public o: InvokeOptions;
 }

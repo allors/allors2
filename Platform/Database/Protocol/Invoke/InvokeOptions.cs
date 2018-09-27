@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InvokeRequest.cs" company="Allors bvba">
+// <copyright file="InvokeOptions.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 //
 // Dual Licensed under
@@ -18,18 +18,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Allors.Server.Protocol.Invoke
+namespace Allors.Server
 {
-    public class InvokeRequest
+    public class InvokeOptions
     {
         /// <summary>
-        /// The id.
+        /// The isolated option.
         /// </summary>
-        public Invocation[] I { get; set; }
+        public string I { get; set; }
 
         /// <summary>
-        /// The version.
+        /// The continue on error option.
         /// </summary>
-        public InvokeOptions O { get; set; }
+        public string C { get; set; }
     }
 }

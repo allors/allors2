@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 import {
   InvokeResponse, ISession, ISessionObject, Method, PullResponse,
   PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
-  SyncResponse, Workspace,
+  SyncResponse, Workspace, InvokeOptions,
 } from '../../../framework';
 
 import { Database } from './Database';
@@ -76,20 +76,12 @@ export class Scope {
   }
 
   public invoke(method: Method): Observable<Invoked>;
+  public invoke(methods: Method[], options?: InvokeOptions): Observable<Invoked>;
   public invoke(service: string, args?: any): Observable<Invoked>;
-  public invoke(methodOrService: Method | string, args?: any): Observable<Invoked> {
+  public invoke(methodOrService: Method | Method[] | string, args?: any): Observable<Invoked> {
 
     return this.database
       .invoke(methodOrService as any, args)
-      .pipe(
-        map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse))
-      );
-  }
-
-  public invokeAll(methods: Method[]): Observable<Invoked> {
-
-    return this.database
-      .invokeAll(methods)
       .pipe(
         map((invokeResponse: InvokeResponse) => new Invoked(this.session, invokeResponse))
       );

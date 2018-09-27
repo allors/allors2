@@ -23,18 +23,13 @@ namespace Allors.Server
     public class InvokeRequest
     {
         /// <summary>
-        /// The id.
+        /// The invocations.
         /// </summary>
-        public string I { get; set; }
+        public Invocation[] I { get; set; }
 
         /// <summary>
-        /// The version.
+        /// The options.
         /// </summary>
-        public string V { get; set; }
-
-        /// <summary>
-        /// The method.
-        /// </summary>
-        public string M { get; set; }
+        public InvokeOptions O { get; set; }
     }
 }

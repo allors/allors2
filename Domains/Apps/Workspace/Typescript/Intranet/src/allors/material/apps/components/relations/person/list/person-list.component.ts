@@ -154,7 +154,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             { message: 'Are you sure you want to delete these people?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope.invokeAll(methods)
+            this.scope.invoke(methods)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

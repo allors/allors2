@@ -24,6 +24,10 @@
 	  <Content Remove="wwwroot\**" />
 	  <EmbeddedResource Remove="wwwroot\**" />
 	  <None Remove="wwwroot\**" />
+	</ItemGroup> 
+
+	<ItemGroup>
+	  <Compile Remove="..\..\..\Base\Database\Server\Export\Base\Database\InvokeAllResponseBuilder.cs" />
 	</ItemGroup>
   
 

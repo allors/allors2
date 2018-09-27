@@ -4,6 +4,8 @@ export { ResponseError } from './ResponseError';
 export { DerivationError } from './DerivationError';
 
 export { InvokeRequest } from './invoke/InvokeRequest';
+export { Invocation } from './invoke/Invocation';
+export { InvokeOptions } from './invoke/InvokeOptions';
 export { InvokeResponse } from './invoke/InvokeResponse';
 
 export { PullRequest } from './pull/PullRequest';
