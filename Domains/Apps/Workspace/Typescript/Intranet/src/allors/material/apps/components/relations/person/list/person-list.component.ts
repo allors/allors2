@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatTableDataSource, MatSort } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { BehaviorSubject, Subscription } from 'rxjs';
@@ -12,6 +12,7 @@ import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataServi
 import { Person } from '../../../../../../domain';
 import { PullRequest, Sort, SessionObject } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { PersonAddComponent } from '../add/person-add.module';
 
 interface Row {
   person: Person;
@@ -46,6 +47,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     private workspaceService: WorkspaceService,
     private dataService: DataService,
     private errorService: ErrorService,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
@@ -169,5 +171,14 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public onView(person: Person): void {
     this.router.navigate(['/relations/person/' + person.id]);
+  }
+
+  public addNew() {
+    const dialogRef = this.dialog.open(PersonAddComponent, {
+      autoFocus: false
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.refresh();
+    });
   }
 }
