@@ -12,16 +12,17 @@
   <div>
     <mat-card>
       <mat-card-content class="container-fluid a-search">
-        <!-- <a-mat-search (values)="search$.next($event)">
-          <a-mat-search-input name="name"></a-mat-search-input>
+        <a-mat-search (values)="search$.next($event)">
+          <!-- <a-mat-search-input name="name"></a-mat-search-input>
           <a-mat-search-input name="articleNumber"></a-mat-search-input>
-          <a-mat-search-input name="keyword"></a-mat-search-input>
-          <a-mat-search-select name="manufacturer" [options]="manufacturers" display="displayName"></a-mat-search-select>
+          <a-mat-search-input name="keyword"></a-mat-search-input> -->
+          <!-- <a-mat-search-select name="manufacturer" [options]="manufacturers" display="displayName"></a-mat-search-select>
           <a-mat-search-select name="supplier" [options]="suppliers" display="displayName"></a-mat-search-select>
           <a-mat-search-select name="productCategory" [options]="productCategories" display="Name"></a-mat-search-select>
-          <a-mat-search-select name="productType" [options]="productTypes" display="Name"></a-mat-search-select>
           <a-mat-search-select name="inventoryItemKind" [options]="inventoryItemKinds" display="Name"></a-mat-search-select>
-        </a-mat-search> -->
+          <a-mat-search-select name="productType" [options]="productTypes" display="Name"></a-mat-search-select>
+          <a-mat-search-select name="inventoryItemKind" [options]="inventoryItemKinds" display="Name"></a-mat-search-select> -->
+        </a-mat-search>
       </mat-card-content>
 
       <mat-card-content class="container-fluid a-list">
@@ -33,12 +34,12 @@
         <mat-list>
           <mat-list-item *ngFor="let good of goods; let last = last" [attr.data-allors-id]="good.id" (click)="onView(good)" style="cursor: pointer;">
 
-            <mat-icon *ngIf="!good.avatar" mat-list-avatar>insert_photo</mat-icon>
-            <img *ngIf="good.avatar" mat-list-avatar [src]="mediaService.url(good.avatar)" />
+            <!-- <mat-icon *ngIf="!good.avatar" mat-list-avatar>insert_photo</mat-icon> -->
+            <!-- <img *ngIf="good.avatar" mat-list-avatar [src]="mediaService.url(good.avatar)" /> -->
 
-            <h3 mat-line>{{good.name}}</h3>
-            <p mat-line>{{good.description}}
-              <span *ngIf="!good.isSerialised">; Available: {{good.available}}</span>
+            <h3 mat-line>{{good.Name}}</h3>
+            <p mat-line>{{good.Description}}
+              <!-- <span *ngIf="!good.isSerialised">; Available: {{good.available}}</span> -->
             </p>
 
             <div (click)="$event.stopPropagation()">
