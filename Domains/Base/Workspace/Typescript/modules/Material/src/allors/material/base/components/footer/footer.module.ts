@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatToolbarModule } from '@angular/material';
+
+import { AllorsFocusModule } from '../../../../angular';
 
 import { AllorsMaterialFooterComponent } from './footer.component';
-import { MatToolbarModule } from '@angular/material';
 export { AllorsMaterialFooterComponent } from './footer.component';
 
 @NgModule({
@@ -14,7 +16,8 @@ export { AllorsMaterialFooterComponent } from './footer.component';
   ],
   imports: [
     CommonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    AllorsFocusModule
   ],
 })
 export class AllorsMaterialFooterModule {

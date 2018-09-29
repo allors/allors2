@@ -175,7 +175,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public addNew() {
     const dialogRef = this.dialog.open(PersonAddComponent, {
-      autoFocus: false
+      autoFocus: false,
+      disableClose: true
     });
     dialogRef.afterClosed().subscribe(result => {
       this.refresh();

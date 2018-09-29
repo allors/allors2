@@ -4,7 +4,7 @@
       {{item[this.display]}}
       <mat-icon matChipRemove *ngIf="!disabled">cancel</mat-icon>
     </mat-chip>
-    <input #searchInput [matChipInputFor]="chipList" [matAutocomplete]="auto" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" (focusout)="focusout($event)">
+    <input aFocus [aFocusTrigger]="roleType" #searchInput [matChipInputFor]="chipList" [matAutocomplete]="auto" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" (focusout)="focusout($event)">
   </mat-chip-list>
   <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn()">
     <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="selected(option)" [attr.data-allors-option-display]="option[display]">

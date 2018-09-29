@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-
 import { Observable } from 'rxjs';
 
 import { WorkspaceService, DataService } from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
-import { MetaDomain } from '../allors/meta';
 import { Loaded } from '../allors/angular';
 import { StateService } from '../allors/material/apps/services/StateService';
 import { tap } from 'rxjs/operators';

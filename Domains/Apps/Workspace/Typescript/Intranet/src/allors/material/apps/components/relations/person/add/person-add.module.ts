@@ -16,6 +16,7 @@ import { AllorsMaterialFooterSaveCancelModule } from '../../../../../base/compon
 
 import { PersonAddComponent } from './person-add.component';
 import { A11yModule } from '@angular/cdk/a11y';
+import { AllorsFocusService, AllorsFocusModule } from '../../../../../../angular';
 export { PersonAddComponent } from './person-add.component';
 
 @NgModule({
@@ -35,6 +36,7 @@ export { PersonAddComponent } from './person-add.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+    AllorsFocusModule,
     A11yModule,
     CommonModule,
     FormsModule,
@@ -53,7 +55,7 @@ export { PersonAddComponent } from './person-add.component';
     MatTooltipModule,
     MatOptionModule,
     ReactiveFormsModule,
-    RouterModule,
-  ],
+    RouterModule
+  ]
 })
 export class PersonAddModule { }

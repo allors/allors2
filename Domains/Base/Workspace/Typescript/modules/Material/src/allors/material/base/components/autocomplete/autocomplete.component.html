@@ -1,5 +1,5 @@
 <mat-form-field class="d-flex flex-column align-items-stretch" [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
-  <input [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" [matAutocomplete]="autocomplete">
+  <input aFocus [aFocusTrigger]="roleType" [formControl]="searchControl" type="text" autocomplete="off" matInput [placeholder]="label" [required]="required" [disabled]="disabled" [readonly]="readonly" [matAutocomplete]="autocomplete">
   <mat-hint *ngIf="hint">{{hint}}</mat-hint>
 
   <mat-autocomplete #autocomplete="matAutocomplete" [displayWith]="displayFn()" (optionSelected)="optionSelected($event)">

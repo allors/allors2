@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, Allors } from '../../../../../../angular';
+import { ErrorService, Saved, Allors, AllorsFocusService, AllorsFocusModule } from '../../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   templateUrl: './person-add.component.html',
-  providers: [Allors]
+  providers: [Allors, AllorsFocusService]
 })
 export class PersonAddComponent implements OnInit, OnDestroy {
 
@@ -52,6 +52,7 @@ export class PersonAddComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: Allors,
+    @Self() public focusService: AllorsFocusService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -119,6 +120,8 @@ export class PersonAddComponent implements OnInit, OnDestroy {
         this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 
         this.person = scope.session.create('Person') as Person;
+
+        this.focusService.focus(m.Person.Salutation);
 
       },
         (error: any) => {

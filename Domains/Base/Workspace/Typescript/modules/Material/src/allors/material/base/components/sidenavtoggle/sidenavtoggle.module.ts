@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule, MatButtonModule } from '@angular/material';
 
-import { MatAutocompleteModule, MatInputModule, MatIconModule, MatListModule, MatButtonModule } from '@angular/material';
+import { AllorsFocusModule } from '../../../../angular';
 
 import { AllorsMaterialSideNavToggleComponent } from './sidenavtoggle.component';
 export { AllorsMaterialSideNavToggleComponent } from './sidenavtoggle.component';
@@ -19,6 +18,7 @@ export { AllorsMaterialSideNavToggleComponent } from './sidenavtoggle.component'
     CommonModule,
     MatIconModule,
     MatButtonModule,
+    AllorsFocusModule
   ],
 })
 export class AllorsMaterialSideNavToggleModule {

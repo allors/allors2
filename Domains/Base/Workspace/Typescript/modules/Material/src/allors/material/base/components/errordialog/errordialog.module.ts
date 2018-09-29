@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
-
-import { AllorsMaterialErrorDialogComponent } from './errordialog.component';
 import { MatDialogModule, MatButtonModule } from '@angular/material';
 import { CommonModule } from '@angular/common';
+
+import { AllorsFocusModule } from '../../../../angular';
+
+import { AllorsMaterialErrorDialogComponent } from './errordialog.component';
 export { AllorsMaterialErrorDialogComponent };
 
 @NgModule({
@@ -19,6 +21,7 @@ export { AllorsMaterialErrorDialogComponent };
     MatDialogModule,
     MatButtonModule,
     CommonModule,
+    AllorsFocusModule
   ],
 })
 export class AllorsMaterialErrorDialogModule {

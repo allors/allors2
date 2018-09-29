@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { MatInputModule } from '@angular/material';
 
-import { TextareaComponent } from './textarea.component';
+import { AllorsFocusModule } from '../../../../angular';
 
+import { TextareaComponent } from './textarea.component';
 export { TextareaComponent } from './textarea.component';
 
 @NgModule({
@@ -17,10 +16,10 @@ export { TextareaComponent } from './textarea.component';
     TextareaComponent,
   ],
   imports: [
-
     FormsModule,
     CommonModule,
     MatInputModule,
+    AllorsFocusModule
   ],
 })
 export class AllorsMaterialTextAreaModule {

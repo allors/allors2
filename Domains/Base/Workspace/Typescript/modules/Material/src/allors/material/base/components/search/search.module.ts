@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule, MatFormFieldModule, MatInputModule, MatButtonModule } from '@angular/material';
 
+import { AllorsFocusModule } from '../../../../angular';
+
 import { AllorsMaterialSearchComponent } from './search.component';
 export { AllorsMaterialSearchComponent } from './search.component';
 
@@ -19,7 +21,8 @@ export { AllorsMaterialSearchComponent } from './search.component';
     MatButtonModule,
     MatFormFieldModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    AllorsFocusModule
   ],
 })
 export class AllorsMaterialSearchModule {

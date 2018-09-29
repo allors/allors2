@@ -4,7 +4,7 @@
   <form #form="ngForm" novalidate class="container-fluid">
 
     <div class="row">
-      <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name" autofocus="autofocus"></a-mat-select>
+      <a-mat-select class="col-md" [object]="person" [roleType]="m.Person.Salutation" [options]="salutations" display="Name" focus="true"></a-mat-select>
       <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.FirstName"></a-mat-input>
       <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.MiddleName"></a-mat-input>
       <a-mat-input class="col-md" [object]="person" [roleType]="m.Person.LastName"></a-mat-input>

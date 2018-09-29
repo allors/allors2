@@ -42,7 +42,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, DataService, Allors
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, DataService, Allors, AllorsFocusModule
 } from '../allors/angular';
 
 import {
@@ -82,6 +82,7 @@ import { ConfigService } from './app.config.service';
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    AllorsFocusModule.forRoot(),
 
     relations.Modules,
     orders.Modules,

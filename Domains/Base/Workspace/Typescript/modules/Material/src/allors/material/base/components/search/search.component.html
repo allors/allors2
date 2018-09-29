@@ -1,5 +1,5 @@
 <mat-form-field floatLabel="never" appearance="standard" class="d-flex flex-column align-items-stretch">
-    <input #search matInput (keyup)="filter.emit($event.target.value)" placeholder="Search">
+    <input autofocus #search matInput (keyup)="filter.emit($event.target.value)" placeholder="Search">
     <span matSuffix *ngIf="!search.value" aria-label="Search">
         <mat-icon>search</mat-icon>
     </span>

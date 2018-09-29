@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { MatAutocompleteModule, MatInputModule, MatIconModule, MatListModule } from '@angular/material';
+import { RouterModule } from '@angular/router';
+
+import { AllorsFocusModule } from '../../../../angular';
+export { SideMenuItem } from './sidemenuitem';
 
 import { AllorsMaterialSideMenuComponent } from './sidemenu.component';
-
-import { RouterModule } from '@angular/router';
 export { AllorsMaterialSideMenuComponent } from './sidemenu.component';
-export { SideMenuItem } from './sidemenuitem';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +20,6 @@ export { SideMenuItem } from './sidemenuitem';
   ],
   imports: [
     CommonModule,
-
     FormsModule,
     MatAutocompleteModule,
     MatInputModule,
@@ -28,6 +27,7 @@ export { SideMenuItem } from './sidemenuitem';
     MatListModule,
     ReactiveFormsModule,
     RouterModule,
+    AllorsFocusModule
   ],
 })
 export class AllorsMaterialSideMenuModule {

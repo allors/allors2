@@ -30,6 +30,9 @@ export abstract class Field implements AfterViewInit, OnDestroy {
   @Input()
   public hint: string;
 
+  @Input()
+  public focus: boolean;
+
   @ViewChildren(NgModel) private controls: QueryList<NgModel>;
 
   private id = 0;

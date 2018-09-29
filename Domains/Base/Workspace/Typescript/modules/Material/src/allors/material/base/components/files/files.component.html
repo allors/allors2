@@ -1,7 +1,7 @@
 <div [attr.data-allors-id]="dataAllorsId" [attr.data-allors-roletype]="dataAllorsRoleType">
   <div class="row">
     <mat-form-field class="col">
-      <input matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
+      <input aFocus [aFocusTrigger]="roleType" matInput [ngModel]="fieldValue" [name]="name" [placeholder]="label" readonly (click)="fileInput.click()">
     </mat-form-field>
 
     <button mat-icon-button type="button" (click)="fileInput.click()">
