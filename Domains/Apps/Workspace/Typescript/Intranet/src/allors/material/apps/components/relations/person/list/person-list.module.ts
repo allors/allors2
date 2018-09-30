@@ -6,13 +6,13 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialFilterModule } from '../../../../../base/components/filter';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
-import { AllorsMaterialSearchModule } from '../../../../../base/components/search';
 
 import { PersonAddComponent, PersonAddModule } from '../add/person-add.module';
 
@@ -28,6 +28,7 @@ export { PersonListComponent } from './person-list.component';
   ],
   imports: [
     AllorsMaterialFileModule,
+    AllorsMaterialFilterModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -35,7 +36,6 @@ export { PersonListComponent } from './person-list.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    AllorsMaterialSearchModule,
     CommonModule,
     FormsModule,
     MatButtonModule,

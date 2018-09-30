@@ -6,7 +6,6 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSearchModule } from '../../../../base/components/search';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
@@ -29,7 +28,6 @@ export { GoodsOverviewComponent } from './goods-overview.component';
   imports: [
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
-    AllorsMaterialSearchModule,
     AllorsMaterialSelectModule,
     AllorsMaterialLocalisedTextModule,
     AllorsMaterialSideNavToggleModule,

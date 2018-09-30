@@ -15,7 +15,6 @@ import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
-import { AllorsMaterialSearchModule } from '../../../../base/components/search';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -38,7 +37,6 @@ export { OrganisationsOverviewComponent } from './organisations-overview.compone
     AllorsModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
-    AllorsMaterialSearchModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,

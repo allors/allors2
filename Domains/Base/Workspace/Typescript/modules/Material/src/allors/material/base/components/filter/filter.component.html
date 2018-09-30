@@ -1,0 +1,26 @@
+<!-- <mat-form-field floatLabel="never" appearance="standard" class="d-flex flex-column align-items-stretch">
+    <input autofocus #search matInput (keyup)="filter.emit($event.target.value)" placeholder="Search">
+    <span matSuffix *ngIf="!search.value" aria-label="Search">
+        <mat-icon>search</mat-icon>
+    </span>
+    <button matSuffix mat-button *ngIf="search.value" mat-icon-button aria-label="Clear" (click)="search.value=''; filter.emit(search.value)">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field> -->
+<mat-toolbar style="background-color: transparent">
+    <mat-toolbar-row (click)="addFilter($event)">
+        <mat-chip-list class="mr-auto">
+            <mat-chip [removable]="true">first name: 'John' <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <mat-chip [removable]="true">last name: 'Doe' <mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+            <mat-chip [removable]="true">age: 25 <mat-icon matChipRemove>cancel</mat-icon></mat-chip>
+        </mat-chip-list>
+        <button mat-button mat-icon-button aria-label="Clear Filters">
+            <mat-icon>close</mat-icon>
+        </button>
+        <button mat-button mat-icon-button aria-label="Filter">
+            <mat-icon>filter_list</mat-icon>
+        </button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div #dialogPosition></div>

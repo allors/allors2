@@ -3,15 +3,22 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
 import { AuthorizationService } from './auth/authorization.service';
 import { LoginComponent } from './auth/login.component';
 import { MainComponent } from './main/main.component';
+import { DefaultLoggingService } from './app.logging.service';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ConfigService } from './app.config.service';
+
+import { DefaultStateService } from '../allors/material/apps/services/DefaultStateService';
+import { StateService } from '../allors/material/apps/services/StateService';
+import { AllorsMaterialFilterModule } from '../allors/material/base/components/filter';
 
 import * as ap from '../allors/material/apps/components/accountspayable';
 import * as ar from '../allors/material/apps/components/accountsreceivable';
@@ -56,12 +63,6 @@ const ALLORS_MATERIAL_MODULES: any[] = [
   AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
 ];
 
-import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
-import { DefaultLoggingService } from './app.logging.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { DefaultStateService } from '../allors/material/apps/services/DefaultStateService';
-import { StateService } from '../allors/material/apps/services/StateService';
-import { ConfigService } from './app.config.service';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -84,6 +85,7 @@ import { ConfigService } from './app.config.service';
     AppRoutingModule,
     AllorsModule.forRoot(),
     AllorsFocusModule.forRoot(),
+    AllorsMaterialFilterModule.forRoot(),
 
     relations.Modules,
     orders.Modules,

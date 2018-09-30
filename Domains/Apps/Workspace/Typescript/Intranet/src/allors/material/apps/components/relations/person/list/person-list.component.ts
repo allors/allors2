@@ -13,6 +13,7 @@ import { Person } from '../../../../../../domain';
 import { PullRequest, Sort, SessionObject } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { PersonAddComponent } from '../add/person-add.module';
+import { AllorsMaterialFilterService } from '../../../../../base/components/filter/filter.service';
 
 interface Row {
   person: Person;
@@ -24,7 +25,7 @@ interface Row {
 
 @Component({
   templateUrl: './person-list.component.html',
-  providers: [Allors]
+  providers: [Allors, AllorsMaterialFilterService]
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
@@ -43,6 +44,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
+    @Self() private filterService: AllorsMaterialFilterService,
     public mediaService: MediaService,
     public router: Router,
     private errorService: ErrorService,

@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSearchModule } from '../../../../base/components/search';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -30,7 +29,6 @@ export { CategoriesOverviewComponent } from './categories-overview.component';
   imports: [
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
-    AllorsMaterialSearchModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
