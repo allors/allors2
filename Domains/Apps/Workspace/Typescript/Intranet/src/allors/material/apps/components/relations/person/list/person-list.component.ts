@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
 import { Person } from '../../../../../../domain';
 import { PullRequest, Sort, SessionObject } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
@@ -23,7 +23,8 @@ interface Row {
 }
 
 @Component({
-  templateUrl: './person-list.component.html'
+  templateUrl: './person-list.component.html',
+  providers: [Allors]
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
@@ -39,13 +40,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
+    @Self() private allors: Allors,
     public mediaService: MediaService,
     public router: Router,
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
     private errorService: ErrorService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -54,15 +53,14 @@ export class PersonListComponent implements OnInit, OnDestroy {
     titleService: Title) {
 
     titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    this.dataSource.sort = this.sort;
+    const { pull, scope } = this.allors;
 
-    const { pull } = this.dataService;
+    this.dataSource.sort = this.sort;
 
     this.subscription = this.refresh$
       .pipe(
@@ -77,11 +75,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
               },
             })];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
         const people = loaded.collections.People as Person[];
         this.data = people.map((v) => {
           return {
@@ -145,6 +143,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public delete(person: Person | Person[]): void {
 
+    const { scope } = this.allors;
+
     const people = person instanceof SessionObject ? [person as Person] : person instanceof Array ? person : [];
     const methods = people.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
@@ -156,7 +156,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             { message: 'Are you sure you want to delete these people?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope.invoke(methods)
+            scope.invoke(methods)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

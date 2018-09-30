@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
@@ -21,6 +21,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './invoices-overview.component.html',
+  providers: [Allors]
 })
 export class InvoicesOverviewComponent implements OnDestroy {
 
@@ -41,13 +42,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
-
   private page$: BehaviorSubject<number>;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -57,7 +55,6 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
     this.titleService.setTitle('Purchase Invoices');
 
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -89,7 +86,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
         }, [])
       );
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combined$
       .pipe(
@@ -107,7 +104,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded: Loaded) => {
@@ -166,7 +163,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
                     skip: 0, take
                   })];
 
-                return this.scope.load('Pull', new PullRequest({ pulls: queries }));
+                return scope.load('Pull', new PullRequest({ pulls: queries }));
               })
             );
         })

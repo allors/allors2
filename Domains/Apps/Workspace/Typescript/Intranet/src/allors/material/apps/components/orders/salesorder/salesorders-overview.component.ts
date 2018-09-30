@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, SalesOrder, SalesOrderState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -22,7 +22,8 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: './salesorders-overview.component.html'
+  templateUrl: './salesorders-overview.component.html',
+  providers: [Allors]
 })
 export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
   public searchForm: FormGroup;
@@ -43,11 +44,9 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -58,7 +57,6 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
   ) {
     titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -72,7 +70,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -104,7 +102,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded: Loaded) => {
@@ -176,7 +174,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return this.scope.load('Pull', new PullRequest({ pulls: pulls2 }));
+                return scope.load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
         })

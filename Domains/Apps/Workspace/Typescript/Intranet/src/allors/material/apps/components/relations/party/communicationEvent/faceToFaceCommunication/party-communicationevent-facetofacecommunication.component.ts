@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -14,6 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-communicationevent-facetofacecommunication.component.html',
+  providers: [Allors]
 })
 export class PartyCommunicationEventFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
@@ -34,19 +35,16 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private stateService: StateService,
   ) {
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -56,7 +54,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -102,13 +100,13 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
@@ -117,7 +115,7 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
         this.communicationEvent = loaded.objects.communicationEvent as FaceToFaceCommunication;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
+          this.communicationEvent = scope.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
           if (this.party.objectType.name === 'Person') {
             this.communicationEvent.AddParticipant(this.party);
           }
@@ -145,10 +143,12 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   public participantAdded(id: string): void {
+    const { scope } = this.allors;
+
     this.addParticipant = false;
 
-    const participant: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const participant: Person = scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = participant;
     relationShip.Organisation = this.party as Organisation;
 
@@ -162,8 +162,10 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   public cancel(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Cancel)
+      scope.invoke(this.communicationEvent.Cancel)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -173,15 +175,15 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe(() => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -197,8 +199,10 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   public close(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Close)
+      scope.invoke(this.communicationEvent.Close)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -208,15 +212,15 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe(() => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -232,8 +236,10 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   public reopen(): void {
+    const { scope } = this.allors;
+
     const cancelFn = () => {
-      this.scope.invoke(this.communicationEvent.Reopen)
+      scope.invoke(this.communicationEvent.Reopen)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -243,15 +249,15 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe(() => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -267,8 +273,9 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe(() => {
         this.goBack();

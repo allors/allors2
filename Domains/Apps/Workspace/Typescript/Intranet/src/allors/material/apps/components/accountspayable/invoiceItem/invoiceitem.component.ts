@@ -1,10 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceitem.component.html',
+  providers: [Allors]
 })
 export class InvoiceItemEditComponent
   implements OnInit, OnDestroy {
@@ -35,11 +36,9 @@ export class InvoiceItemEditComponent
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -47,14 +46,13 @@ export class InvoiceItemEditComponent
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService,
   ) {
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { pull } = this.dataService;
+    const { pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -88,11 +86,11 @@ export class InvoiceItemEditComponent
             pull.VatRegime()
           ];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.invoiceItem as PurchaseInvoiceItem;
@@ -107,7 +105,7 @@ export class InvoiceItemEditComponent
 
         if (!this.invoiceItem) {
           this.title = 'Add invoice Item';
-          this.invoiceItem = this.scope.session.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
+          this.invoiceItem = scope.session.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
           if (
@@ -132,7 +130,7 @@ export class InvoiceItemEditComponent
   }
 
   public goodSelected(product: Product): void {
-    const { pull } = this.dataService;
+    const { pull, scope } = this.allors;
 
     this.invoiceItem.InvoiceItemType = this.productItemType;
 
@@ -144,7 +142,7 @@ export class InvoiceItemEditComponent
       })
     ];
 
-    this.scope.load('Pull', new PullRequest({ pulls }))
+    scope.load('Pull', new PullRequest({ pulls }))
       .subscribe(
         (loaded) => {
           this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
@@ -165,7 +163,10 @@ export class InvoiceItemEditComponent
   }
 
   public save(): void {
-    this.scope.save().subscribe(
+
+    const { m, pull, scope } = this.allors;
+
+    scope.save().subscribe(
       (saved: Saved) => {
         this.router.navigate(['/accountspayable/invoice/' + this.invoice.id]);
       },
@@ -176,9 +177,12 @@ export class InvoiceItemEditComponent
   }
 
   public update(): void {
+
+    const { scope } = this.allors;
+
     const isNew = this.invoiceItem.isNew;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

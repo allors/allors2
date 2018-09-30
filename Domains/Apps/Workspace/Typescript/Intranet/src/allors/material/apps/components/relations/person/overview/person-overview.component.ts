@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -16,6 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './person-overview.component.html',
+  providers: [Allors]
 })
 export class PersonOverviewComponent implements OnInit, OnDestroy {
 
@@ -46,12 +47,11 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
+
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -62,10 +62,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   get contactMechanisms(): any {
@@ -83,7 +82,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, tree } = this.dataService;
+    const { m, pull, tree, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -158,12 +157,12 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             pull.PersonRole()
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.person = loaded.objects.Person as Person;
@@ -216,11 +215,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+    const { scope } = this.allors;
+
     partyContactMechanism.ThroughDate = new Date();
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
-        this.scope.session.reset();
+        scope.session.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -229,11 +230,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+    const { scope } = this.allors;
+
     partyContactMechanism.ThroughDate = undefined;
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
-        this.scope.session.reset();
+        scope.session.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -242,11 +245,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteContactMechanism(contactMechanism: ContactMechanism): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(contactMechanism.Delete)
+          scope.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -259,11 +264,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancelCommunication(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Cancel)
+          scope.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
@@ -276,11 +283,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public closeCommunication(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Close)
+          scope.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
@@ -293,11 +302,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public reopenCommunication(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Reopen)
+          scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
@@ -310,11 +321,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteCommunication(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Delete)
+          scope.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -327,11 +340,13 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(workEffort: WorkEffort): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work effort?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(workEffort.Delete)
+          scope.invoke(workEffort.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

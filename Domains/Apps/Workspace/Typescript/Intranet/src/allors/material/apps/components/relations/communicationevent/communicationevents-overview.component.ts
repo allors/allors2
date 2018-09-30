@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from '../../../../../domain';
 import { And, Contains, Equals, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -22,6 +22,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './communicationevents-overview.component.html',
+  providers: [Allors]
 })
 export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
 
@@ -47,11 +48,9 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -61,7 +60,6 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   ) {
 
     titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -74,7 +72,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -109,7 +107,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -157,7 +155,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return this.scope
+                return scope
                   .load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
@@ -165,7 +163,7 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.data = loaded.collections.communicationEvents as CommunicationEvent[];
         this.total = loaded.values.communicationEvents_total;
@@ -191,11 +189,13 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancel(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Cancel)
+          scope.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
@@ -208,11 +208,13 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public close(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Close)
+          scope.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
@@ -225,11 +227,13 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public reopen(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Reopen)
+          scope.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
@@ -242,11 +246,13 @@ export class CommunicationEventsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(communicationEvent: CommunicationEvent): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this communication event?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(communicationEvent.Delete)
+          scope.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

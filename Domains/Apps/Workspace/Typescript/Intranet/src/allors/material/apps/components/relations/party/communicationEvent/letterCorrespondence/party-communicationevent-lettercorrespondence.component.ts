@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from '../../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -13,7 +13,8 @@ import { AllorsMaterialDialogService } from '../../../../../../base/services/dia
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './party-communicationevent-lettercorrespondence.component.html'
+  templateUrl: './party-communicationevent-lettercorrespondence.component.html',
+  providers: [Allors]
 })
 export class PartyCommunicationEventLetterCorrespondenceComponent
   implements OnInit, OnDestroy {
@@ -38,16 +39,14 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   private subscription: Subscription;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService
   ) {
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -57,7 +56,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -115,12 +114,12 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
             })
           ];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe(
         loaded => {
-          this.scope.session.reset();
+          scope.session.reset();
 
           this.party = loaded.objects.party as Party;
           const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
@@ -129,7 +128,7 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
           this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
 
           if (!this.communicationEvent) {
-            this.communicationEvent = this.scope.session.create('LetterCorrespondence') as LetterCorrespondence;
+            this.communicationEvent = scope.session.create('LetterCorrespondence') as LetterCorrespondence;
             this.communicationEvent.IncomingLetter = true;
           }
 
@@ -184,10 +183,12 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   public senderAdded(id: string): void {
+    const { scope } = this.allors;
+
     this.addSender = false;
 
-    const sender: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const sender: Person = scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = sender;
     relationShip.Organisation = this.party as Organisation;
 
@@ -195,10 +196,12 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   public receiverAdded(id: string): void {
+    const { scope } = this.allors;
+
     this.addReceiver = false;
 
-    const receiver: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const receiver: Person = scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = receiver;
     relationShip.Organisation = this.party as Organisation;
 
@@ -216,8 +219,10 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   public cancel(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Cancel).subscribe(
+      scope.invoke(this.communicationEvent.Cancel).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', {
@@ -230,14 +235,14 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
       );
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope.save().subscribe(
+            scope.save().subscribe(
               (saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -254,8 +259,10 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   public close(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Close).subscribe(
+      scope.invoke(this.communicationEvent.Close).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', {
@@ -268,14 +275,14 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
       );
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope.save().subscribe(
+            scope.save().subscribe(
               (saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -292,8 +299,10 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   public reopen(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Reopen).subscribe(
+      scope.invoke(this.communicationEvent.Reopen).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', {
@@ -306,14 +315,14 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
       );
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope.save().subscribe(
+            scope.save().subscribe(
               (saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -330,7 +339,9 @@ export class PartyCommunicationEventLetterCorrespondenceComponent
   }
 
   public save(): void {
-    this.scope.save().subscribe(
+    const { scope } = this.allors;
+
+    scope.save().subscribe(
       (saved: Saved) => {
         this.goBack();
       },

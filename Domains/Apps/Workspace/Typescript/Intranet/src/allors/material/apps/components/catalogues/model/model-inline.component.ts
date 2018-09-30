@@ -20,7 +20,7 @@ export class InlineModelComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  constructor(private workspaceService: WorkspaceService, private errorService: ErrorService) {
+  constructor(private workspaceService: WorkspaceService) {
 
     this.m = this.workspaceService.metaPopulation.metaDomain;
   }

@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
 import { ProductType, SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -12,6 +12,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './producttype.component.html',
+  providers: [Allors]
 })
 export class ProductTypeComponent implements OnInit, OnDestroy {
 
@@ -25,22 +26,19 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
   public characteristics: SerialisedInventoryItemCharacteristicType[];
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -60,7 +58,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -68,7 +66,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
         this.productType = loaded.objects.productType as ProductType;
         if (!this.productType) {
-          this.productType = this.scope.session.create('ProductType') as ProductType;
+          this.productType = scope.session.create('ProductType') as ProductType;
         }
 
         this.characteristics = loaded.collections.characteristics as SerialisedInventoryItemCharacteristicType[];
@@ -87,8 +85,9 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

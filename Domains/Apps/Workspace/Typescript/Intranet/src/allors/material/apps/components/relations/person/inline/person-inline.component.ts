@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit , Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -9,6 +9,7 @@ import { MetaDomain } from '../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'person-inline',
   templateUrl: './person-inline.component.html',
+  providers: [Allors]
 })
 export class PersonInlineComponent implements OnInit {
 
@@ -26,27 +27,23 @@ export class PersonInlineComponent implements OnInit {
   public genders: Enumeration[];
   public salutations: Enumeration[];
 
-  private scope: Scope;
-
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { pull } = this.dataService;
+    const { pull, scope } = this.allors;
 
     const pulls = [
       pull.Locale({
         sort: new Sort(this.m.Locale.Name)
       }),
       pull.GenderType({
-        predicate: new Equals(this.m.GenderType.IsActive, true ),
+        predicate: new Equals(this.m.GenderType.IsActive, true),
         sort: new Sort(this.m.GenderType.Name),
       }),
       pull.Salutation({
@@ -55,19 +52,19 @@ export class PersonInlineComponent implements OnInit {
       })
     ];
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.locales = loaded.collections.locales as Locale[];
         this.genders = loaded.collections.genders as Enumeration[];
         this.salutations = loaded.collections.salutations as Enumeration[];
 
-        this.person = this.scope.session.create('Person') as Person;
+        this.person = scope.session.create('Person') as Person;
       },
-      (error: any) => {
-        this.cancelled.emit();
-      },
-    );
+        (error: any) => {
+          this.cancelled.emit();
+        },
+      );
   }
 
   public cancel(): void {
@@ -75,13 +72,15 @@ export class PersonInlineComponent implements OnInit {
   }
 
   public save(): void {
-    this.scope
+    const { scope } = this.allors;
+
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.saved.emit(this.person.id);
       },
-      (error: Error) => {
-        this.errorService.handle(error);
-      });
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 }

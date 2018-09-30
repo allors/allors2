@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, DataService, x, Invoked } from '../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, x, Invoked, Allors } from '../../../../../angular';
 import { ProductType } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -18,6 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './producttypes-overview.component.html',
+  providers: [Allors]
 })
 export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
@@ -28,11 +29,9 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
   public search$: BehaviorSubject<SearchData>;
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private titleService: Title,
     private snackBar: MatSnackBar,
@@ -42,14 +41,13 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
     this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -81,7 +79,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
             )
           ];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -94,12 +92,14 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(productType: ProductType): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this product type?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           if (confirm) {
-            this.scope.invoke(productType.Delete)
+            scope.invoke(productType.Delete)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

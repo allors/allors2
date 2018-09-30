@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
 import { InvoiceTermType, SalesOrder, SalesTerm } from '../../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceterm.component.html',
+  providers: [Allors]
 })
 export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
@@ -26,25 +27,22 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -69,7 +67,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -81,7 +79,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
         if (!this.salesTerm) {
           this.title = 'Add Order Invoice Term';
-          this.salesTerm = this.scope.session.create('InvoiceTerm') as SalesTerm;
+          this.salesTerm = scope.session.create('InvoiceTerm') as SalesTerm;
           this.order.AddSalesTerm(this.salesTerm);
         }
       },
@@ -99,7 +97,9 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    this.scope
+    const { scope } = this.allors;
+
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);

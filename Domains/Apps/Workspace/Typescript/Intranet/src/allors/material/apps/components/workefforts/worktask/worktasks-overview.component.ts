@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -24,6 +24,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './worktasks-overview.component.html',
+  providers: [Allors]
 })
 export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
@@ -51,11 +52,9 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -67,10 +66,9 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     titleService.setTitle(this.title);
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
 
     this.searchForm = this.formBuilder.group({
       assignee: [''],
@@ -94,12 +92,11 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
         }, [])
       );
 
+    const { m, pull, scope } = this.allors;
+
     this.subscription = combined$
       .pipe(
         switchMap(([data]) => {
-
-          const { m, pull } = this.dataService;
-
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.Organisation({
@@ -115,7 +112,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -160,7 +157,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
                     }
                   })];
 
-                return this.scope
+                return scope
                   .load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
@@ -168,7 +165,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.data = loaded.collections.worktasks as WorkTask[];
         this.total = loaded.values.worktasks_total;
@@ -201,11 +198,13 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(worktask: WorkTask): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(worktask.Delete)
+          scope.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

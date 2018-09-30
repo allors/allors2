@@ -1,10 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, Singleton, TelecommunicationsNumber } from '../../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-communicationevent-phonecommunication.component.html',
+  providers: [Allors]
 })
 export class PartyCommunicationEventPhoneCommunicationComponent implements OnInit, OnDestroy {
 
@@ -34,18 +35,15 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -55,7 +53,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -99,13 +97,13 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
@@ -114,7 +112,7 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
         this.communicationEvent = loaded.objects.communicationEvent as PhoneCommunication;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('PhoneCommunication') as PhoneCommunication;
+          this.communicationEvent = scope.session.create('PhoneCommunication') as PhoneCommunication;
         }
 
         const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
@@ -162,10 +160,12 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   public callerAdded(id: string): void {
+    const { scope } = this.allors;
+
     this.addCaller = false;
 
-    const person: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const person: Person = scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
     relationShip.Organisation = this.party as Organisation;
 
@@ -177,10 +177,12 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   public receiverAdded(id: string): void {
+    const { scope } = this.allors;
+
     this.addReceiver = false;
 
-    const person: Person = this.scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const person: Person = scope.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
     relationShip.Organisation = this.party as Organisation;
 
@@ -188,8 +190,10 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   public cancel(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Cancel)
+      scope.invoke(this.communicationEvent.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -199,16 +203,16 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       // TODO:
       /*  this.dialogService
         .openConfirm({ message: 'Save changes?' })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -224,8 +228,10 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   public close(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Close)
+      scope.invoke(this.communicationEvent.Close)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -235,16 +241,16 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       // TODO:
       /*  this.dialogService
         .openConfirm({ message: 'Save changes?' })
         .afterClosed().subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -260,8 +266,10 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   public reopen(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Reopen)
+      scope.invoke(this.communicationEvent.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -271,16 +279,16 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       // TODO:
       /*  this.dialogService
          .openConfirm({ message: 'Save changes?' })
          .afterClosed().subscribe((confirm: boolean) => {
            if (confirm) {
-             this.scope
+             scope
                .save()
                .subscribe((saved: Saved) => {
-                 this.scope.session.reset();
+                 scope.session.reset();
                  cancelFn();
                },
                (error: Error) => {
@@ -296,8 +304,9 @@ export class PartyCommunicationEventPhoneCommunicationComponent implements OnIni
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

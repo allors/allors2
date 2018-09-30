@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Country, CustomOrganisationClassification, Organisation, OrganisationRole, Media, OrganisationClassification } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
@@ -23,6 +23,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './organisations-overview.component.html',
+  providers: [Allors]
 })
 export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
@@ -36,11 +37,9 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
   public search$: BehaviorSubject<SearchData>;
   public refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     public mediaService: MediaService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -51,14 +50,13 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle('Organisations');
 
-    this.scope = this.workspaceService.createScope();
     this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -163,12 +161,12 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
             )
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.countries = loaded.collections.Countries as Country[];
@@ -192,12 +190,13 @@ export class OrganisationsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(organisation: Organisation): void {
+    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this organisation?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(organisation.Delete)
+          scope.invoke(organisation.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

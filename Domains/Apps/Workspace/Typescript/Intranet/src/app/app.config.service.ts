@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Self } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { WorkspaceService, DataService } from '../allors/angular';
+import { WorkspaceService, Allors } from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
 import { Loaded } from '../allors/angular';
@@ -12,15 +12,13 @@ import { tap } from 'rxjs/operators';
 export class ConfigService {
 
     constructor(
-        private workspaceService: WorkspaceService,
-        private dataService: DataService,
+        @Self() private allors: Allors,
         private stateService: StateService
     ) { }
 
     public setup(): Observable<any> {
 
-        const { m, pull } = this.dataService;
-        const scope = this.workspaceService.createScope();
+        const { m, pull, scope } = this.allors;
 
         const pulls = [
             pull.Organisation({

@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,6 +15,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './organisation.component.html',
+  providers: [Allors]
 })
 export class OrganisationComponent implements OnInit, OnDestroy {
 
@@ -43,13 +44,11 @@ export class OrganisationComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
@@ -57,15 +56,14 @@ export class OrganisationComponent implements OnInit, OnDestroy {
     titleService: Title) {
 
     titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -121,7 +119,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
             );
           }
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -136,7 +134,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
           this.supplierRelationship = loaded.collections.supplierRelationships[0] as SupplierRelationship;
         } else {
           this.subTitle = 'add a new organisation';
-          this.organisation = this.scope.session.create('Organisation') as Organisation;
+          this.organisation = scope.session.create('Organisation') as Organisation;
           this.organisation.IsManufacturer = false;
         }
 
@@ -178,9 +176,10 @@ export class OrganisationComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
     if (this.activeRoles.indexOf(this.customerRole) > -1 && !this.isActiveCustomer) {
-      const customerRelationship = this.scope.session.create('CustomerRelationship') as CustomerRelationship;
+      const customerRelationship = scope.session.create('CustomerRelationship') as CustomerRelationship;
       customerRelationship.Customer = this.organisation;
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
@@ -194,7 +193,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.supplierRole) > -1 && !this.isActiveSupplier) {
-      const supplierRelationship = this.scope.session.create('SupplierRelationship') as SupplierRelationship;
+      const supplierRelationship = scope.session.create('SupplierRelationship') as SupplierRelationship;
       supplierRelationship.Supplier = this.organisation;
       supplierRelationship.InternalOrganisation = this.internalOrganisation;
     }
@@ -207,7 +206,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
       this.supplierRelationship.ThroughDate = new Date();
     }
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

@@ -3,6 +3,8 @@ import { WorkspaceService } from './WorkspaceService';
 import { Scope } from './Scope';
 import { MetaDomain, PullFactory, FetchFactory, TreeFactory } from '../../../meta';
 
+export const x = {};
+
 @Injectable()
 export class Allors {
 

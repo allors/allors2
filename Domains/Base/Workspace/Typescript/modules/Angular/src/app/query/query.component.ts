@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService, DataService, x } from '../../allors/angular';
-import { Organisation, Person } from '../../allors/domain';
-import { Equals, Like, PullRequest, Pull, Sort, TreeNode } from '../../allors/framework';
-import { PullFactory, MetaDomain } from '../../allors/meta';
+import { Loaded, Scope, WorkspaceService, x, Allors } from '../../allors/angular';
+import { Organisation } from '../../allors/domain';
+import { Like, PullRequest, Sort } from '../../allors/framework';
 
 @Component({
   templateUrl: './query.component.html',
+  providers: [Allors]
 })
 export class QueryComponent implements OnInit, OnDestroy {
 
@@ -18,15 +18,12 @@ export class QueryComponent implements OnInit, OnDestroy {
   public skip = 5;
   public take = 5;
 
-  private scope: Scope;
   private subscription: Subscription;
 
   constructor(
+    @Self() private allors: Allors,
     private title: Title,
-    private data: DataService,
-    private workspaceService: WorkspaceService
   ) {
-    this.scope = workspaceService.createScope();
   }
 
   public ngOnInit() {
@@ -39,7 +36,7 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const { m, pull } = this.data;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Organisation({
@@ -55,8 +52,9 @@ export class QueryComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.scope.session.reset();
-    this.subscription = this.scope
+
+    scope.session.reset();
+    this.subscription = scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
         this.organisations = loaded.collections.Organisations as Organisation[];

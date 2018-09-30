@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -25,6 +25,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './workeffortassignments-overview.component.html',
+  providers: [Allors]
 })
 export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   public m: MetaDomain;
@@ -52,13 +53,11 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
   private subscription: Subscription;
-  private scope: Scope;
 
   private page$: BehaviorSubject<number>;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -69,10 +68,9 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
     private stateService: StateService) {
 
     titleService.setTitle(this.title);
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
 
     this.searchForm = this.formBuilder.group({
       assignee: [''],
@@ -103,11 +101,11 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
         }, [])
       );
 
+    const { m, pull, scope } = this.allors;
+
     this.subscription = combined$
       .pipe(
         switchMap(([data, take, , internalOrganisationId]) => {
-
-          const { m, pull } = this.dataService;
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -125,7 +123,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -188,7 +186,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
                   })
                 ];
 
-                return this.scope
+                return scope
                   .load('Pull', new PullRequest({ pulls: assignmentsQuery }));
               })
             );
@@ -196,7 +194,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.data = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
         this.total = loaded.values.workEffortAssignments_total;
@@ -226,11 +224,13 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   }
 
   public delete(worktask: WorkTask): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(worktask.Delete)
+          scope.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

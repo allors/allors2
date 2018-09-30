@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, SearchFactory, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, SearchFactory, x, Allors } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './quoteitem.component.html',
+  providers: [Allors]
 })
 export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
@@ -37,8 +38,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -46,15 +46,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService,
   ) {
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
 
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -97,12 +96,12 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
         this.quote = loaded.objects.productQuote as ProductQuote;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
         this.requestItem = loaded.objects.requestItem as RequestItem;
@@ -112,7 +111,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.quoteItem) {
           this.title = 'Add Quote Item';
-          this.quoteItem = this.scope.session.create('QuoteItem') as QuoteItem;
+          this.quoteItem = scope.session.create('QuoteItem') as QuoteItem;
           this.quoteItem.UnitOfMeasure = piece;
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
@@ -139,8 +138,10 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
+    const { scope } = this.allors;
+
     const submitFn: () => void = () => {
-      this.scope.invoke(this.quoteItem.Submit)
+      scope.invoke(this.quoteItem.Submit)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
@@ -150,15 +151,15 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 submitFn();
               },
                 (error: Error) => {
@@ -174,8 +175,10 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.quoteItem.Cancel)
+      scope.invoke(this.quoteItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -185,15 +188,15 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -209,8 +212,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/productQuote/' + this.quote.id]);
@@ -230,7 +234,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   private update(product: Product) {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Good(
@@ -244,7 +248,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];

@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -14,6 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-communicationevent-emailcommunication.component.html',
+  providers: [Allors]
 })
 export class PartyCommunicationEventEmailCommunicationComponent implements OnInit, OnDestroy {
 
@@ -35,25 +36,22 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -93,13 +91,13 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
             }),
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.party = loaded.objects.party as Party;
         const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
@@ -109,8 +107,8 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
         this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.scope.session.create('EmailCommunication') as EmailCommunication;
-          this.emailTemplate = this.scope.session.create('EmailTemplate') as EmailTemplate;
+          this.communicationEvent = scope.session.create('EmailCommunication') as EmailCommunication;
+          this.emailTemplate = scope.session.create('EmailTemplate') as EmailTemplate;
           this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.communicationEvent.Originator = this.party.GeneralEmail;
           this.communicationEvent.IncomingMail = false;
@@ -139,8 +137,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   }
 
   public cancel(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Cancel)
+      scope.invoke(this.communicationEvent.Cancel)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -150,15 +150,15 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe(() => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -174,8 +174,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   }
 
   public close(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Close)
+      scope.invoke(this.communicationEvent.Close)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -185,15 +187,15 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe(() => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -209,8 +211,10 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   }
 
   public reopen(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.communicationEvent.Reopen)
+      scope.invoke(this.communicationEvent.Reopen)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -220,15 +224,15 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe(() => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -244,8 +248,9 @@ export class PartyCommunicationEventEmailCommunicationComponent implements OnIni
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe(() => {
         this.goBack();

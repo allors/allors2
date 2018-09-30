@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './requestitem.component.html',
+  providers: [Allors]
 })
 export class RequestItemEditComponent implements OnInit, OnDestroy {
 
@@ -31,11 +32,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -43,14 +42,13 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -69,12 +67,12 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         this.requestItem = loaded.objects.requestItem as RequestItem;
@@ -84,7 +82,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.requestItem) {
           this.title = 'Add Request Item';
-          this.requestItem = this.scope.session.create('RequestItem') as RequestItem;
+          this.requestItem = scope.session.create('RequestItem') as RequestItem;
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
@@ -118,8 +116,10 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(this.requestItem.Cancel)
+      scope.invoke(this.requestItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -129,15 +129,15 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -153,8 +153,9 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/request/' + this.request.id]);
@@ -174,7 +175,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   private refreshInventory(product: Product): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Good({
@@ -186,7 +187,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];

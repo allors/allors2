@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -6,12 +6,11 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService } from '../../../../../angular';
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
 import { InternalOrganisation, ProductQuote, QuoteState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { DataService, x } from '../../../../../angular/base/data/DataService';
 
 interface SearchData {
   company: string;
@@ -22,6 +21,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './productquotes-overview.component.html',
+  providers: [Allors]
 })
 export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   public searchForm: FormGroup; public advancedSearch: boolean;
@@ -39,13 +39,10 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   public quoteState: QuoteState;
 
   private subscription: Subscription;
-  private scope: Scope;
-
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -56,7 +53,6 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -69,7 +65,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -101,7 +97,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded: Loaded) => {
@@ -153,7 +149,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
                   )
                 ];
 
-                return this.scope.load('Pull', new PullRequest({ pulls: queries }));
+                return scope.load('Pull', new PullRequest({ pulls: queries }));
               })
             );
         })

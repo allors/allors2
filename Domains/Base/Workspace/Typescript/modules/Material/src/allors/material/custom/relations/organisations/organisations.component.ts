@@ -1,15 +1,16 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, x, DataService } from '../../../../angular';
-import { Organisation, Person } from '../../../../domain';
-import { MetaDomain, PullFactory } from '../../../../meta';
-import { PullRequest, Equals } from '../../../../framework';
+import { Loaded, Scope, WorkspaceService, Allors, x } from '../../../../angular';
+import { Organisation } from '../../../../domain';
+import { MetaDomain } from '../../../../meta';
+import { PullRequest } from '../../../../framework';
 
 @Component({
   templateUrl: './organisations.component.html',
+  providers: [Allors]
 })
 export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
@@ -22,8 +23,8 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   private scope: Scope;
 
   constructor(
+    @Self() private allors: Allors,
     private workspaceService: WorkspaceService,
-    private dataService: DataService,
     private titleService: Title,
     private router: Router) {
 
@@ -55,7 +56,7 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const { m, pull } = this.dataService;
+    const { m, pull } = this.allors;
 
     const pulls = [
 

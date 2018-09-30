@@ -1,14 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService, DataService, x } from '../../allors/angular';
+import { Loaded, Scope, WorkspaceService, x, Allors } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
 import { PullRequest } from '../../allors/framework';
 
 @Component({
   templateUrl: './fetch.component.html',
+  providers: [Allors]
 })
 export class FetchComponent implements OnInit, OnDestroy {
 
@@ -19,9 +20,9 @@ export class FetchComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
+    @Self() private allors: Allors,
     private title: Title,
     private route: ActivatedRoute,
-    private data: DataService,
     workspace: WorkspaceService
   ) {
 
@@ -38,7 +39,7 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const { pull, tree } = this.data;
+    const { pull } = this.allors;
     const id = this.route.snapshot.paramMap.get('id');
 
     const pulls = [

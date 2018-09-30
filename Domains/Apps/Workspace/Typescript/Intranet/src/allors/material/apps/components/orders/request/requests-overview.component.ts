@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, Request, RequestState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
@@ -20,7 +20,8 @@ interface SearchData {
 }
 
 @Component({
-  templateUrl: './requests-overview.component.html'
+  templateUrl: './requests-overview.component.html',
+  providers: [Allors]
 })
 export class RequestsOverviewComponent implements OnInit, OnDestroy {
   public total: number;
@@ -42,11 +43,9 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -56,7 +55,6 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
   ) {
     titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -69,7 +67,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -98,7 +96,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load(
               'Pull',
               new PullRequest({ pulls })
@@ -170,7 +168,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
                   )
                 ];
 
-                return this.scope.load('Pull', new PullRequest({ pulls: queries }));
+                return scope.load('Pull', new PullRequest({ pulls: queries }));
               })
             );
         })

@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, MediaService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, MediaService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,7 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './nonserialisedgood.component.html',
+  providers: [Allors]
 })
 export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
@@ -54,23 +55,21 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private stateService: StateService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     public mediaService: MediaService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -135,7 +134,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             pull.Brand({ sort: new Sort(m.Brand.Name) })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -158,17 +157,17 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === 'eaa6c331-0dd9-4bb1-8245-12a673304468');
 
                 if (this.good === undefined) {
-                  this.good = this.scope.session.create('Good') as Good;
+                  this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
                   this.good.Sku = '';
 
-                  this.inventoryItem = this.scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
+                  this.inventoryItem = scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
                   // TODO:
                   // this.good.InventoryItemKind = inventoryItemKindNonSerialised;
                   // this.inventoryItem.Good = this.good;
                   this.inventoryItem.Facility = this.facility;
 
-                  this.vendorProduct = this.scope.session.create('VendorProduct') as VendorProduct;
+                  this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
                   this.vendorProduct.Product = this.good;
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
                 } else {
@@ -200,7 +199,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return this.scope.load('Pull', new PullRequest({ pulls: queries2 }));
+                return scope.load('Pull', new PullRequest({ pulls: queries2 }));
               })
             )
             ;
@@ -232,7 +231,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     // TODO: include Model
     const pulls = [
@@ -243,7 +242,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -269,6 +268,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
+
     // TODO:
     // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
     //   this.good.RemoveStandardFeature(feature);
@@ -285,7 +286,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
     if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
       const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === 'Unknown');
 
-      const inventoryItemVariance = this.scope.session.create('InventoryItemVariance') as InventoryItemVariance;
+      const inventoryItemVariance = scope.session.create('InventoryItemVariance') as InventoryItemVariance;
       inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
       inventoryItemVariance.Reason = reason;
 
@@ -328,7 +329,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();
@@ -343,7 +344,9 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
-    const supplierOffering = this.scope.session.create('SupplierOffering') as SupplierOffering;
+    const { scope } = this.allors;
+
+    const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
     // TODO:
     // supplierOffering.Product = good;

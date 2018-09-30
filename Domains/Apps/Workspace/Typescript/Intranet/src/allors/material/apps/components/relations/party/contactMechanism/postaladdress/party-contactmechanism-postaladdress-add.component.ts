@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { Country, Enumeration, Party, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -12,6 +12,7 @@ import { AllorsMaterialDialogService } from '../../../../../../base/services/dia
 
 @Component({
   templateUrl: './party-contactmechanism-postaladdress.html',
+  providers: [Allors]
 })
 export class PartyContactMechanismPostalAddressAddComponent implements OnInit, OnDestroy {
 
@@ -28,22 +29,19 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
   public countries: Country[];
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -78,7 +76,7 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -87,12 +85,12 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
         this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
-          this.contactMechanism = this.scope.session.create('PostalAddress') as PostalAddress;
-          this.postalBoundary = this.scope.session.create('PostalBoundary') as PostalBoundary;
+          this.contactMechanism = scope.session.create('PostalAddress') as PostalAddress;
+          this.postalBoundary = scope.session.create('PostalBoundary') as PostalBoundary;
           this.contactMechanism.PostalBoundary = this.postalBoundary;
         }
 
-        this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
         this.partyContactMechanism.UseAsDefault = true;
 
@@ -115,8 +113,9 @@ export class PartyContactMechanismPostalAddressAddComponent implements OnInit, O
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

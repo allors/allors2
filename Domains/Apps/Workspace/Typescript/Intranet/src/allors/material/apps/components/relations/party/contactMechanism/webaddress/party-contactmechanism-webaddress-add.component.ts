@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { Enumeration, Party, PartyContactMechanism, WebAddress } from '../../../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -12,6 +12,7 @@ import { AllorsMaterialDialogService } from '../../../../../../base/services/dia
 
 @Component({
   templateUrl: './party-contactmechanism-webaddress.html',
+  providers: [Allors]
 })
 export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDestroy {
 
@@ -26,22 +27,19 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
   public contactMechanismPurposes: Enumeration[];
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const {m, pull} = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -65,7 +63,7 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -74,10 +72,10 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
         this.party = loaded.objects.party as Party;
 
         if (!this.contactMechanism) {
-          this.contactMechanism = this.scope.session.create('WebAddress') as WebAddress;
+          this.contactMechanism = scope.session.create('WebAddress') as WebAddress;
         }
 
-        this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.partyContactMechanism.ContactMechanism = this.contactMechanism;
         this.partyContactMechanism.UseAsDefault = true;
 
@@ -99,8 +97,9 @@ export class PartyContactMechanismAddWebAddressComponent implements OnInit, OnDe
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

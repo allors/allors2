@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Invoked, Saved, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Invoked, Saved, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
@@ -25,6 +25,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './invoices-overview.component.html',
+  providers: [Allors]
 })
 export class InvoicesOverviewComponent implements OnDestroy {
 
@@ -46,13 +47,11 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   private page$: BehaviorSubject<number>;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -64,7 +63,6 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
     this.titleService.setTitle('Sales Invoices');
 
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -98,7 +96,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
         }, [])
       );
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combined$
       .pipe(
@@ -116,7 +114,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded: Loaded) => {
@@ -196,7 +194,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
                   })
                 ];
 
-                return this.scope.load('Pull', new PullRequest({ pulls: queries }));
+                return scope.load('Pull', new PullRequest({ pulls: queries }));
               }));
         })
       )
@@ -233,8 +231,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   }
 
   public send(invoice: SalesInvoice): void {
+    const { scope } = this.allors;
+
     const sendFn: () => void = () => {
-      this.scope.invoke(invoice.Send)
+      scope.invoke(invoice.Send)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
@@ -244,15 +244,15 @@ export class InvoicesOverviewComponent implements OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 sendFn();
               },
                 (error: Error) => {
@@ -268,8 +268,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   }
 
   public cancel(invoice: SalesInvoice): void {
+    const { scope } = this.allors;
+
     const cancelFn: () => void = () => {
-      this.scope.invoke(invoice.CancelInvoice)
+      scope.invoke(invoice.CancelInvoice)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -279,15 +281,15 @@ export class InvoicesOverviewComponent implements OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -303,8 +305,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   }
 
   public writeOff(invoice: SalesInvoice): void {
+    const { scope } = this.allors;
+
     const writeOffFn: () => void = () => {
-      this.scope.invoke(invoice.WriteOff)
+      scope.invoke(invoice.WriteOff)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
@@ -314,15 +318,15 @@ export class InvoicesOverviewComponent implements OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 writeOffFn();
               },
                 (error: Error) => {
@@ -338,8 +342,10 @@ export class InvoicesOverviewComponent implements OnDestroy {
   }
 
   public reopen(invoice: SalesInvoice): void {
+    const { scope } = this.allors;
+
     const reopenFn: () => void = () => {
-      this.scope.invoke(invoice.Reopen)
+      scope.invoke(invoice.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -349,15 +355,15 @@ export class InvoicesOverviewComponent implements OnDestroy {
           });
     };
 
-    if (this.scope.session.hasChanges) {
+    if (scope.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.scope
+            scope
               .save()
               .subscribe((saved: Saved) => {
-                this.scope.session.reset();
+                scope.session.reset();
                 reopenFn();
               },
                 (error: Error) => {
@@ -373,11 +379,13 @@ export class InvoicesOverviewComponent implements OnDestroy {
   }
 
   public delete(invoice: SalesInvoice): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this invoice?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(invoice.Delete)
+          scope.invoke(invoice.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
 import { EmailAddress, Enumeration, PartyContactMechanism } from '../../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -12,6 +12,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './party-contactmechanism-emailaddress.html',
+  providers: [Allors]
 })
 export class PartyContactMechanismEmailAddressEditComponent implements OnInit, OnDestroy {
 
@@ -25,22 +26,19 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
   public contactMechanismPurposes: Enumeration[];
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -57,7 +55,7 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -67,10 +65,10 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
         this.contactMechanism = this.partyContactMechanism.ContactMechanism as EmailAddress;
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as Enumeration[];
       },
-      (error: any) => {
-        this.errorService.handle(error);
-        this.goBack();
-      },
+        (error: any) => {
+          this.errorService.handle(error);
+          this.goBack();
+        },
       );
   }
 
@@ -81,8 +79,9 @@ export class PartyContactMechanismEmailAddressEditComponent implements OnInit, O
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

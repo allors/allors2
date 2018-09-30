@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, DataService } from '../../../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../../angular';
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -9,6 +9,7 @@ import { MetaDomain } from '../../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-postaladdress',
   templateUrl: './party-contactmechanism-postaladdress-inline.component.html',
+  providers: [Allors]
 })
 export class PartyContactMechanismPostalAddressInlineComponent implements OnInit, OnDestroy {
 
@@ -30,16 +31,15 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
   public m: MetaDomain;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService) {
 
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Country({
@@ -51,15 +51,15 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
       })
     ];
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.countries = loaded.collections.countries as Country[];
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 
-        this.partyContactMechanism = this.scope.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.postalAddress = this.scope.session.create('PostalAddress') as PostalAddress;
-        this.postalBoundary = this.scope.session.create('PostalBoundary') as PostalBoundary;
+        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.postalAddress = scope.session.create('PostalAddress') as PostalAddress;
+        this.postalBoundary = scope.session.create('PostalBoundary') as PostalBoundary;
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
         this.postalAddress.PostalBoundary = this.postalBoundary;
       },
@@ -70,10 +70,12 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
   }
 
   public ngOnDestroy(): void {
+    const { scope } = this.allors;
+
     if (!!this.partyContactMechanism) {
-      this.scope.session.delete(this.partyContactMechanism);
-      this.scope.session.delete(this.postalAddress);
-      this.scope.session.delete(this.postalBoundary);
+      scope.session.delete(this.partyContactMechanism);
+      scope.session.delete(this.postalAddress);
+      scope.session.delete(this.postalBoundary);
     }
   }
 

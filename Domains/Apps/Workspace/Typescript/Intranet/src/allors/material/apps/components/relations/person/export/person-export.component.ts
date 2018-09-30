@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import * as Papa from 'papaparse';
 
-import { ErrorService, Scope, WorkspaceService, DataService, x } from '../../../../../../angular';
+import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
 import { Person } from '../../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../../framework';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
@@ -18,6 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './person-export.component.html',
+  providers: [Allors]
 })
 export class PersonExportComponent implements OnDestroy {
 
@@ -33,19 +34,15 @@ export class PersonExportComponent implements OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
-
   private page$: BehaviorSubject<number>;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     titleService: Title) {
 
     titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.searchForm = this.formBuilder.group({
@@ -73,7 +70,7 @@ export class PersonExportComponent implements OnDestroy {
         }, [])
       );
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combined$
       .pipe(
@@ -103,12 +100,12 @@ export class PersonExportComponent implements OnDestroy {
               take
             })];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.scope.session.reset();
+        scope.session.reset();
 
         this.data = loaded.collections.people as Person[];
         this.total = loaded.values.people_total;

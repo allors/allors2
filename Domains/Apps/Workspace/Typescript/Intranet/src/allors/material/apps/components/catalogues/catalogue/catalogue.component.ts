@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,6 +15,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './catalogue.component.html',
+  providers: [Allors]
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
@@ -32,30 +33,28 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
-  private scope: Scope;
+
   private refresh$: BehaviorSubject<Date>;
 
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -82,7 +81,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
             ,
             pull.CatScope()];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -94,7 +93,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.catalogue) {
-          this.catalogue = this.scope.session.create('Catalogue') as Catalogue;
+          this.catalogue = scope.session.create('Catalogue') as Catalogue;
           this.catalogue.InternalOrganisation = this.internalOrganisation;
         }
 
@@ -119,8 +118,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();
@@ -131,8 +131,9 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

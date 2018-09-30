@@ -6,6 +6,8 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTableModule, MatSortModule, MatPaginatorModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
+import { AllorsModule } from '../../../../../angular';
+
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
@@ -33,6 +35,7 @@ export { OrganisationsOverviewComponent } from './organisations-overview.compone
     OrganisationsOverviewComponent,
   ],
   imports: [
+    AllorsModule,
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSearchModule,

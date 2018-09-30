@@ -1,10 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,6 +16,7 @@ import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
 
 @Component({
   templateUrl: './category.component.html',
+  providers: [Allors]
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
@@ -31,29 +32,26 @@ export class CategoryComponent implements OnInit, OnDestroy {
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
-  private scope: Scope;
   private refresh$: BehaviorSubject<Date>;
 
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -83,7 +81,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -96,7 +94,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.locales as Locale[];
 
         if (!this.category) {
-          this.category = this.scope.session.create('ProductCategory') as ProductCategory;
+          this.category = scope.session.create('ProductCategory') as ProductCategory;
           this.category.InternalOrganisation = this.internalOrganisation;
         }
 
@@ -118,7 +116,9 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.scope
+    const { scope } = this.allors;
+
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

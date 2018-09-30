@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CdkAccordionModule, CdkAccordionItem } from '@angular/cdk/accordion';
+import { CdkAccordionModule } from '@angular/cdk/accordion';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +42,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, DataService, Allors, AllorsFocusModule
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, Allors, AllorsFocusModule, AllorsModule
 } from '../allors/angular';
 
 import {
@@ -82,6 +82,7 @@ import { ConfigService } from './app.config.service';
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    AllorsModule.forRoot(),
     AllorsFocusModule.forRoot(),
 
     relations.Modules,
@@ -92,6 +93,7 @@ import { ConfigService } from './app.config.service';
     workefforts.Modules,
   ],
   providers: [
+    Title,
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
@@ -101,19 +103,14 @@ import { ConfigService } from './app.config.service';
     { provide: StateService, useClass: DefaultStateService },
     { provide: LoggingService, useClass: DefaultLoggingService },
     { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
-    Allors,
     AllorsMaterialSideNavService,
     AllorsMaterialDialogService,
     AuthenticationService,
     AuthorizationService,
     ConfigService,
-    DatabaseService,
-    WorkspaceService,
-    DataService,
     MediaService,
     MenuService,
     PdfService,
-    Title,
   ],
 })
 export class AppModule { }

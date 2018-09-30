@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, DataService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../angular';
 import { ProductQuote } from '../../../../../domain';
 import { Fetch, PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
   encapsulation: ViewEncapsulation.Native,
   styleUrls: ['./productquote-print.component.scss'],
   templateUrl: './productquote-print.component.html',
+  providers: [Allors]
 })
 
 export class ProductQuotePrintComponent implements OnInit, OnDestroy {
@@ -23,22 +24,19 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
   public body: string;
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -52,7 +50,7 @@ export class ProductQuotePrintComponent implements OnInit, OnDestroy {
             )
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )

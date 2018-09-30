@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './worktask.component.html',
+  providers: [Allors]
 })
 export class WorkTaskEditComponent implements OnInit, OnDestroy {
   public title = 'Work Task';
@@ -41,22 +42,20 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     public stateService: StateService,
   ) {
-    this.scope = this.workspaceService.createScope();
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    this.m = this.workspaceService.metaPopulation.metaDomain;
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.m = this.allors.m;
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(
       this.route.url,
@@ -90,7 +89,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -101,7 +100,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
                 if (addMode) {
                   this.subTitle = 'add a new work task';
-                  this.workTask = this.scope.session.create('WorkTask') as WorkTask;
+                  this.workTask = scope.session.create('WorkTask') as WorkTask;
                 }
 
                 this.workEffortStates = loaded.collections
@@ -127,9 +126,9 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
                 }
 
                 if (addMode) {
-                  return this.scope.load('Pull', new PullRequest({}));
+                  return scope.load('Pull', new PullRequest({}));
                 } else {
-                  return this.scope.load(
+                  return scope.load(
                     'Pull',
                     new PullRequest({ pulls: assignmentsFetch }),
                   );
@@ -163,11 +162,13 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   public contactPersonAdded(id: string): void {
+    const { scope } = this.allors;
+
     this.addContactPerson = false;
 
-    const contact: Person = this.scope.session.get(id) as Person;
+    const contact: Person = scope.session.get(id) as Person;
 
-    const organisationContactRelationship = this.scope.session.create(
+    const organisationContactRelationship = scope.session.create(
       'OrganisationContactRelationship',
     ) as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.workTask
@@ -200,10 +201,12 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
+
     if (this.assignees) {
       this.assignees.forEach((assignee: Person) => {
         if (this.existingAssignees.indexOf(assignee) < 0) {
-          const workEffortAssignment: WorkEffortAssignment = this.scope.session.create(
+          const workEffortAssignment: WorkEffortAssignment = scope.session.create(
             'WorkEffortAssignment',
           ) as WorkEffortAssignment;
           workEffortAssignment.Assignment = this.workTask;
@@ -211,7 +214,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.scope.save().subscribe(
+    scope.save().subscribe(
       (saved: Saved) => {
         this.goBack();
       },
@@ -227,7 +230,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   private updateCustomer(party: Party) {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -252,7 +255,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.scope.load('Pull', new PullRequest({ pulls })).subscribe(
+    scope.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         const partyContactMechanisms: PartyContactMechanism[] = loaded
           .collections.partyContactMechanisms as PartyContactMechanism[];

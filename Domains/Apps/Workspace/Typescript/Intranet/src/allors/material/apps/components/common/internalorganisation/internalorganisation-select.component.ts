@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../services/StateService';
-import { WorkspaceService, Loaded, ErrorService, DataService } from '../../../../../angular';
+import { ErrorService, Allors } from '../../../../../angular';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
@@ -10,6 +10,7 @@ import { Organisation } from '../../../../../domain';
   // tslint:disable-next-line:component-selector
   selector: 'internalorganisation-select',
   templateUrl: './internalorganisation-select.component.html',
+  providers: [Allors]
 })
 export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
@@ -27,16 +28,13 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private stateService: StateService,
     private errorService: ErrorService) { }
 
   ngOnInit(): void {
 
-    const scope = this.workspaceService.createScope();
-
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Organisation(

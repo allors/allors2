@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, Title } from '@angular/platform-browser';
 
-import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, DatabaseService, WorkspaceService, DataService } from '../allors/angular';
+import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, AllorsFocusModule, AllorsModule } from '../allors/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,17 +34,16 @@ import { QueryComponent } from './query/query.component';
     ReactiveFormsModule,
     HttpClientModule,
     AppRoutingModule,
+    AllorsModule.forRoot(),
+    AllorsFocusModule.forRoot()
   ],
   providers: [
+    Title,
     { provide: DatabaseConfig, useValue: { url: environment.url } },
     { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl} },
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-    DatabaseService,
-    WorkspaceService,
     AuthenticationService,
     AuthorizationService,
-    DataService,
-    Title,
   ],
 })
 export class AppModule { }

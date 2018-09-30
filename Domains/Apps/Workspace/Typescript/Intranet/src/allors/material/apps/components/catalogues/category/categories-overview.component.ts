@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { ProductCategory } from '../../../../../domain';
 import { And, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { StateService } from '../../../services/StateService';
@@ -18,6 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './categories-overview.component.html',
+  providers: [Allors]
 })
 export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
@@ -28,11 +29,9 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
   public search$: BehaviorSubject<SearchData>;
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private titleService: Title,
     private snackBar: MatSnackBar,
@@ -43,14 +42,13 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle('Categories');
 
-    this.scope = this.workspaceService.createScope();
     this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -58,7 +56,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
       );
 
-      this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([data, refresh, internalOrganisationId]) => {
           const predicate: And = new And();
@@ -84,7 +82,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
               }
             )];
 
-          return this.scope.load('Pull', new PullRequest({ pulls }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -97,11 +95,13 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(category: ProductCategory): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this category?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(category.Delete)
+          scope.invoke(category.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

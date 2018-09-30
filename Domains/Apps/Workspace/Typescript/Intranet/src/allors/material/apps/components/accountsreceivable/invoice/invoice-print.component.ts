@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, DataService } from '../../../../../angular';
+import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../angular';
 import { SalesInvoice } from '../../../../../domain';
 import { Fetch, PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,8 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog/di
   encapsulation: ViewEncapsulation.Native,
   styleUrls: ['./invoice-print.component.scss'],
   templateUrl: './invoice-print.component.html',
+  providers: [Allors]
+
 })
 
 export class InvoicePrintComponent implements OnInit, OnDestroy {
@@ -23,22 +25,19 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
   public body: string;
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { pull } = this.dataService;
+    const { pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -50,7 +49,7 @@ export class InvoicePrintComponent implements OnInit, OnDestroy {
             pull.Invoice({ object: id })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
 

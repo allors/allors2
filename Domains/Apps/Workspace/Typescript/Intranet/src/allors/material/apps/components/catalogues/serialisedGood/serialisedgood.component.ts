@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar, MatTabChangeEvent } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { isType } from '@angular/core/src/type';
 import { forEach } from '@angular/router/src/utils/collection';
-import { ErrorService, SearchFactory, Loaded, MediaService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, SearchFactory, Loaded, MediaService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, SupplierOffering, VatRate, VendorProduct } from '../../../../../domain';
 import { Contains, Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { FetchFactory, MetaDomain } from '../../../../../meta';
@@ -16,6 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './serialisedgood.component.html',
+  providers: [Allors]
 })
 export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
@@ -58,8 +59,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -68,20 +68,19 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     private stateService: StateService,
   ) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.organisationFilter = new SearchFactory({
       objectType: this.m.Organisation,
       roleTypes: [this.m.Organisation.Name],
     });
 
-    this.fetcher = new Fetcher(this.stateService, this.dataService.pull);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -176,11 +175,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             pull.Brand({ sort: new Sort(m.Brand.Name) })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                this.scope.session.reset();
+                scope.session.reset();
 
                 this.good = loaded.objects.good as Good;
                 this.categories = loaded.collections.productCategories as ProductCategory[];
@@ -201,17 +200,17 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae');
 
                 if (this.good === undefined) {
-                  this.good = this.scope.session.create('Good') as Good;
+                  this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
                   this.good.Sku = '';
 
-                  this.inventoryItem = this.scope.session.create('SerialisedInventoryItem') as SerialisedInventoryItem;
+                  this.inventoryItem = scope.session.create('SerialisedInventoryItem') as SerialisedInventoryItem;
                   // TODO:
                   // this.good.InventoryItemKind = inventoryItemKindSerialised;
                   // this.inventoryItem.Good = this.good;
                   this.inventoryItem.Facility = this.facility;
 
-                  this.vendorProduct = this.scope.session.create('VendorProduct') as VendorProduct;
+                  this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
                   this.vendorProduct.Product = this.good;
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
 
@@ -254,7 +253,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                     })
                   );
 
-                  return this.scope.load('Pull', new PullRequest({ pulls: pulls2 }));
+                  return scope.load('Pull', new PullRequest({ pulls: pulls2 }));
                 }
               }));
         })
@@ -286,7 +285,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const pulls = [
       pull.Brand({
@@ -299,7 +298,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const selectedBrand = loaded.objects.selectedbrand as Brand;
@@ -320,10 +319,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
     this.onSave();
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();
@@ -334,11 +334,12 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-    const isNew = this.good.isNew;
+    const { scope } = this.allors;
 
+    const isNew = this.good.isNew;
     this.onSave();
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
@@ -416,7 +417,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
-    const supplierOffering = this.scope.session.create('SupplierOffering') as SupplierOffering;
+    const { scope } = this.allors;
+
+    const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
     // TODO:
     // supplierOffering.Product = good;

@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,6 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './communicationevent-overview.component.html',
+  providers: [Allors]
 })
 export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
@@ -30,7 +31,6 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   get isEmail(): boolean {
     return this.communicationEventPrefetch.objectType.name === 'EmailCommunication';
@@ -49,8 +49,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -59,14 +58,13 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -80,7 +78,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             pull.Party({ object: id })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -162,26 +160,26 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
                 ];
 
                 if (this.isEmail) {
-                  return this.scope.load('Pull', new PullRequest({ pulls: fetchEmail }));
+                  return scope.load('Pull', new PullRequest({ pulls: fetchEmail }));
                 }
 
                 if (this.isMeeting) {
-                  return this.scope.load('Pull', new PullRequest({ pulls: fetchMeeting }));
+                  return scope.load('Pull', new PullRequest({ pulls: fetchMeeting }));
                 }
 
                 if (this.isLetter) {
-                  return this.scope.load('Pull', new PullRequest({ pulls: fetchLetter }));
+                  return scope.load('Pull', new PullRequest({ pulls: fetchLetter }));
                 }
 
                 if (this.isPhone) {
-                  return this.scope.load('Pull', new PullRequest({ pulls: fetchPhone }));
+                  return scope.load('Pull', new PullRequest({ pulls: fetchPhone }));
                 }
               })
             );
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
         this.communicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
 
         if (this.isEmail) {
@@ -219,11 +217,13 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteWorkEffort(worktask: WorkTask): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(worktask.Delete)
+          scope.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

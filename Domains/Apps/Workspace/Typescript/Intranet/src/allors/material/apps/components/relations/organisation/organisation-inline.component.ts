@@ -1,6 +1,6 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -9,6 +9,7 @@ import { MetaDomain } from '../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'organisation-inline',
   templateUrl: './organisation-inline.component.html',
+  providers: [Allors]
 })
 export class OrganisationInlineComponent implements OnInit {
 
@@ -22,23 +23,20 @@ export class OrganisationInlineComponent implements OnInit {
 
   public m: MetaDomain;
 
-  private scope: Scope;
-
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService) {
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .load('Pull', new PullRequest({}))
       .subscribe((loaded) => {
-        this.organisation = this.scope.session.create('Organisation') as Organisation;
+        this.organisation = scope.session.create('Organisation') as Organisation;
       },
         (error: any) => {
           this.cancelled.emit();
@@ -51,7 +49,9 @@ export class OrganisationInlineComponent implements OnInit {
   }
 
   public save(): void {
-    this.scope
+    const { scope } = this.allors;
+
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.saved.emit(this.organisation.id);

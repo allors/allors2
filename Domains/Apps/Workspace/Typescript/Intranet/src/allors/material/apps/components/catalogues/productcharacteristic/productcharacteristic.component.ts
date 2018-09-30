@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedInventoryItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -12,6 +12,7 @@ import { Title } from '../../../../../../../node_modules/@angular/platform-brows
 
 @Component({
   templateUrl: './productcharacteristic.component.html',
+  providers: [Allors]
 })
 export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
@@ -29,24 +30,21 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   public allUoms: IUnitOfMeasure[];
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -84,7 +82,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -92,7 +90,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
         this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedInventoryItemCharacteristicType;
         if (!this.productCharacteristic) {
-          this.productCharacteristic = this.scope.session.create('SerialisedInventoryItemCharacteristicType') as SerialisedInventoryItemCharacteristicType;
+          this.productCharacteristic = scope.session.create('SerialisedInventoryItemCharacteristicType') as SerialisedInventoryItemCharacteristicType;
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
@@ -115,8 +113,9 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
+    const { scope } = this.allors;
 
-    this.scope
+    scope
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, DataService, x } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Brand, Good, InternalOrganisation, InventoryItemKind, Model, Organisation, Ownership, ProductCategory, ProductType, SerialisedInventoryItemState, SerialisedInventoryItem, NonSerialisedInventoryItem, Media, Product } from '../../../../../domain';
 import { And, ContainedIn, Contains, Equals, Like, Predicate, PullRequest, Sort, Filter, ObjectType } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -31,6 +31,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './goods-overview.component.html',
+  providers: [Allors]
 })
 export class GoodsOverviewComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
@@ -57,11 +58,9 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   public search$: BehaviorSubject<SearchData>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
-    private dataService: DataService,
+    @Self() private allors: Allors,
     private errorService: ErrorService,
     private titleService: Title,
     private dialog: MatDialog,
@@ -73,7 +72,6 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle(this.title);
 
-    this.scope = this.workspaceService.createScope();
     this.search$ = new BehaviorSubject<SearchData>({});
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.chosenGood = 'Serialised';
@@ -81,7 +79,7 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull } = this.dataService;
+    const { m, pull, scope } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -310,12 +308,12 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.scope
+          return scope
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.scope.session.reset();
+        scope.session.reset();
 
         // const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         // this.suppliers = internalOrganisation.ActiveSuppliers as Organisation[];
@@ -383,11 +381,13 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(good: Good): void {
+    const { scope } = this.allors;
+
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this product?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.scope.invoke(good.Delete)
+          scope.invoke(good.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -421,7 +421,6 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
       good.FinishedGood.InventoryItemKind === this.inventoryItemKinds
         .find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE')
     );
-    return false;
   }
 
   public goBack(): void {
