@@ -304,14 +304,16 @@ namespace Allors
                     .Build();
 
                 var contact1 = new PersonBuilder(this.Session)
-                    .WithFirstName("contact1")
+                    .WithFirstName($"John{i}")
+                    .WithLastName($"Doe{i}")
                     .WithGender(new GenderTypes(this.Session).Male)
                     .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                     .WithPartyContactMechanism(contact1Email)
                     .Build();
 
                 var contact2 = new PersonBuilder(this.Session)
-                    .WithFirstName("contact2")
+                    .WithFirstName($"Jane{i}")
+                    .WithLastName($"Doe{i}")
                     .WithGender(new GenderTypes(this.Session).Male)
                     .WithLocale(new Locales(this.Session).EnglishUnitedStates)
                     .WithPartyContactMechanism(contact2PhoneNumber)

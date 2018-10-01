@@ -2,8 +2,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatStepper } from '@angular/material';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AllorsMaterialFilterService } from './filter.service';
-import { FilterDefinition } from './FilterDefinition';
+import { AllorsFilterService, FilterFieldDefinition } from '../../../../angular/base/filter';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
@@ -12,7 +11,7 @@ export class AllorsMaterialFilterDialogComponent {
 
   @ViewChild('stepper') stepper: MatStepper;
 
-  filterService: AllorsMaterialFilterService;
+  filterService: AllorsFilterService;
 
   formGroup: FormGroup;
 
@@ -24,19 +23,26 @@ export class AllorsMaterialFilterDialogComponent {
     this.filterService = data.filterService;
   }
 
-  get selectedFilterDefinition(): FilterDefinition {
-    return this.formGroup.get('definition').value;
-  }
-
-  apply() {
-  }
-
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
       definition: ['', Validators.required],
       value: ['', Validators.required]
     });
   }
+
+  get selectedDefinition(): FilterFieldDefinition {
+    return this.formGroup.get('definition').value;
+  }
+
+  apply() {
+    this.filterService.addFilterField({
+      definition: this.formGroup.get('definition').value,
+      value: this.formGroup.get('value').value
+    });
+
+    this.dialogRef.close();
+  }
+
 }
 
 

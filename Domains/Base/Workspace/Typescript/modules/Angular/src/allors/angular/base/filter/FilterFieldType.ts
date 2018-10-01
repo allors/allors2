@@ -1,4 +1,4 @@
-export enum FilterType {
+export enum FilterFieldType {
 
   Boolean,
   Date,

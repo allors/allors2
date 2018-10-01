@@ -1,23 +1,23 @@
 <mat-dialog-content>
     <form [formGroup]="formGroup">
-        <mat-vertical-stepper #stepper>
+        <mat-vertical-stepper #stepper [linear]="true">
             <mat-step>
                 <ng-template matStepLabel>
-                    <span *ngIf="!selectedFilterDefinition">Filter</span>
-                    <span *ngIf="!!selectedFilterDefinition"><strong>{{selectedFilterDefinition.name}}</strong></span>
+                    <span *ngIf="!selectedDefinition">Filter</span>
+                    <span *ngIf="!!selectedDefinition"><strong>{{selectedDefinition.name}}</strong></span>
                 </ng-template>
                 <mat-form-field>
-                    <mat-select placeholder="Field" formControlName="definition" required>
-                        <mat-option *ngFor="let filterDefinition of filterService.filterDefinitions" [value]="filterDefinition" (onSelectionChange)="stepper.next()">
-                            {{filterDefinition.name}}
+                    <mat-select placeholder="Field" formControlName="definition" required (selectionChange)="stepper.next()">
+                        <mat-option *ngFor="let definition of filterService.filterFieldDefinitions" [value]="definition">
+                            {{definition.name}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>
-                        <span *ngIf="!selectedFilterDefinition">Value</span>
-                        <span *ngIf="!!selectedFilterDefinition"><strong>{{selectedFilterDefinition.predicate}}</strong></span>
+                        <span *ngIf="!selectedDefinition">Value</span>
+                        <span *ngIf="!!selectedDefinition"><strong>{{selectedDefinition.predicate}}</strong></span>
                 </ng-template>
                 <mat-form-field>
                     <input matInput placeholder="Value" formControlName="value" required>
@@ -29,5 +29,4 @@
             </mat-step>
         </mat-vertical-stepper>
     </form>
-
 </mat-dialog-content>

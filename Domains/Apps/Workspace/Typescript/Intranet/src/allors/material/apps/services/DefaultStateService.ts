@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SearchFactory, WorkspaceService } from '../../../angular';
-import { Organisation } from '../../../domain';
 import { And, ContainedIn, Equals, Filter } from '../../../framework';
 import { MetaDomain } from '../../../meta';
 import { StateService } from './StateService';

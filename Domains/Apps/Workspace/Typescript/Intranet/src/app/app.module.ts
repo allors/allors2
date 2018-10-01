@@ -57,6 +57,7 @@ import {
   AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule,
   AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, MomentUtcDateAdapter, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent, AllorsMaterialSideNavService, AllorsMaterialDialogService
 } from '../allors/material';
+import { AllorsFilterModule } from '../allors/angular/base/filter';
 
 const ALLORS_MATERIAL_MODULES: any[] = [
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialDatetimepickerModule, AllorsMaterialDialogModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule,
@@ -85,7 +86,8 @@ const ALLORS_MATERIAL_MODULES: any[] = [
     AppRoutingModule,
     AllorsModule.forRoot(),
     AllorsFocusModule.forRoot(),
-    AllorsMaterialFilterModule.forRoot(),
+    AllorsFilterModule.forRoot(),
+    AllorsMaterialFilterModule,
 
     relations.Modules,
     orders.Modules,

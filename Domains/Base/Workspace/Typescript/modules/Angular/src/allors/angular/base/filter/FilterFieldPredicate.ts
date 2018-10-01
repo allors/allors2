@@ -1,4 +1,4 @@
-export enum FilterPredicate {
+export enum FilterFieldPredicate {
 
   Equals = 'Equals',
   LessThan = 'Less Than',

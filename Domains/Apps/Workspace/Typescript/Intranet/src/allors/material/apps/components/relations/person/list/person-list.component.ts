@@ -5,16 +5,16 @@ import { Router } from '@angular/router';
 import { MatSnackBar, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
-import { PullRequest, SessionObject } from '../../../../../../framework';
+import { PullRequest, SessionObject, Filter, And, Predicate, Like } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
-import { AllorsMaterialFilterService, FilterPredicate, FilterType } from '../../../../../base/components/filter';
 
 import { Person } from '../../../../../../domain';
 import { PersonAddComponent } from '../add/person-add.module';
+import { AllorsFilterService, FilterFieldPredicate, FilterFieldType } from '../../../../../../angular/base/filter';
 
 interface Row {
   person: Person;
@@ -26,7 +26,7 @@ interface Row {
 
 @Component({
   templateUrl: './person-list.component.html',
-  providers: [Allors, AllorsMaterialFilterService]
+  providers: [Allors, AllorsFilterService]
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
@@ -45,7 +45,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
-    @Self() private filterService: AllorsMaterialFilterService,
+    @Self() private filterService: AllorsFilterService,
     public mediaService: MediaService,
     public router: Router,
     private errorService: ErrorService,
@@ -58,31 +58,44 @@ export class PersonListComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    filterService.filterDefinitions = [
+    filterService.filterFieldDefinitions.push(
       {
         name: 'First Name',
-        predicate: FilterPredicate.StartsWith,
-        type: FilterType.String
+        predicate: FilterFieldPredicate.StartsWith,
+        type: FilterFieldType.String
       },
       {
         name: 'Last Name',
-        predicate: FilterPredicate.StartsWith,
-        type: FilterType.String
+        predicate: FilterFieldPredicate.StartsWith,
+        type: FilterFieldType.String
       }
-    ]
+    );
   }
 
   public ngOnInit(): void {
 
-    const { pull, scope } = this.allors;
+    const { m, pull, scope } = this.allors;
 
     this.dataSource.sort = this.sort;
 
-    this.subscription = this.refresh$
+    this.subscription = combineLatest(this.filterService.filterFields$, this.refresh$)
       .pipe(
-        switchMap((refresh) => {
+        switchMap(([filterFields]) => {
+
+          const predicates = filterFields.map(v => {
+            if (v.definition === this.filterService.filterFieldDefinitions[0]) {
+              return new Like(m.Person.FirstName, v.value + '%');
+            }
+
+            if (v.definition === this.filterService.filterFieldDefinitions[1]) {
+              return new Like(m.Person.LastName, v.value + '%');
+            }
+
+          });
+
           const pulls = [
             pull.Person({
+              predicate: predicates.length > 0 ? new And({ operands: predicates }) : undefined,
               include: {
                 Salutation: x,
                 Picture: x,
