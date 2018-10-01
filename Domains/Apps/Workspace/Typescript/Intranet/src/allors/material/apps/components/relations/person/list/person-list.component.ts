@@ -8,12 +8,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
-import { Person } from '../../../../../../domain';
-import { PullRequest, Sort, SessionObject } from '../../../../../../framework';
+import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
+import { PullRequest, SessionObject } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { AllorsMaterialFilterService, FilterPredicate, FilterType } from '../../../../../base/components/filter';
+
+import { Person } from '../../../../../../domain';
 import { PersonAddComponent } from '../add/person-add.module';
-import { AllorsMaterialFilterService } from '../../../../../base/components/filter/filter.service';
 
 interface Row {
   person: Person;
@@ -56,6 +57,19 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+
+    filterService.filterDefinitions = [
+      {
+        name: 'First Name',
+        predicate: FilterPredicate.StartsWith,
+        type: FilterType.String
+      },
+      {
+        name: 'Last Name',
+        predicate: FilterPredicate.StartsWith,
+        type: FilterType.String
+      }
+    ]
   }
 
   public ngOnInit(): void {

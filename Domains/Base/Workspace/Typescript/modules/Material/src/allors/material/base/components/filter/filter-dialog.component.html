@@ -1,8 +1,33 @@
-<h1 mat-dialog-title>Add filter</h1>
 <mat-dialog-content>
-    TODO
+    <form [formGroup]="formGroup">
+        <mat-vertical-stepper #stepper>
+            <mat-step>
+                <ng-template matStepLabel>
+                    <span *ngIf="!selectedFilterDefinition">Filter</span>
+                    <span *ngIf="!!selectedFilterDefinition"><strong>{{selectedFilterDefinition.name}}</strong></span>
+                </ng-template>
+                <mat-form-field>
+                    <mat-select placeholder="Field" formControlName="definition" required>
+                        <mat-option *ngFor="let filterDefinition of filterService.filterDefinitions" [value]="filterDefinition" (onSelectionChange)="stepper.next()">
+                            {{filterDefinition.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-step>
+            <mat-step>
+                <ng-template matStepLabel>
+                        <span *ngIf="!selectedFilterDefinition">Value</span>
+                        <span *ngIf="!!selectedFilterDefinition"><strong>{{selectedFilterDefinition.predicate}}</strong></span>
+                </ng-template>
+                <mat-form-field>
+                    <input matInput placeholder="Value" formControlName="value" required>
+                </mat-form-field>
+                <div>
+                    <button mat-button mat-dialog-close>Cancel</button>
+                    <button mat-button color="primary" (click)="apply()">Apply</button>
+                </div>
+            </mat-step>
+        </mat-vertical-stepper>
+    </form>
+
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button [mat-dialog-close]="value">Ok</button>
-    <button mat-button [mat-dialog-close]="value">Cancel</button>
-</mat-dialog-actions>

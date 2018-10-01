@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter, OnDestroy, ViewChild, ElementRef } fro
 import { MatDialog } from '@angular/material';
 
 import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
+import { AllorsMaterialFilterService } from './filter.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,22 +11,23 @@ import { AllorsMaterialFilterDialogComponent } from './filter-dialog.component';
 })
 export class AllorsMaterialFilterComponent {
 
-  @ViewChild('dialogPosition') dialogPosition: ElementRef;
+  @ViewChild('toolBar') toolBar: ElementRef;
 
-  constructor(private dialog: MatDialog) {
+  constructor(
+    private dialog: MatDialog,
+    private filterService: AllorsMaterialFilterService) {
   }
 
   public addFilter(event: MouseEvent) {
 
-    const { offsetTop, offsetLeft, offsetWidth } = this.dialogPosition.nativeElement;
+    const { offsetTop, offsetLeft, offsetWidth } = this.toolBar.nativeElement;
 
     const top = offsetTop;
-    const middle = offsetLeft + offsetWidth / 2;
-
-    // TODO: improve position algorithm
-    const left = event.pageX < middle ? event.pageX > 60 ? event.pageX - 20 : 40 : middle;
+    const left = event.pageX < offsetLeft + 60 ? event.pageX - 20 : event.pageX - 40;
 
     this.dialog.open(AllorsMaterialFilterDialogComponent, {
+      data: { filterService: this.filterService },
+      autoFocus: true,
       backdropClass: 'blah',
       position: {
         'top': `${top}px`,
