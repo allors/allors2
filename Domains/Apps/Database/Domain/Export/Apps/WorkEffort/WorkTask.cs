@@ -58,14 +58,15 @@ namespace Allors.Domain
                 this.WorkEffortNumber = this.Store.DeriveNextWorkEffortNumber();
             }
 
-            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+            // TODO: DocumentService
+            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
-            var model = new PrintWorkTask()
-                            {
-                                WorkTask = this
-                            };
+            //var model = new PrintWorkTask()
+            //                {
+            //                    WorkTask = this
+            //                };
 
-            this.HtmlContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
+            //this.HtmlContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
         }
 
         //public void AppsDelete(DeletableDelete method)

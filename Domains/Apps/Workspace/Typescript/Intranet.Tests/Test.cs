@@ -43,7 +43,7 @@ namespace Intranet.Tests
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
             var services = new ServiceCollection();
-            services.AddAllorsTesting();
+            services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration

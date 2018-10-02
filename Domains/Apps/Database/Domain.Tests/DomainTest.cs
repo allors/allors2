@@ -64,17 +64,7 @@ namespace Allors
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors(new ServiceConfig
-            {
-                Directory = new DirectoryInfo("../../../../Server"),
-                ApplicationName = "Server",
-                //Assemblies = new[]
-                //{
-                //    typeof(Database).GetTypeInfo().Assembly,
-                //    typeof(Person).GetTypeInfo().Assembly,
-                //    typeof(Queryable).Assembly
-                //}
-            });
+            services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration

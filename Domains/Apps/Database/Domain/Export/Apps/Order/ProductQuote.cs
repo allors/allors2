@@ -35,14 +35,15 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+            // TODO: DocumentService
+            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
-            var model = new PrintProductQuote
-            {
-                                ProductQuote = this
-                            };
+            //var model = new PrintProductQuote
+            //{
+            //                    ProductQuote = this
+            //                };
 
-            this.HtmlContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;
+            //this.HtmlContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;
         }
 
         private SalesOrder OrderThis()

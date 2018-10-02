@@ -294,14 +294,15 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+            // TODO: DocumentService
+            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
-            var model = new PrintSalesOrder
-            {
-                SalesOrder = this
-            };
+            //var model = new PrintSalesOrder
+            //{
+            //    SalesOrder = this
+            //};
 
-            this.HtmlContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
+            //this.HtmlContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

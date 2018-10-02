@@ -276,14 +276,15 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
-            var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
+            // TODO: DocumentService
+            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
 
-            var model = new PrintSalesInvoice
-            {
-                SalesInvoice = this
-            };
+            //var model = new PrintSalesInvoice
+            //{
+            //    SalesInvoice = this
+            //};
 
-            this.HtmlContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
+            //this.HtmlContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)
