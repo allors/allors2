@@ -25,6 +25,8 @@
 
     using Newtonsoft.Json;
 
+    using ObjectFactory = Allors.ObjectFactory;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -38,7 +40,7 @@
         public void ConfigureServices(IServiceCollection services)
         {
             // Allors
-            services.AddAllorsEmbedded();
+            services.AddAllors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
             services.AddSingleton<IExtentService, ExtentService>();
@@ -63,11 +65,11 @@
                         cfg.SaveToken = true;
 
                         cfg.TokenValidationParameters = new TokenValidationParameters()
-                                                            {
-                                                                ValidIssuer = this.Configuration["Tokens:Issuer"],
-                                                                ValidAudience = this.Configuration["Tokens:Issuer"],
-                                                                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
-                                                            };
+                        {
+                            ValidIssuer = this.Configuration["Tokens:Issuer"],
+                            ValidAudience = this.Configuration["Tokens:Issuer"],
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration["Tokens:Key"]))
+                        };
                     });
 
             // Add framework services.
@@ -97,14 +99,15 @@
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Allors
-            var objectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User));
-            var configuration = new Configuration
-                                    {
-                                        ObjectFactory = objectFactory,
-                                        ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
-                                    };
 
-            var database = new Database(app.ApplicationServices, configuration);
+            var database = new Database(
+                app.ApplicationServices,
+                new Configuration
+                {
+                    ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
+                    ConnectionString = this.Configuration.GetConnectionString("DefaultConnection")
+                });
+
             app.UseAllors(database);
 
             if (env.IsDevelopment())
@@ -119,7 +122,7 @@
             app.UseStaticFiles();
 
             app.UseAuthentication();
-            
+
             app.UseCors("AllowAll");
 
             app.UseExceptionHandler(appBuilder =>

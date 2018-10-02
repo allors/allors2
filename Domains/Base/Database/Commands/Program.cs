@@ -46,11 +46,7 @@ namespace Commands
         static Program()
         {
             var services = new ServiceCollection();
-            services.AddAllors(new ServiceConfig
-                                   {
-                                       Directory = ServerDirectory,
-                                       ApplicationName = "Server"
-                                   });
+            services.AddAllors();
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")

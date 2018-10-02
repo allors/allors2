@@ -6,20 +6,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="EmployeesTemplate.odt" />
+    <None Remove="Image.jpeg" />
+    <None Remove="Resources\EmbeddedTemplate.odt" />
+    <None Remove="Resources\FileTemplate.odt" />
     <None Remove="Resources\logo.png" />
     <None Remove="Resources\PdfAs.jpg" />
-    <None Remove="Views\EmailTemplate.cshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\EmailTemplate.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\logo.png" />
     <EmbeddedResource Include="Resources\PdfAs.jpg" />
+    <Content Include="Resources\FileTemplate.odt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Resources\EmbeddedTemplate.odt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,12 +45,6 @@
 
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="libwkhtmltox.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

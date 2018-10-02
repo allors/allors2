@@ -26,15 +26,15 @@ namespace Allors.Services
     {
         private readonly DerivationConfig config;
 
-        public DerivationService(DerivationConfig config = null)
+        public DerivationService(DerivationConfig config)
         {
-            this.config = config ?? new DerivationConfig();
+            this.config = config;
         }
 
 
         public IDerivation CreateDerivation(ISession session)
         {
-            if (this.config.DerivationLogFunc == null)
+            if (this.config?.DerivationLogFunc == null)
             {
                 return new Domain.NonLogging.Derivation(session, this.config);
             }

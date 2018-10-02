@@ -24,7 +24,7 @@ namespace Allors.Domain
 
     public class DerivationConfig
     {
-        public Func<Domain.Logging.IDerivationLog> DerivationLogFunc { get; set; }
+        public Func<Logging.IDerivationLog> DerivationLogFunc { get; set; }
 
         public bool ThrowExceptionOnCycleDetected { get; set; } = false;
     }

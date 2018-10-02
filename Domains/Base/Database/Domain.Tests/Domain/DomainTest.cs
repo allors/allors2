@@ -49,6 +49,8 @@ namespace Tests
 
         public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
 
+        public IDocumentService DocumentService => this.Session.ServiceProvider.GetRequiredService<IDocumentService>();
+
         public TimeSpan? TimeShift
         {
             get => this.TimeService.Shift;
@@ -67,20 +69,15 @@ namespace Tests
         protected void Setup(bool populate)
         {
             var services = new ServiceCollection();
-            services.AddAllors(new ServiceConfig
-            {
-                Directory = new DirectoryInfo("."),
-                ApplicationName = ApplicationName
-            });
-
+            services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
-            
-            var configuration = new Configuration
-                                    {
-                                        ObjectFactory = this.ObjectFactory,
-                                    };
 
-            var database = new Database(serviceProvider, configuration);
+            var database = new Database(
+                serviceProvider,
+                new Configuration
+                {
+                    ObjectFactory = this.ObjectFactory,
+                });
             serviceProvider.GetRequiredService<IDatabaseService>().Database = database;
             this.Setup(database, populate);
         }
@@ -88,7 +85,7 @@ namespace Tests
         protected void Setup(IDatabase database, bool populate)
         {
             database.Init();
-            
+
             this.Session = database.CreateSession();
 
             if (populate)
@@ -103,6 +100,24 @@ namespace Tests
             var assembly = this.GetType().GetTypeInfo().Assembly;
             var resource = assembly.GetManifestResourceStream(name);
             return resource;
+        }
+
+        protected ManifestResourceInfo GetResourceInfo(string name)
+        {
+            var assembly = this.GetType().GetTypeInfo().Assembly;
+            var resourceInfo = assembly.GetManifestResourceInfo(name);
+            return resourceInfo;
+        }
+
+        protected byte[] GetResourceBytes(string name)
+        {
+            var assembly = this.GetType().GetTypeInfo().Assembly;
+            var resource = assembly.GetManifestResourceStream(name);
+            using (var ms = new MemoryStream())
+            {
+                resource.CopyTo(ms);
+                return ms.ToArray();
+            }
         }
     }
 }
