@@ -66,6 +66,7 @@ namespace Allors
             var services = new ServiceCollection();
             services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
+            //serviceProvider.ConfigureAllors();
 
             var configuration = new Configuration
                                     {

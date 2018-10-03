@@ -38,7 +38,7 @@ namespace Allors.Repository
 
         public Permission[] DeniedPermissions { get; set; }
         public SecurityToken[] SecurityTokens { get; set; }
-        public string HtmlContent { get; set; }
+        public Media PrintDocument { get; set; }
 
         public User CreatedBy { get; set; }
         public User LastModifiedBy { get; set; }

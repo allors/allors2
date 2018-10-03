@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
@@ -35,15 +36,8 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            // TODO: DocumentService
-            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
-
-            //var model = new PrintProductQuote
-            //{
-            //                    ProductQuote = this
-            //                };
-
-            //this.HtmlContent = templateService.Render("Templates/ProductQuote.cshtml", model).Result;
+            var model = new Dictionary<string, object> { { "productQuote", this } };
+            this.RenderPrintDocument(this.Issuer?.ProductQuoteTemplate, model);
         }
 
         private SalesOrder OrderThis()

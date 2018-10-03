@@ -13,8 +13,8 @@ namespace Allors.Repository
         [RoleId("B3ECE72C-D62C-4F24-805A-34D7FF21DE4F")]
         [Indexed]
         #endregion
-        [Size(-1)]
+        [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        string HtmlContent { get; set; }
+        Media PrintDocument { get; set; }
     }
 }

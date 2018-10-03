@@ -15,7 +15,7 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public string HtmlContent { get; set; }
+        public Media PrintDocument { get; set; }
 
         public string Comment { get; set; }
 

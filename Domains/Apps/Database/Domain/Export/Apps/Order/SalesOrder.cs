@@ -20,11 +20,8 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Domain.NonLogging;
-    using Allors.Services;
 
     using Meta;
-
-    using Microsoft.Extensions.DependencyInjection;
 
     using Resources;
 
@@ -294,15 +291,8 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            // TODO: DocumentService
-            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
-
-            //var model = new PrintSalesOrder
-            //{
-            //    SalesOrder = this
-            //};
-
-            //this.HtmlContent = templateService.Render("Templates/SalesOrder.cshtml", model).Result;
+            var model = new Dictionary<string, object> { { "salesOrder", this } };
+            this.RenderPrintDocument(this.TakenBy?.SalesInvoiceTemplate, model);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)

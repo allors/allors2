@@ -14,16 +14,13 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
-    using Allors.Meta;
-    using Allors.Services;
+    using System.Linq;
 
-    using Microsoft.Extensions.DependencyInjection;
+    using Allors.Meta;
 
     using Resources;
 
@@ -276,15 +273,8 @@ namespace Allors.Domain
 
             //this.AppsOnDeriveRevenues(derivation);
 
-            // TODO: DocumentService
-            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
-
-            //var model = new PrintSalesInvoice
-            //{
-            //    SalesInvoice = this
-            //};
-
-            //this.HtmlContent = templateService.Render("Templates/SalesInvoice.cshtml", model).Result;
+            var model = new Dictionary<string, object> { { "salesInvoice", this } };
+            this.RenderPrintDocument(this.BilledFrom?.SalesInvoiceTemplate, model);
         }
 
         private void DeriveCurrentPaymentStatus(IDerivation derivation)

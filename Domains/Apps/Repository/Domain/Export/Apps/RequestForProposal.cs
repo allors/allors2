@@ -52,7 +52,7 @@ namespace Allors.Repository
         public User LastModifiedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
-        public string HtmlContent { get; set; }
+        public Media PrintDocument { get; set; }
 
         #endregion
 

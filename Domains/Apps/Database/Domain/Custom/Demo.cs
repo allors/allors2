@@ -2,6 +2,8 @@ namespace Allors
 {
     using System;
     using System.IO;
+    using System.Linq;
+    using System.Reflection;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -94,6 +96,11 @@ namespace Allors
                 .WithContactMechanism(postalAddress)
                 .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
                 .Build());
+
+            internalOrganisation.ProductQuoteTemplate = this.CreateOpenDocumentTemplate(this.GetResourceBytes("Templates.ProductQuote.odt"));
+            internalOrganisation.SalesOrderTemplate = this.CreateOpenDocumentTemplate(this.GetResourceBytes("Templates.SalesOrder.odt"));
+            internalOrganisation.SalesInvoiceTemplate = this.CreateOpenDocumentTemplate(this.GetResourceBytes("Templates.SalesInvoice.odt"));
+            internalOrganisation.WorkTaskTemplate = this.CreateOpenDocumentTemplate(this.GetResourceBytes("Templates.WorkTask.odt"));
 
             var logo = this.DataPath + @"\admin\images\logo.png";
 
@@ -501,6 +508,31 @@ line2")
             }
 
             this.Session.Derive();
+        }
+
+        private byte[] GetResourceBytes(string name)
+        {
+            var assembly = this.GetType().GetTypeInfo().Assembly;
+            var manifestResourceName = assembly.GetManifestResourceNames().First(v => v.Contains(name));
+            var resource = assembly.GetManifestResourceStream(manifestResourceName);
+            if (resource != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    resource.CopyTo(ms);
+                    return ms.ToArray();
+                }
+            }
+
+            return null;
+        }
+
+        private Template CreateOpenDocumentTemplate(byte[] content)
+        {
+            var media = new MediaBuilder(this.Session).WithInData(content).Build();
+            var templateType = new TemplateTypes(this.Session).OpenDocumentType;
+            var template = new TemplateBuilder(this.Session).WithMedia(media).WithTemplateType(templateType).Build();
+            return template;
         }
 
         private void SetupUser(string email, string firstName, string lastName, string password)

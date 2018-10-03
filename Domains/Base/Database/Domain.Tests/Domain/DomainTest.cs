@@ -49,8 +49,6 @@ namespace Tests
 
         public ITimeService TimeService => this.Session.ServiceProvider.GetRequiredService<ITimeService>();
 
-        public IDocumentService DocumentService => this.Session.ServiceProvider.GetRequiredService<IDocumentService>();
-
         public TimeSpan? TimeShift
         {
             get => this.TimeService.Shift;
@@ -100,13 +98,6 @@ namespace Tests
             var assembly = this.GetType().GetTypeInfo().Assembly;
             var resource = assembly.GetManifestResourceStream(name);
             return resource;
-        }
-
-        protected ManifestResourceInfo GetResourceInfo(string name)
-        {
-            var assembly = this.GetType().GetTypeInfo().Assembly;
-            var resourceInfo = assembly.GetManifestResourceInfo(name);
-            return resourceInfo;
         }
 
         protected byte[] GetResourceBytes(string name)

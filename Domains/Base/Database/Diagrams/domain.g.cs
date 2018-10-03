@@ -903,6 +903,16 @@ namespace Allors.Domain
 						global::System.Byte[] Data {set;}
 
 		}
+		public interface Template  : UniquelyIdentifiable, AccessControlledObject, Deletable 
+		{
+						TemplateType TemplateType {set;}
+
+						Media Media {set;}
+
+		}
+		public interface TemplateType  : Enumeration, Deletable 
+		{
+		}
 		public interface PreparedExtent  : UniquelyIdentifiable, Deletable 
 		{
 						global::System.String Name {set;}

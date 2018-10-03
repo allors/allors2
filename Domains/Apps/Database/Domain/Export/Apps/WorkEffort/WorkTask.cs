@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Meta;
@@ -58,15 +59,8 @@ namespace Allors.Domain
                 this.WorkEffortNumber = this.Store.DeriveNextWorkEffortNumber();
             }
 
-            // TODO: DocumentService
-            //var templateService = this.strategy.Session.ServiceProvider.GetRequiredService<ITemplateService>();
-
-            //var model = new PrintWorkTask()
-            //                {
-            //                    WorkTask = this
-            //                };
-
-            //this.HtmlContent = templateService.Render("Templates/WorkTask.cshtml", model).Result;
+            var model = new Dictionary<string, object> { { "workTask", this } };
+            this.RenderPrintDocument(this.TakenBy?.SalesInvoiceTemplate, model);
         }
 
         //public void AppsDelete(DeletableDelete method)

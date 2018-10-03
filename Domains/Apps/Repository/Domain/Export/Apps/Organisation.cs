@@ -209,6 +209,14 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedComments { get; set; }
 
+        public Template ProductQuoteTemplate { get; set; }
+
+        public Template SalesOrderTemplate { get; set; }
+
+        public Template SalesInvoiceTemplate { get; set; }
+
+        public Template WorkTaskTemplate { get; set; }
+
         #endregion
 
         #region Versioning

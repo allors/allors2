@@ -70,7 +70,7 @@ namespace Allors.Repository
         public DateTime CreationDate { get; set; }
         public DateTime LastModifiedDate { get; set; }
 
-        public string HtmlContent { get; set; }
+        public Media PrintDocument { get; set; }
 
         public string Comment { get; set; }
 

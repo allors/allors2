@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Allors.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +10,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Templates\ProductQuote.odt" />
+    <None Remove="Templates\SalesInvoice.odt" />
+    <None Remove="Templates\SalesOrder.odt" />
+    <None Remove="Templates\WorkTask.odt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\WorkTask.odt" />
+    <EmbeddedResource Include="Templates\SalesInvoice.odt" />
+    <EmbeddedResource Include="Templates\SalesOrder.odt" />
+    <EmbeddedResource Include="Templates\ProductQuote.odt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaltReport2" Version="3.0.1-beta-35" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
   </ItemGroup>
 

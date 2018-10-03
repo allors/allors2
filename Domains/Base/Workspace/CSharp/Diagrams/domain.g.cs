@@ -315,6 +315,12 @@ namespace Allors.Domain
 								global::System.Byte[] Data {set;}
 
 				}
+				public interface Template : UniquelyIdentifiable, Deletable 
+				{
+				}
+				public interface TemplateType : Enumeration, Deletable 
+				{
+				}
 				public interface PreparedExtent : UniquelyIdentifiable, Deletable 
 				{
 				}

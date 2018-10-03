@@ -480,10 +480,46 @@ namespace Allors.Repository
         Party[] ActiveSuppliers { get; set; }
 
         #region Allors
+        [Id("02076C50-183B-4657-BE2F-9CF4872E9989")]
+        [AssociationId("1C6A6309-836E-4DD5-9F4A-B9EEFAC1D683")]
+        [RoleId("808ABBA5-5635-428D-B4EA-C7140AA3717C")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template ProductQuoteTemplate { get; set; }
+
+        #region Allors
+        [Id("7FD61BF5-AC01-405C-A100-5DA3F2861B81")]
+        [AssociationId("A5156B1A-C7CB-4AB9-91A6-FCFD129A8C4A")]
+        [RoleId("D5C6F295-6A4A-426B-A233-AE7F41080FD6")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template SalesOrderTemplate { get; set; }
+
+        #region Allors
+        [Id("A8D44A4A-9C82-44A7-BBBA-117A4F7D261B")]
+        [AssociationId("3B55BFB3-5531-4659-A7E1-20D39E68FD59")]
+        [RoleId("F9C61F15-C32C-48D1-85E0-490A9F540EB6")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template SalesInvoiceTemplate { get; set; }
+
+        #region Allors
+        [Id("9505E487-973D-4556-9C79-3538E7FE1C8B")]
+        [AssociationId("F4F9D9FF-6DF0-4B75-9022-DE4DF200A1F4")]
+        [RoleId("CBBD4779-D96D-4DCD-A2C3-8E5365B9AEA0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        Template WorkTaskTemplate { get; set; }
+        
+        #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion
         void StartNewFiscalYear();
-
+ 
         #region inherited methods
 
         #endregion
