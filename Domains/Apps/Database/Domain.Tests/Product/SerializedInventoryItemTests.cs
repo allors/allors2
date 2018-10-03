@@ -64,7 +64,7 @@ namespace Allors.Domain
                 .WithSerialNumber("1")
                 .WithPart(new FinishedGoodBuilder(this.Session)
                             .WithPartId("1")
-                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)  //TODO: Error??
                             .Build())
                 .Build();
 

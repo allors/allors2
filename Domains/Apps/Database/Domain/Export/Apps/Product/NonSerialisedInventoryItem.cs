@@ -79,6 +79,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
         {
+            // TODO: Test for changes in these relations for performance reasons
             this.QuantityOnHand = 0M;
 
             foreach (InventoryItemVariance inventoryItemVariance in this.InventoryItemVariances)
@@ -109,6 +110,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveQuantityCommittedOut(IDerivation derivation)
         {
+            // TODO: Test for changes in these relations for performance reasons
             this.QuantityCommittedOut = 0M;
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
@@ -133,6 +135,7 @@ namespace Allors.Domain
 
         public void AppsOnDeriveQuantityExpectedIn(IDerivation derivation)
         {
+            // TODO: Test for changes in these relations for performance reasons
             this.QuantityExpectedIn = 0M;
 
             if (this.ExistPart)

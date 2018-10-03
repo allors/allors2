@@ -49,6 +49,7 @@
     <None Include="General\Localised.cd" />
     <None Include="Invoice\Overview.cd" />
     <None Include="Order\Overview.cd" />
+    <None Include="Products\Inventory Storage.cd" />
     <None Include="Products\Overview.cd" />
     <None Include="Relation\Overview.cd" />
     <None Include="Shipment\Overview.cd" />
