@@ -32,7 +32,7 @@
       </div>
 
       <div class="a-items">
-        <table mat-table matSort [dataSource]="dataSource">
+        <table mat-table matSort matSortActive="name" matSortDirection="asc" (matSortChange)="sort$.next($event)" [dataSource]="dataSource">
           <!-- Selection Column -->
           <ng-container matColumnDef="select" sticky>
             <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()">

@@ -2,14 +2,14 @@ import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatSort, MatDialog, Sort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
-import { PullRequest, SessionObject, Filter, And, Predicate, Like } from '../../../../../../framework';
+import { PullRequest, SessionObject, Filter, And, Predicate, Like, Sort as AllorsSort } from '../../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 import { Person } from '../../../../../../domain';
@@ -38,8 +38,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public data: Row[];
 
-  @ViewChild(MatSort) sort: MatSort;
-
+  public sort$: BehaviorSubject<Sort>;
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
@@ -56,6 +55,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
     titleService: Title) {
 
     titleService.setTitle(this.title);
+
+    this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     filterService.filterFieldDefinitions.push(
@@ -76,11 +77,9 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     const { m, pull, scope } = this.allors;
 
-    this.dataSource.sort = this.sort;
-
-    this.subscription = combineLatest(this.filterService.filterFields$, this.refresh$)
+    this.subscription = combineLatest(this.filterService.filterFields$, this.sort$, this.refresh$)
       .pipe(
-        switchMap(([filterFields]) => {
+        switchMap(([filterFields, sort]) => {
 
           const predicates = filterFields.map(v => {
             if (v.definition === this.filterService.filterFieldDefinitions[0]) {
@@ -93,9 +92,31 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
           });
 
+          let sorting: AllorsSort[];
+          if (sort) {
+            const descending = sort.direction === 'desc';
+
+            switch (sort.active) {
+              case 'name':
+                sorting = [
+                  new AllorsSort({
+                    roleType: m.Person.FirstName,
+                    descending
+                  }),
+                  new AllorsSort({
+                    roleType: m.Person.LastName,
+                    descending
+                  }),
+                ];
+
+                break;
+            }
+          }
+
           const pulls = [
             pull.Person({
               predicate: predicates.length > 0 ? new And({ operands: predicates }) : undefined,
+              sort: sorting,
               include: {
                 Salutation: x,
                 Picture: x,
