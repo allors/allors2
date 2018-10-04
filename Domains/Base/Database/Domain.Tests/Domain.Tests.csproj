@@ -9,7 +9,6 @@
     <None Remove="EmployeesTemplate.odt" />
     <None Remove="Image.jpeg" />
     <None Remove="Resources\EmbeddedTemplate.odt" />
-    <None Remove="Resources\FileTemplate.odt" />
     <None Remove="Resources\logo.png" />
     <None Remove="Resources\PdfAs.jpg" />
   </ItemGroup>
@@ -17,9 +16,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\logo.png" />
     <EmbeddedResource Include="Resources\PdfAs.jpg" />
-    <Content Include="Resources\FileTemplate.odt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <EmbeddedResource Include="Resources\EmbeddedTemplate.odt" />
   </ItemGroup>
 

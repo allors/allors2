@@ -62,14 +62,9 @@ namespace Server.Tests
             };
 
             var services = new ServiceCollection();
-            services.AddAllors(new ServiceConfig
-            {
-                Directory = new DirectoryInfo(@"."),
-                ApplicationName = "Server.Tests"
-            });
+            services.AddAllors();
             var serviceProvider = services.BuildServiceProvider();
-
-
+            
             this.HttpClientHandler = new HttpClientHandler();
             this.HttpClient = new HttpClient(this.HttpClientHandler)
             {

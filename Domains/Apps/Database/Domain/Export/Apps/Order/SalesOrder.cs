@@ -245,12 +245,12 @@ namespace Allors.Domain
 
                 if (!this.ExistShipToCustomer && partyFinancial != null)
                 {
-                    this.PaymentMethod= partyFinancial.DefaultPaymentMethod;
+                    this.PaymentMethod = partyFinancial.DefaultPaymentMethod;
                 }
 
                 if (!this.ExistPaymentMethod && this.ExistStore)
                 {
-                    this.PaymentMethod= this.Store.DefaultCollectionMethod;
+                    this.PaymentMethod = this.Store.DefaultCollectionMethod;
                 }
             }
 
@@ -291,8 +291,12 @@ namespace Allors.Domain
             this.PreviousBillToCustomer = this.BillToCustomer;
             this.PreviousShipToCustomer = this.ShipToCustomer;
 
-            var model = new Dictionary<string, object> { { "salesOrder", this } };
-            this.RenderPrintDocument(this.TakenBy?.SalesInvoiceTemplate, model);
+            var model = new Dictionary<string, object>
+                            {
+                                {"salesOrder", this},
+                                {"value", "a value"}
+                            };
+            this.RenderPrintDocument(this.TakenBy?.SalesOrderTemplate, model);
         }
 
         public void AppsOnPostDerive(ObjectOnPostDerive method)
@@ -916,7 +920,7 @@ namespace Allors.Domain
                 var leftToInvoice = (orderItem.QuantityOrdered * orderItem.ActualUnitPrice) - amountAlreadyInvoiced;
 
                 if (leftToInvoice > 0)
-                { 
+                {
                     var invoiceItem = new SalesInvoiceItemBuilder(this.Strategy.Session)
                         .WithInvoiceItemType(orderItem.InvoiceItemType)
                         .WithActualUnitPrice(orderItem.ActualUnitPrice)

@@ -41,12 +41,10 @@ namespace Allors.Domain
             }
 
 
-#if DEBUG
-            if (document != null)
-            {
-                File.WriteAllBytes($@"\temp\{@this.Strategy.Class.Name}_{@this.Strategy.ObjectId}.odt", document);
-            }
-#endif
+            //if (document != null)
+            //{
+            //    File.WriteAllBytes($@"\temp\{@this.Strategy.Class.Name}_{@this.Strategy.ObjectId}.odt", document);
+            //}
         }
     }
 }

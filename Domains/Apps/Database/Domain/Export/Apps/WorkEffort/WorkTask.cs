@@ -60,7 +60,7 @@ namespace Allors.Domain
             }
 
             var model = new Dictionary<string, object> { { "workTask", this } };
-            this.RenderPrintDocument(this.TakenBy?.SalesInvoiceTemplate, model);
+            this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model);
         }
 
         //public void AppsDelete(DeletableDelete method)
