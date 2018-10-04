@@ -21,10 +21,8 @@
 namespace Allors.Server
 {
     using System;
-    using System.Data.Common;
 
     using Allors.Domain;
-    using Allors.Server.Protocol;
     using Allors.Server.Protocol.Invoke;
     using Allors.Server.Protocol.Push;
     using Allors.Server.Protocol.Sync;
@@ -33,8 +31,6 @@ namespace Allors.Server
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-
-    using Polly;
 
     public class DatabaseController : Controller
     {

@@ -1,11 +1,9 @@
 export * from './productquote/productquote-overview.module';
 export * from './productquote/productquotes-overview.module';
-export * from './productquote/productquote-print.module';
 export * from './request/request-overview.module';
 export * from './request/requests-overview.module';
 export * from './salesorder/salesorder-overview.module';
 export * from './salesorder/salesorders-overview.module';
-export * from './salesorder/salesorder-print.module';
 
 export * from './productquote/productquote.module';
 export * from './quoteitem/quoteitem.module';
@@ -18,12 +16,10 @@ export * from './salesterms/invoiceterm/invoiceterm.module';
 export * from './salesterms/orderterm/orderterm.module';
 
 import { ProductQuoteOverviewModule } from './productquote/productquote-overview.module';
-import { ProductQuotePrintModule } from './productquote/productquote-print.module';
 import { ProductQuotesOverviewModule } from './productquote/productquotes-overview.module';
 import { RequestOverviewModule } from './request/request-overview.module';
 import { RequestsOverviewModule } from './request/requests-overview.module';
 import { SalesOrderOverviewModule } from './salesorder/salesorder-overview.module';
-import { SalesOrderPrintModule } from './salesorder/salesorder-print.module';
 import { SalesOrdersOverviewModule } from './salesorder/salesorders-overview.module';
 
 import { ProductQuoteEditModule } from './productquote/productquote.module';
@@ -42,12 +38,10 @@ export const Modules = [
   OrderTermEditModule,
   ProductQuoteOverviewModule,
   ProductQuotesOverviewModule,
-  ProductQuotePrintModule,
   RequestsOverviewModule,
   RequestOverviewModule,
   SalesOrderOverviewModule,
   SalesOrdersOverviewModule,
-  SalesOrderPrintModule,
   ProductQuoteEditModule,
   RequestEditModule,
   QuoteItemEditModule,

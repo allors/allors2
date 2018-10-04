@@ -3,7 +3,6 @@ export * from './workeffortassignment/workeffortassignments-overview.module';
 
 export * from './worktask/worktask-overview.module';
 export * from './worktask/worktasks-overview.module';
-export * from './worktask/worktask-print.module';
 
 export * from './worktask/worktask.module';
 
@@ -12,7 +11,6 @@ import { WorkEffortAssignmentsOverviewModule } from './workeffortassignment/work
 
 import { WorkTaskOverviewModule } from './worktask/worktask-overview.module';
 import { WorkTasksOverviewModule } from './worktask/worktasks-overview.module';
-import { WorkTaskPrintModule } from './worktask/worktask-print.module';
 
 import { WorkTaskEditModule } from './worktask/worktask.module';
 
@@ -22,7 +20,6 @@ export const Modules = [
 
   WorkTasksOverviewModule,
   WorkTaskOverviewModule,
-  WorkTaskPrintModule,
 
   WorkTaskEditModule,
 ];

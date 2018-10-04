@@ -20,8 +20,23 @@
 
 namespace Allors.Services
 {
+    using Microsoft.AspNetCore.Http;
+
     public class UserService : IUserService
     {
-        public string UserName { get; set; }
+        private readonly IHttpContextAccessor httpContextAccessor;
+
+        private string userName;
+
+        public UserService(IHttpContextAccessor httpContextAccessor = null)
+        {
+            this.httpContextAccessor = httpContextAccessor;
+        }
+
+        public string UserName
+        {
+            get => this.userName ?? this.httpContextAccessor?.HttpContext.User.Identity.Name;
+            set => this.userName = value;
+        }
     }
 }

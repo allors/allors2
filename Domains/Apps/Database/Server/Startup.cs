@@ -23,6 +23,7 @@
     using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
 
@@ -46,6 +47,7 @@
             services.AddAllors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
+
 
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()

@@ -17,10 +17,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 // tslint:disable:object-literal-sort-keys
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { canActivate: [AuthorizationService],  path: 'printinvoice/:id', component: ar.InvoicePrintComponent },
-  { canActivate: [AuthorizationService],  path: 'printsalesorder/:id', component: orders.SalesOrderPrintComponent },
-  { canActivate: [AuthorizationService],  path: 'printproductquote/:id', component: orders.ProductQuotePrintComponent },
-  { canActivate: [AuthorizationService],  path: 'printworktask/:id', component: workefforts.WorkTaskPrintComponent },
   {
     canActivate: [AuthorizationService],
     path: '', component: MainComponent,

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Persons.cs" company="Allors bvba">
+// <copyright file="People.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -13,19 +13,15 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-using System;
 
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
+    using System;
 
     using Meta;
 
     public partial class People
     {
-        public static readonly Guid AdministratorId = new Guid("FF791BA1-6E02-4F64-83A3-E6BEE1208C11");
-        public static readonly Guid GuestId = new Guid("1261CB56-67F2-4725-AF7D-604A117ABBEC");
-
         public static void AppsOnDeriveCommissions(ISession session)
         {
             foreach (Person person in session.Extent<Person>())
@@ -68,6 +64,7 @@ namespace Allors.Domain
             base.AppsSecure(config);
 
             var full = new[] { Operations.Read, Operations.Write, Operations.Execute };
+
             config.GrantOwner(this.ObjectType, full);
         }
     }

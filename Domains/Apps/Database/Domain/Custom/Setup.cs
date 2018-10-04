@@ -20,11 +20,6 @@
 
 namespace Allors
 {
-    using System;
-
-    using Allors.Domain;
-    using Allors.Meta;
-
     public partial class Setup
     {
         private void CustomOnPrePrepare()
