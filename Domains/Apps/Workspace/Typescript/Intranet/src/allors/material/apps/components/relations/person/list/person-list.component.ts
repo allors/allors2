@@ -8,13 +8,14 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType } from '../../../../../../framework';
 import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
-import { PullRequest, SessionObject, Filter, And, Predicate, Like, Sort as AllorsSort } from '../../../../../../framework';
+import { AllorsFilterService, FilterFieldPredicate, FilterFieldType } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { Sorter } from '../../../../../base/sorting';
 
 import { Person } from '../../../../../../domain';
 import { PersonAddComponent } from '../add/person-add.module';
-import { AllorsFilterService, FilterFieldPredicate, FilterFieldType } from '../../../../../../angular/base/filter';
 
 interface Row {
   person: Person;
@@ -77,6 +78,13 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     const { m, pull, scope } = this.allors;
 
+    const sorter = new Sorter(
+      {
+        name: [m.Person.FirstName, m.Person.LastName],
+        lastModifiedDate: m.Person.LastModifiedDate,
+      }
+    );
+
     this.subscription = combineLatest(this.filterService.filterFields$, this.sort$, this.refresh$)
       .pipe(
         switchMap(([filterFields, sort]) => {
@@ -92,31 +100,10 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
           });
 
-          let sorting: AllorsSort[];
-          if (sort) {
-            const descending = sort.direction === 'desc';
-
-            switch (sort.active) {
-              case 'name':
-                sorting = [
-                  new AllorsSort({
-                    roleType: m.Person.FirstName,
-                    descending
-                  }),
-                  new AllorsSort({
-                    roleType: m.Person.LastName,
-                    descending
-                  }),
-                ];
-
-                break;
-            }
-          }
-
           const pulls = [
             pull.Person({
               predicate: predicates.length > 0 ? new And({ operands: predicates }) : undefined,
-              sort: sorting,
+              sort: sorter.create(sort),
               include: {
                 Salutation: x,
                 Picture: x,
