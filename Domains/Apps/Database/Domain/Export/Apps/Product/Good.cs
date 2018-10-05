@@ -151,11 +151,7 @@ namespace Allors.Domain
             {
                 foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
                 {
-                    if (inventoryItem is NonSerialisedInventoryItem)
-                    {
-                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                        this.QuantityOnHand += nonSerialised.QuantityOnHand;
-                    }
+                    this.QuantityOnHand += inventoryItem.QuantityOnHand;
                 }
             }
         }

@@ -23,13 +23,15 @@ namespace Allors.Domain
 {
     using Meta;
     using Xunit;
-
+    using Should;
+    using System.Linq;
     
     public class SerialisedInventoryItemTests : DomainTest
     {
         [Fact]
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
+            // Arrange
             var part = new FinishedGoodBuilder(this.Session).WithName("part")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithPartId("1")
@@ -40,38 +42,148 @@ namespace Allors.Domain
             var builder = new SerialisedInventoryItemBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            // Act
+            var derivation = this.Session.Derive(false);
 
+            // Assert
+            derivation.HasErrors.ShouldBeTrue();
+
+            // Re-arrange
             this.Session.Rollback();
 
             builder.WithPart(part);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            // Act
+            derivation = this.Session.Derive(false);
 
+            // Assert
+            derivation.HasErrors.ShouldBeTrue();
+
+            // Re-arrange
             this.Session.Rollback();
 
             builder.WithSerialNumber("1");
             builder.Build();
 
-            Assert.False(this.Session.Derive(false).HasErrors);
+            // Act
+            derivation = this.Session.Derive(false);
+
+            // Assert
+            derivation.HasErrors.ShouldBeFalse();
         }
 
         [Fact]
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var item = new SerialisedInventoryItemBuilder(this.Session)
-                .WithSerialNumber("1")
-                .WithPart(new FinishedGoodBuilder(this.Session)
-                            .WithPartId("1")
-                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)  //TODO: Error??
-                            .Build())
+            // Arrange
+            var available = new SerialisedInventoryItemStates(this.Session).Available;
+            var warehouse = new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse);
+            var kinds = new InventoryItemKinds(this.Session);
+
+            var finishedGood = CreateFinishedGood("1", kinds.Serialised);
+            var serializedItem = CreateSerialzedInventoryItem("1", finishedGood);
+
+            // Act
+            this.Session.Derive(true);
+
+            // Assert
+            serializedItem.SerialisedInventoryItemState.ShouldEqual(available);
+            serializedItem.Facility.ShouldEqual(warehouse);
+        }
+
+        [Fact]
+        public void GivenFinishedGoodWithSerializedInventory_WhenDeriving_ThenQuantityOnHandUpdated()
+        {
+            // Arrange
+            var available = new SerialisedInventoryItemStates(this.Session).Available;
+            var warehouse = new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse);
+
+            var kinds = new InventoryItemKinds(this.Session);
+            var unitsOfMeasure = new UnitsOfMeasure(this.Session);
+            var unknown = new VarianceReasons(this.Session).Unknown;
+
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            var finishedGood = CreateFinishedGood("FG1", kinds.Serialised);
+            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+            var serialItem1 = CreateSerialzedInventoryItem("1", finishedGood);
+            var serialItem2 = CreateSerialzedInventoryItem("2", finishedGood);
+            var serialItem3 = CreateSerialzedInventoryItem("3", finishedGood);
+
+            // Act
+            this.Session.Derive(true);
+
+            serialItem1.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+            serialItem2.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+            serialItem3.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+
+            this.Session.Derive(true);
+
+            // Assert
+            finishedGood.GoodsWhereFinishedGood.Sum(g => g.QuantityOnHand).ShouldEqual(3);
+        }
+
+        [Fact]
+        public void GivenSerializedItemInMultipleFacilities_WhenDeriving_ThenMultipleQuantityOnHandTracked()
+        {
+            // Arrange
+            var warehouseType = new FacilityTypes(this.Session).Warehouse;
+            var warehouse1 = CreateFacility("WH1", warehouseType, this.InternalOrganisation);
+            var warehouse2 = CreateFacility("WH2", warehouseType, this.InternalOrganisation);
+
+            var serialized = new InventoryItemKinds(this.Session).Serialised;
+            var piece = new UnitsOfMeasure(this.Session).Piece;
+            var unknown = new VarianceReasons(this.Session).Unknown;
+
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            var finishedGood = CreateFinishedGood("FG1", serialized);
+            var good = CreateGood("10101", vatRate21, "good1", piece, category, finishedGood);
+            var serialItem1 = CreateSerialzedInventoryItem("1", finishedGood, warehouse1);
+            var serialItem2 = CreateSerialzedInventoryItem("2", finishedGood, warehouse2);
+
+            // Act
+            this.Session.Derive(true);
+
+            serialItem1.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+            serialItem2.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+
+            this.Session.Derive(true);
+
+            // Assert
+            var item1 = new InventoryItems(this.Session).Extent().First(i => i.Facility.Equals(warehouse1));
+            item1.QuantityOnHand.ShouldEqual(1);
+
+            var item2 = new InventoryItems(this.Session).Extent().First(i => i.Facility.Equals(warehouse2));
+            item2.QuantityOnHand.ShouldEqual(1);
+
+            finishedGood.GoodsWhereFinishedGood.Sum(g => g.QuantityOnHand).ShouldEqual(2);
+        }
+
+        private Facility CreateFacility(string name, FacilityType type, InternalOrganisation owner)
+            => new FacilityBuilder(this.Session).WithName(name).WithFacilityType(type).WithOwner(owner).Build();
+
+        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, FinishedGood finishedGood)
+            => new GoodBuilder(this.Session)
+                .WithSku(sku)
+                .WithVatRate(vatRate)
+                .WithName(name)
+                .WithUnitOfMeasure(uom)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
                 .Build();
 
-            this.Session.Derive();
+        private SerialisedInventoryItem CreateSerialzedInventoryItem(string serialNumber, Part part)
+            => new SerialisedInventoryItemBuilder(this.Session).WithSerialNumber(serialNumber).WithPart(part).Build();
 
-            Assert.Equal(new SerialisedInventoryItemStates(this.Session).Available, item.SerialisedInventoryItemState);
-            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);
-        }
+        private SerialisedInventoryItem CreateSerialzedInventoryItem(string serialNumber, Part part, Facility facility)
+            => new SerialisedInventoryItemBuilder(this.Session).WithSerialNumber(serialNumber).WithPart(part).WithFacility(facility).Build();
+
+        private FinishedGood CreateFinishedGood(string partId, InventoryItemKind kind)
+            => new FinishedGoodBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+
+        private InventoryItemVariance CreateInventoryVariance(int quantity, VarianceReason reason)
+           => new InventoryItemVarianceBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
     }
 }

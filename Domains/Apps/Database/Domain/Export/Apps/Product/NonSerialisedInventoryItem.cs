@@ -34,19 +34,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.Part is FinishedGood finishedGood)
-            {
-                foreach (Good good in finishedGood.GoodsWhereFinishedGood)
-                {
-                    derivation.AddDependency(good, this);
-                }
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -75,37 +62,6 @@ namespace Allors.Domain
             this.AppsOnDeriveUnitOfMeasure(derivation);
 
             this.PreviousQuantityOnHand = this.QuantityOnHand;
-        }
-
-        public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
-        {
-            // TODO: Test for changes in these relations for performance reasons
-            this.QuantityOnHand = 0M;
-
-            foreach (InventoryItemVariance inventoryItemVariance in this.InventoryItemVariances)
-            {
-                this.QuantityOnHand += inventoryItemVariance.Quantity;
-            }
-
-            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
-            {
-                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
-                {
-                    this.QuantityOnHand -= pickListItem.ActualQuantity.Value;
-                }
-            }
-
-            foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
-            {
-                if (shipmentReceipt.ExistShipmentItem)
-                {
-                    var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
-                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed))
-                    {
-                        this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
-                    }
-                }
-            }
         }
 
         public void AppsOnDeriveQuantityCommittedOut(IDerivation derivation)
