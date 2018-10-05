@@ -21,6 +21,9 @@
 
 namespace Allors.Domain
 {
+    using Meta;
+    using Should;
+    using System.Linq;
     using Xunit;
 
     public class InventoryItemVarianceTests : DomainTest
@@ -59,5 +62,59 @@ namespace Allors.Domain
             Assert.Equal(10, good.QuantityOnHand);
             Assert.Equal(10, inventoryItem.QuantityOnHand);
         }
+
+        [Fact]
+        public void GivenSerializedInventoryItems_WhenVarianceContainsInvalidQuantity_ThenDerivationExceptionRaised()
+        {
+            // Arrange
+            var kinds = new InventoryItemKinds(this.Session);
+            var unitsOfMeasure = new UnitsOfMeasure(this.Session);
+            var unknown = new VarianceReasons(this.Session).Unknown;
+
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            var finishedGood = CreateFinishedGood("FG1", kinds.Serialised);
+            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
+            var serialItem1 = CreateSerialzedInventoryItem("1", finishedGood);
+            var variance = CreateInventoryVariance(10, unknown);
+
+            serialItem1.AddInventoryItemVariance(variance);
+
+            // Act
+            var derivation = this.Session.Derive(false);
+
+            // Assert
+            derivation.HasErrors.ShouldBeTrue();
+            derivation.Errors.SelectMany(e => e.RoleTypes).Contains(M.InventoryItemVariance.Quantity).ShouldBeTrue();
+
+            // Re-Arrange
+            variance.Quantity = -10;
+
+            // Act
+            derivation = this.Session.Derive(false);
+
+            // Assert
+            derivation.HasErrors.ShouldBeTrue();
+            derivation.Errors.SelectMany(e => e.RoleTypes).Contains(M.InventoryItemVariance.Quantity).ShouldBeTrue();
+        }
+
+        private FinishedGood CreateFinishedGood(string partId, InventoryItemKind kind)
+            => new FinishedGoodBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+
+        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, FinishedGood finishedGood)
+            => new GoodBuilder(this.Session)
+                .WithSku(sku)
+                .WithVatRate(vatRate)
+                .WithName(name)
+                .WithUnitOfMeasure(uom)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
+                .Build();
+
+        private SerialisedInventoryItem CreateSerialzedInventoryItem(string serialNumber, Part part)
+            => new SerialisedInventoryItemBuilder(this.Session).WithSerialNumber(serialNumber).WithPart(part).Build();
+
+        private InventoryItemVariance CreateInventoryVariance(int quantity, VarianceReason reason)
+           => new InventoryItemVarianceBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
     }
 }

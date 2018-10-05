@@ -22,7 +22,10 @@ namespace Allors.Domain
     {
         public static void AppsOnBuild(this Part @this, ObjectOnBuild method)
         {
-            @this.InventoryItemKind = new InventoryItemKinds(@this.Strategy.Session).NonSerialised;
+            if (!@this.ExistInventoryItemKind)
+            {
+                @this.InventoryItemKind = new InventoryItemKinds(@this.Strategy.Session).NonSerialised;
+            }
         }
 
         public static void AppsOnPreDerive(this Part @this, ObjectOnPreDerive method)
@@ -57,16 +60,24 @@ namespace Allors.Domain
 
         public static void AppsOnDeriveInventoryItem(this Part @this, IDerivation derivation)
         {
-            if (@this.ExistInternalOrganisation && @this.ExistInventoryItemKind && @this.InventoryItemKind.Equals(new InventoryItemKinds(@this.Strategy.Session).NonSerialised))
+            //if (@this.ExistInternalOrganisation && @this.ExistInventoryItemKind && @this.InventoryItemKind.Equals(new InventoryItemKinds(@this.Strategy.Session).NonSerialised))
+            if (@this.ExistInternalOrganisation && !@this.ExistInventoryItemsWherePart && @this.ExistInventoryItemKind)
             {
-                if (!@this.ExistInventoryItemsWherePart )
+                foreach (Facility facility in @this.InternalOrganisation.FacilitiesWhereOwner)
                 {
-                    foreach (Facility facility in @this.InternalOrganisation.FacilitiesWhereOwner)
+                    if (@this.InventoryItemKind.IsNonSerialized)
                     {
                         new NonSerialisedInventoryItemBuilder(@this.Strategy.Session)
-                            .WithPart(@this)
-                            .WithFacility(facility)
-                            .Build();
+                          .WithPart(@this)
+                          .WithFacility(facility)
+                          .Build();
+                    }
+                    else if (@this.InventoryItemKind.IsSerialized)
+                    {
+                        new SerialisedInventoryItemBuilder(@this.Strategy.Session)
+                          .WithPart(@this)
+                          .WithFacility(facility)
+                          .Build();
                     }
                 }
             }

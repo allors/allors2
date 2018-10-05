@@ -35,19 +35,6 @@ namespace Allors.Domain
             }
         }
 
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.Part is FinishedGood finishedGood)
-            {
-                foreach (Good good in finishedGood.GoodsWhereFinishedGood)
-                {
-                    derivation.AddDependency(this, good);
-                }
-            }
-        }
-
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
@@ -63,6 +50,8 @@ namespace Allors.Domain
             {
                 this.Details = this.DeriveDetails();
             }
+
+            this.AppsOnDeriveQuantityOnHand(derivation);
         }
 
         private void AppsOnDeriveProductCharacteristics(IDerivation derivation)

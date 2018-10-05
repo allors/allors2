@@ -24,6 +24,7 @@ namespace Allors.Domain
     using System;
     using Meta;
     using Xunit;
+    using Should;
 
 
     public class NonSerialisedInventoryItemTests : DomainTest
@@ -71,10 +72,10 @@ namespace Allors.Domain
 
             Session.Derive();
 
-            Assert.NotNull(item.AvailableToPromise);
-            Assert.NotNull(item.QuantityCommittedOut);
-            Assert.NotNull(item.QuantityExpectedIn);
-            Assert.NotNull(item.QuantityOnHand);
+            Assert.Equal(0M, item.AvailableToPromise);
+            Assert.Equal(0M, item.QuantityCommittedOut);
+            Assert.Equal(0M, item.QuantityExpectedIn);
+            Assert.Equal(0M, item.QuantityOnHand);
             Assert.Equal(new NonSerialisedInventoryItemStates(this.Session).Good, item.NonSerialisedInventoryItemState);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);
         }
@@ -118,241 +119,200 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsRaised_ThenSalesOrderItemsWithQuantityShortFalledAreUpdated()
         {
+            // Arrange
+            var inventoryItemKinds = new InventoryItemKinds(this.Session);
+            var unitsOfMeasure = new UnitsOfMeasure(this.Session);
+            var varianceReasons = new VarianceReasons(this.Session);
+            var contactMechanisms = new ContactMechanismPurposes(this.Session);
+
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var category = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(category)
-                .WithFinishedGood(finishedGood)
-                .Build();
-
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            var finishedGood = CreateFinishedGood("1", inventoryItemKinds.NonSerialised);
+            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(5).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(5, varianceReasons.Unknown));
 
-            this.Session.Derive();
+            this.Session.Derive(true);
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
+            var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            this.Session.Derive();
+            this.Session.Derive(true);
             this.Session.Commit();
 
-            var order1 = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithDeliveryDate(DateTime.UtcNow)
-                .Build();
+            var order1 = CreateSalesOrder(customer, customer, DateTime.UtcNow);
+            var salesItem1 = CreateSalesOrderItem("item1", good, 10, 15);
+            var salesItem2 = CreateSalesOrderItem("item2", good, 20, 15);
 
-            var item1 = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
-            var item2 = new SalesOrderItemBuilder(this.Session).WithDescription("item2").WithProduct(good).WithQuantityOrdered(20).WithActualUnitPrice(15).Build();
-            order1.AddSalesOrderItem(item1);
-            order1.AddSalesOrderItem(item2);
+            order1.AddSalesOrderItem(salesItem1);
+            order1.AddSalesOrderItem(salesItem2);
 
-            this.Session.Derive();
+            var order2 = CreateSalesOrder(customer, customer, DateTime.UtcNow.AddDays(1));
+            var salesitem3 = CreateSalesOrderItem("item3", good, 10, 15);
+            var salesItem4 = CreateSalesOrderItem("item4", good, 20, 15);
+
+            order2.AddSalesOrderItem(salesitem3);
+            order2.AddSalesOrderItem(salesItem4);
+
+            this.Session.Derive(true);
             this.Session.Commit();
 
+            // Act
             order1.Confirm();
-
-            this.Session.Derive();
-
-            var order2 = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithDeliveryDate(DateTime.UtcNow.AddDays(1))
-                .Build();
-
-            var item3 = new SalesOrderItemBuilder(this.Session).WithDescription("item3").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
-            var item4 = new SalesOrderItemBuilder(this.Session).WithDescription("item4").WithProduct(good).WithQuantityOrdered(20).WithActualUnitPrice(15).Build();
-            order2.AddSalesOrderItem(item3);
-            order2.AddSalesOrderItem(item4);
-
-            this.Session.Derive();
-            this.Session.Commit();
-
             order2.Confirm();
 
-            this.Session.Derive();
-
-            Assert.Equal(0, item1.QuantityRequestsShipping);
-            Assert.Equal(5, item1.QuantityPendingShipment);
-            Assert.Equal(10, item1.QuantityReserved);
-            Assert.Equal(5, item1.QuantityShortFalled);
-
-            Assert.Equal(0, item2.QuantityRequestsShipping);
-            Assert.Equal(0, item2.QuantityPendingShipment);
-            Assert.Equal(20, item2.QuantityReserved);
-            Assert.Equal(20, item2.QuantityShortFalled);
-
-            Assert.Equal(0, item3.QuantityRequestsShipping);
-            Assert.Equal(0, item3.QuantityPendingShipment);
-            Assert.Equal(10, item3.QuantityReserved);
-            Assert.Equal(10, item3.QuantityShortFalled);
-
-            Assert.Equal(0, item4.QuantityRequestsShipping);
-            Assert.Equal(0, item4.QuantityPendingShipment);
-            Assert.Equal(20, item4.QuantityReserved);
-            Assert.Equal(20, item4.QuantityShortFalled);
-
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(5, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
-
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(15).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-
-            this.Session.Derive();
+            this.Session.Derive(true);
             this.Session.Commit();
 
+            // Assert
+            salesItem1.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem1.QuantityPendingShipment.ShouldEqual(5);
+            salesItem1.QuantityReserved.ShouldEqual(10);
+            salesItem1.QuantityShortFalled.ShouldEqual(5);
+
+            salesItem2.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem2.QuantityPendingShipment.ShouldEqual(0);
+            salesItem2.QuantityReserved.ShouldEqual(20);
+            salesItem2.QuantityShortFalled.ShouldEqual(20);
+
+            salesitem3.QuantityRequestsShipping.ShouldEqual(0);
+            salesitem3.QuantityPendingShipment.ShouldEqual(0);
+            salesitem3.QuantityReserved.ShouldEqual(10);
+            salesitem3.QuantityShortFalled.ShouldEqual(10);
+
+            salesItem4.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem4.QuantityPendingShipment.ShouldEqual(0);
+            salesItem4.QuantityReserved.ShouldEqual(20);
+            salesItem4.QuantityShortFalled.ShouldEqual(20);
+
+            salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise.ShouldEqual(0);
+            salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(5);
+
+            // Re-arrange
+            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(15, varianceReasons.Unknown));
+            
+            // Act
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            // Assert
             // Orderitems are sorted as follows: item1, item2, item3, item4
-            Assert.Equal(0, item1.QuantityRequestsShipping);
-            Assert.Equal(10, item1.QuantityPendingShipment);
-            Assert.Equal(10, item1.QuantityReserved);
-            Assert.Equal(0, item1.QuantityShortFalled);
+            salesItem1.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem1.QuantityPendingShipment.ShouldEqual(10);
+            salesItem1.QuantityReserved.ShouldEqual(10);
+            salesItem1.QuantityShortFalled.ShouldEqual(0);
 
-            Assert.Equal(0, item2.QuantityRequestsShipping);
-            Assert.Equal(10, item2.QuantityPendingShipment);
-            Assert.Equal(20, item2.QuantityReserved);
-            Assert.Equal(10, item2.QuantityShortFalled);
+            salesItem2.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem2.QuantityPendingShipment.ShouldEqual(10);
+            salesItem2.QuantityReserved.ShouldEqual(20);
+            salesItem2.QuantityShortFalled.ShouldEqual(10);
 
-            Assert.Equal(0, item3.QuantityRequestsShipping);
-            Assert.Equal(0, item3.QuantityPendingShipment);
-            Assert.Equal(10, item3.QuantityReserved);
-            Assert.Equal(10, item3.QuantityShortFalled);
+            salesitem3.QuantityRequestsShipping.ShouldEqual(0);
+            salesitem3.QuantityPendingShipment.ShouldEqual(0);
+            salesitem3.QuantityReserved.ShouldEqual(10);
+            salesitem3.QuantityShortFalled.ShouldEqual(10);
 
-            Assert.Equal(0, item4.QuantityRequestsShipping);
-            Assert.Equal(0, item4.QuantityPendingShipment);
-            Assert.Equal(20, item4.QuantityReserved);
-            Assert.Equal(20, item4.QuantityShortFalled);
+            salesItem4.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem4.QuantityPendingShipment.ShouldEqual(0);
+            salesItem4.QuantityReserved.ShouldEqual(20);
+            salesItem4.QuantityShortFalled.ShouldEqual(20);
 
-            Assert.Equal(0, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(20, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+            salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise.ShouldEqual(0);
+            salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(20);
 
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(85).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-
+            // Re-arrange
+            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(85, varianceReasons.Unknown));
+            
+            // Act
             this.Session.Derive();
             this.Session.Commit();
 
-            //// Orderitems are sorted as follows: item2, item1, item4, item 3
-            Assert.Equal(0, item1.QuantityRequestsShipping);
-            Assert.Equal(10, item1.QuantityPendingShipment);
-            Assert.Equal(10, item1.QuantityReserved);
-            Assert.Equal(0, item1.QuantityShortFalled);
+            // Assert
+            // Orderitems are sorted as follows: item2, item1, item4, item 3
+            salesItem1.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem1.QuantityPendingShipment.ShouldEqual(10);
+            salesItem1.QuantityReserved.ShouldEqual(10);
+            salesItem1.QuantityShortFalled.ShouldEqual(0);
 
-            Assert.Equal(0, item2.QuantityRequestsShipping);
-            Assert.Equal(20, item2.QuantityPendingShipment);
-            Assert.Equal(20, item2.QuantityReserved);
-            Assert.Equal(0, item2.QuantityShortFalled);
+            salesItem2.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem2.QuantityPendingShipment.ShouldEqual(20);
+            salesItem2.QuantityReserved.ShouldEqual(20);
+            salesItem2.QuantityShortFalled.ShouldEqual(0);
 
-            Assert.Equal(0, item3.QuantityRequestsShipping);
-            Assert.Equal(10, item3.QuantityPendingShipment);
-            Assert.Equal(10, item3.QuantityReserved);
-            Assert.Equal(0, item3.QuantityShortFalled);
+            salesitem3.QuantityRequestsShipping.ShouldEqual(0);
+            salesitem3.QuantityPendingShipment.ShouldEqual(10);
+            salesitem3.QuantityReserved.ShouldEqual(10);
+            salesitem3.QuantityShortFalled.ShouldEqual(0);
 
-            Assert.Equal(0, item4.QuantityRequestsShipping);
-            Assert.Equal(20, item4.QuantityPendingShipment);
-            Assert.Equal(20, item4.QuantityReserved);
-            Assert.Equal(0, item4.QuantityShortFalled);
+            salesItem4.QuantityRequestsShipping.ShouldEqual(0);
+            salesItem4.QuantityPendingShipment.ShouldEqual(20);
+            salesItem4.QuantityReserved.ShouldEqual(20);
+            salesItem4.QuantityShortFalled.ShouldEqual(0);
 
-            Assert.Equal(45, item1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
-            Assert.Equal(105, item1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
+            salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise.ShouldEqual(45);
+            salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(105);
         }
 
         [Fact]
         public void GivenInventoryItem_WhenQuantityOnHandIsDecreased_ThenSalesOrderItemsWithQuantityRequestsShippingAreUpdated()
         {
+            // Arrange
+            var inventoryItemKinds = new InventoryItemKinds(this.Session);
+            var unitsOfMeasure = new UnitsOfMeasure(this.Session);
+            var varianceReasons = new VarianceReasons(this.Session);
+            var contactMechanisms = new ContactMechanismPurposes(this.Session);
+
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var category = new ProductCategoryBuilder(this.Session)
-                .WithName("category")
-                .Build();
-
-            var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(category)
-                .WithFinishedGood(finishedGood)
-                .Build();
-
+            var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
+            var finishedGood = CreateFinishedGood("1", inventoryItemKinds.NonSerialised);
+            var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(5).WithReason(new VarianceReasons(this.Session).Ruined).Build());
+            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(5, varianceReasons.Ruined));  //TODO: Ruined available to ship?
 
-            this.Session.Derive();
+            this.Session.Derive(true);
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
-            var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
-                .WithContactMechanism(mechelenAddress)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).ShippingAddress)
-                .WithUseAsDefault(true)
-                .Build();
-
+            var shipToMechelen = CreateShipTo(mechelenAddress, contactMechanisms.ShippingAddress, true);
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
-
             var internalOrganisation = this.InternalOrganisation;
-
-
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
+            
+            this.Session.Derive(true);
 
+            var order = CreateSalesOrder(customer, customer, DateTime.UtcNow, false);
+            var salesItem = CreateSalesOrderItem("item1", good, 10, 15);
 
-            this.Session.Derive();
-
-            var order = new SalesOrderBuilder(this.Session)
-                .WithBillToCustomer(customer)
-                .WithShipToCustomer(customer)
-                .WithDeliveryDate(DateTime.UtcNow)
-                .WithPartiallyShip(false)
-                .Build();
-
-            var item1 = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(10).WithActualUnitPrice(15).Build();
-            order.AddSalesOrderItem(item1);
-
-            this.Session.Derive();
+            // Act
+            order.AddSalesOrderItem(salesItem);
+            this.Session.Derive(true);
 
             order.Confirm();
+            this.Session.Derive(true);
 
+            // Assert
+            salesItem.QuantityRequestsShipping.ShouldEqual(5);
+            salesItem.QuantityPendingShipment.ShouldEqual(0);
+            salesItem.QuantityReserved.ShouldEqual(10);
+            salesItem.QuantityShortFalled.ShouldEqual(5);
+            
+            // Rearrange
+            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(-2, varianceReasons.Unknown));
+
+            // Act
             this.Session.Derive();
 
-            Assert.Equal(5, item1.QuantityRequestsShipping);
-            Assert.Equal(0, item1.QuantityPendingShipment);
-            Assert.Equal(10, item1.QuantityReserved);
-            Assert.Equal(5, item1.QuantityShortFalled);
-
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(-2).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-
-            this.Session.Derive();
-
-            Assert.Equal(3, item1.QuantityRequestsShipping);
-            Assert.Equal(0, item1.QuantityPendingShipment);
-            Assert.Equal(10, item1.QuantityReserved);
-            Assert.Equal(7, item1.QuantityShortFalled);
+            // Assert
+            salesItem.QuantityRequestsShipping.ShouldEqual(3);
+            salesItem.QuantityPendingShipment.ShouldEqual(0);
+            salesItem.QuantityReserved.ShouldEqual(10);
+            salesItem.QuantityShortFalled.ShouldEqual(7);
         }
 
         //[Fact]
@@ -445,5 +405,38 @@ namespace Allors.Domain
         //Assert.Contains(goodItem, extent);
         //Assert.Contains(damagedItem, extent);
         //}
+
+        private FinishedGood CreateFinishedGood(string partId, InventoryItemKind kind)
+            => new FinishedGoodBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+
+        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, FinishedGood finishedGood)
+            => new GoodBuilder(this.Session)
+                .WithSku(sku)
+                .WithVatRate(vatRate)
+                .WithName(name)
+                .WithUnitOfMeasure(uom)
+                .WithPrimaryProductCategory(category)
+                .WithFinishedGood(finishedGood)
+                .Build();
+
+        private PartyContactMechanism CreateShipTo(ContactMechanism mechanism, ContactMechanismPurpose purpose, bool isDefault)
+            => new PartyContactMechanismBuilder(this.Session).WithContactMechanism(mechanism).WithContactPurpose(purpose).WithUseAsDefault(isDefault).Build();
+
+        private SalesOrder CreateSalesOrder(Person billTo, Person shipTo, DateTime deliveryDate)
+            => new SalesOrderBuilder(this.Session).WithBillToCustomer(billTo).WithShipToCustomer(shipTo).WithDeliveryDate(deliveryDate).Build();
+
+        private SalesOrder CreateSalesOrder(Person billTo, Person shipTo, DateTime deliveryDate, bool partialShip)
+            => new SalesOrderBuilder(this.Session).WithBillToCustomer(billTo).WithShipToCustomer(shipTo).WithDeliveryDate(deliveryDate).WithPartiallyShip(partialShip).Build();
+
+        private SalesOrderItem CreateSalesOrderItem(string description, Product product, decimal quantityOrdered, decimal unitPrice)
+            => new SalesOrderItemBuilder(this.Session)
+                .WithDescription(description)
+                .WithProduct(product)
+                .WithQuantityOrdered(quantityOrdered)
+                .WithActualUnitPrice(unitPrice)
+                .Build();
+
+        private InventoryItemVariance CreateInventoryVariance(int quantity, VarianceReason reason)
+            => new InventoryItemVarianceBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
     }
 }
