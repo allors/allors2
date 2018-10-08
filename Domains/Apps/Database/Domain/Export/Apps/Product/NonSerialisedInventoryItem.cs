@@ -64,6 +64,37 @@ namespace Allors.Domain
             this.PreviousQuantityOnHand = this.QuantityOnHand;
         }
 
+        public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
+        {
+            // TODO: Test for changes in these relations for performance reasons
+            this.QuantityOnHand = 0M;
+
+            foreach (InventoryItemVariance inventoryItemVariance in this.InventoryItemVariances)
+            {
+                this.QuantityOnHand += inventoryItemVariance.Quantity;
+            }
+
+            foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)
+            {
+                if (pickListItem.ActualQuantity.HasValue && pickListItem.PickListWherePickListItem.PickListState.Equals(new PickListStates(this.Strategy.Session).Picked))
+                {
+                    this.QuantityOnHand -= pickListItem.ActualQuantity.Value;
+                }
+            }
+
+            foreach (ShipmentReceipt shipmentReceipt in this.ShipmentReceiptsWhereInventoryItem)
+            {
+                if (shipmentReceipt.ExistShipmentItem)
+                {
+                    var purchaseShipment = (PurchaseShipment)shipmentReceipt.ShipmentItem.ShipmentWhereShipmentItem;
+                    if (purchaseShipment.PurchaseShipmentState.Equals(new PurchaseShipmentStates(this.Strategy.Session).Completed))
+                    {
+                        this.QuantityOnHand += shipmentReceipt.QuantityAccepted;
+                    }
+                }
+            }
+        }
+
         public void AppsOnDeriveQuantityCommittedOut(IDerivation derivation)
         {
             // TODO: Test for changes in these relations for performance reasons
@@ -125,8 +156,7 @@ namespace Allors.Domain
             salesOrderItems.Filter.AddEquals(M.SalesOrderItem.SalesOrderItemState, new SalesOrderItemStates(this.Strategy.Session).InProcess);
             salesOrderItems.AddSort(M.OrderItem.DeliveryDate, SortDirection.Ascending);
 
-            var finishedGood = this.Part as FinishedGood;
-            var goods = finishedGood?.GoodsWhereFinishedGood;
+            var goods = this.Part?.GoodsWherePart;
 
             if (goods != null)
             {

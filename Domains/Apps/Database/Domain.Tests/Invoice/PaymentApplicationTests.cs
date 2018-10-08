@@ -45,7 +45,7 @@ namespace Allors.Domain
                                         .WithProduct(new GoodBuilder(this.Session)
                                                             .WithName("good")
                                                             .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                                                            .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                                                            .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                                                             .Build())  
                                         .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                                         .WithQuantity(1)
@@ -77,7 +77,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();

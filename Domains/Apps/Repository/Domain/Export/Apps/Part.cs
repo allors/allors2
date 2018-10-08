@@ -7,8 +7,14 @@ namespace Allors.Repository
     #region Allors
     [Id("75916246-b1b5-48ef-9578-d65980fd2623")]
     #endregion
-    public partial interface Part : AccessControlledObject, UniquelyIdentifiable
+    public partial class Part : AccessControlledObject, UniquelyIdentifiable
     {
+        public Permission[] DeniedPermissions { get; set; }
+
+        public SecurityToken[] SecurityTokens { get; set; }
+
+        public Guid UniqueId { get; set; }
+
         #region Allors
         [Id("17D9A211-83AC-4F77-B0D6-2673C50EE4C2")]
         [AssociationId("8B4C220A-A33B-468C-B345-2A40126118C1")]
@@ -18,7 +24,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        InternalOrganisation InternalOrganisation { get; set; }
+        public InternalOrganisation InternalOrganisation { get; set; }
 
         #region Allors
         [Id("5239147e-0829-4250-bdbc-8115e9c19206")]
@@ -26,7 +32,7 @@ namespace Allors.Repository
         [RoleId("a9efc713-6574-4b82-b20e-0fc22747566a")]
         #endregion
         [Size(256)]
-        string Name { get; set; }
+        public string Name { get; set; }
 
         #region Allors
         [Id("527c0d02-7723-4715-b975-ec9474d0d22d")]
@@ -35,7 +41,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        PartSpecification[] PartSpecifications { get; set; }
+        public PartSpecification[] PartSpecifications { get; set; }
 
         #region Allors
         [Id("610f6c8c-0d1d-4c8e-9d3d-a98e17d181b5")]
@@ -44,7 +50,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        UnitOfMeasure UnitOfMeasure { get; set; }
+        public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region Allors
         [Id("773e731d-47f7-4742-b8c6-81dec0a09f29")]
@@ -53,7 +59,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
-        Document[] Documents { get; set; }
+        public Document[] Documents { get; set; }
 
         #region Allors
         [Id("5f727bd9-9c3e-421e-93eb-646c4fdf73d3")]
@@ -63,7 +69,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        Party ManufacturedBy { get; set; }
+        public Party ManufacturedBy { get; set; }
 
         #region Allors
         [Id("89a29d59-b56f-4846-a9d2-cf7d094826dc")]
@@ -71,21 +77,21 @@ namespace Allors.Repository
         [RoleId("84e90f5a-ce0f-4f88-b964-829154e682dd")]
         #endregion
         [Size(256)]
-        string ManufacturerId { get; set; }
+        public string ManufacturerId { get; set; }
 
         #region Allors
         [Id("8dc701e0-1f66-44ee-acc6-9726aa7d5853")]
         [AssociationId("2b9103c7-7ff8-4733-aa02-53800bb6e9bc")]
         [RoleId("6d60fb2f-1893-48ac-9e7d-9aa2a9a89431")]
         #endregion
-        int ReorderLevel { get; set; }
+        public int ReorderLevel { get; set; }
 
         #region Allors
         [Id("a093c852-cba8-43ff-9572-fd8c6cd53638")]
         [AssociationId("8c3d3a61-4d3a-477c-9701-a292435112e3")]
         [RoleId("f2ffce75-82d5-460f-83cc-621d63211d18")]
         #endregion
-        int ReorderQuantity { get; set; }
+        public int ReorderQuantity { get; set; }
 
         #region Allors
         [Id("a202a540-dc0d-4032-9963-d0aa1511c990")]
@@ -94,7 +100,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
-        PriceComponent[] PriceComponents { get; set; }
+        public PriceComponent[] PriceComponents { get; set; }
 
         #region Allors
         [Id("f2c3407e-ab62-4f3e-94e5-7e9e65b89d6e")]
@@ -105,7 +111,7 @@ namespace Allors.Repository
         [Indexed]
         [Required]
         [Workspace]
-        InventoryItemKind InventoryItemKind { get; set; }
+        public InventoryItemKind InventoryItemKind { get; set; }
 
         #region Allors
         [Id("B316EB62-A654-4429-9699-403B23DB5284")]
@@ -115,7 +121,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        ProductType ProductType { get; set; }
+        public ProductType ProductType { get; set; }
 
         #region Allors
         [Id("43b4b5c7-f94d-4e9b-9ea9-32a4414b11a6")]
@@ -125,6 +131,64 @@ namespace Allors.Repository
         [Unique]
         [Required]
         [Size(256)]
-        string PartId { get; set; }
+        public string PartId { get; set; }
+
+        #region Allors
+        [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]
+        [AssociationId("9D3328E6-EE12-4A59-B664-967EB5DC6612")]
+        [RoleId("E6010C20-764F-4FD6-BB0B-A5B57B59C840")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityOnHand { get; set; }
+
+        #region Allors
+        [Id("04cd1e20-a031-4a4f-9f40-6debb52b002c")]
+        [AssociationId("4441b31a-7807-41c6-803b-aeacd18e2867")]
+        [RoleId("8dc2ddca-4ae2-48b9-92db-ac68f2f5542e")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal AvailableToPromise { get; set; }
+
+        #region Allors
+        [Id("75CC0426-6695-4930-BB16-4B8B8618D7C8")]
+        [AssociationId("14629D25-2A27-45BC-BF8C-A5D91997AF7C")]
+        [RoleId("03733A79-F65B-4481-9B08-5C5DDEA7CB17")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityCommittedOut { get; set; }
+
+        #region Allors
+        [Id("2ED8E0B8-3ABA-4CDE-93C7-E45AFB381E66")]
+        [AssociationId("D625F49C-3156-4BE7-97B0-197C9CD813E9")]
+        [RoleId("F27E47C0-5D1E-4DF3-BCCF-DD5809324938")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityExpectedIn { get; set; }
+
+        public void OnBuild() { }
+
+        public void OnDerive() { }
+
+        public void OnPostBuild() { }
+
+        public void OnPostDerive() { }
+
+        public void OnPreDerive() { }
     }
 }

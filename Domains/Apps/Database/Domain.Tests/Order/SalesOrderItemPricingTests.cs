@@ -35,7 +35,7 @@ namespace Allors.Domain
         private Good variantGood;
         private Good variantGood2;
         private Good virtualGood;
-        private FinishedGood part;
+        private Part part;
         private Colour feature1;
         private Colour feature2;
         private Singleton internalOrganisation;
@@ -88,7 +88,7 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
 
-            this.part = new FinishedGoodBuilder(this.Session)
+            this.part = new PartBuilder(this.Session)
                 .WithPartId("99")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -113,7 +113,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
                 .WithPrimaryProductCategory(this.productCategory)
-                .WithFinishedGood(this.part)
+                .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
@@ -123,7 +123,7 @@ namespace Allors.Domain
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.parentProductCategory)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
@@ -132,7 +132,7 @@ namespace Allors.Domain
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.parentProductCategory)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
@@ -4294,7 +4294,7 @@ namespace Allors.Domain
             this.productCategory = (ProductCategory)session.Instantiate(this.productCategory);
             this.parentProductCategory = (ProductCategory)session.Instantiate(this.parentProductCategory);
             this.ancestorProductCategory = (ProductCategory)session.Instantiate(this.ancestorProductCategory);
-            this.part = (FinishedGood)session.Instantiate(this.part);
+            this.part = (Part)session.Instantiate(this.part);
             this.good = (Good)session.Instantiate(this.good);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);

@@ -124,12 +124,12 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+            var finishedGood1 = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+            var finishedGood2 = new PartBuilder(this.Session)
                 .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -140,7 +140,7 @@ namespace Allors.Domain
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood1)
+                .WithPart(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -149,7 +149,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood2)
+                .WithPart(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -277,12 +277,12 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+            var finishedGood1 = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+            var finishedGood2 = new PartBuilder(this.Session)
                 .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -293,7 +293,7 @@ namespace Allors.Domain
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood1)
+                .WithPart(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -302,7 +302,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood2)
+                .WithPart(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -419,12 +419,12 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+            var finishedGood1 = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+            var finishedGood2 = new PartBuilder(this.Session)
                 .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -435,7 +435,7 @@ namespace Allors.Domain
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood1)
+                .WithPart(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -444,7 +444,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood2)
+                .WithPart(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
@@ -543,12 +543,12 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var finishedGood1 = new FinishedGoodBuilder(this.Session)
+            var finishedGood1 = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+            var finishedGood2 = new PartBuilder(this.Session)
                 .WithPartId("2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -559,7 +559,7 @@ namespace Allors.Domain
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood1)
+                .WithPart(finishedGood1)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -568,7 +568,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood2)
+                .WithPart(finishedGood2)
                 .Build();
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)

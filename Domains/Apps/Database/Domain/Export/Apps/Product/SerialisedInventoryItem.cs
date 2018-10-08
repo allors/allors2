@@ -27,6 +27,18 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
+        public int QuantityOnHand()
+        {
+            var state = this.SerialisedInventoryItemState;
+
+            if (state.IsScrap || state.IsSold || state.IsInRent)
+            {
+                return 0;
+            }
+
+            return 1;
+        }
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistSerialisedInventoryItemState)
@@ -50,8 +62,6 @@ namespace Allors.Domain
             {
                 this.Details = this.DeriveDetails();
             }
-
-            this.AppsOnDeriveQuantityOnHand(derivation);
         }
 
         private void AppsOnDeriveProductCharacteristics(IDerivation derivation)

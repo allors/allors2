@@ -101,7 +101,7 @@ namespace Allors.Domain
         public void GivenGood_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -137,7 +137,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithFinishedGood(finishedGood);
+            builder.WithPart(finishedGood);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -164,7 +164,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithPrimaryProductCategory(productCategory)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -186,7 +186,7 @@ namespace Allors.Domain
                 .WithVatRate(vatRate21)
                 .WithPrimaryProductCategory(productCategory)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -229,7 +229,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -288,7 +288,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
@@ -367,7 +367,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(productCategory111)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithVatRate(vatRate21)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive(); 
