@@ -80,12 +80,12 @@ export class PersonExportComponent implements OnDestroy {
 
           if (data.firstName) {
             const like = '%' + data.firstName + '%';
-            operands.push(new Like(m.Person.FirstName, like));
+            operands.push(new Like({roleType: m.Person.FirstName, value: like}));
           }
 
           if (data.lastName) {
             const like = data.lastName.replace('*', '%') + '%';
-            operands.push(new Like(m.Person.LastName, like));
+            operands.push(new Like({roleType: m.Person.LastName, value: like}));
           }
 
           const pulls = [

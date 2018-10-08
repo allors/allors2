@@ -24,7 +24,7 @@ export class AllorsMaterialFilterComponent {
   }
 
   clear() {
-    this.filterService.cleaerFilterFields();
+    this.filterService.clearFilterFields();
   }
 
   remove(field: FilterField) {

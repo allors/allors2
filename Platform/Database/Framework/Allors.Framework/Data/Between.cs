@@ -53,7 +53,16 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            var values = this.Values.ToArray();
+            object argument = null;
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
+                {
+                    return;
+                }
+            }
+
+            var values = this.Parameter != null ? ((IEnumerable<object>)argument).ToArray() : this.Values.ToArray();
             compositePredicate.AddBetween(this.RoleType, values[0], values[1]);
         }
     }

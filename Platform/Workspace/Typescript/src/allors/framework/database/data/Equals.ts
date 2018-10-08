@@ -1,20 +1,17 @@
 import { PropertyType } from '../../meta';
 import { ISessionObject } from '../../workspace/SessionObject';
-import { Predicate } from './Predicate';
+import { ParametrizedPredicate } from './ParametrizedPredicate';
 
-export class Equals implements Predicate {
+export class Equals extends ParametrizedPredicate {
   public propertyType: PropertyType;
   public value: string | Date | boolean | number;
   public object: ISessionObject | string;
 
-  constructor(fields?: Partial<Equals> | PropertyType, valueOrObject?: ISessionObject | string | Date | boolean | number) {
+  constructor(fields?: Partial<Equals> | PropertyType) {
+    super();
+
     if ((fields as PropertyType).objectType) {
       this.propertyType = fields as PropertyType;
-      if (this.propertyType.objectType.isUnit) {
-        this.value = valueOrObject as any;
-      } else {
-        this.object = valueOrObject as any;
-      }
     } else {
       Object.assign(this, fields);
     }
@@ -25,6 +22,7 @@ export class Equals implements Predicate {
     return {
       kind: 'Equals',
       propertytype: this.propertyType.id,
+      parameter: this.parameter,
       value: this.value,
       object: this.object && (this.object as ISessionObject).id ? (this.object as ISessionObject).id : this.object
     };

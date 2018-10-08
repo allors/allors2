@@ -22,11 +22,13 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Meta;
     using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class Instanceof : IPropertyPredicate
     {
+        public string Parameter { get; set; }
+
         public Instanceof(IComposite objectType = null)
         {
             this.ObjectType = objectType;
@@ -39,30 +41,41 @@ namespace Allors.Data
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.Instanceof,
-                           ObjectType = this.ObjectType?.Id,
-                           PropertyType = this.PropertyType?.Id
-                       };
+            {
+                Kind = PredicateKind.Instanceof,
+                ObjectType = this.ObjectType?.Id,
+                PropertyType = this.PropertyType?.Id
+            };
         }
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
+            object argument = null;
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
+                {
+                    return;
+                }
+            }
+
+            var composite = argument != null ? (IComposite)session.GetMetaObject(argument) : this.ObjectType;
+
             if (this.PropertyType != null)
             {
                 if (this.PropertyType is IRoleType roleType)
                 {
-                    compositePredicate.AddInstanceof(roleType, this.ObjectType);
+                    compositePredicate.AddInstanceof(roleType, composite);
                 }
                 else
                 {
                     var associationType = (IAssociationType)PropertyType;
-                    compositePredicate.AddInstanceof(associationType, this.ObjectType);
+                    compositePredicate.AddInstanceof(associationType, composite);
                 }
             }
             else
             {
-                compositePredicate.AddInstanceof(this.ObjectType);
+                compositePredicate.AddInstanceof(composite);
             }
         }
     }

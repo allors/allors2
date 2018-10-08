@@ -1,10 +1,12 @@
-import { FilterFieldDefinition } from './FilterFieldDefinition';
+import { Like, ParametrizedPredicate } from 'src/allors/framework';
 
-export interface FilterField {
-
-  definition: FilterFieldDefinition;
-
+export class FilterField {
+  predicate: ParametrizedPredicate;
   value: any;
-
   value2?: any;
+
+  constructor(fields?: Partial<FilterField>) {
+    Object.assign(this, fields);
+  }
 }
+

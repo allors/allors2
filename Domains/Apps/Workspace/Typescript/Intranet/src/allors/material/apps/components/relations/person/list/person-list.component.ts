@@ -8,9 +8,9 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType } from '../../../../../../framework';
+import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter } from '../../../../../../framework';
 import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
-import { AllorsFilterService, FilterFieldPredicate, FilterFieldType } from '../../../../../../angular/base/filter';
+import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
 
@@ -59,24 +59,18 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-
-    filterService.filterFieldDefinitions.push(
-      {
-        name: 'First Name',
-        predicate: FilterFieldPredicate.StartsWith,
-        type: FilterFieldType.String
-      },
-      {
-        name: 'Last Name',
-        predicate: FilterFieldPredicate.StartsWith,
-        type: FilterFieldType.String
-      }
-    );
   }
 
   public ngOnInit(): void {
 
     const { m, pull, scope } = this.allors;
+
+    const predicate = new And([
+       new Like({roleType: m.Person.FirstName}),
+       new Like({roleType: m.Person.LastName}),
+    ]);
+
+    this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
@@ -89,20 +83,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([filterFields, sort]) => {
 
-          const predicates = filterFields.map(v => {
-            if (v.definition === this.filterService.filterFieldDefinitions[0]) {
-              return new Like(m.Person.FirstName, v.value + '%');
-            }
-
-            if (v.definition === this.filterService.filterFieldDefinitions[1]) {
-              return new Like(m.Person.LastName, v.value + '%');
-            }
-
-          });
+          const args = this.filterService.arguments(filterFields);
 
           const pulls = [
             pull.Person({
-              predicate: predicates.length > 0 ? new And({ operands: predicates }) : undefined,
+              predicate,
               sort: sorter.create(sort),
               include: {
                 Salutation: x,
@@ -110,6 +95,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
               },
+              arguments: args
             })];
 
           return scope.load('Pull', new PullRequest({ pulls }));

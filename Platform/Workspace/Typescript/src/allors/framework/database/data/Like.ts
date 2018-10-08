@@ -1,24 +1,28 @@
 import { RoleType } from '../../meta';
 
-import { Predicate } from './Predicate';
+import { ParametrizedPredicate } from './ParametrizedPredicate';
 
-export class Like implements Predicate {
+export class Like extends ParametrizedPredicate {
   public roleType: RoleType;
   public value: any;
 
-  constructor(fields?: Partial<Like> | RoleType, value?: string) {
+  constructor(fields?: Partial<Like> | RoleType) {
+    super();
+
     if ((fields as RoleType).objectType) {
       this.roleType = fields as RoleType;
-      this.value = value;
     } else {
       Object.assign(this, fields);
     }
+
+    this.parameter = this.parameter || this.roleType.name;
   }
 
   public toJSON(): any {
     return {
       kind: 'Like',
       roleType: this.roleType.id,
+      parameter: this.parameter,
       value: this.value,
     };
   }

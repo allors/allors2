@@ -81,11 +81,11 @@ export class PersonEditComponent implements OnInit, OnDestroy {
               sort: new Sort(m.Locale.Name)
             }),
             pull.GenderType({
-              predicate: new Equals(m.GenderType.IsActive, true),
+              predicate: new Equals({propertyType: m.GenderType.IsActive, value: true}),
               sort: new Sort(m.GenderType.Name),
             }),
             pull.Salutation({
-              predicate: new Equals(m.Salutation.IsActive, true),
+              predicate: new Equals({propertyType: m.Salutation.IsActive, value: true}),
               sort: new Sort(m.Salutation.Name),
             }),
             pull.PersonRole({
@@ -116,10 +116,9 @@ export class PersonEditComponent implements OnInit, OnDestroy {
               pull.CustomerRelationship({
                 predicate: new And({
                   operands: [
-                    new Equals(m.CustomerRelationship.Customer, id),
-                    new Equals(m.CustomerRelationship.InternalOrganisation, internalOrganisationId),
+                    new Equals({propertyType: m.CustomerRelationship.Customer, object: id}),
+                    new Equals({propertyType: m.CustomerRelationship.InternalOrganisation, object: internalOrganisationId}),
                     new Not({
-                      // TODO: create constructor overload for PropertyType
                       operand: new Exists({ propertyType: m.CustomerRelationship.ThroughDate }),
                     })
                   ]
@@ -128,8 +127,8 @@ export class PersonEditComponent implements OnInit, OnDestroy {
               pull.Employment({
                 predicate: new And({
                   operands: [
-                    new Equals(m.Employment.Employee, id),
-                    new Equals(m.Employment.Employer, internalOrganisationId),
+                    new Equals({propertyType: m.Employment.Employee, object: id}),
+                    new Equals({propertyType: m.Employment.Employer, object: internalOrganisationId}),
                     new Not({
                       operand: new Exists({ propertyType: m.Employment.ThroughDate })
                     })

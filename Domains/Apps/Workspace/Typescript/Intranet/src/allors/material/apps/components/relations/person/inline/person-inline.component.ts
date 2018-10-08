@@ -43,11 +43,11 @@ export class PersonInlineComponent implements OnInit {
         sort: new Sort(this.m.Locale.Name)
       }),
       pull.GenderType({
-        predicate: new Equals(this.m.GenderType.IsActive, true),
+        predicate: new Equals({propertyType: this.m.GenderType.IsActive, value: true}),
         sort: new Sort(this.m.GenderType.Name),
       }),
       pull.Salutation({
-        predicate: new Equals(this.m.Salutation.IsActive, true),
+        predicate: new Equals({propertyType: this.m.Salutation.IsActive, value: true}),
         sort: new Sort(this.m.Salutation.Name)
       })
     ];

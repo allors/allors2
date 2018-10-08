@@ -51,7 +51,18 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            compositePredicate.AddLessThan(this.RoleType, this.Value);
+            object argument = null;
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
+                {
+                    return;
+                }
+            }
+
+            var value = this.Parameter != null ? argument : this.Value;
+
+            compositePredicate.AddLessThan(this.RoleType, value);
         }
     }
 }

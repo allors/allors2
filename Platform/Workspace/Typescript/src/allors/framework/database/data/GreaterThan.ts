@@ -1,15 +1,16 @@
 import { RoleType } from '../../meta';
 
-import { Predicate } from './Predicate';
+import { ParametrizedPredicate } from './ParametrizedPredicate';
 
-export class GreaterThan implements Predicate {
+export class GreaterThan extends ParametrizedPredicate {
   public roleType: RoleType;
   public value: string | Date | boolean | number;
 
-  constructor(fields?: Partial<GreaterThan> | RoleType, value?: string | Date | boolean | number) {
+  constructor(fields?: Partial<GreaterThan> | RoleType) {
+    super();
+
     if ((fields as RoleType).objectType) {
       this.roleType = fields as RoleType;
-      this.value = value;
     } else {
       Object.assign(this, fields);
     }
@@ -19,6 +20,7 @@ export class GreaterThan implements Predicate {
     return {
       kind: 'GreaterThan',
       roleType: this.roleType.id,
+      parameter: this.parameter,
       value: this.value,
     };
   }

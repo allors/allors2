@@ -6,10 +6,9 @@ export class Instanceof implements Predicate {
   public propertyType: PropertyType;
   public objectType: ObjectType | MetaObjectType;
 
-  constructor(fields?: Partial<Instanceof> | PropertyType, objectType?: ObjectType | MetaObjectType) {
+  constructor(fields?: Partial<Instanceof> | PropertyType) {
     if ((fields as PropertyType).objectType) {
       this.propertyType = fields as PropertyType;
-      this.objectType = objectType;
     } else {
       Object.assign(this, fields);
     }

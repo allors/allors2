@@ -3,21 +3,21 @@
         <mat-vertical-stepper #stepper [linear]="true">
             <mat-step>
                 <ng-template matStepLabel>
-                    <span *ngIf="!selectedDefinition">Filter</span>
-                    <span *ngIf="!!selectedDefinition"><strong>{{selectedDefinition.name}}</strong></span>
+                    <span *ngIf="!selectedPredicate">Filter</span>
+                    <span *ngIf="!!selectedPredicate"><strong>{{selectedPredicate.parameter}}</strong></span>
                 </ng-template>
                 <mat-form-field>
-                    <mat-select placeholder="Field" formControlName="definition" required (selectionChange)="stepper.next()">
-                        <mat-option *ngFor="let definition of filterService.filterFieldDefinitions" [value]="definition">
-                            {{definition.name}}
+                    <mat-select placeholder="Field" formControlName="predicate" required (selectionChange)="stepper.next()">
+                        <mat-option *ngFor="let predicate of filterService.filterFieldPredicates" [value]="predicate">
+                            {{predicate.parameter}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
             </mat-step>
             <mat-step>
                 <ng-template matStepLabel>
-                        <span *ngIf="!selectedDefinition">Value</span>
-                        <span *ngIf="!!selectedDefinition"><strong>{{selectedDefinition.predicate}}</strong></span>
+                        <span *ngIf="!selectedPredicate">Value</span>
+                        <span *ngIf="!!selectedPredicate"><strong>TODO</strong></span>
                 </ng-template>
                 <mat-form-field>
                     <input matInput placeholder="Value" formControlName="value" required>

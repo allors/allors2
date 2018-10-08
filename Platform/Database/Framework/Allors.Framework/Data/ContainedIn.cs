@@ -52,9 +52,20 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
+            object argument = null;
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
+                {
+                    return;
+                }
+            }
+
+            var objects = this.Parameter != null ? session.GetObjects(argument) : this.Objects;
+
             if (this.PropertyType is IRoleType roleType)
             {
-                if (this.Objects != null)
+                if (objects != null)
                 {
                     compositePredicate.AddContainedIn(roleType, this.Objects);
                 }
@@ -65,8 +76,8 @@ namespace Allors.Data
             }
             else
             {
-                var associationType = (IAssociationType)PropertyType;
-                if (this.Objects != null)
+                var associationType = (IAssociationType)this.PropertyType;
+                if (objects != null)
                 {
                     compositePredicate.AddContainedIn(associationType, this.Objects);
                 }

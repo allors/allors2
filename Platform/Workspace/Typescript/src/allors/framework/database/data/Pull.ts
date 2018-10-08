@@ -17,6 +17,8 @@ export class Pull {
 
   public object: ISessionObject | string;
 
+  public arguments: { [name: string]: string; };
+
   public results: Result[];
 
   constructor(fields?: Partial<Pull> | ObjectType | MetaObjectType, flat?: FlatPull) {
@@ -26,9 +28,10 @@ export class Pull {
       if (!flat) {
         this.extent = new Filter({ objectType: objectType });
       } else {
-        this.object = flat.object;
-        this.extent = flat.extent;
         this.extentRef = flat.extentRef;
+        this.extent = flat.extent;
+        this.object = flat.object;
+        this.arguments = flat.arguments;
 
         const sort = flat.sort instanceof Sort ? [flat.sort] : flat.sort;
 
@@ -84,6 +87,7 @@ export class Pull {
       extentRef: this.extentRef,
       extent: this.extent,
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
+      arguments: this.arguments,
       results: this.results,
     };
   }

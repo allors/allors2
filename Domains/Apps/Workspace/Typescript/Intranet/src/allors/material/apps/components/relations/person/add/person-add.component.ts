@@ -84,11 +84,11 @@ export class PersonAddComponent implements OnInit, OnDestroy {
               sort: new Sort(m.Locale.Name)
             }),
             pull.GenderType({
-              predicate: new Equals(m.GenderType.IsActive, true),
+              predicate: new Equals({propertyType: m.GenderType.IsActive, value: true}),
               sort: new Sort(m.GenderType.Name),
             }),
             pull.Salutation({
-              predicate: new Equals(m.Salutation.IsActive, true),
+              predicate: new Equals({propertyType: m.Salutation.IsActive, value: true}),
               sort: new Sort(m.Salutation.Name),
             }),
             pull.PersonRole({

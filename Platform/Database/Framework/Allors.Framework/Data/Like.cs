@@ -22,8 +22,8 @@ namespace Allors.Data
 {
     using System.Collections.Generic;
 
-    using Allors.Meta;
     using Allors.Data.Protocol;
+    using Allors.Meta;
 
     public class Like : IRolePredicate
     {
@@ -51,7 +51,18 @@ namespace Allors.Data
 
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-            compositePredicate.AddLike(this.RoleType, this.Value);
+            object argument = null;
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
+                {
+                    return;
+                }
+            }
+
+            var value = this.Parameter != null ? (string)argument : this.Value;
+
+            compositePredicate.AddLike(this.RoleType, value);
         }
     }
 }

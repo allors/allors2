@@ -1,22 +1,19 @@
 import { PropertyType } from '../../meta';
 
 import { ISessionObject } from './../../workspace/SessionObject';
-import { Predicate } from './Predicate';
+import { ParametrizedPredicate } from './ParametrizedPredicate';
 import { Extent } from './Extent';
 
-export class ContainedIn implements Predicate {
+export class ContainedIn extends ParametrizedPredicate {
   public propertyType: PropertyType;
   public extent: Extent;
   public objects: Array<ISessionObject | string>;
 
-  constructor(fields?: Partial<ContainedIn> | PropertyType, value?: Extent | Array<ISessionObject | string>) {
+  constructor(fields?: Partial<ContainedIn> | PropertyType) {
+    super();
+
     if ((fields as PropertyType).objectType) {
       this.propertyType = fields as PropertyType;
-      if (value instanceof Array) {
-        this.objects = value;
-      } else {
-        this.extent = value;
-      }
     } else {
       Object.assign(this, fields);
     }
@@ -26,6 +23,7 @@ export class ContainedIn implements Predicate {
     return {
       kind: 'ContainedIn',
       propertytype: this.propertyType.id,
+      parameter: this.parameter,
       extent: this.extent,
       objects: this.objects ? this.objects.map((v) => (v as ISessionObject).id ? (v as ISessionObject).id : v) : undefined,
     };

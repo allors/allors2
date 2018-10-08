@@ -2,7 +2,9 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatStepper } from '@angular/material';
 import { Component, Inject, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AllorsFilterService, FilterFieldDefinition } from '../../../../angular/base/filter';
+import { AllorsFilterService } from '../../../../angular/base/filter';
+import { FilterField } from 'src/allors/angular/base/filter/FilterField';
+import { ParametrizedPredicate } from 'src/allors/framework';
 
 @Component({
   templateUrl: 'filter-dialog.component.html',
@@ -25,20 +27,20 @@ export class AllorsMaterialFilterDialogComponent {
 
   ngOnInit() {
     this.formGroup = this.formBuilder.group({
-      definition: ['', Validators.required],
+      predicate: ['', Validators.required],
       value: ['', Validators.required]
     });
   }
 
-  get selectedDefinition(): FilterFieldDefinition {
-    return this.formGroup.get('definition').value;
+  get selectedPredicate(): ParametrizedPredicate {
+    return this.formGroup.get('predicate').value;
   }
 
   apply() {
-    this.filterService.addFilterField({
-      definition: this.formGroup.get('definition').value,
+    this.filterService.addFilterField(new FilterField({
+      predicate: this.formGroup.get('predicate').value,
       value: this.formGroup.get('value').value
-    });
+    }));
 
     this.dialogRef.close();
   }

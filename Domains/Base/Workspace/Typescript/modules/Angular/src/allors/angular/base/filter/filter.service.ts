@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { FilterFieldDefinition } from './FilterFieldDefinition';
-import { FilterField } from './FilterField';
 import { Observable, BehaviorSubject } from 'rxjs';
+
+import { Predicate } from '../../../framework';
+import { FilterField } from './FilterField';
+import { parametrizedPredicates, ParametrizedPredicate } from '../../../framework/database/data/ParametrizedPredicate';
 
 @Injectable()
 export class AllorsFilterService {
-  readonly filterFieldDefinitions: FilterFieldDefinition[] = [];
+  readonly filterFieldPredicates: ParametrizedPredicate[] = [];
 
   readonly filterFields$: Observable<FilterField[]>;
 
@@ -19,7 +21,7 @@ export class AllorsFilterService {
     return this.filterFieldsSubject.getValue();
   }
 
-  cleaerFilterFields(): any {
+  clearFilterFields(): any {
     this.filterFieldsSubject.next([]);
   }
 
@@ -29,6 +31,19 @@ export class AllorsFilterService {
 
   removeFilterField(filterField: FilterField): any {
     this.filterFieldsSubject.next(this.filterFields.filter((v) => v !== filterField));
+  }
+
+  init(predicate: Predicate) {
+    parametrizedPredicates(predicate).forEach((v) => {
+      this.filterFieldPredicates.push(v);
+    });
+  }
+
+  arguments(filterFields: FilterField[]): any {
+    return filterFields.reduce((acc, cur) => {
+      acc[cur.predicate.parameter] = (cur.value2 !== undefined && cur.value2 !== null) ? [cur.value, cur.value2] : cur.value;
+      return acc;
+    }, {});
   }
 
 }

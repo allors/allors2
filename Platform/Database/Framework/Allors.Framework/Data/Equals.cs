@@ -44,22 +44,30 @@ namespace Allors.Data
         public Predicate Save()
         {
             return new Predicate
-                       {
-                           Kind = PredicateKind.Equals,
-                           PropertyType = this.PropertyType.Id,
-                           Object = this.Object?.Id.ToString(),
-                           Value = Convert.ToString(this.Value),
-                           Parameter = this.Parameter
-                       };
+            {
+                Kind = PredicateKind.Equals,
+                PropertyType = this.PropertyType.Id,
+                Object = this.Object?.Id.ToString(),
+                Value = Convert.ToString(this.Value),
+                Parameter = this.Parameter
+            };
         }
 
         /// <inheritdoc/>
         void IPredicate.Build(ISession session, IReadOnlyDictionary<string, object> arguments, Allors.ICompositePredicate compositePredicate)
         {
-
+            object argument = null;
+            if (this.Parameter != null)
+            {
+                if (arguments == null || !arguments.TryGetValue(this.Parameter, out argument))
+                {
+                    return;
+                }
+            }
+            
             if (this.PropertyType == null)
             {
-                var equals = this.Parameter != null ? arguments?[this.Parameter] : this.Object;
+                var equals = this.Parameter != null ? argument : this.Object;
                 if (equals != null)
                 {
                     compositePredicate.AddEquals(this.Object);
@@ -71,7 +79,7 @@ namespace Allors.Data
                 {
                     if (roleType.ObjectType.IsUnit)
                     {
-                        var equals = this.Parameter != null ? arguments?[this.Parameter] : this.Value;
+                        var equals = this.Parameter != null ? argument : this.Value;
                         if (equals != null)
                         {
                             compositePredicate.AddEquals(roleType, equals);
@@ -79,7 +87,7 @@ namespace Allors.Data
                     }
                     else
                     {
-                        var equals = this.Parameter != null ? arguments?[this.Parameter] : this.Object;
+                        var equals = this.Parameter != null ? argument : this.Object;
                         if (equals != null)
                         {
                             compositePredicate.AddEquals(roleType, equals);
@@ -89,7 +97,7 @@ namespace Allors.Data
                 else
                 {
                     var associationType = (IAssociationType)this.PropertyType;
-                    var equals = (IObject)(this.Parameter != null ? arguments?[this.Parameter] : this.Object);
+                    var equals = (IObject)(this.Parameter != null ? argument : this.Object);
                     if (equals != null)
                     {
                         compositePredicate.AddEquals(associationType, equals);

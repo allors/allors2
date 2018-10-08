@@ -1,9 +1,5 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
-export { FilterFieldDefinition } from './FilterFieldDefinition';
-export { FilterFieldType } from './FilterFieldType';
-export { FilterFieldPredicate } from './FilterFieldPredicate';
-
 import { AllorsFilterService } from './filter.service';
 export { AllorsFilterService } from './filter.service';
 

@@ -97,7 +97,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
               sort: new Sort(m.PurchaseInvoiceItemState.Name)
             }),
             pull.InternalOrganisation({
-              predicate: new Equals(m.Organisation.IsInternalOrganisation, true),
+              predicate: new Equals({propertyType: m.Organisation.IsInternalOrganisation, value: true}),
               sort: [
                 new Sort(m.Organisation.PartyName),
               ],
@@ -119,18 +119,18 @@ export class InvoicesOverviewComponent implements OnDestroy {
                 const predicate: And = new And();
                 const predicates: Predicate[] = predicate.operands;
 
-                predicates.push(new Equals(m.PurchaseInvoice.BilledTo, internalOrganisationId));
+                predicates.push(new Equals({propertyType: m.PurchaseInvoice.BilledTo, value: internalOrganisationId}));
 
                 if (data.invoiceNumber) {
                   const like: string = '%' + data.invoiceNumber + '%';
-                  predicates.push(new Like(m.PurchaseInvoice.InvoiceNumber, like));
+                  predicates.push(new Like({roleType: m.PurchaseInvoice.InvoiceNumber, value: like}));
                 }
 
                 if (data.supplier) {
                   const containedIn: ContainedIn = new ContainedIn({
                     propertyType: m.PurchaseInvoice.BilledFrom, extent: new Filter({
                       objectType: m.Party,
-                      predicate: new Like(m.Party.PartyName, data.supplier.replace('*', '%') + '%')
+                      predicate: new Like({roleType: m.Party.PartyName, value: data.supplier.replace('*', '%') + '%'})
                     })
                   });
                   predicates.push(containedIn);
@@ -138,13 +138,13 @@ export class InvoicesOverviewComponent implements OnDestroy {
 
                 if (data.internalOrganisation) {
                   predicates.push(
-                    new Equals(m.PurchaseInvoice.BilledFrom, this.billedFromInternalOrganisation),
+                    new Equals({propertyType: m.PurchaseInvoice.BilledFrom, object: this.billedFromInternalOrganisation}),
                   );
                 }
 
                 if (data.reference) {
                   const like: string = data.reference.replace('*', '%') + '%';
-                  predicates.push(new Like(m.PurchaseInvoice.CustomerReference, like ));
+                  predicates.push(new Like({roleType: m.PurchaseInvoice.CustomerReference, value: like }));
                 }
 
                 if (data.state) {
