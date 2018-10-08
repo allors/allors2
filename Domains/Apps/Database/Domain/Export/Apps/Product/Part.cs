@@ -38,7 +38,7 @@ namespace Allors.Domain
                 {
                     foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
                     {
-                        derivation.AddDependency(inventoryItem, this);
+                        derivation.AddDependency(this, inventoryItem);
                     }
                 }
             }
