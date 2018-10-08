@@ -318,17 +318,17 @@ namespace Allors.Domain
 
             if (this.ExistProduct && internalOrganisation != null)
             {
-                if (this.Product is Good good && good.ExistFinishedGood) 
+                if (this.Product is Good good && good.ExistPart) 
                 {
-                    if (good.FinishedGood.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
+                    if (good.Part.InventoryItemKind.Equals(new InventoryItemKinds(this.strategy.Session).Serialised))
                     {
-                        var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                        var inventoryItems = good.Part.InventoryItemsWherePart;
                         inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
                         this.ReservedFromSerialisedInventoryItem = inventoryItems.First as SerialisedInventoryItem;
                     }
                     else
                     {
-                        var inventoryItems = good.FinishedGood.InventoryItemsWherePart;
+                        var inventoryItems = good.Part.InventoryItemsWherePart;
                         inventoryItems.Filter.AddEquals(M.InventoryItem.Facility, internalOrganisation.DefaultFacility);
                         this.ReservedFromNonSerialisedInventoryItem = inventoryItems.First as NonSerialisedInventoryItem;
                     }
@@ -561,13 +561,13 @@ namespace Allors.Domain
             this.UnitPurchasePrice = 0;
 
             if (this.Product is Good good &&
-                good.FinishedGood.ExistSupplierOfferingsWherePart &&
-                good.FinishedGood.SupplierOfferingsWherePart.Count == 1 &&
-                good.FinishedGood.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
+                good.Part.ExistSupplierOfferingsWherePart &&
+                good.Part.SupplierOfferingsWherePart.Count == 1 &&
+                good.Part.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
             {
                 ProductPurchasePrice productPurchasePrice = null;
 
-                var prices = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices;
+                var prices = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices;
                 foreach (ProductPurchasePrice purchasePrice in prices)
                 {
                     if (purchasePrice.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
@@ -579,8 +579,8 @@ namespace Allors.Domain
 
                 if (productPurchasePrice == null)
                 {
-                    var index = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
-                    var lastKownPrice = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
+                    var index = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
+                    var lastKownPrice = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
                     productPurchasePrice = lastKownPrice;
                 }
 

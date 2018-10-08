@@ -182,13 +182,13 @@ namespace Intranet.Tests
 
             var vatRate = new VatRateBuilder(this.session).WithRate(21).Build();
 
-            var finishedGood1 = new FinishedGoodBuilder(this.session)
+            var finishedGood1 = new PartBuilder(this.session)
                 .WithName("finished good1")
                 .WithPartId("1-1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .Build();
 
-            var finishedGood2 = new FinishedGoodBuilder(this.session)
+            var finishedGood2 = new PartBuilder(this.session)
                 .WithName("finished good2")
                 .WithPartId("1-2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
@@ -202,7 +202,7 @@ namespace Intranet.Tests
                 .WithSku("10101")
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithFinishedGood(finishedGood1)
+                .WithPart(finishedGood1)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.session)
@@ -225,7 +225,7 @@ namespace Intranet.Tests
                 .WithSku("10102")
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithFinishedGood(finishedGood2)
+                .WithPart(finishedGood2)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.session)

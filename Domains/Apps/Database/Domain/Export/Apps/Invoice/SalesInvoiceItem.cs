@@ -464,12 +464,12 @@ namespace Allors.Domain
 
             if (this.Product is Good good &&
                 this.ExistQuantity && this.Quantity > 0 &&
-                good.FinishedGood.ExistSupplierOfferingsWherePart &&
-                good.FinishedGood.SupplierOfferingsWherePart.Count == 1 &&
-                good.FinishedGood.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
+                good.Part.ExistSupplierOfferingsWherePart &&
+                good.Part.SupplierOfferingsWherePart.Count == 1 &&
+                good.Part.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
             {
                 ProductPurchasePrice productPurchasePrice = null;
-                var prices = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices;
+                var prices = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices;
                 foreach (ProductPurchasePrice purchasePrice in prices)
                 {
                     if (purchasePrice.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
@@ -481,8 +481,8 @@ namespace Allors.Domain
 
                 if (productPurchasePrice == null)
                 {
-                    var index = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
-                    var lastKownPrice = good.FinishedGood.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
+                    var index = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
+                    var lastKownPrice = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
                     productPurchasePrice = lastKownPrice;
                 }
 

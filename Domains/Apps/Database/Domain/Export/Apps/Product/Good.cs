@@ -48,7 +48,7 @@ namespace Allors.Domain
 
             if (!this.ExistVariants)
             {
-                derivation.Validation.AssertExists(this, M.Good.FinishedGood);
+                derivation.Validation.AssertExists(this, M.Good.Part);
             }
 
             if (this.LocalisedNames.Any(x => x.Locale.Equals(defaultLocale)))
@@ -63,9 +63,9 @@ namespace Allors.Domain
 
             this.AddProductCategory(this.PrimaryProductCategory);
 
-            if (this.ExistFinishedGood)
+            if (this.ExistPart)
             {
-                foreach (SupplierOffering supplierOffering in this.FinishedGood.SupplierOfferingsWherePart)
+                foreach (SupplierOffering supplierOffering in this.Part.SupplierOfferingsWherePart)
                 {
                     if (supplierOffering.FromDate <= DateTime.UtcNow
                         && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
@@ -83,10 +83,6 @@ namespace Allors.Domain
 
             this.DeriveVirtualProductPriceComponent();
             this.DeriveProductCategoriesExpanded(derivation);
-            this.DeriveQuantityOnHand();
-            this.DeriveAvailableToPromise();
-            this.DeriveQuantityCommittedOut();
-            this.DeriveQuantityExpectedIn();
         }
 
         public void DeriveVirtualProductPriceComponent()
@@ -108,8 +104,7 @@ namespace Allors.Domain
                     {
                         product.AddVirtualProductPriceComponent(priceComponent);
 
-                        var basePrice = priceComponent as BasePrice;
-                        if (basePrice != null && !priceComponent.ExistProductFeature)
+                        if (priceComponent is BasePrice basePrice && !priceComponent.ExistProductFeature)
                         {
                             product.AddToBasePrice(basePrice);
                         }
@@ -139,70 +134,6 @@ namespace Allors.Domain
                 {
                     this.AddProductCategoriesExpanded(superJacent);
                     superJacent.AppsOnDeriveAllProducts(derivation);
-                }
-            }
-        }
-
-        public void DeriveQuantityOnHand()
-        {
-            this.QuantityOnHand = 0;
-
-            if (this.ExistFinishedGood)
-            {
-                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
-                {
-                    this.QuantityOnHand += inventoryItem.QuantityOnHand;
-                }
-            }
-        }
-
-        public void DeriveAvailableToPromise()
-        {
-            this.AvailableToPromise = 0;
-
-            if (this.ExistFinishedGood)
-            {
-                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
-                {
-                    if (inventoryItem is NonSerialisedInventoryItem)
-                    {
-                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                        this.AvailableToPromise += nonSerialised.AvailableToPromise;
-                    }
-                }
-            }
-        }
-
-        public void DeriveQuantityCommittedOut()
-        {
-            this.QuantityCommittedOut = 0;
-
-            if (this.ExistFinishedGood)
-            {
-                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
-                {
-                    if (inventoryItem is NonSerialisedInventoryItem)
-                    {
-                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                        this.QuantityCommittedOut += nonSerialised.QuantityCommittedOut;
-                    }
-                }
-            }
-        }
-
-        public void DeriveQuantityExpectedIn()
-        {
-            this.QuantityExpectedIn = 0;
-
-            if (this.ExistFinishedGood)
-            {
-                foreach (InventoryItem inventoryItem in this.FinishedGood.InventoryItemsWherePart)
-                {
-                    if (inventoryItem is NonSerialisedInventoryItem)
-                    {
-                        var nonSerialised = (NonSerialisedInventoryItem)inventoryItem;
-                        this.QuantityExpectedIn += nonSerialised.QuantityExpectedIn;
-                    }
                 }
             }
         }

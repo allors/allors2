@@ -33,7 +33,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new FinishedGoodBuilder(this.Session)
+                .WithPart(new PartBuilder(this.Session)
                             .WithPartId("1")
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
@@ -49,7 +49,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new FinishedGoodBuilder(this.Session)
+                .WithPart(new PartBuilder(this.Session)
                             .WithPartId("1")
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
@@ -64,7 +64,7 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(new FinishedGoodBuilder(this.Session)
+                .WithPart(new PartBuilder(this.Session)
                                 .WithPartId("1")
                                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                 .Build())
@@ -83,7 +83,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
-            var part = new FinishedGoodBuilder(this.Session)
+            var part = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -101,7 +101,7 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenUnitOfMeasureIsPartUnitOfMeasure()
         {
             var uom = new UnitsOfMeasure(this.Session).Centimeter;
-            var part = new FinishedGoodBuilder(this.Session)
+            var part = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(uom)
@@ -130,7 +130,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreateFinishedGood("1", inventoryItemKinds.NonSerialised);
+            var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
             inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(5, varianceReasons.Unknown));
@@ -270,7 +270,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreateFinishedGood("1", inventoryItemKinds.NonSerialised);
+            var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
             inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(5, varianceReasons.Ruined));  //TODO: Ruined available to ship?
@@ -406,17 +406,17 @@ namespace Allors.Domain
         //Assert.Contains(damagedItem, extent);
         //}
 
-        private FinishedGood CreateFinishedGood(string partId, InventoryItemKind kind)
-            => new FinishedGoodBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+        private Part CreatePart(string partId, InventoryItemKind kind)
+            => new PartBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
 
-        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, FinishedGood finishedGood)
+        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new GoodBuilder(this.Session)
                 .WithSku(sku)
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
                 .WithPrimaryProductCategory(category)
-                .WithFinishedGood(finishedGood)
+                .WithPart(part)
                 .Build();
 
         private PartyContactMechanism CreateShipTo(ContactMechanism mechanism, ContactMechanismPurpose purpose, bool isDefault)
