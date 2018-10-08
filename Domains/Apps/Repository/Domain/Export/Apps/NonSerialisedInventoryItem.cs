@@ -35,8 +35,6 @@ namespace Allors.Repository
 
         public Facility Facility { get; set; }
 
-        public decimal QuantityOnHand { get; set; }
-
         #endregion
 
         #region ObjectStates
@@ -141,6 +139,18 @@ namespace Allors.Repository
         [Scale(2)]
         [Workspace]
         public decimal QuantityExpectedIn { get; set; }
+
+        #region Allors
+        [Id("a6b78e16-6aef-4478-b426-9429c1a01059")]
+        [AssociationId("9bcc50ce-a070-4cdd-802f-4296908b75f7")]
+        [RoleId("a44947f1-b7e2-4f0c-97d6-2fd32ecae097")]
+        #endregion
+        [Derived]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public decimal QuantityOnHand { get; set; }
 
         #region inherited methods
         public void OnBuild(){}

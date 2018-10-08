@@ -31,7 +31,7 @@ namespace Allors.Domain
         public void GivenSupplierOffering_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("organisation").Build();
-            var part = new FinishedGoodBuilder(this.Session)
+            var part = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -94,7 +94,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -105,7 +105,7 @@ namespace Allors.Domain
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood)
+                .WithPart(finishedGood)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
@@ -123,7 +123,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenNewGoodBasedOnFinishedGood_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryFinishedGoodAndFacility()
+        public void GivenNewGoodBasedOnPart_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryPartAndFacility()
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
 
@@ -138,7 +138,7 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -153,7 +153,7 @@ namespace Allors.Domain
             var good = new GoodBuilder(this.Session)
                 .WithName("good")
                 .WithSku("10101")
-                .WithFinishedGood(finishedGood)
+                .WithPart(finishedGood)
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
@@ -168,7 +168,7 @@ namespace Allors.Domain
 
             this.Session.Derive(); 
 
-            Assert.Equal(2, good.FinishedGood.InventoryItemsWherePart.Count);
+            Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
             Assert.Equal(1, this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }

@@ -32,34 +32,27 @@ namespace Allors.Domain
         [Fact]
         public void GivenInventoryItem_WhenPositiveVariance_ThenQuantityOnHandIsRaised()
         {
-            var finishedGood = new FinishedGoodBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var nonSerialized = new InventoryItemKinds(this.Session).NonSerialised;
+            var unknown = new VarianceReasons(this.Session).Unknown;
+            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
+            var piece = new UnitsOfMeasure(this.Session).Piece;
+            var category = this.Session.Extent<ProductCategory>().First;
 
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood)
-                .Build();
+            var finishedGood = CreatePart("FG1", nonSerialized);
+            var good = CreateGood("10101", vatRate21, "good", piece, category, finishedGood);
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session)
-                .WithPart(finishedGood)
-                .Build();
-
-            this.Session.Derive();
+            this.Session.Derive(true);
             this.Session.Commit();
 
-            Assert.Equal(0, good.QuantityOnHand);
+            var inventoryItem = (NonSerialisedInventoryItem)finishedGood.InventoryItemsWherePart.First();
+
+            Assert.Equal(0, finishedGood.QuantityOnHand);
             Assert.Equal(0, inventoryItem.QuantityOnHand);
 
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(10, unknown));
+            this.Session.Derive(true);
 
-            this.Session.Derive();
-            Assert.Equal(10, good.QuantityOnHand);
+            Assert.Equal(10, finishedGood.QuantityOnHand);
             Assert.Equal(10, inventoryItem.QuantityOnHand);
         }
 
@@ -73,7 +66,7 @@ namespace Allors.Domain
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
-            var finishedGood = CreateFinishedGood("FG1", kinds.Serialised);
+            var finishedGood = CreatePart("FG1", kinds.Serialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var serialItem1 = CreateSerialzedInventoryItem("1", finishedGood);
             var variance = CreateInventoryVariance(10, unknown);
@@ -98,17 +91,17 @@ namespace Allors.Domain
             derivation.Errors.SelectMany(e => e.RoleTypes).Contains(M.InventoryItemVariance.Quantity).ShouldBeTrue();
         }
 
-        private FinishedGood CreateFinishedGood(string partId, InventoryItemKind kind)
-            => new FinishedGoodBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+        private Part CreatePart(string partId, InventoryItemKind kind)
+            => new PartBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
 
-        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, FinishedGood finishedGood)
+        private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new GoodBuilder(this.Session)
                 .WithSku(sku)
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
                 .WithPrimaryProductCategory(category)
-                .WithFinishedGood(finishedGood)
+                .WithPart(part)
                 .Build();
 
         private SerialisedInventoryItem CreateSerialzedInventoryItem(string serialNumber, Part part)

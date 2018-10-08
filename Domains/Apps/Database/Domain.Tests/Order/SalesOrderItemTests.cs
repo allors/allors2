@@ -35,7 +35,7 @@ namespace Allors.Domain
         private Good variantGood;
         private Good variantGood2;
         private Good virtualGood;
-        private FinishedGood part;
+        private Part part;
         private Colour feature1;
         private Colour feature2;
         private Organisation shipToCustomer;
@@ -86,7 +86,7 @@ namespace Allors.Domain
                                                             .WithUseAsDefault(true)
                                                             .Build());
 
-            this.part = new FinishedGoodBuilder(this.Session)
+            this.part = new PartBuilder(this.Session)
                 .WithPartId("99")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -111,7 +111,7 @@ namespace Allors.Domain
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(this.part)
+                .WithPart(this.part)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
@@ -164,7 +164,7 @@ namespace Allors.Domain
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
@@ -173,7 +173,7 @@ namespace Allors.Domain
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
@@ -619,7 +619,7 @@ namespace Allors.Domain
                 .WithName("good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(new FinishedGoodBuilder(this.Session).WithPartId("3").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session).WithPartId("3").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             new SupplierRelationshipBuilder(this.Session)
@@ -1156,7 +1156,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -1195,7 +1195,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -1267,7 +1267,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -1308,7 +1308,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.FinishedGood.InventoryItemsWherePart[0]);
+            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
             inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(110).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
@@ -1350,7 +1350,7 @@ namespace Allors.Domain
 
             var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
 
-            var testPart = new FinishedGoodBuilder(this.Session)
+            var testPart = new PartBuilder(this.Session)
                 .WithPartId("3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -1359,7 +1359,7 @@ namespace Allors.Domain
                 .WithSku("10101")
                 .WithVatRate(this.vatRate21)
                 .WithName("good1")
-                .WithFinishedGood(testPart)
+                .WithPart(testPart)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
@@ -1659,7 +1659,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithPartId("3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -1670,7 +1670,7 @@ namespace Allors.Domain
                 .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(finishedGood)
+                .WithPart(finishedGood)
                 .Build();
 
             var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
@@ -1943,7 +1943,7 @@ namespace Allors.Domain
             this.productCategory = (ProductCategory)session.Instantiate(this.productCategory);
             this.parentProductCategory = (ProductCategory)session.Instantiate(this.parentProductCategory);
             this.ancestorProductCategory = (ProductCategory)session.Instantiate(this.ancestorProductCategory);
-            this.part = (FinishedGood)session.Instantiate(this.part);
+            this.part = (Part)session.Instantiate(this.part);
             this.virtualGood = (Good)session.Instantiate(this.virtualGood);
             this.good = (Good)session.Instantiate(this.good);
             this.feature1 = (Colour)session.Instantiate(this.feature1);

@@ -68,54 +68,6 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
-        [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]
-        [AssociationId("9D3328E6-EE12-4A59-B664-967EB5DC6612")]
-        [RoleId("E6010C20-764F-4FD6-BB0B-A5B57B59C840")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal QuantityOnHand { get; set; }
-
-        #region Allors
-        [Id("04cd1e20-a031-4a4f-9f40-6debb52b002c")]
-        [AssociationId("4441b31a-7807-41c6-803b-aeacd18e2867")]
-        [RoleId("8dc2ddca-4ae2-48b9-92db-ac68f2f5542e")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal AvailableToPromise { get; set; }
-
-        #region Allors
-        [Id("75CC0426-6695-4930-BB16-4B8B8618D7C8")]
-        [AssociationId("14629D25-2A27-45BC-BF8C-A5D91997AF7C")]
-        [RoleId("03733A79-F65B-4481-9B08-5C5DDEA7CB17")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal QuantityCommittedOut { get; set; }
-
-        #region Allors
-        [Id("2ED8E0B8-3ABA-4CDE-93C7-E45AFB381E66")]
-        [AssociationId("D625F49C-3156-4BE7-97B0-197C9CD813E9")]
-        [RoleId("F27E47C0-5D1E-4DF3-BCCF-DD5809324938")]
-        #endregion
-        [Derived]
-        [Required]
-        [Precision(19)]
-        [Scale(2)]
-        [Workspace]
-        public decimal QuantityExpectedIn { get; set; }
-
-        #region Allors
         [Id("4e8eceff-aec2-44f8-9820-4e417ed904c1")]
         [AssociationId("30f4ec83-5854-4a53-a594-ba1247d02b2f")]
         [RoleId("80361383-e1fc-4256-9b69-7cd43469d0de")]
@@ -132,7 +84,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public FinishedGood FinishedGood { get; set; }
+        public Part Part { get; set; }
 
         #region Allors
         [Id("859487f7-9759-4c30-8528-8cd5d014b0a2")]
@@ -211,7 +163,6 @@ namespace Allors.Repository
         [Workspace]
         [Size(-1)]
         public string Keywords { get; set; }
-
 
         #region inherited methods
 

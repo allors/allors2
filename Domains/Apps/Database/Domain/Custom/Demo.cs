@@ -186,7 +186,7 @@ namespace Allors
 
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
                 .WithPartId("10101")
                 .WithName("finished good")
@@ -201,7 +201,7 @@ namespace Allors
                 .WithSku("10101")
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithFinishedGood(finishedGood)
+                .WithPart(finishedGood)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.Session)
@@ -216,7 +216,7 @@ namespace Allors
             var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).WithFacility(facility2).Build();
             goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
 
-            var finishedGood2 = new FinishedGoodBuilder(this.Session)
+            var finishedGood2 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
                 .WithPartId("2-2")
                 .WithName("finished good2")
@@ -232,7 +232,7 @@ namespace Allors
                 .WithSku("10102")
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithFinishedGood(finishedGood2)
+                .WithPart(finishedGood2)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.Session)
@@ -244,7 +244,7 @@ namespace Allors
 
             new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialNumber("1").Build();
 
-            var finishedGood3 = new FinishedGoodBuilder(this.Session)
+            var finishedGood3 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
                 .WithPartId("3-3")
                 .WithName("finished good3")
@@ -259,7 +259,7 @@ namespace Allors
                 .WithSku("10103")
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
-                .WithFinishedGood(finishedGood3)
+                .WithPart(finishedGood3)
                 .Build();
 
             new ProductFeatureApplicabilityBuilder(this.Session)

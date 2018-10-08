@@ -27,7 +27,7 @@ namespace Allors.Domain
 
     public class SalesInvoiceItemTests : DomainTest
     {
-        private FinishedGood finishedGood;
+        private Part finishedGood;
         private Good good;
         private Colour feature1;
         private Colour feature2;
@@ -72,7 +72,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.finishedGood = new FinishedGoodBuilder(this.Session)
+            this.finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -83,7 +83,7 @@ namespace Allors.Domain
                 .WithName("good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithFinishedGood(this.finishedGood)
+                .WithPart(this.finishedGood)
                 .Build();
 
             this.feature1 = new ColourBuilder(this.Session)
@@ -2447,7 +2447,7 @@ namespace Allors.Domain
         private void InstantiateObjects(ISession session)
         {
             this.good = (Good)session.Instantiate(this.good);
-            this.finishedGood = (FinishedGood)session.Instantiate(this.finishedGood);
+            this.finishedGood = (Part)session.Instantiate(this.finishedGood);
             this.feature1 = (Colour)session.Instantiate(this.feature1);
             this.feature2 = (Colour)session.Instantiate(this.feature2);
             this.internalOrganisation = (Singleton)session.Instantiate(this.internalOrganisation);

@@ -35,8 +35,6 @@ namespace Allors.Repository
         
         public Facility Facility { get; set; }
 
-        public decimal QuantityOnHand { get; set; }
-
         #endregion
 
         #region ObjectStates

@@ -28,9 +28,9 @@ namespace Allors.Domain
     public class PartTests : DomainTest
     {
         [Fact]
-        public void GivenFinishedGood_WhenDeriving_ThenRequiredRelationsMustExist()
+        public void GivenPart_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var builder = new FinishedGoodBuilder(this.Session);
+            var builder = new PartBuilder(this.Session);
             var finishedGood = builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -44,9 +44,9 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenFinishedGood_WhenBuild_ThenPostBuildRelationsMustExist()
+        public void GivenPart_WhenBuild_ThenPostBuildRelationsMustExist()
         {
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -55,9 +55,9 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenNewFinishedGood_WhenDeriving_ThenInventoryItemIsCreated()
+        public void GivenNewPart_WhenDeriving_ThenInventoryItemIsCreated()
         {
-            var finishedGood = new FinishedGoodBuilder(this.Session)
+            var finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -66,88 +66,6 @@ namespace Allors.Domain
             
             Assert.Equal(1, finishedGood.InventoryItemsWherePart.Count);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), finishedGood.InventoryItemsWherePart.First.Facility);
-        }
-
-        [Fact]
-        public void GivenRawMaterial_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var builder = new RawMaterialBuilder(this.Session);
-            var deliverableBasedService = builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithPartId("1");
-            deliverableBasedService = builder.Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenRawMaterial_WhenBuild_ThenPostBuildRelationsMustExist()
-        {
-            var rawMaterial = new RawMaterialBuilder(this.Session)
-                .WithPartId("1")
-                .WithName("rawMaterial")
-                .Build();
-
-            Assert.Equal(new InventoryItemKinds(this.Session).NonSerialised, rawMaterial.InventoryItemKind);
-        }
-
-        [Fact]
-        public void GivenNewRawMaterial_WhenDeriving_ThenInventoryItemIsCreated()
-        {
-            var rawMaterial = new RawMaterialBuilder(this.Session)
-                .WithPartId("1")
-                .WithName("RawMaterial")
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(1, rawMaterial.InventoryItemsWherePart.Count);
-            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), rawMaterial.InventoryItemsWherePart.First.Facility);
-        }
-
-        [Fact]
-        public void GivenSubAssembly_WhenDeriving_ThenRequiredRelationsMustExist()
-        {
-            var builder = new SubAssemblyBuilder(this.Session);
-            var subAssembly = builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithPartId("1");
-            subAssembly = builder.Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
-        }
-
-        [Fact]
-        public void GivenSubAssembly_WhenBuild_ThenPostBuildRelationsMustExist()
-        {
-            var subAssembly = new SubAssemblyBuilder(this.Session)
-                .WithPartId("1")
-                .WithName("subAssembly")
-                .Build();
-
-            Assert.Equal(new InventoryItemKinds(this.Session).NonSerialised, subAssembly.InventoryItemKind);
-        }
-
-        [Fact]
-        public void GivenNewSubAssembly_WhenDeriving_ThenInventoryItemIsCreated()
-        {
-            var subAssembly = new SubAssemblyBuilder(this.Session)
-                .WithPartId("1")
-                .WithName("SubAssembly")
-                .Build();
-
-            this.Session.Derive();
-
-            Assert.Equal(1, subAssembly.InventoryItemsWherePart.Count);
-            Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), subAssembly.InventoryItemsWherePart.First.Facility);
         }
     }
 }

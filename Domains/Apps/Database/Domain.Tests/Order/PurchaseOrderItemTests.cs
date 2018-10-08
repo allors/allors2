@@ -28,7 +28,7 @@ namespace Allors.Domain
 
     public class PurchaseOrderItemTests : DomainTest
     {
-        private FinishedGood finishedGood;
+        private Part finishedGood;
         private ProductPurchasePrice currentPurchasePrice;
         private PurchaseOrder order;
         private Organisation supplier;
@@ -51,7 +51,7 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            this.finishedGood = new FinishedGoodBuilder(this.Session)
+            this.finishedGood = new PartBuilder(this.Session)
                 .WithPartId("1")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -109,7 +109,7 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(shipToContactMechanism).Build();
-            var part = new RawMaterialBuilder(this.Session).WithPartId("2").Build();
+            var part = new PartBuilder(this.Session).WithPartId("2").Build();
             buyer.AddPartyContactMechanism(partyContactMechanism);
 
             this.Session.Derive();
@@ -634,7 +634,7 @@ namespace Allors.Domain
 
         private void InstantiateObjects(ISession session)
         {
-            this.finishedGood = (FinishedGood)session.Instantiate(this.finishedGood);
+            this.finishedGood = (Part)session.Instantiate(this.finishedGood);
             this.currentPurchasePrice = (ProductPurchasePrice)session.Instantiate(this.currentPurchasePrice);
             this.order = (PurchaseOrder)session.Instantiate(this.order);
             this.supplier = (Organisation)session.Instantiate(this.supplier);
