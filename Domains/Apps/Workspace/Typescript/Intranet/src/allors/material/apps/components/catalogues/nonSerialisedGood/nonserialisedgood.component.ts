@@ -190,7 +190,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
                 this.title = this.good.Name;
                 this.subTitle = 'Non Serialised';
-                this.actualQuantityOnHand = this.good.QuantityOnHand;
+                // TODO: QuantityOnHand
+                // this.actualQuantityOnHand = this.good.QuantityOnHand;
 
                 const queries2 = [
                   pull.Organisation({
@@ -283,15 +284,16 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
     //   this.good.AddStandardFeature(this.selectedModel);
     // }
 
-    if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
-      const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === 'Unknown');
+    // TODO: QuantityOnHand
+    // if (this.actualQuantityOnHand !== this.good.QuantityOnHand) {
+    //   const reason = this.varianceReasons.find((v: VarianceReason) => v.Name === 'Unknown');
 
-      const inventoryItemVariance = scope.session.create('InventoryItemVariance') as InventoryItemVariance;
-      inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
-      inventoryItemVariance.Reason = reason;
+    //   const inventoryItemVariance = scope.session.create('InventoryItemVariance') as InventoryItemVariance;
+    //   inventoryItemVariance.Quantity = this.actualQuantityOnHand - this.good.QuantityOnHand;
+    //   inventoryItemVariance.Reason = reason;
 
-      this.inventoryItem.AddInventoryItemVariance(inventoryItemVariance);
-    }
+    //   this.inventoryItem.AddInventoryItemVariance(inventoryItemVariance);
+    // }
 
     const suppliersToDelete = this.suppliers;
 

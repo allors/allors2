@@ -66,8 +66,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
     const { m, pull, scope } = this.allors;
 
     const predicate = new And([
-       new Like({roleType: m.Person.FirstName}),
-       new Like({roleType: m.Person.LastName}),
+       new Like({roleType: m.Person.FirstName, parameter: 'firstName'}),
+       new Like({roleType: m.Person.LastName, parameter: 'lasttName'}),
     ]);
 
     this.filterService.init(predicate);
@@ -83,8 +83,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([filterFields, sort]) => {
 
-          const args = this.filterService.arguments(filterFields);
-
           const pulls = [
             pull.Person({
               predicate,
@@ -95,7 +93,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
               },
-              arguments: args
+              arguments: this.filterService.arguments(filterFields)
             })];
 
           return scope.load('Pull', new PullRequest({ pulls }));

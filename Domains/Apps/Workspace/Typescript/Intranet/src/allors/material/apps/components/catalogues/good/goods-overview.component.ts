@@ -301,7 +301,8 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
                 LocalisedNames: x,
                 LocalisedDescriptions: x,
                 PrimaryProductCategory: x,
-                FinishedGood: x
+                // TODO: 
+                // FinishedGood: x
               },
               // predicate: goodsPredicate,
               sort: new Sort(m.Good.Name),
@@ -417,10 +418,13 @@ export class GoodsOverviewComponent implements OnInit, OnDestroy {
   }
 
   public serialisedGood(good: Good): boolean {
-    return (
-      good.FinishedGood.InventoryItemKind === this.inventoryItemKinds
-        .find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE')
-    );
+    // TODO: QuantityOnHand
+    // return (
+    //   good.FinishedGood.InventoryItemKind === this.inventoryItemKinds
+    //     .find((v: InventoryItemKind) => v.UniqueId.toUpperCase() === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE')
+    // );
+
+    return false;
   }
 
   public goBack(): void {
