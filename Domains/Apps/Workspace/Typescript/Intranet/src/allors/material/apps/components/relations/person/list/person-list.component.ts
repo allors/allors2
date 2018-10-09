@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { MatSnackBar, MatTableDataSource, MatSort, MatDialog, Sort } from '@angular/material';
+import { MatSnackBar, MatTableDataSource, MatSort, MatDialog, Sort, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter } from '../../../../../../framework';
 import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
@@ -34,13 +34,15 @@ export class PersonListComponent implements OnInit, OnDestroy {
   public title = 'People';
 
   public displayedColumns = ['select', 'name', 'email', 'phone', 'lastModifiedDate', 'menu'];
-  public dataSource = new MatTableDataSource<Row>();
   public selection = new SelectionModel<Row>(true, []);
 
-  public data: Row[];
+  public total: number;
+  public dataSource = new MatTableDataSource<Row>();
 
-  public sort$: BehaviorSubject<Sort>;
+  private sort$: BehaviorSubject<Sort>;
   private refresh$: BehaviorSubject<Date>;
+  private pager$: BehaviorSubject<PageEvent>;
+
   private subscription: Subscription;
 
   constructor(
@@ -59,6 +61,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+
   }
 
   public ngOnInit(): void {
@@ -66,8 +70,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
     const { m, pull, scope } = this.allors;
 
     const predicate = new And([
-       new Like({roleType: m.Person.FirstName, parameter: 'firstName'}),
-       new Like({roleType: m.Person.LastName, parameter: 'lasttName'}),
+      new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
+      new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
     ]);
 
     this.filterService.init(predicate);
@@ -79,9 +83,17 @@ export class PersonListComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.filterService.filterFields$, this.sort$, this.refresh$)
+    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
       .pipe(
-        switchMap(([filterFields, sort]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+          return [
+            refresh,
+            filterFields,
+            sort,
+            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+          ];
+        }, []),
+        switchMap(([refresh, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.Person({
@@ -93,7 +105,9 @@ export class PersonListComponent implements OnInit, OnDestroy {
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
               },
-              arguments: this.filterService.arguments(filterFields)
+              arguments: this.filterService.arguments(filterFields),
+              skip: pageEvent.pageIndex * pageEvent.pageSize,
+              take: pageEvent.pageSize,
             })];
 
           return scope.load('Pull', new PullRequest({ pulls }));
@@ -101,8 +115,10 @@ export class PersonListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         scope.session.reset();
+        this.total = loaded.values.People_total;
         const people = loaded.collections.People as Person[];
-        this.data = people.map((v) => {
+
+        this.dataSource.data = people.map((v) => {
           return {
             person: v,
             name: v.displayName,
@@ -111,8 +127,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
         });
-
-        this.dataSource.data = this.data;
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -144,22 +158,22 @@ export class PersonListComponent implements OnInit, OnDestroy {
     return numSelected === numRows;
   }
 
-  public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
   public goBack(): void {
     this.location.back();
   }
 
   public refresh(): void {
     this.refresh$.next(new Date());
+  }
+
+  public page(event: PageEvent): void {
+    this.pager$.next(event);
+  }
+
+  public masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   public delete(person: Person | Person[]): void {

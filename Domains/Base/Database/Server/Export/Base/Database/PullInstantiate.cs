@@ -84,9 +84,9 @@ namespace Allors.Server
 
                                 var objects = ((Extent)fetch.Step.Get(@object, aclCache)).ToArray();
 
-                                if (result.Skip.HasValue)
+                                if (result.Skip.HasValue || result.Take.HasValue)
                                 {
-                                    var paged = objects.Skip(result.Skip.Value);
+                                    var paged = result.Skip.HasValue ? objects.Skip(result.Skip.Value) : objects;
                                     if (result.Take.HasValue)
                                     {
                                         paged = paged.Take(result.Take.Value);
