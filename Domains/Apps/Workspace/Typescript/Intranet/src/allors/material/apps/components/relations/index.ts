@@ -3,9 +3,9 @@ export * from './person/edit/person-edit.module';
 export * from './person/export/person-export.module';
 export * from './person/list/person-list.module';
 
-export * from './organisation/organisations-overview.module';
-export * from './organisation/organisation-overview.module';
-export * from './organisation/organisation.module';
+export * from './organisation/list/organisation-list.module';
+export * from './organisation/overview/organisation-overview.module';
+export * from './organisation/edit/organisation.module';
 
 export * from './party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-add.module';
 export * from './party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-edit.module';
@@ -30,9 +30,9 @@ import { PeopleOverviewModule } from './person/list/person-list.module';
 import { PersonOverviewModule } from './person/overview/person-overview.module';
 import { PersonModule } from './person/edit/person-edit.module';
 
-import { OrganisationOverviewModule } from './organisation/organisation-overview.module';
-import { OrganisationModule } from './organisation/organisation.module';
-import { OrganisationsOverviewModule } from './organisation/organisations-overview.module';
+import { OrganisationOverviewModule } from './organisation/overview/organisation-overview.module';
+import { OrganisationModule } from './organisation/edit/organisation.module';
+import { OrganisationsOverviewModule } from './organisation/list/organisation-list.module';
 
 import { PartyContactMechanismEmailAddressAddModule } from './party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-add.module';
 import { PartyContactMechanismEmailAddressEditModule } from './party/contactmechanism/emailaddress/party-contactmechanism-emailaddress-edit.module';
@@ -56,6 +56,6 @@ export const Modules = [
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
   PartyContactMechanismEmailAddressAddModule, PartyContactMechanismEmailAddressEditModule, PartyContactMechanismAddPostalAddressModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
-  PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule, 
+  PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule,
   CommunicationEventWorkTaskModule, CommunicationEventsOverviewModule, CommunicationEventOverviewModule,
 ];

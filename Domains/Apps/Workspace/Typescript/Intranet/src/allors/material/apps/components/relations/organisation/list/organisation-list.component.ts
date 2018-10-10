@@ -1,3 +1,4 @@
+
 import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
@@ -14,26 +15,29 @@ import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
 
-import { Person } from '../../../../../../domain';
-import { PersonAddComponent } from '../add/person-add.module';
+import { Organisation } from '../../../../../../domain';
+// import { OrganisationAddComponent } from '../add/organisation-add.module';
 
 interface Row {
-  person: Person;
+  organisation: Organisation;
   name: string;
-  email: string;
+  classification: string;
+  street: string;
+  locality: string;
+  country: string;
   phone: string;
   lastModifiedDate: Date;
 }
 
 @Component({
-  templateUrl: './person-list.component.html',
+  templateUrl: './organisation-list.component.html',
   providers: [Allors, AllorsFilterService]
 })
-export class PersonListComponent implements OnInit, OnDestroy {
+export class OrganisationListComponent implements OnInit, OnDestroy {
 
-  public title = 'People';
+  public title = 'Organisations';
 
-  public displayedColumns = ['select', 'name', 'email', 'phone', 'lastModifiedDate', 'menu'];
+  public displayedColumns = ['select', 'name', 'classification', 'street', 'locality', 'country', 'phone', 'lastModifiedDate', 'menu'];
   public selection = new SelectionModel<Row>(true, []);
 
   public total: number;
@@ -62,7 +66,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
-
   }
 
   public ngOnInit(): void {
@@ -70,16 +73,15 @@ export class PersonListComponent implements OnInit, OnDestroy {
     const { m, pull, scope } = this.allors;
 
     const predicate = new And([
-      new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
+      new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
     ]);
 
     this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
-        name: [m.Person.FirstName, m.Person.LastName],
-        lastModifiedDate: m.Person.LastModifiedDate,
+        name: m.Organisation.Name,
+        lastModifiedDate: m.Organisation.LastModifiedDate,
       }
     );
 
@@ -96,12 +98,15 @@ export class PersonListComponent implements OnInit, OnDestroy {
         switchMap(([refresh, filterFields, sort, pageEvent]) => {
 
           const pulls = [
-            pull.Person({
+            pull.Organisation({
               predicate,
               sort: sorter.create(sort),
               include: {
-                Salutation: x,
-                Picture: x,
+                GeneralCorrespondence: {
+                  PostalBoundary: {
+                    Country: x
+                  }
+                },
                 GeneralPhoneNumber: x,
                 GeneralEmail: x,
               },
@@ -115,14 +120,17 @@ export class PersonListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         scope.session.reset();
-        this.total = loaded.values.People_total;
-        const people = loaded.collections.People as Person[];
+        this.total = loaded.values.Organisations_total;
+        const people = loaded.collections.Organisations as Organisation[];
 
         this.dataSource.data = people.map((v) => {
           return {
-            person: v,
+            organisation: v,
             name: v.displayName,
-            email: v.displayEmail,
+            classification: v.displayClassification,
+            street: v.displayAddress,
+            locality: v.displayAddress2,
+            country: v.displayAddress3,
             phone: v.displayPhone,
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
@@ -145,11 +153,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
   }
 
   public get hasDeleteSelection() {
-    return this.selectedPeople.filter((v) => v.CanExecuteDelete).length > 0;
+    return this.selectedOrganisations.filter((v) => v.CanExecuteDelete).length > 0;
   }
 
-  public get selectedPeople() {
-    return this.selection.selected.map(v => v.person);
+  public get selectedOrganisations() {
+    return this.selection.selected.map(v => v.organisation);
   }
 
   public isAllSelected() {
@@ -180,18 +188,18 @@ export class PersonListComponent implements OnInit, OnDestroy {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  public delete(person: Person | Person[]): void {
+  public delete(organisation: Organisation | Organisation[]): void {
 
     const { scope } = this.allors;
 
-    const people = person instanceof SessionObject ? [person as Person] : person instanceof Array ? person : [];
+    const people = organisation instanceof SessionObject ? [organisation as Organisation] : organisation instanceof Array ? organisation : [];
     const methods = people.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
     if (methods.length > 0) {
       this.dialogService
         .confirm(
           methods.length === 1 ?
-            { message: 'Are you sure you want to delete this person?' } :
+            { message: 'Are you sure you want to delete this organisation?' } :
             { message: 'Are you sure you want to delete these people?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
@@ -208,17 +216,17 @@ export class PersonListComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onView(person: Person): void {
-    this.router.navigate(['/relations/person/' + person.id]);
+  public onView(organisation: Organisation): void {
+    this.router.navigate(['/relations/organisation/' + organisation.id]);
   }
 
-  public addNew() {
-    const dialogRef = this.dialog.open(PersonAddComponent, {
-      autoFocus: false,
-      disableClose: true
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.refresh();
-    });
-  }
+  // public addNew() {
+  //   const dialogRef = this.dialog.open(OrganisationAddComponent, {
+  //     autoFocus: false,
+  //     disableClose: true
+  //   });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     this.refresh();
+  //   });
+  // }
 }

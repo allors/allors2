@@ -3,12 +3,12 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a [routerLink]="['/relations/people']">People</a> / <a [routerLink]="['/relations/person/' + person.id]">{{person.displayName}}</a> / Edit
+        <a [routerLink]="['/relations/people']">People</a> / <a [routerLink]="['/relations/person/' + (person && person.id)]">{{person?.displayName}}</a> / Edit
       </div>
     </div>
   </div>
 
-  <form class="a-edit" #form="ngForm" (submit)="save()" novalidate  *ngIf="person">
+  <form *ngIf="person" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
     <mat-card>
       <mat-card-content>
         <div class="container-fluid">
@@ -55,7 +55,10 @@
       </mat-card-content>
     </mat-card>
 
-    <a-mat-footer-save-cancel></a-mat-footer-save-cancel>
+    <a-mat-footer>
+      <button mat-raised-button (click)="location.back()" type="button">CANCEL</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.scope.session.hasChanges || activeRoles.length > 0) ">SAVE</button>
+    </a-mat-footer>
 
   </form>
 </div>
