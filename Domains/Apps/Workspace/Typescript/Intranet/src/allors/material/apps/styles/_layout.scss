@@ -18,7 +18,7 @@ mat-sidenav-content > div {
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      background-color:whitesmoke;
+      background-color: whitesmoke;
       > .a-breadcrumb {
         flex: 0 0 auto;
         background-color: white;
@@ -28,7 +28,8 @@ mat-sidenav-content > div {
           padding-bottom: 0.5rem;
         }
       }
-      > .a-body {
+
+      > .a-list {
         flex-grow: 1;
         display: flex;
         flex-direction: column;
@@ -55,6 +56,77 @@ mat-sidenav-content > div {
               padding-top: 1rem;
               padding-bottom: 1rem;
             }
+          }
+        }
+      }
+
+      > .a-overview {
+        flex-grow: 1;
+        overflow: auto;
+        > div {
+          > div {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            > mat-card {
+              flex-grow: 1;
+              display: flex;
+              flex-direction: column;
+              align-items: stretch;
+              > div {
+                flex: 0 0 auto;
+                margin-bottom: 0.3rem;
+                mat-icon {
+                  vertical-align: text-bottom;
+                  margin-right: 0.5rem;
+                }
+                mat-button-toggle-group {
+                  mat-button-toggle {
+                    margin: -0.3rem;
+                  }
+                }
+              }
+              > mat-card-content {
+                flex-grow: 1;
+                overflow: auto;
+                > div {
+                  padding-top: 1rem;
+                }
+                > mat-list {
+                  padding-top: 0;
+                  max-height: 40rem;
+                }
+              }
+              > mat-card-actions {
+                flex: 0 0 auto;
+              }
+            }
+          }
+        }
+      }
+
+      > .a-edit {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem;
+        > mat-card {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
+          > mat-card-content {
+            flex-grow: 1;
+            overflow: auto;
+            div.row {
+              padding-bottom: 0.5rem;
+            }
+          }
+          > mat-card-actions {
+            flex: 0 0 auto;
           }
         }
       }
@@ -93,121 +165,121 @@ td.mat-table-sticky {
   max-width: 60px !important;
 }
 
-.a-list,
-.a-master {
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  > div,
-  > .a-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    > .a-search {
-      flex: 0 0 auto;
-      padding-top: 1rem;
-    }
-    > .a-items {
-      flex: 1 1 0;
-      overflow: auto;
-      mat-list-item {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-      }
-    }
-  }
-}
+// .a-list,
+// .a-master {
+//   height: 100vh;
+//   min-height: 100vh;
+//   max-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: stretch;
+//   > div,
+//   > .a-body {
+//     flex-grow: 1;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: stretch;
+//     > .a-search {
+//       flex: 0 0 auto;
+//       padding-top: 1rem;
+//     }
+//     > .a-items {
+//       flex: 1 1 0;
+//       overflow: auto;
+//       mat-list-item {
+//         padding-top: 1rem;
+//         padding-bottom: 1rem;
+//       }
+//     }
+//   }
+// }
 
-.a-overview,
-.a-detail {
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  > div,
-  > .a-body {
-    flex-grow: 1;
-    overflow: auto;
-    > div {
-      > div {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        > mat-card {
-          flex-grow: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: stretch;
-          > div {
-            flex: 0 0 auto;
-            margin-bottom: 0.3rem;
-            mat-icon {
-              vertical-align: text-bottom;
-              margin-right: 0.5rem;
-            }
-            mat-button-toggle-group {
-              mat-button-toggle {
-                margin: -0.3rem;
-              }
-            }
-          }
-          > mat-card-content {
-            flex-grow: 1;
-            overflow: auto;
-            > div {
-              padding-top: 1rem;
-            }
-            > mat-list {
-              padding-top: 0;
-              max-height: 40rem;
-            }
-          }
-          > mat-card-actions {
-            flex: 0 0 auto;
-          }
-        }
-      }
-    }
-  }
-}
+// .a-overview,
+// .a-detail {
+//   height: 100vh;
+//   min-height: 100vh;
+//   max-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: stretch;
+//   > div,
+//   > .a-body {
+//     flex-grow: 1;
+//     overflow: auto;
+//     > div {
+//       > div {
+//         padding-top: 1rem;
+//         padding-bottom: 1rem;
+//         display: flex;
+//         flex-direction: column;
+//         align-items: stretch;
+//         > mat-card {
+//           flex-grow: 1;
+//           display: flex;
+//           flex-direction: column;
+//           align-items: stretch;
+//           > div {
+//             flex: 0 0 auto;
+//             margin-bottom: 0.3rem;
+//             mat-icon {
+//               vertical-align: text-bottom;
+//               margin-right: 0.5rem;
+//             }
+//             mat-button-toggle-group {
+//               mat-button-toggle {
+//                 margin: -0.3rem;
+//               }
+//             }
+//           }
+//           > mat-card-content {
+//             flex-grow: 1;
+//             overflow: auto;
+//             > div {
+//               padding-top: 1rem;
+//             }
+//             > mat-list {
+//               padding-top: 0;
+//               max-height: 40rem;
+//             }
+//           }
+//           > mat-card-actions {
+//             flex: 0 0 auto;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
-.a-edit {
-  height: 100vh;
-  min-height: 100vh;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  > div,
-  > .a-body {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 1rem;
-    > mat-card {
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      > mat-card-content {
-        flex-grow: 1;
-        overflow: auto;
-        div.row {
-          padding-bottom: 0.5rem;
-        }
-      }
-      > mat-card-actions {
-        flex: 0 0 auto;
-      }
-    }
-  }
-}
+// .a-edit {
+//   height: 100vh;
+//   min-height: 100vh;
+//   max-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: stretch;
+//   > div,
+//   > .a-body {
+//     flex-grow: 1;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: stretch;
+//     padding: 1rem;
+//     > mat-card {
+//       flex-grow: 1;
+//       display: flex;
+//       flex-direction: column;
+//       align-items: stretch;
+//       > mat-card-content {
+//         flex-grow: 1;
+//         overflow: auto;
+//         div.row {
+//           padding-bottom: 0.5rem;
+//         }
+//       }
+//       > mat-card-actions {
+//         flex: 0 0 auto;
+//       }
+//     }
+//   }
+// }

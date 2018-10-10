@@ -1,9 +1,15 @@
-<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+<div class="a-main">
 
-  <a-mat-header [title]="title"></a-mat-header>
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a [routerLink]="['/relations/people']">People</a> / <a [routerLink]="['/relations/person/' + person.id]">{{person.displayName}}</a> / Edit
+      </div>
+    </div>
+  </div>
 
-  <div class="a-body">
-    <mat-card *ngIf="person">
+  <form class="a-edit" #form="ngForm" (submit)="save()" novalidate  *ngIf="person">
+    <mat-card>
       <mat-card-content>
         <div class="container-fluid">
 
@@ -48,8 +54,8 @@
         </div>
       </mat-card-content>
     </mat-card>
-  </div>
 
-  <a-mat-footer-save-cancel></a-mat-footer-save-cancel>
+    <a-mat-footer-save-cancel></a-mat-footer-save-cancel>
 
-</form>
+  </form>
+</div>
