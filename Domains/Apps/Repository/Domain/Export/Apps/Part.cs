@@ -9,11 +9,13 @@ namespace Allors.Repository
     #endregion
     public partial class Part : AccessControlledObject, UniquelyIdentifiable
     {
+        #region inheritedProperties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
         public Guid UniqueId { get; set; }
+        #endregion inheritedProperties
 
         #region Allors
         [Id("17D9A211-83AC-4F77-B0D6-2673C50EE4C2")]
@@ -181,6 +183,20 @@ namespace Allors.Repository
         [Workspace]
         public decimal QuantityExpectedIn { get; set; }
 
+        /// <summary>
+        /// Gets or Sets the InventoryStrategy used by this Part
+        /// </summary>
+        #region Allors
+        [Id("73BE7204-4AC4-4357-90B0-64E16D374B42")]
+        [AssociationId("86B0C071-41B6-4A8F-914F-9E675BA98285")]
+        [RoleId("DCABBDBE-B7A9-4F74-B244-4D8447FDF069")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public InventoryStrategy InventoryStrategy { get; set; }
+
+        #region inheritedMethods
         public void OnBuild() { }
 
         public void OnDerive() { }
@@ -190,5 +206,6 @@ namespace Allors.Repository
         public void OnPostDerive() { }
 
         public void OnPreDerive() { }
+        #endregion inheritedMethods
     }
 }

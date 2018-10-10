@@ -20,6 +20,9 @@ namespace Allors.Domain
 {
     public  partial class Part
     {
+        public InventoryStrategy GetInventoryStrategy
+            => this.InventoryStrategy ?? (this.InternalOrganisation?.InventoryStrategy ?? new InventoryStrategies(this.strategy.Session).Standard);
+
         public void AppsOnBuild(ObjectOnBuild method)
         {
             if (!this.ExistInventoryItemKind)
@@ -88,15 +91,13 @@ namespace Allors.Domain
 
             foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
             {
-                if (this.InventoryItemKind.IsNonSerialized)
+                if (inventoryItem is NonSerialisedInventoryItem nonSerialisedItem)
                 {
-                    NonSerialisedInventoryItem nonSerializedItem = (NonSerialisedInventoryItem)inventoryItem;
-                    this.QuantityOnHand += nonSerializedItem.QuantityOnHand;
+                    this.QuantityOnHand += nonSerialisedItem.QuantityOnHand;
                 }
-                else if (this.InventoryItemKind.IsSerialized)
+                else if (inventoryItem is SerialisedInventoryItem serialisedItem)
                 {
-                    SerialisedInventoryItem serializedItem = (SerialisedInventoryItem)inventoryItem;
-                    this.QuantityOnHand += serializedItem.QuantityOnHand();
+                    this.QuantityOnHand += serialisedItem.QuantityOnHand;
                 }
             }
         }
@@ -107,9 +108,13 @@ namespace Allors.Domain
 
             foreach (InventoryItem inventoryItem in this.InventoryItemsWherePart)
             {
-                if (inventoryItem is NonSerialisedInventoryItem nonSerialised)
+                if (inventoryItem is NonSerialisedInventoryItem nonSerialisedItem)
                 {
-                    this.AvailableToPromise += nonSerialised.AvailableToPromise;
+                    this.AvailableToPromise += nonSerialisedItem.AvailableToPromise;
+                }
+                else if (inventoryItem is SerialisedInventoryItem serialisedItem)
+                {
+                    this.AvailableToPromise += serialisedItem.AvailableToPromise;
                 }
             }
         }

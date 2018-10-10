@@ -142,10 +142,10 @@ namespace Allors.Domain
 
             // Assert
             var item1 = (SerialisedInventoryItem)new InventoryItems(this.Session).Extent().First(i => i.Facility.Equals(warehouse1));
-            item1.QuantityOnHand().ShouldEqual(1);
+            item1.QuantityOnHand.ShouldEqual(1);
 
             var item2 = (SerialisedInventoryItem)new InventoryItems(this.Session).Extent().First(i => i.Facility.Equals(warehouse2));
-            item2.QuantityOnHand().ShouldEqual(1);
+            item2.QuantityOnHand.ShouldEqual(1);
 
             finishedGood.QuantityOnHand.ShouldEqual(2);
         }

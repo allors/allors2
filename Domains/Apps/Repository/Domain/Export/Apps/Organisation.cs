@@ -217,6 +217,7 @@ namespace Allors.Repository
 
         public Template WorkTaskTemplate { get; set; }
 
+        public InventoryStrategy InventoryStrategy { get; set; }
         #endregion
 
         #region Versioning

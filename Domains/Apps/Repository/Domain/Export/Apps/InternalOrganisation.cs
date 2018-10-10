@@ -514,7 +514,20 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         Template WorkTaskTemplate { get; set; }
-        
+
+        /// <summary>
+        /// Gets or Sets the InventoryStrategy used by this InternalOrganisation
+        /// </summary>
+        #region Allors
+        [Id("78D1D6C1-1F79-4B8A-9C85-F60C1A5594E4")]
+        [AssociationId("6D751271-12C0-421D-97FF-BDB08E7E7B42")]
+        [RoleId("66DA0F04-9FD7-4ECD-A74B-6CE9132DA6AF")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        InventoryStrategy InventoryStrategy { get; set; }
+
         #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion

@@ -27,17 +27,11 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public int QuantityOnHand()
-        {
-            var state = this.SerialisedInventoryItemState;
+        public int QuantityOnHand
+            => this.Part.GetInventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? 1 : 0;
 
-            if (state.IsScrap || state.IsSold || state.IsInRent)
-            {
-                return 0;
-            }
-
-            return 1;
-        }
+        public int AvailableToPromise
+            => this.Part.GetInventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.SerialisedInventoryItemState) ? 1 : 0;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {

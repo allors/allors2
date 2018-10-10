@@ -22,6 +22,9 @@ namespace Allors.Domain
 
     public static partial class InternalOrganisationExtensions
     {
+        public static InventoryStrategy GetInventoryStrategy(this InternalOrganisation @this)
+            => @this.InventoryStrategy ?? new InventoryStrategies(@this.Strategy.Session).Standard;
+
         public static void AppsStartNewFiscalYear(this InternalOrganisation @this, InternalOrganisationStartNewFiscalYear method)
         {
             var organisation = (Organisation)@this;

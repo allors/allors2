@@ -20,7 +20,7 @@ namespace Allors.Domain
     public partial class NonSerialisedInventoryItemStates
     {
         private static readonly Guid GoodId = new Guid("6806CC54-3AA7-4510-A209-99F92D5C1D58");
-        private static readonly Guid BeingReparedId = new Guid("ABD19809-9E27-4ee6-BEA1-637902260F57");
+        private static readonly Guid BeingRepairedId = new Guid("ABD19809-9E27-4ee6-BEA1-637902260F57");
         private static readonly Guid SlightlyDamagedId = new Guid("EE4C6034-7320-4209-A0AA-6067B20AC418");
         private static readonly Guid DefectiveId = new Guid("C0E10011-1BA4-412f-B426-103C1C11B879");
         private static readonly Guid ScrapId = new Guid("CF51C221-111C-4666-8E97-CC060643C5FD");
@@ -29,7 +29,7 @@ namespace Allors.Domain
 
         public NonSerialisedInventoryItemState Good => this.StateCache[GoodId];
 
-        public NonSerialisedInventoryItemState BeingRepared => this.StateCache[BeingReparedId];
+        public NonSerialisedInventoryItemState BeingRepaired => this.StateCache[BeingRepairedId];
 
         public NonSerialisedInventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
 
@@ -49,7 +49,7 @@ namespace Allors.Domain
                 .Build();
 
             new NonSerialisedInventoryItemStateBuilder(this.Session)
-                .WithUniqueId(BeingReparedId)
+                .WithUniqueId(BeingRepairedId)
                 .WithName("Being Repared")
                 .Build();
 
