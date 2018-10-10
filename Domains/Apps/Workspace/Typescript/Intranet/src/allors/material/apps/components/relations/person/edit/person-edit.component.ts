@@ -52,10 +52,10 @@ export class PersonEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: Allors,
+    public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private titleService: Title,
-    private location: Location,
     private stateService: StateService) {
 
     this.m = allors.m;

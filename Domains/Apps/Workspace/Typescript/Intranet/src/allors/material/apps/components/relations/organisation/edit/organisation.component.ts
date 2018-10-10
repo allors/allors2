@@ -3,14 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../angular';
-import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
+import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../../domain';
+import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { Title } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
 
 @Component({

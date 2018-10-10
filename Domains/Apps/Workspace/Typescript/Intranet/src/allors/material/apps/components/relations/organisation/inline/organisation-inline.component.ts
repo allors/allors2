@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../angular';
-import { Organisation } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { Organisation } from '../../../../../../domain';
+import { PullRequest } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector

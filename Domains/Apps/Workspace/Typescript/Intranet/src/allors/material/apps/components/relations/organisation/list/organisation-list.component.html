@@ -17,11 +17,11 @@
           <mat-toolbar-row>
             <div class="pl-3 mr-auto">{{title}}</div>
             <div>
-              <button [disabled]="!hasDeleteSelection" mat-icon-button matTooltip="Delete" (click)="delete(selectedPeople)">
+              <button [disabled]="!hasDeleteSelection" mat-icon-button matTooltip="Delete" (click)="delete(selectedOrganisations)">
                 <mat-icon>delete</mat-icon>
               </button>
 
-              <button [disabled]="!hasSelection" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/people']">
+              <button [disabled]="!hasSelection" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/organisations']">
                 <mat-icon>save_alt</mat-icon>
               </button>
 
@@ -57,20 +57,37 @@
           <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
             <td mat-cell *matCellDef="let row">
-              <div style="padding-top: 10px; padding-bottom: 10px;">
-                <img *ngIf="!row.person.Picture" style="width: 36; height: 36px; border-radius: 50%" [src]="'https://dummyimage.com/40x40/ccc/333.png&text=!'" />
-                <img *ngIf="row.person.Picture" style="width: 36px; height: 36px; border-radius: 50%" [src]="mediaService.url(row.person.Picture)" />
-                <span style="margin-left: 1rem">{{row.name}}</span>
-              </div>
+              {{row.name}}
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+          <ng-container matColumnDef="classification">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Classification </th>
             <td mat-cell *matCellDef="let row">
-              {{row.email}}
+              {{row.classification}}
             </td>
           </ng-container>
+
+          <ng-container matColumnDef="street">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Street </th>
+              <td mat-cell *matCellDef="let row">
+                {{row.street}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="locality">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Locality </th>
+                <td mat-cell *matCellDef="let row">
+                  {{row.locality}}
+                </td>
+              </ng-container>
+  
+            <ng-container matColumnDef="country">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+                <td mat-cell *matCellDef="let row">
+                  {{row.country}}
+                </td>
+              </ng-container>
 
           <ng-container matColumnDef="phone">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
@@ -93,14 +110,14 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <a [routerLink]="['/relations/person/' + row.person.id]" mat-menu-item>Details</a>
-                <button mat-menu-item (click)="delete(row.person)" [disabled]="!row.person.CanExecuteDelete">Delete</button>
+                <a [routerLink]="['/relations/organisation/' + row.organisation.id]" mat-menu-item>Details</a>
+                <button mat-menu-item (click)="delete(row.organisation)" [disabled]="!row.organisation.CanExecuteDelete">Delete</button>
               </mat-menu>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onView(row.person)" style="cursor: pointer;">
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onView(row.organisation)" style="cursor: pointer;">
           </tr>
         </table>
       </div>
