@@ -22,6 +22,7 @@ namespace Allors.Domain
 
     public static partial class InternalOrganisationExtensions
     {
+        //TODO: SyncInventoryStrategy from Organisation, etc.
         public static InventoryStrategy GetInventoryStrategy(this InternalOrganisation @this)
             => @this.InventoryStrategy ?? new InventoryStrategies(@this.Strategy.Session).Standard;
 

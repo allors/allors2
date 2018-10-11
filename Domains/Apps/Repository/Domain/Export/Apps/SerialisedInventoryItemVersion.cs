@@ -40,7 +40,7 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         [Multiplicity(Multiplicity.ManyToOne)]
-        public SerialisedInventoryItemState SerialisedInventoryItemState { get; set; }
+        public InventoryItemState SerialisedInventoryItemState { get; set; }
 
         #region Allors
         [Id("6DD0FA27-1140-4F51-A642-35D8C1126684")]

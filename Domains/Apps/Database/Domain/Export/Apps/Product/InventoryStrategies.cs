@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NonSerialisedInventoryItemStates.cs" company="Allors bvba">
+// <copyright file="InventoryItemState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -32,40 +32,38 @@ namespace Allors.Domain
         {
             base.AppsSetup(setup);
 
-            var nonSerialisedStates = new NonSerialisedInventoryItemStates(this.Session);
-            var serialisedStates = new SerialisedInventoryItemStates(this.Session);
+            var inventoryStates = new InventoryItemStates(this.Session);
 
             new InventoryStrategyBuilder(this.Session)
                 .WithUniqueId(StandardId)
                 .WithName("Standard Inventory Strategy")
                 .Build();
 
-            this.Standard.AddAvailableToPromiseNonSerialisedState(nonSerialisedStates.Good);
+            this.Standard.AddAvailableToPromiseNonSerialisedState(inventoryStates.Good);
 
-            this.Standard.AddOnHandNonSerialisedState(nonSerialisedStates.Good);
-            this.Standard.AddOnHandNonSerialisedState(nonSerialisedStates.BeingRepaired);
-            this.Standard.AddOnHandNonSerialisedState(nonSerialisedStates.SlightlyDamaged);
-            this.Standard.AddOnHandNonSerialisedState(nonSerialisedStates.Defective);
-            this.Standard.AddOnHandNonSerialisedState(nonSerialisedStates.Scrap);
+            this.Standard.AddOnHandNonSerialisedState(inventoryStates.Good);
+            this.Standard.AddOnHandNonSerialisedState(inventoryStates.BeingRepaired);
+            this.Standard.AddOnHandNonSerialisedState(inventoryStates.SlightlyDamaged);
+            this.Standard.AddOnHandNonSerialisedState(inventoryStates.Defective);
+            this.Standard.AddOnHandNonSerialisedState(inventoryStates.Scrap);
 
-            this.Standard.AddAvailableToPromiseSerialisedState(serialisedStates.Good);
-            this.Standard.AddAvailableToPromiseSerialisedState(serialisedStates.Available);
+            this.Standard.AddAvailableToPromiseSerialisedState(inventoryStates.Good);
+            this.Standard.AddAvailableToPromiseSerialisedState(inventoryStates.Available);
 
-            this.Standard.AddOnHandSerialisedState(serialisedStates.Good);
-            this.Standard.AddOnHandSerialisedState(serialisedStates.BeingRepaired);
-            this.Standard.AddOnHandSerialisedState(serialisedStates.SlightlyDamaged);
-            this.Standard.AddOnHandSerialisedState(serialisedStates.Defective);
-            this.Standard.AddOnHandSerialisedState(serialisedStates.Scrap);
-            this.Standard.AddOnHandSerialisedState(serialisedStates.Available);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.Good);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.BeingRepaired);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.SlightlyDamaged);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.Defective);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.Scrap);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.Available);
             // Exclude serialisedStates.Sold
             // Exclude serialisedStates.InRent
-            this.Standard.AddOnHandSerialisedState(serialisedStates.Assigned);
+            this.Standard.AddOnHandSerialisedState(inventoryStates.Assigned);
         }
 
         protected override void AppsPrepare(Setup setup)
         {
-            setup.AddDependency(this.Meta.ObjectType, M.SerialisedInventoryItemState);
-            setup.AddDependency(this.Meta.ObjectType, M.NonSerialisedInventoryItemState);
+            setup.AddDependency(this.Meta.ObjectType, M.InventoryItemState);
         }
     }
 }

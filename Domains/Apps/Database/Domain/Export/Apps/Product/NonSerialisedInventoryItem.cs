@@ -21,16 +21,16 @@ namespace Allors.Domain
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
-                new TransitionalConfiguration(M.NonSerialisedInventoryItem, M.NonSerialisedInventoryItem.NonSerialisedInventoryItemState),
+                new TransitionalConfiguration(M.NonSerialisedInventoryItem, M.NonSerialisedInventoryItem.InventoryItemState),
             };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistNonSerialisedInventoryItemState)
+            if (!this.ExistInventoryItemState)
             {
-                this.NonSerialisedInventoryItemState = new NonSerialisedInventoryItemStates(this.Strategy.Session).Good;
+                this.InventoryItemState = new InventoryItemStates(this.Strategy.Session).Good;
             }
         }
 
@@ -70,7 +70,7 @@ namespace Allors.Domain
             var inventoryStrategy = this.Part.GetInventoryStrategy;
             this.QuantityOnHand = 0M;
 
-            if (!this.Part.GetInventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
+            if (!this.Part.GetInventoryStrategy.OnHandNonSerialisedStates.Contains(this.InventoryItemState))
             {
                 return;  // This Inventorty Item's State is not counted for On-Hand inventory
             }

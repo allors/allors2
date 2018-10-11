@@ -17,6 +17,12 @@ namespace Allors.Repository
 
         public ObjectState[] ObjectStates { get; set; }
 
+        public InventoryItemState PreviousInventoryItemState { get; set; }
+
+        public InventoryItemState LastInventoryItemState { get; set; }
+
+        public InventoryItemState InventoryItemState { get; set; }
+
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -35,40 +41,6 @@ namespace Allors.Repository
 
         public Facility Facility { get; set; }
 
-        #endregion
-
-        #region ObjectStates
-        #region NonSerialisedInventoryItemState
-        #region Allors
-        [Id("35D3FF5B-AA47-41F9-A44F-7809EC2D7955")]
-        [AssociationId("EBE15EA6-05F8-4EC0-8CD5-E5773A836EC4")]
-        [RoleId("624BCFA2-C488-4404-ACFA-8D4EC7CC1B7D")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public NonSerialisedInventoryItemState PreviousNonSerialisedInventoryItemState { get; set; }
-
-        #region Allors
-        [Id("4524D9FF-A484-49BD-B8BC-74C4D488FDC3")]
-        [AssociationId("43452B62-BDD8-41C9-85DA-EE9DF093A917")]
-        [RoleId("1F6FAA52-BC38-400D-BC04-9D7E0499F9AD")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Derived]
-        public NonSerialisedInventoryItemState LastNonSerialisedInventoryItemState { get; set; }
-
-        #region Allors
-        [Id("B31DEEC8-709E-4049-989A-D4BD3028A166")]
-        [AssociationId("D3D5E468-4F4C-4EFE-822F-C9CA753C0CA6")]
-        [RoleId("731CBA99-ABD0-4C7A-A38A-B606E4E42812")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Workspace]
-        public NonSerialisedInventoryItemState NonSerialisedInventoryItemState { get; set; }
-        #endregion
         #endregion
 
         #region Versioning

@@ -23,21 +23,21 @@ namespace Allors.Domain
     public partial class SerialisedInventoryItem
     {
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
-            { new TransitionalConfiguration(M.SerialisedInventoryItem, M.SerialisedInventoryItem.SerialisedInventoryItemState), };
+            { new TransitionalConfiguration(M.SerialisedInventoryItem, M.SerialisedInventoryItem.InventoryItemState), };
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
         public int QuantityOnHand
-            => this.Part.GetInventoryStrategy.OnHandSerialisedStates.Contains(this.SerialisedInventoryItemState) ? 1 : 0;
+            => this.Part.GetInventoryStrategy.OnHandSerialisedStates.Contains(this.InventoryItemState) ? 1 : 0;
 
         public int AvailableToPromise
-            => this.Part.GetInventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.SerialisedInventoryItemState) ? 1 : 0;
+            => this.Part.GetInventoryStrategy.AvailableToPromiseSerialisedStates.Contains(this.InventoryItemState) ? 1 : 0;
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistSerialisedInventoryItemState)
+            if (!this.ExistInventoryItemState)
             {
-                this.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.Strategy.Session).Available;
+                this.InventoryItemState = new InventoryItemStates(this.Strategy.Session).Available;
             }
         }
 

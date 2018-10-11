@@ -41,8 +41,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(new NonSerialisedInventoryItemStates(this.Session).Good, item.NonSerialisedInventoryItemState);
-            Assert.Equal(item.LastNonSerialisedInventoryItemState, item.NonSerialisedInventoryItemState);
+            Assert.Equal(new InventoryItemStates(this.Session).Good, item.InventoryItemState);
+            Assert.Equal(item.LastInventoryItemState, item.InventoryItemState);
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Null(item.PreviousNonSerialisedInventoryItemState);
+            Assert.Null(item.PreviousInventoryItemState);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace Allors.Domain
             Assert.Equal(0M, item.QuantityCommittedOut);
             Assert.Equal(0M, item.QuantityExpectedIn);
             Assert.Equal(0M, item.QuantityOnHand);
-            Assert.Equal(new NonSerialisedInventoryItemStates(this.Session).Good, item.NonSerialisedInventoryItemState);
+            Assert.Equal(new InventoryItemStates(this.Session).Good, item.InventoryItemState);
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), item.Facility);
         }
 
@@ -365,7 +365,7 @@ namespace Allors.Domain
         //        .WithGood(good)
         //        .WithAvailableToPromise(120)
         //        .WithQuantityOnHand(120)
-        //        .WithCurrentObjectState(new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged)
+        //        .WithCurrentObjectState(new InventoryItemStates(this.DatabaseSession).SlightlyDamaged)
         //        .Build();
 
         //    var partItem = (NonSerialisedInventoryItem)rawMaterial.InventoryItemsWherePart[0];
@@ -389,7 +389,7 @@ namespace Allors.Domain
         //Assert.Contains(damagedItem, extent);
         //Assert.Contains(partItem, extent);
 
-        //valueByParameter[parameters[1]] = new NonSerialisedInventoryItemStates(this.DatabaseSession).SlightlyDamaged;
+        //valueByParameter[parameters[1]] = new InventoryItemStates(this.DatabaseSession).SlightlyDamaged;
 
         //extent = preparedExtent.Execute(valueByParameter);
 

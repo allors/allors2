@@ -245,7 +245,7 @@ namespace Allors.Domain
 
                 if (this.ExistReservedFromSerialisedInventoryItem)
                 {
-                    this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.strategy.Session).Assigned;
+                    this.ReservedFromSerialisedInventoryItem.InventoryItemState = new InventoryItemStates(this.strategy.Session).Assigned;
                     this.QuantityReserved = 1;
                     this.QuantityRequestsShipping = 1;
                 }
@@ -261,7 +261,7 @@ namespace Allors.Domain
 
                 if (this.ExistReservedFromSerialisedInventoryItem)
                 {
-                    this.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState = new SerialisedInventoryItemStates(this.strategy.Session).Available;
+                    this.ReservedFromSerialisedInventoryItem.InventoryItemState = new InventoryItemStates(this.strategy.Session).Available;
                 }
             }
         }
