@@ -21,7 +21,6 @@
 namespace Allors.Data
 {
     using System.Text;
-
     using Allors.Meta;
 
     public class Step
@@ -41,6 +40,19 @@ namespace Allors.Data
             }
         }
 
+        public bool IsOne 
+        {
+            get
+            {
+                if (this.PropertyType.IsMany)
+                {
+                    return false;
+                }
+
+                return this.ExistNext ? this.Next.IsOne : this.PropertyType.IsOne;
+            }
+        }
+        
         public Tree Include { get; set; }
 
         public IPropertyType PropertyType { get; set; }
@@ -92,6 +104,5 @@ namespace Allors.Data
                 this.Next.AppendToName(name);
             }
         }
-
     }
 }

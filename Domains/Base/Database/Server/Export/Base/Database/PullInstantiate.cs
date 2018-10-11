@@ -21,11 +21,15 @@
 
 namespace Allors.Server
 {
+    using System.Collections;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Allors.Data;
     using Allors.Domain;
     using Allors.Services;
+
+    using Org.BouncyCastle.Utilities.Collections;
 
     public class PullInstantiate
     {
@@ -71,7 +75,7 @@ namespace Allors.Server
 
                             var propertyType = fetch.Step.End.PropertyType;
 
-                            if (propertyType.IsOne)
+                            if (fetch.Step.IsOne)
                             {
                                 name = name ?? propertyType.SingularName;
 
@@ -82,7 +86,8 @@ namespace Allors.Server
                             {
                                 name = name ?? propertyType.PluralName;
 
-                                var objects = ((Extent)fetch.Step.Get(@object, aclCache)).ToArray();
+                                var stepResult = fetch.Step.Get(@object, aclCache);
+                                var objects = stepResult is HashSet<object> set ? set.Cast<IObject>().ToArray() : ((Extent)stepResult).ToArray();
 
                                 if (result.Skip.HasValue || result.Take.HasValue)
                                 {

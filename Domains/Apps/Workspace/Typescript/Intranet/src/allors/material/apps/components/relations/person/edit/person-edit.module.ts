@@ -12,7 +12,7 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../../base/component
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
-import { AllorsMaterialFooterModule } from 'src/allors/material/base/components/footer';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
 import { PersonEditComponent } from './person-edit.component';
 export { PersonEditComponent } from './person-edit.component';

@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, x, Allors } from '../../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber } from '../../../../../../domain';
-import { Fetch, PullRequest, TreeNode } from '../../../../../../framework';
+import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { Fetcher } from '../../../Fetcher';
@@ -49,7 +49,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private fetcher: Fetcher;
-  
+
   constructor(
     @Self() private allors: Allors,
     public router: Router,
@@ -158,9 +158,11 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
               object: id,
               fetch: {
                 CommunicationEventsWhereInvolvedParty: {
-                  CommunicationEventState: x,
-                  FromParties: x,
-                  ToParties: x,
+                  include: {
+                    CommunicationEventState: x,
+                    FromParties: x,
+                    ToParties: x,
+                  }
                 }
               }
             }),
@@ -173,10 +175,10 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         scope.session.reset();
-        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
-        this.organisation = loaded.objects.organisation as Organisation;
-        this.communicationEvents = loaded.collections.communicationEvents as CommunicationEvent[];
+        this.organisation = loaded.objects.Organisation as Organisation;
+        this.communicationEvents = loaded.collections.CommunicationEventsWhereInvolvedParty as CommunicationEvent[];
 
         this.currentContactRelationships = this.organisation.CurrentOrganisationContactRelationships as OrganisationContactRelationship[];
         this.inactiveContactRelationships = this.organisation.InactiveOrganisationContactRelationships as OrganisationContactRelationship[];

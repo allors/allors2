@@ -1,14 +1,14 @@
-<div class="a-detail">
+<div class="a-main">
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a [routerLink]="['/relations/organisations']">Organisation</a> / {{organisation?.displayName}}
+      </div>
+    </div>
+  </div>
 
-  <div class="container-fluid">
+  <div class="a-overview container-fluid">
     <div *ngIf="organisation" class="row">
 
       <div class="col-md-6">
@@ -16,7 +16,8 @@
           <div class="row">
             <div class="col">
               <h2>
-                <mat-icon>business</mat-icon> Organisation</h2>
+                <mat-icon>business</mat-icon> Organisation
+              </h2>
             </div>
           </div>
 
@@ -26,7 +27,7 @@
               <div class="row">
                 <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
                 <mat-form-field class="col">
-                  <input matInput name="role" [(ngModel)]="rolesText" placeholder="Role" readonly/>
+                  <input matInput name="role" [(ngModel)]="rolesText" placeholder="Role" readonly />
                 </mat-form-field>
               </div>
 
@@ -62,7 +63,8 @@
           <div class="row">
             <div class="col">
               <h2>
-                <mat-icon>people</mat-icon> Communications</h2>
+                <mat-icon>people</mat-icon> Communications
+              </h2>
             </div>
           </div>
 
@@ -73,8 +75,7 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="router.navigate(['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ])"
-                style="cursor: pointer;">
+              <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="router.navigate(['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ])" style="cursor: pointer;">
                 <div *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-line>
                   Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
 
@@ -134,7 +135,8 @@
           <div class="row">
             <div class="col">
               <h2>
-                <mat-icon>person</mat-icon> Contacts</h2>
+                <mat-icon>person</mat-icon> Contacts
+              </h2>
             </div>
 
             <div class="col">
@@ -153,26 +155,22 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let contactRelationship of this.contactRelationships; let last=last" [attr.data-allors-id]="contactRelationShip.id" (click)="router.navigate(['/relations/person/' + contactRelationship.Contact.id])"
-                style="cursor: pointer;">
+              <mat-list-item *ngFor="let contactRelationship of this.contactRelationships; let last=last" [attr.data-allors-id]="contactRelationShip.id" (click)="router.navigate(['/relations/person/' + contactRelationship.Contact.id])" style="cursor: pointer;">
                 <div mat-line>{{contactRelationship.Contact.Salutation?.Name}} {{contactRelationship.Contact.FirstName}} {{contactRelationship.Contact.MiddleName}}
                   {{contactRelationship.Contact.LastName}}
                 </div>
                 <div *ngIf="contactRelationship.Contact.Function" mat-line>{{contactRelationship.Contact.Function}}</div>
                 <div mat-line *ngFor="let partyContactMechanism of contactRelationship.Contact.PartyContactMechanisms">
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'  && partyContactMechanism.UseAsDefault"
-                    mat-line>
+                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'  && partyContactMechanism.UseAsDefault" mat-line>
                     {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
                   </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'  && partyContactMechanism.UseAsDefault"
-                    mat-line>
+                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'  && partyContactMechanism.UseAsDefault" mat-line>
                     {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
                   </p>
                   <p *ngIf="this.isPhone(partyContactMechanism.ContactMechanism)" mat-line>
                     {{ partyContactMechanism.ContactMechanism?.CountryCode}} {{ partyContactMechanism.ContactMechanism?.AreaCode}} {{ partyContactMechanism.ContactMechanism?.ContactNumber}}
                   </p>
-                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'  && partyContactMechanism.UseAsDefault"
-                    mat-line>
+                  <p *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'  && partyContactMechanism.UseAsDefault" mat-line>
                     {{ partyContactMechanism.ContactMechanism?.Address1}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.PostalCode}}
                     {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Country?.Name}}
                   </p>
@@ -207,7 +205,8 @@
           <div class="row">
             <div class="col">
               <h2>
-                <mat-icon>contacts</mat-icon> Contact Info</h2>
+                <mat-icon>contacts</mat-icon> Contact Info
+              </h2>
             </div>
 
             <div class="col">
@@ -256,14 +255,10 @@
                       <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu">
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]"
-                        mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]"
-                        mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]"
-                        mat-menu-item>Edit</a>
-                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]"
-                        mat-menu-item>Edit</a>
+                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
+                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
+                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
+                      <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
                       <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
                       <button mat-menu-item (click)="activateContactMechanism(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
                       <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>

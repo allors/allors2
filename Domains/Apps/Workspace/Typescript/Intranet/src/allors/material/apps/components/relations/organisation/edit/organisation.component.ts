@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
@@ -49,6 +50,7 @@ export class OrganisationComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
+    public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
@@ -93,8 +95,8 @@ export class OrganisationComponent implements OnInit, OnDestroy {
                 {
                   predicate: new And({
                     operands: [
-                      new Equals({ propertyType: m.CustomerRelationship.Customer, value: id }),
-                      new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, value: internalOrganisationId }),
+                      new Equals({ propertyType: m.CustomerRelationship.Customer, object: id }),
+                      new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, object: internalOrganisationId }),
                       new Not({
                         operand: new Exists({ propertyType: m.CustomerRelationship.ThroughDate }),
                       }),
@@ -108,8 +110,8 @@ export class OrganisationComponent implements OnInit, OnDestroy {
                 {
                   predicate: new And({
                     operands: [
-                      new Equals({ propertyType: m.SupplierRelationship.Supplier, value: id }),
-                      new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation, value: internalOrganisationId }),
+                      new Equals({ propertyType: m.SupplierRelationship.Supplier, object: id }),
+                      new Equals({ propertyType: m.SupplierRelationship.InternalOrganisation, object: internalOrganisationId }),
                       new Not({
                         operand: new Exists({ propertyType: m.SupplierRelationship.ThroughDate }),
                       })
@@ -126,21 +128,21 @@ export class OrganisationComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.subTitle = 'edit organisation';
-        this.organisation = loaded.objects.organisation as Organisation;
-        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.organisation = loaded.objects.Organisation as Organisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
         if (this.organisation) {
-          this.customerRelationship = loaded.collections.customerRelationships[0] as CustomerRelationship;
-          this.supplierRelationship = loaded.collections.supplierRelationships[0] as SupplierRelationship;
+          this.customerRelationship = loaded.collections.CustomerRelationships[0] as CustomerRelationship;
+          this.supplierRelationship = loaded.collections.SupplierRelationships[0] as SupplierRelationship;
         } else {
           this.subTitle = 'add a new organisation';
           this.organisation = scope.session.create('Organisation') as Organisation;
           this.organisation.IsManufacturer = false;
         }
 
-        this.locales = loaded.collections.locales as Locale[];
-        this.classifications = loaded.collections.customOrganisationClassifications as CustomOrganisationClassification[];
-        this.industries = loaded.collections.industryClassifications as IndustryClassification[];
+        this.locales = loaded.collections.Locales as Locale[];
+        this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
+        this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];
         this.customerRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8B5E0CEE-4C98-42F1-8F18-3638FBA943A0');
         this.supplierRole = this.roles.find((v: OrganisationRole) => v.UniqueId.toUpperCase() === '8C6D629B-1E27-4520-AA8C-E8ADF93A5095');
