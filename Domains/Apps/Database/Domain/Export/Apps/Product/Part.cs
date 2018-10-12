@@ -20,7 +20,6 @@ namespace Allors.Domain
 {
     public  partial class Part
     {
-        //TODO: SyncInventoryStrategy from Organisation, etc.
         public InventoryStrategy GetInventoryStrategy
             => this.InventoryStrategy ?? (this.InternalOrganisation?.InventoryStrategy ?? new InventoryStrategies(this.strategy.Session).Standard);
 
@@ -59,14 +58,14 @@ namespace Allors.Domain
                 this.InternalOrganisation = internalOrganisations.First();
             }
 
-            this.SyncInventoryItems(derivation);
+            this.DeriveInventoryItem(derivation);
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
         }
 
-        private void SyncInventoryItems(IDerivation derivation)
+        private void DeriveInventoryItem(IDerivation derivation)
         {
             if (this.ExistInternalOrganisation && this.ExistInventoryItemKind && this.InventoryItemKind.IsNonSerialized)
             //if (this.ExistInternalOrganisation && !this.ExistInventoryItemsWherePart && this.ExistInventoryItemKind)

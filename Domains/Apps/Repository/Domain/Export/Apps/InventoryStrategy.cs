@@ -21,21 +21,11 @@ namespace Allors.Repository
         [Workspace]
         public string Name { get; set; }
 
-        /// <summary>
-        /// The InventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy
-        /// </summary>
-        #region Allors
-        [Id("2F90BA87-BEEC-4BB6-BF49-45A622B22BD4")]
-        [AssociationId("8B0742E6-11FA-4AE4-8A94-FF9C557BC628")]
-        [RoleId("01FE80D4-88E9-4421-B5C6-13833FF55349")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public InventoryItemState[] AvailableToPromiseNonSerialisedStates { get; set; }
+        /* SerialisedInventoryItemState InventoryStrategy Items 
+         ******************************************************/
 
         /// <summary>
-        /// The InventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy
+        /// The SerialisedInventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy
         /// </summary>
         #region Allors
         [Id("6E36E878-B821-4A74-B722-B834E8204D18")]
@@ -45,23 +35,10 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public InventoryItemState[] AvailableToPromiseSerialisedStates { get; set; }
+        public SerialisedInventoryItemState[] AvailableToPromiseSerialisedStates { get; set; }
 
         /// <summary>
-        /// The InventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy
-        /// </summary>
-        #region Allors
-        [Id("F20911A6-B1A6-46E8-955B-4286DE54D806")]
-        [AssociationId("04C41736-A073-4BFC-8C4A-4AC3DD87544D")]
-        [RoleId("8BCA64CB-7768-4ED5-AB2D-8C164EA3A266")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        public InventoryItemState[] OnHandNonSerialisedStates { get; set; }
-
-        /// <summary>
-        /// The InventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy
+        /// The SerialisedInventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy
         /// </summary>
         #region Allors
         [Id("9D87E54C-5EB5-4014-84E8-9957126430CA")]
@@ -71,7 +48,36 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToMany)]
         [Indexed]
         [Workspace]
-        public InventoryItemState[] OnHandSerialisedStates { get; set; }
+        public SerialisedInventoryItemState[] OnHandSerialisedStates { get; set; }
+
+        /* NonSerialisedInventoryItemState InventoryStrategy Items 
+         *********************************************************/
+
+        /// <summary>
+        /// The NonSerialisedInventoryItemStates included in AvailableToPromise calculations for this InventoryStrategy
+        /// </summary>
+        #region Allors
+        [Id("2F90BA87-BEEC-4BB6-BF49-45A622B22BD4")]
+        [AssociationId("8B0742E6-11FA-4AE4-8A94-FF9C557BC628")]
+        [RoleId("01FE80D4-88E9-4421-B5C6-13833FF55349")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        public NonSerialisedInventoryItemState[] AvailableToPromiseNonSerialisedStates { get; set; }
+
+        /// <summary>
+        /// The NonSerialisedInventoryItemStates included in QuantityOnHand calculations for this InventoryStrategy
+        /// </summary>
+        #region Allors
+        [Id("F20911A6-B1A6-46E8-955B-4286DE54D806")]
+        [AssociationId("04C41736-A073-4BFC-8C4A-4AC3DD87544D")]
+        [RoleId("8BCA64CB-7768-4ED5-AB2D-8C164EA3A266")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Indexed]
+        [Workspace]
+        public NonSerialisedInventoryItemState[] OnHandNonSerialisedStates { get; set; }
 
         #region inheritedMethods
         public void OnBuild() { }

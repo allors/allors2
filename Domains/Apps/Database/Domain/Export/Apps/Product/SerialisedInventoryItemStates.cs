@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InventoryItemStates.cs" company="Allors bvba">
+// <copyright file="SerialisedInventoryItemStates.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class InventoryItemStates
+    public partial class SerialisedInventoryItemStates
     {
         private static readonly Guid GoodId = new Guid("CD80FC9B-BF25-4587-8D52-57E491E74104");
         private static readonly Guid BeingRepairedId = new Guid("4584A95F-60BA-478c-8E09-E6AFC88CF683");
@@ -29,93 +29,84 @@ namespace Allors.Domain
         private static readonly Guid InRentId = new Guid("9ACC6C05-60B5-4085-8B43-EB730939DB47");
         private static readonly Guid AssignedId = new Guid("3AD2DEC0-65AB-4E31-BDE0-3227727D9329");
 
-        private UniquelyIdentifiableSticky<InventoryItemState> stateCache;
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> stateCache;
 
-        public InventoryItemState Good => this.StateCache[GoodId];
+        public SerialisedInventoryItemState Good => this.StateCache[GoodId];
 
-        public InventoryItemState BeingRepaired => this.StateCache[BeingRepairedId];
+        public SerialisedInventoryItemState BeingRepaired => this.StateCache[BeingRepairedId];
 
-        public InventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
+        public SerialisedInventoryItemState SlightlyDamaged => this.StateCache[SlightlyDamagedId];
 
-        public InventoryItemState Defective => this.StateCache[DefectiveId];
+        public SerialisedInventoryItemState Defective => this.StateCache[DefectiveId];
 
-        public InventoryItemState Scrap => this.StateCache[ScrapId];
+        public SerialisedInventoryItemState Scrap => this.StateCache[ScrapId];
 
-        public InventoryItemState Available => this.StateCache[AvailableId];
+        public SerialisedInventoryItemState Available => this.StateCache[AvailableId];
 
-        public InventoryItemState Sold => this.StateCache[SoldId];
+        public SerialisedInventoryItemState Sold => this.StateCache[SoldId];
 
-        public InventoryItemState InRent => this.StateCache[InRentId];
+        public SerialisedInventoryItemState InRent => this.StateCache[InRentId];
 
-        public InventoryItemState Assigned => this.StateCache[AssignedId];
+        public SerialisedInventoryItemState Assigned => this.StateCache[AssignedId];
 
-        private UniquelyIdentifiableSticky<InventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<InventoryItemState>(this.Session));
+        private UniquelyIdentifiableSticky<SerialisedInventoryItemState> StateCache => this.stateCache ?? (this.stateCache = new UniquelyIdentifiableSticky<SerialisedInventoryItemState>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(GoodId)
                 .WithName("In good order")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(true)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(BeingRepairedId)
                 .WithName("Being Repaired")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(true)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SlightlyDamagedId)
                 .WithName("Slightly Damaged")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(true)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(DefectiveId)
                 .WithName("Defective")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(true)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(ScrapId)
                 .WithName("Scrap")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(true)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(AvailableId)
                 .WithName("Available")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(false)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(SoldId)
                 .WithName("Sold")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(false)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(InRentId)
                 .WithName("InRent")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(false)
+                .WithIsActive(true)
                 .Build();
 
-            new InventoryItemStateBuilder(this.Session)
+            new SerialisedInventoryItemStateBuilder(this.Session)
                 .WithUniqueId(AssignedId)
                 .WithName("Assigned")
-                .WithIsNonSerialisedState(true)
-                .WithIsSerialisedState(false)
+                .WithIsActive(true)
                 .Build();
         }
     }
