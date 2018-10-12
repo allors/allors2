@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="InventoryItemVariance.cs" company="Allors bvba">
+// <copyright file="InventoryItemTransaction.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,20 +17,20 @@ namespace Allors.Domain
 {
     using System.Linq;
 
-    public partial class InventoryItemVariance
+    public partial class InventoryItemTransaction
     {
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
 
-            derivation.AddDependency(this.InventoryItemWhereInventoryItemVariance, this);
+            derivation.AddDependency(this.InventoryItemWhereInventoryItemTransaction, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (this.InventoryItemWhereInventoryItemVariance.Part.InventoryItemKind.IsSerialized)
+            if (this.InventoryItemWhereInventoryItemTransaction.Part.InventoryItemKind.IsSerialized)
             {
                 if (this.Quantity != 1 && this.Quantity != -1 && this.Quantity != 0)
                 {

@@ -212,9 +212,9 @@ namespace Allors
                 .Build();
 
             var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).WithFacility(facility1).Build();
-            goodInventoryItem1.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            goodInventoryItem1.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
             var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).WithFacility(facility2).Build();
-            goodInventoryItem2.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            goodInventoryItem2.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             var finishedGood2 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)

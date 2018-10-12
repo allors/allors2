@@ -117,8 +117,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -204,7 +204,7 @@ namespace Allors.Domain
                 .Build();
 
             var good1Inventory = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(1).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -310,7 +310,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item3.SalesOrderItemState);
 
-            good1Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -353,7 +353,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item3.SalesOrderItemState);
 
-            good2Inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            good2Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -419,7 +419,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -519,7 +519,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -604,7 +604,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -755,7 +755,7 @@ namespace Allors.Domain
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
-            inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -832,7 +832,7 @@ namespace Allors.Domain
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
-            inventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -879,7 +879,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -892,7 +892,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood2)
                 .Build();
 
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(10).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -950,7 +950,7 @@ namespace Allors.Domain
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityShortFalled);
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -964,7 +964,7 @@ namespace Allors.Domain
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityShortFalled);
 
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -1007,7 +1007,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -1108,7 +1108,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -1212,7 +1212,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -1278,7 +1278,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -2743,8 +2743,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
+            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 
@@ -2824,7 +2824,7 @@ namespace Allors.Domain
             this.Session.Derive();
 
             var partInventory = (NonSerialisedInventoryItem)part.InventoryItemsWherePart[0];
-            partInventory.AddInventoryItemVariance(new InventoryItemVarianceBuilder(this.Session).WithQuantity(100).WithReason(new VarianceReasons(this.Session).Unknown).Build());
+            partInventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
 
             this.Session.Derive();
 

@@ -90,7 +90,7 @@ namespace Allors.Domain
 
             var kinds = new InventoryItemKinds(this.Session);
             var unitsOfMeasure = new UnitsOfMeasure(this.Session);
-            var unknown = new VarianceReasons(this.Session).Unknown;
+            var unknown = new InventoryTransactionReasons(this.Session).Unknown;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
@@ -103,9 +103,9 @@ namespace Allors.Domain
             // Act
             this.Session.Derive(true);
 
-            serialItem1.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
-            serialItem2.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
-            serialItem3.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+            serialItem1.AddInventoryItemTransaction(CreateInventoryVariance(1, unknown));
+            serialItem2.AddInventoryItemTransaction(CreateInventoryVariance(1, unknown));
+            serialItem3.AddInventoryItemTransaction(CreateInventoryVariance(1, unknown));
 
             this.Session.Derive(true);
 
@@ -123,7 +123,7 @@ namespace Allors.Domain
 
             var serialized = new InventoryItemKinds(this.Session).Serialised;
             var piece = new UnitsOfMeasure(this.Session).Piece;
-            var unknown = new VarianceReasons(this.Session).Unknown;
+            var unknown = new InventoryTransactionReasons(this.Session).Unknown;
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
@@ -135,8 +135,8 @@ namespace Allors.Domain
             // Act
             this.Session.Derive(true);
 
-            serialItem1.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
-            serialItem2.AddInventoryItemVariance(CreateInventoryVariance(1, unknown));
+            serialItem1.AddInventoryItemTransaction(CreateInventoryVariance(1, unknown));
+            serialItem2.AddInventoryItemTransaction(CreateInventoryVariance(1, unknown));
 
             this.Session.Derive(true);
 
@@ -172,7 +172,7 @@ namespace Allors.Domain
         private Part CreatePart(string partId, InventoryItemKind kind)
             => new PartBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
 
-        private InventoryItemVariance CreateInventoryVariance(int quantity, VarianceReason reason)
-           => new InventoryItemVarianceBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
+        private InventoryItemTransaction CreateInventoryVariance(int quantity, InventoryTransactionReason reason)
+           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
     }
 }

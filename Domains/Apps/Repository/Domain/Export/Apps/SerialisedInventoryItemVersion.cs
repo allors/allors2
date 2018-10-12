@@ -15,7 +15,7 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public InventoryItemVariance[] InventoryItemVariances { get; set; }
+        public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
 
         public Part Part { get; set; }
 

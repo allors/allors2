@@ -15,7 +15,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToMany)]
         [Workspace]
-        InventoryItemVariance[] InventoryItemVariances { get; set; }
+        InventoryItemTransaction[] InventoryItemTransactions { get; set; }
 
         #region Allors
         [Id("E18AD324-B38C-4603-A1A0-30D7150F5FE6")]

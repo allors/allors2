@@ -122,7 +122,7 @@ namespace Allors.Domain
             // Arrange
             var inventoryItemKinds = new InventoryItemKinds(this.Session);
             var unitsOfMeasure = new UnitsOfMeasure(this.Session);
-            var varianceReasons = new VarianceReasons(this.Session);
+            var varianceReasons = new InventoryTransactionReasons(this.Session);
             var contactMechanisms = new ContactMechanismPurposes(this.Session);
 
             var store = this.Session.Extent<Store>().First;
@@ -133,7 +133,7 @@ namespace Allors.Domain
             var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(5, varianceReasons.Unknown));
+            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(5, varianceReasons.Unknown));
 
             this.Session.Derive(true);
 
@@ -195,7 +195,7 @@ namespace Allors.Domain
             salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(5);
 
             // Re-arrange
-            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(15, varianceReasons.Unknown));
+            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(15, varianceReasons.Unknown));
             
             // Act
             this.Session.Derive(true);
@@ -227,7 +227,7 @@ namespace Allors.Domain
             salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(20);
 
             // Re-arrange
-            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(85, varianceReasons.Unknown));
+            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(85, varianceReasons.Unknown));
             
             // Act
             this.Session.Derive();
@@ -265,7 +265,7 @@ namespace Allors.Domain
             // Arrange
             var inventoryItemKinds = new InventoryItemKinds(this.Session);
             var unitsOfMeasure = new UnitsOfMeasure(this.Session);
-            var varianceReasons = new VarianceReasons(this.Session);
+            var varianceReasons = new InventoryTransactionReasons(this.Session);
             var contactMechanisms = new ContactMechanismPurposes(this.Session);
 
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
@@ -273,7 +273,7 @@ namespace Allors.Domain
             var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(5, varianceReasons.Ruined));  //TODO: Ruined available to ship?
+            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(5, varianceReasons.Ruined));  //TODO: Ruined available to ship?
 
             this.Session.Derive(true);
 
@@ -303,7 +303,7 @@ namespace Allors.Domain
             salesItem.QuantityShortFalled.ShouldEqual(5);
             
             // Rearrange
-            inventoryItem.AddInventoryItemVariance(CreateInventoryVariance(-2, varianceReasons.Unknown));
+            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(-2, varianceReasons.Unknown));
 
             // Act
             this.Session.Derive();
@@ -436,7 +436,7 @@ namespace Allors.Domain
                 .WithActualUnitPrice(unitPrice)
                 .Build();
 
-        private InventoryItemVariance CreateInventoryVariance(int quantity, VarianceReason reason)
-            => new InventoryItemVarianceBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
+        private InventoryItemTransaction CreateInventoryVariance(int quantity, InventoryTransactionReason reason)
+            => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
     }
 }

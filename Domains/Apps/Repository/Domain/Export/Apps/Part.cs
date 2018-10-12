@@ -28,6 +28,19 @@ namespace Allors.Repository
         [Workspace]
         public InternalOrganisation InternalOrganisation { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Default Facility where this Part is stored
+        /// </summary>
+        #region Allors
+        [Id("23EC834E-849F-4CEF-9E22-BE73CCEC18FF")]
+        [AssociationId("9EDEFEEE-AC9E-4858-9A0D-E1674316A3B5")]
+        [RoleId("C4C36290-7AFF-4582-B075-4915340783B6")]
+        #endregion
+        [Indexed]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Facility DefaultFacility { get; set; }
+
         #region Allors
         [Id("5239147e-0829-4250-bdbc-8115e9c19206")]
         [AssociationId("6f267a60-802b-454f-9ac7-762a92746255")]

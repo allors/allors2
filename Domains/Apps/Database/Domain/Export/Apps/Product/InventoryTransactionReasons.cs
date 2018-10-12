@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="VarianceReasons.cs" company="Allors bvba">
+// <copyright file="InventoryTransactionReasons.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,7 +17,7 @@ namespace Allors.Domain
 {
     using System;
 
-    public partial class VarianceReasons
+    public partial class InventoryTransactionReasons
     {
         private static readonly Guid OrderId = new Guid("81D45DC9-03D8-480b-B210-1CC641A9CBD3");
         private static readonly Guid ShipmentId = new Guid("C768FA78-0257-4e2d-B760-EC022D89BACF");
@@ -26,68 +26,88 @@ namespace Allors.Domain
         private static readonly Guid UnknownId = new Guid("7A438996-B2DC-4b6d-8DDD-47690B06D9B6");
         private static readonly Guid RuinedId = new Guid("6790C5D4-7CC6-43c9-9CAC-48227021E7E9");
 
-        private UniquelyIdentifiableSticky<VarianceReason> cache;
+        private UniquelyIdentifiableSticky<InventoryTransactionReason> cache;
 
-        public VarianceReason Order => this.Cache[OrderId];
+        public InventoryTransactionReason Order => this.Cache[OrderId];
 
-        public VarianceReason Shipment => this.Cache[ShipmentId];
+        public InventoryTransactionReason Shipment => this.Cache[ShipmentId];
 
-        public VarianceReason Theft => this.Cache[TheftId];
+        public InventoryTransactionReason Theft => this.Cache[TheftId];
 
-        public VarianceReason Shrinkage => this.Cache[ShrinkageId];
+        public InventoryTransactionReason Shrinkage => this.Cache[ShrinkageId];
 
-        public VarianceReason Unknown => this.Cache[UnknownId];
+        public InventoryTransactionReason Unknown => this.Cache[UnknownId];
 
-        public VarianceReason Ruined => this.Cache[RuinedId];
+        public InventoryTransactionReason Ruined => this.Cache[RuinedId];
 
-        private UniquelyIdentifiableSticky<VarianceReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<VarianceReason>(this.Session));
+        private UniquelyIdentifiableSticky<InventoryTransactionReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InventoryTransactionReason>(this.Session));
 
         protected override void AppsSetup(Setup setup)
         {
             base.AppsSetup(setup);
 
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
+            var serialisedStates = new SerialisedInventoryItemStates(this.Session);
+            var nonSerialisedStates = new NonSerialisedInventoryItemStates(this.Session);
 
-            new VarianceReasonBuilder(this.Session)
+            new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Order")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Bestelling").WithLocale(dutchLocale).Build())
                 .WithUniqueId(OrderId)
                 .WithIsActive(true)
+                .WithIsManualEntryAllowed(false)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
 
-            new VarianceReasonBuilder(this.Session)
+            new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Shipment")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShipmentId)
                 .WithIsActive(true)
+                .WithIsManualEntryAllowed(false)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
             
-            new VarianceReasonBuilder(this.Session)
+            new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Theft")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diefstal").WithLocale(dutchLocale).Build())
                 .WithUniqueId(TheftId)
                 .WithIsActive(true)
+                .WithIsManualEntryAllowed(true)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
             
-            new VarianceReasonBuilder(this.Session)
+            new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Shrinkage")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Inkrimping").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ShrinkageId)
                 .WithIsActive(true)
+                .WithIsManualEntryAllowed(false)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
             
-            new VarianceReasonBuilder(this.Session)
+            new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Unknown")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Onbekend").WithLocale(dutchLocale).Build())
                 .WithUniqueId(UnknownId)
                 .WithIsActive(true)
+                .WithIsManualEntryAllowed(false)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
             
-            new VarianceReasonBuilder(this.Session)
+            new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Ruined")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Vernield").WithLocale(dutchLocale).Build())
                 .WithUniqueId(RuinedId)
                 .WithIsActive(true)
+                .WithIsManualEntryAllowed(false)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Scrap)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Scrap)
                 .Build();
         }
     }
