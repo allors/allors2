@@ -58,7 +58,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Order).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Order).WithPart(finishedGood).Build());
             this.Session.Derive();
             this.Session.Commit();
 
@@ -215,7 +215,7 @@ namespace Allors.Domain
                 .Build();
 
             var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
+            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
 
             this.Session.Derive();
 

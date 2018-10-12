@@ -49,7 +49,7 @@ namespace Allors.Domain
             Assert.Equal(0, finishedGood.QuantityOnHand);
             Assert.Equal(0, inventoryItem.QuantityOnHand);
 
-            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(10, unknown));
+            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(10, unknown, finishedGood));
             this.Session.Derive(true);
 
             Assert.Equal(10, finishedGood.QuantityOnHand);
@@ -69,7 +69,7 @@ namespace Allors.Domain
             var finishedGood = CreatePart("FG1", kinds.Serialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
             var serialItem1 = CreateSerialzedInventoryItem("1", finishedGood);
-            var variance = CreateInventoryVariance(10, unknown);
+            var variance = CreateInventoryVariance(10, unknown, finishedGood);
 
             serialItem1.AddInventoryItemTransaction(variance);
 
@@ -107,7 +107,7 @@ namespace Allors.Domain
         private SerialisedInventoryItem CreateSerialzedInventoryItem(string serialNumber, Part part)
             => new SerialisedInventoryItemBuilder(this.Session).WithSerialNumber(serialNumber).WithPart(part).Build();
 
-        private InventoryItemTransaction CreateInventoryVariance(int quantity, InventoryTransactionReason reason)
-           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).Build();
+        private InventoryItemTransaction CreateInventoryVariance(int quantity, InventoryTransactionReason reason, Part part)
+           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).Build();
     }
 }

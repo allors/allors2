@@ -10,7 +10,7 @@
   <Interface Name="Allors.Domain.InventoryItem">
     <Position X="4.25" Y="2.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAQAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgCAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
