@@ -39,6 +39,7 @@ namespace Allors.Repository
         [Indexed]
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
+        [Required]
         public Facility DefaultFacility { get; set; }
 
         #region Allors
@@ -58,6 +59,9 @@ namespace Allors.Repository
         [Indexed]
         public PartSpecification[] PartSpecifications { get; set; }
 
+        /// <summary>
+        /// Gets or sets the UnitOfMeasure in which this Part is tracked
+        /// </summary>
         #region Allors
         [Id("610f6c8c-0d1d-4c8e-9d3d-a98e17d181b5")]
         [AssociationId("00a2efd5-0a43-4b86-8ce3-2196c2ad7c3d")]
@@ -65,6 +69,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Required]
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region Allors

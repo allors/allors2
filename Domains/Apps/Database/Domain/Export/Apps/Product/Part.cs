@@ -16,6 +16,8 @@
 
 using System.Linq;
 
+using Allors.Meta;
+
 namespace Allors.Domain
 {
     public  partial class Part
@@ -28,6 +30,26 @@ namespace Allors.Domain
             if (!this.ExistInventoryItemKind)
             {
                 this.InventoryItemKind = new InventoryItemKinds(this.Strategy.Session).NonSerialised;
+            }
+
+            if (!this.ExistUnitOfMeasure)
+            {
+                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Piece;
+            }
+
+            if (!this.ExistInternalOrganisation)
+            {
+                var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(o => o.IsInternalOrganisation);
+
+                if (internalOrganisations.Count() == 1)
+                {
+                    this.InternalOrganisation = internalOrganisations.First();
+                }
+            }
+
+            if (!this.ExistDefaultFacility)
+            {
+                this.DefaultFacility = this.InternalOrganisation.FacilitiesWhereOwner.First;
             }
         }
 
@@ -51,36 +73,31 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            var internalOrganisations = new Organisations(this.Strategy.Session).Extent().Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
-
-            if (!this.ExistInternalOrganisation && internalOrganisations.Count() == 1)
+            if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
-                this.InternalOrganisation = internalOrganisations.First();
+                this.SyncDefaultInventoryItem();
             }
 
-            this.DeriveInventoryItem(derivation);
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
         }
 
-        private void DeriveInventoryItem(IDerivation derivation)
+        private void SyncDefaultInventoryItem()
         {
-            if (this.ExistInternalOrganisation && this.ExistInventoryItemKind && this.InventoryItemKind.IsNonSerialized)
-            //if (this.ExistInternalOrganisation && !this.ExistInventoryItemsWherePart && this.ExistInventoryItemKind)
+            //if (this.ExistInternalOrganisation && this.ExistInventoryItemKind && this.InventoryItemKind.IsNonSerialized)
+            if (this.InventoryItemKind.IsNonSerialized)
             {
                 var inventoryItems = this.InventoryItemsWherePart;
 
-                foreach (Facility facility in this.InternalOrganisation.FacilitiesWhereOwner)
+                if (!inventoryItems.Any(i => i.Facility.Equals(this.DefaultFacility) && i.UnitOfMeasure.Equals(this.UnitOfMeasure)))
                 {
-                    if (!inventoryItems.Any(i => i.ExistFacility && i.Facility.Equals(facility)))
-                    {
-                        new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                          .WithPart(this)
-                          .WithFacility(facility)
-                          .Build();
-                    }
+                    new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
+                      .WithPart(this)
+                      .WithFacility(this.DefaultFacility)
+                      .WithUnitOfMeasure(this.UnitOfMeasure)
+                      .Build();
                 }
             }
         }
