@@ -195,7 +195,7 @@
           </mat-card-content>
 
           <mat-card-actions>
-            <button mat-button [routerLink]="['/person/organisation/'+ organisation.id]">Add new</button>
+            <button mat-button (click)="navigation.add(m.Person, organisation)">Add new</button>
           </mat-card-actions>
         </mat-card>
       </div>

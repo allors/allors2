@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Route, Router } from '@angular/router';
 
 import { NavigationItem } from './NavigationItem';
-import { ISessionObject } from 'src/allors/framework';
+import { ISessionObject, ObjectType, MetaObject, MetaObjectType } from 'src/allors/framework';
 
 @Injectable()
 export class NavigationService {
@@ -17,11 +17,26 @@ export class NavigationService {
       .map((route: Route) => new NavigationItem(route));
   }
 
-  overview(...sessionObjects: ISessionObject[]) {
+  overview(sessionObject: ISessionObject) {
 
-    const objectTypeId = sessionObjects[0].objectType.id;
+    const objectTypeId = sessionObject.objectType.id;
     const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'overview');
-    const url = sessionObjects.reduce((acc, v, i) => acc.replace(`:${i}` , v.id) , navigationItem.route.path);
+    const url = navigationItem.route.path.replace(`:id`, sessionObject.id);
+    this.router.navigate([url]);
+  }
+
+  add(objectTypeOrMetaObjectType: ObjectType | MetaObjectType, ...params: ISessionObject[]) {
+    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType._objectType.id;
+    const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'add');
+    const url = navigationItem.route.path;
+    const queryParams = params.reduce((acc, v) => { acc[v.objectType.name] = v.id; return acc; }, {});
+    this.router.navigate([url], { queryParams });
+  }
+
+  edit(sessionObject: ISessionObject) {
+    const objectTypeId = sessionObject.objectType.id;
+    const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'edit');
+    const url = navigationItem.route.path.replace(`:id`, sessionObject.id);
     this.router.navigate([url]);
   }
 

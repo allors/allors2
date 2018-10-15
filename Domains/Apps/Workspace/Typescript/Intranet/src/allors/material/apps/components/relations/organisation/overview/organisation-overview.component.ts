@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, x, Allors } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, x, Allors, NavigationService } from '../../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -52,6 +52,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
+    public navigation: NavigationService,
     public router: Router,
     private errorService: ErrorService,
     private titleService: Title,

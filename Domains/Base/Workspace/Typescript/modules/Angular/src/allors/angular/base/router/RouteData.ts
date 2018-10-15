@@ -1,7 +1,7 @@
 export class RouteData {
   id: string;
   menuType: 'module' | 'page';
-  action: string;
+  action: 'list' | 'overview' | 'add' | 'edit';
   title: string;
   icon: string;
 }
@@ -20,4 +20,12 @@ export function pageListData(fields: Partial<RouteData>): Partial<RouteData> {
 
 export function overviewData(fields: Partial<RouteData>): Partial<RouteData> {
   return Object.assign({ action: 'overview' }, fields);
+}
+
+export function addData(fields: Partial<RouteData>): Partial<RouteData> {
+  return Object.assign({ action: 'add' }, fields);
+}
+
+export function editData(fields: Partial<RouteData>): Partial<RouteData> {
+  return Object.assign({ action: 'edit' }, fields);
 }

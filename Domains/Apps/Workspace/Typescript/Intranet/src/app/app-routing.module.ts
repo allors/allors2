@@ -14,7 +14,7 @@ import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ids } from '../allors/meta/generated';
-import { moduleData, pageListData, overviewData } from '../allors/angular';
+import { moduleData, pageListData, overviewData, editData, addData } from '../allors/angular';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -30,21 +30,15 @@ export const routes: Routes = [
         path: 'relations', data: moduleData({ title: 'Relations', icon: 'dashboard' }),
         children: [
           { path: 'people', data: pageListData({ id: ids.Person, icon: 'people' }), component: relations.PersonListComponent, },
-          { path: 'person/:0', data: overviewData({ id: ids.Person }), component: relations.PersonOverviewComponent },
+          { path: 'person/:id', data: overviewData({ id: ids.Person }), component: relations.PersonOverviewComponent },
           { path: 'organisations', data: pageListData({ id: ids.Organisation, icon: 'business' }), component: relations.OrganisationListComponent },
           { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: relations.OrganisationOverviewComponent },
           { path: 'communicationevents', data: pageListData({ id: ids.CommunicationEvent, icon: 'share' }), component: relations.CommunicationEventsOverviewComponent },
           { path: 'party/:id/communicationevent/:roleId', data: overviewData({ id: ids.CommunicationEvent }), component: relations.CommunicationEventOverviewComponent },
         ],
       },
-      {
-        path: 'person',
-        children: [
-          { path: '', component: relations.PersonEditComponent },
-          { path: ':id', component: relations.PersonEditComponent },
-          { path: 'organisation/:organisationId', component: relations.PersonEditComponent },
-        ],
-      },
+      { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent},
+      { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent},
       {
         path: 'export',
         children: [

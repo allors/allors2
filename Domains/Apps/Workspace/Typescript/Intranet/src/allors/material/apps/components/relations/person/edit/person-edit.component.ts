@@ -72,8 +72,8 @@ export class PersonEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const organisationId: string = this.route.snapshot.paramMap.get('organisationId');
+          const id = this.route.snapshot.paramMap.get('id');
+          const organisationId = this.route.snapshot.queryParamMap.get('Organisation');
 
           let pulls = [
             this.fetcher.internalOrganisation,
