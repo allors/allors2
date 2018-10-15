@@ -49,7 +49,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, Allors, AllorsFocusModule, AllorsModule
+  DatabaseConfig, DatabaseService, WorkspaceService, ErrorService, LoggingService, MediaService, MenuService, PdfService, Allors, AllorsFocusModule, AllorsModule, NavigationService
 } from '../allors/angular';
 
 import {
@@ -63,7 +63,6 @@ const ALLORS_MATERIAL_MODULES: any[] = [
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialDatetimepickerModule, AllorsMaterialDialogModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule,
   AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
 ];
-
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -114,6 +113,7 @@ const ALLORS_MATERIAL_MODULES: any[] = [
     ConfigService,
     MediaService,
     MenuService,
+    NavigationService,
     PdfService,
   ],
 })

@@ -1,5 +1,5 @@
-import { ChangeDetectorRef , Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
+import { Injectable } from '@angular/core';
+import { Route, Router } from '@angular/router';
 
 import { MenuItem } from './MenuItem';
 
@@ -13,9 +13,9 @@ export class MenuService {
 
   constructor(private router: Router) {
 
-    this.menuItemByRoute = new Map();
     this.modules = [];
     this.pagesByModule = new Map();
+    this.menuItemByRoute = new Map();
 
     this.menuItems = this.router.config.map((route: Route) => new MenuItem(this.menuItemByRoute, this.modules, this.pagesByModule, route));
   }

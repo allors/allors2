@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, MediaService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InventoryItemVariance, Locale, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VarianceReason, VatRate, VendorProduct } from '../../../../../domain';
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Locale, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VatRate, VendorProduct } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
@@ -37,7 +37,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public selectedBrand: Brand;
   public models: Model[];
   public selectedModel: Model;
-  public varianceReasons: VarianceReason[];
+  // public varianceReasons: VarianceReason[];
   public inventoryItemKinds: InventoryItemKind[];
   public inventoryItems: NonSerialisedInventoryItem[];
   public inventoryItem: NonSerialisedInventoryItem;
@@ -121,12 +121,13 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             //   path: new Path({ step: this.m.Product.SupplierOfferingsWhereProduct }),
             // }),
             pull.VatRate(),
-            pull.VarianceReason(
-              {
-                predicate: new Equals({ propertyType: m.VarianceReason.IsActive, value: true }),
-                sort: new Sort(m.VarianceReason.Name),
-              }
-            ),
+            // TODO:
+            // pull.VarianceReason(
+            //   {
+            //     predicate: new Equals({ propertyType: m.VarianceReason.IsActive, value: true }),
+            //     sort: new Sort(m.VarianceReason.Name),
+            //   }
+            // ),
             pull.InventoryItemKind({ sort: new Sort(m.InventoryItemKind.Name) }),
             pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
             pull.ProductCategory(),
@@ -142,7 +143,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 this.good = loaded.objects.good as Good;
                 this.categories = loaded.collections.productCategories as ProductCategory[];
                 this.productTypes = loaded.collections.productTypes as ProductType[];
-                this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
+                // this.varianceReasons = loaded.collections.varianceReasons as VarianceReason[];
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.brands = loaded.collections.brands as Brand[];
                 this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];

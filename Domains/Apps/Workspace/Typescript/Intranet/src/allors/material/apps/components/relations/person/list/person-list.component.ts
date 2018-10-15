@@ -9,7 +9,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter } from '../../../../../../framework';
-import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
@@ -48,8 +48,8 @@ export class PersonListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: Allors,
     @Self() private filterService: AllorsFilterService,
+    public navigationService: NavigationService,
     public mediaService: MediaService,
-    public router: Router,
     private errorService: ErrorService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
@@ -62,7 +62,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
-
   }
 
   public ngOnInit(): void {
@@ -206,10 +205,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
           }
         });
     }
-  }
-
-  public onView(person: Person): void {
-    this.router.navigate(['/relations/person/' + person.id]);
   }
 
   public addNew() {

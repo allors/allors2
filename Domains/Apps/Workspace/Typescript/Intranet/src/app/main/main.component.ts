@@ -2,7 +2,7 @@ import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 
 import { Subscription } from 'rxjs';
-import { switchMap, filter, tap } from 'rxjs/operators';
+import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
 import { MenuService, Loaded, Allors } from '../../allors/angular';

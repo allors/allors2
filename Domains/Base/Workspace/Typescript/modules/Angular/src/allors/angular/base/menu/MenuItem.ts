@@ -1,4 +1,5 @@
-import { ActivatedRoute, NavigationEnd, Route, Router } from '@angular/router';
+import { Route } from '@angular/router';
+import { RouteData } from '../router/RouteData';
 
 export class MenuItem {
   public route: Route;
@@ -32,9 +33,10 @@ export class MenuItem {
 
     this.parent = parent;
     if (route.data) {
-      this.type = route.data.type;
-      this.title = route.data.title || route.path;
-      this.icon = route.data.icon;
+      const data = route.data as RouteData;
+      this.type = data.menuType;
+      this.title = data.title || route.path;
+      this.icon = data.icon;
     }
 
     if (!parent) {

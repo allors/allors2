@@ -13,8 +13,9 @@ import { LoginComponent } from './auth/login.component';
 import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { ids } from '../allors/meta/generated';
+import { moduleData, pageListData, overviewData } from '../allors/angular';
 
-// tslint:disable:object-literal-sort-keys
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -22,18 +23,18 @@ export const routes: Routes = [
     path: '', component: MainComponent,
     children: [
       {
-        path: '', component: DashboardComponent, data: { type: 'module', title: 'Home', icon: 'home' },
+        path: '', data: moduleData({ title: 'Home', icon: 'home' }), component: DashboardComponent,
       },
       // Relations
       {
-        path: 'relations', data: { type: 'module', title: 'Relations', icon: 'dashboard' },
+        path: 'relations', data: moduleData({ title: 'Relations', icon: 'dashboard' }),
         children: [
-          { path: 'people', component: relations.PersonListComponent, data: { type: 'page', title: 'People', icon: 'people' }},
-          { path: 'person/:id', component: relations.PersonOverviewComponent },
-          { path: 'organisations', component: relations.OrganisationListComponent, data: { type: 'page', title: 'Organisations', icon: 'business' } },
-          { path: 'organisation/:id', component: relations.OrganisationOverviewComponent },
-          { path: 'communicationevents', component: relations.CommunicationEventsOverviewComponent, data: { type: 'page', title: 'Communications', icon: 'share' } },
-          { path: 'party/:id/communicationevent/:roleId', component: relations.CommunicationEventOverviewComponent },
+          { path: 'people', data: pageListData({ id: ids.Person, icon: 'people' }), component: relations.PersonListComponent, },
+          { path: 'person/:0', data: overviewData({ id: ids.Person }), component: relations.PersonOverviewComponent },
+          { path: 'organisations', data: pageListData({ id: ids.Organisation, icon: 'business' }), component: relations.OrganisationListComponent },
+          { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: relations.OrganisationOverviewComponent },
+          { path: 'communicationevents', data: pageListData({ id: ids.CommunicationEvent, icon: 'share' }), component: relations.CommunicationEventsOverviewComponent },
+          { path: 'party/:id/communicationevent/:roleId', data: overviewData({ id: ids.CommunicationEvent }), component: relations.CommunicationEventOverviewComponent },
         ],
       },
       {
@@ -89,13 +90,13 @@ export const routes: Routes = [
 
       // Orders
       {
-        path: 'orders', data: { type: 'module', title: 'Orders', icon: 'share' },
+        path: 'orders', data: moduleData({ title: 'Orders', icon: 'share' }),
         children: [
-          { path: 'requests', component: orders.RequestsOverviewComponent, data: { type: 'page', title: 'Requests', icon: 'share' } },
+          { path: 'requests', data: pageListData({ id: ids.Request, icon: 'share' }), component: orders.RequestsOverviewComponent },
           { path: 'request/:id', component: orders.RequestOverviewComponent },
-          { path: 'productQuotes', component: orders.ProductQuotesOverviewComponent, data: { type: 'page', title: 'Quotes', icon: 'share' } },
+          { path: 'productQuotes', data: pageListData({ id: ids.Quote, icon: 'share' }), component: orders.ProductQuotesOverviewComponent },
           { path: 'productQuote/:id', component: orders.ProductQuoteOverviewComponent },
-          { path: 'salesOrders', component: orders.SalesOrdersOverviewComponent, data: { type: 'page', title: 'Orders', icon: 'share' } },
+          { path: 'salesOrders', data: pageListData({ id: ids.SalesOrder, icon: 'share' }), component: orders.SalesOrdersOverviewComponent },
           { path: 'salesOrder/:id', component: orders.SalesOrderOverviewComponent },
         ],
       },
@@ -135,13 +136,13 @@ export const routes: Routes = [
 
       // Catalogues
       {
-        path: 'catalogues', data: { type: 'module', title: 'Catalogues', icon: 'share' },
+        path: 'catalogues', data: moduleData({ title: 'Catalogues', icon: 'share' }),
         children: [
-          { path: 'catalogues', component: catalogues.CataloguesOverviewComponent, data: { type: 'page', title: 'Catalogues', icon: 'share' } },
-          { path: 'categories', component: catalogues.CategoriesOverviewComponent, data: { type: 'page', title: 'Categories', icon: 'share' } },
-          { path: 'goods', component: catalogues.GoodsOverviewComponent, data: { type: 'page', title: 'Products', icon: 'share' } },
-          { path: 'productCharacteristics', component: catalogues.ProductCharacteristicsOverviewComponent, data: { type: 'page', title: 'Product Characteristics', icon: 'share' } },
-          { path: 'productTypes', component: catalogues.ProductTypesOverviewComponent, data: { type: 'page', title: 'Product Types', icon: 'share' } },
+          { path: 'catalogues', data: pageListData({ id: ids.Catalogue, icon: 'share' }), component: catalogues.CataloguesOverviewComponent },
+          { path: 'categories', data: pageListData({ id: ids.ProductCategory, icon: 'share' }), component: catalogues.CategoriesOverviewComponent },
+          { path: 'goods', data: pageListData({ id: ids.Product, icon: 'share' }), component: catalogues.GoodsOverviewComponent },
+          { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedInventoryItemCharacteristicType, icon: 'share' }), component: catalogues.ProductCharacteristicsOverviewComponent },
+          { path: 'productTypes', data: pageListData({ id: ids.ProductType, icon: 'share' }), component: catalogues.ProductTypesOverviewComponent },
         ],
       },
       {
@@ -189,9 +190,9 @@ export const routes: Routes = [
 
       // Accounts Payable
       {
-        path: 'accountspayable', data: { type: 'module', title: 'Accounts Payable', icon: 'dashboard' },
+        path: 'accountspayable', data: moduleData({ title: 'Accounts Payable', icon: 'dashboard' }),
         children: [
-          { path: 'invoices', component: ap.InvoicesOverviewComponent, data: { type: 'page', title: 'Invoices', icon: 'attach_money' } },
+          { path: 'invoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: ap.InvoicesOverviewComponent },
           { path: 'invoice/:id', component: ap.InvoiceOverviewComponent },
         ],
       },
@@ -207,9 +208,9 @@ export const routes: Routes = [
 
       // Accounts Receivable
       {
-        path: 'accountsreceivable', data: { type: 'module', title: 'Accounts Receivable', icon: 'dashboard' },
+        path: 'accountsreceivable', data: moduleData({ title: 'Accounts Receivable', icon: 'dashboard' }),
         children: [
-          { path: 'invoices', component: ar.InvoicesOverviewComponent, data: { type: 'page', title: 'Invoices', icon: 'attach_money' } },
+          { path: 'invoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: ar.InvoicesOverviewComponent },
           { path: 'invoice/:id', component: ar.InvoiceOverviewComponent },
         ],
       },
@@ -233,10 +234,10 @@ export const routes: Routes = [
 
       // WorkEfforts
       {
-        path: 'workefforts', data: { type: 'module', title: 'Work Efforts', icon: 'work' },
+        path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
         children: [
           { path: '', component: workefforts.WorkEffortsOverviewComponent },
-          { path: 'worktasks', component: workefforts.WorkTasksOverviewComponent, data: { type: 'page', title: 'Tasks', icon: 'timer' } },
+          { path: 'worktasks', data: pageListData({ id: ids.Task, icon: 'timer' }), component: workefforts.WorkTasksOverviewComponent },
           { path: 'worktask/:id', component: workefforts.WorkTaskOverviewComponent },
         ],
       },
@@ -251,9 +252,9 @@ export const routes: Routes = [
     ],
   },
 ];
-// tslint:enable:object-literal-sort-keys
+
 @NgModule({
-  exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

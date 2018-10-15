@@ -41,6 +41,7 @@ export {
     $meta.WorkspaceComposites:{composite|	Meta$composite$}; separator=",\n"$
 } from './domain.g';
 
+export { ids} from './population.g';
 export { data } from './population.g';
 export * from './tree.g';
 export * from './fetch.g';
@@ -201,7 +202,11 @@ population(meta) ::= <<
 
 import { Data } from '../../framework';
 
-export let data: Data = {
+export const ids = {
+$meta.WorkspaceComposites:{composite|    $composite.Name$: '$composite.IdAsNumberString$',}; separator="\n"$
+};
+
+export const data: Data = {
     domains:
     [
 $meta.SortedDomains:{domain|            '$domain.Name$',}; separator="\n"$
@@ -220,7 +225,7 @@ $meta.WorkspaceClasses:{class|$class(class)$}; separator=" "$
 
 interface(interface) ::= <<
     {
-        id: '$interface.IdAsNumberString$',
+        id: ids.$interface.Name$,
         name: '$interface.Name$',
         plural: '$interface.PluralName$',
         interfaces:
@@ -255,7 +260,7 @@ $endif$
 
 class(class) ::= <<
     {
-        id: '$class.IdAsNumberString$',
+        id: ids.$class.Name$,
         name: '$class.Name$',
         plural: '$class.PluralName$',
         interfaces:
