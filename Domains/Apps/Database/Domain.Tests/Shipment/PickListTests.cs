@@ -21,6 +21,7 @@
 
 namespace Allors.Domain
 {
+    using Should;
     using System;
     using Meta;
     using Xunit;
@@ -175,15 +176,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
-            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
-            good2Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build());
-
-            this.Session.Derive();
+            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart.First;
+            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart.First;
 
             var colorWhite = new ColourBuilder(this.Session)
                 .WithName("white")
@@ -335,13 +334,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
-            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
-
-            this.Session.Derive();
-
-            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
-            good2Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -393,7 +387,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenSalesOrder_WhenShipmentIsCreated_ThenOrdertemsAreAddedToPickList()
+        public void GivenSalesOrder_WhenShipmentIsCreated_ThenOrderItemsAreAddedToPickList()
         {
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
@@ -477,15 +471,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
-            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood1).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
-            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
-            good2Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood2).Build());
-
-            this.Session.Derive();
+            var good1Inventory = finishedGood1.InventoryItemsWherePart.First;
+            var good2Inventory = finishedGood2.InventoryItemsWherePart.First;
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
@@ -495,6 +487,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
             var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+
             order.AddSalesOrderItem(item1);
             order.AddSalesOrderItem(item2);
             order.AddSalesOrderItem(item3);
@@ -507,15 +500,15 @@ namespace Allors.Domain
 
             var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
-            Assert.Equal(2, pickList.PickListItems.Count);
+            pickList.PickListItems.Count.ShouldEqual(2);
 
             var extent1 = pickList.PickListItems;
             extent1.Filter.AddEquals(M.PickListItem.InventoryItem, good1Inventory);
-            Assert.Equal(3, extent1.First.RequestedQuantity);
+            extent1.First.RequestedQuantity.ShouldEqual(3);
 
             var extent2 = pickList.PickListItems;
             extent2.Filter.AddEquals(M.PickListItem.InventoryItem, good2Inventory);
-            Assert.Equal(5, extent2.First.RequestedQuantity);
+            extent2.First.RequestedQuantity.ShouldEqual(5);
         }
 
         [Fact]
@@ -601,13 +594,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart[0];
-            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood1).Build());
-
-            this.Session.Derive();
-
-            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart[0];
-            good2Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -619,6 +607,7 @@ namespace Allors.Domain
             var item1 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(1).WithActualUnitPrice(15).Build();
             var item2 = new SalesOrderItemBuilder(this.Session).WithProduct(good1).WithQuantityOrdered(2).WithActualUnitPrice(15).Build();
             var item3 = new SalesOrderItemBuilder(this.Session).WithProduct(good2).WithQuantityOrdered(5).WithActualUnitPrice(15).Build();
+
             order1.AddSalesOrderItem(item1);
             order1.AddSalesOrderItem(item2);
             order1.AddSalesOrderItem(item3);
@@ -652,10 +641,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(1, customer.ShipmentsWhereBillToParty.Count);
+            customer.ShipmentsWhereBillToParty.Count.ShouldEqual(1);
 
             var customerShipment = (CustomerShipment)customer.ShipmentsWhereBillToParty.First;
-            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, customerShipment.CustomerShipmentState);
+            customerShipment.CustomerShipmentState.ShouldEqual(new CustomerShipmentStates(this.Session).Picked);
         }
     }
 }

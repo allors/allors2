@@ -23,8 +23,6 @@ namespace Allors.Repository
 
         public Guid UniqueId { get; set; }
 
-        public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
-
         public Part Part { get; set; }
 
         public string Name { get; set; }

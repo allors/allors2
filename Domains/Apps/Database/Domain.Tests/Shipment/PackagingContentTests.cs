@@ -72,13 +72,8 @@ namespace Allors.Domain
                 .WithPart(finishedGood2)
                 .Build();
 
-            var good1inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            good1inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood1).Build());
-
-            this.Session.Derive();
-
-            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
-            good2inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -154,13 +149,8 @@ namespace Allors.Domain
                 .WithPart(finishedGood2)
                 .Build();
 
-            var good1inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            good1inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood1).Build());
-
-            this.Session.Derive();
-
-            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
-            good2inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Ruined).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 

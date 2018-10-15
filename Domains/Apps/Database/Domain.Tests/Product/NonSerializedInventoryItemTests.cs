@@ -132,8 +132,7 @@ namespace Allors.Domain
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(5, varianceReasons.Unknown, finishedGood));
+            CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
 
             this.Session.Derive(true);
 
@@ -195,7 +194,7 @@ namespace Allors.Domain
             salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(5);
 
             // Re-arrange
-            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(15, varianceReasons.Unknown, finishedGood));
+            CreateInventoryTransaction(15, varianceReasons.Unknown, finishedGood);
             
             // Act
             this.Session.Derive(true);
@@ -227,7 +226,7 @@ namespace Allors.Domain
             salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(20);
 
             // Re-arrange
-            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(85, varianceReasons.Unknown, finishedGood));
+            CreateInventoryTransaction(85, varianceReasons.Unknown, finishedGood);
             
             // Act
             this.Session.Derive();
@@ -272,8 +271,7 @@ namespace Allors.Domain
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = CreatePart("1", inventoryItemKinds.NonSerialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(5, varianceReasons.Ruined, finishedGood));  //TODO: Ruined available to ship?
+            CreateInventoryTransaction(5, varianceReasons.Unknown, finishedGood);
 
             this.Session.Derive(true);
 
@@ -303,7 +301,7 @@ namespace Allors.Domain
             salesItem.QuantityShortFalled.ShouldEqual(5);
             
             // Rearrange
-            inventoryItem.AddInventoryItemTransaction(CreateInventoryVariance(-2, varianceReasons.Unknown, finishedGood));
+            CreateInventoryTransaction(-2, varianceReasons.Unknown, finishedGood);
 
             // Act
             this.Session.Derive();
@@ -436,7 +434,7 @@ namespace Allors.Domain
                 .WithActualUnitPrice(unitPrice)
                 .Build();
 
-        private InventoryItemTransaction CreateInventoryVariance(int quantity, InventoryTransactionReason reason, Part part)
+        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part)
             => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).Build();
     }
 }

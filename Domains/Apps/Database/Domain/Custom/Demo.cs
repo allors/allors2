@@ -211,8 +211,7 @@ namespace Allors
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
-            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).WithFacility(facility1).Build();
-            goodInventoryItem1.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
             var finishedGood2 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)

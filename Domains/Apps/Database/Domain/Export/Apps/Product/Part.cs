@@ -86,17 +86,16 @@ namespace Allors.Domain
 
         private void SyncDefaultInventoryItem()
         {
-            //if (this.ExistInternalOrganisation && this.ExistInventoryItemKind && this.InventoryItemKind.IsNonSerialized)
             if (this.InventoryItemKind.IsNonSerialized)
             {
                 var inventoryItems = this.InventoryItemsWherePart;
 
                 if (!inventoryItems.Any(i => i.Facility.Equals(this.DefaultFacility) && i.UnitOfMeasure.Equals(this.UnitOfMeasure)))
                 {
-                    new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
-                      .WithPart(this)
+                    var inventoryItem = (InventoryItem)new NonSerialisedInventoryItemBuilder(this.Strategy.Session)
                       .WithFacility(this.DefaultFacility)
                       .WithUnitOfMeasure(this.UnitOfMeasure)
+                      .WithPart(this)
                       .Build();
                 }
             }

@@ -75,7 +75,7 @@ namespace Allors.Domain
                 return;  // This Inventorty Item's State is not counted for On-Hand inventory
             }
 
-            foreach (InventoryItemTransaction inventoryItemVariance in this.InventoryItemTransactions)
+            foreach (InventoryItemTransaction inventoryItemVariance in this.InventoryItemTransactionsWhereInventoryItem)
             {
                 this.QuantityOnHand += inventoryItemVariance.Quantity;
             }

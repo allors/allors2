@@ -22,7 +22,7 @@ namespace Allors.Repository
         Part Part { get; set; }
 
         /// <summary>
-        /// Gets or sets the Facility at which this InventoryItems tracks inventory information
+        /// Gets or sets the Facility at which this InventoryItem tracks inventory information
         /// </summary>
         #region Allors
         [Id("BC234CEA-DC2E-4BDC-B911-5A12D1D6F354")]
@@ -71,15 +71,5 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         Lot Lot { get; set; }
-
-        #region Allors
-        [Id("9ADBF0A8-5676-430A-8242-97660692A1F6")]
-        [AssociationId("F8A66D91-2CED-4252-9B83-55519491BF79")]
-        [RoleId("3A57D8C7-7D7E-44D9-9482-12C74393B0DC")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Workspace]
-        InventoryItemTransaction[] InventoryItemTransactions { get; set; }
     }
 }

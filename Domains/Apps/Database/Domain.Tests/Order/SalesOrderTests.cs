@@ -117,8 +117,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithPart(finishedGood1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithPart(finishedGood2).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithPart(finishedGood1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithPart(finishedGood2).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
             this.Session.Derive();
 
@@ -203,8 +203,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood1)
                 .Build();
 
-            var good1Inventory = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood1).Build();
-            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
 
             this.Session.Derive();
 
@@ -216,8 +215,6 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .WithPart(finishedGood2)
                 .Build();
-
-            var good2Inventory = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -310,7 +307,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item3.SalesOrderItemState);
 
-            good1Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
 
             this.Session.Derive();
 
@@ -353,7 +350,7 @@ namespace Allors.Domain
             Assert.Equal(new SalesOrderItemStates(this.Session).Finished, item2.SalesOrderItemState);
             Assert.Equal(new SalesOrderItemStates(this.Session).InProcess, item3.SalesOrderItemState);
 
-            good2Inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -418,8 +415,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -518,8 +514,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -603,8 +598,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -709,8 +703,6 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventory = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -755,7 +747,7 @@ namespace Allors.Domain
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
-            inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -786,8 +778,6 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventory = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var shipToMechelen = new PartyContactMechanismBuilder(this.Session)
@@ -832,7 +822,7 @@ namespace Allors.Domain
             Assert.Equal(0, item.QuantityPendingShipment);
             Assert.Equal(10, item.QuantityShortFalled);
 
-            inventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -879,7 +869,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
 
             this.Session.Derive();
 
@@ -892,7 +882,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood2)
                 .Build();
 
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -950,7 +940,7 @@ namespace Allors.Domain
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityShortFalled);
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
 
             this.Session.Derive();
 
@@ -964,7 +954,7 @@ namespace Allors.Domain
             Assert.Equal(0, item2.QuantityPendingShipment);
             Assert.Equal(10, item2.QuantityShortFalled);
 
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -1006,8 +996,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -1107,8 +1096,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
 
@@ -1211,8 +1199,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -1277,10 +1264,11 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
+
+            var inventoryItem = (NonSerialisedInventoryItem)finishedGood.InventoryItemsWherePart.First;
 
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var mechelenAddress = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
@@ -2743,8 +2731,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            finishedGood1.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build());
-            finishedGood2.InventoryItemsWherePart.First.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
 
             this.Session.Derive();
 
@@ -2823,8 +2811,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var partInventory = (NonSerialisedInventoryItem)part.InventoryItemsWherePart[0];
-            partInventory.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(part).Build();
 
             this.Session.Derive();
 

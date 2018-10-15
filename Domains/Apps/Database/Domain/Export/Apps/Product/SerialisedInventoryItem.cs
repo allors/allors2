@@ -97,8 +97,8 @@ namespace Allors.Domain
         public string DeriveDetails()
         {
             var builder = new StringBuilder();
-
-            if (this.ExistPart && this.Part.ExistManufacturedBy)
+            
+            if (this.Part != null && this.Part.ExistManufacturedBy)
             {
                 builder.Append($", Manufacturer: {this.Part.ManufacturedBy.PartyName}");
             }

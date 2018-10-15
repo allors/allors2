@@ -864,8 +864,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart[0];
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -995,8 +994,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart[0];
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1102,8 +1100,7 @@ namespace Allors.Domain
 
             this.SetIdentity("admin");
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart[0];
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(1).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1156,8 +1153,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1195,8 +1191,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1267,8 +1262,7 @@ namespace Allors.Domain
             var store = this.Session.Extent<Store>().First;
             store.IsImmediatelyPicked = false;
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1308,8 +1302,7 @@ namespace Allors.Domain
 
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.Session.Instantiate(this.good.Part.InventoryItemsWherePart[0]);
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1364,8 +1357,7 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
-            var good1InventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(testPart).Build();
-            good1InventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(testPart).Build();
 
             var item = new SalesOrderItemBuilder(this.Session)
                 .WithProduct(testgood)
@@ -1567,8 +1559,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1605,8 +1596,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1654,8 +1644,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenOrderItemWithPendingShipmentAndPendingPickList_WhenOrderItemIsCancelled_ThenPickListQuantityAndShipmentQuantityAreDecreased()
         {
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1673,8 +1662,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var good2inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            good2inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -1745,8 +1733,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1790,8 +1777,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1843,8 +1829,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(3).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(3).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 
@@ -1887,8 +1872,7 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var inventoryItem = (NonSerialisedInventoryItem)this.part.InventoryItemsWherePart.First;
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(this.part).Build();
 
             this.Session.Derive();
 

@@ -25,6 +25,7 @@ namespace Allors.Domain
         private static readonly Guid ShrinkageId = new Guid("CF6CCC79-7EE8-4755-A9C3-EC9A83649B55");
         private static readonly Guid UnknownId = new Guid("7A438996-B2DC-4b6d-8DDD-47690B06D9B6");
         private static readonly Guid RuinedId = new Guid("6790C5D4-7CC6-43c9-9CAC-48227021E7E9");
+        private static readonly Guid PhysicalCountId = new Guid("971D0321-A86D-450C-ADAA-18B3C2114714");
 
         private UniquelyIdentifiableSticky<InventoryTransactionReason> cache;
 
@@ -39,6 +40,8 @@ namespace Allors.Domain
         public InventoryTransactionReason Unknown => this.Cache[UnknownId];
 
         public InventoryTransactionReason Ruined => this.Cache[RuinedId];
+
+        public InventoryTransactionReason PhysicalCount => this.Cache[PhysicalCountId];
 
         private UniquelyIdentifiableSticky<InventoryTransactionReason> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<InventoryTransactionReason>(this.Session));
 
@@ -108,6 +111,15 @@ namespace Allors.Domain
                 .WithIsManualEntryAllowed(false)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Scrap)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Scrap)
+                .Build();
+
+            new InventoryTransactionReasonBuilder(this.Session)
+                .WithName("Physical Count")
+                .WithUniqueId(PhysicalCountId)
+                .WithIsActive(true)
+                .WithIsManualEntryAllowed(true)
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
         }
     }

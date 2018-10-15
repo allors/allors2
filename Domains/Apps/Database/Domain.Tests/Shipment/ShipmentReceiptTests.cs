@@ -57,11 +57,12 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Order).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Order).WithPart(finishedGood).Build();
+
             this.Session.Derive();
             this.Session.Commit();
 
+            var inventoryItem = finishedGood.InventoryItemsWherePart.First;
             var builder = new ShipmentReceiptBuilder(this.Session);
             builder.Build();
 
@@ -214,10 +215,11 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            var inventoryItem = new NonSerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood).Build();
-            inventoryItem.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build());
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
 
             this.Session.Derive();
+
+            var inventoryItem = finishedGood.InventoryItemsWherePart.First;
 
             var order1 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)

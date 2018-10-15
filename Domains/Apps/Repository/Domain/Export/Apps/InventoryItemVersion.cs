@@ -8,16 +8,6 @@ namespace Allors.Repository
     public partial interface InventoryItemVersion : Version, Deletable
     {
         #region Allors
-        [Id("2C73BA77-C8EA-455D-A541-7425D01FABB4")]
-        [AssociationId("D5BC1071-2E4D-4481-9144-7304529888E0")]
-        [RoleId("CE7D79D7-534B-4AEF-ADB9-0EB3BFD544F3")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        InventoryItemTransaction[] InventoryItemTransactions { get; set; }
-
-        #region Allors
         [Id("E18AD324-B38C-4603-A1A0-30D7150F5FE6")]
         [AssociationId("0E687A2F-9275-4071-8F8B-CED011A0F58D")]
         [RoleId("68F707E3-A869-4199-BE14-B6DCC3586881")]

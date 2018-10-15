@@ -212,10 +212,8 @@ namespace Intranet.Tests
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
-            var goodInventoryItem1 = new NonSerialisedInventoryItemBuilder(this.session).WithPart(finishedGood1).WithFacility(facility1).Build();
-            goodInventoryItem1.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.session).Unknown).Build());
-            var goodInventoryItem2 = new NonSerialisedInventoryItemBuilder(this.session).WithPart(finishedGood2).WithFacility(facility2).Build();
-            goodInventoryItem2.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.session).Unknown).Build());
+            new InventoryItemTransactionBuilder(this.session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.session).Unknown).Build();
+            new InventoryItemTransactionBuilder(this.session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.session).Unknown).Build();
 
             var good2 = new GoodBuilder(this.session)
                 .WithName("Tiny red round gizmo")

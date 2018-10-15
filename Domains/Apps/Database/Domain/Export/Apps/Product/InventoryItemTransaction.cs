@@ -24,46 +24,65 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.AddDependency(this.InventoryItemWhereInventoryItemTransaction, this);
+            derivation.AddDependency(this.InventoryItem, this);
         }
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (this.InventoryItemWhereInventoryItemTransaction.Part.InventoryItemKind.IsSerialized)
+            if (!this.ExistFacility)
+            {
+                this.Facility = this.Part.DefaultFacility;
+            }
+
+            if (!this.ExistUnitOfMeasure)
+            {
+                this.UnitOfMeasure = this.Part.UnitOfMeasure;
+            }
+
+            if (this.Part.InventoryItemKind.IsSerialized)
             {
                 if (this.Quantity != 1 && this.Quantity != -1 && this.Quantity != 0)
                 {
                     var message = "Serialized Inventory Items only accept Quantities of -1, 0, and 1.";
                     derivation.Validation.AddError(this, this.Meta.Quantity, message);
                 }
+
+                if (!this.ExistSerialNumber)  // TODO: Serialised Item vs. Serialised Inventory Item
+                {
+                    var message = "The Serial Number is required for Inventory Item Transactions involving Serialised Inventory Items.";
+                    derivation.Validation.AddError(this, this.Meta.SerialNumber, message);
+                }
             }
 
-            //this.AttachToInventoryItem(derivation);
+            this.AttachToInventoryItem(derivation);
         }
 
         private void AttachToInventoryItem(IDerivation derivation)
         {
             // Match on required properties
             bool matched = false;
-            bool possibleMatches = true;
-
-            var inventoryItems = this.Part.InventoryItemsWherePart.ToArray();
-            var matchingItems = inventoryItems.Where(i => i.Facility.Equals(this.Facility));
-            possibleMatches = matchingItems.Count() > 0;
+            var matchingItems = this.Part.InventoryItemsWherePart.ToArray();
+            bool possibleMatches = matchingItems.Length > 0;
 
             if (possibleMatches)
             {
-                matchingItems = matchingItems.Where(m => m.UnitOfMeasure.Equals(this.UnitOfMeasure));
-                possibleMatches = matchingItems.Count() > 0;
+                matchingItems = matchingItems.Where(i => i.Facility.Equals(this.Facility)).ToArray();
+                possibleMatches = (matchingItems != null) && (matchingItems.Length > 0);
+            }
+
+            if (possibleMatches)
+            {
+                matchingItems = matchingItems.Where(m => m.UnitOfMeasure.Equals(this.UnitOfMeasure)).ToArray();
+                possibleMatches = matchingItems.Length > 0;
             }
 
             // Match on optional properties
-            if (possibleMatches && this.ExistLot && matchingItems.Count() > 0)
+            if (possibleMatches && this.ExistLot)
             {
-                matchingItems = matchingItems.Where(m => m.Lot.Equals(this.Lot));
-                possibleMatches = matchingItems.Count() > 0;
+                matchingItems = matchingItems.Where(m => m.Lot.Equals(this.Lot)).ToArray();
+                possibleMatches = matchingItems.Length > 0;
             }
 
             if (possibleMatches)
@@ -75,17 +94,18 @@ namespace Allors.Domain
                     {
                         if (nonSerialItem.NonSerialisedInventoryItemState.Equals(this.Reason.DefaultNonSerialisedInventoryItemState))
                         {
+                            this.InventoryItem = item;
                             matched = true;
-                            item.AddInventoryItemTransaction(this);
                             break;
                         }
                     }
                     else if (item is SerialisedInventoryItem serialItem)
                     {
-                        if (serialItem.SerialisedInventoryItemState.Equals(this.Reason.DefaultSerialisedInventoryItemState))
+                        if (serialItem.SerialisedInventoryItemState.Equals(this.Reason.DefaultSerialisedInventoryItemState)
+                            && serialItem.SerialNumber.Equals(this.SerialNumber))
                         {
+                            this.InventoryItem = item;
                             matched = true;
-                            item.AddInventoryItemTransaction(this);
                             break;
                         }
                     }
@@ -94,41 +114,45 @@ namespace Allors.Domain
             
             if (!matched)
             {
-                var facility = this.Facility ?? this.Part.DefaultFacility;
-                var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
+                this.SyncInventoryItem();
+            }
+        }
 
-                if (this.Part.InventoryItemKind.IsSerialized)
+        private void SyncInventoryItem()
+        {
+            var facility = this.Facility ?? this.Part.DefaultFacility;
+            var unitOfMeasure = this.UnitOfMeasure ?? this.Part.UnitOfMeasure;
+
+            if (this.Part.InventoryItemKind.IsSerialized)
+            {
+                var builder = new SerialisedInventoryItemBuilder(this.strategy.Session)
+                    .WithFacility(facility)
+                    .WithUnitOfMeasure(unitOfMeasure)
+                    .WithSerialNumber(this.SerialNumber)
+                    .WithPart(this.Part)
+                    .WithSerialisedInventoryItemState(this.Reason.DefaultSerialisedInventoryItemState);
+
+                if (this.ExistLot)
                 {
-                    var builder = new SerialisedInventoryItemBuilder(this.strategy.Session)
-                        .WithFacility(facility)
-                        .WithUnitOfMeasure(unitOfMeasure)
-                        .WithPart(this.Part)
-                        .WithSerialisedInventoryItemState(this.Reason.DefaultSerialisedInventoryItemState);
-
-                    if (this.ExistLot)
-                    {
-                        builder.WithLot(this.Lot);
-                    }
-
-                    InventoryItem item = builder.Build();
-                    item.AddInventoryItemTransaction(this);
+                    builder.WithLot(this.Lot);
                 }
-                else if (this.Part.InventoryItemKind.IsNonSerialized)
+
+                this.InventoryItem = builder.Build();
+            }
+            else if (this.Part.InventoryItemKind.IsNonSerialized)
+            {
+                var builder = new NonSerialisedInventoryItemBuilder(this.strategy.Session)
+                    .WithFacility(facility)
+                    .WithUnitOfMeasure(unitOfMeasure)
+                    .WithPart(this.Part)
+                    .WithNonSerialisedInventoryItemState(this.Reason.DefaultNonSerialisedInventoryItemState);
+
+                if (this.ExistLot)
                 {
-                    var builder = new NonSerialisedInventoryItemBuilder(this.strategy.Session)
-                        .WithFacility(facility)
-                        .WithUnitOfMeasure(unitOfMeasure)
-                        .WithPart(this.Part)
-                        .WithNonSerialisedInventoryItemState(this.Reason.DefaultNonSerialisedInventoryItemState);
-
-                    if (this.ExistLot)
-                    {
-                        builder.WithLot(this.Lot);
-                    }
-
-                    InventoryItem item = builder.Build();
-                    item.AddInventoryItemTransaction(this);
+                    builder.WithLot(this.Lot);
                 }
+
+                this.InventoryItem = builder.Build();
             }
         }
     }

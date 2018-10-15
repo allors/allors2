@@ -35,15 +35,6 @@ namespace Allors.Repository
         public Part Part { get; set; }
 
         #region Allors
-        [Id("57bdf1d7-84b8-4c7c-a470-396f6facd3bd")]
-        [AssociationId("6f8706cd-f005-4ab1-8deb-db5d00b72403")]
-        [RoleId("1a45c449-2b0d-4f64-be40-0858018b9cf6")]
-        #endregion
-        [Required]
-        [Workspace]
-        public int Quantity { get; set; }
-
-        #region Allors
         [Id("e422efc4-4d17-46d8-bba4-6e78e7761f93")]
         [AssociationId("468307f7-5033-4e77-9482-5df34ca9a4f1")]
         [RoleId("7e0b8650-0d19-4ecc-b6e6-3c78dfe8c2aa")]
@@ -53,6 +44,38 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public InventoryTransactionReason Reason { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Serial Number for this InventoryItemTransaction (required if Part.InventoryItemKind.IsSerialised)
+        /// </summary>
+        #region Allors
+        [Id("AFC2C5F2-4E00-4FB8-836F-C2B6A5A292A0")]
+        [AssociationId("416923C5-26C1-49BB-88E3-D6A67EFE9828")]
+        [RoleId("8C43D427-697E-48AE-A60A-02699C93413B")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        public string SerialNumber { get; set; }
+
+        #region Allors
+        [Id("57bdf1d7-84b8-4c7c-a470-396f6facd3bd")]
+        [AssociationId("6f8706cd-f005-4ab1-8deb-db5d00b72403")]
+        [RoleId("1a45c449-2b0d-4f64-be40-0858018b9cf6")]
+        #endregion
+        [Required]
+        [Workspace]
+        public int Quantity { get; set; }
+
+        #region Allors
+        [Id("9ADBF0A8-5676-430A-8242-97660692A1F6")]
+        [AssociationId("F8A66D91-2CED-4252-9B83-55519491BF79")]
+        [RoleId("3A57D8C7-7D7E-44D9-9482-12C74393B0DC")]
+        #endregion
+        [Indexed]
+        [Derived]
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public InventoryItem InventoryItem { get; set; }
 
         #region Allors
         [Id("58ead8d2-c9c3-4092-b5d1-79af4811f43c")]

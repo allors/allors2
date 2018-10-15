@@ -22,8 +22,6 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
         
         public Guid UniqueId { get; set; }
-
-        public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
         
         public Part Part { get; set; }
         
