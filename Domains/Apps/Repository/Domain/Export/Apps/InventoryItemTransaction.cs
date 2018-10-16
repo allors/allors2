@@ -66,6 +66,19 @@ namespace Allors.Repository
         [Workspace]
         public int Quantity { get; set; }
 
+        /// <summary>
+        /// The TransactionDate and Time when this InventoryItemTransaction occurred.
+        /// </summary>
+        #region Allors
+        [Id("af9fa5bc-a392-473d-b077-7f06ee24390b")]
+        [AssociationId("9a0f9ecd-9954-4c2f-bb0e-e94f9cc3c19a")]
+        [RoleId("5665d533-cd9c-4328-b422-66a94d77b19b")]
+        #endregion
+        [Required]
+        [Indexed]
+        [Workspace]
+        public DateTime TransactionDate { get; set; }
+
         #region Allors
         [Id("9ADBF0A8-5676-430A-8242-97660692A1F6")]
         [AssociationId("F8A66D91-2CED-4252-9B83-55519491BF79")]
@@ -86,17 +99,9 @@ namespace Allors.Repository
         [Indexed]
         public ItemVarianceAccountingTransaction ItemVarianceAccountingTransaction { get; set; }
 
-        #region Allors
-        [Id("af9fa5bc-a392-473d-b077-7f06ee24390b")]
-        [AssociationId("9a0f9ecd-9954-4c2f-bb0e-e94f9cc3c19a")]
-        [RoleId("5665d533-cd9c-4328-b422-66a94d77b19b")]
-        #endregion
-        [Indexed]
-        [Workspace]
-        public DateTime TransactionDate { get; set; }
-
         /// <summary>
-        /// Gets or Sets the Facility where this InventoryItemTransaction applies
+        /// Gets or Sets the Facility where this InventoryItemTransaction applies.
+        /// If not provided, the DefaultFacility from the Part will be used for this InventoryItemTransaction.
         /// </summary>
         #region Allors
         [Id("D22BB11E-8E99-4B81-9B72-20858AF33A11")]
@@ -109,7 +114,7 @@ namespace Allors.Repository
         public Facility Facility { get; set; }
 
         /// <summary>
-        /// Gets or Sets the Lot where this InventoryItemTransaction applies (if any)
+        /// Gets or Sets the Lot where this InventoryItemTransaction applies (if any).
         /// </summary>
         #region Allors
         [Id("7EC5EF43-3031-4519-9C0C-14828E123C7D")]
@@ -122,7 +127,8 @@ namespace Allors.Repository
         public Lot Lot { get; set; }
 
         /// <summary>
-        /// Gets or Sets the Unit of Measure for this InventoryItemTransaction
+        /// Gets or Sets the UnitOfMeasure for this InventoryItemTransaction.
+        /// If not provided, the UnitOfMeasure from the Part will be used for this InventoryItemTransaction.
         /// </summary>
         #region Allors
         [Id("639C6EF1-1D76-42B4-A59B-184DAD622D6F")]
@@ -133,6 +139,34 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public UnitOfMeasure UnitOfMeasure { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the NonSerialisedInventoryItemState for this InventoryItemTransaction.
+        /// If not provided, the DefaultNonSerialisedInventoryItemState from the InventoryStrategy will be used for this InventoryItemTransaction.
+        /// </summary>
+        #region Allors
+        [Id("CA486EA2-D3CA-47CD-B09B-87CDA73DFC42")]
+        [AssociationId("D10C433C-7BC9-4534-9844-25ABF6438ED3")]
+        [RoleId("DF1E5585-F9C0-4A44-92C2-5E75F1CABE2C")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public NonSerialisedInventoryItemState NonSerialisedInventoryItemState { get; set; }
+
+        /// <summary>
+        /// Gets or Sets the SerialisedInventoryItemState for this InventoryItemTransaction.
+        /// /// If not provided, the DefaultSerialisedInventoryItemState from the InventoryStrategy will be used for this InventoryItemTransaction.
+        /// </summary>
+        #region Allors
+        [Id("07166685-B405-41F7-9581-10CFB937ACF9")]
+        [AssociationId("E85E7A73-A08B-4784-83AC-CFC848F881D9")]
+        [RoleId("A22119E7-F630-4FC7-8E92-C3FA149E39BD")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedInventoryItemState SerialisedInventoryItemState { get; set; }
 
         #region inherited methods
 

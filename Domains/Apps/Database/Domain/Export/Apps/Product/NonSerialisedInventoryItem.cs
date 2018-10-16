@@ -67,7 +67,6 @@ namespace Allors.Domain
         public void AppsOnDeriveQuantityOnHand(IDerivation derivation)
         {
             // TODO: Test for changes in these relations for performance reasons
-            var inventoryStrategy = this.Part.GetInventoryStrategy;
             this.QuantityOnHand = 0M;
 
             if (!this.Part.GetInventoryStrategy.OnHandNonSerialisedStates.Contains(this.NonSerialisedInventoryItemState))
@@ -75,9 +74,12 @@ namespace Allors.Domain
                 return;  // This Inventorty Item's State is not counted for On-Hand inventory
             }
 
-            foreach (InventoryItemTransaction inventoryItemVariance in this.InventoryItemTransactionsWhereInventoryItem)
+            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
             {
-                this.QuantityOnHand += inventoryItemVariance.Quantity;
+                if (inventoryTransaction.Reason.AffectsQuantityOnHand)
+                {
+                    this.QuantityOnHand += inventoryTransaction.Quantity;
+                }
             }
 
             foreach (PickListItem pickListItem in this.PickListItemsWhereInventoryItem)

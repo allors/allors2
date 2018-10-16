@@ -38,6 +38,45 @@ namespace Allors.Repository
         public bool IsManualEntryAllowed { get; set; }
 
         /// <summary>
+        /// Gets or Sets a flag to indicate if this TransactionReason Affects the QuantityOnHand for InventoryItem objects.
+        /// </summary>
+        #region Allors
+        [Id("62899C64-9139-4CDA-961E-0F2DA52D6EB9")]
+        [AssociationId("64E3418C-8561-480A-BE28-D893561D2E3B")]
+        [RoleId("9BEC0DAE-8560-4E72-9774-D6501EC05DBF")]
+        #endregion
+        [Indexed]
+        [Required]
+        [Workspace]
+        public bool AffectsQuantityOnHand { get; set; }
+
+        /// <summary>
+        /// Gets or Sets a flag to indicate if this TransactionReason Affects the QuantityCommittedOut for InventoryItem objects.
+        /// </summary>
+        #region Allors
+        [Id("1A13F812-685E-428E-A255-3E8C6F76A58E")]
+        [AssociationId("2353C89D-DA1E-4388-9878-FF27F7439DB5")]
+        [RoleId("7F414807-275F-4C69-AA83-3BD8AEB44DFC")]
+        #endregion
+        [Indexed]
+        [Required]
+        [Workspace]
+        public bool AffectsQuantityCommittedOut { get; set; }
+
+        /// <summary>
+        /// Gets or Sets a flag to indicate if this TransactionReason Affects the QuantityExpectedIn for InventoryItem objects.
+        /// </summary>
+        #region Allors
+        [Id("EE2FE83F-F223-4B6B-B777-ABD8DE074491")]
+        [AssociationId("48B5A5DA-27D1-4C8B-8272-FFFB6A44C33F")]
+        [RoleId("5909E526-61F2-4EEF-8DD1-D98FDECE8706")]
+        #endregion
+        [Indexed]
+        [Required]
+        [Workspace]
+        public bool AffectsQuantityExpectedIn { get; set; }
+
+        /// <summary>
         /// Gets or Sets the Default NonSerialisedInventoryItemState which corresponds to this InventoryTransactionReason
         /// </summary>
         #region Allors

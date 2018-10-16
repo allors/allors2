@@ -15,11 +15,19 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using System.Collections.Generic;
+    using System;
     using System.Linq;
 
     public partial class InventoryItemTransaction
     {
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistTransactionDate)
+            {
+                this.TransactionDate = DateTime.UtcNow;
+            }
+        }
+
         public void AppsOnPreDerive(ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
@@ -49,10 +57,22 @@ namespace Allors.Domain
                     derivation.Validation.AddError(this, this.Meta.Quantity, message);
                 }
 
-                if (!this.ExistSerialNumber)  // TODO: Serialised Item vs. Serialised Inventory Item
+                if (!this.ExistSerialisedInventoryItemState)
+                {
+                    this.SerialisedInventoryItemState = this.Reason.DefaultSerialisedInventoryItemState;
+                }
+
+                if (!this.ExistSerialNumber)  // TODO: Match on Serialised Item, not on SerialNumber string
                 {
                     var message = "The Serial Number is required for Inventory Item Transactions involving Serialised Inventory Items.";
                     derivation.Validation.AddError(this, this.Meta.SerialNumber, message);
+                }
+            }
+            else if (this.Part.InventoryItemKind.IsNonSerialized)
+            {
+                if (!this.ExistNonSerialisedInventoryItemState)
+                {
+                    this.NonSerialisedInventoryItemState = this.Reason.DefaultNonSerialisedInventoryItemState;
                 }
             }
 
@@ -92,7 +112,7 @@ namespace Allors.Domain
                 {
                     if (item is NonSerialisedInventoryItem nonSerialItem)
                     {
-                        if (nonSerialItem.NonSerialisedInventoryItemState.Equals(this.Reason.DefaultNonSerialisedInventoryItemState))
+                        if (nonSerialItem.NonSerialisedInventoryItemState.Equals(this.NonSerialisedInventoryItemState))
                         {
                             this.InventoryItem = item;
                             matched = true;
@@ -101,7 +121,7 @@ namespace Allors.Domain
                     }
                     else if (item is SerialisedInventoryItem serialItem)
                     {
-                        if (serialItem.SerialisedInventoryItemState.Equals(this.Reason.DefaultSerialisedInventoryItemState)
+                        if (serialItem.SerialisedInventoryItemState.Equals(this.SerialisedInventoryItemState)
                             && serialItem.SerialNumber.Equals(this.SerialNumber))
                         {
                             this.InventoryItem = item;
@@ -130,7 +150,7 @@ namespace Allors.Domain
                     .WithUnitOfMeasure(unitOfMeasure)
                     .WithSerialNumber(this.SerialNumber)
                     .WithPart(this.Part)
-                    .WithSerialisedInventoryItemState(this.Reason.DefaultSerialisedInventoryItemState);
+                    .WithSerialisedInventoryItemState(this.SerialisedInventoryItemState);
 
                 if (this.ExistLot)
                 {
@@ -145,7 +165,7 @@ namespace Allors.Domain
                     .WithFacility(facility)
                     .WithUnitOfMeasure(unitOfMeasure)
                     .WithPart(this.Part)
-                    .WithNonSerialisedInventoryItemState(this.Reason.DefaultNonSerialisedInventoryItemState);
+                    .WithNonSerialisedInventoryItemState(this.NonSerialisedInventoryItemState);
 
                 if (this.ExistLot)
                 {

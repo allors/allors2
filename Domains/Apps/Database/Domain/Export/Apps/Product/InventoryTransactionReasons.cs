@@ -59,6 +59,9 @@ namespace Allors.Domain
                 .WithUniqueId(OrderId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(false)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -69,6 +72,9 @@ namespace Allors.Domain
                 .WithUniqueId(ShipmentId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(true)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -79,6 +85,9 @@ namespace Allors.Domain
                 .WithUniqueId(TheftId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(true)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(true)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -89,6 +98,9 @@ namespace Allors.Domain
                 .WithUniqueId(ShrinkageId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(true)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -99,6 +111,9 @@ namespace Allors.Domain
                 .WithUniqueId(UnknownId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(true)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
@@ -109,6 +124,9 @@ namespace Allors.Domain
                 .WithUniqueId(RuinedId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(true)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Scrap)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Scrap)
                 .Build();
@@ -118,6 +136,9 @@ namespace Allors.Domain
                 .WithUniqueId(PhysicalCountId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(true)
+                .WithAffectsQuantityCommittedOut(true)
+                .WithAffectsQuantityExpectedIn(true)
+                .WithAffectsQuantityOnHand(true)
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
