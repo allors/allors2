@@ -4,7 +4,7 @@ import { Tree } from './Tree';
 const includeKey = 'include';
 
 export class Step {
-  public tree: Tree;
+  public include: Tree;
 
   public propertyType: AssociationType | RoleType;
 
@@ -42,7 +42,7 @@ export class Step {
 
         if (keys.find(v => v === includeKey)) {
           const treeLiteral = literal[includeKey];
-          this.tree = new Tree(this.propertyType.objectType, treeLiteral);
+          this.include = new Tree(this.propertyType.objectType, treeLiteral);
         }
 
         const nextStepName = keys.find(v => v !== includeKey);
@@ -60,7 +60,7 @@ export class Step {
   public toJSON(): any {
 
     return {
-      tree: this.tree,
+      include: this.include,
       propertyType: this.propertyType.id,
       next: this.next,
     };

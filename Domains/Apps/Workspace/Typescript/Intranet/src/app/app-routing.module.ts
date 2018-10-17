@@ -37,26 +37,16 @@ export const routes: Routes = [
           { path: 'party/:id/communicationevent/:roleId', data: overviewData({ id: ids.CommunicationEvent }), component: relations.CommunicationEventOverviewComponent },
         ],
       },
-      { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent},
-      { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent},
-      {
-        path: 'export',
-        children: [
-          { path: 'people', component: relations.PersonExportComponent },
-        ],
-      },
-      {
-        path: 'organisation',
-        children: [
-          { path: '', component: relations.OrganisationComponent },
-          { path: ':id', component: relations.OrganisationComponent },
-        ],
-      },
+      { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent },
+      { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent },
+      { path: 'organisation', data: addData({ id: ids.Person }), component: relations.OrganisationEditComponent },
+      { path: 'organisation/:id', data: editData({ id: ids.Person }), component: relations.OrganisationEditComponent },
+      { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
+      { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
+
       {
         path: 'party',
         children: [
-          { path: ':id/partycontactmechanism/emailaddress', component: relations.PartyContactMechanismEmailAddressAddComponent },
-          { path: ':id/partycontactmechanism/emailaddress/:roleId', component: relations.PartyContactMechanismEmailAddressEditComponent },
           { path: ':id/partycontactmechanism/postaladdress', component: relations.PartyContactMechanismPostalAddressAddComponent },
           { path: ':id/partycontactmechanism/postaladdress/:roleId', component: relations.PartyContactMechanismPostalAddressEditComponent },
           { path: ':id/partycontactmechanism/telecommunicationsnumber', component: relations.PartyContactMechanismTelecommunicationsNumberAddComponent },

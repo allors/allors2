@@ -1,16 +1,16 @@
-<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+<div class="a-main">
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigationService.list(m.Person)">People</a> / <a (cklick)="navigationService.overview(party)">{{party?.toString()}}</a> / Edit
+      </div>
+    </div>
+  </div>
 
-  <div>
+  <form *ngIf="contactMechanism" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
 
-    <mat-card *ngIf="contactMechanism">
+    <mat-card >
       <mat-card-content class="container-fluid">
 
         <div class="row">
@@ -25,11 +25,11 @@
 
       </mat-card-content>
     </mat-card>
-  </div>
 
-  <mat-toolbar>
-    <span class="col"></span>
-    <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-  </mat-toolbar>
-</form>
+    <a-mat-footer>
+      <button mat-raised-button (click)="location.back()" type="button">CANCEL</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
+    </a-mat-footer>
+
+  </form>
+</div>

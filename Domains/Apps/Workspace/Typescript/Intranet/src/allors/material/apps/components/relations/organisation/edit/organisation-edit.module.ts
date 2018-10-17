@@ -14,15 +14,15 @@ import { AllorsMaterialStaticModule } from '../../../../../base/components/stati
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
-import { OrganisationComponent } from './organisation.component';
-export { OrganisationComponent } from './organisation.component';
+import { OrganisationEditComponent } from './organisation-edit.component';
+export { OrganisationEditComponent } from './organisation-edit.component';
 
 @NgModule({
   declarations: [
-    OrganisationComponent,
+    OrganisationEditComponent,
   ],
   exports: [
-    OrganisationComponent,
+    OrganisationEditComponent,
   ],
   imports: [
     AllorsMaterialFileModule,

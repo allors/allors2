@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -52,6 +52,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
+    public navigationService: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -88,7 +89,8 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.param();
 
           const partyContactMechanismTree = tree.PartyContactMechanism({
             ContactPurposes: x,
@@ -167,11 +169,15 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.person = loaded.objects.Person as Person;
 
-        const organisationContactRelationships = loaded.collections.OrganisationContactRelationshipsWhereContact as OrganisationContactRelationship[];
-        this.organisation = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].Organisation as Organisation : undefined;
-        this.contactKindsText = organisationContactRelationships.length > 0 ? organisationContactRelationships[0].ContactKinds
-          .map((v: OrganisationContactKind) => v.Description)
-          .reduce((acc: string, cur: string) => acc + ', ' + cur) : undefined;
+        const organisationContactRelationships = loaded.collections.OrganisationContactRelationships as OrganisationContactRelationship[];
+
+        if (organisationContactRelationships.length > 0) {
+          const organisationContactRelationship = organisationContactRelationships[0];
+          this.organisation = organisationContactRelationship.Organisation as Organisation;
+          this.contactKindsText = organisationContactRelationship.ContactKinds
+            .map((v: OrganisationContactKind) => v.Description)
+            .reduce((acc: string, cur: string) => acc + ', ' + cur);
+        }
 
         this.communicationEvents = loaded.collections.CommunicationEventsWhereInvolvedParty as CommunicationEvent[];
         this.workEffortAssignments = loaded.collections.WorkEffortAssignmentsWhereProfessional as WorkEffortAssignment[];

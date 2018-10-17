@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Scope, WorkspaceService, Allors } from '../../../../../../../angular';
-import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
+import { ErrorService, Scope, Allors } from '../../../../../../angular';
+import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-emailAddress',
-  templateUrl: './party-contactmechanism-emailaddress-inline.component.html',
+  templateUrl: './emailaddress-inline.component.html',
   providers: [Allors]
 })
 export class PartyContactMechanismEmailAddressInlineComponent

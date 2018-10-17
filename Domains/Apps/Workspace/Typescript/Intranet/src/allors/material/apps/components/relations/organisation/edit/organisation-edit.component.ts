@@ -15,10 +15,10 @@ import { Title } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './organisation.component.html',
+  templateUrl: './organisation-edit.component.html',
   providers: [Allors]
 })
-export class OrganisationComponent implements OnInit, OnDestroy {
+export class OrganisationEditComponent implements OnInit, OnDestroy {
 
   public title = 'Organisation';
   public subTitle: string;

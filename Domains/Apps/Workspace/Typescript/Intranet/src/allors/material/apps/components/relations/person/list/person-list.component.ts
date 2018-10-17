@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { MatSnackBar, MatTableDataSource, MatSort, MatDialog, Sort, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 

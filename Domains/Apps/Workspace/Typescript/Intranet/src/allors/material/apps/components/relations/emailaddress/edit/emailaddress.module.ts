@@ -5,23 +5,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 
-import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/textarea';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyContactMechanismEmailAddressAddComponent } from './party-contactmechanism-emailaddress-add.component';
-export { PartyContactMechanismEmailAddressAddComponent } from './party-contactmechanism-emailaddress-add.component';
+import { EmailAddressEditComponent } from './emailaddress-edit.component';
+export { EmailAddressEditComponent } from './emailaddress-edit.component';
 
 @NgModule({
   declarations: [
-    PartyContactMechanismEmailAddressAddComponent,
+    EmailAddressEditComponent,
   ],
   exports: [
-    PartyContactMechanismEmailAddressAddComponent,
+    EmailAddressEditComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -36,7 +36,7 @@ export { PartyContactMechanismEmailAddressAddComponent } from './party-contactme
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -50,4 +50,4 @@ export { PartyContactMechanismEmailAddressAddComponent } from './party-contactme
     RouterModule,
   ],
 })
-export class PartyContactMechanismEmailAddressAddModule {}
+export class PartyContactMechanismEmailAddressAddModule { }

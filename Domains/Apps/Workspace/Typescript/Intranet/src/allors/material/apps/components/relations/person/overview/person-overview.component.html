@@ -3,7 +3,7 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a [routerLink]="['/relations/people']">People</a> / {{person.displayName}}
+        <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}}
       </div>
     </div>
   </div>
@@ -180,7 +180,7 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menuEditContact="matMenu">
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
+                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" (click)="navigationService.edit(partyContactMechanism.ContactMechanism)" mat-menu-item>Edit</a>
                     <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
                     <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
                     <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
@@ -201,7 +201,7 @@
             <button mat-button [matMenuTriggerFor]="menuAddContact">Add new</button>
             <mat-menu #menuAddContact="matMenu">
               <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress']">Web</button>
-              <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/emailaddress']">Email</button>
+              <button mat-menu-item (click)="navigationService.add(m.EmailAddress, person)">Email</button>
               <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/postaladdress']">Postal</button>
               <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber']">Telecom</button>
             </mat-menu>

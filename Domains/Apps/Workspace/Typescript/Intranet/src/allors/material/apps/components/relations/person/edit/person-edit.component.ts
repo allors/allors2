@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors } from '../../../../../../angular';
+import { ErrorService, Saved, x, Allors, NavigationService } from '../../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -52,6 +52,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: Allors,
+    public navigationService: NavigationService,
     public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,

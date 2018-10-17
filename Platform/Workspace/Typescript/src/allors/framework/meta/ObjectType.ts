@@ -15,22 +15,23 @@ export enum Kind {
 }
 
 export class ObjectType implements MetaObject {
-  public id: string;
-  public name: string;
-  public plural: string;
-  public kind: Kind;
+  id: string;
+  name: string;
+  plural: string;
+  kind: Kind;
 
-  public interfaceByName: { [name: string]: ObjectType; } = {};
+  interfaceByName: { [name: string]: ObjectType; } = {};
+  classes: ObjectType[] = [];
 
-  public roleTypeByName: { [name: string]: RoleType; } = {};
-  public exclusiveRoleTypes: ExclusiveRoleType[] = [];
-  public concreteRoleTypes: ConcreteRoleType[] = [];
+  roleTypeByName: { [name: string]: RoleType; } = {};
+  exclusiveRoleTypes: ExclusiveRoleType[] = [];
+  concreteRoleTypes: ConcreteRoleType[] = [];
 
-  public associationTypeByName: { [name: string]: AssociationType; } = {};
+  associationTypeByName: { [name: string]: AssociationType; } = {};
 
-  public methodTypeByName: { [name: string]: MethodType; } = {};
-  public exclusiveMethodTypes: ExclusiveMethodType[] = [];
-  public concreteMethodTypes: ConcreteMethodType[] = [];
+  methodTypeByName: { [name: string]: MethodType; } = {};
+  exclusiveMethodTypes: ExclusiveMethodType[] = [];
+  concreteMethodTypes: ConcreteMethodType[] = [];
 
   constructor(public metaPopulation: MetaPopulation) {
   }
@@ -51,7 +52,7 @@ export class ObjectType implements MetaObject {
     return this.kind === Kind.class;
   }
 
-  public derive(): void {
+  derive(): void {
     const interfaces: ObjectType[] = [];
     this.addInterfaces(interfaces);
 
@@ -62,6 +63,11 @@ export class ObjectType implements MetaObject {
     this.concreteMethodTypes.forEach((v) => this.methodTypeByName[v.name] = v);
 
     interfaces.forEach((v) => {
+
+      if (this.isClass) {
+        v.classes.push(this);
+      }
+
       v.exclusiveRoleTypes.forEach((roleType) => {
         if (!this.roleTypeByName[roleType.name]) {
           this.roleTypeByName[roleType.name] = roleType;

@@ -11,7 +11,9 @@ export class NavigationItem {
   public id: string;
   public action: string;
 
-  constructor(route: Route, parent?: NavigationItem) {
+  constructor(navigationItems: NavigationItem[], route: Route, parent?: NavigationItem) {
+
+    navigationItems.push(this);
 
     this.route = route;
     this.parent = parent;
@@ -30,6 +32,6 @@ export class NavigationItem {
       this.link = route.path ? parent.link + '/' + route.path : parent.link;
     }
 
-    this.children = route.children ? route.children.map((child: Route) => new NavigationItem(child, this)) : [];
+    this.children = route.children ? route.children.map((child: Route) => new NavigationItem(navigationItems, child, this)) : [];
   }
 }
