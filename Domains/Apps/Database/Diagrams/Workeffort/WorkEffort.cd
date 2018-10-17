@@ -266,8 +266,8 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="InventoryTransactionReasonsToCancel" />
       <Property Name="InventoryTransactionReasonsToCreate" />
+      <Property Name="InventoryTransactionReasonsToCancel" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.InventoryTransactionReason" Collapsed="true">

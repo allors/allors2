@@ -56,7 +56,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkEffortWithInventoryAssignments_WhenCancelling_ThenInventoryReservationCancelled()
+        public void GivenWorkEffortWithInventoryAssignment_WhenCancelling_ThenInventoryReservationCancelled()
         {
             var reasons = new InventoryTransactionReasons(this.Session);
 
@@ -90,7 +90,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkEffortWithInventoryAssignments_WhenCompleting_ThenInventoryTransactionsCreated()
+        public void GivenWorkEffortWithInventoryAssignment_WhenCompleting_ThenInventoryTransactionsCreated()
         {
             var reasons = new InventoryTransactionReasons(this.Session);
 
@@ -126,7 +126,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkEffortWithInventoryAssignments_WhenCompletingThenCancelling_ThenInventoryTransactionsCancelled()
+        public void GivenWorkEffortWithInventoryAssignment_WhenCompletingThenCancelling_ThenInventoryTransactionsCancelled()
         {
             var reasons = new InventoryTransactionReasons(this.Session);
 
@@ -165,6 +165,65 @@ namespace Allors.Domain
             reservationCancellation.Quantity.ShouldEqual(-10);
             consumption.Quantity.ShouldEqual(10);
             consumptionCancellation.Quantity.ShouldEqual(-10);
+        }
+
+        [Fact]
+        public void GivenWorkEffortWithInventoryAssignment_WhenChangingQuantity_ThenInventoryTransactionsCreate()
+        {
+            // Arrage
+            var reasons = new InventoryTransactionReasons(this.Session);
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var part = new PartBuilder(this.Session).WithPartId("P1").Build();
+
+            // Act
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            // Assert
+            workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
+            workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
+
+            // Re-arrange
+            var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workEffort).WithPart(part)
+                .WithQuantity(5)
+                .Build();
+
+            // Act
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            // Assert
+            var reservation = inventoryAssignment.InventoryItemTransactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
+            reservation.Quantity.ShouldEqual(5);
+
+            // Re-arrange
+            inventoryAssignment.Quantity = 10;
+
+            // Act
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            // Assert
+            var reservations = inventoryAssignment.InventoryItemTransactions.Where(t => t.Reason.Equals(reasons.Reservation));
+            reservations.Sum(r => r.Quantity).ShouldEqual(10);
+
+            // Re-arrange
+            workEffort.Finish();
+
+            // Act
+            this.Session.Derive(true);
+            this.Session.Commit();
+
+            // Assert
+            reservations = inventoryAssignment.InventoryItemTransactions.Where(t => t.Reason.Equals(reasons.Reservation));
+            var consumption = inventoryAssignment.InventoryItemTransactions.First(t => t.Reason.Equals(reasons.Consumption));
+
+            inventoryAssignment.InventoryItemTransactions.Count.ShouldEqual(4);
+
+            reservations.Sum(r => r.Quantity).ShouldEqual(0);
+            consumption.Quantity.ShouldEqual(10);
         }
     }
 }
