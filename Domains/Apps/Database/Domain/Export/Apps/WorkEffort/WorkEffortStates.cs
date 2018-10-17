@@ -22,6 +22,7 @@ namespace Allors.Domain
         private static readonly Guid NeedsActionId = new Guid("0D2618A7-A3B7-40f5-88C4-30DADE4D5164");
         private static readonly Guid ConfirmedId = new Guid("61E5FCB6-7814-4FED-8CE7-28C26EB88EE6");
         private static readonly Guid DeclinedId = new Guid("0DFFC51A-4982-4DDA-808B-8F70D46F2749");
+        private static readonly Guid InProgressId = new Guid("8384CC3B-492F-4EED-B305-C735D6C82433");
         private static readonly Guid CompletedId = new Guid("E8E941CD-7175-4931-AB1E-50E52DC6D720");
         private static readonly Guid CancelledId = new Guid("D3EBD54F-35B0-4bc4-AC8E-4EC583028B0A");
         private static readonly Guid DelegatedId = new Guid("0EB0E562-5094-4F48-AAAC-EF5DF239CF07");
@@ -37,7 +38,9 @@ namespace Allors.Domain
 
         public WorkEffortState Confirmed => this.StateCache[ConfirmedId];
 
-        public WorkEffortState InProgress => this.StateCache[DeclinedId];
+        public WorkEffortState Declined => this.StateCache[DeclinedId];
+
+        public WorkEffortState InProgress => this.StateCache[InProgressId];
 
         public WorkEffortState Completed => this.StateCache[CompletedId];
 
@@ -63,6 +66,7 @@ namespace Allors.Domain
 
             var englishLocale = new Locales(this.Session).EnglishGreatBritain;
             var dutchLocale = new Locales(this.Session).DutchNetherlands;
+            var reasons = new InventoryTransactionReasons(this.Session);
 
             new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(NeedsActionId)
@@ -77,6 +81,11 @@ namespace Allors.Domain
             new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(DeclinedId)
                 .WithName("Declined")
+                .Build();
+
+            new WorkEffortStateBuilder(this.Session)
+                .WithUniqueId(InProgressId)
+                .WithName("In Progress")
                 .Build();
 
             new WorkEffortStateBuilder(this.Session)
@@ -96,7 +105,7 @@ namespace Allors.Domain
 
             new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(InPlanningId)
-                .WithName("In planning")
+                .WithName("In Planning")
                 .Build();
 
             new WorkEffortStateBuilder(this.Session)
@@ -118,6 +127,26 @@ namespace Allors.Domain
                 .WithUniqueId(TentativeId)
                 .WithName("Tentative")
                 .Build();
+
+            // Work Effort States which create a Reservation (if one doesn't exist)
+            this.NeedsAction.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Confirmed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Declined.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.InProgress.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Delagated.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.InPlanning.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Planned.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Sent.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Accepted.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.Tentative.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+
+            // The Completed state should create a Consumption and cancel the Reservation
+            this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
+            this.Completed.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+            
+            // The Cancelled state should cancel any existing Consumption and Reservation
+            this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
+            this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Consumption);
         }
     }
 }

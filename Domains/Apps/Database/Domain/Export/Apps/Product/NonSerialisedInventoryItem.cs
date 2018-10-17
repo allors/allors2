@@ -76,9 +76,15 @@ namespace Allors.Domain
 
             foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
             {
-                if (inventoryTransaction.Reason.AffectsQuantityOnHand)
+                var reason = inventoryTransaction.Reason;
+
+                if (reason.IncreasesQuantityOnHand == true)
                 {
                     this.QuantityOnHand += inventoryTransaction.Quantity;
+                }
+                else if (reason.IncreasesQuantityOnHand == false)
+                {
+                    this.QuantityOnHand -= inventoryTransaction.Quantity;
                 }
             }
 

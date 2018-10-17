@@ -57,7 +57,7 @@ namespace Allors.Domain
                 .WithPart(finishedGood)
                 .Build();
 
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Order).WithPart(finishedGood).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood).Build();
 
             this.Session.Derive();
             this.Session.Commit();

@@ -14,6 +14,9 @@ namespace Allors.Repository
 
         #endregion
 
+        /// <summary>
+        /// Gets or sets the WorkEffort under which this Assignment exists.
+        /// </summary>
         #region Allors
         [Id("0bf425d4-7468-4e28-8fda-0b04278cb2cd")]
         [AssociationId("2c6841c6-c161-48e0-a257-d932d99ae7b4")]
@@ -24,26 +27,47 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public WorkEffort Assignment { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets the Part which describes this WorkEffortInventoryAssignment.
+        /// </summary>
         #region Allors
-        [Id("5fcdb553-4b8f-419b-9f12-b9cefa68d39f")]
-        [AssociationId("dba27480-4d2f-4e69-af01-4e9afba2cc98")]
-        [RoleId("3f7a72a4-2727-4dd6-a602-60ef9b6896af")]
+        [Id("3704B202-A216-4943-A98A-EB0A78477EFD")]
+        [AssociationId("77299BF7-A2AF-43CC-BC26-716D48F2E0B9")]
+        [RoleId("D972B23E-FC81-4832-80E2-D94A34FA5D23")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
         [Workspace]
-        public InventoryItem InventoryItem { get; set; }
-        
+        public Part Part { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Quantity of the Part for this WorkEffortInventoryAssignment.
+        /// </summary>
         #region Allors
         [Id("70121570-c02d-4977-80e4-23e14cbc3fc9")]
         [AssociationId("b4224775-005c-4078-a5b6-2b8a60bc143a")]
         [RoleId("c82f1c25-9c42-4d38-8fae-f8790e2333ef")]
         #endregion
+        [Required]
         [Workspace]
         public int Quantity { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).
+        /// </summary>
+        #region Allors
+        [Id("5fcdb553-4b8f-419b-9f12-b9cefa68d39f")]
+        [AssociationId("dba27480-4d2f-4e69-af01-4e9afba2cc98")]
+        [RoleId("3f7a72a4-2727-4dd6-a602-60ef9b6896af")]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Indexed]
+        [Derived]
+        [Workspace]
+        public InventoryItemTransaction[] InventoryItemTransactions { get; set; }
+
         #region inherited methods
 
 

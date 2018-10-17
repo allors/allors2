@@ -23,12 +23,14 @@ namespace Allors.Domain
 
             if (derivation.ChangeSet.Associations.Contains(@this.Id))
             {
-                if (@this.ExistWorkEffortAssignmentsWhereAssignment)
+                foreach (WorkEffortAssignment effortAssignment in @this.WorkEffortAssignmentsWhereAssignment)
                 {
-                    foreach (WorkEffortAssignment workEffortAssignment in @this.WorkEffortAssignmentsWhereAssignment)
-                    {
-                        derivation.AddDependency(workEffortAssignment, @this);
-                    }
+                    derivation.AddDependency(effortAssignment, @this);
+                }
+
+                foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
+                {
+                    derivation.AddDependency(inventoryAssignment, @this);
                 }
             }
         }

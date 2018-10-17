@@ -38,43 +38,43 @@ namespace Allors.Repository
         public bool IsManualEntryAllowed { get; set; }
 
         /// <summary>
-        /// Gets or Sets a flag to indicate if this TransactionReason Affects the QuantityOnHand for InventoryItem objects.
+        /// Gets or Sets a flag to indicate if this InventoryTransactionReason IncreasesQuantityCommittedOut for InventoryItem objects.
+        /// True values increase inventory, False values decrease inventory, and null values do not affect inventory.
         /// </summary>
         #region Allors
-        [Id("62899C64-9139-4CDA-961E-0F2DA52D6EB9")]
-        [AssociationId("64E3418C-8561-480A-BE28-D893561D2E3B")]
-        [RoleId("9BEC0DAE-8560-4E72-9774-D6501EC05DBF")]
+        [Id("8F42A67D-7951-4450-8D31-7A4CBE864656")]
+        [AssociationId("99877B3E-C716-41C9-A888-128104F68351")]
+        [RoleId("D2908EE3-C7AE-4395-BC88-36161F50F92D")]
         #endregion
         [Indexed]
-        [Required]
         [Workspace]
-        public bool AffectsQuantityOnHand { get; set; }
+        public bool IncreasesQuantityCommittedOut { get; set; }
 
         /// <summary>
-        /// Gets or Sets a flag to indicate if this TransactionReason Affects the QuantityCommittedOut for InventoryItem objects.
+        /// Gets or Sets a flag to indicate if this InventoryTransactionReason IncreasesQuantityExpectedIn for InventoryItem objects.
+        /// True values increase inventory, False values decrease inventory, and null values do not affect inventory.
         /// </summary>
         #region Allors
-        [Id("1A13F812-685E-428E-A255-3E8C6F76A58E")]
-        [AssociationId("2353C89D-DA1E-4388-9878-FF27F7439DB5")]
-        [RoleId("7F414807-275F-4C69-AA83-3BD8AEB44DFC")]
+        [Id("15D50828-0A4B-4589-914F-85EE9D7D13A3")]
+        [AssociationId("91F8C21E-3A64-424A-9166-1FD47A1D287E")]
+        [RoleId("9CF55733-CDDE-43E8-A7D7-5BBEB1140052")]
         #endregion
         [Indexed]
-        [Required]
         [Workspace]
-        public bool AffectsQuantityCommittedOut { get; set; }
+        public bool IncreasesQuantityExpectedIn { get; set; }
 
         /// <summary>
-        /// Gets or Sets a flag to indicate if this TransactionReason Affects the QuantityExpectedIn for InventoryItem objects.
+        /// Gets or Sets a flag to indicate if this InventoryTransactionReason IncreasesQuantityOnHand for InventoryItem objects.
+        /// True values increase inventory, False values decrease inventory, and null values do not affect inventory.
         /// </summary>
         #region Allors
-        [Id("EE2FE83F-F223-4B6B-B777-ABD8DE074491")]
-        [AssociationId("48B5A5DA-27D1-4C8B-8272-FFFB6A44C33F")]
-        [RoleId("5909E526-61F2-4EEF-8DD1-D98FDECE8706")]
+        [Id("C7AD0CE1-D5D4-4E2A-9E36-006BBB4E82AA")]
+        [AssociationId("43EC0DAC-30DA-46A8-A3A5-F2A0449FCA01")]
+        [RoleId("308D8701-D143-4D61-94B1-2BEE8344C8F9")]
         #endregion
         [Indexed]
-        [Required]
         [Workspace]
-        public bool AffectsQuantityExpectedIn { get; set; }
+        public bool IncreasesQuantityOnHand { get; set; }
 
         /// <summary>
         /// Gets or Sets the Default NonSerialisedInventoryItemState which corresponds to this InventoryTransactionReason

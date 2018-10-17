@@ -40,12 +40,9 @@
   <Interface Name="Allors.Domain.Facility" Collapsed="true">
     <Position X="6.25" Y="1.5" Width="1.25" />
     <TypeIdentifier>
-      <HashCode>ABAAAACAAAAgAAAAAAAAAAQAAAAAACABAAAAAEAAAAA=</HashCode>
+      <HashCode>ABAAgACAAAAgAAAAAAAAAAQAAAAAAAABAAAAAEAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="MadeUpOf" />
-    </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Good">
     <Position X="9" Y="5.5" Width="2" />
@@ -190,7 +187,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>EAACAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>EAACAACAAAAAAAAAAAAAgAAAAAAAgAAAAAAEAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

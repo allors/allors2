@@ -41,7 +41,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        public Facility MadeUpOf { get; set; }
+        public Facility ParentFacility { get; set; }
 
         #region Allors
         [Id("1daad895-cf57-4110-a4e0-117e0212c3e4")]
