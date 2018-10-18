@@ -23,45 +23,58 @@ namespace Allors.Domain
         {
             var state = this.Assignment.WorkEffortState;
             var transactions = this.InventoryItemTransactions.ToArray();
+            var partChanged = this.ExistCurrentVersion && (this.CurrentVersion.Part != this.Part);
             
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
             {
-                var transactionQuantity = 0;
-                var matchingTransactions = transactions.Where(t => t.Reason.Equals(createReason));
-
-                if (matchingTransactions.Count() > 0)
+                this.SyncInventoryTransactions(this.Part, this.Quantity, createReason, false);
+                
+                if (partChanged)
                 {
-                    transactionQuantity = matchingTransactions.Sum(t => t.Quantity);
-                }
-
-                if (this.Quantity != transactionQuantity)
-                {
-                    this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.strategy.Session)
-                        .WithPart(this.Part)
-                        .WithQuantity(this.Quantity - transactionQuantity)
-                        .WithReason(createReason)
-                        .Build());
+                    var previous = this.CurrentVersion;  // CurrentVersion is Previous Version until PostDerive
+                    this.SyncInventoryTransactions(previous.Part, previous.Quantity, createReason, true);
                 }
             }
 
             foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
             {
-                var transactionQuantity = 0;
-                var matchingTransactions = transactions.Where(t => t.Reason.Equals(cancelReason));
+                this.SyncInventoryTransactions(this.Part, this.Quantity, cancelReason, true);
 
-                if (matchingTransactions.Count() > 0)
+                if (partChanged)
                 {
-                    transactionQuantity = matchingTransactions.Sum(t => t.Quantity);
+                    var previous = this.CurrentVersion;  // CurrentVersion is Previous Version until PostDerive
+                    this.SyncInventoryTransactions(previous.Part, previous.Quantity, cancelReason, true);
                 }
+            }
+        }
 
-                if (transactionQuantity != 0)
-                {
-                    this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.strategy.Session)
-                        .WithPart(this.Part)
-                        .WithQuantity(0 - transactionQuantity)
-                        .WithReason(cancelReason)
-                        .Build());
-                }
+        private void SyncInventoryTransactions(Part part, int initialQuantity, InventoryTransactionReason reason, bool isCancellation)
+        {
+            var adjustmentQuantity = 0;
+            var existingQuantity = 0;
+            var matchingTransactions = this.InventoryItemTransactions.Where(t => t.Reason.Equals(reason) && t.Part.Equals(part));
+
+            if (matchingTransactions.Count() > 0)
+            {
+                existingQuantity = matchingTransactions.Sum(t => t.Quantity);
+            }
+
+            if (isCancellation)
+            {
+                adjustmentQuantity = 0 - existingQuantity;
+            }
+            else
+            {
+                adjustmentQuantity = initialQuantity - existingQuantity;
+            }
+
+            if (adjustmentQuantity != 0)
+            {
+                this.AddInventoryItemTransaction(new InventoryItemTransactionBuilder(this.strategy.Session)
+                    .WithPart(part)
+                    .WithQuantity(adjustmentQuantity)
+                    .WithReason(reason)
+                    .Build());
             }
         }
     }

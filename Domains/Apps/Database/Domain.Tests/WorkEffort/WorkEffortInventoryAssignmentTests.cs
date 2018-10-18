@@ -30,23 +30,30 @@ namespace Allors.Domain
         [Fact]
         public void GivenNewWorkEffort_WhenAddingInventoryAssignment_ThenInventoryReservationCreated()
         {
+            // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new PartBuilder(this.Session).WithPartId("P1").Build();
 
+            // Act
             this.Session.Derive(true);
 
+            // Assert
             workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
             workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
 
+            // Re-arrange
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
-                .WithAssignment(workEffort).WithPart(part)
+                .WithAssignment(workEffort)
+                .WithPart(part)
                 .WithQuantity(10)
                 .Build();
 
+            // Act
             this.Session.Derive(true);
 
+            // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
 
             transactions.Count.ShouldEqual(1);
@@ -56,8 +63,52 @@ namespace Allors.Domain
         }
 
         [Fact]
+        public void GivenNewWorkEffortWithInventoryAssignment_WhenChangingPart_ThenOldInventoryCancelledAndNewInventoryCreated()
+        {
+            // Arrange
+            var reasons = new InventoryTransactionReasons(this.Session);
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
+
+            this.Session.Derive(true);
+
+            var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workEffort)
+                .WithPart(part1)
+                .WithQuantity(10)
+                .Build();
+
+            // Act
+            this.Session.Derive(true);
+
+            // Assert
+            var transactions = inventoryAssignment.InventoryItemTransactions.ToArray();
+
+            transactions.Length.ShouldEqual(1);
+            transactions[0].Part.ShouldEqual(part1);
+            transactions[0].Quantity.ShouldEqual(10);
+            transactions[0].Reason.ShouldEqual(reasons.Reservation);
+
+            // Re-arrange
+            inventoryAssignment.Part = part2;
+
+            // Act
+            this.Session.Derive(true);
+
+            // Assert
+            var part1Transactions = inventoryAssignment.InventoryItemTransactions.Where(t => t.Part.Equals(part1)).ToArray();
+            var part2Transactions = inventoryAssignment.InventoryItemTransactions.Where(t => t.Part.Equals(part2)).ToArray();
+
+            part1Transactions.Sum(t => t.Quantity).ShouldEqual(0);
+            part2Transactions.Sum(t => t.Quantity).ShouldEqual(10);
+        }
+
+        [Fact]
         public void GivenWorkEffortWithInventoryAssignment_WhenCancelling_ThenInventoryReservationCancelled()
         {
+            // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
@@ -65,20 +116,19 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
-            workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
-
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
-                .WithAssignment(workEffort).WithPart(part)
+                .WithAssignment(workEffort)
+                .WithPart(part)
                 .WithQuantity(10)
                 .Build();
 
             this.Session.Derive(true);
 
+            // Act
             workEffort.Cancel();
-
             this.Session.Derive(true);
 
+            // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
             var reservation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
             var reservationCancellation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity < 0));
@@ -92,6 +142,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkEffortWithInventoryAssignment_WhenCompleting_ThenInventoryTransactionsCreated()
         {
+            // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
@@ -99,20 +150,19 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
-            workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
-
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
-                .WithAssignment(workEffort).WithPart(part)
+                .WithAssignment(workEffort)
+                .WithPart(part)
                 .WithQuantity(10)
                 .Build();
 
             this.Session.Derive(true);
 
+            // Act
             workEffort.Finish();
-
             this.Session.Derive(true);
 
+            // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
             var reservation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
             var reservationCancellation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity < 0));
@@ -128,6 +178,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkEffortWithInventoryAssignment_WhenCompletingThenCancelling_ThenInventoryTransactionsCancelled()
         {
+            // Arrange
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
@@ -135,24 +186,22 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
-            workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
-
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
-                .WithAssignment(workEffort).WithPart(part)
+                .WithAssignment(workEffort)
+                .WithPart(part)
                 .WithQuantity(10)
                 .Build();
 
             this.Session.Derive(true);
 
+            // Act
             workEffort.Finish();
-
             this.Session.Derive(true);
 
             workEffort.Cancel();
-
             this.Session.Derive(true);
 
+            // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
             var reservation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
             var reservationCancellation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity < 0));
@@ -168,7 +217,47 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenWorkEffortWithInventoryAssignment_WhenChangingQuantity_ThenInventoryTransactionsCreate()
+        public void GivenNewWorkEffortWithInventoryAssignment_WhenChangingPartQuantityState_ThenOldInventoryCancelledAndNewInventoryCreated()
+        {
+            // Arrange
+            var reasons = new InventoryTransactionReasons(this.Session);
+
+            var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
+            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
+
+            this.Session.Derive(true);
+
+            var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workEffort)
+                .WithPart(part1)
+                .WithQuantity(10)
+                .Build();
+
+            this.Session.Derive(true);
+
+            // Act
+            inventoryAssignment.Part = part2;
+            inventoryAssignment.Quantity = 5;
+
+            workEffort.Finish();
+            this.Session.Derive(true);
+
+            // Assert
+            var part1Transactions = inventoryAssignment.InventoryItemTransactions.Where(t => t.Part.Equals(part1)).ToArray();
+            var part2Transactions = inventoryAssignment.InventoryItemTransactions.Where(t => t.Part.Equals(part2)).ToArray();
+
+            var part1Reservations = part1Transactions.Where(t => t.Reason.Equals(reasons.Reservation));
+            var part2Reservations = part2Transactions.Where(t => t.Reason.Equals(reasons.Reservation));
+            var part2Consumption = part2Transactions.Where(t => t.Reason.Equals(reasons.Consumption));
+
+            part1Reservations.Sum(r => r.Quantity).ShouldEqual(0);
+            part2Reservations.Sum(r => r.Quantity).ShouldEqual(0);
+            part2Consumption.Sum(c => c.Quantity).ShouldEqual(5);
+        }
+
+        [Fact]
+        public void GivenWorkEffortWithInventoryAssignment_WhenChangingQuantity_ThenInventoryTransactionsCreated()
         {
             // Arrage
             var reasons = new InventoryTransactionReasons(this.Session);
@@ -176,23 +265,16 @@ namespace Allors.Domain
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
             var part = new PartBuilder(this.Session).WithPartId("P1").Build();
 
-            // Act
             this.Session.Derive(true);
-            this.Session.Commit();
 
-            // Assert
-            workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
-            workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
-
-            // Re-arrange
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
-                .WithAssignment(workEffort).WithPart(part)
+                .WithAssignment(workEffort)
+                .WithPart(part)
                 .WithQuantity(5)
                 .Build();
 
             // Act
             this.Session.Derive(true);
-            this.Session.Commit();
 
             // Assert
             var reservation = inventoryAssignment.InventoryItemTransactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
@@ -203,7 +285,6 @@ namespace Allors.Domain
 
             // Act
             this.Session.Derive(true);
-            this.Session.Commit();
 
             // Assert
             var reservations = inventoryAssignment.InventoryItemTransactions.Where(t => t.Reason.Equals(reasons.Reservation));
@@ -214,7 +295,6 @@ namespace Allors.Domain
 
             // Act
             this.Session.Derive(true);
-            this.Session.Commit();
 
             // Assert
             reservations = inventoryAssignment.InventoryItemTransactions.Where(t => t.Reason.Equals(reasons.Reservation));
