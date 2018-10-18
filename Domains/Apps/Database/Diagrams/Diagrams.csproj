@@ -53,6 +53,7 @@
     <None Include="Products\Overview.cd" />
     <None Include="Relation\Overview.cd" />
     <None Include="Shipment\Overview.cd" />
+    <None Include="Temp.cd" />
     <None Include="Workeffort\WorkEffort.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

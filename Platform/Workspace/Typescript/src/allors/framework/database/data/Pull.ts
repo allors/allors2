@@ -15,6 +15,8 @@ export class Pull {
 
   public extent: Extent;
 
+  public objectType: ObjectType | MetaObjectType;
+
   public object: ISessionObject | string;
 
   public arguments: { [name: string]: string; };
@@ -23,10 +25,10 @@ export class Pull {
 
   constructor(fields?: Partial<Pull> | ObjectType | MetaObjectType, flat?: FlatPull) {
     if (fields instanceof ObjectType || (fields as MetaObjectType)._objectType) {
-      const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+      this.objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
 
       if (!flat) {
-        this.extent = new Filter({ objectType: objectType });
+        this.extent = new Filter({ objectType: this.objectType });
       } else {
         this.extentRef = flat.extentRef;
         this.extent = flat.extent;
@@ -40,24 +42,24 @@ export class Pull {
             throw new Error('predicate conflicts with object/extent/extentRef');
           }
 
-          this.extent = new Filter({ objectType: objectType, predicate: flat.predicate, sort });
+          this.extent = new Filter({ objectType: this.objectType, predicate: flat.predicate, sort });
         }
 
         if (!this.object && !this.extent && !this.extentRef) {
-          this.extent = new Filter({ objectType: objectType, sort });
+          this.extent = new Filter({ objectType: this.objectType, sort });
         }
 
         if (flat.fetchRef || flat.fetch || flat.include || flat.name || flat.skip || flat.take) {
           const result = new Result({
             fetchRef: flat.fetchRef,
-            fetch: flat.fetch ? flat.fetch instanceof Fetch ? flat.fetch : new Fetch(objectType, flat.fetch) : undefined,
+            fetch: flat.fetch ? flat.fetch instanceof Fetch ? flat.fetch : new Fetch(this.objectType, flat.fetch) : undefined,
             name: flat.name,
             skip: flat.skip,
             take: flat.take
           });
 
           if (flat.include) {
-            const include = flat.include instanceof Tree ? flat.include : new Tree(objectType, flat.include);
+            const include = flat.include instanceof Tree ? flat.include : new Tree(this.objectType, flat.include);
 
             if (result.fetch) {
               if (result.fetch.step) {
@@ -86,6 +88,7 @@ export class Pull {
     return {
       extentRef: this.extentRef,
       extent: this.extent,
+      objectType: this.objectType && (this.objectType as MetaObjectType)._objectType ? (this.objectType as MetaObjectType)._objectType.id : (this.objectType as ObjectType).id,
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
       arguments: this.arguments,
       results: this.results,

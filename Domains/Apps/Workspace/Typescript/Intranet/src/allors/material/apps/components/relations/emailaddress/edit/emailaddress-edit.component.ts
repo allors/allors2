@@ -80,6 +80,21 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
                 object: id,
                 fetch: {
                   PartyContactMechanismsWhereContactMechanism: {
+                    PartyWherePartyContactMechanism: {
+                      include: {
+                        PartyContactMechanisms: {
+                          ContactPurposes: x,
+                          ContactMechanism: x,
+                        }
+                      }
+                    }
+                  }
+                }
+              }),
+              pull.EmailAddress({
+                object: id,
+                fetch: {
+                  PartyContactMechanismsWhereContactMechanism: {
                     include: {
                       ContactMechanism: x
                     }
@@ -103,7 +118,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
 
         if (add) {
-          this.party = loaded.objects.Person as Party;
+          this.party = loaded.objects.Party as Party;
           this.contactMechanism = scope.session.create('EmailAddress') as EmailAddress;
           this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
@@ -111,6 +126,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
           this.party.AddPartyContactMechanism(this.partyContactMechanism);
 
         } else {
+          this.party = loaded.collections.Parties && (loaded.collections.Parties as Party[])[0];
           const partyContactMechanisms = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
           this.partyContactMechanism = partyContactMechanisms && partyContactMechanisms[0];
           this.contactMechanism = this.partyContactMechanism.ContactMechanism as EmailAddress;
@@ -120,7 +136,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.goBack();
+          this.navigationService.back();
         },
       );
   }
@@ -137,14 +153,10 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
     scope
       .save()
       .subscribe((saved: Saved) => {
-        this.goBack();
+        this.navigationService.back();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

@@ -37,6 +37,7 @@ export const routes: Routes = [
           { path: 'party/:id/communicationevent/:roleId', data: overviewData({ id: ids.CommunicationEvent }), component: relations.CommunicationEventOverviewComponent },
         ],
       },
+
       { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent },
       { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent },
       { path: 'organisation', data: addData({ id: ids.Person }), component: relations.OrganisationEditComponent },

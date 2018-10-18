@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Route, Router, ActivatedRoute } from '@angular/router';
+import {Location} from '@angular/common';
 
 import { NavigationItem } from './NavigationItem';
 import { ISessionObject, ObjectType, MetaObject, MetaObjectType } from 'src/allors/framework';
@@ -10,7 +11,7 @@ export class NavigationService {
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private location: Location
   ) {
 
     this.navigationItems = [];
@@ -44,5 +45,9 @@ export class NavigationService {
     const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'edit');
     const url = navigationItem.link.replace(`:id`, sessionObject.id);
     this.router.navigate([url]);
+  }
+
+  back() {
+    this.location.back();
   }
 }

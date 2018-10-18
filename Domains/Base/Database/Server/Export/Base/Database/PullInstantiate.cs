@@ -110,20 +110,20 @@ namespace Allors.Server
                         }
                         else
                         {
-                            name = name ?? @object.Strategy.Class.SingularName;
+                            name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
                             response.AddObject(name, @object, include);
                         }
                     }
                     else
                     {
-                        name = name ?? @object.Strategy.Class.SingularName;
+                        name = name ?? this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
                         response.AddObject(name, @object);
                     }
                 }
             }
             else
             {
-                var name = @object.Strategy.Class.SingularName;
+                var name = this.pull.ObjectType?.Name ?? @object.Strategy.Class.SingularName;
                 response.AddObject(name, @object);
             }
         }

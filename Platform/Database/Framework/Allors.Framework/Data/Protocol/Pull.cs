@@ -24,11 +24,15 @@ namespace Allors.Data.Protocol
     using System.Collections.Generic;
     using System.Linq;
 
+    using Allors.Meta;
+
     public class Pull 
     {
         public Guid? ExtentRef { get; set; }
 
         public Extent Extent { get; set; }
+
+        public Guid? ObjectType { get; set; }
 
         public string Object { get; set; }
 
@@ -42,6 +46,7 @@ namespace Allors.Data.Protocol
             {
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Load(session),
+                ObjectType = this.ObjectType.HasValue ? (IObjectType)session.Database.MetaPopulation.Find(this.ObjectType.Value) : null,
                 Object = this.Object != null ? session.Instantiate(this.Object) : null,
                 Results = this.Results?.Select(v => v.Load(session)).ToArray(),
                 Arguments = this.Arguments != null ? new Arguments(this.Arguments) : null

@@ -23,11 +23,15 @@ namespace Allors.Data
     using System;
     using System.Linq;
 
+    using Allors.Meta;
+
     public class Pull
     {
         public Guid? ExtentRef { get; set; }
 
         public IExtent Extent { get; set; }
+
+        public IObjectType ObjectType { get; set; }
 
         public IObject Object { get; set; }
 
@@ -41,6 +45,7 @@ namespace Allors.Data
             {
                 ExtentRef = this.ExtentRef,
                 Extent = this.Extent?.Save(),
+                ObjectType = this.ObjectType?.Id,
                 Object = this.Object?.Id.ToString(),
                 Results = this.Results?.Select(v => v.Save()).ToArray()
             };
