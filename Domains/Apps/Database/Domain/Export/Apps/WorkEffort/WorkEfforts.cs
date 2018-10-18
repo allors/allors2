@@ -30,7 +30,7 @@ namespace Allors.Domain
             config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
 
             config.Deny(this.ObjectType, cancelledState, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Read);
+            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Read);  //TODO: Deny Read or Write?
         }
     }
 }

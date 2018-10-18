@@ -132,6 +132,20 @@ namespace Allors.Domain
                     this.QuantityCommittedOut += salesOrderItem.QuantityOrdered;
                 }
             }
+
+            foreach (InventoryItemTransaction inventoryTransaction in this.InventoryItemTransactionsWhereInventoryItem)
+            {
+                var reason = inventoryTransaction.Reason;
+
+                if (reason.IncreasesQuantityCommittedOut == true)
+                {
+                    this.QuantityCommittedOut += inventoryTransaction.Quantity;
+                }
+                else if (reason.IncreasesQuantityCommittedOut == false)
+                {
+                    this.QuantityCommittedOut -= inventoryTransaction.Quantity;
+                }
+            }
         }
 
         public void AppsOnDeriveQuantityExpectedIn(IDerivation derivation)

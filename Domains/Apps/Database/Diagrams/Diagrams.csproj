@@ -55,6 +55,8 @@
     <None Include="Shipment\Overview.cd" />
     <None Include="Temp.cd" />
     <None Include="Workeffort\WorkEffort.cd" />
+    <None Include="Workeffort\WorkEffort Time.cd" />
+    <None Include="Workeffort\WorkEffort Inventory.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

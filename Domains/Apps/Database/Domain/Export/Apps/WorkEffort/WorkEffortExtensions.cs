@@ -78,6 +78,7 @@ namespace Allors.Domain
 
         public static void AppsReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {
+            //TODO: Guard against reopening from Cancelled and Completed?
             @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).NeedsAction;
         }
 

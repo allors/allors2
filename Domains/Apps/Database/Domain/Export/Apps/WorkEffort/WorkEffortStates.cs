@@ -128,8 +128,11 @@ namespace Allors.Domain
                 .WithName("Tentative")
                 .Build();
 
-            // Work Effort States which create a Reservation (if one doesn't exist)
+            // The Needs Action state is the initial and re-opened state (Cancel Consumption for Re-Open)
             this.NeedsAction.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
+            this.NeedsAction.AddInventoryTransactionReasonsToCancel(reasons.Consumption);
+
+            // Work Effort States which create a Reservation (if one doesn't exist)
             this.Confirmed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.Declined.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.InProgress.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
@@ -140,9 +143,9 @@ namespace Allors.Domain
             this.Accepted.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.Tentative.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
 
-            // The Completed state should create a Consumption and cancel the Reservation
+            // The Completed state should create a Consumption (which Decreases the Reservation)
+            this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Reservation);
             this.Completed.AddInventoryTransactionReasonsToCreate(reasons.Consumption);
-            this.Completed.AddInventoryTransactionReasonsToCancel(reasons.Reservation);
             
             // The Cancelled state should cancel any existing Consumption and Reservation
             this.Cancelled.AddInventoryTransactionReasonsToCancel(reasons.Reservation);

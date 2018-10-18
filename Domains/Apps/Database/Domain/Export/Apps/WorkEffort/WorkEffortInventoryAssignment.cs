@@ -24,26 +24,32 @@ namespace Allors.Domain
             var state = this.Assignment.WorkEffortState;
             var transactions = this.InventoryItemTransactions.ToArray();
             var partChanged = this.ExistCurrentVersion && (this.CurrentVersion.Part != this.Part);
-            
+
             foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
             {
                 this.SyncInventoryTransactions(this.Part, this.Quantity, createReason, false);
-                
-                if (partChanged)
-                {
-                    var previous = this.CurrentVersion;  // CurrentVersion is Previous Version until PostDerive
-                    this.SyncInventoryTransactions(previous.Part, previous.Quantity, createReason, true);
-                }
             }
 
             foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
             {
                 this.SyncInventoryTransactions(this.Part, this.Quantity, cancelReason, true);
+            }
 
-                if (partChanged)
+            if (partChanged)
+            {
+                // CurrentVersion is Previous Version until PostDerive
+                var previousPart = this.CurrentVersion.Part;
+                var previousQuantity = this.CurrentVersion.Quantity;
+                state = this.CurrentVersion.Assignment.PreviousWorkEffortState ?? this.CurrentVersion.Assignment.WorkEffortState;
+
+                foreach (InventoryTransactionReason createReason in state.InventoryTransactionReasonsToCreate)
                 {
-                    var previous = this.CurrentVersion;  // CurrentVersion is Previous Version until PostDerive
-                    this.SyncInventoryTransactions(previous.Part, previous.Quantity, cancelReason, true);
+                    this.SyncInventoryTransactions(previousPart, previousQuantity, createReason, true);
+                }
+
+                foreach (InventoryTransactionReason cancelReason in state.InventoryTransactionReasonsToCancel)
+                {
+                    this.SyncInventoryTransactions(previousPart, previousQuantity, cancelReason, true);
                 }
             }
         }
