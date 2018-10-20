@@ -1,15 +1,13 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar, MatTabChangeEvent } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { isType } from '@angular/core/src/type';
-import { forEach } from '@angular/router/src/utils/collection';
-import { ErrorService, SearchFactory, Loaded, MediaService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Invoice, InvoiceItem, Locale, LocalisedText, Model, Organisation, OrganisationRole, Ownership, ProductCategory, ProductFeature, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemCharacteristic, SerialisedInventoryItemCharacteristicType, SerialisedInventoryItemState, Singleton, SupplierOffering, VatRate, VendorProduct } from '../../../../../domain';
-import { Contains, Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { FetchFactory, MetaDomain } from '../../../../../meta';
+import { ErrorService, SearchFactory, MediaService, Saved, Scope, x, Allors } from '../../../../../angular';
+import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InvoiceItem, Locale, Model, Organisation, Ownership, ProductCategory, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemState, SupplierOffering, VatRate, VendorProduct } from '../../../../../domain';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
+import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { switchMap } from 'rxjs/operators';
@@ -83,8 +81,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-      .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+    .pipe(
+      switchMap(([, , internalOrganisationId]) => {
 
           const id: string = this.route.snapshot.paramMap.get('id');
 
@@ -129,12 +127,12 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 // StandardFeatures: x,
               }
             }),
-            pull.SerialisedInventoryItem({
+            pull.SerialisedItem({
               object: id,
               include: {
                 Ownership: x,
-                SerialisedInventoryItemCharacteristics: {
-                  SerialisedInventoryItemCharacteristicType: {
+                SerialisedItemCharacteristics: {
+                  SerialisedItemCharacteristicType: {
                     UnitOfMeasure: x,
                   },
                   LocalisedValues: {
@@ -197,7 +195,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
                 const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-                const inventoryItemKindSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === '2596e2dd-3f5d-4588-a4a2-167d6fbe3fae');
 
                 if (this.good === undefined) {
                   this.good = scope.session.create('Good') as Good;
@@ -285,7 +282,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const { m, pull, scope } = this.allors;
+    const { pull, scope } = this.allors;
 
     const pulls = [
       pull.Brand({
@@ -301,7 +298,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        const selectedBrand = loaded.objects.selectedbrand as Brand;
         // TODO:
         // this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       },
@@ -325,9 +321,9 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
     scope
       .save()
-      .subscribe((saved: Saved) => {
-        this.goBack();
-      },
+      .subscribe(() => {
+          this.goBack();
+        },
         (error: Error) => {
           this.errorService.handle(error);
         });
@@ -341,14 +337,15 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
 
     scope
       .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        if (isNew) {
-          this.router.navigate(['/serialisedGood/' + this.good.id]);
-        } else {
-          this.refresh();
-        }
-      },
+      .subscribe(() => {
+          this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+          if (isNew) {
+            this.router.navigate(['/serialisedGood/' + this.good.id]);
+          }
+          else {
+            this.refresh();
+          }
+        },
         (error: Error) => {
           this.errorService.handle(error);
         });
@@ -393,7 +390,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
             (v.ThroughDate === null || v.ThroughDate >= now));
 
           if (supplierOffering === undefined) {
-            this.supplierOfferings.push(this.newSupplierOffering(supplier, this.good));
+            this.supplierOfferings.push(this.newSupplierOffering(supplier));
           } else {
             supplierOffering.ThroughDate = null;
           }
@@ -416,7 +413,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     }
   }
 
-  private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
+  private newSupplierOffering(supplier: Organisation): SupplierOffering {
     const { scope } = this.allors;
 
     const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;

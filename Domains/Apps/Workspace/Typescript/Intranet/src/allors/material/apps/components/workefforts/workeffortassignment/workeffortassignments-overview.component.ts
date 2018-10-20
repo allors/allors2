@@ -4,24 +4,17 @@ import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort, Filter } from '../../../../../framework';
+import { ErrorService, Invoked, x, Allors } from '../../../../../angular';
+import { InternalOrganisation, Person, Priority, WorkEffortState, WorkTask, WorkEffortPartyAssignment } from '../../../../../domain';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-interface SearchData {
-  name: string;
-  description: string;
-  state: string;
-  priority: string;
-  assignee: string;
-}
 
 @Component({
   templateUrl: './workeffortassignments-overview.component.html',
@@ -36,7 +29,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
   public searchForm: FormGroup; public advancedSearch: boolean;
 
-  public data: WorkEffortAssignment[];
+  public data: WorkEffortPartyAssignment[];
 
   public workEffortStates: WorkEffortState[];
   public selectedWorkEffortState: WorkEffortState;
@@ -60,10 +53,9 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
     @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
-    private titleService: Title,
     private snackBar: MatSnackBar,
+    private titleService: Title,
     private router: Router,
-    private snackBarService: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
@@ -91,7 +83,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
+        scan(([previousData,,], [data, take, date, internalOrganisationId]) => {
           return [
             data,
             data !== previousData ? 50 : take,
@@ -105,7 +97,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     this.subscription = combined$
       .pipe(
-        switchMap(([data, take, , internalOrganisationId]) => {
+        switchMap(([data,,]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -167,17 +159,17 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
                 const assignmentPredicate: And = new And();
                 const assignmentPredicates: Predicate[] = assignmentPredicate.operands;
-                assignmentPredicates.push(new ContainedIn({ propertyType: m.WorkEffortAssignment.Assignment, extent: workTasksExtent }));
+                assignmentPredicates.push(new ContainedIn({ propertyType: m.WorkEffortPartyAssignment.Assignment, extent: workTasksExtent }));
 
                 if (data.assignee) {
-                  assignmentPredicates.push(new Equals({ propertyType: m.WorkEffortAssignment.Professional, object: this.assignee }));
+                  assignmentPredicates.push(new Equals({ propertyType: m.WorkEffortPartyAssignment.Party, object: this.assignee }));
                 }
 
                 const assignmentsQuery = [
-                  pull.WorkEffortAssignment({
+                  pull.WorkEffortPartyAssignment({
                     predicate: assignmentPredicate,
                     include: {
-                      Professional: x,
+                      Party: x,
                       Assignment: {
                         WorkEffortState: x,
                         Priority: x,
@@ -196,7 +188,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
         scope.session.reset();
 
-        this.data = loaded.collections.workEffortAssignments as WorkEffortAssignment[];
+        this.data = loaded.collections.workEffortAssignments as WorkEffortPartyAssignment[];
         this.total = loaded.values.workEffortAssignments_total;
       },
         (error: any) => {
@@ -231,10 +223,10 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
       .subscribe((confirm: boolean) => {
         if (confirm) {
           scope.invoke(worktask.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
+            .subscribe(() => {
+                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                this.refresh();
+              },
               (error: Error) => {
                 this.errorService.handle(error);
               });

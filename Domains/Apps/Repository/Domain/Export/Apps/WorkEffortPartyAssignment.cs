@@ -32,8 +32,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public WorkEffort Assignment { get; set; }
+
         #region Allors
         [Id("92081ae5-3e2a-4b13-98b8-0fc45403b877")]
         [AssociationId("2b11931c-a007-4fec-ab78-ecc8388b2a77")]
@@ -42,8 +43,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
+        [Workspace]
         public Party Party { get; set; }
+
         #region Allors
         [Id("f88ae79d-7605-4be9-972e-541489bdb72b")]
         [AssociationId("b527fed9-c720-45aa-b8c5-fe5336f43f5c")]
@@ -51,7 +53,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
+        [Workspace]
         public Facility Facility { get; set; }
 
         #region inherited methods

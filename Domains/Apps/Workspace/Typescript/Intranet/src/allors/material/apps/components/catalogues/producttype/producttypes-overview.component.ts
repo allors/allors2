@@ -72,7 +72,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
               {
                 predicate,
                 include: {
-                  SerialisedInventoryItemCharacteristicTypes: x,
+                  SerialisedItemCharacteristicTypes: x,
                 },
                 sort: new Sort(m.ProductType.Name),
               }

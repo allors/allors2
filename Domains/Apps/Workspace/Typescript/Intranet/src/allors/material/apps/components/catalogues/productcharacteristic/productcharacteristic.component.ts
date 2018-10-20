@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { IUnitOfMeasure, Locale, SerialisedInventoryItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
+import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
@@ -21,7 +21,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public productCharacteristic: SerialisedInventoryItemCharacteristicType;
+  public productCharacteristic: SerialisedItemCharacteristicType;
 
   public singleton: Singleton;
   public locales: Locale[];
@@ -53,11 +53,11 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
           const id: string = this.route.snapshot.paramMap.get('id');
 
           const pulls = [
-            pull.SerialisedInventoryItemCharacteristic(
+            pull.SerialisedItemCharacteristic(
               {
                 object: id,
                 include: {
-                  SerialisedInventoryItemCharacteristicType: {
+                  SerialisedItemCharacteristicType: {
                     LocalisedNames: {
                       Locale: x,
                     }
@@ -88,9 +88,9 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedInventoryItemCharacteristicType;
+        this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedItemCharacteristicType;
         if (!this.productCharacteristic) {
-          this.productCharacteristic = scope.session.create('SerialisedInventoryItemCharacteristicType') as SerialisedInventoryItemCharacteristicType;
+          this.productCharacteristic = scope.session.create('SerialisedItemCharacteristicType') as SerialisedItemCharacteristicType;
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;

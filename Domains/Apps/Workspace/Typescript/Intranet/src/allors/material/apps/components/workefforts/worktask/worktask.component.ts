@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
+import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
@@ -28,9 +28,9 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   public workEffortPurposes: WorkEffortPurpose[];
   public singleton: Singleton;
   public employees: Person[];
-  public workEffortAssignments: WorkEffortAssignment[];
-  public assignees: Person[] = [];
-  public existingAssignees: Person[] = [];
+  public workEffortPartyAssignments: WorkEffortPartyAssignment[];
+  public assignees: Party[] = [];
+  public existingAssignees: Party[] = [];
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
   public addContactPerson = false;
@@ -116,7 +116,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
                   pull.WorkTask({
                     object: id,
                     fetch: {
-                      WorkEffortAssignmentsWhereAssignment: x,
+                      WorkEffortPartyAssignmentsWhereAssignment: x,
                     }
                   })
                 ];
@@ -139,12 +139,12 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         (loaded) => {
-          this.workEffortAssignments = loaded.collections
-            .workEffortAssignments as WorkEffortAssignment[];
+          this.workEffortPartyAssignments = loaded.collections
+            .workEffortAssignments as WorkEffortPartyAssignment[];
 
-          if (this.workEffortAssignments) {
-            this.assignees = this.workEffortAssignments.map(
-              (v: WorkEffortAssignment) => v.Professional,
+          if (this.workEffortPartyAssignments) {
+            this.assignees = this.workEffortPartyAssignments.map(
+              (v: WorkEffortPartyAssignment) => v.Party,
             );
           }
 
@@ -206,11 +206,11 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     if (this.assignees) {
       this.assignees.forEach((assignee: Person) => {
         if (this.existingAssignees.indexOf(assignee) < 0) {
-          const workEffortAssignment: WorkEffortAssignment = scope.session.create(
+          const workEffortAssignment: WorkEffortPartyAssignment = scope.session.create(
             'WorkEffortAssignment',
-          ) as WorkEffortAssignment;
+          ) as WorkEffortPartyAssignment;
           workEffortAssignment.Assignment = this.workTask;
-          workEffortAssignment.Professional = assignee;
+          workEffortAssignment.Party = assignee;
         }
       });
     }

@@ -1,8 +1,8 @@
 import { domain } from '../domain';
-import { SerialisedInventoryItem } from '../generated/SerialisedInventoryItem.g';
+import { SerialisedItem } from '../generated/SerialisedItem.g';
 
-declare module '../generated/SerialisedInventoryItem.g' {
-  interface SerialisedInventoryItem {
+declare module '../generated/SerialisedItem.g' {
+  interface SerialisedItem {
     age;
     yearsToGo;
     goingConcern;
@@ -14,55 +14,52 @@ declare module '../generated/SerialisedInventoryItem.g' {
 
 domain.extend((workspace) => {
 
-  const obj: SerialisedInventoryItem = workspace.prototypeByName['SerialisedInventoryItem'];
+  const obj: SerialisedItem = workspace.prototypeByName['SerialisedItem'];
 
   Object.defineProperty(obj, 'age', {
-    get(this: SerialisedInventoryItem) {
+    get(this: SerialisedItem) {
       if (obj.ManufacturingYear) {
         return new Date().getFullYear() - this.ManufacturingYear;
-      }
-      else {
+      } else {
         return 0;
       }
     },
   });
 
   Object.defineProperty(obj, 'yearsToGo', {
-    get(this: SerialisedInventoryItem) {
+    get(this: SerialisedItem) {
       if (obj.ManufacturingYear) {
         return this.LifeTime - this.age < 0 ? 0 : this.LifeTime - this.age;
-      }
-      else {
+      } else {
         return 0;
       }
     },
   });
 
   Object.defineProperty(obj, 'goingConcern', {
-    get(this: SerialisedInventoryItem) {
+    get(this: SerialisedItem) {
       return Math.round((this.ReplacementValue * this.yearsToGo) / this.LifeTime);
     },
   });
 
   Object.defineProperty(obj, 'marketValue', {
-    get(this: SerialisedInventoryItem) {
+    get(this: SerialisedItem) {
       if (obj.ManufacturingYear) {
         return Math.round(this.ReplacementValue * Math.exp(-2.045 * this.age / this.LifeTime));
-      }
-      else {
+      } else {
         return 0;
       }
     },
   });
 
   Object.defineProperty(obj, 'grossBookValue', {
-    get(this: SerialisedInventoryItem) {
+    get(this: SerialisedItem) {
       return Math.round(this.PurchasePrice + this.RefurbishCost + this.TransportCost);
     },
   });
 
   Object.defineProperty(obj, 'expectedPosa', {
-    get(this: SerialisedInventoryItem) {
+    get(this: SerialisedItem) {
       return this.ExpectedSalesPrice - this.grossBookValue;
     },
   });

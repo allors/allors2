@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortAssignment } from '../../../../../../domain';
+import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortPartyAssignment } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -28,7 +28,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   public internalOrganisation: InternalOrganisation;
 
   public communicationEvents: CommunicationEvent[];
-  public workEffortAssignments: WorkEffortAssignment[];
+  public workEffortPartyAssignments: WorkEffortPartyAssignment[];
 
   public contactMechanismsCollection = 'Current';
   public currentContactMechanisms: PartyContactMechanism[] = [];
@@ -135,7 +135,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             pull.Person({
               object: id,
               fetch: {
-                WorkEffortAssignmentsWhereProfessional: {
+                WorkEffortPartyAssignmentsWhereParty: {
                   include: {
                     Assignment: {
                       WorkEffortState: x,
@@ -180,7 +180,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         }
 
         this.communicationEvents = loaded.collections.CommunicationEventsWhereInvolvedParty as CommunicationEvent[];
-        this.workEffortAssignments = loaded.collections.WorkEffortAssignmentsWhereProfessional as WorkEffortAssignment[];
+        this.workEffortPartyAssignments = loaded.collections.WorkEffortAssignmentsWhereProfessional as WorkEffortPartyAssignment[];
 
         this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];

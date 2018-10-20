@@ -1,26 +1,20 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, PdfService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortState, WorkTask } from '../../../../../domain';
-import { And, ContainedIn, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
+import { ErrorService, Invoked, PdfService, x, Allors } from '../../../../../angular';
+import { InternalOrganisation, Person, Priority, WorkEffortState, WorkTask } from '../../../../../domain';
+import { And, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-interface SearchData {
-  name: string;
-  description: string;
-  state: string;
-  priority: string;
-}
 
 @Component({
   templateUrl: './worktasks-overview.component.html',
@@ -57,10 +51,9 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
     @Self() private allors: Allors,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
-    private titleService: Title,
     private snackBar: MatSnackBar,
+    private titleService: Title,
     private router: Router,
-    private snackBarService: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public pdfService: PdfService,
     private stateService: StateService) {
@@ -87,7 +80,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
 
     const combined$ = combineLatest(search$, this.refresh$)
       .pipe(
-        scan(([previousData, previousDate], [data, date]) => {
+        scan(([], [data, date]) => {
           return [data, date];
         }, [])
       );
@@ -205,10 +198,10 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
       .subscribe((confirm: boolean) => {
         if (confirm) {
           scope.invoke(worktask.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
+            .subscribe(() => {
+                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                this.refresh();
+              },
               (error: Error) => {
                 this.errorService.handle(error);
               });

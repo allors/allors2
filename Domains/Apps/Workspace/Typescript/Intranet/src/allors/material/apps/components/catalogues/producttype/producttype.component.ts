@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
-import { ProductType, SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
+import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -23,7 +23,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
   public productType: ProductType;
 
-  public characteristics: SerialisedInventoryItemCharacteristicType[];
+  public characteristics: SerialisedItemCharacteristicType[];
 
   private subscription: Subscription;
 
@@ -50,11 +50,11 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
             pull.ProductType({
               object: id,
               include: {
-                SerialisedInventoryItemCharacteristicTypes: x,
+                SerialisedItemCharacteristicTypes: x,
               }
             }),
-            pull.SerialisedInventoryItemCharacteristicType({
-              sort: new Sort(m.SerialisedInventoryItemCharacteristicType.Name),
+            pull.SerialisedItemCharacteristicType({
+              sort: new Sort(m.SerialisedItemCharacteristicType.Name),
             })
           ];
 
@@ -69,7 +69,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
           this.productType = scope.session.create('ProductType') as ProductType;
         }
 
-        this.characteristics = loaded.collections.characteristics as SerialisedInventoryItemCharacteristicType[];
+        this.characteristics = loaded.collections.characteristics as SerialisedItemCharacteristicType[];
       },
         (error: any) => {
           this.errorService.handle(error);

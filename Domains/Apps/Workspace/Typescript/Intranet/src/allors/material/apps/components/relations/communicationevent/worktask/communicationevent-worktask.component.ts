@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
-import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
+import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -30,12 +30,12 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   public priorities: Priority[];
   public workEffortPurposes: WorkEffortPurpose[];
   public employees: Person[];
-  public workEffortAssignments: WorkEffortAssignment[];
+  public workEffortPartyAssignments: WorkEffortPartyAssignment[];
   public assignees: Person[] = [];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  
+
   constructor(
     @Self() private allors: Allors,
     private errorService: ErrorService,
@@ -85,7 +85,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
               predicate: new Equals({ propertyType: m.WorkEffortPurpose.IsActive, value: true }),
               sort: new Sort( m.WorkEffortPurpose.Name),
             }),
-            pull.WorkEffortAssignment()
+            pull.WorkEffortPartyAssignment()
           ];
 
           return scope
@@ -126,9 +126,9 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
     const { scope } = this.allors;
 
     this.assignees.forEach((assignee: Person) => {
-      const workEffortAssignment: WorkEffortAssignment = scope.session.create('WorkEffortAssignment') as WorkEffortAssignment;
-      workEffortAssignment.Assignment = this.workTask;
-      workEffortAssignment.Professional = assignee;
+      const workEffortPartyAssignment: WorkEffortPartyAssignment = scope.session.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
+      workEffortPartyAssignment.Assignment = this.workTask;
+      workEffortPartyAssignment.Party = assignee;
     });
 
     scope

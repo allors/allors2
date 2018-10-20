@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 import { ErrorService, Scope, WorkspaceService, x, Invoked, Allors } from '../../../../../angular';
-import { SerialisedInventoryItemCharacteristicType } from '../../../../../domain';
+import { SerialisedItemCharacteristicType } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { StateService } from '../../../services/StateService';
@@ -23,8 +23,8 @@ interface SearchData {
 export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
 
   public title = 'Product Characteristics';
-  public characteristicTypes: SerialisedInventoryItemCharacteristicType[];
-  public filtered: SerialisedInventoryItemCharacteristicType[];
+  public characteristicTypes: SerialisedItemCharacteristicType[];
+  public filtered: SerialisedItemCharacteristicType[];
 
   public search$: BehaviorSubject<SearchData>;
   private refresh$: BehaviorSubject<Date>;
@@ -63,17 +63,17 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
 
           if (data.name) {
             const like: string = data.name.replace('*', '%') + '%';
-            predicates.push(new Like({ roleType: m.SerialisedInventoryItemCharacteristicType.Name, value: like }));
+            predicates.push(new Like({ roleType: m.SerialisedItemCharacteristicType.Name, value: like }));
           }
 
           const pulls = [
-            pull.SerialisedInventoryItemCharacteristicType({
+            pull.SerialisedItemCharacteristicType({
               predicate,
               include: {
                 LocalisedNames: x,
                 UnitOfMeasure: x,
               },
-              sort: new Sort(m.SerialisedInventoryItemCharacteristicType.Name),
+              sort: new Sort(m.SerialisedItemCharacteristicType.Name),
             })];
 
           return scope.load('Pull', new PullRequest({ pulls }));
@@ -81,7 +81,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
         })
       )
       .subscribe((loaded) => {
-        this.characteristicTypes = loaded.collections.SerialisedInventoryItemCharacteristicTypes as SerialisedInventoryItemCharacteristicType[];
+        this.characteristicTypes = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -89,7 +89,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
         });
   }
 
-  public delete(characteristicType: SerialisedInventoryItemCharacteristicType): void {
+  public delete(characteristicType: SerialisedItemCharacteristicType): void {
     const { scope } = this.allors;
 
     this.dialogService
@@ -122,7 +122,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
     this.refresh$.next(new Date());
   }
 
-  public onView(productCharacteristic: SerialisedInventoryItemCharacteristicType): void {
+  public onView(productCharacteristic: SerialisedItemCharacteristicType): void {
     this.router.navigate(['/productCharacteristic/' + productCharacteristic.id]);
   }
 }
