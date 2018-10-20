@@ -263,16 +263,6 @@ namespace Allors.Repository
         DateTime ActualStart { get; set; }
 
         #region Allors
-        [Id("2e7494ed-6df4-424e-907b-3b900aabf4c5")]
-        [AssociationId("c6a502b8-5867-4ac9-8356-60155c1950ae")]
-        [RoleId("45733b43-f02c-498d-8e77-fe882526268c")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        [Workspace]
-        WorkEffortInventoryAssignment[] InventoryItemsNeeded { get; set; }
-
-        #region Allors
         [Id("2efd427f-daeb-4b84-9f86-857ed1bdb1b7")]
         [AssociationId("0e92f113-f607-46bb-85c1-eb3cddb317ef")]
         [RoleId("40e23b5c-8943-4e27-86a1-d0a0140068e6")]
@@ -300,16 +290,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         WorkEffortType WorkEffortType { get; set; }
-
-        #region Allors
-        [Id("62b84e6e-1b2f-46cb-825f-57f586e6cb92")]
-        [AssociationId("81a938c3-1b27-4c24-993a-9bf616f06582")]
-        [RoleId("dc2dc942-1210-4fdd-ad95-fe5b4dbd674d")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Indexed]
-        [Workspace]
-        InventoryItem[] InventoryItemsProduced { get; set; }
 
         #region Allors
         [Id("a60c8797-320d-471f-9755-d3ef20a4feac")]
@@ -363,5 +343,11 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         void Reopen();
+
+        #region Allors
+        [Id("A0DA49D5-9AB3-4F1C-A40C-81644ADDD411")]
+        #endregion
+        [Workspace]
+        void Complete();
     }
 }

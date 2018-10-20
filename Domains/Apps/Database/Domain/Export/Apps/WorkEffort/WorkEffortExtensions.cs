@@ -23,9 +23,9 @@ namespace Allors.Domain
 
             if (derivation.ChangeSet.Associations.Contains(@this.Id))
             {
-                foreach (WorkEffortAssignment effortAssignment in @this.WorkEffortAssignmentsWhereAssignment)
+                foreach (WorkEffortPartyAssignment partyAssignment in @this.WorkEffortPartyAssignmentsWhereAssignment)
                 {
-                    derivation.AddDependency(effortAssignment, @this);
+                    derivation.AddDependency(partyAssignment, @this);
                 }
 
                 foreach (WorkEffortInventoryAssignment inventoryAssignment in @this.WorkEffortInventoryAssignmentsWhereAssignment)
@@ -41,8 +41,7 @@ namespace Allors.Domain
 
             if (!@this.ExistOwner)
             {
-                var owner = @this.Strategy.Session.GetUser() as Person;
-                if (owner == null)
+                if (!(@this.Strategy.Session.GetUser() is Person owner))
                 {
                     owner = @this.Strategy.Session.GetSingleton().Guest as Person;
                 }
@@ -78,7 +77,6 @@ namespace Allors.Domain
 
         public static void AppsReopen(this WorkEffort @this, WorkEffortReopen reopen)
         {
-            //TODO: Guard against reopening from Cancelled and Completed?
             @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).NeedsAction;
         }
 

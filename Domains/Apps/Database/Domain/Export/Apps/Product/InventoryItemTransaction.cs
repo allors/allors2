@@ -62,10 +62,10 @@ namespace Allors.Domain
                     this.SerialisedInventoryItemState = this.Reason.DefaultSerialisedInventoryItemState;
                 }
 
-                if (!this.ExistSerialNumber)  // TODO: Match on Serialised Item, not on SerialNumber string
+                if (!this.ExistSerialisedItem)
                 {
                     var message = "The Serial Number is required for Inventory Item Transactions involving Serialised Inventory Items.";
-                    derivation.Validation.AddError(this, this.Meta.SerialNumber, message);
+                    derivation.Validation.AddError(this, this.Meta.SerialisedItem, message);
                 }
             }
             else if (this.Part.InventoryItemKind.IsNonSerialized)
@@ -122,7 +122,7 @@ namespace Allors.Domain
                     else if (item is SerialisedInventoryItem serialItem)
                     {
                         if (serialItem.SerialisedInventoryItemState.Equals(this.SerialisedInventoryItemState)
-                            && serialItem.SerialNumber.Equals(this.SerialNumber))
+                            && serialItem.SerialisedItem.Equals(this.SerialisedItem))
                         {
                             this.InventoryItem = item;
                             matched = true;
@@ -148,7 +148,7 @@ namespace Allors.Domain
                 var builder = new SerialisedInventoryItemBuilder(this.strategy.Session)
                     .WithFacility(facility)
                     .WithUnitOfMeasure(unitOfMeasure)
-                    .WithSerialNumber(this.SerialNumber)
+                    .WithSerialisedItem(this.SerialisedItem)
                     .WithPart(this.Part)
                     .WithSerialisedInventoryItemState(this.SerialisedInventoryItemState);
 

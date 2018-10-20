@@ -29,8 +29,9 @@ namespace Allors.Domain
 
             config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
 
+            // TODO: Add new Finished state derived when a work effort is billed, allow methods for completed state
             config.Deny(this.ObjectType, cancelledState, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Read);  //TODO: Deny Read or Write?
+            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Write);
         }
     }
 }

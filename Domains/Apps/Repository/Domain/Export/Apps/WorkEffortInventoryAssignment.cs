@@ -55,6 +55,19 @@ namespace Allors.Repository
         public int Quantity { get; set; }
 
         /// <summary>
+        /// Gets or sets the SerialisedItem affected by this WorkEffortInventoryAssignment (optional).
+        /// </summary>
+        #region Allors
+        [Id("94491F02-2CF7-4D4F-862D-28D60E37D8B4")]
+        [AssociationId("CCE12C1B-46F2-424E-BC99-E7D39F1A4BF4")]
+        [RoleId("1A577505-1BC4-454D-9EC2-38AB86BD8825")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public SerialisedItem SerialisedItem { get; set; }
+
+        /// <summary>
         /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).
         /// </summary>
         #region Allors

@@ -49,41 +49,6 @@ namespace Allors.Domain
             {
                 this.Name = this.Part.Name;
             }
-
-            this.AppsOnDeriveProductCharacteristics(derivation);
-
-            if (derivation.IsCreated(this))
-            {
-                this.Details = this.DeriveDetails();
-            }
-        }
-
-        private void AppsOnDeriveProductCharacteristics(IDerivation derivation)
-        {
-            var characteristicsToDelete = this.SerialisedInventoryItemCharacteristics.ToList();
-            if (this.ExistPart && this.Part.ExistProductType)
-            {
-                foreach (SerialisedInventoryItemCharacteristicType characteristicType in this.Part.ProductType.SerialisedInventoryItemCharacteristicTypes)
-                {
-                    var characteristic = this.SerialisedInventoryItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedInventoryItemCharacteristicType, characteristicType));
-                    if (characteristic == null)
-                    {
-                        this.AddSerialisedInventoryItemCharacteristic(
-                            new SerialisedInventoryItemCharacteristicBuilder(this.strategy.Session)
-                            .WithSerialisedInventoryItemCharacteristicType(characteristicType)
-                            .Build());
-                    }
-                    else
-                    {
-                        characteristicsToDelete.Remove(characteristic);
-                    }
-                }
-            }
-
-            foreach (SerialisedInventoryItemCharacteristic characteristic in characteristicsToDelete)
-            {
-                this.RemoveSerialisedInventoryItemCharacteristic(characteristic);
-            }
         }
 
         public void AppsDelete(DeletableDelete method)
@@ -92,66 +57,6 @@ namespace Allors.Domain
             {
                 version.Delete();
             }
-        }
-
-        public string DeriveDetails()
-        {
-            var builder = new StringBuilder();
-            
-            if (this.Part != null && this.Part.ExistManufacturedBy)
-            {
-                builder.Append($", Manufacturer: {this.Part.ManufacturedBy.PartyName}");
-            }
-
-            //foreach (ProductFeature feature in this.ProductFeatureApplicabilitiesWhereAvailableFor)
-            //{
-            //    if (feature is Brand)
-            //    {
-            //        var brand = (Brand)feature;
-            //        builder.Append($", Brand: {brand.Name}");
-            //    }
-            //    if (feature is Model)
-            //    {
-            //        var model = (Model)feature;
-            //        builder.Append($", Model: {model.Name}");
-            //    }
-            //}
-
-            builder.Append($", SN: {this.SerialNumber}");
-
-            if (this.ExistManufacturingYear)
-            {
-                builder.Append($", YOM: {this.ManufacturingYear}");
-            }
-
-            foreach (SerialisedInventoryItemCharacteristic characteristic in this.SerialisedInventoryItemCharacteristics)
-            {
-                if (characteristic.ExistValue)
-                {
-                    var characteristicType = characteristic.SerialisedInventoryItemCharacteristicType;
-                    if (characteristicType.ExistUnitOfMeasure)
-                    {
-                        var uom = characteristicType.UnitOfMeasure.ExistAbbreviation
-                                        ? characteristicType.UnitOfMeasure.Abbreviation
-                                        : characteristicType.UnitOfMeasure.Name;
-                        builder.Append(
-                            $", {characteristicType.Name}: {characteristic.Value} {uom}");
-                    }
-                    else
-                    {
-                        builder.Append($", {characteristicType.Name}: {characteristic.Value}");
-                    }
-                }
-            }
-
-            var details = builder.ToString();
-
-            if (details.StartsWith(","))
-            {
-                details = details.Substring(2);
-            }
-
-            return details;
         }
     }
 }

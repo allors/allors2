@@ -67,7 +67,8 @@ namespace Allors.Domain
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = CreatePart("FG1", kinds.Serialised);
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, finishedGood);
-            var variance = CreateInventoryTransaction(10, unknown, finishedGood, "1");
+            var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var variance = CreateInventoryTransaction(10, unknown, finishedGood, serialItem);
 
             // Act
             var derivation = this.Session.Derive(false);
@@ -103,7 +104,7 @@ namespace Allors.Domain
         private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part)
            => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).Build();
 
-        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, string SerialNumber)
-           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialNumber(SerialNumber).Build();
+        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, SerialisedItem serialisedItem)
+           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialisedItem(serialisedItem).Build();
     }
 }

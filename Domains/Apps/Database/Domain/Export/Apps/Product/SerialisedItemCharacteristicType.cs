@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SerialisedInventoryItemCharacteristicType.cs" company="Allors bvba">
+// <copyright file="SerialisedItemCharacteristicType.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -19,7 +19,7 @@ namespace Allors.Domain
 
     using Meta;
 
-    public partial class SerialisedInventoryItemCharacteristicType
+    public partial class SerialisedItemCharacteristicType
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {

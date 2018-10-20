@@ -172,7 +172,7 @@ namespace Allors.Domain
 
             if (derivation.IsCreated(this) && this.ExistSerialisedInventoryItem)
             {
-                this.Details = this.SerialisedInventoryItem.DeriveDetails();
+                this.Details = this.SerialisedInventoryItem.SerialisedItem.Details;
             }
 
             this.AppsOnDeriveCurrentObjectState(derivation);
@@ -714,7 +714,7 @@ namespace Allors.Domain
                     }
                     else
                     {
-                        discountAdjustmentAmount = this.DiscountAdjustment.Amount.HasValue ? this.DiscountAdjustment.Amount.Value : 0;
+                        discountAdjustmentAmount = this.DiscountAdjustment.Amount ?? 0;
                     }
 
                     this.UnitDiscount += discountAdjustmentAmount;
@@ -728,14 +728,14 @@ namespace Allors.Domain
                     }
                     else
                     {
-                        surchargeAdjustmentAmount = this.SurchargeAdjustment.Amount.HasValue ? this.SurchargeAdjustment.Amount.Value : 0;
+                        surchargeAdjustmentAmount = this.SurchargeAdjustment.Amount ?? 0;
                     }
 
                     this.UnitSurcharge += surchargeAdjustmentAmount;
                 }
             }
 
-            var price = this.ActualUnitPrice.HasValue ? this.ActualUnitPrice.Value : this.UnitBasePrice;
+            var price = this.ActualUnitPrice ?? this.UnitBasePrice;
 
             decimal vat = 0;
             if (this.ExistDerivedVatRate)
@@ -999,8 +999,7 @@ namespace Allors.Domain
         public void AppsOnDeriveSalesRep(IDerivation derivation)
         {
             this.SalesRep = null;
-            var customer = this.ShipToParty as Organisation;
-            if (customer != null)
+            if (this.ShipToParty is Organisation customer)
             {
                 if (this.ExistProduct)
                 {
@@ -1056,8 +1055,7 @@ namespace Allors.Domain
 
                 foreach (ShipmentItemBilling shipmentItemBilling in orderShipment.ShipmentItem.ShipmentItemBillingsWhereShipmentItem)
                 {
-                    var salesInvoiceItem = shipmentItemBilling.InvoiceItem as SalesInvoiceItem;
-                    if (salesInvoiceItem != null)
+                    if (shipmentItemBilling.InvoiceItem is SalesInvoiceItem salesInvoiceItem)
                     {
                         if (salesInvoiceItem.SalesInvoiceWhereSalesInvoiceItem.SalesInvoiceState.Equals(new SalesInvoiceStates(this.Strategy.Session).Paid))
                         {

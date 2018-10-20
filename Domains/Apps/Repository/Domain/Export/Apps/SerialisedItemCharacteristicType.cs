@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5A0B6477-7B54-48FA-AF59-7B664587F197")]
     #endregion
-    public partial class SerialisedInventoryItemCharacteristicType : Enumeration
+    public partial class SerialisedItemCharacteristicType : Enumeration
     {
         #region inherited properties
 

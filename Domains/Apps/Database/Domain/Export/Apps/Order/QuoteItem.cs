@@ -45,7 +45,7 @@ namespace Allors.Domain
 
             if (derivation.IsCreated(this) && this.ExistSerialisedInventoryItem)
             {
-                this.Details = this.SerialisedInventoryItem.DeriveDetails();
+                this.Details = this.SerialisedInventoryItem.SerialisedItem.Details;
             }
         }
 

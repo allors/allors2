@@ -19,13 +19,13 @@ namespace Allors.Domain
 
     using Meta;
 
-    public partial class SerialisedInventoryItemCharacteristic
+    public partial class SerialisedItemCharacteristic
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 
-            if (this.SerialisedInventoryItemCharacteristicType.ExistUnitOfMeasure)
+            if (this.SerialisedItemCharacteristicType.ExistUnitOfMeasure)
             {
                 this.Sync();
             }

@@ -4,9 +4,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("D4BF9E21-4EB5-4ED0-A9BF-3FE01E585AC7")]
+    [Id("0819F7F9-4B4F-4197-AFD6-3DAEABF60AAF")]
     #endregion
-    public partial class WorkEffortInventoryAssignmentVersion : Version
+    public partial class WorkEffortInventoryProducedVersion : Version
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }
@@ -22,9 +22,9 @@ namespace Allors.Repository
         /// Gets or sets the WorkEffort under which this Assignment exists.
         /// </summary>
         #region Allors
-        [Id("1B695715-456E-4BE6-8B42-0386928BBE07")]
-        [AssociationId("D9424EA4-0486-47F8-8892-C85800125CD6")]
-        [RoleId("A1F96E5B-C959-4D82-82D4-9F0F7954FA46")]
+        [Id("F54C515C-0927-451F-92FD-45796A981C13")]
+        [AssociationId("C5D0DE56-3DD0-4405-BD46-003AC98D69B8")]
+        [RoleId("BA9655A4-24B4-4B99-B580-F0E51A73FB63")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -33,12 +33,12 @@ namespace Allors.Repository
         public WorkEffort Assignment { get; set; }
 
         /// <summary>
-        /// Gets or sets the Part which describes this WorkEffortInventoryAssignment.
+        /// Gets or sets the Part which describes this WorkEffortInventoryProduced.
         /// </summary>
         #region Allors
-        [Id("F1811C2A-9A4E-4949-9008-E3519EA4AB51")]
-        [AssociationId("DD39BE11-C72D-41C5-B0B2-D039C06B44FF")]
-        [RoleId("11FADBA0-B32B-437B-8FDE-30F56B473882")]
+        [Id("A2238689-EC36-47DA-B6E3-495DB5304D6B")]
+        [AssociationId("0887CBD8-6CEC-44B0-A61A-02CB94E0A245")]
+        [RoleId("3497802F-563B-4A9D-A038-D9507DBFA02B")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
@@ -47,37 +47,24 @@ namespace Allors.Repository
         public Part Part { get; set; }
 
         /// <summary>
-        /// Gets or sets the Quantity of the Part for this WorkEffortInventoryAssignment.
+        /// Gets or sets the Quantity of the Part for this WorkEffortInventoryProduced.
         /// </summary>
         #region Allors
-        [Id("F5E0881D-E239-4B21-8E7A-C380E96E2A26")]
-        [AssociationId("AD4120B4-5276-41F6-9F97-590234D31003")]
-        [RoleId("AE7FFA88-4F5C-475B-B31B-898BCC0EF459")]
+        [Id("12DFE479-59FF-449C-AD10-B003DD38B37D")]
+        [AssociationId("D33613CD-5F5A-47C9-9060-B291326B6F39")]
+        [RoleId("FBC86C3D-9CEF-4C6A-B9E3-4379B8F45C00")]
         #endregion
         [Required]
         [Workspace]
         public int Quantity { get; set; }
 
         /// <summary>
-        /// Gets or sets the SerialisedItem affected by this WorkEffortInventoryAssignment (optional).
+        /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryProduced (derived).
         /// </summary>
         #region Allors
-        [Id("B8553DCE-F6E8-4E1D-AAAC-988A0134FBCB")]
-        [AssociationId("FA584713-F5DA-4FF1-A532-AA54C8E62470")]
-        [RoleId("0E0C098A-24E9-4922-8295-DFCA95CDE73D")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public SerialisedItem SerialisedItem { get; set; }
-
-        /// <summary>
-        /// Gets or sets the InventoryItemTransactions create by this WorkEffortInventoryAssignment (derived).
-        /// </summary>
-        #region Allors
-        [Id("30EF280B-A7EA-400D-BA36-2DCD242C96F2")]
-        [AssociationId("35DD3B2D-0B15-400C-AD4C-F0B8860D9754")]
-        [RoleId("70CFE0A0-BF10-4EA6-8AE0-41CCE4ED447F")]
+        [Id("C1D81C5C-2BCF-4971-AFB7-146A2B4D7DEB")]
+        [AssociationId("6AE4D8F9-ADED-47C0-8BD0-4180E550070F")]
+        [RoleId("1ACCB4E9-7EFF-49D8-8151-D4B139B44138")]
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Indexed]
@@ -95,7 +82,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
         #endregion
     }
 }

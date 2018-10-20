@@ -11,7 +11,7 @@ namespace Intranet.Tests
     {
         private readonly ISession session;
 
-        private DirectoryInfo dataPath;
+        private readonly DirectoryInfo dataPath;
 
         public Population(ISession session, DirectoryInfo dataPath)
         {
@@ -140,11 +140,11 @@ namespace Intranet.Tests
 
             var productType = new ProductTypeBuilder(this.session)
                 .WithName($"Gizmo Serialized")
-                .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.session)
+                .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.session)
                                             .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Afmeting").WithLocale(dutchLocale).Build())
                                             .Build())
-                .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.session)
+                .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.session)
                                             .WithName("Weight")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Gewicht").WithLocale(dutchLocale).Build())
                                             .WithUnitOfMeasure(new UnitsOfMeasure(this.session).Kilogram)
@@ -233,7 +233,8 @@ namespace Intranet.Tests
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
-            var good2InventoryItem = new SerialisedInventoryItemBuilder(this.session).WithPart(finishedGood2).WithSerialNumber("1").Build();
+            var serialisedItem = new SerialisedItemBuilder(this.session).WithSerialNumber("1").Build();
+            var good2InventoryItem = new SerialisedInventoryItemBuilder(this.session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).Build();
 
             var good3 = new GoodBuilder(this.session)
                 .WithName("Tiny green round gizmo")

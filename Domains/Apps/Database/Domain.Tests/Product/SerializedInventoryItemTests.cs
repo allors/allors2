@@ -36,6 +36,7 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithPartId("1")
                 .Build();
+            var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
 
             this.Session.Derive(true);
             this.Session.Commit();
@@ -52,7 +53,7 @@ namespace Allors.Domain
             // Re-arrange
             this.Session.Rollback();
 
-            builder.WithSerialNumber("1");
+            builder.WithSerialisedItem(serialItem);
             builder.Build();
 
             // Act
@@ -71,14 +72,15 @@ namespace Allors.Domain
             var kinds = new InventoryItemKinds(this.Session);
 
             var finishedGood = CreatePart("1", kinds.Serialised);
-            var serializedItem = new SerialisedInventoryItemBuilder(this.Session).WithSerialNumber("1").WithPart(finishedGood).Build();
+            var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var serialInventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithSerialisedItem(serialItem).WithPart(finishedGood).Build();
 
             // Act
             this.Session.Derive(true);
 
             // Assert
-            serializedItem.SerialisedInventoryItemState.ShouldEqual(available);
-            serializedItem.Facility.ShouldEqual(warehouse);
+            serialInventoryItem.SerialisedInventoryItemState.ShouldEqual(available);
+            serialInventoryItem.Facility.ShouldEqual(warehouse);
         }
 
         [Fact]
@@ -95,14 +97,17 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var serialPart = CreatePart("FG1", kinds.Serialised);
+            var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var serialItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("2").Build();
+            var serialItem3 = new SerialisedItemBuilder(this.Session).WithSerialNumber("3").Build();
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, serialPart);
 
             // Act
             this.Session.Derive(true);
 
-            CreateInventoryTransaction(1, unknown, serialPart, "1");
-            CreateInventoryTransaction(1, unknown, serialPart, "2");
-            CreateInventoryTransaction(1, unknown, serialPart, "3");
+            CreateInventoryTransaction(1, unknown, serialPart, serialItem1);
+            CreateInventoryTransaction(1, unknown, serialPart, serialItem2);
+            CreateInventoryTransaction(1, unknown, serialPart, serialItem3);
 
             this.Session.Derive(true);
 
@@ -125,13 +130,15 @@ namespace Allors.Domain
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var category = new ProductCategoryBuilder(this.Session).WithName("category").Build();
             var finishedGood = CreatePart("FG1", serialized);
+            var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var serialItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("2").Build();
             var good = CreateGood("10101", vatRate21, "good1", piece, category, finishedGood);
 
             // Act
             this.Session.Derive(true);
 
-            CreateInventoryTransaction(1, unknown, finishedGood, "1", warehouse1);
-            CreateInventoryTransaction(1, unknown, finishedGood, "2", warehouse2);
+            CreateInventoryTransaction(1, unknown, finishedGood, serialItem1, warehouse1);
+            CreateInventoryTransaction(1, unknown, finishedGood, serialItem2, warehouse2);
 
             this.Session.Derive(true);
 
@@ -161,10 +168,10 @@ namespace Allors.Domain
         private Part CreatePart(string partId, InventoryItemKind kind)
             => new PartBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
 
-        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, string serialNumber)
-           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialNumber(serialNumber).Build();
+        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, SerialisedItem serialisedItem)
+           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialisedItem(serialisedItem).Build();
 
-        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, string serialNumber, Facility facility)
-           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialNumber(serialNumber).WithFacility(facility).Build();
+        private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, SerialisedItem serialisedItem, Facility facility)
+           => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialisedItem(serialisedItem).WithFacility(facility).Build();
     }
 }

@@ -41,11 +41,9 @@ namespace Allors.Repository
         public Facility Facility { get; set; }
         public Deliverable[] DeliverablesProduced { get; set; }
         public DateTime ActualStart { get; set; }
-        public WorkEffortInventoryAssignment[] InventoryItemsNeeded { get; set; }
         public WorkEffort[] Children { get; set; }
         public OrderItem OrderItemFulfillment { get; set; }
         public WorkEffortType WorkEffortType { get; set; }
-        public InventoryItem[] InventoryItemsProduced { get; set; }
         public Requirement[] RequirementFulfillments { get; set; }
         public string SpecialTerms { get; set; }
         public WorkEffort[] Concurrencies { get; set; }
@@ -139,6 +137,7 @@ namespace Allors.Repository
         public void OnPostDerive() { }
         public void Confirm() { }
         public void Finish() { }
+        public void Complete() { }
         public void Cancel() { }
         public void Reopen() { }
         public void Delete() { }

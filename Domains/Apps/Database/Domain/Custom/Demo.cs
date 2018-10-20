@@ -12,7 +12,7 @@ namespace Allors
     {
         private readonly ISession Session;
 
-        private DirectoryInfo DataPath;
+        private readonly DirectoryInfo DataPath;
 
         public Demo(ISession session, DirectoryInfo dataPath)
         {
@@ -146,11 +146,11 @@ namespace Allors
 
             var productType = new ProductTypeBuilder(this.Session)
                 .WithName($"Gizmo Serialized")
-                .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
+                .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Size")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Afmeting").WithLocale(dutchLocale).Build())
                                             .Build())
-                .WithSerialisedInventoryItemCharacteristicType(new SerialisedInventoryItemCharacteristicTypeBuilder(this.Session)
+                .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.Session)
                                             .WithName("Weight")
                                             .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Gewicht").WithLocale(dutchLocale).Build())
                                             .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Kilogram)
@@ -239,7 +239,8 @@ namespace Allors
                 .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
-            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialNumber("1").Build();
+            var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).Build();
 
             var finishedGood3 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)

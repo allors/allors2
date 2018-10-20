@@ -45,15 +45,11 @@ namespace Allors.Repository
 
         public DateTime ActualStart { get; set; }
 
-        public WorkEffortInventoryAssignment[] InventoryItemsNeeded { get; set; }
-
         public WorkEffort[] Children { get; set; }
 
         public OrderItem OrderItemFulfillment { get; set; }
 
         public WorkEffortType WorkEffortType { get; set; }
-
-        public InventoryItem[] InventoryItemsProduced { get; set; }
 
         public Requirement[] RequirementFulfillments { get; set; }
 

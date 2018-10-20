@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.WorkTask">
-    <Position X="0.75" Y="5" Width="1.5" />
+    <Position X="0.75" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAgAAAAAAAAAAABAAAIAAAAAAAgAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -10,13 +10,11 @@
   <Interface Name="Allors.Domain.WorkEffort" Collapsed="true">
     <Position X="0.5" Y="2" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEYAkQIAgAA=</HashCode>
+      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkQIAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="WorkEffortState" />
-      <Property Name="InventoryItemsNeeded" />
-      <Property Name="InventoryItemsProduced" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortInventoryAssignment">
@@ -33,8 +31,8 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Assignment" />
-      <Property Name="InventoryItemTransactions" />
       <Property Name="Part" />
+      <Property Name="InventoryItemTransactions" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.InventoryItemTransaction">
@@ -44,8 +42,8 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Reason" />
       <Property Name="Part" />
+      <Property Name="Reason" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffortState" Collapsed="true">
@@ -70,13 +68,6 @@
     <Position X="6" Y="4.25" Width="2" />
     <TypeIdentifier>
       <HashCode>BAAAMQAQAAAAAACAAAAAQIWAQAEAAACiAAACAAAAABA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.InventoryItem" Collapsed="true">
-    <Position X="3.75" Y="4.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

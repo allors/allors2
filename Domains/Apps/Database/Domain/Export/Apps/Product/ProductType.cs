@@ -21,7 +21,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            if (derivation.HasChangedRole(this, this.Meta.SerialisedInventoryItemCharacteristicTypes))
+            if (derivation.HasChangedRole(this, this.Meta.SerialisedItemCharacteristicTypes))
             {
                 foreach (Part part in this.PartsWhereProductType)
                 {

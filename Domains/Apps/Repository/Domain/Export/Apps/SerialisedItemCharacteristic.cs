@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("A34F6226-7837-4905-9125-61CD00A07BF4")]
     #endregion
-    public partial class SerialisedInventoryItemCharacteristic : AccessControlledObject, Deletable
+    public partial class SerialisedItemCharacteristic : AccessControlledObject, Deletable
     {
         #region inherited properties
 
@@ -25,7 +25,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Required]
         [Workspace]
-        public SerialisedInventoryItemCharacteristicType SerialisedInventoryItemCharacteristicType { get; set; }
+        public SerialisedItemCharacteristicType SerialisedItemCharacteristicType { get; set; }
 
         #region Allors
         [Id("E68E6931-F10C-4F04-A23E-B2BC82AC6D5C")]
@@ -49,36 +49,18 @@ namespace Allors.Repository
 
         #region inherited methods
 
-        public void OnBuild()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnBuild() { }
 
-        public void OnPostBuild()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnPostBuild() { }
 
-        public void OnPreDerive()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnPreDerive() { }
 
-        public void OnDerive()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnDerive() { }
 
-        public void OnPostDerive()
-        {
-            throw new NotImplementedException();
-        }
+        public void OnPostDerive() { }
 
-        public void Delete()
-        {
-            throw new NotImplementedException();
-        }
-
+        public void Delete() { }
+        
         #endregion
     }
 }

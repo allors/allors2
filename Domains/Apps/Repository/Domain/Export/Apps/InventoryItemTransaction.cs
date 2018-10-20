@@ -53,9 +53,9 @@ namespace Allors.Repository
         [AssociationId("416923C5-26C1-49BB-88E3-D6A67EFE9828")]
         [RoleId("8C43D427-697E-48AE-A60A-02699C93413B")]
         #endregion
-        [Size(256)]
+        [Multiplicity(Multiplicity.ManyToOne)]        
         [Workspace]
-        public string SerialNumber { get; set; }
+        public SerialisedItem SerialisedItem { get; set; }
 
         #region Allors
         [Id("57bdf1d7-84b8-4c7c-a470-396f6facd3bd")]
