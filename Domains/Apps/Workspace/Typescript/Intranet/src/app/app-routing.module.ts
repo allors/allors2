@@ -46,15 +46,14 @@ export const routes: Routes = [
 
       { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
-
       { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
       { path: 'postaladdress/:id', data: editData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
+      { path: 'telecommunicationsnumber', data: addData({ id: ids.TelecommunicationsNumber }), component: relations.TelecommunicationsNumberEditComponent },
+      { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: relations.TelecommunicationsNumberEditComponent },
 
       {
         path: 'party',
         children: [
-          { path: ':id/partycontactmechanism/telecommunicationsnumber', component: relations.PartyContactMechanismTelecommunicationsNumberAddComponent },
-          { path: ':id/partycontactmechanism/telecommunicationsnumber/:roleId', component: relations.PartyContactMechanismTelecommunicationsNumberEditComponent },
           { path: ':id/partycontactmechanism/webaddress', component: relations.PartyContactMechanismAddWebAddressComponent },
           { path: ':id/partycontactmechanism/webaddress/:roleId', component: relations.PartyContactMechanismEditWebAddressComponent },
 

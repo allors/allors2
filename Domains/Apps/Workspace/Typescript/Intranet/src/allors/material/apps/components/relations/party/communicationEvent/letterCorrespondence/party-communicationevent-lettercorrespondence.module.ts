@@ -17,7 +17,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/
 
 import { PersonInlineModule } from '../../../person/inline/person-inline.module';
 
-import { PartyContactMechanismPostalAddressInlineModule } from '../../../postaladdress/inline/postaladdress-inline.module';
+import { PostalAddressInlineModule } from '../../../postaladdress/inline/postaladdress-inline.module';
 import { PartyCommunicationEventLetterCorrespondenceComponent } from './party-communicationevent-lettercorrespondence.component';
 export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-communicationevent-lettercorrespondence.component';
 
@@ -58,7 +58,7 @@ export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-co
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    PartyContactMechanismPostalAddressInlineModule,
+    PostalAddressInlineModule,
     PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,

@@ -9,13 +9,17 @@
   </div>
 
   <form *ngIf="contactMechanism" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
-
-    <mat-card >
+    <mat-card *ngIf="contactMechanism">
       <mat-card-content class="container-fluid">
-
         <div class="row">
           <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
-          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
+          <a-mat-select class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactMechanismType" [options]="contactMechanismTypes" display="Name" label="Type"></a-mat-select>
+        </div>
+
+        <div class="row">
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.CountryCode"></a-mat-input>
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.AreaCode"></a-mat-input>
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.TelecommunicationsNumber.ContactNumber"></a-mat-input>
         </div>
 
         <div class="row">

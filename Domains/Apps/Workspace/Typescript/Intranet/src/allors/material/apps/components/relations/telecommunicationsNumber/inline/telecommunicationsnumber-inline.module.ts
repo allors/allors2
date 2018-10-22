@@ -5,15 +5,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 
-import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
-import { AllorsMaterialSlideToggleModule } from '../../../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/textarea';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './party-contactmechanism-telecommunicationsnumber-inline.component';
-export { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './party-contactmechanism-telecommunicationsnumber-inline.component';
+import { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './telecommunicationsnumber-inline.component';
+export { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './telecommunicationsnumber-inline.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ export { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './
     PartyContactMechanismTelecommunicationsNumberInlineComponent,
   ],
   imports: [
-    
+
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -35,7 +35,7 @@ export { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -49,4 +49,4 @@ export { PartyContactMechanismTelecommunicationsNumberInlineComponent } from './
     RouterModule,
   ],
 })
-export class PartyContactMechanismTelecommunicationsNumberInlineModule {}
+export class TelecommunicationsNumberInlineModule { }

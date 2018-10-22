@@ -2,28 +2,29 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { EmailAddress, Enumeration, Party, PartyContactMechanism } from '../../../../../../domain';
+import { Enumeration, PartyContactMechanism, TelecommunicationsNumber, Party, ContactMechanismType } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './emailaddress-edit.html',
+  templateUrl: './telecommunicationsnumber-edit.html',
   providers: [Allors]
 })
-export class EmailAddressEditComponent implements OnInit, OnDestroy {
+export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Email Address';
+  public title = 'Telecommunications Number';
 
   public m: MetaDomain;
 
   public party: Party;
   public partyContactMechanism: PartyContactMechanism;
-  public contactMechanism: EmailAddress;
+  public contactMechanism: TelecommunicationsNumber;
   public contactMechanismPurposes: Enumeration[];
+  public contactMechanismTypes: Enumeration[];
 
   private subscription: Subscription;
 
@@ -53,6 +54,10 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
             pull.ContactMechanismPurpose({
               predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
               sort: new Sort(m.ContactMechanismPurpose.Name)
+            }),
+            pull.ContactMechanismType({
+              predicate: new Equals({ propertyType: m.ContactMechanismType.IsActive, value: true }),
+              sort: new Sort(this.m.ContactMechanismType.Name)
             })
           ];
 
@@ -66,7 +71,9 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
                 include: {
                   PartyContactMechanisms: {
                     ContactPurposes: x,
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      ContactMechanismType: x,
+                    },
                   }
                 }
               }
@@ -84,7 +91,9 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
                       include: {
                         PartyContactMechanisms: {
                           ContactPurposes: x,
-                          ContactMechanism: x,
+                          ContactMechanism: {
+                            ContactMechanismType: x,
+                          },
                         }
                       }
                     }
@@ -96,7 +105,9 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
                 fetch: {
                   PartyContactMechanismsWhereContactMechanism: {
                     include: {
-                      ContactMechanism: x
+                      ContactMechanism: {
+                        ContactMechanismType: x,
+                      }
                     }
                   }
                 }
@@ -115,10 +126,14 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, add }) => {
 
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+        this.contactMechanismTypes = loaded.collections.ContactMechanismTypes as Enumeration[];
 
         if (add) {
           this.party = loaded.objects.Party as Party;
-          this.contactMechanism = scope.session.create('EmailAddress') as EmailAddress;
+          // TODO: Should be lookup on UniqueId
+          const phone: ContactMechanismType = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === 'Phone');
+          this.contactMechanism = scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+          this.contactMechanism.ContactMechanismType = phone;
           this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
           this.partyContactMechanism.UseAsDefault = true;
@@ -128,10 +143,9 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
           this.party = loaded.collections.Parties && (loaded.collections.Parties as Party[])[0];
           const partyContactMechanisms = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
           this.partyContactMechanism = partyContactMechanisms && partyContactMechanisms[0];
-          this.contactMechanism = this.partyContactMechanism.ContactMechanism as EmailAddress;
+          this.contactMechanism = this.partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
           this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
         }
-
       },
         (error: any) => {
           this.errorService.handle(error);

@@ -180,10 +180,7 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menuEditContact="matMenu">
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'EmailAddress'" (click)="navigation.edit(partyContactMechanism.ContactMechanism)" mat-menu-item>Edit</a>
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'WebAddress'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'TelecommunicationsNumber'" [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber/' + partyContactMechanism.id]" mat-menu-item>Edit</a>
-                    <a *ngIf="this.checkType(partyContactMechanism.ContactMechanism) === 'PostalAddress'" (click)="navigation.edit(partyContactMechanism.ContactMechanism)" mat-menu-item>Edit</a>
+                    <a (click)="navigation.edit(partyContactMechanism.ContactMechanism)" mat-menu-item>Edit</a>
                     <button mat-menu-item (click)="removeContactMechanism(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
                     <button mat-menu-item (click)="activateContactMechanism(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
                     <button mat-menu-item (click)="deleteContactMechanism(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
@@ -203,7 +200,7 @@
               <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/webaddress']">Web</button>
               <button mat-menu-item (click)="navigation.add(m.EmailAddress, person)">Email</button>
               <button mat-menu-item (click)="navigation.add(m.PostalAddress, person)">Postal</button>
-              <button mat-menu-item [routerLink]="['/party/' + person.id + '/partycontactmechanism/telecommunicationsnumber']">Telecom</button>
+              <button mat-menu-item (click)="navigation.add(m.TelecommunicationsNumber, person)">Telecom</button>
             </mat-menu>
 
           </mat-card-actions>

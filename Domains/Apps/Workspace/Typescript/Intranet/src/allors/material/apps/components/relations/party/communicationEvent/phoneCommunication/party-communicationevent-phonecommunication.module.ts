@@ -18,7 +18,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/
 
 import { PersonInlineModule } from '../../../person/inline/person-inline.module';
 
-import { PartyContactMechanismTelecommunicationsNumberInlineModule } from '../../contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-inline.module';
+import { TelecommunicationsNumberInlineModule } from '../../../telecommunicationsnumber/inline/telecommunicationsnumber-inline.module';
 
 import { PartyCommunicationEventPhoneCommunicationComponent } from './party-communicationevent-phonecommunication.component';
 export { PartyCommunicationEventPhoneCommunicationComponent } from './party-communicationevent-phonecommunication.component';
@@ -31,7 +31,7 @@ export { PartyCommunicationEventPhoneCommunicationComponent } from './party-comm
     PartyCommunicationEventPhoneCommunicationComponent,
   ],
   imports: [
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialDatetimepickerModule,
@@ -43,12 +43,12 @@ export { PartyCommunicationEventPhoneCommunicationComponent } from './party-comm
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -59,10 +59,10 @@ export { PartyCommunicationEventPhoneCommunicationComponent } from './party-comm
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    PartyContactMechanismTelecommunicationsNumberInlineModule,
+    TelecommunicationsNumberInlineModule,
     PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class PartyCommunicationEventPhoneCommunicationModule {}
+export class PartyCommunicationEventPhoneCommunicationModule { }

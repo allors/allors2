@@ -20,7 +20,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 
 import { PersonInlineModule } from '../../relations/person/inline/person-inline.module';
 import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
-import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/postaladdress/inline/postaladdress-inline.module';
+import { PostalAddressInlineModule } from '../../relations/postaladdress/inline/postaladdress-inline.module';
 
 import { InvoiceComponent } from './invoice.component';
 
@@ -69,7 +69,7 @@ export { InvoiceComponent } from './invoice.component';
     MatOptionModule,
     PersonInlineModule,
     PartyContactMechanismInlineModule,
-    PartyContactMechanismPostalAddressInlineModule,
+    PostalAddressInlineModule,
     ReactiveFormsModule,
     RouterModule,
   ],

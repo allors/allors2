@@ -52,4 +52,4 @@ export { PostalAddressEditComponent } from './postaladdress-edit.component';
     RouterModule,
   ],
 })
-export class PartyContactMechanismPostalAddressEditModule { }
+export class PostalAddressModule { }

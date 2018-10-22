@@ -9,9 +9,8 @@ export * from './organisation/edit/organisation-edit.module';
 
 export * from './emailaddress/edit/emailaddress-edit.module';
 export * from './postaladdress/edit/postaladdress-edit.module';
+export * from './telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 
-export * from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-add.module';
-export * from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-edit.module';
 export * from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-add.module';
 export * from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-edit.module';
 
@@ -33,11 +32,10 @@ import { OrganisationOverviewModule } from './organisation/overview/organisation
 import { OrganisationModule } from './organisation/edit/organisation-edit.module';
 import { OrganisationsOverviewModule } from './organisation/list/organisation-list.module';
 
-import { PartyContactMechanismEmailAddressAddModule } from './emailaddress/edit/emailaddress-edit.module';
+import { EmailAddressdModule } from './emailaddress/edit/emailaddress-edit.module';
+import { PostalAddressModule } from './postaladdress/edit/postaladdress-edit.module';
+import { TelecommunicationsNumberModule } from './telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 
-import { PartyContactMechanismPostalAddressEditModule } from './postaladdress/edit/postaladdress-edit.module';
-import { PartyContactMechanismTelecommunicationsNumberAddModule } from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-add.module';
-import { PartyContactMechanismTelecommunicationsNumberEditModule } from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-edit.module';
 import { PartyContactMechanismAddWebAddressModule } from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-add.module';
 import { PartyContactMechanismEditWebAddressModule } from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-edit.module';
 
@@ -53,7 +51,7 @@ import { CommunicationEventWorkTaskModule } from './communicationevent/worktask/
 export const Modules = [
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
-  PartyContactMechanismEmailAddressAddModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
+  EmailAddressdModule, PostalAddressModule, TelecommunicationsNumberModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
   PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule,
   CommunicationEventWorkTaskModule, CommunicationEventsOverviewModule, CommunicationEventOverviewModule,
 ];

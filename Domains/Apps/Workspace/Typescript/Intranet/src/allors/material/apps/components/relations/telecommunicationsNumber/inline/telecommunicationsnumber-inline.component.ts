@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../../angular';
-import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
+import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-telecommunicationsnumber',
-  templateUrl: './party-contactmechanism-telecommunicationsnumber-inline.component.html',
+  templateUrl: './telecommunicationsnumber-inline.component.html',
   providers: [Allors]
 })
 export class PartyContactMechanismTelecommunicationsNumberInlineComponent implements OnInit, OnDestroy {

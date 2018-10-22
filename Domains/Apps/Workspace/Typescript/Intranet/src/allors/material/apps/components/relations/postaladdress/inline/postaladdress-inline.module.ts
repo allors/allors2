@@ -49,4 +49,4 @@ export { PartyContactMechanismPostalAddressInlineComponent } from './postaladdre
     RouterModule,
   ],
 })
-export class PartyContactMechanismPostalAddressInlineModule { }
+export class PostalAddressInlineModule { }

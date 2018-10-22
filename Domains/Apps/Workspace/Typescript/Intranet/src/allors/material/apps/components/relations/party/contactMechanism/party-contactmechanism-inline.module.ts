@@ -18,9 +18,10 @@ import { AllorsMaterialTextAreaModule } from '../../../../../base/components/tex
 import { PartyContactMechanismInlineComponent } from './party-contactmechanism-inline.component';
 export { PartyContactMechanismInlineComponent } from './party-contactmechanism-inline.component';
 
-import { PartyContactMechanismEmailAddressInlineModule } from '../../emailaddress/inline/emailaddress-inline.module';
-import { PartyContactMechanismPostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
-import { PartyContactMechanismTelecommunicationsNumberInlineModule } from './telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-inline.module';
+import { EmailAddressInlineModule } from '../../emailaddress/inline/emailaddress-inline.module';
+import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
+import { TelecommunicationsNumberInlineModule } from '../../telecommunicationsnumber/inline/telecommunicationsnumber-inline.module';
+
 import { PartyContactMechanismInlineWebAddressModule } from './webaddress/party-contactmechanism-webaddress-inline.module';
 
 @NgModule({
@@ -58,9 +59,9 @@ import { PartyContactMechanismInlineWebAddressModule } from './webaddress/party-
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    PartyContactMechanismEmailAddressInlineModule,
-    PartyContactMechanismPostalAddressInlineModule,
-    PartyContactMechanismTelecommunicationsNumberInlineModule,
+    EmailAddressInlineModule,
+    PostalAddressInlineModule,
+    TelecommunicationsNumberInlineModule,
     PartyContactMechanismInlineWebAddressModule,
     ReactiveFormsModule,
     RouterModule,
