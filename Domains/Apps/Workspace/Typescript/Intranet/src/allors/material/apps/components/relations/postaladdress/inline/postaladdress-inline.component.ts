@@ -1,14 +1,14 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../../angular';
-import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
+import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-postaladdress',
-  templateUrl: './party-contactmechanism-postaladdress-inline.component.html',
+  templateUrl: './postaladdress-inline.component.html',
   providers: [Allors]
 })
 export class PartyContactMechanismPostalAddressInlineComponent implements OnInit, OnDestroy {

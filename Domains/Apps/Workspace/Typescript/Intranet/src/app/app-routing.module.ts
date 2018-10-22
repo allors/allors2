@@ -40,16 +40,19 @@ export const routes: Routes = [
 
       { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent },
       { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent },
+
       { path: 'organisation', data: addData({ id: ids.Person }), component: relations.OrganisationEditComponent },
       { path: 'organisation/:id', data: editData({ id: ids.Person }), component: relations.OrganisationEditComponent },
+
       { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
+
+      { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
+      { path: 'postaladdress/:id', data: editData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
 
       {
         path: 'party',
         children: [
-          { path: ':id/partycontactmechanism/postaladdress', component: relations.PartyContactMechanismPostalAddressAddComponent },
-          { path: ':id/partycontactmechanism/postaladdress/:roleId', component: relations.PartyContactMechanismPostalAddressEditComponent },
           { path: ':id/partycontactmechanism/telecommunicationsnumber', component: relations.PartyContactMechanismTelecommunicationsNumberAddComponent },
           { path: ':id/partycontactmechanism/telecommunicationsnumber/:roleId', component: relations.PartyContactMechanismTelecommunicationsNumberEditComponent },
           { path: ':id/partycontactmechanism/webaddress', component: relations.PartyContactMechanismAddWebAddressComponent },

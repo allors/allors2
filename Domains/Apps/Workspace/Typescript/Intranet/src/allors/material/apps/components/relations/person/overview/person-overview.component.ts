@@ -52,7 +52,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
-    public navigationService: NavigationService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,

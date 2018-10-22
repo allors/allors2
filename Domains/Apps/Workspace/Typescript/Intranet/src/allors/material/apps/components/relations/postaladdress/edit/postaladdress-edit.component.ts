@@ -4,26 +4,28 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { EmailAddress, Enumeration, Party, PartyContactMechanism } from '../../../../../../domain';
+import { ErrorService, Saved, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { Country, Enumeration, PartyContactMechanism, PostalAddress, Party, PostalBoundary } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 @Component({
-  templateUrl: './emailaddress-edit.html',
+  templateUrl: './postaladdress-edit.html',
   providers: [Allors]
 })
-export class EmailAddressEditComponent implements OnInit, OnDestroy {
+export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Email Address';
+  public title = 'Postal Address';
 
   public m: MetaDomain;
 
   public party: Party;
   public partyContactMechanism: PartyContactMechanism;
-  public contactMechanism: EmailAddress;
+  public contactMechanism: PostalAddress;
+  public postalBoundary: PostalBoundary;
   public contactMechanismPurposes: Enumeration[];
+  public countries: Country[];
 
   private subscription: Subscription;
 
@@ -53,6 +55,9 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
             pull.ContactMechanismPurpose({
               predicate: new Equals({ propertyType: m.ContactMechanismPurpose.IsActive, value: true }),
               sort: new Sort(m.ContactMechanismPurpose.Name)
+            }),
+            pull.Country({
+              sort: new Sort(m.Country.Name)
             })
           ];
 
@@ -66,7 +71,11 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
                 include: {
                   PartyContactMechanisms: {
                     ContactPurposes: x,
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x
+                      }
+                    },
                   }
                 }
               }
@@ -76,7 +85,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
           } else {
             pulls = [
               ...pulls,
-              pull.EmailAddress({
+              pull.PostalAddress({
                 object: id,
                 fetch: {
                   PartyContactMechanismsWhereContactMechanism: {
@@ -84,19 +93,27 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
                       include: {
                         PartyContactMechanisms: {
                           ContactPurposes: x,
-                          ContactMechanism: x,
+                          ContactMechanism: {
+                            PostalAddress_PostalBoundary: {
+                              Country: x
+                            }
+                          },
                         }
                       }
                     }
                   }
                 }
               }),
-              pull.EmailAddress({
+              pull.PostalAddress({
                 object: id,
                 fetch: {
                   PartyContactMechanismsWhereContactMechanism: {
                     include: {
-                      ContactMechanism: x
+                      ContactMechanism: {
+                        PostalAddress_PostalBoundary: {
+                          Country: x
+                        }
+                      }
                     }
                   }
                 }
@@ -116,10 +133,14 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, add }) => {
 
         this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
+        this.countries = loaded.collections.Countries as Country[];
 
         if (add) {
           this.party = loaded.objects.Party as Party;
-          this.contactMechanism = scope.session.create('EmailAddress') as EmailAddress;
+
+          this.contactMechanism = scope.session.create('PostalAddress') as PostalAddress;
+          this.postalBoundary = scope.session.create('PostalBoundary') as PostalBoundary;
+          this.contactMechanism.PostalBoundary = this.postalBoundary;
           this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
           this.partyContactMechanism.UseAsDefault = true;
@@ -129,14 +150,14 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
           this.party = loaded.collections.Parties && (loaded.collections.Parties as Party[])[0];
           const partyContactMechanisms = loaded.collections.PartyContactMechanisms as PartyContactMechanism[];
           this.partyContactMechanism = partyContactMechanisms && partyContactMechanisms[0];
-          this.contactMechanism = this.partyContactMechanism.ContactMechanism as EmailAddress;
+          this.contactMechanism = this.partyContactMechanism.ContactMechanism as PostalAddress;
           this.contactMechanismPurposes = loaded.collections.ContactMechanismPurposes as Enumeration[];
         }
 
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.navigation.back();
+          this.subscription.unsubscribe();
         },
       );
   }

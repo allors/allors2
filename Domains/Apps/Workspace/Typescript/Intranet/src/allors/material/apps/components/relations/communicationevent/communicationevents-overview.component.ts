@@ -10,7 +10,6 @@ import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from '
 import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { CommunicationEvent, CommunicationEventPurpose, CommunicationEventState, Person } from '../../../../../domain';
 import { And, Contains, Equals, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {

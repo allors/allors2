@@ -19,7 +19,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 
 import { PersonInlineModule } from '../../relations/person/inline/person-inline.module';
 import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
-import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
+import { PartyContactMechanismPostalAddressInlineModule } from '../../relations/postaladdress/inline/postaladdress-inline.module';
 
 import { SalesOrderEditComponent } from './salesorder.component';
 export { SalesOrderEditComponent } from './salesorder.component';
@@ -43,7 +43,7 @@ export { SalesOrderEditComponent } from './salesorder.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

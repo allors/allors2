@@ -17,10 +17,8 @@ import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/
 
 import { PersonInlineModule } from '../../../person/inline/person-inline.module';
 
-import { PartyContactMechanismPostalAddressInlineModule } from '../../contactmechanism/postaladdress/party-contactmechanism-postaladdress-inline.module';
-
+import { PartyContactMechanismPostalAddressInlineModule } from '../../../postaladdress/inline/postaladdress-inline.module';
 import { PartyCommunicationEventLetterCorrespondenceComponent } from './party-communicationevent-lettercorrespondence.component';
-
 export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-communicationevent-lettercorrespondence.component';
 
 @NgModule({
@@ -31,7 +29,7 @@ export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-co
     PartyCommunicationEventLetterCorrespondenceComponent,
   ],
   imports: [
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialDatetimepickerModule,
@@ -43,13 +41,13 @@ export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-co
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -66,4 +64,4 @@ export { PartyCommunicationEventLetterCorrespondenceComponent } from './party-co
     RouterModule,
   ],
 })
-export class PartyCommunicationEventLetterCorrespondenceModule {}
+export class PartyCommunicationEventLetterCorrespondenceModule { }

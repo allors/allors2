@@ -5,27 +5,28 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 
-import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/textarea';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyContactMechanismPostalAddressEditComponent } from './party-contactmechanism-postaladdress-edit.component';
-export { PartyContactMechanismPostalAddressEditComponent } from './party-contactmechanism-postaladdress-edit.component';
+import { PostalAddressEditComponent } from './postaladdress-edit.component';
+export { PostalAddressEditComponent } from './postaladdress-edit.component';
 
 @NgModule({
   declarations: [
-    PartyContactMechanismPostalAddressEditComponent,
+    PostalAddressEditComponent,
   ],
   exports: [
-    PartyContactMechanismPostalAddressEditComponent,
+    PostalAddressEditComponent,
   ],
   imports: [
-    
     AllorsMaterialFileModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -37,7 +38,7 @@ export { PartyContactMechanismPostalAddressEditComponent } from './party-contact
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -51,4 +52,4 @@ export { PartyContactMechanismPostalAddressEditComponent } from './party-contact
     RouterModule,
   ],
 })
-export class PartyContactMechanismPostalAddressEditModule {}
+export class PartyContactMechanismPostalAddressEditModule { }

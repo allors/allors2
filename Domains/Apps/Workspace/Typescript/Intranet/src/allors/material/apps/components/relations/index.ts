@@ -8,9 +8,8 @@ export * from './organisation/overview/organisation-overview.module';
 export * from './organisation/edit/organisation-edit.module';
 
 export * from './emailaddress/edit/emailaddress-edit.module';
+export * from './postaladdress/edit/postaladdress-edit.module';
 
-export * from './party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-add.module';
-export * from './party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-edit.module';
 export * from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-add.module';
 export * from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-edit.module';
 export * from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-add.module';
@@ -36,8 +35,7 @@ import { OrganisationsOverviewModule } from './organisation/list/organisation-li
 
 import { PartyContactMechanismEmailAddressAddModule } from './emailaddress/edit/emailaddress-edit.module';
 
-import { PartyContactMechanismAddPostalAddressModule } from './party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-add.module';
-import { PartyContactMechanismPostalAddressEditModule } from './party/contactmechanism/postaladdress/party-contactmechanism-postaladdress-edit.module';
+import { PartyContactMechanismPostalAddressEditModule } from './postaladdress/edit/postaladdress-edit.module';
 import { PartyContactMechanismTelecommunicationsNumberAddModule } from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-add.module';
 import { PartyContactMechanismTelecommunicationsNumberEditModule } from './party/contactmechanism/telecommunicationsnumber/party-contactmechanism-telecommunicationsnumber-edit.module';
 import { PartyContactMechanismAddWebAddressModule } from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-add.module';
@@ -55,7 +53,7 @@ import { CommunicationEventWorkTaskModule } from './communicationevent/worktask/
 export const Modules = [
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
-  PartyContactMechanismEmailAddressAddModule, PartyContactMechanismAddPostalAddressModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
+  PartyContactMechanismEmailAddressAddModule, PartyContactMechanismPostalAddressEditModule, PartyContactMechanismTelecommunicationsNumberAddModule, PartyContactMechanismTelecommunicationsNumberEditModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
   PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule,
   CommunicationEventWorkTaskModule, CommunicationEventsOverviewModule, CommunicationEventOverviewModule,
 ];

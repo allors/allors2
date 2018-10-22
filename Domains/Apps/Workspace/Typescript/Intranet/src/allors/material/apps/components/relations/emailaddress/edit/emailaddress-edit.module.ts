@@ -6,7 +6,7 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
-import { AllorsMaterialFooterModule } from 'src/allors/material';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
