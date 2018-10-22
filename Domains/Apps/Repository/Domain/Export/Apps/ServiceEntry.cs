@@ -8,19 +8,8 @@ namespace Allors.Repository
     [Id("4a4a0548-b75f-4a79-89aa-f5c242121f11")]
     #endregion
     [Plural("ServiceEntries")]
-    public partial interface ServiceEntry : Commentable, AccessControlledObject 
+    public partial interface ServiceEntry : Commentable, AccessControlledObject, Period
     {
-
-
-        #region Allors
-        [Id("385eac5a-a588-4f30-b4df-a4b07be43d88")]
-        [AssociationId("36477b8a-7c51-4fe6-bd6f-44e6205fb1bd")]
-        [RoleId("ed9b3483-c2a2-4572-9346-35ed621500b9")]
-        #endregion
-
-        DateTime ThroughDateTime { get; set; }
-
-
         #region Allors
         [Id("74fc8f9b-62f3-4921-bce1-ca10eed33204")]
         [AssociationId("987c6fb3-b512-4797-933d-28424500649e")]
@@ -28,27 +17,14 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         EngagementItem EngagementItem { get; set; }
-
 
         #region Allors
         [Id("9b04b715-376f-4c39-b78b-f92af6b4ffc1")]
         [AssociationId("2c25dc8f-c253-471e-87fb-fe6934cf2b15")]
         [RoleId("b80138a0-0a0b-4a3a-8fbb-5bca2dc8c84c")]
         #endregion
-
         bool IsBillable { get; set; }
-
-
-        #region Allors
-        [Id("a4246c12-e77c-41e0-9f00-995fab17c13c")]
-        [AssociationId("eef2f215-f262-4f7e-b87b-a8229b1d5d4b")]
-        [RoleId("f1ff8c32-0f88-49b9-83c1-b0754d65700e")]
-        #endregion
-
-        DateTime FromDateTime { get; set; }
-
 
         #region Allors
         [Id("a6ae42bd-babf-44e1-bdc0-cc403e56e43e")]
@@ -56,9 +32,7 @@ namespace Allors.Repository
         [RoleId("04df18b1-b92d-437d-a666-852c85e64330")]
         #endregion
         [Size(-1)]
-
         string Description { get; set; }
-
 
         #region Allors
         [Id("b9bb6409-c6b9-4a4b-9d46-02c62b4b3304")]
@@ -67,8 +41,6 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         WorkEffort WorkEffort { get; set; }
-
     }
 }

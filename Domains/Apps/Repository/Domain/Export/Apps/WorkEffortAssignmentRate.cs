@@ -1,7 +1,5 @@
 namespace Allors.Repository
 {
-    using System;
-
     using Attributes;
 
     #region Allors
@@ -13,7 +11,6 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
-
         #endregion
 
         #region Allors
@@ -24,8 +21,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public RateType RateType { get; set; }
+
         #region Allors
         [Id("627da684-d501-4221-97c2-81329e2b5e8c")]
         [AssociationId("4b9c1fd3-acf0-4e5b-8cb5-d32f94bff10b")]
@@ -34,13 +31,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public WorkEffortPartyAssignment WorkEffortPartyAssignment { get; set; }
 
-
         #region inherited methods
-
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -50,7 +43,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
         #endregion
 
     }

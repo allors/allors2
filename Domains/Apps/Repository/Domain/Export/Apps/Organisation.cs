@@ -9,7 +9,6 @@ namespace Allors.Repository
     public partial class Organisation : InternalOrganisation, Deletable, Versioned
     {
         #region inherited properties
-
         public string PurchaseOrderNumberPrefix { get; set; }
 
         public string TransactionReferenceNumber { get; set; }
@@ -218,6 +217,14 @@ namespace Allors.Repository
         public Template WorkTaskTemplate { get; set; }
 
         public InventoryStrategy InventoryStrategy { get; set; }
+
+        public PartyRate CurrentPartyRate { get; set; }
+
+        public PartyRate[] AllPartyRates { get; set; }
+
+        public Counter WorkEffortCounter { get; set; }
+
+        public string WorkEffortPrefix { get; set; }
         #endregion
 
         #region Versioning

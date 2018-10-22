@@ -88,6 +88,11 @@ namespace Allors.Domain
                     this.IncomingShipmentCounter = new CounterBuilder(this.strategy.Session).Build();
                 }
 
+                if (!this.ExistWorkEffortCounter)
+                {
+                    this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).Build();
+                }
+
                 if (!this.ExistInvoiceSequence)
                 {
                     this.InvoiceSequence = new InvoiceSequenceBuilder(this.strategy.Session).Build();

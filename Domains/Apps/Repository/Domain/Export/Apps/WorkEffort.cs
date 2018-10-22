@@ -9,7 +9,6 @@ namespace Allors.Repository
     #endregion
     public partial interface WorkEffort : Transitional, UniquelyIdentifiable, Deletable, Auditable, Commentable, Printable
     {
-        #region ObjectStates
         #region WorkEffortState
         #region Allors
         [Id("4240C679-19EA-41B9-A82D-D156DE6B4007")]
@@ -40,7 +39,6 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
         WorkEffortState WorkEffortState { get; set; }
-        #endregion
         #endregion
 
         #region Allors
@@ -73,18 +71,28 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Workspace]
-        Organisation TakenBy{ get; set; }
+        Organisation TakenBy { get; set; }
+
+        //#region Allors
+        //[Id("C814C85A-2C07-4C65-9AEA-C889425C8EE3")]
+        //[AssociationId("5586602B-68F0-4409-AAFA-32BA3C20AE07")]
+        //[RoleId("5D076AD3-0E19-48CA-A6A2-E825BBE0F3BA")]
+        //#endregion
+        //[Multiplicity(Multiplicity.ManyToOne)]
+        //[Indexed]
+        //[Required]
+        //[Workspace]
+        //Store Store { get; set; }
 
         #region Allors
-        [Id("C814C85A-2C07-4C65-9AEA-C889425C8EE3")]
-        [AssociationId("5586602B-68F0-4409-AAFA-32BA3C20AE07")]
-        [RoleId("5D076AD3-0E19-48CA-A6A2-E825BBE0F3BA")]
+        [Id("0db9b217-c54f-4a7b-a1c0-9592eeabd51f")]
+        [AssociationId("c918d8f5-77f0-4c0d-b02a-7695a7109cf2")]
+        [RoleId("ae8f325d-31e5-473a-8caf-d378ba571025")]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-        [Required]
         [Workspace]
-        Store Store { get; set; }
+        Facility Facility { get; set; }
 
         #region Allors
         [Id("5012F30D-1B22-47D7-B3A5-42F023FEE3E1")]
@@ -208,6 +216,7 @@ namespace Allors.Repository
         [AssociationId("4ad69693-3a44-4403-abed-43fd6f208348")]
         [RoleId("21381f45-898c-4622-9e26-039cb49a9eaa")]
         #endregion
+        [Derived]
         [Precision(19)]
         [Scale(2)]
         [Workspace]
@@ -232,16 +241,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         WorkEffort[] Precendencies { get; set; }
-
-        #region Allors
-        [Id("0db9b217-c54f-4a7b-a1c0-9592eeabd51f")]
-        [AssociationId("c918d8f5-77f0-4c0d-b02a-7695a7109cf2")]
-        [RoleId("ae8f325d-31e5-473a-8caf-d378ba571025")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        Facility Facility { get; set; }
 
         #region Allors
         [Id("1a3705c0-0e77-4d6d-a368-ef5141a6c908")]

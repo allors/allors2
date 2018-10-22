@@ -65,7 +65,7 @@ namespace Allors.Domain
             @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Confirmed;
         }
 
-        public static void AppsFinish(this WorkEffort @this, WorkEffortFinish method)
+        public static void AppsComplete(this WorkEffort @this, WorkEffortComplete method)
         {
             @this.WorkEffortState = new WorkEffortStates(@this.Strategy.Session).Completed;
         }

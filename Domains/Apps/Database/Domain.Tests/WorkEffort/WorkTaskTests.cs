@@ -27,7 +27,7 @@ namespace Allors.Domain
     public class WorkTaskTests : DomainTest
     {
         [Fact]
-        public void GivenCustomerShipment_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
+        public void GivenWorkTask_WhenBuild_ThenLastObjectStateEqualsCurrencObjectState()
         {
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
 
@@ -38,7 +38,7 @@ namespace Allors.Domain
         }
 
         [Fact]
-        public void GivenCustomerShipment_WhenBuild_ThenPreviousObjectStateIsNull()
+        public void GivenWorkTask_WhenBuild_ThenPreviousObjectStateIsNull()
         {
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
 

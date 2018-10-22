@@ -104,6 +104,9 @@ namespace Allors.Repository
 
         public LocalisedText[] LocalisedComments { get; set; }
 
+        public PartyRate CurrentPartyRate { get; set; }
+
+        public PartyRate[] AllPartyRates { get; set; }
         #endregion
 
         #region Versioning

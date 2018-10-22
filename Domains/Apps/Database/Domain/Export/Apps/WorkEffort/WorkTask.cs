@@ -32,10 +32,8 @@ namespace Allors.Domain
 
         public TransitionalConfiguration[] TransitionalConfigurations => StaticTransitionalConfigurations;
 
-        public void AppsOnDerive(ObjectOnDerive method)
+        public void AppsOnBuild(ObjectOnBuild method)
         {
-            var derivation = method.Derivation;
-
             var internalOrganisations = new Organisations(this.strategy.Session).Extent()
                 .Where(v => Equals(v.IsInternalOrganisation, true)).ToArray();
 
@@ -43,20 +41,23 @@ namespace Allors.Domain
             {
                 this.TakenBy = internalOrganisations.First();
             }
+        }
 
-            if (!this.ExistStore && this.ExistTakenBy)
-            {
-                var store = new Stores(this.strategy.Session).Extent()
-                    .FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
-                if (store != null)
-                {
-                    this.Store = store;
-                }
-            }
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            //if (!this.ExistStore && this.ExistTakenBy)
+            //{
+            //    var store = new Stores(this.strategy.Session).Extent()
+            //        .FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
+            //    if (store != null)
+            //    {
+            //        this.Store = store;
+            //    }
+            //}
 
-            if (!this.ExistWorkEffortNumber && this.ExistStore)
+            if (!this.ExistWorkEffortNumber && this.ExistTakenBy)
             {
-                this.WorkEffortNumber = this.Store.DeriveNextWorkEffortNumber();
+                this.WorkEffortNumber = this.TakenBy.NextWorkEffortNumber();
             }
 
             var model = new Dictionary<string, object> { { "workTask", this } };

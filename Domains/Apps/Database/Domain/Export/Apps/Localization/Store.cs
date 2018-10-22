@@ -75,11 +75,11 @@ namespace Allors.Domain
             return string.Concat(this.SalesOrderNumberPrefix, salesOrderNumber);
         }
 
-        public string DeriveNextWorkEffortNumber()
-        {
-            var salesOrderNumber = this.WorkEffortCounter.NextValue();
-            return string.Concat(this.WorkEffortNumberPrefix, salesOrderNumber);
-        }
+        //public string DeriveNextWorkEffortNumber()
+        //{
+        //    var salesOrderNumber = this.WorkEffortCounter.NextValue();
+        //    return string.Concat(this.WorkEffortNumberPrefix, salesOrderNumber);
+        //}
 
         public string DeriveNextCreditNoteNumber(int year)
         {
@@ -118,10 +118,10 @@ namespace Allors.Domain
                 this.OutgoingShipmentCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
             }
 
-            if (!this.ExistWorkEffortCounter)
-            {
-                this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
-            }
+            //if (!this.ExistWorkEffortCounter)
+            //{
+            //    this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build();
+            //}
 
             if (!this.ExistBillingProcess)
             {

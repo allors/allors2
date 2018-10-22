@@ -169,7 +169,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Act
-            workEffort.Finish();
+            workEffort.Complete();
             this.Session.Derive(true);
 
             // Assert
@@ -207,7 +207,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Act
-            workEffort.Finish();
+            workEffort.Complete();
             this.Session.Derive(true);
 
             workEffort.Cancel();
@@ -257,7 +257,7 @@ namespace Allors.Domain
             inventoryAssignment.Part = part2;
             inventoryAssignment.Quantity = 5;
 
-            workEffort.Finish();
+            workEffort.Complete();
             this.Session.Derive(true);
 
             // Assert
@@ -300,7 +300,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            workEffort.Finish();
+            workEffort.Complete();
             this.Session.Derive(true);
 
             // Act
@@ -366,7 +366,7 @@ namespace Allors.Domain
             reservations.Sum(r => r.Quantity).ShouldEqual(10);
 
             // Re-arrange
-            workEffort.Finish();
+            workEffort.Complete();
 
             // Act
             this.Session.Derive(true);

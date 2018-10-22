@@ -24,6 +24,7 @@ namespace Allors.Domain
         private static readonly Guid DeclinedId = new Guid("0DFFC51A-4982-4DDA-808B-8F70D46F2749");
         private static readonly Guid InProgressId = new Guid("8384CC3B-492F-4EED-B305-C735D6C82433");
         private static readonly Guid CompletedId = new Guid("E8E941CD-7175-4931-AB1E-50E52DC6D720");
+        private static readonly Guid FinishedId = new Guid("2CEF3B4F-2609-4A7C-BBF3-ACC76EB9472D");
         private static readonly Guid CancelledId = new Guid("D3EBD54F-35B0-4bc4-AC8E-4EC583028B0A");
         private static readonly Guid DelegatedId = new Guid("0EB0E562-5094-4F48-AAAC-EF5DF239CF07");
         private static readonly Guid InPlanningId = new Guid("007B3B09-218D-4898-AE32-A78FAEFA097E");
@@ -43,6 +44,8 @@ namespace Allors.Domain
         public WorkEffortState InProgress => this.StateCache[InProgressId];
 
         public WorkEffortState Completed => this.StateCache[CompletedId];
+
+        public WorkEffortState Finished => this.StateCache[FinishedId];
 
         public WorkEffortState Cancelled => this.StateCache[CancelledId];
 
@@ -91,6 +94,11 @@ namespace Allors.Domain
             new WorkEffortStateBuilder(this.Session)
                 .WithUniqueId(CompletedId)
                 .WithName("Completed")
+                .Build();
+
+            new WorkEffortStateBuilder(this.Session)
+                .WithUniqueId(FinishedId)
+                .WithName("Finished")
                 .Build();
 
             new WorkEffortStateBuilder(this.Session)

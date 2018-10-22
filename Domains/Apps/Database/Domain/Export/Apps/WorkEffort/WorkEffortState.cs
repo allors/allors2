@@ -29,6 +29,8 @@ namespace Allors.Domain
 
         public bool IsCompleted => this.Equals(new WorkEffortStates(this.strategy.Session).Completed);
 
+        public bool IsFinished => this.Equals(new WorkEffortStates(this.strategy.Session).Finished);
+
         public bool IsCancelled => this.Equals(new WorkEffortStates(this.strategy.Session).Cancelled);
 
         public bool IsDelegated => this.Equals(new WorkEffortStates(this.strategy.Session).Delagated);

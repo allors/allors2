@@ -77,6 +77,10 @@ namespace Allors.Domain
         private static readonly Guid AmpereId = new Guid("6CAA7DD3-608F-40A6-AE26-9141517D8C45");
         private static readonly Guid VoltId = new Guid("A15B7AFB-660C-455D-A5C7-03D3D32B29CB");
 
+        // Time
+        private static readonly Guid HourId = new Guid("F4F28786-958A-43AE-925D-3AC4BA021B7B");
+        private static readonly Guid DayId = new Guid("DC1520ED-7F33-41A1-B1AB-94A2333B0104");
+
         private UniquelyIdentifiableSticky<UnitOfMeasure> cache;
 
         public UnitOfMeasure Pack => this.Cache[PackId];
@@ -142,6 +146,10 @@ namespace Allors.Domain
         public UnitOfMeasure Ampere => this.Cache[AmpereId];
 
         public UnitOfMeasure Volt => this.Cache[VoltId];
+
+        public UnitOfMeasure Hour => this.Cache[HourId];
+
+        public UnitOfMeasure Day => this.Cache[DayId];
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<UnitOfMeasure>(this.Session));
 
@@ -400,6 +408,20 @@ namespace Allors.Domain
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("volt").WithLocale(dutchLocale).Build())
                 .WithAbbreviation("V")
                 .WithUniqueId(KiloWattHourId)
+                .WithIsActive(true)
+                .Build();
+
+            new UnitOfMeasureBuilder(this.Session)
+                .WithName("Hour")
+                .WithAbbreviation("HR")
+                .WithUniqueId(HourId)
+                .WithIsActive(true)
+                .Build();
+
+            new UnitOfMeasureBuilder(this.Session)
+                .WithName("Day")
+                .WithAbbreviation("DY")
+                .WithUniqueId(DayId)
                 .WithIsActive(true)
                 .Build();
         }

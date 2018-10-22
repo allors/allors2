@@ -108,6 +108,9 @@ namespace Allors.Repository
 
         public PaymentMethod DefaultPaymentMethod { get; set; }
 
+        public PartyRate CurrentPartyRate { get; set; }
+
+        public PartyRate[] AllPartyRates { get; set; }
         #endregion
 
         #region Versioning

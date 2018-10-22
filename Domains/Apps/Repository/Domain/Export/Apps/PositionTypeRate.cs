@@ -13,7 +13,6 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
-
         #endregion
 
         #region Allors
@@ -25,6 +24,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Rate { get; set; }
+
         #region Allors
         [Id("c49a44b8-dff1-471c-8309-cf9c7e9188c2")]
         [AssociationId("7de3e158-9900-40c4-a015-c62947c0248a")]
@@ -33,8 +33,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public RateType RateType { get; set; }
+
         #region Allors
         [Id("f49e4e9e-2e8f-49f6-9c10-4aefb4bb61bf")]
         [AssociationId("6f36fb29-7820-45fa-9dca-888c11d8b0a3")]
@@ -43,13 +43,9 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public TimeFrequency TimeFrequency { get; set; }
 
-
         #region inherited methods
-
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -59,7 +55,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
         #endregion
 
     }

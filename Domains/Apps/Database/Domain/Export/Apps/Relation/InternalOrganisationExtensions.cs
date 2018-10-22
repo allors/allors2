@@ -198,6 +198,9 @@ namespace Allors.Domain
             return string.Concat(@this.PurchaseOrderNumberPrefix, purchaseOrderNumber);
         }
 
+        public static string NextWorkEffortNumber(this InternalOrganisation @this)
+            => string.Concat(@this.WorkEffortPrefix, @this.WorkEffortCounter.NextValue());
+
         public static int NextValidElevenTestNumer(int previous)
         {
             var candidate = previous.ToString();

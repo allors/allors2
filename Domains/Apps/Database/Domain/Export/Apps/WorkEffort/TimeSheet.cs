@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WorkEfforts.cs" company="Allors bvba">
+// <copyright file="TimeEntry.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -17,20 +17,14 @@ namespace Allors.Domain
 {
     using Meta;
 
-    public partial class WorkEfforts
+    public partial class TimeSheet
     {
-        protected override void AppsSecure(Security config)
+        public void AppsOnDerive(ObjectOnDerive method)
         {
-            base.AppsSecure(config);
+            var derivation = method.Derivation;
 
-            var openedState = new WorkEffortStates(this.Session).NeedsAction;
-            var cancelledState = new WorkEffortStates(this.Session).Cancelled;
-            var finishedState = new WorkEffortStates(this.Session).Finished;
-
-            config.Deny(this.ObjectType, openedState, M.WorkEffort.Reopen);
-
-            config.Deny(this.ObjectType, cancelledState, Operations.Execute, Operations.Write);
-            config.Deny(this.ObjectType, finishedState, Operations.Execute, Operations.Write);
+            derivation.Validation.AssertExists(this, this.Meta.FromDate);
+            derivation.Validation.AssertExists(this, this.Meta.ThroughDate);
         }
     }
 }

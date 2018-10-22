@@ -528,6 +528,31 @@ namespace Allors.Repository
         [Workspace]
         InventoryStrategy InventoryStrategy { get; set; }
 
+        /// <summary>
+        /// Gets or sets the WorkEffortCounter to be used to populate the WorkEfforNumber for WorkEffort objects
+        /// </summary>
+        #region Allors
+        [Id("72BA7C7A-9EA5-4327-86AF-ED77041E19AE")]
+        [AssociationId("8D657926-5B1E-455F-9010-FD04ABD9192F")]
+        [RoleId("7CEBA57D-3E60-47A8-9806-11B62C700C57")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Counter WorkEffortCounter { get; set; }
+
+        /// <summary>
+        /// Gets or sets the WorkEffortPrefix to be used before the WorkEfforNumber for WorkEffort objects
+        /// </summary>
+        #region Allors
+        [Id("DFA0E963-7F13-41C0-B1CC-3BEBE1F951F1")]
+        [AssociationId("BC581E81-852C-4C41-91C7-78E195BDE869")]
+        [RoleId("9E71EAAC-7973-4C65-AC43-0DCD2D9AEF83")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        string WorkEffortPrefix { get; set; }
+
         #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion

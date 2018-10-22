@@ -10,13 +10,9 @@ namespace Allors.Repository
     public partial class MaterialsUsage : ServiceEntry 
     {
         #region inherited properties
-        public DateTime ThroughDateTime { get; set; }
-
         public EngagementItem EngagementItem { get; set; }
 
         public bool IsBillable { get; set; }
-
-        public DateTime FromDateTime { get; set; }
 
         public string Description { get; set; }
 
@@ -30,6 +26,9 @@ namespace Allors.Repository
 
         public SecurityToken[] SecurityTokens { get; set; }
 
+        public DateTime FromDate { get; set; }
+
+        public DateTime ThroughDate { get; set; }
         #endregion
 
         #region Allors
@@ -42,10 +41,7 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal Amount { get; set; }
 
-
         #region inherited methods
-
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -55,10 +51,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
-
         #endregion
-
     }
 }

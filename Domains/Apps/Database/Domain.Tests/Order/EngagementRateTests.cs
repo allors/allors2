@@ -42,7 +42,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithRatingType(new RatingTypes(this.Session).Poor);
+            builder.WithRateType(new RateTypes(this.Session).BillingRate);
             builder.Build();
             
             Assert.False(this.Session.Derive(false).HasErrors);

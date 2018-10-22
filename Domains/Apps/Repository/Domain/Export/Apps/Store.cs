@@ -253,24 +253,24 @@ namespace Allors.Repository
         [Workspace]
         public string SalesOrderNumberPrefix { get; set; }
 
-        #region Allors
-        [Id("95637046-149C-4AB1-A10D-AD3FA9F176BE")]
-        [AssociationId("BA21500D-A7C0-46EA-B46E-692B9522EC36")]
-        [RoleId("697DBA3D-5583-4DFE-B620-F4AD99DC2183")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Required]
-        public Counter WorkEffortCounter { get; set; }
+        //#region Allors
+        //[Id("95637046-149C-4AB1-A10D-AD3FA9F176BE")]
+        //[AssociationId("BA21500D-A7C0-46EA-B46E-692B9522EC36")]
+        //[RoleId("697DBA3D-5583-4DFE-B620-F4AD99DC2183")]
+        //#endregion
+        //[Multiplicity(Multiplicity.ManyToOne)]
+        //[Indexed]
+        //[Required]
+        //public Counter WorkEffortCounter { get; set; }
 
-        #region Allors
-        [Id("E10B3C2E-FEC4-486F-A904-57A38B01D5BD")]
-        [AssociationId("409A2E64-1ADD-42E1-ACDA-58CFA17B3448")]
-        [RoleId("9E506C43-7F6B-41DA-88AA-19CC7DD59914")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        public string WorkEffortNumberPrefix { get; set; }
+        //#region Allors
+        //[Id("E10B3C2E-FEC4-486F-A904-57A38B01D5BD")]
+        //[AssociationId("409A2E64-1ADD-42E1-ACDA-58CFA17B3448")]
+        //[RoleId("9E506C43-7F6B-41DA-88AA-19CC7DD59914")]
+        //#endregion
+        //[Size(256)]
+        //[Workspace]
+        //public string WorkEffortNumberPrefix { get; set; }
 
         #region Allors
         [Id("85279191-9836-444B-A5CB-742A488D0467")]

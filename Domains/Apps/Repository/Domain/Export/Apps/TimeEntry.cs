@@ -11,13 +11,13 @@ namespace Allors.Repository
     public partial class TimeEntry : ServiceEntry 
     {
         #region inherited properties
-        public DateTime ThroughDateTime { get; set; }
-
         public EngagementItem EngagementItem { get; set; }
 
         public bool IsBillable { get; set; }
 
-        public DateTime FromDateTime { get; set; }
+        public DateTime FromDate { get; set; }
+
+        public DateTime ThroughDate { get; set; }
 
         public string Description { get; set; }
 
@@ -30,7 +30,6 @@ namespace Allors.Repository
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
-
         #endregion
 
         #region Allors
@@ -42,6 +41,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal Cost { get; set; }
+
         #region Allors
         [Id("1bb9affa-1390-4f54-92b5-64997e55525e")]
         [AssociationId("0f0341bb-d719-4989-a39b-02b1c1ce98b9")]
@@ -52,6 +52,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal GrossMargin { get; set; }
+
         #region Allors
         [Id("258a33cc-06ea-45a0-9b15-1b6d58385910")]
         [AssociationId("4909a04f-fd14-46ce-9c4c-bc7a2cc21914")]
@@ -59,8 +60,8 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
-
         public QuoteTerm QuoteTerm { get; set; }
+
         #region Allors
         [Id("2c33de6e-b4fd-47e4-b254-2991f33f01f1")]
         [AssociationId("c8b7e4be-fbc5-414c-8e30-3947925c24b8")]
@@ -69,6 +70,7 @@ namespace Allors.Repository
         [Precision(19)]
         [Scale(2)]
         public decimal BillingRate { get; set; }
+
         #region Allors
         [Id("409ff1fb-1531-4829-9d6b-7b3e7113594a")]
         [AssociationId("54a57392-59ed-4583-99f1-1f2a97ca65c5")]
@@ -77,8 +79,8 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-
         public UnitOfMeasure UnitOfMeasure { get; set; }
+
         #region Allors
         [Id("c163457c-6a36-45ab-8c62-e555128afbfc")]
         [AssociationId("01112e75-888e-4dac-93e0-185afe6988af")]
@@ -88,10 +90,7 @@ namespace Allors.Repository
         [Scale(2)]
         public decimal AmountOfTime { get; set; }
 
-
         #region inherited methods
-
-
         public void OnBuild(){}
 
         public void OnPostBuild(){}
@@ -101,9 +100,6 @@ namespace Allors.Repository
         public void OnDerive(){}
 
         public void OnPostDerive(){}
-
-
-
         #endregion
 
     }
