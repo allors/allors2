@@ -271,7 +271,7 @@
           <mat-card-actions>
             <button mat-button [matMenuTriggerFor]="menu">Add new</button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item [routerLink]="['/party/' + organisation.id + '/partycontactmechanism/webaddress']">Web</button>
+              <button mat-menu-item (click)="navigation.add(m.WebAddress, organisation)">Web</button>
               <button mat-menu-item (click)="navigation.add(m.EmailAddress, organisation)">Email</button>
               <button mat-menu-item (click)="navigation.add(m.PostalAddress, organisation)">Postal</button>
               <button mat-menu-item (click)="navigation.add(m.TelecommunicationsNumber, organisation)">Telecom</button>

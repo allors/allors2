@@ -6,9 +6,9 @@ import { PartyContactMechanism } from '../../../../../../domain';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism',
-  templateUrl: './party-contactmechanism-inline.component.html',
+  templateUrl: './contactmechanism-inline.component.html',
 })
-export class PartyContactMechanismInlineComponent {
+export class ContactMechanismInlineComponent {
   @Output() public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();

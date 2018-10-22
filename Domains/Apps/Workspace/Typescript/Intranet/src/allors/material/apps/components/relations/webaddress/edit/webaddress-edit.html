@@ -8,14 +8,14 @@
     </div>
   </div>
 
-  <form *ngIf="contactMechanism" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+  <form *ngIf="contactMechanism" class="a-edit" #form="ngForm" (submit)="save()">
 
-    <mat-card >
+    <mat-card>
       <mat-card-content class="container-fluid">
 
         <div class="row">
-          <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes"></a-mat-select>
-          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.EmailAddress.ElectronicAddressString" label="Email address"></a-mat-input>
+          <a-mat-select class="col-md" [object]="partyContactMechanism" [roleType]="m.PartyContactMechanism.ContactPurposes" [options]="contactMechanismPurposes" display="Name" label="Contact purposes" class="col-md"></a-mat-select>
+          <a-mat-input class="col-md" [object]="contactMechanism" [roleType]="m.WebAddress.ElectronicAddressString" class="col-md"></a-mat-input>
         </div>
 
         <div class="row">

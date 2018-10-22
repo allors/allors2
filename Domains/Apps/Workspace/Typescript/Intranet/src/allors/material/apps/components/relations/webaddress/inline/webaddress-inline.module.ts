@@ -5,25 +5,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 
-import { AllorsMaterialFileModule } from '../../../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../../../base/components/select';
-import { AllorsMaterialSlideToggleModule } from '../../../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../../../base/components/textarea';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyContactMechanismInlineWebAddressComponent } from './party-contactmechanism-webaddress-inline.component';
-export { PartyContactMechanismInlineWebAddressComponent } from './party-contactmechanism-webaddress-inline.component';
+import { InlineWebAddressComponent } from './webaddress-inline.component';
+export { InlineWebAddressComponent } from './webaddress-inline.component';
 
 @NgModule({
   declarations: [
-    PartyContactMechanismInlineWebAddressComponent,
+    InlineWebAddressComponent,
   ],
   exports: [
-    PartyContactMechanismInlineWebAddressComponent,
+    InlineWebAddressComponent,
   ],
   imports: [
-    
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -35,7 +34,7 @@ export { PartyContactMechanismInlineWebAddressComponent } from './party-contactm
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -46,6 +45,7 @@ export { PartyContactMechanismInlineWebAddressComponent } from './party-contactm
     MatTooltipModule,
     MatOptionModule,
     ReactiveFormsModule,
-    RouterModule,  ],
+    RouterModule
+  ],
 })
-export class PartyContactMechanismInlineWebAddressModule {}
+export class InlineWebAddressModule { }

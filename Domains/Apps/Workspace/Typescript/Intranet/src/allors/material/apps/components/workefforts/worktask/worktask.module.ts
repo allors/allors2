@@ -21,7 +21,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { PersonInlineModule } from '../../relations/person/inline/person-inline.module';
-import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
+import { ContactMechanismInlineModule } from '../../relations/contactmechanism/inline/contactmechanism-inline.module';
 
 import { WorkTaskEditComponent } from './worktask.component';
 export { WorkTaskEditComponent } from './worktask.component';
@@ -35,9 +35,9 @@ export { WorkTaskEditComponent } from './worktask.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-	  AllorsMaterialChipsModule,
-	  AllorsMaterialDatepickerModule,
-	  AllorsMaterialDatetimepickerModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialDatepickerModule,
+    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,
     AllorsMaterialInputModule,
@@ -48,7 +48,7 @@ export { WorkTaskEditComponent } from './worktask.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,
@@ -57,7 +57,7 @@ export { WorkTaskEditComponent } from './worktask.component';
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -69,9 +69,9 @@ export { WorkTaskEditComponent } from './worktask.component';
     MatTooltipModule,
     MatOptionModule,
     PersonInlineModule,
-    PartyContactMechanismInlineModule,
+    ContactMechanismInlineModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class WorkTaskEditModule {}
+export class WorkTaskEditModule { }

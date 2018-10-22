@@ -18,7 +18,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { PersonInlineModule } from '../../relations/person/inline/person-inline.module';
-import { PartyContactMechanismInlineModule } from '../../relations/party/contactmechanism/party-contactmechanism-inline.module';
+import { ContactMechanismInlineModule } from '../../relations/contactmechanism/inline/contactmechanism-inline.module';
 
 import { ProductQuoteEditComponent } from './productquote.component';
 export { ProductQuoteEditComponent } from './productquote.component';
@@ -59,7 +59,7 @@ export { ProductQuoteEditComponent } from './productquote.component';
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    PartyContactMechanismInlineModule,
+    ContactMechanismInlineModule,
     PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,

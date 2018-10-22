@@ -50,13 +50,12 @@ export const routes: Routes = [
       { path: 'postaladdress/:id', data: editData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
       { path: 'telecommunicationsnumber', data: addData({ id: ids.TelecommunicationsNumber }), component: relations.TelecommunicationsNumberEditComponent },
       { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: relations.TelecommunicationsNumberEditComponent },
+      { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: relations.EditWebAddressComponent },
+      { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: relations.EditWebAddressComponent },
 
       {
         path: 'party',
         children: [
-          { path: ':id/partycontactmechanism/webaddress', component: relations.PartyContactMechanismAddWebAddressComponent },
-          { path: ':id/partycontactmechanism/webaddress/:roleId', component: relations.PartyContactMechanismEditWebAddressComponent },
-
           { path: ':id/communicationevent/emailcommunication/:roleId', component: relations.PartyCommunicationEventEmailCommunicationComponent },
           { path: ':id/communicationevent/emailcommunication', component: relations.PartyCommunicationEventEmailCommunicationComponent },
           { path: ':id/communicationevent/facetofacecommunication/:roleId', component: relations.PartyCommunicationEventFaceToFaceCommunicationComponent },

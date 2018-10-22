@@ -11,8 +11,7 @@ export * from './emailaddress/edit/emailaddress-edit.module';
 export * from './postaladdress/edit/postaladdress-edit.module';
 export * from './telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 
-export * from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-add.module';
-export * from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-edit.module';
+export * from './webaddress/edit/webaddress-edit.module';
 
 export * from './party/communicationevent/emailcommunication/party-communicationevent-emailcommunication.module';
 export * from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
@@ -36,8 +35,7 @@ import { EmailAddressdModule } from './emailaddress/edit/emailaddress-edit.modul
 import { PostalAddressModule } from './postaladdress/edit/postaladdress-edit.module';
 import { TelecommunicationsNumberModule } from './telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 
-import { PartyContactMechanismAddWebAddressModule } from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-add.module';
-import { PartyContactMechanismEditWebAddressModule } from './party/contactmechanism/webaddress/party-contactmechanism-webaddress-edit.module';
+import { EditWebAddressModule } from './webaddress/edit/webaddress-edit.module';
 
 import { PartyCommunicationEventEmailCommunicationModule } from './party/communicationevent/emailcommunication/party-communicationevent-emailcommunication.module';
 import { PartyCommunicationEventFaceToFaceCommunicationModule } from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
@@ -51,7 +49,7 @@ import { CommunicationEventWorkTaskModule } from './communicationevent/worktask/
 export const Modules = [
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
-  EmailAddressdModule, PostalAddressModule, TelecommunicationsNumberModule, PartyContactMechanismAddWebAddressModule, PartyContactMechanismEditWebAddressModule,
+  EmailAddressdModule, PostalAddressModule, TelecommunicationsNumberModule, EditWebAddressModule,
   PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule,
   CommunicationEventWorkTaskModule, CommunicationEventsOverviewModule, CommunicationEventOverviewModule,
 ];

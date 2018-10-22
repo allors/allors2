@@ -15,21 +15,20 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyContactMechanismInlineComponent } from './party-contactmechanism-inline.component';
-export { PartyContactMechanismInlineComponent } from './party-contactmechanism-inline.component';
+import { ContactMechanismInlineComponent } from './contactmechanism-inline.component';
+export { ContactMechanismInlineComponent } from './contactmechanism-inline.component';
 
 import { EmailAddressInlineModule } from '../../emailaddress/inline/emailaddress-inline.module';
 import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
 import { TelecommunicationsNumberInlineModule } from '../../telecommunicationsnumber/inline/telecommunicationsnumber-inline.module';
-
-import { PartyContactMechanismInlineWebAddressModule } from './webaddress/party-contactmechanism-webaddress-inline.module';
+import { InlineWebAddressModule } from '../../webaddress/inline/webaddress-inline.module';
 
 @NgModule({
   declarations: [
-    PartyContactMechanismInlineComponent,
+    ContactMechanismInlineComponent,
   ],
   exports: [
-    PartyContactMechanismInlineComponent,
+    ContactMechanismInlineComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -62,9 +61,9 @@ import { PartyContactMechanismInlineWebAddressModule } from './webaddress/party-
     EmailAddressInlineModule,
     PostalAddressInlineModule,
     TelecommunicationsNumberInlineModule,
-    PartyContactMechanismInlineWebAddressModule,
+    InlineWebAddressModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class PartyContactMechanismInlineModule { }
+export class ContactMechanismInlineModule { }
