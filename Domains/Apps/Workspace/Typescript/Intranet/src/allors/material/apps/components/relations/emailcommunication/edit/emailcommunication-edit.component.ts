@@ -2,15 +2,15 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { ErrorService, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './emailcommunication-edit.component.html',
@@ -19,26 +19,30 @@ import { switchMap } from 'rxjs/operators';
 export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
 
   public title = 'Email Communication';
-  public subTitle: string;
 
   public addOriginator = false;
   public addAddressee = false;
 
   public m: MetaDomain;
 
-  public communicationEvent: EmailCommunication;
-  public employees: Person[];
   public party: Party;
+  public person: Person;
+  public organisation: Organisation;
   public purposes: CommunicationEventPurpose[];
+  public contacts: Party[] = [];
+
   public ownEmailAddresses: EmailAddress[] = [];
   public allEmailAddresses: EmailAddress[];
   public emailTemplate: EmailTemplate;
+
+  public communicationEvent: EmailCommunication;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: Allors,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
@@ -57,23 +61,15 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([, , internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const roleId: string = this.route.snapshot.paramMap.get('roleId');
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.param();
+          const personId = navRoute.queryParam(m.Person);
+          const organisationId = navRoute.queryParam(m.Organisation);
 
-          const pulls = [
-            pull.Party({ object: id, include: { GeneralEmail: x } }),
-            pull.CommunicationEvent({
-              object: roleId,
-              include: {
-                EmailCommunication_Originator: x,
-                EmailCommunication_Addressees: x,
-                EmailCommunication_EmailTemplate: x,
-                EventPurposes: x,
-                CommunicationEventState: x
-              }
-            }),
-            pull.InternalOrganisation({
-              object: id,
+          let pulls = [
+            pull.Organisation({
+              object: internalOrganisationId,
+              name: 'InternalOrganisation',
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
@@ -82,45 +78,118 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
                 }
               }
             }),
-            pull.CommunicationEventPurpose({
-              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: new Sort(m.CommunicationEventPurpose.Name),
-            }),
             pull.EmailAddress({
               sort: new Sort(m.EmailAddress.ElectronicAddressString)
             }),
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name)
+            }),
           ];
 
+          const add = !id;
+
+          if (add) {
+            if (!!organisationId) {
+              pulls = [
+                ...pulls,
+                pull.Organisation({
+                  object: organisationId,
+                  include: {
+                    CurrentContacts: x,
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x,
+                    }
+                  }
+                }
+                )
+              ];
+            }
+
+            if (!!personId) {
+              pulls = [
+                ...pulls,
+                pull.Person({
+                  object: personId,
+                }),
+                pull.Person({
+                  object: personId,
+                  fetch: {
+                    OrganisationContactRelationshipsWhereContact: {
+                      Organisation: {
+                        include: {
+                          CurrentContacts: x,
+                          CurrentPartyContactMechanisms: {
+                            ContactMechanism: x,
+                          }
+                        }
+                      }
+                    }
+                  }
+                })
+              ];
+            }
+
+          } else {
+            pulls = [
+              ...pulls,
+              pull.EmailCommunication({
+                object: id,
+                include: {
+                  Originator: x,
+                  Addressees: x,
+                  EmailTemplate: x,
+                  EventPurposes: x,
+                  CommunicationEventState: x,
+                }
+              }),
+            ];
+          }
+
           return scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, add }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, add }) => {
 
         scope.session.reset();
 
-        this.party = loaded.objects.party as Party;
-        const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-        this.employees = internalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
-        this.allEmailAddresses = loaded.collections.emailAddresses as EmailAddress[];
-        this.communicationEvent = loaded.objects.communicationEvent as EmailCommunication;
+        this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
+        this.ownEmailAddresses = internalOrganisation.ActiveEmployees
+        .map((v) => v.CurrentPartyContactMechanisms
+          .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress._objectType)
+          .map((w) => w.ContactMechanism as EmailAddress))
+        .reduce((acc, v) => acc.concat(v), []);
 
-        if (!this.communicationEvent) {
+        if (add) {
+          this.person = loaded.objects.Person as Person;
+          this.organisation = loaded.objects.Organisation as Organisation;
+          if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
+            // TODO: check active
+            this.organisation = loaded.collections.Organisations[0] as Organisation;
+          }
+
+          this.party = this.organisation || this.person;
+
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
+          if (!!this.person) {
+            this.contacts.push(this.person);
+          }
+
           this.communicationEvent = scope.session.create('EmailCommunication') as EmailCommunication;
           this.emailTemplate = scope.session.create('EmailTemplate') as EmailTemplate;
           this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.communicationEvent.Originator = this.party.GeneralEmail;
           this.communicationEvent.IncomingMail = false;
-        }
 
-        for (const employee of this.employees) {
-          const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-          for (const contactMechanism of employeeContactMechanisms) {
-            if (contactMechanism.objectType.name === 'EmailAddress') {
-              this.ownEmailAddresses.push(contactMechanism as EmailAddress);
-            }
-          }
+        } else {
+          this.communicationEvent = loaded.objects.FaceToFaceCommunication as EmailCommunication;
         }
       },
         (error: any) => {

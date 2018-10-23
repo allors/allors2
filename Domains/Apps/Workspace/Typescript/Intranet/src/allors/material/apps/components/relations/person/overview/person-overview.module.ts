@@ -13,6 +13,9 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
+import { PartyCommunicationEventsModule } from '../../party/communicationevents/party-communicationevents.module';
+import { PartyPartyContactMechanismsModule } from '../../party/partycontactmechanisms/party-partycontactmechanisms.module';
+
 import { PersonOverviewComponent } from './person-overview.component';
 export { PersonOverviewComponent } from './person-overview.component';
 
@@ -24,6 +27,8 @@ export { PersonOverviewComponent } from './person-overview.component';
     PersonOverviewComponent,
   ],
   imports: [
+    PartyCommunicationEventsModule,
+    PartyPartyContactMechanismsModule,
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,

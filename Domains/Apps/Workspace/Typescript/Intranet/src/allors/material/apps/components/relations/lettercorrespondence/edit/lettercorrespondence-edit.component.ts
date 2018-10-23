@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from '../../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { ErrorService, Invoked, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './lettercorrespondence-edit.component.html',
@@ -20,7 +20,6 @@ export class EditLetterCorrespondenceComponent
   implements OnInit, OnDestroy {
   public scope: Scope;
   public title = 'Letter Correspondence';
-  public subTitle: string;
 
   public addSender = false;
   public addReceiver = false;
@@ -28,18 +27,22 @@ export class EditLetterCorrespondenceComponent
 
   public m: MetaDomain;
 
-  public communicationEvent: LetterCorrespondence;
-  public employees: Person[];
-  public contacts: Party[] = [];
   public party: Party;
+  public person: Person;
+  public organisation: Organisation;
   public purposes: CommunicationEventPurpose[];
+  public contacts: Party[] = [];
+
   public postalAddresses: ContactMechanism[] = [];
+
+  public communicationEvent: LetterCorrespondence;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: Allors,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
@@ -61,102 +64,148 @@ export class EditLetterCorrespondenceComponent
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const roleId: string = this.route.snapshot.paramMap.get('roleId');
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.param();
+          const personId = navRoute.queryParam(m.Person);
+          const organisationId = navRoute.queryParam(m.Organisation);
 
-          const pulls = [
-            pull.Party({
-              object: id,
+          let pulls = [
+            pull.Organisation({
+              object: internalOrganisationId,
+              name: 'InternalOrganisation',
               include: {
-                CurrentContacts: x,
-                CurrentPartyContactMechanisms: {
-                  ContactMechanism: {
-                    PostalAddress_PostalBoundary: {
-                      Country: x,
-                    }
+                ActiveEmployees: {
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }
             }),
-            pull.CommunicationEvent({
-              object: id,
-              include: {
-                LetterCorrespondence_Originators: x,
-                LetterCorrespondence_Receivers: x,
-                EventPurposes: x,
-                CommunicationEventState: x,
-                LetterCorrespondence_PostalAddresses: {
-                  PostalBoundary: {
-                    Country: x,
-                  }
-                }
-              }
+            pull.CommunicationEventPurpose({
+              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
+              sort: new Sort(m.CommunicationEventPurpose.Name)
             }),
-            pull.InternalOrganisation(
-              {
-                object: internalOrganisationId,
-                include: {
-                  ActiveEmployees: {
+          ];
+
+          const add = !id;
+
+          if (add) {
+            if (!!organisationId) {
+              pulls = [
+                ...pulls,
+                pull.Organisation({
+                  object: organisationId,
+                  include: {
+                    CurrentContacts: x,
                     CurrentPartyContactMechanisms: {
                       ContactMechanism: {
                         PostalAddress_PostalBoundary: {
                           Country: x,
                         }
-                      }
+                      },
                     }
                   }
                 }
-              }
-            ),
-            pull.CommunicationEventPurpose({
-              predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
-              sort: new Sort(m.CommunicationEventPurpose.Name),
-            })
-          ];
+                )
+              ];
+            }
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+            if (!!personId) {
+              pulls = [
+                ...pulls,
+                pull.Person({
+                  object: personId,
+                }),
+                pull.Person({
+                  object: personId,
+                  fetch: {
+                    OrganisationContactRelationshipsWhereContact: {
+                      Organisation: {
+                        include: {
+                          CurrentContacts: x,
+                          CurrentPartyContactMechanisms: {
+                            ContactMechanism: {
+                              PostalAddress_PostalBoundary: {
+                                Country: x,
+                              }
+                            },
+                          }
+                        }
+                      }
+                    }
+                  }
+                })
+              ];
+            }
+
+          } else {
+            pulls = [
+              ...pulls,
+              pull.LetterCorrespondence({
+                object: id,
+                include: {
+                  Originators: x,
+                  Receivers: x,
+                  PostalAddresses: {
+                    PostalBoundary: {
+                      Country: x,
+                    }
+                  }
+                }
+              }),
+            ];
+          }
+
+          return scope
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, add }))
+            );
         })
       )
-      .subscribe(
-        loaded => {
-          scope.session.reset();
+      .subscribe(({ loaded, add }) => {
+        scope.session.reset();
 
-          this.party = loaded.objects.party as Party;
-          const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-          this.employees = internalOrganisation.ActiveEmployees;
-          this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
-          this.communicationEvent = loaded.objects.communicationEvent as LetterCorrespondence;
+        this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.postalAddresses = internalOrganisation.ActiveEmployees
+          .map((v) => v.CurrentPartyContactMechanisms
+            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress._objectType)
+            .map((w) => w.ContactMechanism as PostalAddress))
+          .reduce((acc, v) => acc.concat(v), []);
 
-          if (!this.communicationEvent) {
-            this.communicationEvent = scope.session.create('LetterCorrespondence') as LetterCorrespondence;
-            this.communicationEvent.IncomingLetter = true;
+        if (add) {
+          this.person = loaded.objects.Person as Person;
+          this.organisation = loaded.objects.Organisation as Organisation;
+          if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
+            // TODO: check active
+            this.organisation = loaded.collections.Organisations[0] as Organisation;
           }
 
-          for (const employee of this.employees) {
-            const employeeContactMechanisms: ContactMechanism[] = employee.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-            for (const contactMechanism of employeeContactMechanisms) {
-              if (contactMechanism.objectType.name === 'PostalAddress') {
-                this.postalAddresses.push(contactMechanism);
-              }
-            }
+          this.party = this.organisation || this.person;
+
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
+          if (!!this.person) {
+            this.contacts.push(this.person);
           }
 
-          const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-          for (const contactMechanism of contactMechanisms) {
-            if (contactMechanism.objectType.name === 'PostalAddress') {
-              this.postalAddresses.push(contactMechanism);
-            }
-          }
+          this.communicationEvent = scope.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent.IncomingLetter = true;
 
-          this.contacts.push(this.party);
-          if (this.employees.length > 0) {
-            this.contacts = this.contacts.concat(this.employees);
-          }
+        } else {
+          this.communicationEvent = loaded.objects.LetterCorrespondence as LetterCorrespondence;
+        }
 
-          if (this.party.CurrentContacts.length > 0) {
-            this.contacts = this.contacts.concat(this.party.CurrentContacts);
-          }
-        },
+        if (!this.communicationEvent) {
+          this.communicationEvent = scope.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent.IncomingLetter = true;
+        }
+      },
         (error: any) => {
           this.errorService.handle(error);
           this.goBack();
@@ -190,7 +239,7 @@ export class EditLetterCorrespondenceComponent
     const sender: Person = scope.session.get(id) as Person;
     const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = sender;
-    relationShip.Organisation = this.party as Organisation;
+    relationShip.Organisation = this.organisation;
 
     this.communicationEvent.AddOriginator(sender);
   }
@@ -203,7 +252,7 @@ export class EditLetterCorrespondenceComponent
     const receiver: Person = scope.session.get(id) as Person;
     const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = receiver;
-    relationShip.Organisation = this.party as Organisation;
+    relationShip.Organisation = this.organisation;
 
     this.communicationEvent.AddReceiver(receiver);
   }

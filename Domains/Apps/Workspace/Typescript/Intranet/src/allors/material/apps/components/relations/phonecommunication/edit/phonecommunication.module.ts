@@ -9,6 +9,7 @@ import { AllorsMaterialChipsModule } from '../../../../../base/components/chips'
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
 import { AllorsMaterialDatetimepickerModule } from '../../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
@@ -35,6 +36,7 @@ export { EditPhoneCommunicationComponent } from './phonecommunication-edit.compo
     AllorsMaterialDatepickerModule,
     AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,

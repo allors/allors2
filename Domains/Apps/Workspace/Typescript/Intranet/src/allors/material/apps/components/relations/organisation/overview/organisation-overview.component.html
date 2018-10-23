@@ -101,11 +101,7 @@
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <button mat-menu-item [routerLink]="['/relations/party/' + organisation.id + '/communicationevent/' + communicationEvent.id ]">Details</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'EmailCommunication'" mat-menu-item [routerLink]="['/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'FaceToFaceCommunication'" mat-menu-item [routerLink]="['/party/' + organisation.id + '/communicationevent/facetofacecommunication/' + communicationEvent.id ]">Edit</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'LetterCorrespondence'" mat-menu-item [routerLink]="['/party/' + organisation.id + '/communicationevent/lettercorrespondence/' + communicationEvent.id ]">Edit</button>
-                    <button *ngIf="this.checkType(communicationEvent) === 'PhoneCommunication'" mat-menu-item [routerLink]="['/party/' + organisation.id + '/communicationevent/emailcommunication/' + communicationEvent.id ]">Edit</button>
+                    <button mat-menu-item (click)="navigation.edit(communicationEvent)">Edit</button>
                     <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="deleteCommunication(communicationEvent)">Delete</button>
                     <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancelCommunication(communicationEvent)">Cancel</button>
                     <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="closeCommunication(communicationEvent)">Close</button>

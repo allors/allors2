@@ -41,8 +41,8 @@ export const routes: Routes = [
       { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent },
       { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent },
 
-      { path: 'organisation', data: addData({ id: ids.Person }), component: relations.OrganisationEditComponent },
-      { path: 'organisation/:id', data: editData({ id: ids.Person }), component: relations.OrganisationEditComponent },
+      { path: 'organisation', data: addData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
+      { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
 
       { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
@@ -54,13 +54,13 @@ export const routes: Routes = [
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: relations.EditWebAddressComponent },
 
       { path: 'emailcommunication', data: addData({ id: ids.EmailCommunication }), component: relations.EditEmailCommunicationComponent },
-      { path: 'emailcommunication/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditEmailCommunicationComponent },
+      { path: 'emailcommunication/:id', data: editData({ id: ids.EmailCommunication }), component: relations.EditEmailCommunicationComponent },
       { path: 'facetofacecommunication', data: addData({ id: ids.FaceToFaceCommunication }), component: relations.EditFaceToFaceCommunicationComponent },
-      { path: 'facetofacecommunication/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditFaceToFaceCommunicationComponent },
+      { path: 'facetofacecommunication/:id', data: editData({ id: ids.FaceToFaceCommunication }), component: relations.EditFaceToFaceCommunicationComponent },
       { path: 'lettercorrespondence', data: addData({ id: ids.LetterCorrespondence }), component: relations.EditLetterCorrespondenceComponent },
-      { path: 'lettercorrespondence/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditLetterCorrespondenceComponent },
+      { path: 'lettercorrespondence/:id', data: editData({ id: ids.LetterCorrespondence }), component: relations.EditLetterCorrespondenceComponent },
       { path: 'phonecommunication', data: addData({ id: ids.PhoneCommunication }), component: relations.EditPhoneCommunicationComponent },
-      { path: 'phonecommunication/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditPhoneCommunicationComponent },
+      { path: 'phonecommunication/:id', data: editData({ id: ids.PhoneCommunication }), component: relations.EditPhoneCommunicationComponent },
 
       {
         path: 'communicationevent',

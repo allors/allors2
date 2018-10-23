@@ -10,7 +10,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter } from '../../../../../../framework';
-import { ErrorService, Invoked, MediaService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
@@ -52,6 +52,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: Allors,
     @Self() private filterService: AllorsFilterService,
+    public navigation: NavigationService,
     public mediaService: MediaService,
     public router: Router,
     private errorService: ErrorService,
@@ -215,18 +216,4 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
         });
     }
   }
-
-  public onView(organisation: Organisation): void {
-    this.router.navigate(['/relations/organisation/' + organisation.id]);
-  }
-
-  // public addNew() {
-  //   const dialogRef = this.dialog.open(OrganisationAddComponent, {
-  //     autoFocus: false,
-  //     disableClose: true
-  //   });
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     this.refresh();
-  //   });
-  // }
 }

@@ -47,7 +47,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: Allors,
     @Self() private filterService: AllorsFilterService,
-    public navigationService: NavigationService,
+    public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
     private dialog: MatDialog,

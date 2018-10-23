@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
-import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
@@ -14,19 +12,18 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { EmailAddressEditComponent } from './emailaddress-edit.component';
-export { EmailAddressEditComponent } from './emailaddress-edit.component';
+import { PartyPartyContactMechanismsComponent } from './party-partycontactmechanisms.component';
+export { PartyPartyContactMechanismsComponent } from './party-partycontactmechanisms.component';
 
 @NgModule({
   declarations: [
-    EmailAddressEditComponent,
+    PartyPartyContactMechanismsComponent,
   ],
   exports: [
-    EmailAddressEditComponent,
+    PartyPartyContactMechanismsComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
-    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -52,4 +49,4 @@ export { EmailAddressEditComponent } from './emailaddress-edit.component';
     RouterModule,
   ],
 })
-export class PartyContactMechanismEmailAddressAddModule { }
+export class PartyPartyContactMechanismsModule { }

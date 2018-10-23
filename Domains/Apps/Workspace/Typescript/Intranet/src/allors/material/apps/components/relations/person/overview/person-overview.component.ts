@@ -42,8 +42,6 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private customerRole: PersonRole;
   private employeeRole: PersonRole;
   private contactRole: PersonRole;
-  private isActiveCustomer: boolean;
-  private isActiveEmployee: boolean;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;

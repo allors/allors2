@@ -1,15 +1,15 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, Singleton, TelecommunicationsNumber } from '../../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { ErrorService, Invoked, Saved, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, TelecommunicationsNumber } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './phonecommunication-edit.component.html',
@@ -18,7 +18,6 @@ import { switchMap } from 'rxjs/operators';
 export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
   public title = 'Phone Communication';
-  public subTitle: string;
 
   public addCaller = false;
   public addReceiver = false;
@@ -26,18 +25,22 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public communicationEvent: PhoneCommunication;
-  public employees: Person[];
-  public contacts: Party[] = [];
   public party: Party;
+  public person: Person;
+  public organisation: Organisation;
   public purposes: CommunicationEventPurpose[];
+  public contacts: Party[] = [];
   public phonenumbers: ContactMechanism[] = [];
+  public employees: Person[];
+
+  public communicationEvent: PhoneCommunication;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: Allors,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -59,30 +62,15 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const roleId: string = this.route.snapshot.paramMap.get('roleId');
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.param();
+          const personId = navRoute.queryParam(m.Person);
+          const organisationId = navRoute.queryParam(m.Organisation);
 
-          const pulls = [
-            pull.Party({
-              object: id,
-              include: {
-                CurrentContacts: x,
-                CurrentPartyContactMechanisms: {
-                  ContactMechanism: x,
-                }
-              }
-            }),
-            pull.CommunicationEvent({
-              object: id,
-              include: {
-                FromParties: x,
-                ToParties: x,
-                EventPurposes: x,
-                CommunicationEventState: x,
-              }
-            }),
+          let pulls = [
             pull.Organisation({
               object: internalOrganisationId,
+              name: 'InternalOrganisation',
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
@@ -94,39 +82,106 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
             pull.CommunicationEventPurpose({
               predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
               sort: new Sort(m.CommunicationEventPurpose.Name)
-            })
+            }),
           ];
 
+          const add = !id;
+
+          if (add) {
+            if (!!organisationId) {
+              pulls = [
+                ...pulls,
+                pull.Organisation({
+                  object: organisationId,
+                  include: {
+                    CurrentContacts: x,
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x,
+                    }
+                  }
+                }
+                )
+              ];
+            }
+
+            if (!!personId) {
+              pulls = [
+                ...pulls,
+                pull.Person({
+                  object: personId,
+                }),
+                pull.Person({
+                  object: personId,
+                  fetch: {
+                    OrganisationContactRelationshipsWhereContact: {
+                      Organisation: {
+                        include: {
+                          CurrentContacts: x,
+                          CurrentPartyContactMechanisms: {
+                            ContactMechanism: x,
+                          }
+                        }
+                      }
+                    }
+                  }
+                })
+              ];
+            }
+
+          } else {
+            pulls = [
+              ...pulls,
+              pull.FaceToFaceCommunication({
+                object: id,
+                include: {
+                  FromParties: x,
+                  ToParties: x,
+                  EventPurposes: x,
+                  CommunicationEventState: x,
+                }
+              }),
+            ];
+          }
+
           return scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, add }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, add }) => {
 
         scope.session.reset();
 
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
-        this.party = loaded.objects.party as Party;
-        this.communicationEvent = loaded.objects.communicationEvent as PhoneCommunication;
 
-        if (!this.communicationEvent) {
-          this.communicationEvent = scope.session.create('PhoneCommunication') as PhoneCommunication;
-        }
-
-        const contactMechanisms: ContactMechanism[] = this.party.CurrentPartyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
-        for (const contactMechanism of contactMechanisms) {
-          if (contactMechanism.objectType.name === 'TelecommunicationsNumber') {
-            this.phonenumbers.push(contactMechanism);
+        if (add) {
+          this.person = loaded.objects.Person as Person;
+          this.organisation = loaded.objects.Organisation as Organisation;
+          if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
+            // TODO: check active
+            this.organisation = loaded.collections.Organisations[0] as Organisation;
           }
+
+          this.party = this.organisation || this.person;
+
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
+          if (!!this.person) {
+            this.contacts.push(this.person);
+          }
+
+          this.communicationEvent = scope.session.create('PhoneCommunication') as PhoneCommunication;
+        } else {
+          this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;
         }
 
-        this.contacts.push(this.party);
+        // TODO: phone number from organisation, person or contacts ...
+        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber._objectType).map((v) => v.ContactMechanism);
 
-        if (this.party.CurrentContacts.length > 0) {
-          this.contacts = this.contacts.concat(this.party.CurrentContacts);
-        }
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -148,11 +203,14 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   public phoneNumberAdded(partyContactMechanism: PartyContactMechanism): void {
     this.addPhoneNumber = false;
 
-    this.party.AddPartyContactMechanism(partyContactMechanism);
+    if (!!this.organisation) {
+      this.organisation.AddPartyContactMechanism(partyContactMechanism);
+    }
 
     const phonenumber = partyContactMechanism.ContactMechanism as TelecommunicationsNumber;
-    this.phonenumbers.push(phonenumber);
     this.communicationEvent.AddContactMechanism(phonenumber);
+
+    this.phonenumbers.push(phonenumber);
   }
 
   public callerCancelled(): void {
@@ -167,7 +225,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
     const person: Person = scope.session.get(id) as Person;
     const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
-    relationShip.Organisation = this.party as Organisation;
+    relationShip.Organisation = this.organisation;
 
     this.communicationEvent.AddCaller(person);
   }
@@ -184,7 +242,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
     const person: Person = scope.session.get(id) as Person;
     const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
-    relationShip.Organisation = this.party as Organisation;
+    relationShip.Organisation = this.organisation;
 
     this.communicationEvent.AddReceiver(person);
   }

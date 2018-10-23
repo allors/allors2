@@ -11,7 +11,6 @@ import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
-import { load, loadQueryList } from '@angular/core/src/render3/instructions';
 
 @Component({
   templateUrl: './facetofacecommunication-edit.component.html',
@@ -171,7 +170,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
           this.communicationEvent.AddParticipant(this.person);
 
         } else {
-          this.communicationEvent = loaded.objects.CommunicationEvent as FaceToFaceCommunication;
+          this.communicationEvent = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
         }
       },
         (error: any) => {

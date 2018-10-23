@@ -1,36 +1,32 @@
-<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-    </mat-toolbar-row>
-    <span class="col"></span>
-  </mat-toolbar>
+<div class="a-main">
 
-  <div>
-    <mat-card *ngIf="communicationEvent">
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigation.overview(party)">{{party.displayName}}</a></span> / {{title}}
+      </div>
+    </div>
+  </div>
+
+  <form *ngIf="communicationEvent" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+    <mat-card>
 
       <mat-card-content class="container-fluid">
-        <div class="row" *ngIf="!communicationEvent.isNew">
-          <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes"
-            display="Name"></a-mat-select>
+        <div class="row">
+          <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.EmailCommunication.EventPurposes" [options]="purposes" display="Name"></a-mat-select>
           <div class="col-md">
             <div class="row">
-              <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
+              <a-mat-static *ngIf="!communicationEvent.isNew" class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
               <a-mat-slidetoggle [object]="communicationEvent" [roleType]="m.EmailCommunication.IncomingMail"></a-mat-slidetoggle>
             </div>
           </div>
         </div>
 
         <div class="row">
-          <a-mat-select class="col-md-12" *ngIf="communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator"
-            [options]="allEmailAddresses" display="displayName" label="From"></a-mat-select>
-          <a-mat-select class="col-md-12" *ngIf="!communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator"
-            [options]="ownEmailAddresses" display="displayName" label="From"></a-mat-select>
-          <a-mat-chips class="col-md-12" *ngIf="communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees"
-            [options]="ownEmailAddresses" display="displayName" label="To"></a-mat-chips>
-          <a-mat-chips class="col-md-12" *ngIf="!communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees"
-            [options]="allEmailAddresses" display="displayName" label="To"></a-mat-chips>
+          <a-mat-select class="col-md-12" *ngIf="communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" [options]="allEmailAddresses" display="displayName" label="From"></a-mat-select>
+          <a-mat-select class="col-md-12" *ngIf="!communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Originator" [options]="ownEmailAddresses" display="displayName" label="From"></a-mat-select>
+          <a-mat-chips class="col-md-12" *ngIf="communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" [options]="ownEmailAddresses" display="displayName" label="To"></a-mat-chips>
+          <a-mat-chips class="col-md-12" *ngIf="!communicationEvent.IncomingMail" [object]="communicationEvent" [roleType]="m.EmailCommunication.Addressees" [options]="allEmailAddresses" display="displayName" label="To"></a-mat-chips>
         </div>
 
         <div class="row">
@@ -57,14 +53,11 @@
       </mat-card-actions>
     </mat-card>
 
-  </div>
 
-  <mat-toolbar class="a-footer">
-    <mat-toolbar-row class="row">
-      <span class="col"></span>
-      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-    </mat-toolbar-row>
-  </mat-toolbar>
+    <a-mat-footer>
+      <button mat-raised-button (click)="navigation.back()" type="button">CANCEL</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
+    </a-mat-footer>
 
-</form>
+  </form>
+</div>

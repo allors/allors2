@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule } from '@angular/material';
 
 import { AllorsMaterialChipsModule } from '../../../../../base/components/chips';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
 import { AllorsMaterialDatetimepickerModule } from '../../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
@@ -32,6 +33,7 @@ export { EditEmailCommunicationComponent } from './emailcommunication-edit.compo
     AllorsMaterialDatepickerModule,
     AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,

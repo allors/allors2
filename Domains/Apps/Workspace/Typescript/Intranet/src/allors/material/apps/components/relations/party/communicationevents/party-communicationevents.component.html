@@ -1,0 +1,59 @@
+<mat-card>
+
+  <div class="row">
+    <div class="col">
+      <h2>
+        <mat-icon>people</mat-icon> Communications
+      </h2>
+    </div>
+  </div>
+
+  <mat-card-content>
+
+    <ul *ngIf="communicationEvents?.length == 0">
+      <li>no communications to display</li>
+    </ul>
+
+    <mat-list>
+      <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="navigation.edit(communicationEvent)" style="cursor: pointer;">
+        <div *ngIf="communicationEvent.objectType === allors.m.FaceToFaceCommunication" mat-line>Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
+        <div *ngIf="communicationEvent.objectType === allors.m.PhoneCommunication" mat-line>Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
+        <div *ngIf="communicationEvent.objectType === allors.m.EmailCommunication" mat-line>Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
+        <div *ngIf="communicationEvent.objectType === allors.m.LetterCorrespondence" mat-line>Letter, {{ communicationEvent.CommunicationEventState.Name }}</div>
+
+        <p mat-line>{{ communicationEvent.Subject }} </p>
+        <p mat-line>{{ communicationEvent.ActualStart | date}}
+          <span *ngIf="communicationEvent.ActualEnd">/ {{ communicationEvent.ActualEnd | date }}</span>
+        </p>
+        <p mat-line>Involved:
+          <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
+        </p>
+
+        <div (click)="$event.stopPropagation()">
+          <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menuEditCom="matMenu">
+            <button mat-menu-item (click)="navigation.edit(communicationEvent)">Edit</button>
+            <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="delete.emit(communicationEvent)">Delete</button>
+            <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="delete.emit(communicationEvent)">Cancel</button>
+            <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="delete.emit(communicationEvent)">Close</button>
+            <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="delete.emit(communicationEvent)">Reopen</button>
+          </mat-menu>
+        </div>
+
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
+    <mat-menu #menuAddComm="matMenu">
+      <button mat-menu-item (click)="add.emit(allors.m.FaceToFaceCommunication)">Meeting</button>
+      <button mat-menu-item (click)="add.emit(allors.m.PhoneCommunication)">Phone</button>
+      <button mat-menu-item (click)="add.emit(allors.m.EmailCommunication)">Email</button>
+      <button mat-menu-item (click)="add.emit(allors.m.LetterCorrespondence)">Letter</button>
+    </mat-menu>
+  </mat-card-actions>
+</mat-card>
