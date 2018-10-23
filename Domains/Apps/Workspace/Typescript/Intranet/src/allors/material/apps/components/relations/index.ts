@@ -13,10 +13,10 @@ export * from './telecommunicationsnumber/edit/telecommunicationsnumber-edit.mod
 
 export * from './webaddress/edit/webaddress-edit.module';
 
-export * from './party/communicationevent/emailcommunication/party-communicationevent-emailcommunication.module';
-export * from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
-export * from './party/communicationevent/lettercorrespondence/party-communicationevent-lettercorrespondence.module';
-export * from './party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module';
+export * from './emailcommunication/edit/emailcommunication.module';
+export * from './facetofacecommunication/edit/facetofacecommunication.module';
+export * from './lettercorrespondence/edit/lettercorrespondence.module';
+export * from './phonecommunication/edit/phonecommunication.module';
 
 export * from './communicationevent/communicationevent-overview.module';
 export * from './communicationevent/communicationevents-overview.module';
@@ -34,13 +34,12 @@ import { OrganisationsOverviewModule } from './organisation/list/organisation-li
 import { EmailAddressdModule } from './emailaddress/edit/emailaddress-edit.module';
 import { PostalAddressModule } from './postaladdress/edit/postaladdress-edit.module';
 import { TelecommunicationsNumberModule } from './telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
-
 import { EditWebAddressModule } from './webaddress/edit/webaddress-edit.module';
 
-import { PartyCommunicationEventEmailCommunicationModule } from './party/communicationevent/emailcommunication/party-communicationevent-emailcommunication.module';
-import { PartyCommunicationEventFaceToFaceCommunicationModule } from './party/communicationevent/facetofacecommunication/party-communicationevent-facetofacecommunication.module';
-import { PartyCommunicationEventLetterCorrespondenceModule } from './party/communicationevent/lettercorrespondence/party-communicationevent-lettercorrespondence.module';
-import { PartyCommunicationEventPhoneCommunicationModule } from './party/communicationevent/phonecommunication/party-communicationevent-phonecommunication.module';
+import { EmailCommunicationModule } from './emailcommunication/edit/emailcommunication.module';
+import { FaceToFaceCommunicationModule } from './facetofacecommunication/edit/facetofacecommunication.module';
+import { LetterCorrespondenceModule } from './/lettercorrespondence/edit/lettercorrespondence.module';
+import { PhoneCommunicationModule } from './phonecommunication/edit/phonecommunication.module';
 
 import { CommunicationEventOverviewModule } from './communicationevent/communicationevent-overview.module';
 import { CommunicationEventsOverviewModule } from './communicationevent/communicationevents-overview.module';
@@ -50,6 +49,6 @@ export const Modules = [
   PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
   EmailAddressdModule, PostalAddressModule, TelecommunicationsNumberModule, EditWebAddressModule,
-  PartyCommunicationEventEmailCommunicationModule, PartyCommunicationEventFaceToFaceCommunicationModule, PartyCommunicationEventLetterCorrespondenceModule, PartyCommunicationEventPhoneCommunicationModule,
+  EmailCommunicationModule, FaceToFaceCommunicationModule, LetterCorrespondenceModule, PhoneCommunicationModule,
   CommunicationEventWorkTaskModule, CommunicationEventsOverviewModule, CommunicationEventOverviewModule,
 ];

@@ -53,19 +53,15 @@ export const routes: Routes = [
       { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: relations.EditWebAddressComponent },
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: relations.EditWebAddressComponent },
 
-      {
-        path: 'party',
-        children: [
-          { path: ':id/communicationevent/emailcommunication/:roleId', component: relations.PartyCommunicationEventEmailCommunicationComponent },
-          { path: ':id/communicationevent/emailcommunication', component: relations.PartyCommunicationEventEmailCommunicationComponent },
-          { path: ':id/communicationevent/facetofacecommunication/:roleId', component: relations.PartyCommunicationEventFaceToFaceCommunicationComponent },
-          { path: ':id/communicationevent/facetofacecommunication', component: relations.PartyCommunicationEventFaceToFaceCommunicationComponent },
-          { path: ':id/communicationevent/lettercorrespondence/:roleId', component: relations.PartyCommunicationEventLetterCorrespondenceComponent },
-          { path: ':id/communicationevent/lettercorrespondence', component: relations.PartyCommunicationEventLetterCorrespondenceComponent },
-          { path: ':id/communicationevent/phonecommunication/:roleId', component: relations.PartyCommunicationEventPhoneCommunicationComponent },
-          { path: ':id/communicationevent/phonecommunication', component: relations.PartyCommunicationEventPhoneCommunicationComponent },
-        ],
-      },
+      { path: 'emailcommunication', data: addData({ id: ids.EmailCommunication }), component: relations.EditEmailCommunicationComponent },
+      { path: 'emailcommunication/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditEmailCommunicationComponent },
+      { path: 'facetofacecommunication', data: addData({ id: ids.FaceToFaceCommunication }), component: relations.EditFaceToFaceCommunicationComponent },
+      { path: 'facetofacecommunication/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditFaceToFaceCommunicationComponent },
+      { path: 'lettercorrespondence', data: addData({ id: ids.LetterCorrespondence }), component: relations.EditLetterCorrespondenceComponent },
+      { path: 'lettercorrespondence/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditLetterCorrespondenceComponent },
+      { path: 'phonecommunication', data: addData({ id: ids.PhoneCommunication }), component: relations.EditPhoneCommunicationComponent },
+      { path: 'phonecommunication/:id', data: editData({ id: ids.EmailAddress }), component: relations.EditPhoneCommunicationComponent },
+
       {
         path: 'communicationevent',
         children: [

@@ -179,7 +179,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
         this.organisation = loaded.objects.Organisation as Organisation;
-        this.communicationEvents = loaded.collections.CommunicationEventsWhereInvolvedParty as CommunicationEvent[];
+        this.communicationEvents = loaded.collections.CommunicationEvents as CommunicationEvent[];
 
         this.currentContactRelationships = this.organisation.CurrentOrganisationContactRelationships as OrganisationContactRelationship[];
         this.inactiveContactRelationships = this.organisation.InactiveOrganisationContactRelationships as OrganisationContactRelationship[];

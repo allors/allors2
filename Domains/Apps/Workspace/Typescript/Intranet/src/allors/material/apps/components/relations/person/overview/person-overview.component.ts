@@ -179,7 +179,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
 
-        this.communicationEvents = loaded.collections.CommunicationEventsWhereInvolvedParty as CommunicationEvent[];
+        this.communicationEvents = loaded.collections.CommunicationEvents as CommunicationEvent[];
         this.workEffortPartyAssignments = loaded.collections.WorkEffortAssignmentsWhereProfessional as WorkEffortPartyAssignment[];
 
         this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];

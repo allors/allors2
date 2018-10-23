@@ -4,19 +4,19 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
-import { StateService } from '../../../../../services/StateService';
-import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './party-communicationevent-emailcommunication.component.html',
+  templateUrl: './emailcommunication-edit.component.html',
   providers: [Allors]
 })
-export class PartyCommunicationEventEmailCommunicationComponent implements OnInit, OnDestroy {
+export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
 
   public title = 'Email Communication';
   public subTitle: string;

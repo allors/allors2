@@ -1,33 +1,31 @@
-<form class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+<div class="a-main">
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigation.overview(party)">{{party.displayName}}</a></span> / {{title}}
+      </div>
+    </div>
+  </div>
 
-  <div>
-    <mat-card *ngIf="communicationEvent">
+  <form *ngIf="communicationEvent" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+
+    <mat-card>
       <mat-card-content class="container-fluid">
 
         <div class="row" *ngIf="!communicationEvent.isNew">
-          <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name"
-            label="Status"></a-mat-static>
+          <a-mat-static class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.CommunicationEventState" display="Name" label="Status"></a-mat-static>
         </div>
 
         <div class="row">
           <a-mat-input class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Subject" class="col-md"></a-mat-input>
-          <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes"
-            display="Name" class="col-md"></a-mat-select>
+          <a-mat-select class="col-md" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.EventPurposes" [options]="purposes" display="Name" class="col-md"></a-mat-select>
         </div>
 
         <div class="row">
           <div class="col-12">
             <div class="row">
-              <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts"
-                display="displayName"></a-mat-chips>
+              <a-mat-chips class="col" [object]="communicationEvent" [roleType]="m.FaceToFaceCommunication.Participants" [options]="contacts" display="displayName"></a-mat-chips>
               <button mat-mini-fab color="accent" type="button" (click)="addParticipant = !addParticipant">
                 <mat-icon *ngIf="!addParticipant">add</mat-icon>
                 <mat-icon *ngIf="addParticipant">close</mat-icon>
@@ -49,6 +47,9 @@
         <div class="row">
           <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledStart"></a-mat-datetimepicker>
           <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ScheduledEnd"></a-mat-datetimepicker>
+        </div>
+
+        <div class="row">
           <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualStart"></a-mat-datetimepicker>
           <a-mat-datetimepicker class="col-md" [object]="communicationEvent" [roleType]="m.CommunicationEvent.ActualEnd"></a-mat-datetimepicker>
         </div>
@@ -66,14 +67,11 @@
       </mat-card-actions>
 
     </mat-card>
-  </div>
 
-  <mat-toolbar class="a-footer">
-    <mat-toolbar-row class="row">
-      <span class="col"></span>
-      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE</button>
-    </mat-toolbar-row>
-  </mat-toolbar>
+    <a-mat-footer>
+      <button mat-raised-button (click)="navigation.back()" type="button">CANCEL</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || communicationEvent.Participants.length < 2 || !allors.scope.session.hasChanges">SAVE</button>
+    </a-mat-footer>
 
-</form>
+  </form>
+</div>

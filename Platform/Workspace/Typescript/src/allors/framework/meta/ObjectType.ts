@@ -62,6 +62,10 @@ export class ObjectType implements MetaObject {
     this.exclusiveMethodTypes.forEach((v) => this.methodTypeByName[v.name] = v);
     this.concreteMethodTypes.forEach((v) => this.methodTypeByName[v.name] = v);
 
+    if (this.isClass) {
+      this.classes.push(this);
+    }
+
     interfaces.forEach((v) => {
 
       if (this.isClass) {

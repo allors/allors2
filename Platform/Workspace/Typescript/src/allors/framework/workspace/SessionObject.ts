@@ -182,30 +182,34 @@ export class SessionObject implements INewSessionObject {
     }
 
     public add(roleTypeName: string, value: any) {
-        this.assertExists();
+        if (!!value) {
+            this.assertExists();
 
-        const roles = this.get(roleTypeName);
-        if (roles.indexOf(value) < 0) {
-            roles.push(value);
+            const roles = this.get(roleTypeName);
+            if (roles.indexOf(value) < 0) {
+                roles.push(value);
+            }
+
+            this.set(roleTypeName, roles);
+
+            this.session.hasChanges = true;
         }
-
-        this.set(roleTypeName, roles);
-
-        this.session.hasChanges = true;
     }
 
     public remove(roleTypeName: string, value: any) {
-        this.assertExists();
+        if (!!value) {
+            this.assertExists();
 
-        const roles = this.get(roleTypeName);
-        const index = roles.indexOf(value);
-        if (index >= 0) {
-            roles.splice(index, 1);
+            const roles = this.get(roleTypeName);
+            const index = roles.indexOf(value);
+            if (index >= 0) {
+                roles.splice(index, 1);
+            }
+
+            this.set(roleTypeName, roles);
+
+            this.session.hasChanges = true;
         }
-
-        this.set(roleTypeName, roles);
-
-        this.session.hasChanges = true;
     }
 
     public save(): PushRequestObject {

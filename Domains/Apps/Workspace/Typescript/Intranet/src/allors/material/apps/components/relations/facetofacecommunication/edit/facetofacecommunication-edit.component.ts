@@ -2,42 +2,43 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
-import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
-import { StateService } from '../../../../../services/StateService';
-import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { switchMap, map } from 'rxjs/operators';
+import { load, loadQueryList } from '@angular/core/src/render3/instructions';
 
 @Component({
-  templateUrl: './party-communicationevent-facetofacecommunication.component.html',
+  templateUrl: './facetofacecommunication-edit.component.html',
   providers: [Allors]
 })
-export class PartyCommunicationEventFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
+export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
   public title = 'Face to Face Communication (Meeting)';
-  public subTitle: string;
 
   public addParticipant = false;
 
   public m: MetaDomain;
 
-  public communicationEvent: FaceToFaceCommunication;
-  public parties: Party[];
   public party: Party;
+  public person: Person;
+  public organisation: Organisation;
   public purposes: CommunicationEventPurpose[];
-  public singleton: Singleton;
-  public employees: Person[];
   public contacts: Party[] = [];
+
+  public communicationEvent: FaceToFaceCommunication;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: Allors,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private snackBar: MatSnackBar,
@@ -48,10 +49,6 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
-  get PartyIsOrganisation(): boolean {
-    return this.party.objectType.name === 'Organisation';
-  }
-
   public ngOnInit(): void {
 
     const { m, pull, scope } = this.allors;
@@ -60,32 +57,15 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
       .pipe(
         switchMap(([, , internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const roleId: string = this.route.snapshot.paramMap.get('roleId');
+          const navRoute = new NavigationActivatedRoute(this.route);
+          const id = navRoute.param();
+          const personId = navRoute.queryParam(m.Person);
+          const organisationId = navRoute.queryParam(m.Organisation);
 
-          const pulls = [
-            pull.Party(
-              {
-                object: id,
-                include: {
-                  CurrentContacts: x,
-                  CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
-                  }
-                }
-              }
-            ),
-            pull.CommunicationEvent({
-              object: id,
-              include: {
-                FromParties: x,
-                ToParties: x,
-                EventPurposes: x,
-                CommunicationEventState: x,
-              }
-            }),
+          let pulls = [
             pull.Organisation({
               object: internalOrganisationId,
+              name: 'InternalOrganisation',
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
@@ -97,38 +77,101 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
             pull.CommunicationEventPurpose({
               predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
               sort: new Sort(m.CommunicationEventPurpose.Name)
-            })
+            }),
           ];
 
+          const add = !id;
+
+          if (add) {
+            if (!!organisationId) {
+              pulls = [
+                ...pulls,
+                pull.Organisation({
+                  object: organisationId,
+                  include: {
+                    CurrentContacts: x,
+                    CurrentPartyContactMechanisms: {
+                      ContactMechanism: x,
+                    }
+                  }
+                }
+                )
+              ];
+            }
+
+            if (!!personId) {
+              pulls = [
+                ...pulls,
+                pull.Person({
+                  object: personId,
+                }),
+                pull.Person({
+                  object: personId,
+                  fetch: {
+                    OrganisationContactRelationshipsWhereContact: {
+                      Organisation: {
+                        include: {
+                          CurrentContacts: x,
+                          CurrentPartyContactMechanisms: {
+                            ContactMechanism: x,
+                          }
+                        }
+                      }
+                    }
+                  }
+                })
+              ];
+            }
+
+          } else {
+            pulls = [
+              ...pulls,
+              pull.FaceToFaceCommunication({
+                object: id,
+                include: {
+                  Participants: x,
+                  EventPurposes: x,
+                  CommunicationEventState: x,
+                }
+              }),
+            ];
+          }
+
           return scope
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, add }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, add }) => {
 
         scope.session.reset();
 
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-        this.employees = internalOrganisation.ActiveEmployees;
-        this.purposes = loaded.collections.purposes as CommunicationEventPurpose[];
-        this.party = loaded.objects.party as Party;
-        this.communicationEvent = loaded.objects.communicationEvent as FaceToFaceCommunication;
+        this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
-        if (!this.communicationEvent) {
-          this.communicationEvent = scope.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
-          if (this.party.objectType.name === 'Person') {
-            this.communicationEvent.AddParticipant(this.party);
+        if (add) {
+          this.person = loaded.objects.Person as Person;
+          this.organisation = loaded.objects.Organisation as Organisation;
+          if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
+            // TODO: check active
+            this.organisation = loaded.collections.Organisations[0] as Organisation;
           }
-        }
 
-        this.contacts.push(this.party);
+          this.party = this.organisation || this.person;
 
-        if (this.employees.length > 0) {
-          this.contacts = this.contacts.concat(this.employees);
-        }
+          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
+          if (!!this.person) {
+            this.contacts.push(this.person);
+          }
 
-        if (this.party.CurrentContacts.length > 0) {
-          this.contacts = this.contacts.concat(this.party.CurrentContacts);
+          this.communicationEvent = scope.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
+          this.communicationEvent.AddParticipant(this.person);
+
+        } else {
+          this.communicationEvent = loaded.objects.CommunicationEvent as FaceToFaceCommunication;
         }
       },
         (error: any) => {
@@ -148,11 +191,14 @@ export class PartyCommunicationEventFaceToFaceCommunicationComponent implements 
     this.addParticipant = false;
 
     const participant: Person = scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
-    relationShip.Contact = participant;
-    relationShip.Organisation = this.party as Organisation;
-
     this.communicationEvent.AddParticipant(participant);
+
+    if (!!this.organisation) {
+      const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      relationShip.Contact = participant;
+      relationShip.Organisation = this.organisation;
+    }
+
   }
 
   public ngOnDestroy(): void {

@@ -4,19 +4,19 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from '../../../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../../framework';
-import { MetaDomain } from '../../../../../../../meta';
-import { StateService } from '../../../../../services/StateService';
-import { AllorsMaterialDialogService } from '../../../../../../base/services/dialog';
+import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress, Singleton } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './party-communicationevent-lettercorrespondence.component.html',
+  templateUrl: './lettercorrespondence-edit.component.html',
   providers: [Allors]
 })
-export class PartyCommunicationEventLetterCorrespondenceComponent
+export class EditLetterCorrespondenceComponent
   implements OnInit, OnDestroy {
   public scope: Scope;
   public title = 'Letter Correspondence';
