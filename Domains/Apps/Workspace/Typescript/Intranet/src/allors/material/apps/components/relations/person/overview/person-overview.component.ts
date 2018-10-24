@@ -36,6 +36,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   public allContactMechanisms: PartyContactMechanism[] = [];
   public contactKindsText: string;
 
+  public isActiveCustomer: boolean;
+  public isActiveEmployee: boolean;
+
   public roles: PersonRole[];
   public activeRoles: PersonRole[] = [];
   public rolesText: string;
@@ -47,6 +50,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private fetcher: Fetcher;
+
 
   constructor(
     @Self() private allors: Allors,
@@ -185,9 +189,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
 
         this.roles = loaded.collections.PersonRoles as PersonRole[];
-        this.customerRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
-        this.employeeRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'DB06A3E1-6146-4C18-A60D-DD10E19F7243');
-        this.contactRole = this.roles.find((v: PersonRole) => v.UniqueId.toUpperCase() === 'FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E');
+        this.customerRole = this.roles.find((v) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
+        this.employeeRole = this.roles.find((v) => v.UniqueId.toUpperCase() === 'DB06A3E1-6146-4C18-A60D-DD10E19F7243');
+        this.contactRole = this.roles.find((v) => v.UniqueId.toUpperCase() === 'FA2DF11E-7795-4DF7-8B3F-4FD87D0C4D8E');
 
         this.activeRoles = [];
         this.rolesText = '';
