@@ -156,6 +156,12 @@ export class PersonListComponent implements OnInit, OnDestroy {
     return numSelected === numRows;
   }
 
+  public masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
   public goBack(): void {
     this.location.back();
   }
@@ -170,12 +176,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public page(event: PageEvent): void {
     this.pager$.next(event);
-  }
-
-  public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   public delete(person: Person | Person[]): void {

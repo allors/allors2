@@ -83,7 +83,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData,,], [data, take, date, internalOrganisationId]) => {
+        scan(([previousData, ,], [data, take, date, internalOrganisationId]) => {
           return [
             data,
             data !== previousData ? 50 : take,
@@ -97,7 +97,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     this.subscription = combined$
       .pipe(
-        switchMap(([data,,]) => {
+        switchMap(([data, ,]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -224,9 +224,9 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
         if (confirm) {
           scope.invoke(worktask.Delete)
             .subscribe(() => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
               (error: Error) => {
                 this.errorService.handle(error);
               });
