@@ -20,28 +20,28 @@ import { switchMap } from 'rxjs/operators';
 })
 export class PersonOverviewComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  m: MetaDomain;
 
-  public title = 'Person Overview';
-  public person: Person;
-  public organisation: Organisation;
-  public internalOrganisation: InternalOrganisation;
+  title = 'Person Overview';
+  person: Person;
+  organisation: Organisation;
+  internalOrganisation: InternalOrganisation;
 
-  public communicationEvents: CommunicationEvent[];
-  public workEffortPartyAssignments: WorkEffortPartyAssignment[];
+  communicationEvents: CommunicationEvent[];
+  workEffortPartyAssignments: WorkEffortPartyAssignment[];
 
-  public contactMechanismsCollection = 'Current';
-  public currentContactMechanisms: PartyContactMechanism[] = [];
-  public inactiveContactMechanisms: PartyContactMechanism[] = [];
-  public allContactMechanisms: PartyContactMechanism[] = [];
-  public contactKindsText: string;
+  currentContactMechanisms: PartyContactMechanism[] = [];
+  inactiveContactMechanisms: PartyContactMechanism[] = [];
+  allContactMechanisms: PartyContactMechanism[] = [];
+  contactKindsText: string;
 
-  public isActiveCustomer: boolean;
-  public isActiveEmployee: boolean;
+  isActiveCustomer: boolean;
+  isActiveEmployee: boolean;
 
-  public roles: PersonRole[];
-  public activeRoles: PersonRole[] = [];
-  public rolesText: string;
+  roles: PersonRole[];
+  activeRoles: PersonRole[] = [];
+  rolesText: string;
+
   private customerRole: PersonRole;
   private employeeRole: PersonRole;
   private contactRole: PersonRole;
@@ -50,7 +50,6 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private fetcher: Fetcher;
-
 
   constructor(
     @Self() private allors: Allors,
@@ -70,18 +69,6 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
-  get contactMechanisms(): any {
-
-    switch (this.contactMechanismsCollection) {
-      case 'Current':
-        return this.currentContactMechanisms;
-      case 'Inactive':
-        return this.inactiveContactMechanisms;
-      case 'All':
-      default:
-        return this.allContactMechanisms;
-    }
-  }
 
   public ngOnInit(): void {
 

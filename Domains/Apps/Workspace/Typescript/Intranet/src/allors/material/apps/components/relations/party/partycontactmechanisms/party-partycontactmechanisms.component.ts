@@ -11,9 +11,38 @@ import { ObjectType } from '../../../../../../framework';
 })
 export class PartyPartyContactMechanismsComponent {
 
-  constructor(
-    public allors: Allors,
-    public navigation: NavigationService
-  ) { }
+  @Input() currentContactMechanisms: PartyContactMechanism[];
+
+  @Input() inactiveContactMechanisms: PartyContactMechanism[];
+
+  @Input() allContactMechanisms: PartyContactMechanism[];
+
+  @Output() add: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
+
+  @Output() edit: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
+
+  @Output() remove: EventEmitter<CommunicationEvent> = new EventEmitter<CommunicationEvent>();
+
+  @Output() delete: EventEmitter<CommunicationEvent> = new EventEmitter<CommunicationEvent>();
+
+  @Output() activate: EventEmitter<CommunicationEvent> = new EventEmitter<CommunicationEvent>();
+
+  contactMechanismsCollection = 'Current';
+
+  constructor(public allors: Allors) { }
+
+  get contactMechanisms(): any {
+
+    switch (this.contactMechanismsCollection) {
+      case 'Current':
+        return this.currentContactMechanisms;
+      case 'Inactive':
+        return this.inactiveContactMechanisms;
+      case 'All':
+      default:
+        return this.allContactMechanisms;
+    }
+  }
+
 
 }
