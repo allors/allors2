@@ -15,16 +15,23 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using Meta;
+    using System;
+
+    using Allors.Meta;
 
     public partial class TimeSheet
     {
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
+        }
 
-            derivation.Validation.AssertExists(this, this.Meta.FromDate);
-            derivation.Validation.AssertExists(this, this.Meta.ThroughDate);
+        public void AppsDelete(DeletableDelete method)
+        {
+            if (this.ExistTimeEntries)
+            {
+                throw new Exception("Cannot delete TimeSheet due to associated TimeEntry details");
+            }
         }
     }
 }

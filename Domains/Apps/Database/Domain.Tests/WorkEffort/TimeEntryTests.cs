@@ -55,8 +55,8 @@ namespace Allors.Domain
             derivation.Errors.Count().ShouldEqual(originalCount - 1);
 
             //// Re-arrange
-            var workOrder = new WorkTaskBuilder(this.Session).WithName("Work").Build();
-            timeEntry.WorkEffort = workOrder;
+            var tomorrow = DateTime.UtcNow.AddDays(1);
+            timeEntry.ThroughDate = tomorrow;
 
             // Act
             derivation = this.Session.Derive(false);
@@ -66,16 +66,24 @@ namespace Allors.Domain
             derivation.Errors.Count().ShouldEqual(originalCount - 2);
 
             //// Re-arrange
-            var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
-            var today = DateTime.UtcNow;
-            var tomorrow = DateTime.UtcNow.AddDays(1);
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Work").Build();
+            timeEntry.WorkEffort = workOrder;
 
-            var timeSheet = new TimeSheetBuilder(this.Session)
-                .WithWorker(worker)
-                .WithTimeEntry(timeEntry)
-                .WithFromDate(today)
-                .WithThroughDate(tomorrow)
-                .Build();
+            // Act
+            derivation = this.Session.Derive(false);
+
+            // Assert
+            derivation.HasErrors.ShouldBeTrue();
+            derivation.Errors.Count().ShouldEqual(originalCount - 3);
+
+            //// Re-arrange
+            var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            var organisation = new InternalOrganisations(this.Session).Extent().First;
+            var employment = new EmploymentBuilder(this.Session).WithEmployee(worker).WithEmployer(organisation).Build();
+            
+            derivation = this.Session.Derive(false);
+
+            worker.TimeSheetWhereWorker.AddTimeEntry(timeEntry);
 
             // Act
             derivation = this.Session.Derive(false);

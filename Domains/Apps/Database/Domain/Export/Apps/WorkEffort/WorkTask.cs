@@ -45,16 +45,6 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            //if (!this.ExistStore && this.ExistTakenBy)
-            //{
-            //    var store = new Stores(this.strategy.Session).Extent()
-            //        .FirstOrDefault(v => Equals(v.InternalOrganisation, this.TakenBy));
-            //    if (store != null)
-            //    {
-            //        this.Store = store;
-            //    }
-            //}
-
             if (!this.ExistWorkEffortNumber && this.ExistTakenBy)
             {
                 this.WorkEffortNumber = this.TakenBy.NextWorkEffortNumber();

@@ -17,12 +17,15 @@
 namespace Allors.Domain
 {
     using System;
+    using System.Linq;
     using System.Text;
 
     public partial class Person
     {
-        private bool IsDeletable => !this.ExistCurrentOrganisationContactRelationships && 
-                                    !this.ExistEmploymentsWhereEmployee;
+        private bool IsDeletable =>
+            !this.ExistCurrentOrganisationContactRelationships
+            && !this.ExistEmploymentsWhereEmployee
+            && (!this.ExistTimeSheetWhereWorker || !this.TimeSheetWhereWorker.ExistTimeEntries);
 
         public bool AppsIsActiveEmployee(DateTime? date)
         {
@@ -94,6 +97,7 @@ namespace Allors.Domain
             this.AppsOnDeriveCurrentPartyContactMechanisms(derivation);
             this.AppsOnDeriveInactivePartyContactMechanisms(derivation);
             this.AppsOnDeriveCommission();
+            this.SyncTimeSheet();
 
             var deletePermission = new Permissions(this.strategy.Session).Get(this.Meta.ObjectType, this.Meta.Delete, Operations.Execute);
             if (this.IsDeletable)
@@ -214,137 +218,148 @@ namespace Allors.Domain
             return partyName.Length > 0 ? partyName.ToString() : $"[{this.UserName}]";
         }
 
+        private void SyncTimeSheet()
+        {
+            if (!this.ExistTimeSheetWhereWorker
+                && (this.ExistEmploymentsWhereEmployee
+                || this.ExistSubContractorRelationshipsWhereContractor
+                || this.ExistSubContractorRelationshipsWhereSubContractor))
+            {
+                new TimeSheetBuilder(this.strategy.Session).WithWorker(this).Build();
+            }
+        }
+
         public void AppsDelete(DeletableDelete method)
         {
-            if (this.IsDeletable)
+            if (!this.IsDeletable)
             {
-                foreach (PartyFinancialRelationship partyFinancialRelationship in this.PartyFinancialRelationshipsWhereParty)
+                return;
+            }
+
+            foreach (PartyFinancialRelationship partyFinancialRelationship in this.PartyFinancialRelationshipsWhereParty)
+            {
+                partyFinancialRelationship.Delete();
+            }
+
+            foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
+            {
+                partyContactMechanism.ContactMechanism.Delete();
+            }
+
+            foreach (CommunicationEvent communicationEvent in this.CommunicationEventsWhereInvolvedParty)
+            {
+                if (communicationEvent is WebSiteCommunication website)
                 {
-                    partyFinancialRelationship.Delete();
-                }
-
-                foreach (PartyContactMechanism partyContactMechanism in this.PartyContactMechanisms)
-                {
-                    partyContactMechanism.ContactMechanism.Delete();
-                }
-
-                foreach (CommunicationEvent communicationEvent in this.CommunicationEventsWhereInvolvedParty)
-                {
-                    if (communicationEvent.GetType().Name == typeof(WebSiteCommunication).Name)
+                    if (Equals(website.Receiver, this))
                     {
-                        var communication = (WebSiteCommunication)communicationEvent;
-                        if (Equals(communication.Receiver, this))
-                        {
-                            communication.RemoveReceiver();
-                        }
-
-                        if (Equals(communication.Originator, this))
-                        {
-                            communication.RemoveOriginator();
-                        }
-
-                        if (!communication.ExistReceiver || !communication.ExistOriginator)
-                        {
-                            communicationEvent.Delete();
-                        }
+                        website.RemoveReceiver();
                     }
 
-                    if (communicationEvent.GetType().Name == typeof(FaxCommunication).Name)
+                    if (Equals(website.Originator, this))
                     {
-                        var communication = (FaxCommunication)communicationEvent;
-                        if (Equals(communication.Receiver, this))
-                        {
-                            communication.RemoveReceiver();
-                        }
-
-                        if (Equals(communication.Originator, this))
-                        {
-                            communication.RemoveOriginator();
-                        }
-
-                        if (!communication.ExistReceiver || !communication.ExistOriginator)
-                        {
-                            communicationEvent.Delete();
-                        }
+                        website.RemoveOriginator();
                     }
 
-                    if (communicationEvent.GetType().Name == typeof(LetterCorrespondence).Name)
+                    if (!website.ExistReceiver || !website.ExistOriginator)
                     {
-                        var communication = (LetterCorrespondence)communicationEvent;
-                        if (communication.Originators.Contains(this))
-                        {
-                            communication.RemoveOriginator(this);
-                        }
-
-                        if (communication.Receivers.Contains(this))
-                        {
-                            communication.RemoveReceiver(this);
-                        }
-
-                        if (communication.Receivers.Count == 0 || communication.Originators.Count == 0)
-                        {
-                            communicationEvent.Delete();
-                        }
-                    }
-
-                    if (communicationEvent.GetType().Name == typeof(PhoneCommunication).Name)
-                    {
-                        var communication = (PhoneCommunication)communicationEvent;
-                        if (communication.Callers.Contains(this))
-                        {
-                            communication.RemoveCaller(this);
-                        }
-
-                        if (communication.Receivers.Contains(this))
-                        {
-                            communication.RemoveReceiver(this);
-                        }
-
-                        if (communication.Receivers.Count == 0 || communication.Callers.Count == 0)
-                        {
-                            communicationEvent.Delete();
-                        }
-                    }
-
-                    if (communicationEvent.GetType().Name == typeof(EmailCommunication).Name)
-                    {
-                        var communication = (EmailCommunication)communicationEvent;
-
-                        if (communication.Addressees.Count == 0 || !communication.ExistOriginator)
-                        {
-                            communicationEvent.Delete();
-                        }
-                    }
-
-                    if (communicationEvent.GetType().Name == typeof(FaceToFaceCommunication).Name)
-                    {
-                        var communication = (FaceToFaceCommunication)communicationEvent;
-                        if (communication.Participants.Contains(this))
-                        {
-                            communication.RemoveParticipant(this);
-                        }
-
-                        if (communication.Participants.Count <= 1)
-                        {
-                            communicationEvent.Delete();
-                        }
+                        communicationEvent.Delete();
                     }
                 }
 
-                foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereContact)
+                else if (communicationEvent is FaxCommunication fax)
                 {
-                    contactRelationship.Delete();
+                    if (Equals(fax.Receiver, this))
+                    {
+                        fax.RemoveReceiver();
+                    }
+
+                    if (Equals(fax.Originator, this))
+                    {
+                        fax.RemoveOriginator();
+                    }
+
+                    if (!fax.ExistReceiver || !fax.ExistOriginator)
+                    {
+                        communicationEvent.Delete();
+                    }
                 }
 
-                if (this.ExistOwnerAccessControl)
+                else if (communicationEvent is LetterCorrespondence letter)
                 {
-                    this.OwnerAccessControl.Delete();
+                    if (letter.Originators.Contains(this))
+                    {
+                        letter.RemoveOriginator(this);
+                    }
+
+                    if (letter.Receivers.Contains(this))
+                    {
+                        letter.RemoveReceiver(this);
+                    }
+
+                    if (letter.Receivers.Count == 0 || letter.Originators.Count == 0)
+                    {
+                        communicationEvent.Delete();
+                    }
                 }
 
-                if (this.ExistOwnerSecurityToken)
+                else if (communicationEvent is PhoneCommunication phone)
                 {
-                    this.OwnerSecurityToken.Delete();
+                    if (phone.Callers.Contains(this))
+                    {
+                        phone.RemoveCaller(this);
+                    }
+
+                    if (phone.Receivers.Contains(this))
+                    {
+                        phone.RemoveReceiver(this);
+                    }
+
+                    if (phone.Receivers.Count == 0 || phone.Callers.Count == 0)
+                    {
+                        communicationEvent.Delete();
+                    }
                 }
+
+                else if (communicationEvent is EmailCommunication email)
+                {
+                    if (email.Addressees.Count == 0 || !email.ExistOriginator)
+                    {
+                        communicationEvent.Delete();
+                    }
+                }
+
+                else if (communicationEvent is FaceToFaceCommunication faceToFace)
+                {
+                    if (faceToFace.Participants.Contains(this))
+                    {
+                        faceToFace.RemoveParticipant(this);
+                    }
+
+                    if (faceToFace.Participants.Count <= 1)
+                    {
+                        communicationEvent.Delete();
+                    }
+                }
+            }
+
+            foreach (OrganisationContactRelationship contactRelationship in this.OrganisationContactRelationshipsWhereContact)
+            {
+                contactRelationship.Delete();
+            }
+
+            if (this.ExistTimeSheetWhereWorker)
+            {
+                this.TimeSheetWhereWorker.Delete();
+            }
+
+            if (this.ExistOwnerAccessControl)
+            {
+                this.OwnerAccessControl.Delete();
+            }
+
+            if (this.ExistOwnerSecurityToken)
+            {
+                this.OwnerSecurityToken.Delete();
             }
         }
     }

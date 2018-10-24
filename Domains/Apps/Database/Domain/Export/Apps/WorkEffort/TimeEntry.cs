@@ -25,6 +25,8 @@ namespace Allors.Domain
 
             derivation.Validation.AssertAtLeastOne(this, M.TimeEntry.WorkEffort, M.TimeEntry.EngagementItem);
             derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
+            derivation.Validation.AssertExists(this, this.Meta.FromDate);
+            derivation.Validation.AssertExists(this, this.Meta.ThroughDate);
         }
     }
 }

@@ -21,8 +21,11 @@
 
 namespace Allors.Domain
 {
+    using Should;
+    using System.Linq;
     using Xunit;
 
+    using Allors.Meta;
     
     public class WorkTaskTests : DomainTest
     {
@@ -45,6 +48,31 @@ namespace Allors.Domain
             this.Session.Derive();
 
             Assert.Null(workEffort.PreviousWorkEffortState);
+        }
+
+        [Fact]
+        public void GivenWorkTask_WhenBuildingWithTakenBy_ThenWorkEffortNumberAssigned()
+        {
+            // Arragne
+            var organisation1 = new OrganisationBuilder(this.Session).WithName("Org1").WithIsInternalOrganisation(true).Build();
+            var organisation2 = new OrganisationBuilder(this.Session).WithName("Org2").WithIsInternalOrganisation(true).Build();
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+
+            // Act
+            var derivation = this.Session.Derive(false);
+
+            // Assert
+            derivation.HasErrors.ShouldBeTrue();
+            derivation.Errors.SelectMany(e => e.RoleTypes).ShouldContain(M.WorkTask.WorkEffortNumber);
+
+            //// Re-arrange
+            workOrder.TakenBy = organisation2;
+
+            // Act
+            this.Session.Derive(true);
+
+            // Assert
+            workOrder.WorkEffortNumber.ShouldNotBeNull();
         }
     }
 }

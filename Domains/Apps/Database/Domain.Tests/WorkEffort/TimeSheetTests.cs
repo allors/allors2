@@ -51,27 +51,6 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.Count().ShouldEqual(originalCount - 1);
-
-            //// Re-arrange
-            var today = DateTime.UtcNow;
-            timeSheet.FromDate = today;
-
-            // Act
-            derivation = this.Session.Derive(false);
-
-            // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.Count().ShouldEqual(originalCount - 1);
-
-            //// Re-arrange
-            var tomorrow = DateTime.UtcNow.AddDays(1);
-            timeSheet.ThroughDate = tomorrow;
-            // Act
-            derivation = this.Session.Derive(false);
-
-            // Assert
             derivation.HasErrors.ShouldBeFalse();
         }
     }

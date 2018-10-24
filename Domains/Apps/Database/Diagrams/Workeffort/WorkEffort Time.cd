@@ -90,8 +90,8 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Party" />
       <Property Name="Assignment" />
+      <Property Name="Party" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkEffort" Collapsed="true">

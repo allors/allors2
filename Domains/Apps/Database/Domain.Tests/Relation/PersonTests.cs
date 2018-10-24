@@ -23,10 +23,12 @@
 
 namespace Allors.Domain
 {
+    using Should;
     using System;
-
-    using Meta;
+    using System.Linq;
     using Xunit;
+
+    using Allors.Meta;
     
     public class PersonTests : DomainTest
     {
@@ -90,11 +92,6 @@ namespace Allors.Domain
             var contact = new PersonBuilder(this.Session).WithLastName("organisationContact").Build();
             var organisation = new OrganisationBuilder(this.Session).WithName("organisation").Build();
 
-            //new CustomerRelationshipBuilder(this.DatabaseSession)
-            //    .WithCustomer(organisation)
-            //    .WithFromDate(DateTimeFactory.CreateDate(2010, 01, 01))
-            //    .Build();
-
             new OrganisationContactRelationshipBuilder(this.Session)
                 .WithContact(contact)
                 .WithOrganisation(organisation)
@@ -103,8 +100,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(contact.CurrentOrganisationContactRelationships[0].Contact, contact);
-            Assert.Equal(0, contact.InactiveOrganisationContactRelationships.Count);
+            contact.CurrentOrganisationContactRelationships[0].Contact.ShouldEqual(contact);
+            contact.InactiveOrganisationContactRelationships.Count.ShouldEqual(0);
         }
 
         [Fact]
@@ -127,8 +124,52 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(contact.InactiveOrganisationContactRelationships[0].Contact, contact);
-            Assert.Equal(0, contact.CurrentOrganisationContactRelationships.Count);
+            contact.InactiveOrganisationContactRelationships[0].Contact.ShouldEqual(contact);
+            contact.CurrentOrganisationContactRelationships.Count.ShouldEqual(0);
+        }
+
+        [Fact]
+        public void GivenPerson_WhenEmployed_ThenTimeSheetSynced()
+        {
+            var person = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Employee").Build();
+            var employer = new InternalOrganisations(this.Session).Extent().First;
+
+            var employment = new EmploymentBuilder(this.Session)
+                .WithEmployee(person)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            this.Session.Derive();
+
+            person.TimeSheetWhereWorker.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void GivenPerson_WhenContractor_ThenTimeSheetSynced()
+        {
+            var contractor = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Contractor").Build();
+            var organisation = new InternalOrganisations(this.Session).Extent().First;
+            var contractorRelation = new SubContractorRelationshipBuilder(this.Session).WithContractor(contractor).Build();
+
+            contractorRelation.AddParty(organisation);
+
+            this.Session.Derive(true);
+
+            contractor.TimeSheetWhereWorker.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void GivenPerson_WhenSubContractor_ThenTimeSheetSynced()
+        {
+            var subContractor = new PersonBuilder(this.Session).WithFirstName("Sub").WithLastName("Contractor").Build();
+            var organisation = new InternalOrganisations(this.Session).Extent().First;
+            var contractorRelation = new SubContractorRelationshipBuilder(this.Session).WithSubContractor(subContractor).Build();
+
+            contractorRelation.AddParty(organisation);
+
+            this.Session.Derive(true);
+
+            subContractor.TimeSheetWhereWorker.ShouldNotBeNull();
         }
     }
 }
