@@ -21,12 +21,9 @@
 
 namespace Allors.Domain
 {
-    using System;
     using System.Linq;
     using Should;
     using Xunit;
-
-    using Meta;
     
     public class TimeSheetTests : DomainTest
     {

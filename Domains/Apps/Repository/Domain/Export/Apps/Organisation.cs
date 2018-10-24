@@ -225,6 +225,8 @@ namespace Allors.Repository
         public Counter WorkEffortCounter { get; set; }
 
         public string WorkEffortPrefix { get; set; }
+
+        public bool RequireExistingeWorkEffortPartyAssignments { get; set; }
         #endregion
 
         #region Versioning
@@ -368,7 +370,7 @@ namespace Allors.Repository
         public OrganisationClassification[] OrganisationClassifications { get; set; }
 
         #region inherited methods
-        
+
         public void OnBuild(){}
 
         public void OnPostBuild(){}

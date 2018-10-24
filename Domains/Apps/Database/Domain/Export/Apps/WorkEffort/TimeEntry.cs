@@ -19,6 +19,13 @@ namespace Allors.Domain
 
     public partial class TimeEntry
     {
+        public void AppsOnPreDerive(ObjectOnPreDerive method)
+        {
+            var derivation = method.Derivation;
+
+            derivation.AddDependency(this.WorkEffort, this);
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

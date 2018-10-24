@@ -25,8 +25,6 @@ namespace Allors.Domain
     using System.Linq;
     using Should;
     using Xunit;
-
-    using Meta;
     
     public class TimeEntryTests : DomainTest
     {
