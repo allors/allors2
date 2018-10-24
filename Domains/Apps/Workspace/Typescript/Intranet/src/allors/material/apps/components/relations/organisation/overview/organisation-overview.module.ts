@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-
 import { AllorsMaterialAutoCompleteModule } from '../../../../../base/components/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
@@ -18,6 +17,10 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
+import { PartyCommunicationEventsModule } from '../../party/communicationevents/party-communicationevents.module';
+import { PartyPartyContactMechanismsModule } from '../../party/partycontactmechanisms/party-partycontactmechanisms.module';
+import { PartyWorkEffortPartyAssignmentsModule } from '../../party/workefforts/party-workeffortpartyassignments.module';
+
 import { OrganisationOverviewComponent } from './organisation-overview.component';
 export { OrganisationOverviewComponent } from './organisation-overview.component';
 
@@ -28,7 +31,11 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
   exports: [
     OrganisationOverviewComponent,
   ],
-  imports: [	
+  imports: [
+    PartyCommunicationEventsModule,
+    PartyPartyContactMechanismsModule,
+    PartyWorkEffortPartyAssignmentsModule,
+
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -43,7 +50,7 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     MatCheckboxModule,
     MatChipsModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
@@ -61,4 +68,4 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     RouterModule,
   ],
 })
-export class OrganisationOverviewModule {}
+export class OrganisationOverviewModule { }

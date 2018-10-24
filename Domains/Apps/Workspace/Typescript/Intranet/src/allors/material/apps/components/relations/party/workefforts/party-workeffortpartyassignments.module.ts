@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
-import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
@@ -13,26 +12,18 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyCommunicationEventsModule } from '../../party/communicationevents/party-communicationevents.module';
-import { PartyPartyContactMechanismsModule } from '../../party/partycontactmechanisms/party-partycontactmechanisms.module';
-import { PartyWorkEffortPartyAssignmentsModule } from '../../party/workefforts/party-workeffortpartyassignments.module';
-
-import { PersonOverviewComponent } from './person-overview.component';
-export { PersonOverviewComponent } from './person-overview.component';
+import { PartyWorkEffortPartyAssignmentsComponent } from './party-workeffortpartyassignments.component';
+export { PartyWorkEffortPartyAssignmentsComponent } from './party-workeffortpartyassignments.component';
 
 @NgModule({
   declarations: [
-    PersonOverviewComponent,
+    PartyWorkEffortPartyAssignmentsComponent,
   ],
   exports: [
-    PersonOverviewComponent,
+    PartyWorkEffortPartyAssignmentsComponent,
   ],
   imports: [
-    PartyCommunicationEventsModule,
-    PartyPartyContactMechanismsModule,
-    PartyWorkEffortPartyAssignmentsModule,
     AllorsMaterialFileModule,
-    AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -42,14 +33,9 @@ export { PersonOverviewComponent } from './person-overview.component';
     CommonModule,
     FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -63,4 +49,4 @@ export { PersonOverviewComponent } from './person-overview.component';
     RouterModule,
   ],
 })
-export class PersonOverviewModule { }
+export class PartyWorkEffortPartyAssignmentsModule { }

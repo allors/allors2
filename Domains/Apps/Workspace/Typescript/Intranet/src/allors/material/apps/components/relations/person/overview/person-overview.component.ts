@@ -204,58 +204,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.goBack();
+          this.navigation.back();
         },
       );
-  }
-
-  public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
-    const { scope } = this.allors;
-
-    partyContactMechanism.ThroughDate = new Date();
-    scope
-      .save()
-      .subscribe((saved: Saved) => {
-        scope.session.reset();
-        this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
-    const { scope } = this.allors;
-
-    partyContactMechanism.ThroughDate = undefined;
-    scope
-      .save()
-      .subscribe((saved: Saved) => {
-        scope.session.reset();
-        this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public deleteContactMechanism(contactMechanism: ContactMechanism): void {
-    const { scope } = this.allors;
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          scope.invoke(contactMechanism.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
   }
 
   public cancelCommunication(communicationEvent: CommunicationEvent): void {
@@ -334,7 +285,56 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       });
   }
 
-  public delete(workEffort: WorkEffort): void {
+  public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+    const { scope } = this.allors;
+
+    partyContactMechanism.ThroughDate = new Date();
+    scope
+      .save()
+      .subscribe((saved: Saved) => {
+        scope.session.reset();
+        this.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
+    const { scope } = this.allors;
+
+    partyContactMechanism.ThroughDate = undefined;
+    scope
+      .save()
+      .subscribe((saved: Saved) => {
+        scope.session.reset();
+        this.refresh();
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
+  }
+
+  public deleteContactMechanism(contactMechanism: ContactMechanism): void {
+    const { scope } = this.allors;
+
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          scope.invoke(contactMechanism.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
+  }
+
+  public deleteWorkEffort(workEffort: WorkEffort): void {
     const { scope } = this.allors;
 
     this.dialogService
@@ -361,13 +361,5 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
 
   public refresh(): void {
     this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public checkType(obj: any): string {
-    return obj.objectType.name;
   }
 }

@@ -51,7 +51,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
     public navigation: NavigationService,
     public router: Router,
     private errorService: ErrorService,
@@ -416,9 +416,5 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       const phoneCommunication: TelecommunicationsNumber = contactMechanism as TelecommunicationsNumber;
       return phoneCommunication.ContactMechanismType && phoneCommunication.ContactMechanismType.Name === 'Phone';
     }
-  }
-
-  public checkType(obj: any): string {
-    return obj.objectType.name;
   }
 }
