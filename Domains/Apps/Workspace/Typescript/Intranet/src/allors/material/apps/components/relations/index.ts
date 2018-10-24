@@ -18,8 +18,8 @@ export * from './facetofacecommunication/edit/facetofacecommunication.module';
 export * from './lettercorrespondence/edit/lettercorrespondence.module';
 export * from './phonecommunication/edit/phonecommunication.module';
 
-export * from './communicationevent/communicationevent-overview.module';
-export * from './communicationevent/communicationevents-overview.module';
+export * from './communicationevent/overview/communicationevent-overview.module';
+export * from './communicationevent/list/communicationevent-list.module';
 export * from './communicationevent/worktask/communicationevent-worktask.module';
 
 import { PeopleExportModule } from './person/export/person-export.module';
@@ -41,8 +41,8 @@ import { FaceToFaceCommunicationModule } from './facetofacecommunication/edit/fa
 import { LetterCorrespondenceModule } from './/lettercorrespondence/edit/lettercorrespondence.module';
 import { PhoneCommunicationModule } from './phonecommunication/edit/phonecommunication.module';
 
-import { CommunicationEventOverviewModule } from './communicationevent/communicationevent-overview.module';
-import { CommunicationEventsOverviewModule } from './communicationevent/communicationevents-overview.module';
+import { CommunicationEventOverviewModule } from './communicationevent/overview/communicationevent-overview.module';
+import { CommunicationEventsOverviewModule } from './communicationevent/list/communicationevent-list.module';
 import { CommunicationEventWorkTaskModule } from './communicationevent/worktask/communicationevent-worktask.module';
 
 export const Modules = [

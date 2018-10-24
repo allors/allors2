@@ -33,7 +33,7 @@ export const routes: Routes = [
           { path: 'person/:id', data: overviewData({ id: ids.Person }), component: relations.PersonOverviewComponent },
           { path: 'organisations', data: pageListData({ id: ids.Organisation, icon: 'business' }), component: relations.OrganisationListComponent },
           { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: relations.OrganisationOverviewComponent },
-          { path: 'communicationevents', data: pageListData({ id: ids.CommunicationEvent, icon: 'share' }), component: relations.CommunicationEventsOverviewComponent },
+          { path: 'communicationevents', data: pageListData({ id: ids.CommunicationEvent, icon: 'share' }), component: relations.CommunicationEventListComponent },
           { path: 'communicationevent/:id', data: overviewData({ id: ids.CommunicationEvent }), component: relations.CommunicationEventOverviewComponent },
         ],
       },

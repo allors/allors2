@@ -4,12 +4,12 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
+import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { Title } from '@angular/platform-browser';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
