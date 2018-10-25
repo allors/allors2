@@ -25,6 +25,8 @@ namespace Allors.Domain
 
     public partial class WorkTask
     {
+        public new string ToString() => this.WorkEffortNumber ?? this.Name;
+
         public static readonly TransitionalConfiguration[] StaticTransitionalConfigurations =
             {
                 new TransitionalConfiguration(M.WorkTask, M.WorkTask.WorkEffortState),

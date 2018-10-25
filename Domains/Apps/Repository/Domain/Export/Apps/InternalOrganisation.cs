@@ -554,8 +554,8 @@ namespace Allors.Repository
         string WorkEffortPrefix { get; set; }
 
         /// <summary>
-        /// Gets or sets a flag to indicate if this InternalOrganisation Requires Existing WorkEffortPartyAssignments
-        /// to exist before allowing TimeEntry objects to attach to WorkEffort objects.
+        /// Gets or sets a flag to indicate if this InternalOrganisation Requires Existing WorkEffortPartyAssignment
+        /// objects to exist before allowing TimeEntry objects to attach to WorkEffort objects.
         /// </summary>
         #region Allors
         [Id("37FEB213-9427-4A41-8050-DBFE9A33D03F")]
@@ -563,7 +563,7 @@ namespace Allors.Repository
         [RoleId("83B1D233-C1C7-449F-98CF-45DFF2DDF2C3")]
         #endregion
         [Workspace]
-        bool RequireExistingeWorkEffortPartyAssignments { get; set; }
+        bool RequireExistingWorkEffortPartyAssignment { get; set; }
 
         #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]

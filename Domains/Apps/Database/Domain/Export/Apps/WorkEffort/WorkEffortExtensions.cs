@@ -24,6 +24,8 @@ namespace Allors.Domain
     {
         public static DateTime? FromDate(this WorkEffort @this) => @this.ActualStart ?? @this.ScheduledStart;
 
+        public static DateTime? ThroughDate(this WorkEffort @this) => @this.ActualCompletion ?? @this.ScheduledCompletion;
+
         public static void AppsOnPreDerive(this WorkEffort @this, ObjectOnPreDerive method)
         {
             var derivation = method.Derivation;
@@ -109,7 +111,7 @@ namespace Allors.Domain
 
         public static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)
         {
-            var existingAssignmentRequired = @this.TakenBy?.RequireExistingeWorkEffortPartyAssignments == true;
+            var existingAssignmentRequired = @this.TakenBy?.RequireExistingWorkEffortPartyAssignment == true;
             var existingAssignments = @this.WorkEffortPartyAssignmentsWhereAssignment;
 
             foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
@@ -123,9 +125,9 @@ namespace Allors.Domain
 
                     var matchingAssignment = existingAssignments.FirstOrDefault
                         (a => a.Assignment.Equals(@this)
-                        && (a.ExistParty && a.Party.Equals(worker))
+                        && (a.Party.Equals(worker))
                         && (a.ExistFacility && a.Facility.Equals(facility))
-                        && ((a.ExistFromDate && (a.FromDate <= from)))
+                        && (!a.ExistFromDate || (a.ExistFromDate && (a.FromDate <= from)))
                         && (!a.ExistThroughDate || (a.ExistThroughDate && (a.ThroughDate >= through))));
 
                     if (matchingAssignment == null)
@@ -133,18 +135,15 @@ namespace Allors.Domain
                         if (existingAssignmentRequired)
                         {
                             var message = $"No Work Effort Party Assignment matches Worker: {worker}, Facility: {facility}" +
-                                $", Work Effort: {@this.WorkEffortNumber}, From: {from}, Through {through}";
+                                $", Work Effort: {@this}, From: {from}, Through {through}";
                             derivation.Validation.AddError(@this, M.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment, message);
                         }
-                        else if (worker != null)
+                        else if (worker != null)  // Sync a new WorkEffortPartyAssignment
                         {
-                            var fromDate = @this.FromDate() ?? from;
-
                             new WorkEffortPartyAssignmentBuilder(@this.Strategy.Session)
                                 .WithAssignment(@this)
                                 .WithParty(worker)
                                 .WithFacility(facility)
-                                .WithFromDate(fromDate)
                                 .Build();
                         }
                     }

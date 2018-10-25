@@ -226,7 +226,7 @@ namespace Allors.Repository
 
         public string WorkEffortPrefix { get; set; }
 
-        public bool RequireExistingeWorkEffortPartyAssignments { get; set; }
+        public bool RequireExistingWorkEffortPartyAssignment { get; set; }
         #endregion
 
         #region Versioning

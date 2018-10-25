@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TimeEntry.cs" company="Allors bvba">
+// <copyright file="Facilities.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -15,28 +15,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace Allors.Domain
 {
-    using Meta;
+    using Allors.Meta;
 
-    public partial class TimeEntry
+    public partial class Facility
     {
-        public void AppsOnPreDerive(ObjectOnPreDerive method)
-        {
-            var derivation = method.Derivation;
-
-            if (this.ExistWorkEffort)
-            {
-                derivation.AddDependency(this.WorkEffort, this);
-            }
-        }
-
-        public void AppsOnDerive(ObjectOnDerive method)
-        {
-            var derivation = method.Derivation;
-
-            derivation.Validation.AssertAtLeastOne(this, M.TimeEntry.WorkEffort, M.TimeEntry.EngagementItem);
-            derivation.Validation.AssertExists(this, this.Meta.TimeSheetWhereTimeEntry);
-            derivation.Validation.AssertExists(this, this.Meta.FromDate);
-            derivation.Validation.AssertExists(this, this.Meta.ThroughDate);
-        }
+        public new string ToString() => this.Name;
     }
 }

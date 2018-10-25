@@ -7,13 +7,9 @@ namespace Allors.Repository
     #region Allors
     [Id("0bdfb093-35af-4c87-9c1c-05ed9dae6df6")]
     #endregion
-    public partial class WorkEffortPartyAssignment : Period, AccessControlledObject, Commentable 
+    public partial class WorkEffortPartyAssignment : AccessControlledObject, Commentable 
     {
         #region inherited properties
-        public DateTime FromDate { get; set; }
-
-        public DateTime ThroughDate { get; set; }
-
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -45,6 +41,24 @@ namespace Allors.Repository
         [Required]
         [Workspace]
         public Party Party { get; set; }
+
+        #region Allors
+        [Id("3F3D9387-0758-4559-B33F-0C7B352B171C")]
+        [AssociationId("EAF539A6-4427-4BC1-B65E-F18E6B86CC08")]
+        [RoleId("FD4E4258-8BA2-44D3-92ED-876AB7084458")]
+        #endregion
+        [Indexed]
+        [Workspace]
+        public DateTime FromDate { get; set; }
+
+        #region Allors
+        [Id("2A49EA68-DB8F-4186-9D7E-FE2CC1AFD6F5")]
+        [AssociationId("126CDB1A-46F3-4C20-B93F-D753F6A5CD29")]
+        [RoleId("DE319E9D-2814-4656-832A-8A4876FC08D3")]
+        #endregion
+        [Indexed]
+        [Workspace]
+        public DateTime ThroughDate { get; set; }
 
         #region Allors
         [Id("f88ae79d-7605-4be9-972e-541489bdb72b")]
