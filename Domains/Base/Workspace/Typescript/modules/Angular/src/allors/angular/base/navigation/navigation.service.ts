@@ -1,21 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Route, Router, ActivatedRoute } from '@angular/router';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 import { NavigationItem } from './NavigationItem';
 import { ISessionObject, ObjectType, MetaObject, MetaObjectType } from 'src/allors/framework';
+import { WorkspaceService } from '../framework';
 
 @Injectable()
 export class NavigationService {
   public navigationItems: NavigationItem[];
 
   constructor(
+    private workspaceService: WorkspaceService,
     private router: Router,
     private location: Location
   ) {
+    const metaPopulation = workspaceService.metaPopulation;
 
     this.navigationItems = [];
-    this.router.config.map((route: Route) => new NavigationItem(this.navigationItems, route));
+    this.router.config.map((route: Route) => new NavigationItem(workspaceService.metaPopulation, this.navigationItems, route));
   }
 
   list(objectTypeOrMetaObjectType: ObjectType | MetaObjectType) {
@@ -27,7 +30,8 @@ export class NavigationService {
 
   overview(sessionObject: ISessionObject) {
     const objectTypeId = sessionObject.objectType.id;
-    const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'overview');
+    const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'overview') ||
+                           this.navigationItems.find((v) => v.ids && v.ids.indexOf(objectTypeId) > -1 && v.action === 'overview');
     const url = navigationItem.link.replace(`:id`, sessionObject.id);
     this.router.navigate([url]);
   }

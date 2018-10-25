@@ -1,13 +1,14 @@
-<div class="a-detail">
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
+<div class="a-main">
 
-  <div class="container-fluid">
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview container-fluid">
     <div *ngIf="communicationEvent" class="row">
 
       <div class="col-md-6" *ngIf="isEmail">

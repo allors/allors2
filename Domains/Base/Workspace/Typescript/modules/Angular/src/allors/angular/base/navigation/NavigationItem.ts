@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { RouteData } from '../router/RouteData';
+import { MetaPopulation, ObjectType } from '../../../framework';
 
 export class NavigationItem {
   public parent: NavigationItem;
@@ -9,9 +10,10 @@ export class NavigationItem {
   public link: string;
 
   public id: string;
+  public ids: string[];
   public action: string;
 
-  constructor(navigationItems: NavigationItem[], route: Route, parent?: NavigationItem) {
+  constructor(metaPopulation: MetaPopulation, navigationItems: NavigationItem[], route: Route, parent?: NavigationItem) {
 
     navigationItems.push(this);
 
@@ -32,6 +34,11 @@ export class NavigationItem {
       this.link = route.path ? parent.link + '/' + route.path : parent.link;
     }
 
-    this.children = route.children ? route.children.map((child: Route) => new NavigationItem(navigationItems, child, this)) : [];
+    this.children = route.children ? route.children.map((child: Route) => new NavigationItem(metaPopulation, navigationItems, child, this)) : [];
+
+    if (!!this.id) {
+      const objectType = metaPopulation.metaObjectById[this.id] as ObjectType;
+      this.ids = objectType.classes.map((v) => v.id);
+    }
   }
 }
