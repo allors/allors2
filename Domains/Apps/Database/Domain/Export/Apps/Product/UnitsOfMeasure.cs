@@ -25,7 +25,7 @@ namespace Allors.Domain
         private static readonly Guid PieceId = new Guid("F4BBDB52-3441-4768-92D4-729C6C5D6F1B");
         private static readonly Guid PeopleId = new Guid("13274801-52FD-47E8-A15B-8508E848C140");
 
-        // Length,w idth, distance, thickness
+        // Length, width, distance, thickness
         private static readonly Guid MillimeterId = new Guid("A7F83AEF-20DB-42D8-9AB6-2D5821353BE8");
         private static readonly Guid CentimeterId = new Guid("7D81FFC7-E77D-4a00-916D-49F2B1CCA12E");
         private static readonly Guid MeterId = new Guid("2598BA8D-CF49-47f5-98E2-E65795C4178E");
@@ -70,7 +70,7 @@ namespace Allors.Domain
         private static readonly Guid MegaJouleId = new Guid("56D154BA-F16B-43AC-BCD7-B81EC670932D");
         private static readonly Guid KiloWattHourId = new Guid("83C65E69-0048-4474-9F53-4EA89FA26194");
 
-        // Tempetature
+        // Temperature
         private static readonly Guid DegreeCelsiusId = new Guid("A9D40912-E1DE-4A75-8CEE-8AE7FD4E9F3D");
 
         // Electric
@@ -78,8 +78,9 @@ namespace Allors.Domain
         private static readonly Guid VoltId = new Guid("A15B7AFB-660C-455D-A5C7-03D3D32B29CB");
 
         // Time
-        private static readonly Guid HourId = new Guid("F4F28786-958A-43AE-925D-3AC4BA021B7B");
         private static readonly Guid DayId = new Guid("DC1520ED-7F33-41A1-B1AB-94A2333B0104");
+        private static readonly Guid HourId = new Guid("F4F28786-958A-43AE-925D-3AC4BA021B7B");
+        private static readonly Guid MinuteId = new Guid("95C96119-EDF4-4F43-95A7-91814FBDB151");
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> cache;
 
@@ -147,9 +148,11 @@ namespace Allors.Domain
 
         public UnitOfMeasure Volt => this.Cache[VoltId];
 
+        public UnitOfMeasure Day => this.Cache[DayId];
+
         public UnitOfMeasure Hour => this.Cache[HourId];
 
-        public UnitOfMeasure Day => this.Cache[DayId];
+        public UnitOfMeasure Minute => this.Cache[MinuteId];
 
         private UniquelyIdentifiableSticky<UnitOfMeasure> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<UnitOfMeasure>(this.Session));
 
@@ -412,16 +415,23 @@ namespace Allors.Domain
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
+                .WithName("Day")
+                .WithAbbreviation("day")
+                .WithUniqueId(DayId)
+                .WithIsActive(true)
+                .Build();
+
+            new UnitOfMeasureBuilder(this.Session)
                 .WithName("Hour")
-                .WithAbbreviation("HR")
+                .WithAbbreviation("hr")
                 .WithUniqueId(HourId)
                 .WithIsActive(true)
                 .Build();
 
             new UnitOfMeasureBuilder(this.Session)
-                .WithName("Day")
-                .WithAbbreviation("DY")
-                .WithUniqueId(DayId)
+                .WithName("Minute")
+                .WithAbbreviation("min")
+                .WithUniqueId(MinuteId)
                 .WithIsActive(true)
                 .Build();
         }

@@ -22,6 +22,7 @@
 namespace Allors.Domain
 {
     using Should;
+    using System;
     using System.Linq;
     using Xunit;
 
@@ -53,7 +54,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkTask_WhenBuildingWithTakenBy_ThenWorkEffortNumberAssigned()
         {
-            // Arragne
+            // Arrange
             var organisation1 = new OrganisationBuilder(this.Session).WithName("Org1").WithIsInternalOrganisation(true).Build();
             var organisation2 = new OrganisationBuilder(this.Session).WithName("Org2").WithIsInternalOrganisation(true).Build();
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
@@ -73,6 +74,59 @@ namespace Allors.Domain
 
             // Assert
             workOrder.WorkEffortNumber.ShouldNotBeNull();
+        }
+
+        [Fact]
+        public void GivenWorkEffortAndTimeEntries_WhenDeriving_ThenActualHoursDerived()
+        {
+            // Arrange
+            var units = new UnitsOfMeasure(this.Session);
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+
+            this.Session.Derive(true);
+
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+            var laterYesterday = DateTimeFactory.CreateDateTime(yesterday.AddHours(3));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+            var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
+
+            var timeEntry1 = new TimeEntryBuilder(this.Session)
+                .WithFromDate(yesterday)
+                .WithThroughDate(laterYesterday)
+                .WithUnitOfMeasure(units.Hour)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            var timeEntry2 = new TimeEntryBuilder(this.Session)
+                .WithFromDate(today)
+                .WithThroughDate(laterToday)
+                .WithUnitOfMeasure(units.Hour)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            var timeEntry3 = new TimeEntryBuilder(this.Session)
+                .WithFromDate(tomorrow)
+                .WithThroughDate(laterTomorrow)
+                .WithUnitOfMeasure(units.Minute)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntry1);
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntry2);
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntry3);
+
+            // Act
+            this.Session.Derive(true);
+
+            // Assert
+            workOrder.ActualHours.ShouldEqual(13);
         }
     }
 }

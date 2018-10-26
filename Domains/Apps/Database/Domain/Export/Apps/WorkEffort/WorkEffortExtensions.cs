@@ -60,6 +60,7 @@ namespace Allors.Domain
 
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
+            @this.SummarizeTimeEntries();
         }
 
         public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
@@ -109,10 +110,10 @@ namespace Allors.Domain
             }
         }
 
-        public static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)
+        private static void VerifyWorkEffortPartyAssignments(this WorkEffort @this, IDerivation derivation)
         {
             var existingAssignmentRequired = @this.TakenBy?.RequireExistingWorkEffortPartyAssignment == true;
-            var existingAssignments = @this.WorkEffortPartyAssignmentsWhereAssignment;
+            var existingAssignments = @this.WorkEffortPartyAssignmentsWhereAssignment.ToArray();
 
             foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
             {
@@ -147,6 +148,19 @@ namespace Allors.Domain
                                 .Build();
                         }
                     }
+                }
+            }
+        }
+
+        private static void SummarizeTimeEntries(this WorkEffort @this)
+        {
+            @this.ActualHours = 0M;
+
+            foreach (ServiceEntry serviceEntry in @this.ServiceEntriesWhereWorkEffort)
+            {
+                if (serviceEntry is TimeEntry timeEntry)
+                {
+                    @this.ActualHours += timeEntry.ActualHours;
                 }
             }
         }

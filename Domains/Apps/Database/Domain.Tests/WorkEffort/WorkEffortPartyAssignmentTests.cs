@@ -33,7 +33,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenWorkEffortAndTimeEntry_WhenDeriving_ThenWorkEffortPartyAssignmentSynced()
         {
-            // Arragne
+            // Arrange
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
@@ -68,7 +68,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenTimeEntryWithRequiredAssignmentOrganisation_WhenDeriving_ThenWorkEffortPartyAssignmentSynced()
         {
-            // Arragne
+            // Arrange
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var organisation = new InternalOrganisations(this.Session).Extent().First;
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
