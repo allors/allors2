@@ -79,7 +79,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
-        public UnitOfMeasure UnitOfMeasure { get; set; }
+        public TimeFrequency TimeFrequency { get; set; }
 
         #region Allors
         [Id("c163457c-6a36-45ab-8c62-e555128afbfc")]

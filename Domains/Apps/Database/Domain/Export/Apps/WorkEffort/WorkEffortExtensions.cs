@@ -60,7 +60,7 @@ namespace Allors.Domain
 
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
-            @this.SummarizeTimeEntries();
+            @this.DeriveActualHoursAndDates();
         }
 
         public static void AppsOnBuild(this WorkEffort @this, ObjectOnBuild method)
@@ -152,7 +152,7 @@ namespace Allors.Domain
             }
         }
 
-        private static void SummarizeTimeEntries(this WorkEffort @this)
+        private static void DeriveActualHoursAndDates(this WorkEffort @this)
         {
             @this.ActualHours = 0M;
 
@@ -161,6 +161,24 @@ namespace Allors.Domain
                 if (serviceEntry is TimeEntry timeEntry)
                 {
                     @this.ActualHours += timeEntry.ActualHours;
+
+                    if (!@this.ExistActualStart)
+                    {
+                        @this.ActualStart = timeEntry.FromDate;
+                    }
+                    else if (timeEntry.FromDate < @this.ActualStart)
+                    {
+                        @this.ActualStart = timeEntry.FromDate;
+                    }
+
+                    if (!@this.ExistActualCompletion)
+                    {
+                        @this.ActualCompletion = timeEntry.ThroughDate;
+                    }
+                    else if (timeEntry.ThroughDate > @this.ActualCompletion)
+                    {
+                        @this.ActualCompletion = timeEntry.ThroughDate;
+                    }
                 }
             }
         }

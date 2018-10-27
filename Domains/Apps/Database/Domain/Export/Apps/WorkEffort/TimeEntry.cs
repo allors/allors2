@@ -20,35 +20,30 @@ namespace Allors.Domain
 
     public partial class TimeEntry
     {
+        private const int Precision = 17;
+
         public decimal ActualHours
         {
             get
             {
-                var units = new UnitsOfMeasure(this.strategy.Session);
-                decimal hours = 0.0M;
+                var conversion = new TimeFrequencies(this.strategy.Session).Hour.GetConversionFactor(this.TimeFrequency);
 
-                if (this.UnitOfMeasure.Equals(units.Day))
+                if (conversion == null)
                 {
-                    hours = Math.Round((this.AmountOfTime ?? 0.0M) * 24.0M, 17);
+                    return 0.0m;
                 }
-                else if (this.UnitOfMeasure.Equals(units.Hour))
+                else
                 {
-                    hours = this.AmountOfTime ?? 0.0M;
+                    return Math.Round((this.AmountOfTime ?? 0.0m) * (decimal)conversion, Precision);
                 }
-                else if (this.UnitOfMeasure.Equals(units.Minute))
-                {
-                    hours = Math.Round((this.AmountOfTime ?? 0.0M) / 60.0M, 17);
-                }
-
-                return hours;
             }
         }
 
         public void AppsOnBuild(ObjectOnBuild method)
         {
-            if (!this.ExistUnitOfMeasure)
+            if (!this.ExistTimeFrequency)
             {
-                this.UnitOfMeasure = new UnitsOfMeasure(this.strategy.Session).Hour;
+                this.TimeFrequency = new TimeFrequencies(this.strategy.Session).Hour;
             }
         }
 
@@ -70,113 +65,38 @@ namespace Allors.Domain
             derivation.Validation.AssertAtLeastOne(this, this.Meta.WorkEffort, this.Meta.EngagementItem);
             derivation.Validation.AssertAtLeastOne(this, this.Meta.ThroughDate, this.Meta.AmountOfTime);
 
-            this.ValidateUnitOfMeasure(derivation);
             this.DeriveAmountOfTimeOrThroughDate();
-        }
-
-        private void ValidateUnitOfMeasure(IDerivation derivation)
-        {
-            var units = new UnitsOfMeasure(this.strategy.Session);
-            const string error = "The Unit of Measure must be Day, Hour, or Minute.";
-
-            if (!this.UnitOfMeasure.Equals(units.Day) && !this.UnitOfMeasure.Equals(units.Hour) && !this.UnitOfMeasure.Equals(units.Minute))
-            {
-                derivation.Validation.AddError(this, this.Meta.UnitOfMeasure, error);
-                this.UnitOfMeasure = units.Hour;
-            }
         }
 
         private void DeriveAmountOfTimeOrThroughDate()
         {
-            var units = new UnitsOfMeasure(this.strategy.Session);
+            var conversion = this.TimeFrequency.GetConversionFactor(new TimeFrequencies(this.strategy.Session).Minute);
 
             if (this.ThroughDate != null)
             {
-                var timeSpan = this.ThroughDate - this.FromDate;
-                var amount = (decimal)timeSpan.Value.TotalMinutes;
-
-                if (this.UnitOfMeasure.Equals(units.Day))
+                if (conversion != null)
                 {
-                    this.AmountOfTime = amount / 1440.0M;
-                }
-                else if (this.UnitOfMeasure.Equals(units.Hour))
-                {
-                    this.AmountOfTime = amount / 60.0M;
-                }
-                else if (this.UnitOfMeasure.Equals(units.Minute))
-                {
-                    this.AmountOfTime = amount;
+                    var timeSpan = this.ThroughDate - this.FromDate;
+                    var minutes = (decimal)timeSpan.Value.TotalMinutes;
+                    this.AmountOfTime = Math.Round(minutes * (decimal)conversion, Precision);
                 }
                 else
                 {
                     this.RemoveAmountOfTime();
-                    return;
                 }
             }
             else if (this.AmountOfTime != null)
             {
-                var amount = (decimal)this.AmountOfTime;
-                int days = 0;
-                int hours = 0;
-                int minutes = 0;
-                int seconds = 0;
-                int millis = 0;
-
-                if (this.UnitOfMeasure.Equals(units.Day))
+                if (conversion != null)
                 {
-                    days = (int)amount;
-                    amount -= (decimal)days;
-
-                    hours = (int)(amount * 24);
-                    amount -= (decimal)hours;
-
-                    minutes = (int)(amount * 60);
-                    amount -= (decimal)minutes;
-                }
-                else if (this.UnitOfMeasure.Equals(units.Hour))
-                {
-                    if (amount > 24.0M)
-                    {
-                        days = (int)(amount / 24);
-                        amount -= ((decimal)days * 24.0M);
-                    }
-
-                    hours = (int)(amount);
-                    amount -= (decimal)hours;
-
-                    minutes = (int)(amount * 60);
-                    amount -= (decimal)minutes;
-                }
-                else if (this.UnitOfMeasure.Equals(units.Minute))
-                {
-                    if (amount > 1440.0M)
-                    {
-                        days = (int)(amount / 1440);
-                        amount -= ((decimal)days * 24);
-                    }
-
-                    if (amount > 60.0M)
-                    {
-                        hours = (int)(amount / 60M);
-                        amount -= ((decimal)hours * 60M);
-                    }
-
-                    minutes = (int)amount;
-                    amount -= (decimal)minutes;
+                    var minutes = Math.Round((decimal)this.AmountOfTime * (decimal)conversion, Precision);
+                    var timeSpan = TimeSpan.FromMinutes((double)minutes);
+                    this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
                 }
                 else
                 {
-                    this.RemoveThroughDate();
-                    return;
+                    this.RemoveAmountOfTime();
                 }
-
-                seconds = (int)(amount * 60);
-                amount -= (decimal)seconds;
-
-                millis = (int)amount * 1000;
-
-                var timeSpan = new TimeSpan(days, hours, minutes, seconds, millis);
-                this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
             }
         }
     }

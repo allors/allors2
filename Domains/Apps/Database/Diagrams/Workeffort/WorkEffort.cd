@@ -17,7 +17,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkQIAgAA=</HashCode>
+      <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkAIAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -35,7 +35,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAgAIAAAAAAAAAAAAQAAAAACAAgAAAAAgAAAAAA=</HashCode>
+      <HashCode>AAAAAAgAIAAAAAAAAAAAAQAAAAACAAgAAAAAgCAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -94,7 +94,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAQAAgAgAAAAAAAAAAAAAAAAAAAAAAgABgAAAAA=</HashCode>
+      <HashCode>AAAAAAQAAAAgAAAAAAAAAAAAAAAAAAAAAAgAAgAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -127,7 +127,7 @@
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AEAIAAAAAAAAAAAAAAAAAQAAAAACAAAAAAAAAAABAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -196,8 +196,8 @@
       <Property Name="InvoiceItem" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.InvoiceItem" Collapsed="true">
-    <Position X="3.75" Y="7.5" Width="1.5" />
+  <Interface Name="Allors.Domain.InvoiceItem">
+    <Position X="3.75" Y="7.5" Width="2.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAcAggAAAAAAAAAAAAAAAAQABAgAAoAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -227,7 +227,7 @@
   <Interface Name="Allors.Domain.InventoryItemTransaction">
     <Position X="17" Y="4" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAIIAAAIAAIAAIAAAAAgACAAAkAAAAEAAAAkAAAAAA=</HashCode>
+      <HashCode>AAAIIAAAIAAIAAIAAAAAgACAAAgAAAAEAAAAkCAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -252,7 +252,7 @@
   <Interface Name="Allors.Domain.Party" Collapsed="true">
     <Position X="0.75" Y="6" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACgoAgUAAAACAIFBANAgEI=</HashCode>
+      <HashCode>AYAIGAABVAAQAoAQIJgmAACooAgUAAAACAIFBANAgEI=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
