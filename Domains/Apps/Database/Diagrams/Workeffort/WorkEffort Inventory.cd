@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.WorkEffort" Collapsed="true">
+  <Interface Name="Allors.Domain.WorkEffort">
     <Position X="0.5" Y="2" Width="2" />
     <TypeIdentifier>
       <HashCode>AAEJBgCAAoAgBAEFBgCMAAQAAhAAQAgACEQAkAIAgAA=</HashCode>
@@ -65,7 +65,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.WorkTask">
-    <Position X="0.75" Y="4" Width="1.5" />
+    <Position X="2.75" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAAAAgAAAAAAAAAAABAAAIAAAAAAAgAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>

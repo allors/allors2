@@ -80,7 +80,7 @@ namespace Allors.Domain
         public void GivenWorkEffortAndTimeEntries_WhenDeriving_ThenActualHoursDerived()
         {
             // Arrange
-            var units = new UnitsOfMeasure(this.Session);
+            var frequencies = new TimeFrequencies(this.Session);
 
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
@@ -100,21 +100,21 @@ namespace Allors.Domain
             var timeEntry1 = new TimeEntryBuilder(this.Session)
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
-                .WithUnitOfMeasure(units.Hour)
+                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
             var timeEntry2 = new TimeEntryBuilder(this.Session)
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
-                .WithUnitOfMeasure(units.Hour)
+                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
             var timeEntry3 = new TimeEntryBuilder(this.Session)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
-                .WithUnitOfMeasure(units.Minute)
+                .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -126,14 +126,14 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.ActualHours.ShouldEqual(13);
+            workOrder.ActualHours.ShouldEqual(13.0M);
         }
 
         [Fact]
         public void GivenWorkEffortAndTimeEntries_WhenDeriving_ThenActualStartAndCompletionDerived()
         {
             // Arrange
-            var units = new UnitsOfMeasure(this.Session);
+            var frequencies = new TimeFrequencies(this.Session);
 
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
@@ -153,7 +153,7 @@ namespace Allors.Domain
             var timeEntryToday = new TimeEntryBuilder(this.Session)
                 .WithFromDate(today)
                 .WithThroughDate(laterToday)
-                .WithUnitOfMeasure(units.Hour)
+                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -170,7 +170,7 @@ namespace Allors.Domain
             var timeEntryYesterday = new TimeEntryBuilder(this.Session)
                 .WithFromDate(yesterday)
                 .WithThroughDate(laterYesterday)
-                .WithUnitOfMeasure(units.Hour)
+                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -188,7 +188,7 @@ namespace Allors.Domain
             var timeEntryTomorrow = new TimeEntryBuilder(this.Session)
                 .WithFromDate(tomorrow)
                 .WithThroughDate(laterTomorrow)
-                .WithUnitOfMeasure(units.Minute)
+                .WithTimeFrequency(frequencies.Minute)
                 .WithWorkEffort(workOrder)
                 .Build();
 

@@ -35,6 +35,7 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="BasePrices" />
+      <Property Name="EstimatedProductCosts" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Facility" Collapsed="true">
@@ -218,6 +219,13 @@
     <Position X="3" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.EstimatedProductCost">
+    <Position X="15" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAgAAAAAAAAABAACAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

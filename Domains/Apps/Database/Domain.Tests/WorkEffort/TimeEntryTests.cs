@@ -83,7 +83,7 @@ namespace Allors.Domain
         public void GivenTimeEntryWithFromAndThroughDates_WhenDeriving_ThenAmountOfTimeDerived()
         {
             // Arrange
-            var units = new UnitsOfMeasure(this.Session);
+            var frequencies = new TimeFrequencies(this.Session);
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
@@ -96,7 +96,7 @@ namespace Allors.Domain
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithFromDate(now)
                 .WithThroughDate(later)
-                .WithUnitOfMeasure(units.Hour)
+                .WithTimeFrequency(frequencies.Hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -107,34 +107,34 @@ namespace Allors.Domain
 
             // Assert
             timeEntry.AmountOfTime.ShouldEqual(4.0M);
-            timeEntry.ActualHours.ShouldEqual(4.0M);
+            Math.Round(timeEntry.ActualHours, 1).ShouldEqual(4.0M);
 
             //// Re-arrange
-            timeEntry.UnitOfMeasure = units.Day;
+            timeEntry.TimeFrequency = frequencies.Day;
 
             // Act
             this.Session.Derive(true);
 
             // Assert
-            timeEntry.AmountOfTime.ShouldEqual(4.0M / 24.0M);
-            timeEntry.ActualHours.ShouldEqual(4.0M);
+            timeEntry.AmountOfTime.ShouldEqual(Math.Round(4.0M / 24.0M, 17));
+            Math.Round(timeEntry.ActualHours, 1).ShouldEqual(4.0M);
 
             //// Re-arrange
-            timeEntry.UnitOfMeasure = units.Minute;
+            timeEntry.TimeFrequency = frequencies.Minute;
 
             // Act
             this.Session.Derive(true);
 
             // Assert
             timeEntry.AmountOfTime.ShouldEqual(4.0M * 60.0M);
-            timeEntry.ActualHours.ShouldEqual(4.0M);
+            Math.Round(timeEntry.ActualHours, 1).ShouldEqual(4.0M);
         }
 
         [Fact]
         public void GivenTimeEntryWithFromDateAndAmountOfTime_WhenDeriving_ThenThroughDateDerived()
         {
             // Arrange
-            var units = new UnitsOfMeasure(this.Session);
+            var frequencies = new TimeFrequencies(this.Session);
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
@@ -142,12 +142,12 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             var now = DateTimeFactory.CreateDateTime(this.Session.Now());
-            var hour = units.Hour;
+            var hour = frequencies.Hour;
 
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithFromDate(now)
                 .WithAmountOfTime(4.0M)
-                .WithUnitOfMeasure(hour)
+                .WithTimeFrequency(hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -163,7 +163,7 @@ namespace Allors.Domain
 
             //// Re-arrange
             timeEntry.RemoveThroughDate();
-            timeEntry.UnitOfMeasure = units.Minute;
+            timeEntry.TimeFrequency = frequencies.Minute;
 
             // Act
             this.Session.Derive(true);
@@ -175,7 +175,7 @@ namespace Allors.Domain
 
             //// Re-arrange
             timeEntry.RemoveThroughDate();
-            timeEntry.UnitOfMeasure = units.Day;
+            timeEntry.TimeFrequency = frequencies.Day;
 
             // Act
             this.Session.Derive(true);

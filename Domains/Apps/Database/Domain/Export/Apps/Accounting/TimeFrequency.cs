@@ -13,10 +13,18 @@
 // For more information visit http://www.allors.com/legal
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System.Linq;
+
 namespace Allors.Domain
 {
     public partial class TimeFrequency
     {
+        public new string ToString() => this.Name;
+
+        public decimal? GetConversionFactor(TimeFrequency timeFrquency)
+            => this.UnitOfMeasureConversions?.FirstOrDefault(c => c.ToUnitOfMeasure.Equals(timeFrquency)).ConversionFactor;
+
         public string GetName()
         {
             return this.Name;

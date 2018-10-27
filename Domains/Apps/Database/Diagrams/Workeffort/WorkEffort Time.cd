@@ -17,13 +17,6 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.PriceComponent">
-    <Position X="9.75" Y="4.25" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>QAQCAQAAAQAgAQABCBAABAAACKAAAAAAAAAgABAAEAE=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="Allors.Domain.ServiceEntry">
     <Position X="4.75" Y="4.25" Width="1.75" />
     <TypeIdentifier>
@@ -43,19 +36,12 @@
   </Interface>
   <Interface Name="Allors.Domain.PartyRate">
     <Position X="7" Y="4.25" Width="2.25" />
-    <AssociationLine Name="GoverningPriceComponents" Type="Allors.Domain.PriceComponent" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="8.875" Y="6.381" />
-        <Point X="8.875" Y="7.761" />
-        <Point X="9.75" Y="7.761" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
       <HashCode>QAAAIAAAAAAAAAAAAACAABAAAAAACAAAAAAAAAAAAIA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="GoverningPriceComponents" />
+      <Property Name="UnitOfMeasure" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Person" Collapsed="true">
@@ -68,7 +54,7 @@
   <Interface Name="Allors.Domain.TimeEntry">
     <Position X="4" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAQAAAAAAAABCAAAAAAQAAAAEAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAAQAAAAAAAABCAAAAAAQAAAAEAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -116,6 +102,40 @@
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAAgACAAAAgAAAAAAAAAAQAAAAAAAABAAAAAEAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.UnitOfMeasureConversion">
+    <Position X="14" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAEAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ToUnitOfMeasure" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.IUnitOfMeasure">
+    <Position X="10" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQBAAAAgAAAAAAAAAAAACAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UnitOfMeasureConversions" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.UnitOfMeasure">
+    <Position X="9.25" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.TimeFrequency">
+    <Position X="11.25" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

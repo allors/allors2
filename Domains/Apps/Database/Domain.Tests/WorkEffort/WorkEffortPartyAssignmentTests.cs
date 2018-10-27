@@ -42,12 +42,12 @@ namespace Allors.Domain
 
             var today = DateTimeFactory.CreateDateTime(DateTime.UtcNow);
             var tomorrow = DateTimeFactory.CreateDateTime(DateTime.UtcNow.AddDays(1));
-            var hour = new UnitsOfMeasure(this.Session).Hour;
+            var hour = new TimeFrequencies(this.Session).Hour;
 
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithFromDate(today)
                 .WithThroughDate(tomorrow)
-                .WithUnitOfMeasure(hour)
+                .WithTimeFrequency(hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
@@ -79,12 +79,12 @@ namespace Allors.Domain
 
             var today = DateTimeFactory.CreateDateTime(DateTime.UtcNow);
             var tomorrow = DateTimeFactory.CreateDateTime(DateTime.UtcNow.AddDays(1));
-            var hour = new UnitsOfMeasure(this.Session).Hour;
+            var hour = new TimeFrequencies(this.Session).Hour;
 
             var timeEntry = new TimeEntryBuilder(this.Session)
                 .WithFromDate(today)
                 .WithThroughDate(tomorrow)
-                .WithUnitOfMeasure(hour)
+                .WithTimeFrequency(hour)
                 .WithWorkEffort(workOrder)
                 .Build();
 
