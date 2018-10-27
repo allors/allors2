@@ -1,0 +1,170 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigation.overview(party)">{{party.displayName}}</a></span> / {{title}}
+      </div>
+    </div>
+  </div>
+
+  <form *ngIf="good" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+
+    <mat-card>
+      <mat-card-content class="container-fluid">
+        <mat-tab-group>
+
+          <mat-tab label="General">
+            <div class="row pt-3">
+              <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Sku"></a-mat-input>
+              <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Name"></a-mat-input>
+              <mat-form-field class="col-md" *ngIf="salesInvoice">
+                <input matInput placeholder="Invoice" [value]="salesInvoice.InvoiceNumber" readonly="true" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id]">
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <a-mat-textarea class="col-md" [object]="good" [roleType]="m.Good.Description"></a-mat-textarea>
+            </div>
+
+            <div class="row">
+              <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
+              <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
+              <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="row">
+                  <mat-form-field class="col">
+                    <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
+                      <mat-option>None</mat-option>
+                      <mat-option *ngFor="let brand of brands" [value]="brand">{{ brand.Name }} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-mini-fab color="accent" type="button" (click)="addBrand = !addBrand">
+                    <mat-icon *ngIf="!addBrand">add</mat-icon>
+                    <mat-icon *ngIf="addBrand">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12 pb-3" *ngIf="addBrand">
+                <mat-card>
+                  <mat-card-header>Add a new brand</mat-card-header>
+                  <mat-card-content>
+                    <brand-inline [scope]="scope" (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+
+              <div class="col-md">
+                <div class="row">
+                  <mat-form-field class="col">
+                    <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
+                      <mat-option>None</mat-option>
+                      <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <button mat-mini-fab color="accent" type="button" (click)="addModel = !addModel">
+                    <mat-icon *ngIf="!addModel">add</mat-icon>
+                    <mat-icon *ngIf="addModel">close</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <mat-card *ngIf="addModel">
+                  <mat-card-header>Add a new model</mat-card-header>
+                  <mat-card-content>
+                    <model-inline [scope]="scope" (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+
+            <div class="row">
+              <mat-form-field class="col-md">
+                <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+                  <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.HsCode"></a-mat-input>
+            </div>
+
+            <div class="row">
+              <mat-expansion-panel class="col" *ngIf="locales">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Translations
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div *ngFor="let locale of locales; let i = index">
+                  <mat-divider *ngIf="i > 0"></mat-divider>
+                  <div class="row">
+                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedNames" [locale]="locale"></a-mat-localised-text>
+                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Comments">
+            <div class="container-fluid">
+              <div class="row pt-3">
+                <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
+              </div>
+
+              <div class="row">
+                <mat-expansion-panel class="col" *ngIf="locales">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Translations
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div *ngFor="let locale of locales; let i = index">
+                    <mat-divider *ngIf="i > 0"></mat-divider>
+                    <div class="row">
+                      <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedComments" [locale]="locale"></a-mat-localised-text>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Images">
+            <div class="container-fluid">
+              <div class="row pt-3">
+                <a-mat-file class="col-md-12" [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-file>
+                <a-mat-files class="col-md-12" [object]="good" [roleType]="m.Good.Photos" accept="image/*"></a-mat-files>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Documents">
+            <div class="container-fluid">
+              <div class="row pt-3">
+                <a-mat-files class="col-md-12" [object]="good" [roleType]="m.Good.ElectronicDocuments" accept="image/*"></a-mat-files>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+
+      </mat-card-content>
+    </mat-card>
+
+    <a-mat-footer>
+      <button mat-raised-button (click)="navigation.back()" type="button">CANCEL</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
+    </a-mat-footer>
+
+  </form>
+</div>

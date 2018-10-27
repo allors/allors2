@@ -44,6 +44,8 @@ export const routes: Routes = [
       { path: 'organisation', data: addData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
       { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
 
+      { path: 'good', data: addData({ id: ids.Good }), component: catalogues.GoodEditComponent },
+
       { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
@@ -122,7 +124,7 @@ export const routes: Routes = [
         children: [
           { path: 'catalogues', data: pageListData({ id: ids.Catalogue, icon: 'share' }), component: catalogues.CataloguesOverviewComponent },
           { path: 'categories', data: pageListData({ id: ids.ProductCategory, icon: 'share' }), component: catalogues.CategoriesOverviewComponent },
-          { path: 'goods', data: pageListData({ id: ids.Product, icon: 'share' }), component: catalogues.GoodsOverviewComponent },
+          { path: 'goods', data: pageListData({ id: ids.Product, icon: 'share' }), component: catalogues.GoodListComponent },
           { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType, icon: 'share' }), component: catalogues.ProductCharacteristicsOverviewComponent },
           { path: 'productTypes', data: pageListData({ id: ids.ProductType, icon: 'share' }), component: catalogues.ProductTypesOverviewComponent },
         ],
@@ -139,20 +141,6 @@ export const routes: Routes = [
         children: [
           { path: '', component: catalogues.CategoryComponent },
           { path: ':id', component: catalogues.CategoryComponent },
-        ],
-      },
-      {
-        path: 'nonSerialisedGood',
-        children: [
-          { path: ':id', component: catalogues.NonSerialisedGoodComponent },
-          { path: '', component: catalogues.NonSerialisedGoodComponent },
-        ],
-      },
-      {
-        path: 'serialisedGood',
-        children: [
-          { path: ':id', component: catalogues.SerialisedGoodComponent },
-          { path: '', component: catalogues.SerialisedGoodComponent },
         ],
       },
       {

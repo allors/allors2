@@ -4,7 +4,7 @@ export * from './catalogue/catalogue.module';
 export * from './category/categories-overview.module';
 export * from './category/category.module';
 
-export * from './good/goods-overview.module';
+export * from './good/list/good-list.module';
 export * from './good/newgood-dialog.module';
 
 export * from './productcharacteristic/productcharacteristics-overview.module';
@@ -13,8 +13,7 @@ export * from './productcharacteristic/productcharacteristic.module';
 export * from './producttype/producttypes-overview.module';
 export * from './producttype/producttype.module';
 
-export * from './nonSerialisedGood/nonserialisedgood.module';
-export * from './serialisedGood/serialisedgood.module';
+export * from './good/edit/good-edit.module';
 
 import { CatalogueModule } from './catalogue/catalogue.module';
 import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module';
@@ -22,7 +21,7 @@ import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module
 import { CategoriesOverviewModule } from './category/categories-overview.module';
 import { CategoryModule } from './category/category.module';
 
-import { GoodsOverviewModule } from './good/goods-overview.module';
+import { GoodsOverviewModule } from './good/list/good-list.module';
 import { NewGoodDialogModule } from './good/newgood-dialog.module';
 
 import { ProductCharacteristicModule } from './productcharacteristic/productcharacteristic.module';
@@ -31,8 +30,7 @@ import { ProductCharacteristicsOverviewModule } from './productcharacteristic/pr
 import { ProductTypeModule } from './producttype/producttype.module';
 import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';
 
-import { NonSerialisedGoodModule } from './nonSerialisedGood/nonserialisedgood.module';
-import { SerialisedGoodModule } from './serialisedGood/serialisedgood.module';
+import { GoodEditModule } from './good/edit/good-edit.module';
 
 export const Modules = [
   CataloguesOverviewModule, CatalogueModule,
@@ -40,6 +38,5 @@ export const Modules = [
   GoodsOverviewModule, NewGoodDialogModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
-  NonSerialisedGoodModule,
-  SerialisedGoodModule,
+  GoodEditModule,
 ];
