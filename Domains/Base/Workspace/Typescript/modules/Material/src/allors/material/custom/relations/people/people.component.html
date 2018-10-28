@@ -29,11 +29,7 @@
 
             <h3 mat-line>{{person.FirstName}} {{person.LastName}}</h3>
             <p mat-line> {{person.UserName}} </p>
-
-            <span>
-              Extra info
-            </span>
-
+  
             <div (click)="$event.stopPropagation()">
               <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>more_vert</mat-icon>

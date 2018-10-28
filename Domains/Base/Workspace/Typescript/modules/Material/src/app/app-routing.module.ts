@@ -9,6 +9,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import * as relations from '../allors/material/custom/relations';
 import * as tests from '../allors/material/custom/tests';
+import { moduleData, pageListData } from 'src/allors/angular';
+import { ids } from 'src/allors/meta';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -19,14 +21,14 @@ const routes: Routes = [
     canActivate: [AuthorizationService],
     children: [
       {
-        path: 'dashboard', component: DashboardComponent, data: { type: 'module', title: 'Home', icon: 'home' },
+        path: 'dashboard', component: DashboardComponent, data: moduleData({ title: 'Home', icon: 'home' }),
       },
       {
-        path: 'relations', data: { type: 'module', title: 'Relations', icon: 'business' },
+        path: 'relations', data: moduleData({ title: 'Relations', icon: 'business' }),
         children: [
           {
             children: [
-              { path: '', component: relations.OrganisationsComponent, data: { type: 'page', title: 'Organisations' } },
+              { path: '', component: relations.OrganisationsComponent, data: pageListData({ id: ids.Organisation, title:"Organisations", icon: 'business' }) },
               { path: 'add', component: relations.OrganisationComponent },
               { path: ':id/edit', component: relations.OrganisationComponent },
               { path: ':id/overview', component: relations.OrganisationOverviewComponent },
@@ -34,7 +36,7 @@ const routes: Routes = [
             path: 'organisations',
           }, {
             children: [
-              { path: '', component: relations.PeopleComponent, data: { type: 'page', title: 'People' }, },
+              { path: '', component: relations.PeopleComponent, data: pageListData({ id: ids.Person, title:"People", icon: 'people' }) },
               { path: 'add', component: relations.PersonComponent },
               { path: ':id/edit', component: relations.PersonComponent },
               { path: ':id/overview', component: relations.PersonOverviewComponent },
@@ -54,9 +56,8 @@ const routes: Routes = [
     ],
   },
 ];
-
 @NgModule({
-  exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

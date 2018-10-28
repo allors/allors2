@@ -3,4 +3,5 @@ export interface SideMenuItem {
     title: string;
     link?: string;
     children?: SideMenuItem[];
+    open?: boolean;
 }

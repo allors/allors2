@@ -12,7 +12,7 @@ import { ISession, ISessionObject } from '../../../../framework';
 })
 export class AllorsMaterialFilesComponent extends Field {
   @Output()
-  public onChange: EventEmitter<Field> = new EventEmitter<Field>();
+  changed: EventEmitter<Field> = new EventEmitter<Field>();
 
   @Input() public accept = 'image/*';
 
@@ -70,13 +70,13 @@ export class AllorsMaterialFilesComponent extends Field {
     const load: () => void = () => {
       const media: Media = this.object.session.create('Media') as Media;
       media.FileName = file.name;
-      media.InDataUri = reader.result;
+      media.InDataUri = reader.result as string;
       this.object.add(this.roleType.name, media);
     };
 
     reader.addEventListener('load', load, false);
     reader.readAsDataURL(file);
 
-    this.onChange.emit(this);
+    this.changed.emit(this);
   }
 }

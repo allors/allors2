@@ -11,9 +11,11 @@ import { ISession, ISessionObject } from '../../../../framework';
   templateUrl: './file.component.html',
 })
 export class AllorsMaterialFileComponent extends Field {
-  @Output() public onChange: EventEmitter<Field> = new EventEmitter<Field>();
+  @Output()
+  changed: EventEmitter<Field> = new EventEmitter<Field>();
 
-  @Input() public accept = 'image/*';
+  @Input()
+  accept = 'image/*';
 
   constructor(@Optional() parentForm: NgForm, private mediaService: MediaService) {
     super(parentForm);
@@ -56,8 +58,8 @@ export class AllorsMaterialFileComponent extends Field {
     const reader: FileReader = new FileReader();
     const load: () => void = () => {
       this.media.FileName = file.name;
-      this.media.InDataUri = reader.result;
-      this.onChange.emit(this);
+      this.media.InDataUri = reader.result as string;
+      this.changed.emit(this);
     };
 
     reader.addEventListener('load', load, false);

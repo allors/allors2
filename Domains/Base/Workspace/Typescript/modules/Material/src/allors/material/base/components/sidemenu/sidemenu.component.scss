@@ -1,24 +1,4 @@
-@mixin a-mat-sidemenu-theme($theme) {
-
-  $primary: map-get($theme, primary);
-  $warn: map-get($theme, warn);
-  $background: map-get($theme, background);
-  $foreground: map-get($theme, foreground);
-
-  // .collapsed {
-  //   background-color: mat-color($primary, default);
-  // }
-
-  .expanded {
-    background-color: mat-color($background, dialog);
-  }
-
-  .expander {
-    transform: scale(0.75);
-  }
-
-  .active {
-    background-color: mat-color($primary) !important;
-  }
+.expander {
+  transform: scale(0.75);
 }
 

@@ -1,34 +1,41 @@
-import { Component, AfterViewInit, ViewChild, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { BreakpointState, BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Title } from '@angular/platform-browser';
+import { Component, ViewChild, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, WorkspaceService, Loaded, Scope } from '../../allors/angular';
-import { MetaDomain } from '../../allors/meta';
+import { MenuService, Allors } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   styleUrls: ['main.component.scss'],
-  templateUrl: './main.component.html'
+  templateUrl: './main.component.html',
+  providers: [Allors]
 })
 export class MainComponent implements OnInit, OnDestroy {
 
+  selectedInternalOrganisation: Organisation;
+  internalOriganisations: Organisation[];
+
+  sideMenuItems: SideMenuItem[] = [];
+
+  private toggleSubscription;
+  private openSubscription;
+  private closeSubscription;
+
+  @ViewChild('drawer') private sidenav: MatSidenav;
+
   constructor(
-    private workspaceService: WorkspaceService,
-    private breakpointObserver: BreakpointObserver,
-    private titleService: Title,
+    @Self() private allors: Allors,
+    private router: Router,
+    private sideNavService: AllorsMaterialSideNavService,
     private menuService: MenuService,
-    private sideNavService: AllorsMaterialSideNavService) {
+  ) { }
 
-    this.m = workspaceService.metaPopulation.metaDomain;
-    this.scope = this.workspaceService.createScope();
+  public ngOnInit(): void {
 
-    menuService.pagesByModule.forEach((pages, module) => {
+    this.menuService.pagesByModule.forEach((pages, module) => {
       const sideMenuItem = {
         icon: module.icon,
         title: module.title,
@@ -44,52 +51,36 @@ export class MainComponent implements OnInit, OnDestroy {
       this.sideMenuItems.push(sideMenuItem);
     });
 
-    this.toggleSubscription = sideNavService.toggle$.subscribe(() => {
-      if (this.sidenav) {
-        this.sidenav.toggle();
-      }
-    });
-
-    this.handsetSubscription = this.breakpointObserver.observe(Breakpoints.Handset)
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.events
       .pipe(
-        map(result => result.matches)
-      ).subscribe((result) => {
+        filter((v) => v instanceof NavigationEnd)
+      ).subscribe(() => {
         if (this.sidenav) {
-          if (result) {
-            this.sidenav.close();
-          } else {
-            this.sidenav.open();
-          }
+          this.sidenav.close();
         }
       });
-  }
 
-  get title(): string {
-    return this.titleService.getTitle();
-  }
+    this.toggleSubscription = this.sideNavService.toggle$.subscribe(() => {
+      this.sidenav.toggle();
+    });
 
-  sideMenuItems: SideMenuItem[] = [];
+    this.openSubscription = this.sideNavService.open$.subscribe(() => {
+      this.sidenav.open();
+    });
 
-  m: MetaDomain;
-
-  private subscription: Subscription;
-  private toggleSubscription;
-
-  private scope: Scope;
-
-  @ViewChild('drawer') private sidenav: MatSidenav;
-
-  private handsetSubscription: Subscription;
-
-  isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(
-      map(result => result.matches)
-    );
-
-  public ngOnInit(): void {
+    this.closeSubscription = this.sideNavService.close$.subscribe(() => {
+      this.sidenav.close();
+    });
   }
 
   ngOnDestroy(): void {
-    this.handsetSubscription.unsubscribe();
+    this.toggleSubscription.unsubscribe();
+    this.openSubscription.unsubscribe();
+    this.closeSubscription.unsubscribe();
+  }
+
+  public toggle() {
+    this.sideNavService.toggle();
   }
 }
