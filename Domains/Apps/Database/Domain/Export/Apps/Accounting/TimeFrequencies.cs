@@ -76,52 +76,52 @@ namespace Allors.Domain
             this.NewTimeFrequency("trimester", "kwartall", dutchLocale, TrimesterId, true);
             this.NewTimeFrequency("year", "jaar", dutchLocale, "yr", YearId, true);
 
-            // Millisecond Conversions
+            // Millisecond to UOM Conversions
             this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 60000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 3600000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 86400000m));
-            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 604800000m));
+            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m / 1000m));
+            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 60000m));
+            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 3600000m));
+            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 86400000m));
+            this.Millisecond.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 604800000m));
 
-            // Second Conversions
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m / 1000m));
+            // Second to UOM Conversions
+            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1000m));
             this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 60m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 3600m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 86400m));
-            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 604800m));
+            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 60m));
+            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 3600m));
+            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 86400m));
+            this.Second.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 604800m));
 
-            // Minute Conversions
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m / 60000m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m / 60m));
+            // Minute To UOM Conversions
+            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 60000m));
+            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 60m));
             this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 60m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1440m));
-            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 10080m));
+            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 60m));
+            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 1440m));
+            this.Minute.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 10080m));
 
-            // Hour Conversions
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m / 3600000m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m / 3600m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 60m));
+            // Hour to UOM Conversions
+            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 3600000m));
+            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 3600m));
+            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 60m));
             this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 24m));
-            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 168m));
+            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 24m));
+            this.Hour.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 168m));
 
-            // Day Conversions
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m / 86400000m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m / 86400m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 1440m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 24m));
+            // Day to UOM Conversions
+            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 86400000m));
+            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 86400m));
+            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1440m));
+            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 24m));
             this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m));
-            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 7m));
+            this.Day.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m / 7m));
 
-            // Week Conversions
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 1m / 604800000m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 1m / 604800m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 1m / 10080m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 1m / 168m));
-            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 1m / 7m));
+            // Week to UOM Conversions
+            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Millisecond, 604800000m));
+            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Second, 604800m));
+            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Minute, 10080m));
+            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Hour, 168m));
+            this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Day, 7m));
             this.Week.AddUnitOfMeasureConversion(this.NewFrequencyConversion(this.Week, 1m));
         }
 

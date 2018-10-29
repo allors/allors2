@@ -20,22 +20,17 @@ namespace Allors.Domain
 
     public partial class TimeEntry
     {
-        private const int Precision = 17;
+        private int DecimalScale => this.Meta.AmountOfTime.Scale ?? 2;
 
         public decimal ActualHours
         {
             get
             {
-                var conversion = new TimeFrequencies(this.strategy.Session).Hour.GetConversionFactor(this.TimeFrequency);
+                var frequencies = new TimeFrequencies(this.strategy.Session);
+                var minutes = (decimal)(this.ThroughDate - this.FromDate).Value.TotalMinutes;
+                var hours = (decimal)frequencies.Minute.ConvertToFrequency((decimal)minutes, frequencies.Hour);
 
-                if (conversion == null)
-                {
-                    return 0.0m;
-                }
-                else
-                {
-                    return Math.Round((this.AmountOfTime ?? 0.0m) * (decimal)conversion, Precision);
-                }
+                return Math.Round(hours, DecimalScale);
             }
         }
 
@@ -70,32 +65,35 @@ namespace Allors.Domain
 
         private void DeriveAmountOfTimeOrThroughDate()
         {
-            var conversion = this.TimeFrequency.GetConversionFactor(new TimeFrequencies(this.strategy.Session).Minute);
+            var frequencies = new TimeFrequencies(this.strategy.Session);
 
             if (this.ThroughDate != null)
             {
-                if (conversion != null)
+                var timeSpan = this.ThroughDate - this.FromDate;
+                var minutes = (decimal)timeSpan.Value.TotalMinutes;
+                var amount = frequencies.Minute.ConvertToFrequency(minutes, this.TimeFrequency);
+
+                if (amount == null)
                 {
-                    var timeSpan = this.ThroughDate - this.FromDate;
-                    var minutes = (decimal)timeSpan.Value.TotalMinutes;
-                    this.AmountOfTime = Math.Round(minutes * (decimal)conversion, Precision);
+                    this.RemoveAmountOfTime();
                 }
                 else
                 {
-                    this.RemoveAmountOfTime();
+                    this.AmountOfTime = Math.Round((decimal)amount, 2);
                 }
             }
             else if (this.AmountOfTime != null)
             {
-                if (conversion != null)
+                var minutes = this.TimeFrequency.ConvertToFrequency((decimal)this.AmountOfTime, frequencies.Minute);
+
+                if (minutes == null)
                 {
-                    var minutes = Math.Round((decimal)this.AmountOfTime * (decimal)conversion, Precision);
-                    var timeSpan = TimeSpan.FromMinutes((double)minutes);
-                    this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
+                    this.RemoveThroughDate();
                 }
                 else
                 {
-                    this.RemoveAmountOfTime();
+                    var timeSpan = TimeSpan.FromMinutes((double)minutes);
+                    this.ThroughDate = new DateTime(this.FromDate.Ticks, this.FromDate.Kind) + timeSpan;
                 }
             }
         }

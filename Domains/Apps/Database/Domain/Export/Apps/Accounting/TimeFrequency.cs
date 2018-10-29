@@ -22,8 +22,20 @@ namespace Allors.Domain
     {
         public new string ToString() => this.Name;
 
-        public decimal? GetConversionFactor(TimeFrequency timeFrquency)
+        public decimal? GetConvertToFactor(TimeFrequency timeFrquency)
             => this.UnitOfMeasureConversions?.FirstOrDefault(c => c.ToUnitOfMeasure.Equals(timeFrquency)).ConversionFactor;
+
+        public decimal? ConvertToFrequency(decimal value, TimeFrequency timeFrequency)
+        {
+            var conversion = this.GetConvertToFactor(timeFrequency);
+
+            if (conversion != null)
+            {
+                return value * (decimal)conversion;
+            }
+
+            return null;
+        }
 
         public string GetName()
         {

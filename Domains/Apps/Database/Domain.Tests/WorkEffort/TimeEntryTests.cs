@@ -21,6 +21,7 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
     using System;
     using System.Linq;
     using Should;
@@ -106,20 +107,22 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            timeEntry.AmountOfTime.ShouldEqual(4.0M);
-            Math.Round(timeEntry.ActualHours, 1).ShouldEqual(4.0M);
+            timeEntry.AmountOfTime.ShouldEqual(4.00M);
+            timeEntry.ActualHours.ShouldEqual(4.00M);
 
             //// Re-arrange
+            timeEntry.RemoveAmountOfTime();
             timeEntry.TimeFrequency = frequencies.Day;
 
             // Act
             this.Session.Derive(true);
 
             // Assert
-            timeEntry.AmountOfTime.ShouldEqual(Math.Round(4.0M / 24.0M, 17));
-            Math.Round(timeEntry.ActualHours, 1).ShouldEqual(4.0M);
+            timeEntry.AmountOfTime.ShouldEqual(Math.Round(4.0M / 24.0M, M.TimeEntry.AmountOfTime.Scale ?? 2));
+            timeEntry.ActualHours.ShouldEqual(4.00M);
 
             //// Re-arrange
+            timeEntry.RemoveAmountOfTime();
             timeEntry.TimeFrequency = frequencies.Minute;
 
             // Act
@@ -127,7 +130,7 @@ namespace Allors.Domain
 
             // Assert
             timeEntry.AmountOfTime.ShouldEqual(4.0M * 60.0M);
-            Math.Round(timeEntry.ActualHours, 1).ShouldEqual(4.0M);
+            timeEntry.ActualHours.ShouldEqual(4.00M);
         }
 
         [Fact]
@@ -158,7 +161,7 @@ namespace Allors.Domain
 
             // Assert
             var timeSpan = timeEntry.ThroughDate - timeEntry.FromDate;
-            timeSpan.Value.TotalHours.ShouldEqual(4.0, 17);
+            timeSpan.Value.TotalHours.ShouldEqual(4.00);
             timeEntry.ActualHours.ShouldEqual(4.0M);
 
             //// Re-arrange
@@ -170,8 +173,8 @@ namespace Allors.Domain
 
             // Assert
             timeSpan = timeEntry.ThroughDate - timeEntry.FromDate;
-            timeSpan.Value.TotalMinutes.ShouldEqual(4.0, 17);
-            timeEntry.ActualHours.ShouldEqual(Math.Round(4.0M / 60.0M, 17));
+            timeSpan.Value.TotalMinutes.ShouldEqual(4.00);
+            timeEntry.ActualHours.ShouldEqual(Math.Round(4.0M / 60.0M, M.TimeEntry.AmountOfTime.Scale ?? 2));
 
             //// Re-arrange
             timeEntry.RemoveThroughDate();
@@ -182,8 +185,8 @@ namespace Allors.Domain
 
             // Assert
             timeSpan = timeEntry.ThroughDate - timeEntry.FromDate;
-            timeSpan.Value.TotalDays.ShouldEqual(4.0, 17);
-            timeEntry.ActualHours.ShouldEqual(Math.Round(4.0M * 24.0M));
+            timeSpan.Value.TotalDays.ShouldEqual(4.00);
+            timeEntry.ActualHours.ShouldEqual(4.00M * 24.00M);
         }
     }
 }
