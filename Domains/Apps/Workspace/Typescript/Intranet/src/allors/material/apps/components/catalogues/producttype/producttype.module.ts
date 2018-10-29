@@ -41,14 +41,14 @@ export { ProductTypeComponent } from './producttype.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatAutocompleteModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
     MatExpansionModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -60,7 +60,7 @@ export { ProductTypeComponent } from './producttype.component';
     MatTooltipModule,
     MatOptionModule,
     ReactiveFormsModule,
-    RouterModule,  
+    RouterModule,
   ],
 })
 export class ProductTypeModule { }

@@ -39,7 +39,7 @@ export { InvoicesOverviewComponent } from './invoices-overview.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     InternalOrganisationSelectModule,
     MatButtonModule,
@@ -47,7 +47,7 @@ export { InvoicesOverviewComponent } from './invoices-overview.component';
     MatCheckboxModule,
     MatChipsModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,

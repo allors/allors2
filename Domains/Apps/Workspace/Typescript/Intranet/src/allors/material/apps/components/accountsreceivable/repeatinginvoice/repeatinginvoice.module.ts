@@ -43,7 +43,7 @@ export { RepeatingInvoiceEditComponent } from './repeatinginvoice.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

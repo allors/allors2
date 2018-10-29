@@ -43,7 +43,7 @@ export { WorkTaskOverviewComponent } from './worktask-overview.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,
@@ -64,6 +64,6 @@ export { WorkTaskOverviewComponent } from './worktask-overview.component';
     MatTooltipModule,
     MatOptionModule,
     ReactiveFormsModule,
-    RouterModule,],
+    RouterModule, ],
 })
 export class WorkTaskOverviewModule { }

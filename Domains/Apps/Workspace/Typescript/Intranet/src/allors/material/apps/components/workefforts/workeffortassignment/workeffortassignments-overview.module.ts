@@ -29,7 +29,7 @@ export { WorkEffortAssignmentsOverviewComponent } from './workeffortassignments-
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
@@ -61,6 +61,6 @@ export { WorkEffortAssignmentsOverviewComponent } from './workeffortassignments-
     MatTooltipModule,
     MatOptionModule,
     ReactiveFormsModule,
-    RouterModule,],
+    RouterModule, ],
 })
 export class WorkEffortAssignmentsOverviewModule { }

@@ -29,7 +29,7 @@ export { InlineBrandComponent } from './brand-inline.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,

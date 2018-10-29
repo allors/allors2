@@ -43,7 +43,7 @@ export { OrderTermEditComponent } from './orderterm.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

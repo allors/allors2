@@ -60,10 +60,10 @@ export { OrganisationListComponent } from './organisation-list.component';
     MatSortModule,
     ReactiveFormsModule,
     RouterModule,
-    //OrganisationAddModule
+    // OrganisationAddModule
   ],
   entryComponents: [
-    //OrganisationAddComponent
+    // OrganisationAddComponent
   ]
 })
 export class OrganisationsOverviewModule { }

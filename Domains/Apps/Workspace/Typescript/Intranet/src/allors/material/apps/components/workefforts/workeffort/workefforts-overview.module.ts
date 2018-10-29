@@ -29,7 +29,7 @@ export { WorkEffortsOverviewComponent } from './workefforts-overview.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,

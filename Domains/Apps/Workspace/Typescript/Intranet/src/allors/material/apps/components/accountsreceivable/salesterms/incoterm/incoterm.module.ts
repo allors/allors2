@@ -43,7 +43,7 @@ export { IncoTermEditComponent } from './incoterm.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

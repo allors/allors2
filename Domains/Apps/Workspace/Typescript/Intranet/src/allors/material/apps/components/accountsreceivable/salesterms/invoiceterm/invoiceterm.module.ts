@@ -43,7 +43,7 @@ export { InvoiceTermEditComponent } from './invoiceterm.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

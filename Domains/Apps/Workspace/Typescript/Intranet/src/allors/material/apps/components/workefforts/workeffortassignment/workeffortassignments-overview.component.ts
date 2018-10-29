@@ -83,7 +83,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, ,], [data, take, date, internalOrganisationId]) => {
+        scan(([previousData, , ], [data, take, date, internalOrganisationId]) => {
           return [
             data,
             data !== previousData ? 50 : take,
@@ -97,7 +97,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     this.subscription = combined$
       .pipe(
-        switchMap(([data, ,]) => {
+        switchMap(([data, , ]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,

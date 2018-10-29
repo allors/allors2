@@ -41,13 +41,13 @@ export { SalesOrdersOverviewComponent } from './salesorders-overview.component';
     AllorsMaterialTextAreaModule,
     CommonModule,
     CdkTableModule,
-    
+
     FormsModule,
     InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

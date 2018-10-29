@@ -39,7 +39,7 @@ export { RequestItemEditComponent } from './requestitem.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

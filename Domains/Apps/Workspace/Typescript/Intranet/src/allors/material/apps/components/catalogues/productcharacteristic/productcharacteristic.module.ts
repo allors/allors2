@@ -38,12 +38,12 @@ export { ProductCharacteristicComponent } from './productcharacteristic.componen
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
