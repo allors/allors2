@@ -61,7 +61,9 @@ export class SearchFactory {
 
       return scope
         .load('Pull', new PullRequest({ pulls }))
-        .pipe(map((loaded: Loaded) => loaded.collections.results));
+        .pipe(map((loaded: Loaded) => {
+          return loaded.collections.results;
+        }));
     };
   }
 }

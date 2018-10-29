@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatInputModule } from '@angular/material';
+import { MatAutocompleteModule, MatInputModule, MatIconModule, MatButtonModule } from '@angular/material';
 
 import { AllorsFocusModule } from '../../../../angular';
 
@@ -19,6 +19,8 @@ export { AllorsMaterialAutocompleteComponent } from './autocomplete.component';
     CommonModule,
     FormsModule,
     MatAutocompleteModule,
+    MatButtonModule,
+    MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
     AllorsFocusModule,

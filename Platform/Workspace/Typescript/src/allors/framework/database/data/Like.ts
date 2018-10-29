@@ -14,8 +14,6 @@ export class Like extends ParametrizedPredicate {
     } else {
       Object.assign(this, fields);
     }
-
-    this.parameter = this.parameter || this.roleType.name;
   }
 
   public toJSON(): any {

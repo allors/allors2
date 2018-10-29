@@ -6,21 +6,25 @@ export abstract class Field implements AfterViewInit, OnDestroy {
 
   private static counter = 0;
 
-  @Input('name')
-  public assignedName: string;
-
   @Input()
   public object: ISessionObject;
 
   @Input()
   public roleType: RoleType;
 
+  // tslint:disable-next-line:no-input-rename
+  @Input('name')
+  public assignedName: string;
+
+  // tslint:disable-next-line:no-input-rename
   @Input('disabled')
   public assignedDisabled: boolean;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('required')
   public assignedRequired: boolean;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('label')
   public assignedLabel: string;
 

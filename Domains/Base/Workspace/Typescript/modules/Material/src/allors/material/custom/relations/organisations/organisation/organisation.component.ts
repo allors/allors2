@@ -15,20 +15,21 @@ import { MetaDomain, PullFactory } from '../../../../../meta';
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  public title: string;
+  title: string;
 
-  public field: Field;
+  field: Field;
 
-  public m: MetaDomain;
-  public people: Person[];
+  m: MetaDomain;
+  people: Person[];
 
-  public organisation: Organisation;
+  organisation: Organisation;
 
-  public peopleFilter: SearchFactory;
+  peopleFilter: SearchFactory;
+
+  scope: Scope;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
     private workspaceService: WorkspaceService,
@@ -42,7 +43,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
 
-    this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
+    this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.UserName] });
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }

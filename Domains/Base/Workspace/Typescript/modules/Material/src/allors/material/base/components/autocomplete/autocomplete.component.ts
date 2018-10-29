@@ -93,4 +93,10 @@ export class AllorsMaterialAutocompleteComponent extends Field implements OnInit
     this.model = event.option.value;
     this.onChange.emit(this.model);
   }
+
+  clear(event: Event){
+    event.stopPropagation();
+    this.model = undefined;
+    this.onChange.emit(this.model);
+  }
 }

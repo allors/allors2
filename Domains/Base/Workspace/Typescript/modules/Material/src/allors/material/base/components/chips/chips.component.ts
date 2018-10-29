@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, ElementRef } from '@angular/core';
 import { NgForm, FormControl } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { concat, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { concat, debounceTime, distinctUntilChanged, switchMap, map, startWith } from 'rxjs/operators';
 
 import { ISessionObject } from '../../../../framework';
 
@@ -23,7 +23,7 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
 
   @Input() public filter: ((search: string) => Observable<ISessionObject[]>);
 
-  @Output() public onChange: EventEmitter<ISessionObject> = new EventEmitter();
+  @Output() public changed: EventEmitter<ISessionObject> = new EventEmitter();
 
   public filteredOptions: Observable<ISessionObject[]>;
 
@@ -38,48 +38,39 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
 
   public ngOnInit(): void {
     if (this.filter) {
-      this.filteredOptions = of(new Array<ISessionObject>())
+      this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          concat(
-            this.searchControl.valueChanges
-              .pipe(
-                debounceTime(this.debounceTime),
-                distinctUntilChanged(),
-                switchMap((search: string) => {
-                  return this.filter(search);
-                })
-              ),
-          ));
+          debounceTime(this.debounceTime),
+          distinctUntilChanged(),
+          switchMap((search: string) => {
+            return this.filter(search);
+          })
+        );
     } else {
-      this.filteredOptions = of(new Array<ISessionObject>())
+      this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          concat(
-            this.searchControl.valueChanges
-              .pipe(
-                debounceTime(this.debounceTime),
-                distinctUntilChanged(),
-                map((search: string) => {
-                  if (search) {
-                    const lowerCaseSearch: string = search.trim ? search.trim().toLowerCase() : '';
-                    return this.options
-                      .filter((v: ISessionObject) => {
-                        const optionDisplay: string = v[this.display]
-                          ? v[this.display].toString().toLowerCase()
-                          : undefined;
-                        if (optionDisplay) {
-                          return optionDisplay.indexOf(lowerCaseSearch) !== -1;
-                        }
-                      })
-                      .sort(
-                        (a: ISessionObject, b: ISessionObject) =>
-                          a[this.display] !== b[this.display]
-                            ? a[this.display] < b[this.display] ? -1 : 1
-                            : 0,
-                      );
+          debounceTime(this.debounceTime),
+          distinctUntilChanged(),
+          map((search: string) => {
+            if (search) {
+              const lowerCaseSearch: string = search.trim ? search.trim().toLowerCase() : '';
+              return this.options
+                .filter((v: ISessionObject) => {
+                  const optionDisplay: string = v[this.display]
+                    ? v[this.display].toString().toLowerCase()
+                    : undefined;
+                  if (optionDisplay) {
+                    return optionDisplay.indexOf(lowerCaseSearch) !== -1;
                   }
                 })
-              )
-          )
+                .sort(
+                  (a: ISessionObject, b: ISessionObject) =>
+                    a[this.display] !== b[this.display]
+                      ? a[this.display] < b[this.display] ? -1 : 1
+                      : 0,
+                );
+            }
+          })
         );
     }
   }
@@ -94,7 +85,7 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
 
   public selected(option: ISessionObject): void {
     this.add(option);
-    this.onChange.emit(option);
+    this.changed.emit(option);
 
     this.searchControl.reset();
     this.searchInput.nativeElement.value = '';
@@ -104,10 +95,10 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
     if (this.searchControl.value && this.trigger.autocomplete.options.length === 1) {
       const option = this.trigger.autocomplete.options.first.value;
       this.add(option);
-      this.onChange.emit(option);
+      this.changed.emit(option);
 
     } else {
-      this.onChange.emit(undefined);
+      this.changed.emit(undefined);
     }
 
     this.searchControl.reset();
