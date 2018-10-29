@@ -14,8 +14,6 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PersonAddComponent, PersonAddModule } from '../add/person-add.module';
-
 import { PersonListComponent } from './person-list.component';
 export { PersonListComponent } from './person-list.component';
 
@@ -60,10 +58,6 @@ export { PersonListComponent } from './person-list.component';
     MatSortModule,
     ReactiveFormsModule,
     RouterModule,
-    PersonAddModule
   ],
-  entryComponents: [
-    PersonAddComponent
-  ]
 })
 export class PeopleOverviewModule { }

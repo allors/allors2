@@ -41,13 +41,13 @@ export { ProductQuotesOverviewComponent } from './productquotes-overview.compone
     AllorsMaterialTextAreaModule,
     CommonModule,
     CdkTableModule,
-    
+
     FormsModule,
     InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

@@ -18,13 +18,13 @@ export class AllorsMaterialSelectComponent extends Field {
   public options: ISessionObject[];
 
   @Output()
-  public onSelect: EventEmitter<ISessionObject> = new EventEmitter();
+  public selected: EventEmitter<ISessionObject> = new EventEmitter();
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
   }
 
   public onModelChange(option: ISessionObject): void {
-    this.onSelect.emit(option);
+    this.selected.emit(option);
   }
 }

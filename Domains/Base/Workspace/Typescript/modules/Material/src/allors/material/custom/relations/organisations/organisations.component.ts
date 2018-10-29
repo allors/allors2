@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService, Allors, x } from '../../../../angular';
+import { Loaded, Scope, WorkspaceService, Allors, x, NavigationService } from '../../../../angular';
 import { Organisation } from '../../../../domain';
 import { MetaDomain } from '../../../../meta';
 import { PullRequest } from '../../../../framework';
@@ -23,7 +23,8 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   private scope: Scope;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
+    public navigation: NavigationService,
     private workspaceService: WorkspaceService,
     private titleService: Title,
     private router: Router) {

@@ -37,14 +37,14 @@ export { ProductQuoteOverviewComponent } from './productquote-overview.component
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,

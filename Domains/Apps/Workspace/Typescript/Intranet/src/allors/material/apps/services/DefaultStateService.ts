@@ -41,7 +41,7 @@ export class DefaultStateService extends StateService {
             roleTypes: [m.Party.PartyName],
             post: (predicate: And) => {
                 predicate.operands.push(new ContainedIn({
-                    propertyType: m.Party.CustomerRelationshipsWhereCustomer, 
+                    propertyType: m.Party.CustomerRelationshipsWhereCustomer,
                     extent: new Filter({
                         objectType: m.CustomerRelationship,
                         predicate: new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, value: this.internalOrganisationId }),

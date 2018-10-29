@@ -27,7 +27,7 @@ export { QuoteItemEditComponent } from './quoteitem.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,

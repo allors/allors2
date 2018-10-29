@@ -1,34 +1,38 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild, DoCheck } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
 import { Observable, of } from 'rxjs';
-import { concat, debounceTime, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { concat, debounceTime, distinctUntilChanged, switchMap, map, filter } from 'rxjs/operators';
 
 import { Field } from '../../../../angular';
 import { ISessionObject } from '../../../../framework';
 
-import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteTrigger, MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-autocomplete',
   templateUrl: './autocomplete.component.html',
 })
-export class AllorsMaterialAutocompleteComponent extends Field implements OnInit {
-  @Input() public display = 'display';
+export class AllorsMaterialAutocompleteComponent extends Field implements OnInit, DoCheck {
+  @Input() display = 'display';
 
-  @Input() public debounceTime = 400;
+  @Input() debounceTime = 400;
 
-  @Input() public options: ISessionObject[];
+  @Input() options: ISessionObject[];
 
-  @Input() public filter: ((search: string) => Observable<ISessionObject[]>);
+  @Input() filter: ((search: string) => Observable<ISessionObject[]>);
 
-  @Output() public onChange: EventEmitter<ISessionObject> = new EventEmitter();
+  @Output() changed: EventEmitter<ISessionObject> = new EventEmitter();
 
-  public filteredOptions: Observable<ISessionObject[]>;
+  filteredOptions: Observable<ISessionObject[]>;
 
-  public searchControl: FormControl = new FormControl();
+  searchControl: FormControl = new FormControl();
+
+  @ViewChild(MatAutocomplete) private autoComoplete: MatAutocomplete;
 
   @ViewChild(MatAutocompleteTrigger) private trigger: MatAutocompleteTrigger;
+
+  private focused = false;
 
   constructor(@Optional() parentForm: NgForm) {
     super(parentForm);
@@ -36,52 +40,61 @@ export class AllorsMaterialAutocompleteComponent extends Field implements OnInit
 
   public ngOnInit(): void {
     if (this.filter) {
-      this.filteredOptions = of(new Array<ISessionObject>())
+      this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          concat(
-            this.searchControl.valueChanges
-              .pipe(
-                debounceTime(this.debounceTime),
-                distinctUntilChanged(),
-                switchMap((search: string) => {
-                  return this.filter(search);
-                }))
-          ));
+          filter((v) => v && v.trim && v.toLowerCase),
+          debounceTime(this.debounceTime),
+          distinctUntilChanged(),
+          switchMap((search: string) => {
+            return this.filter(search);
+          }))
+        ;
     } else {
-      this.filteredOptions = of(new Array<ISessionObject>())
+      this.filteredOptions = this.searchControl.valueChanges
         .pipe(
-          concat(
-            this.searchControl.valueChanges
-              .pipe(
-                debounceTime(this.debounceTime),
-                distinctUntilChanged(),
-                map((search: string) => {
-                  const lowerCaseSearch: string = search.trim().toLowerCase();
-                  return this.options
-                    .filter((v: ISessionObject) => {
-                      const optionDisplay: string = v[this.display]
-                        ? v[this.display].toString().toLowerCase()
-                        : undefined;
-                      if (optionDisplay) {
-                        return optionDisplay.indexOf(lowerCaseSearch) !== -1;
-                      }
-                    })
-                    .sort(
-                      (a: ISessionObject, b: ISessionObject) =>
-                        a[this.display] !== b[this.display]
-                          ? a[this.display] < b[this.display] ? -1 : 1
-                          : 0,
-                    );
-                })
-              )
-          )
+          filter((v) => v && v.trim && v.toLowerCase),
+          debounceTime(this.debounceTime),
+          distinctUntilChanged(),
+          map((search: string) => {
+            const lowerCaseSearch = search.trim().toLowerCase();
+            return this.options
+              .filter((v: ISessionObject) => {
+                const optionDisplay: string = v[this.display]
+                  ? v[this.display].toString().toLowerCase()
+                  : undefined;
+                if (optionDisplay) {
+                  return optionDisplay.indexOf(lowerCaseSearch) !== -1;
+                }
+              })
+              .sort(
+                (a: ISessionObject, b: ISessionObject) =>
+                  a[this.display] !== b[this.display]
+                    ? a[this.display] < b[this.display] ? -1 : 1
+                    : 0,
+              );
+          })
         );
     }
 
-    this.searchControl.setValue(this.model);
   }
 
-  public displayFn(): (val: ISessionObject) => string {
+  ngDoCheck() {
+    if (!this.focused && !this.trigger.panelOpen && this.searchControl) {
+      if (this.searchControl.value !== this.model) {
+        this.searchControl.setValue(this.model);
+      }
+    }
+  }
+
+  inputBlur() {
+    this.focused = false;
+  }
+
+  inputFocus() {
+    this.focused = true;
+  }
+
+  displayFn(): (val: ISessionObject) => string {
     return (val: ISessionObject) => {
       if (val) {
         return val ? val[this.display] : '';
@@ -89,14 +102,15 @@ export class AllorsMaterialAutocompleteComponent extends Field implements OnInit
     };
   }
 
-  public optionSelected(event: MatAutocompleteSelectedEvent): void {
+  optionSelected(event: MatAutocompleteSelectedEvent): void {
     this.model = event.option.value;
-    this.onChange.emit(this.model);
+    this.changed.emit(this.model);
   }
 
-  clear(event: Event){
+  clear(event: Event) {
     event.stopPropagation();
     this.model = undefined;
-    this.onChange.emit(this.model);
+    this.trigger.closePanel();
+    this.changed.emit(this.model);
   }
 }

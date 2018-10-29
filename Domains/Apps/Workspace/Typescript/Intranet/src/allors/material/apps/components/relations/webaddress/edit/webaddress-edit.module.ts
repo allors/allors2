@@ -37,7 +37,7 @@ export { EditWebAddressComponent } from './webaddress-edit.component';
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

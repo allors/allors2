@@ -25,7 +25,7 @@ export { OrderTermEditComponent } from './orderterm.component';
     OrderTermEditComponent,
   ],
   imports: [
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,

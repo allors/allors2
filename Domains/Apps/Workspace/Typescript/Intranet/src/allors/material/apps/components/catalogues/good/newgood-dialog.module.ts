@@ -28,7 +28,7 @@ export { NewGoodDialogComponent } from './newgood-dialog-component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,

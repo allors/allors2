@@ -42,7 +42,7 @@ export { ProductQuoteEditComponent } from './productquote.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-    
+
     FormsModule,
     MatButtonModule,
     MatCardModule,

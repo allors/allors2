@@ -83,7 +83,7 @@ export class TreeFactory {
     constructor(private metaPopulation: MetaPopulation) {
     }
 
-$meta.WorkspaceComposites:{composite|$treeFactory(composite)$}; separator="\n\n"$	
+$meta.WorkspaceComposites:{composite|$treeFactory(composite)$}; separator="\n\n"$
 }
 
 $meta.WorkspaceComposites:{composite|$treeComposite(composite)$}; separator="\n\n"$

@@ -46,11 +46,11 @@ export { CommunicationEventWorkTaskComponent } from './communicationevent-workta
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    
+
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatFormFieldModule,  
+    MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatListModule,

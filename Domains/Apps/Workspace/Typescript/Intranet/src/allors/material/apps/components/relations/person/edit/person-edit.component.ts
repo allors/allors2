@@ -19,27 +19,28 @@ import { Fetcher } from '../../../Fetcher';
 })
 export class PersonEditComponent implements OnInit, OnDestroy {
 
-  public readonly m: MetaDomain;
+  readonly m: MetaDomain;
 
-  public readonly title = 'Person';
-  public subTitle: string;
+  readonly title = 'Person';
+  add: boolean;
+  edit: boolean;
 
-  public internalOrganisation: InternalOrganisation;
-  public person: Person;
-  public organisation: Organisation;
-  public organisations: Organisation[];
-  public organisationContactRelationship: OrganisationContactRelationship;
+  internalOrganisation: InternalOrganisation;
+  person: Person;
+  organisation: Organisation;
+  organisations: Organisation[];
+  organisationContactRelationship: OrganisationContactRelationship;
 
-  public locales: Locale[];
-  public genders: Enumeration[];
-  public salutations: Enumeration[];
-  public organisationContactKinds: OrganisationContactKind[];
+  locales: Locale[];
+  genders: Enumeration[];
+  salutations: Enumeration[];
+  organisationContactKinds: OrganisationContactKind[];
 
-  public roles: PersonRole[];
-  public selectableRoles: PersonRole[] = [];
-  public activeRoles: PersonRole[] = [];
-  public customerRelationship: CustomerRelationship;
-  public employment: Employment;
+  roles: PersonRole[];
+  selectableRoles: PersonRole[] = [];
+  activeRoles: PersonRole[] = [];
+  customerRelationship: CustomerRelationship;
+  employment: Employment;
 
   private customerRole: PersonRole;
   private employeeRole: PersonRole;
@@ -164,7 +165,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
         this.organisationContactKinds = loaded.collections.OrganisationContactKinds as OrganisationContactKind[];
 
         if (this.person) {
-          this.subTitle = 'edit person';
+          this.edit = true;
           [this.customerRelationship] = loaded.collections.CustomerRelationships as CustomerRelationship[];
           [this.employment] = loaded.collections.Employments as Employment[];
           [this.organisationContactRelationship] = loaded.collections.OrganisationContactRelationships as OrganisationContactRelationship[];
@@ -188,7 +189,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
           }
 
         } else {
-          this.subTitle = 'add a new person';
+          this.add = true;
           this.person = scope.session.create('Person') as Person;
         }
 

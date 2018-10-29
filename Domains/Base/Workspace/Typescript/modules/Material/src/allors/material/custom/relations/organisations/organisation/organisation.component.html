@@ -18,7 +18,7 @@
 
           <div class="row">
             <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [filter]="peopleFilter.create(scope)" display="UserName" (changed)="ownerSelected($event)" hint="With filter"></a-mat-autocomplete>
-            <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" hint="With options"></a-mat-autocomplete>
+            <a-mat-autocomplete class="col-md" [object]="organisation" [roleType]="m.Organisation.Owner" [options]="people" display="UserName" (changed)="ownerSelected($event)" hint="With options"></a-mat-autocomplete>
           </div>
 
           <div class="row">

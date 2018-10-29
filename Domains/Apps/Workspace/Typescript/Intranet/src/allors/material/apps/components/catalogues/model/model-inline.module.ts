@@ -28,7 +28,7 @@ export { InlineModelComponent } from './model-inline.component';
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
-    
+
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
@@ -58,6 +58,6 @@ export { InlineModelComponent } from './model-inline.component';
     MatTooltipModule,
     MatOptionModule,
     ReactiveFormsModule,
-    RouterModule,],
+    RouterModule, ],
 })
 export class ModelInlineModule { }
