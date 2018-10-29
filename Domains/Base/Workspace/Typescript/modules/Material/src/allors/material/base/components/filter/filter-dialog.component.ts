@@ -1,5 +1,5 @@
 import { MatDialogRef, MAT_DIALOG_DATA, MatStepper } from '@angular/material';
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, Inject, ViewChild, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AllorsFilterService } from '../../../../angular/base/filter';
@@ -9,7 +9,7 @@ import { ParametrizedPredicate } from 'src/allors/framework';
 @Component({
   templateUrl: 'filter-dialog.component.html',
 })
-export class AllorsMaterialFilterDialogComponent {
+export class AllorsMaterialFilterDialogComponent implements OnInit {
 
   @ViewChild('stepper') stepper: MatStepper;
 

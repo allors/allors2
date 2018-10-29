@@ -38,7 +38,7 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, ErrorService, LoggingService, MediaService, MenuService, AllorsModule, AllorsFocusModule
+  DatabaseConfig, ErrorService, LoggingService, MediaService, MenuService, AllorsModule, AllorsFocusModule, NavigationService
 } from '../allors/angular';
 
 import {
@@ -99,6 +99,7 @@ const BASE_MATERIAL_MODULES: any[] = [
     { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
     AllorsMaterialSideNavService,
     AllorsMaterialDialogService,
+    NavigationService,
     MenuService,
     AuthenticationService,
     AuthorizationService,

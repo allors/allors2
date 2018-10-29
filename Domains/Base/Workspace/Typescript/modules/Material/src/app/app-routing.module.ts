@@ -9,7 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import * as relations from '../allors/material/custom/relations';
 import * as tests from '../allors/material/custom/tests';
-import { moduleData, pageListData } from 'src/allors/angular';
+import { moduleData, pageListData, overviewData } from 'src/allors/angular';
 import { ids } from 'src/allors/meta';
 
 const routes: Routes = [
@@ -28,15 +28,15 @@ const routes: Routes = [
         children: [
           {
             children: [
-              { path: '', component: relations.OrganisationsComponent, data: pageListData({ id: ids.Organisation, title:"Organisations", icon: 'business' }) },
+              { path: '', component: relations.OrganisationsComponent, data: pageListData({ id: ids.Organisation, title: 'Organisations', icon: 'business' }) },
               { path: 'add', component: relations.OrganisationComponent },
               { path: ':id/edit', component: relations.OrganisationComponent },
-              { path: ':id/overview', component: relations.OrganisationOverviewComponent },
+              { path: ':id/overview', component: relations.OrganisationOverviewComponent, data: overviewData ({ id: ids.Organisation }) },
             ],
             path: 'organisations',
           }, {
             children: [
-              { path: '', component: relations.PeopleComponent, data: pageListData({ id: ids.Person, title:"People", icon: 'people' }) },
+              { path: '', component: relations.PeopleComponent, data: pageListData({ id: ids.Person, title: 'People', icon: 'people' }) },
               { path: 'add', component: relations.PersonComponent },
               { path: ':id/edit', component: relations.PersonComponent },
               { path: ':id/overview', component: relations.PersonOverviewComponent },
