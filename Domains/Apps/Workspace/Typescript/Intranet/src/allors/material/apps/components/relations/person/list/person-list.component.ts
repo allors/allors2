@@ -14,7 +14,6 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { Sorter } from '../../../../../base/sorting';
 
 import { Person } from '../../../../../../domain';
-import { PersonAddComponent } from '../add/person-add.module';
 
 interface Row {
   person: Person;
@@ -45,7 +44,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
     @Self() private filterService: AllorsFilterService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -204,15 +203,5 @@ export class PersonListComponent implements OnInit, OnDestroy {
           }
         });
     }
-  }
-
-  public addNew() {
-    const dialogRef = this.dialog.open(PersonAddComponent, {
-      autoFocus: false,
-      disableClose: true
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.refresh();
-    });
   }
 }
