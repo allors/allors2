@@ -12,11 +12,11 @@ import { ErrorService, MediaService, x, Allors, NavigationService, Invoked } fro
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
+import { StateService } from '../../../../services/StateService';
 
 import { Good, Part, ProductCategory, ProductType, Ownership, InventoryItemKind, Organisation, SerialisedInventoryItemState, InternalOrganisation } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';
-import { StateService } from 'src/allors/material/apps/services/StateService';
-import { GoodEditComponent } from '../..';
+import { GoodEditComponent } from '../../good/edit/good-edit.component';
 
 interface Row {
   good: Good;
