@@ -43,6 +43,8 @@ domain.extend((workspace) => {
             if (this.UserName) {
                 return this.UserName;
             }
+
+            return "N/A";
         },
     });
 
