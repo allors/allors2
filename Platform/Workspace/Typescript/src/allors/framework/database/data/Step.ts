@@ -61,7 +61,7 @@ export class Step {
 
     return {
       include: this.include,
-      propertyType: this.propertyType.id,
+      propertytype: this.propertyType.id,
       next: this.next,
     };
   }

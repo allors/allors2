@@ -1,39 +1,25 @@
-import { domain, Person, Media, Organisation } from '../../src/allors/domain';
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
-import { data, MetaDomain, FetchOrganisation, TreeFactory, FetchFactory } from '../../src/allors/meta';
-
-import { Database, Scope } from '../../src/allors/promise';
-import { AxiosHttp } from '../../src/allors/promise/base/http/AxiosHttp';
+import { Person, Media, Organisation } from '../../src/allors/domain';
+import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
 
 import { assert } from 'chai';
 import 'mocha';
 
+import { Fixture } from '../Fixture';
+
 describe('Extent',
     () => {
-        let metaPopulation: MetaPopulation;
-        let m: MetaDomain;
-        let scope: Scope;
-        let tree: TreeFactory;
-        let fetch: FetchFactory;
+        let fixture: Fixture;
 
         beforeEach(async () => {
-            metaPopulation = new MetaPopulation(data);
-            m = metaPopulation.metaDomain;
-            const workspace = new Workspace(metaPopulation);
-            domain.apply(workspace);
-
-            const http = new AxiosHttp('http://localhost:5000/');
-            await http.login('TestAuthentication/Token', 'administrator');
-            const database = new Database(http);
-            scope = new Scope(database, workspace);
-
-            tree = new TreeFactory(metaPopulation);
-            fetch = new FetchFactory(metaPopulation);
+            fixture = new Fixture();
+            await fixture.init();
         });
 
         describe('People',
             () => {
                 it('should return all people', async () => {
+
+                    const { m, scope } = fixture;
 
                     const pulls = [
                         new Pull({
@@ -45,8 +31,9 @@ describe('Extent',
 
                     scope.session.reset();
 
+                    const pullRequest = new PullRequest({ pulls });
                     const loaded = await scope
-                        .load('Pull', new PullRequest({ pulls }));
+                        .load('Pull', pullRequest);
 
                     const people = loaded.collections['People'] as Person[];
 
@@ -59,6 +46,8 @@ describe('Extent',
         describe('People with include tree',
             () => {
                 it('should return all people', async () => {
+
+                    const { m, scope } = fixture;
 
                     const pulls = [
                         new Pull({
@@ -92,7 +81,7 @@ describe('Extent',
                     assert.isArray(people);
                     assert.isNotEmpty(people);
 
-                    people.forEach((person) => {
+                    people.forEach(() => {
                     });
                 });
             });
@@ -100,6 +89,8 @@ describe('Extent',
         describe('Organisation with tree builder',
             () => {
                 it('should return all organisations', async () => {
+
+                    const { m, scope, tree } = fixture;
 
                     const pulls = [
                         new Pull({
@@ -140,6 +131,8 @@ describe('Extent',
             () => {
                 it('should return all owners', async () => {
 
+                    const { m, scope, fetch } = fixture;
+
                     const pulls = [
                         new Pull({
                             extent: new Filter({
@@ -160,7 +153,7 @@ describe('Extent',
                     const loaded = await scope
                         .load('Pull', new PullRequest({ pulls }));
 
-                    const owners = loaded.collections['Owners'] as Media[];
+                    const owners = loaded.collections['Owners'] as Person[];
 
                     assert.isArray(owners);
                     assert.isNotEmpty(owners);
@@ -168,6 +161,8 @@ describe('Extent',
                 });
 
                 it('should return all employees', async () => {
+
+                    const { m, scope, fetch } = fixture;
 
                     const pulls = [
                         new Pull({
@@ -201,6 +196,8 @@ describe('Extent',
             () => {
                 it('should return all employees', async () => {
 
+                    const { m, scope, fetch } = fixture;
+
                     const pulls = [
                         new Pull({
                             extent: new Filter(m.Organisation),
@@ -230,6 +227,8 @@ describe('Extent',
         describe('Organisation with typesafe path and tree',
             () => {
                 it('should return all people', async () => {
+
+                    const { m, scope, fetch } = fixture;
 
                     const pulls = [
                         new Pull({

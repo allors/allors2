@@ -6,7 +6,7 @@
   "license": "LGPL-3.0",
   "scripts": {
     "postinstall": "node ./postinstall.js",
-    "lint": "tslint --fix --project ./tsconfig.json",
+    "lint": "tslint --project ./tsconfig.json",
     "lint-fix": "tslint --fix --project ./tsconfig.json",
     "test": "_mocha --compilers ts:ts-node/register ./test/**/*.spec.ts",
     "tc:test": "_mocha --compilers ts:ts-node/register --reporter mocha-teamcity-reporter ./test/**/*.spec.ts"

@@ -88,7 +88,7 @@ export class Pull {
     return {
       extentRef: this.extentRef,
       extent: this.extent,
-      objectType: this.objectType && (this.objectType as MetaObjectType)._objectType ? (this.objectType as MetaObjectType)._objectType.id : (this.objectType as ObjectType).id,
+      objectType: this.objectType && ((this.objectType as MetaObjectType)._objectType ? (this.objectType as MetaObjectType)._objectType.id : (this.objectType as ObjectType).id),
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
       arguments: this.arguments,
       results: this.results,

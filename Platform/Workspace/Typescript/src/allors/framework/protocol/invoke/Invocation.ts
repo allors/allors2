@@ -1,5 +1,5 @@
-﻿export class Invocation {
-    public i: string;
-    public v: string;
-    public m: string;
+﻿export interface Invocation {
+    i: string;
+    v: string;
+    m: string;
 }

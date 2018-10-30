@@ -6,7 +6,7 @@ import { map, catchError } from 'rxjs/operators';
 import { AuthenticationConfig } from './authentication.config';
 import { AuthenticationTokenRequest } from './AuthenticationTokenRequest';
 import { AuthenticationTokenResponse } from './AuthenticationTokenResponse';
-import { throwError } from 'rxjs';
+import { throwError, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -25,7 +25,7 @@ export class AuthenticationService {
     private authenticationConfig: AuthenticationConfig,
   ) { }
 
-  public login$(userName: string, password: string): any {
+  public login$(userName: string, password: string): Observable<AuthenticationTokenResponse> {
     const url = this.authenticationConfig.url;
     const request: AuthenticationTokenRequest = { userName, password };
 

@@ -8,24 +8,19 @@ import { AxiosHttp } from '../../src/allors/promise/base/http/AxiosHttp';
 import { assert } from 'chai';
 import 'mocha';
 
+import { Fixture } from '../Fixture';
+
 describe('Instantiate',
     () => {
-        let metaPopulation: MetaPopulation;
-        let m: MetaDomain;
-        let scope: Scope;
+        let fixture: Fixture;
 
         let people: Person[] = [];
 
         beforeEach(async () => {
-            metaPopulation = new MetaPopulation(data);
-            m = metaPopulation.metaDomain;
-            const workspace = new Workspace(metaPopulation);
-            domain.apply(workspace);
+            fixture = new Fixture();
+            await fixture.init();
 
-            const http = new AxiosHttp('http://localhost:5000/');
-            await http.login('TestAuthentication/Token', 'administrator');
-            const database = new Database(http);
-            scope = new Scope(database, workspace);
+            const { m, scope } = fixture;
 
             const pulls = [
                 new Pull({
@@ -46,13 +41,13 @@ describe('Instantiate',
                 .load('Pull', new PullRequest({ pulls }));
 
             people = loaded.collections['People'] as Person[];
-
-            scope = new Scope(database, workspace);
         });
 
         describe('Person',
             () => {
                 it('should return person', async () => {
+
+                    const { m, scope } = fixture;
 
                     const object = people[0].id;
 
@@ -78,6 +73,8 @@ describe('Instantiate',
         describe('People with include tree',
             () => {
                 it('should return all people', async () => {
+
+                    const { m, scope } = fixture;
 
                     const pulls = [
                         new Pull({
