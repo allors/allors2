@@ -59,7 +59,9 @@ namespace Intranet.Tests
             new Setup(this.Session, null).Apply();
             this.Session.Commit();
 
-            new Population(this.Session, null).Execute();
+            // TODO: Using Demo instead of Test Population
+            new Demo(this.Session, null).Execute();
+            // new Population(this.Session, null).Execute();
 
             this.Session.Commit();
         }

@@ -1,13 +1,10 @@
 import { async } from '@angular/core/testing';
 
 import { PullRequest, Pull, Filter, Result, Fetch, Tree, TreeNode } from '../../allors/framework';
-import { Loaded } from '../../allors/angular';
 import { Person, Organisation } from '../../allors/domain';
-
-import { Fixture } from '../Fixture';
+import { Fixture } from '../Fixture.spec';
 
 import 'jasmine-expect';
-import { assertDataInRangeInternal } from '@angular/core/src/render3/util';
 
 let fixture: Fixture;
 
