@@ -101,6 +101,8 @@
     <Compile Include="generated\Task.g.cs" />
     <Compile Include="generated\TaskAssignment.g.cs" />
     <Compile Include="generated\TaskList.g.cs" />
+    <Compile Include="generated\Template.g.cs" />
+    <Compile Include="generated\TemplateType.g.cs" />
     <Compile Include="generated\UniquelyIdentifiable.g.cs" />
     <Compile Include="generated\UnitSample.g.cs" />
     <Compile Include="generated\User.g.cs" />
