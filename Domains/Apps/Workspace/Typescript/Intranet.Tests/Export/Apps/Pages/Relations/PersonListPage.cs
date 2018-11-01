@@ -7,9 +7,9 @@ namespace Intranet.Pages.Relations
 
     using OpenQA.Selenium;
 
-    public class PeopleOverviewPage : MainPage
+    public class PersonListPage : MainPage
     {
-        public PeopleOverviewPage(IWebDriver driver)
+        public PersonListPage(IWebDriver driver)
             : base(driver)
         {
         }
@@ -18,7 +18,7 @@ namespace Intranet.Pages.Relations
 
         public Button Export => new Button(this.Driver, By.XPath("//button[.//mat-icon[contains(text(),'cloud_download')]]"));
 
-        public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
+        public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
 
         public MaterialList List => new MaterialList(this.Driver);
 

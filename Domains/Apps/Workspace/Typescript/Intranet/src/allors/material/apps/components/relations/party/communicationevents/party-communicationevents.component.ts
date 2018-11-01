@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors} from '../../../../../../angular';
-import { CommunicationEvent} from '../../../../../../domain';
+import { NavigationService, Allors } from '../../../../../../angular';
+import { CommunicationEvent } from '../../../../../../domain';
 import { ObjectType } from '../../../../../../framework';
 
 @Component({
@@ -15,10 +15,9 @@ export class PartyCommnunicationEventsComponent {
 
   @Output() add: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
 
+  @Output() edit: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
+
   @Output() delete: EventEmitter<CommunicationEvent> = new EventEmitter<CommunicationEvent>();
 
-  constructor(
-    public allors: Allors,
-    public navigation: NavigationService
-  ) { }
+  constructor(public allors: Allors) { }
 }

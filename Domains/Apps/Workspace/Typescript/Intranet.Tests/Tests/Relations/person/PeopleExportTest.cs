@@ -9,7 +9,7 @@ namespace Intranet.Tests.RelationsPerson
             : base(fixture)
         {
             var dashboard = this.Login();
-            var people = dashboard.Sidenav.NavigateToPeople();
+            var people = dashboard.Sidenav.NavigateToPersonList();
             people.Export.Click();
         }
 

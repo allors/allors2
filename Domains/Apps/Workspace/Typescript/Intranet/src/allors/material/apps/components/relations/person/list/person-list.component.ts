@@ -7,7 +7,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter } from '../../../../../../framework';
+import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter, ContainedIn } from '../../../../../../framework';
 import { ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
@@ -69,6 +69,19 @@ export class PersonListComponent implements OnInit, OnDestroy {
     const predicate = new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
+      // new ContainedIn({
+      //   propertyType: m.Person.GeneralCorrespondence,
+      //   extent: new Filter({
+      //       objectType: m.PostalAddress,
+      //       predicate: new ContainedIn({
+      //         propertyType: m.PostalAddress.Country,
+      //         extent: new Filter({
+      //           objectType: m.Country,
+      //           predicate: new Like({roleType: m.Country.Name, parameter: 'countryName'})
+      //         })
+      //       })
+      //   })
+      // })
     ]);
 
     this.filterService.init(predicate);
@@ -90,7 +103,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
         }, []),
-        switchMap(([refresh, filterFields, sort, pageEvent]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             pull.Person({

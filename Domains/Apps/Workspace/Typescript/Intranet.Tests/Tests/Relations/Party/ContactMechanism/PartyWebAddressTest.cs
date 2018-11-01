@@ -27,7 +27,7 @@ namespace Intranet.Tests.RelationsPartyCommunicationEvent
             var person = new People(this.Session).FindBy(M.Person.PartyName, "contact1");
             var email = (EmailCommunication)person.CommunicationEventsWhereInvolvedParty.First(v => v is EmailCommunication);
 
-            this.sideNav.NavigateToPeople().Select(person).Select(email).Edit.Click();
+            this.sideNav.NavigateToPersonList().Select(person).Select(email).Edit.Click();
 
             Assert.Equal("Communication Event overview", this.Driver.Title);
         }
@@ -40,7 +40,7 @@ namespace Intranet.Tests.RelationsPartyCommunicationEvent
 
             Assert.False(email.ExistScheduledStart);
 
-            this.sideNav.NavigateToPeople().Select(person).Select(email).Edit.Click();
+            this.sideNav.NavigateToPersonList().Select(person).Select(email).Edit.Click();
 
             var page = new PartyEmailCommunicationPage(this.Driver);
 

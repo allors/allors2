@@ -15,7 +15,7 @@
     </ul>
 
     <mat-list>
-      <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="navigation.edit(communicationEvent)" style="cursor: pointer;">
+      <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id" (click)="edit.emit(communicationEvent)" style="cursor: pointer;">
         <div *ngIf="communicationEvent.objectType === allors.m.FaceToFaceCommunication" mat-line>Meeting, {{ communicationEvent.CommunicationEventState.Name }}</div>
         <div *ngIf="communicationEvent.objectType === allors.m.PhoneCommunication" mat-line>Phone call, {{ communicationEvent.CommunicationEventState.Name }}</div>
         <div *ngIf="communicationEvent.objectType === allors.m.EmailCommunication" mat-line>Email, {{ communicationEvent.CommunicationEventState.Name }}</div>
@@ -34,7 +34,7 @@
             <mat-icon>more_vert</mat-icon>
           </button>
           <mat-menu #menuEditCom="matMenu">
-            <button mat-menu-item (click)="navigation.edit(communicationEvent)">Edit</button>
+            <button mat-menu-item (click)="edit.emit(communicationEvent)">Edit</button>
             <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="delete.emit(communicationEvent)">Delete</button>
             <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="delete.emit(communicationEvent)">Cancel</button>
             <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="delete.emit(communicationEvent)">Close</button>

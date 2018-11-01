@@ -18,19 +18,22 @@ import { switchMap, map } from 'rxjs/operators';
 })
 export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
-  public title = 'Face to Face Communication (Meeting)';
+  title = 'Face to Face Communication (Meeting)';
 
-  public addParticipant = false;
+  addParticipant = false;
 
-  public m: MetaDomain;
+  add: boolean;
+  edit: boolean;
 
-  public party: Party;
-  public person: Person;
-  public organisation: Organisation;
-  public purposes: CommunicationEventPurpose[];
-  public contacts: Party[] = [];
+  m: MetaDomain;
 
-  public communicationEvent: FaceToFaceCommunication;
+  party: Party;
+  person: Person;
+  organisation: Organisation;
+  purposes: CommunicationEventPurpose[];
+  contacts: Party[] = [];
+
+  communicationEvent: FaceToFaceCommunication;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -68,7 +71,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: x
                   }
                 }
               }
@@ -79,50 +82,49 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          const add = !id;
-
-          if (add) {
-            if (!!organisationId) {
-              pulls = [
-                ...pulls,
-                pull.Organisation({
-                  object: organisationId,
-                  include: {
-                    CurrentContacts: x,
-                    CurrentPartyContactMechanisms: {
-                      ContactMechanism: x,
-                    }
+          if (!!organisationId) {
+            pulls = [
+              ...pulls,
+              pull.Organisation({
+                object: organisationId,
+                include: {
+                  CurrentContacts: x,
+                  CurrentPartyContactMechanisms: {
+                    ContactMechanism: x,
                   }
                 }
-                )
-              ];
-            }
+              }
+              )
+            ];
+          }
 
-            if (!!personId) {
-              pulls = [
-                ...pulls,
-                pull.Person({
-                  object: personId,
-                }),
-                pull.Person({
-                  object: personId,
-                  fetch: {
-                    OrganisationContactRelationshipsWhereContact: {
-                      Organisation: {
-                        include: {
-                          CurrentContacts: x,
-                          CurrentPartyContactMechanisms: {
-                            ContactMechanism: x,
-                          }
+          if (!!personId) {
+            pulls = [
+              ...pulls,
+              pull.Person({
+                object: personId,
+              }),
+              pull.Person({
+                object: personId,
+                fetch: {
+                  OrganisationContactRelationshipsWhereContact: {
+                    Organisation: {
+                      include: {
+                        CurrentContacts: x,
+                        CurrentPartyContactMechanisms: {
+                          ContactMechanism: x,
                         }
                       }
                     }
                   }
-                })
-              ];
-            }
+                }
+              })
+            ];
+          }
 
-          } else {
+          const add = !id;
+
+          if (!add) {
             pulls = [
               ...pulls,
               pull.FaceToFaceCommunication({
@@ -150,26 +152,30 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
+        this.person = loaded.objects.Person as Person;
+        this.organisation = loaded.objects.Organisation as Organisation;
+        if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
+          // TODO: check active
+          this.organisation = loaded.collections.Organisations[0] as Organisation;
+        }
+
+        this.party = this.organisation || this.person;
+
+        this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
+        if (!!this.person) {
+          this.contacts.push(this.person);
+        }
+
         if (add) {
-          this.person = loaded.objects.Person as Person;
-          this.organisation = loaded.objects.Organisation as Organisation;
-          if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
-            // TODO: check active
-            this.organisation = loaded.collections.Organisations[0] as Organisation;
-          }
-
-          this.party = this.organisation || this.person;
-
-          this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
-          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
-          if (!!this.person) {
-            this.contacts.push(this.person);
-          }
+          this.add = !(this.edit = false);
 
           this.communicationEvent = scope.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
           this.communicationEvent.AddParticipant(this.person);
 
         } else {
+          this.edit = !(this.add = false);
+
           this.communicationEvent = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
         }
       },

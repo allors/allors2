@@ -26,7 +26,7 @@ namespace Intranet.Tests
 
         public Element RelationsGroup => this.Group("Relations");
 
-        public Anchor People => this.Link("/relations/people");
+        public Anchor PersonList => this.Link("/relations/people");
         
         public Anchor Organisations => this.Link("/relations/organisations");
 
@@ -73,10 +73,14 @@ namespace Intranet.Tests
             return new DashboardPage(this.Driver);
         }
 
-        public PeopleOverviewPage NavigateToPeople()
+        public PersonListPage NavigateToPersonList()
         {
-            this.Navigate(this.RelationsGroup, this.People);
-            return new PeopleOverviewPage(this.Driver);
+            var button = new Button(this.Driver, By.CssSelector("button[aria-label='Toggle sidenav']"));
+            button.Click();
+            this.Driver.WaitForAngular();
+
+            this.Navigate(this.RelationsGroup, this.PersonList);
+            return new PersonListPage(this.Driver);
         }
 
         public OrganisationsOverviewPage NavigateToOrganisations()

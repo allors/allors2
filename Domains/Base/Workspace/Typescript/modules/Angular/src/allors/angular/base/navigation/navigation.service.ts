@@ -44,11 +44,12 @@ export class NavigationService {
     this.router.navigate([url], { queryParams });
   }
 
-  edit(sessionObject: ISessionObject) {
+  edit(sessionObject: ISessionObject, ...params: ISessionObject[]) {
     const objectTypeId = sessionObject.objectType.id;
     const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'edit');
     const url = navigationItem.link.replace(`:id`, sessionObject.id);
-    this.router.navigate([url]);
+    const queryParams = params.reduce((acc, v) => { acc[v.objectType.name] = v.id; return acc; }, {});
+    this.router.navigate([url], { queryParams });
   }
 
   back() {

@@ -58,7 +58,7 @@
       </div>
 
       <div class="col-md-6">
-        <party-communicationevents [communicationEvents]='communicationEvents' (add)="navigation.add($event, organisation)" (delete)="deleteCommunication($event)"></party-communicationevents>
+        <party-communicationevents [communicationEvents]='communicationEvents' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"></party-communicationevents>
       </div>
 
       <div class="col-md-6">

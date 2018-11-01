@@ -57,7 +57,9 @@ import {
   AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule,
   AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, MomentUtcDateAdapter, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent, AllorsMaterialSideNavService, AllorsMaterialDialogService
 } from '../allors/material';
+
 import { AllorsFilterModule } from '../allors/angular/base/filter';
+import { InternalOrganisationSelectModule } from '../allors/material/apps/components/common/internalorganisation/internalorganisation-select.module';
 
 const ALLORS_MATERIAL_MODULES: any[] = [
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialDatetimepickerModule, AllorsMaterialDialogModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule, AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule,
@@ -87,6 +89,7 @@ const ALLORS_MATERIAL_MODULES: any[] = [
     AllorsFocusModule.forRoot(),
     AllorsFilterModule.forRoot(),
     AllorsMaterialFilterModule,
+    InternalOrganisationSelectModule,
 
     relations.Modules,
     orders.Modules,

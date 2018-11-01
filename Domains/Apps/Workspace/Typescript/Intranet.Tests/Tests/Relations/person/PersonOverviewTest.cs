@@ -11,13 +11,13 @@ namespace Intranet.Tests.RelationsPerson
     [Collection("Test collection")]
     public class PersonOverviewTest : Test
     {
-        private readonly PeopleOverviewPage people;
+        private readonly PersonListPage people;
 
         public PersonOverviewTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPeople();
+            this.people = dashboard.Sidenav.NavigateToPersonList();
         }
 
         [Fact]

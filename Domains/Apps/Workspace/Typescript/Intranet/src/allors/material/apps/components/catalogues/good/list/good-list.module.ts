@@ -14,8 +14,6 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { InternalOrganisationSelectModule } from '../../../common/internalorganisation/internalorganisation-select.module';
-
 import { GoodListComponent } from './good-list.component';
 export { GoodListComponent } from './good-list.component';
 
@@ -38,7 +36,6 @@ export { GoodListComponent } from './good-list.component';
     AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,
-    InternalOrganisationSelectModule,
     MatButtonModule,
     MatCardModule,
     MatCheckboxModule,

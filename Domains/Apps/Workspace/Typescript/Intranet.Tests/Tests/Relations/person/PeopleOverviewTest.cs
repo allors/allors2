@@ -11,7 +11,7 @@ namespace Intranet.Tests.RelationsPerson
             : base(fixture)
         {
             var dashboard = this.Login();
-            dashboard.Sidenav.NavigateToPeople();
+            dashboard.Sidenav.NavigateToPersonList();
         }
 
         [Fact]
@@ -23,7 +23,7 @@ namespace Intranet.Tests.RelationsPerson
         [Fact]
         public void Search()
         {
-            var page = new PeopleOverviewPage(this.Driver);
+            var page = new PersonListPage(this.Driver);
 
             page.LastName.Text = "jos";
 

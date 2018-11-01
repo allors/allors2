@@ -11,26 +11,26 @@ namespace Intranet.Tests.RelationsPerson
     [Collection("Test collection")]
     public class PersonTest : Test
     {
-        private readonly PeopleOverviewPage people;
+        private readonly PersonListPage personListPage;
 
         public PersonTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPeople();
+            this.personListPage = dashboard.Sidenav.NavigateToPersonList();
         }
 
         [Fact]
         public void Title()
         {
-            this.people.AddNew.Click();
+            this.personListPage.AddNew.Click();
             Assert.Equal("Person", this.Driver.Title);
         }
 
         [Fact]
         public void Add()
         {
-            this.people.AddNew.Click();
+            this.personListPage.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
             var page = new PersonPage(this.Driver);
@@ -65,7 +65,7 @@ namespace Intranet.Tests.RelationsPerson
 
             var person = before.First(v => v.PartyName.Equals("contact1"));
 
-            var personOverview = this.people.Select(person);
+            var personOverview = this.personListPage.Select(person);
             var page = personOverview.Edit();
             
             page.Salutation.Value = "Mr.";

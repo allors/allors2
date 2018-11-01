@@ -4,7 +4,7 @@
     <mat-toolbar color="primary">
       <mat-icon svgIcon="allors-dark" size="3"></mat-icon>
     </mat-toolbar>
-    <a-mat-sidemenu [items]="sideMenuItems"></a-mat-sidemenu>
+    <a-mat-sidemenu  [items]="sideMenuItems"></a-mat-sidemenu>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -14,6 +14,9 @@
           <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
         </button>
         <span style="padding-left: 1rem">Allors Applications</span>
+        <span class="ml-auto">
+          <internalorganisation-select></internalorganisation-select>
+        </span>
       </mat-toolbar>
 
       <router-outlet></router-outlet>

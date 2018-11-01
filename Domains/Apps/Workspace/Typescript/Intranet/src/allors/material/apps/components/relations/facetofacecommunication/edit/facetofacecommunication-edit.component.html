@@ -3,7 +3,9 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigation.overview(party)">{{party.displayName}}</a></span> / {{title}}
+        <a (click)="navigation.list(m.Person)">People</a>
+        <span *ngIf="add"> / Add a new Meeting </span>
+        <span *ngIf="edit"> / <a (cklick)="navigation.overview(person)">{{person?.displayName}}</a> / Edit Meeting</span>
       </div>
     </div>
   </div>
@@ -60,7 +62,7 @@
         </div>
       </mat-card-content>
 
-      <mat-card-actions>
+      <mat-card-actions *ngIf="edit">
         <button *ngIf="communicationEvent.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
         <button *ngIf="communicationEvent.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
         <button *ngIf="communicationEvent.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>

@@ -27,7 +27,7 @@ namespace Intranet.Tests.RelationsCommunicationEventWorkTask
             var person = new People(this.Session).FindBy(M.Person.PartyName, "contact1");
             var email = (EmailCommunication)person.CommunicationEventsWhereInvolvedParty.First(v => v is EmailCommunication);
 
-            this.sideNav.NavigateToPeople().Select(person).Select(email).AddNew.Click();
+            this.sideNav.NavigateToPersonList().Select(person).Select(email).AddNew.Click();
 
             Assert.Equal("Work Task", this.Driver.Title);
         }
@@ -38,7 +38,7 @@ namespace Intranet.Tests.RelationsCommunicationEventWorkTask
             var person = new People(this.Session).FindBy(M.Person.PartyName, "contact1");
             var email = (EmailCommunication)person.CommunicationEventsWhereInvolvedParty.First(v => v is EmailCommunication);
 
-            this.sideNav.NavigateToPeople().Select(person).Select(email).AddNew.Click();
+            this.sideNav.NavigateToPersonList().Select(person).Select(email).AddNew.Click();
 
             var page = new CommunicationEventWorkTaskPage(this.Driver);
 
