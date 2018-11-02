@@ -209,3 +209,4 @@ FakesAssemblies/
 *.opt
 Domains/Apps/Repository/Domain/Apps/Good.cs
 Domains/Apps/Workspace/Typescript/Intranet/package-lock.json
+/Domains/Base/External

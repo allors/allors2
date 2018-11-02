@@ -201,5 +201,87 @@ namespace Allors.Domain
             workOrder.ActualStart.ShouldEqual(yesterday);
             workOrder.ActualCompletion.ShouldEqual(laterTomorrow);
         }
+
+        [Fact]
+        public void GivenWorkEffort_WhenDeriving_ThenPrintDocumentRendered()
+        {
+            // Arrange
+            var frequencies = new TimeFrequencies(this.Session);
+
+            var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
+            var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
+            var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
+            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
+            var part3 = new PartBuilder(this.Session).WithPartId("P3").Build();
+
+            this.Session.Derive(true);
+
+            var inventoryAssignment1 = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workOrder)
+                .WithPart(part1)
+                .WithQuantity(11)
+                .Build();
+
+            var inventoryAssignment2 = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workOrder)
+                .WithPart(part2)
+                .WithQuantity(12)
+                .Build();
+
+            var inventoryAssignment3 = new WorkEffortInventoryAssignmentBuilder(this.Session)
+                .WithAssignment(workOrder)
+                .WithPart(part3)
+                .WithQuantity(13)
+                .Build();
+
+            var yesterday = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(-1));
+            var laterYesterday = DateTimeFactory.CreateDateTime(yesterday.AddHours(3));
+
+            var today = DateTimeFactory.CreateDateTime(this.Session.Now());
+            var laterToday = DateTimeFactory.CreateDateTime(today.AddHours(4));
+
+            var tomorrow = DateTimeFactory.CreateDateTime(this.Session.Now().AddDays(1));
+            var laterTomorrow = DateTimeFactory.CreateDateTime(tomorrow.AddHours(6));
+
+            var timeEntryYesterday = new TimeEntryBuilder(this.Session)
+                .WithFromDate(yesterday)
+                .WithThroughDate(laterYesterday)
+                .WithTimeFrequency(frequencies.Hour)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            var timeEntryToday = new TimeEntryBuilder(this.Session)
+                .WithFromDate(today)
+                .WithThroughDate(laterToday)
+                .WithTimeFrequency(frequencies.Hour)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            var timeEntryTomorrow = new TimeEntryBuilder(this.Session)
+                .WithFromDate(tomorrow)
+                .WithThroughDate(laterTomorrow)
+                .WithTimeFrequency(frequencies.Minute)
+                .WithWorkEffort(workOrder)
+                .Build();
+
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryYesterday);
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryToday);
+            employee.TimeSheetWhereWorker.AddTimeEntry(timeEntryTomorrow);
+
+            // Act
+            this.Session.Derive(true);
+
+            // Assert
+            workOrder.PrintDocument.ShouldNotBeNull();
+            //var result = workOrder.PrintDocument;
+
+            //var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            //var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "generated.odt"));
+            //var stream = new System.IO.MemoryStream(result.MediaContent.Data);
+
+            //stream.CopyTo(outputFile);
+            //stream.Close();
+        }
     }
 }
