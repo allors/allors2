@@ -64,7 +64,7 @@ namespace Intranet.Tests
 
         public Anchor Tasks => this.Link("/workefforts/worktasks");
 
-        public Button Toggle => new Button(this.Driver, By.CssSelector("a-mat-sidenavtoggle button"));
+        public Button Toggle => new Button(this.Driver, By.CssSelector("button[aria-label='Toggle sidenav']"));
 
         public DashboardPage NavigateToHome()
         {
@@ -75,10 +75,6 @@ namespace Intranet.Tests
 
         public PersonListPage NavigateToPersonList()
         {
-            var button = new Button(this.Driver, By.CssSelector("button[aria-label='Toggle sidenav']"));
-            button.Click();
-            this.Driver.WaitForAngular();
-
             this.Navigate(this.RelationsGroup, this.PersonList);
             return new PersonListPage(this.Driver);
         }

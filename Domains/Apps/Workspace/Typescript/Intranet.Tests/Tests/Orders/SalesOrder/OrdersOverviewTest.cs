@@ -19,13 +19,5 @@ namespace Intranet.Tests.OrdersSalesOrder
         {
             Assert.Equal("Sales Orders", this.Driver.Title);
         }
-
-        [Fact]
-        public void Search()
-        {
-            var page = new OrdersOverviewPage(this.Driver);
-
-            page.Company.Text = "acme";
-        }
     }
 }
