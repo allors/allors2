@@ -6,9 +6,9 @@ namespace Intranet.Pages.Relations
 
     using OpenQA.Selenium;
 
-    public class PersonPage : MainPage
+    public class PersonEditPage : MainPage
     {
-        public PersonPage(IWebDriver driver)
+        public PersonEditPage(IWebDriver driver)
             : base(driver)
         {
         }

@@ -9,11 +9,11 @@ namespace Intranet.Tests.Relations
     using Xunit;
 
     [Collection("Test collection")]
-    public class PersonTest : Test
+    public class PersonEditTest : Test
     {
-        private readonly PeopleOverviewPage people;
+        private readonly PersonListPage people;
 
-        public PersonTest(TestFixture fixture)
+        public PersonEditTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
@@ -33,7 +33,7 @@ namespace Intranet.Tests.Relations
             this.people.AddNew.Click();
             var before = new People(this.Session).Extent().ToArray();
 
-            var page = new PersonPage(this.Driver);
+            var page = new PersonEditPage(this.Driver);
             
             page.FirstName.Value = "Jos";
             page.LastName.Value = "Smos";

@@ -19,13 +19,5 @@ namespace Intranet.Tests.OrdersQuote
         {
             Assert.Equal("Quotes", this.Driver.Title);
         }
-
-        [Fact]
-        public void Search()
-        {
-            var page = new QuotesOverviewPage(this.Driver);
-
-            page.Company.Text = "acme";
-        }
     }
 }

@@ -7,9 +7,9 @@ namespace Intranet.Pages.Relations
 
     using OpenQA.Selenium;
 
-    public class PeopleOverviewPage : MainPage
+    public class PersonListPage : MainPage
     {
-        public PeopleOverviewPage(IWebDriver driver)
+        public PersonListPage(IWebDriver driver)
             : base(driver)
         {
         }
@@ -20,12 +20,13 @@ namespace Intranet.Pages.Relations
 
         public Anchor AddNew => new Anchor(this.Driver, By.LinkText("Add New"));
 
-        public MaterialList List => new MaterialList(this.Driver);
+        public MaterialTable Table => new MaterialTable(this.Driver);
 
         public PersonOverviewPage Select(Person person)
         {
-            var listItem = this.List.FindListItem(person);
-            listItem.Click();
+            var row = this.Table.FindRow(person);
+            var cell = row.FindCell("firstName");
+            cell.Click();
 
             return new PersonOverviewPage(this.Driver);
         }
