@@ -10,7 +10,7 @@ set /p args="Enter arguments: "
 echo.
 
 cd Database\Commands\
-dotnet bin\Debug\netcoreapp2.0\Commands.dll %args%
+dotnet bin\Debug\netcoreapp2.1\Commands.dll %args%
 
 echo.
 pause

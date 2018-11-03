@@ -9,9 +9,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="2.0.6" />
-    <PackageReference Include="MaltReport2" Version="3.0.1-beta-35" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.0.2" />
+    <PackageReference Include="MailKit" Version="2.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.1.3" />
   </ItemGroup>
   
   <ItemGroup>

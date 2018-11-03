@@ -29,8 +29,6 @@
 
     using Newtonsoft.Json;
 
-    using ObjectFactory = Allors.ObjectFactory;
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -47,8 +45,7 @@
             services.AddAllors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
-
-
+            
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .UseAllors()
@@ -117,7 +114,6 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }
             else

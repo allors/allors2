@@ -87,7 +87,8 @@
                             });
                 });
 
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.Configure<MvcOptions>(options =>
                 {
