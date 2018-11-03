@@ -160,7 +160,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 if (this.good === undefined) {
                   this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
-                  this.good.Sku = '';
+                  // this.good.Sku = '';
 
                   this.inventoryItem = scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
                   // TODO:

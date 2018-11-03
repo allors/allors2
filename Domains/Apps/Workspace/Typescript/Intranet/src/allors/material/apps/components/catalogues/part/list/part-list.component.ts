@@ -88,20 +88,20 @@ export class PartListComponent implements OnInit, OnDestroy {
           predicate: new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' })
         })
       }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.Brand, parameter: 'Brand' })
-        })
-      }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.Model, parameter: 'Model' })
-        })
-      }),
+      // new ContainedIn({
+      //   propertyType: m.Good.Part,
+      //   extent: new Filter({
+      //     objectType: m.Part,
+      //     predicate: new Like({ roleType: m.Part.Brand, parameter: 'Brand' })
+      //   })
+      // }),
+      // new ContainedIn({
+      //   propertyType: m.Good.Part,
+      //   extent: new Filter({
+      //     objectType: m.Part,
+      //     predicate: new Like({ roleType: m.Part.Model, parameter: 'Model' })
+      //   })
+      // }),
       new ContainedIn({
         propertyType: m.Good.Part,
         extent: new Filter({

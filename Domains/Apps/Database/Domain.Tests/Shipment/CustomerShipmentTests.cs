@@ -24,7 +24,6 @@ namespace Allors.Domain
     using System;
 
     using Meta;
-    using Should;
     using Xunit;
     
     public class CustomerShipmentTests : DomainTest
@@ -969,8 +968,8 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            customer.ShipmentsWhereShipToParty.Count.ShouldEqual(1);
-            customer.PickListsWhereShipToParty.Count.ShouldEqual(1);
+            Assert.Single(customer.ShipmentsWhereShipToParty);
+            Assert.Single(customer.PickListsWhereShipToParty);
 
             var order2 = new SalesOrderBuilder(this.Session)
                 .WithStore(new Stores(this.Session).FindBy(M.Store.Name, "store"))
@@ -987,8 +986,8 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            customer.ShipmentsWhereShipToParty.Count.ShouldEqual(1);
-            customer.PickListsWhereShipToParty.Count.ShouldEqual(1);
+            Assert.Single(customer.ShipmentsWhereShipToParty); 
+            Assert.Single(customer.PickListsWhereShipToParty);
 
             var order3 = new SalesOrderBuilder(this.Session)
                 .WithStore(new Stores(this.Session).FindBy(M.Store.Name, "second store"))
@@ -1005,8 +1004,8 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            customer.ShipmentsWhereShipToParty.Count.ShouldEqual(2);
-            customer.PickListsWhereShipToParty.Count.ShouldEqual(1);
+            Assert.Equal(2, customer.ShipmentsWhereShipToParty.Count);
+            Assert.Single(customer.PickListsWhereShipToParty);
         }
 
         [Fact]

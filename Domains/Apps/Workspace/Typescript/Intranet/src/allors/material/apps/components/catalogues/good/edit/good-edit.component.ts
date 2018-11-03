@@ -168,7 +168,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
                 if (this.good === undefined) {
                   this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
-                  this.good.Sku = '';
+                  // this.good.Sku = '';
 
                   this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
                   this.vendorProduct.Product = this.good;

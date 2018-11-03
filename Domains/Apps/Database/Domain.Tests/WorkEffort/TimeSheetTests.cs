@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using System.Linq;
-    using Should;
     using Xunit;
     
     public class TimeSheetTests : DomainTest
@@ -38,7 +37,7 @@ namespace Allors.Domain
             var originalCount = derivation.Errors.Count();
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
 
             //// Re-arrange
             var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
@@ -48,7 +47,7 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeFalse();
+            Assert.True(derivation.HasErrors);
         }
     }
 }

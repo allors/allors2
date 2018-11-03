@@ -21,13 +21,12 @@
 
 namespace Allors.Domain
 {
-    using Should;
     using System;
     using System.Linq;
     using Xunit;
 
     using Allors.Meta;
-    
+
     public class WorkEffortPartyAssignmentTests : DomainTest
     {
         [Fact]
@@ -59,10 +58,10 @@ namespace Allors.Domain
             // Assert
             var partyAssignment = workOrder.WorkEffortPartyAssignmentsWhereAssignment.First;
 
-            partyAssignment.Assignment.ShouldEqual(workOrder);
-            partyAssignment.Party.ShouldEqual(employee);
-            partyAssignment.ExistFromDate.ShouldBeFalse();
-            partyAssignment.ExistThroughDate.ShouldBeFalse();
+            Assert.Equal(workOrder, partyAssignment.Assignment);
+            Assert.Equal(employee, partyAssignment.Party);
+            Assert.False(partyAssignment.ExistFromDate);
+            Assert.False(partyAssignment.ExistThroughDate);
         }
 
         [Fact]
@@ -94,8 +93,8 @@ namespace Allors.Domain
             var derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.SelectMany(e => e.Relations).Any(r => r.AssociationType.Equals(M.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment)).ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
+            Assert.Contains(derivation.Errors.SelectMany(e => e.Relations), r => r.AssociationType.Equals(M.WorkEffort.WorkEffortPartyAssignmentsWhereAssignment));
 
             //// Re-Arrange
             employee.TimeSheetWhereWorker.RemoveTimeEntries();
@@ -111,7 +110,7 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
         }
     }
 }

@@ -23,7 +23,6 @@ namespace Allors.Domain
 {
     using Meta;
     using Xunit;
-    using Should;
     using System.Linq;
     
     public class SerialisedInventoryItemTests : DomainTest
@@ -50,7 +49,7 @@ namespace Allors.Domain
             var derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
 
             // Re-arrange
             this.Session.Rollback();
@@ -62,7 +61,7 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeFalse();
+            Assert.False(derivation.HasErrors);
         }
 
         [Fact]
@@ -81,8 +80,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            serialInventoryItem.SerialisedInventoryItemState.ShouldEqual(available);
-            serialInventoryItem.Facility.ShouldEqual(warehouse);
+            Assert.Equal(available, serialInventoryItem.SerialisedInventoryItemState);
+            Assert.Equal(warehouse, serialInventoryItem.Facility);
         }
 
         [Fact]
@@ -114,7 +113,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            serialPart.QuantityOnHand.ShouldEqual(3);
+            Assert.Equal(3, serialPart.QuantityOnHand);
         }
 
         [Fact]
@@ -146,12 +145,12 @@ namespace Allors.Domain
 
             // Assert
             var item1 = (SerialisedInventoryItem)new InventoryItems(this.Session).Extent().First(i => i.Facility.Equals(warehouse1));
-            item1.QuantityOnHand.ShouldEqual(1);
+            Assert.Equal(1, item1.QuantityOnHand);
 
             var item2 = (SerialisedInventoryItem)new InventoryItems(this.Session).Extent().First(i => i.Facility.Equals(warehouse2));
-            item2.QuantityOnHand.ShouldEqual(1);
+            Assert.Equal(1, item2.QuantityOnHand);
 
-            finishedGood.QuantityOnHand.ShouldEqual(2);
+            Assert.Equal(2, finishedGood.QuantityOnHand);
         }
 
         private Facility CreateFacility(string name, FacilityType type, InternalOrganisation owner)

@@ -23,13 +23,11 @@
 
 namespace Allors.Domain
 {
-    using Should;
     using System;
-    using System.Linq;
     using Xunit;
 
     using Allors.Meta;
-    
+
     public class PersonTests : DomainTest
     {
         [Fact]
@@ -37,7 +35,7 @@ namespace Allors.Domain
         {
             var builder = new PersonBuilder(this.Session);
             builder.Build();
-                
+
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -71,7 +69,7 @@ namespace Allors.Domain
 
             var acl = new AccessControlList(internalOrganisation, existingAdministrator);
             Assert.True(acl.CanWrite(M.Organisation.Name));
-            
+
             acl = new AccessControlList(internalOrganisation, secondAdministrator);
             Assert.False(acl.CanRead(M.Organisation.Name));
 
@@ -100,8 +98,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            contact.CurrentOrganisationContactRelationships[0].Contact.ShouldEqual(contact);
-            contact.InactiveOrganisationContactRelationships.Count.ShouldEqual(0);
+            Assert.Equal(contact, contact.CurrentOrganisationContactRelationships[0].Contact);
+            Assert.Empty(contact.InactiveOrganisationContactRelationships);
         }
 
         [Fact]
@@ -124,8 +122,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            contact.InactiveOrganisationContactRelationships[0].Contact.ShouldEqual(contact);
-            contact.CurrentOrganisationContactRelationships.Count.ShouldEqual(0);
+            Assert.Equal(contact, contact.InactiveOrganisationContactRelationships[0].Contact);
+            Assert.Empty(contact.CurrentOrganisationContactRelationships);
         }
 
         [Fact]
@@ -141,7 +139,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            person.TimeSheetWhereWorker.ShouldNotBeNull();
+            Assert.NotNull(person.TimeSheetWhereWorker);
         }
 
         [Fact]
@@ -155,7 +153,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            contractor.TimeSheetWhereWorker.ShouldNotBeNull();
+            Assert.NotNull(contractor.TimeSheetWhereWorker);
         }
 
         [Fact]
@@ -169,7 +167,7 @@ namespace Allors.Domain
 
             this.Session.Derive(true);
 
-            subContractor.TimeSheetWhereWorker.ShouldNotBeNull();
+            Assert.NotNull(subContractor.TimeSheetWhereWorker);
         }
     }
 }

@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using System.Linq;
-    using Should;
     using Xunit;
         
     public class WorkEffortInventoryAssignmentTests : DomainTest
@@ -44,8 +43,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workEffort.WorkEffortInventoryAssignmentsWhereAssignment.ShouldBeEmpty();
-            workEffort.WorkEffortState.IsNeedsAction.ShouldBeTrue();
+            Assert.Empty(workEffort.WorkEffortInventoryAssignmentsWhereAssignment);
+            Assert.True(workEffort.WorkEffortState.IsNeedsAction);
 
             // Re-arrange
             var inventoryAssignment = new WorkEffortInventoryAssignmentBuilder(this.Session)
@@ -60,12 +59,13 @@ namespace Allors.Domain
             // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
 
-            transactions.Count.ShouldEqual(1);
-            transactions[0].Part.ShouldEqual(part);
-            transactions[0].Quantity.ShouldEqual(10);
-            transactions[0].Reason.ShouldEqual(reasons.Reservation);
+            Assert.Single(transactions);
+            var transaction = transactions[0];
+            Assert.Equal(part, transaction.Part);
+            Assert.Equal(10, transaction.Quantity);
+            Assert.Equal(reasons.Reservation, transaction.Reason);
 
-            part.QuantityCommittedOut.ShouldEqual(10);
+            Assert.Equal(10, part.QuantityCommittedOut);
         }
 
         [Fact]
@@ -100,10 +100,10 @@ namespace Allors.Domain
             // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions.ToArray();
 
-            transactions.Length.ShouldEqual(1);
-            transactions[0].Part.ShouldEqual(part1);
-            transactions[0].Quantity.ShouldEqual(10);
-            transactions[0].Reason.ShouldEqual(reasons.Reservation);
+            Assert.Single(transactions);
+            Assert.Equal(part1, transactions[0].Part);
+            Assert.Equal(10, transactions[0].Quantity);
+            Assert.Equal(reasons.Reservation, transactions[0].Reason);
 
             // Re-arrange
             inventoryAssignment.Part = part2;
@@ -115,11 +115,11 @@ namespace Allors.Domain
             var part1Transactions = inventoryAssignment.InventoryItemTransactions.Where(t => t.Part.Equals(part1)).ToArray();
             var part2Transactions = inventoryAssignment.InventoryItemTransactions.Where(t => t.Part.Equals(part2)).ToArray();
 
-            part1Transactions.Sum(t => t.Quantity).ShouldEqual(0);
-            part2Transactions.Sum(t => t.Quantity).ShouldEqual(10);
+            Assert.Equal(0, part1Transactions.Sum(t => t.Quantity));
+            Assert.Equal(10, part2Transactions.Sum(t => t.Quantity));
 
-            part1.QuantityCommittedOut.ShouldEqual(0);
-            part2.QuantityCommittedOut.ShouldEqual(10);
+            Assert.Equal(0, part1.QuantityCommittedOut);
+            Assert.Equal(10, part2.QuantityCommittedOut);
         }
 
         [Fact]
@@ -152,15 +152,15 @@ namespace Allors.Domain
             // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
 
-            transactions.Count.ShouldEqual(2);
+            Assert.Equal(2, transactions.Count);
 
             var reservation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
             var reservationCancellation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity < 0));
 
-            reservation.Quantity.ShouldEqual(10);
-            reservationCancellation.Quantity.ShouldEqual(-10);
+            Assert.Equal(10, reservation.Quantity);
+            Assert.Equal(-10, reservationCancellation.Quantity);
 
-            part.QuantityCommittedOut.ShouldEqual(0);
+            Assert.Equal(0, part.QuantityCommittedOut);
         }
 
         [Fact]
@@ -195,16 +195,16 @@ namespace Allors.Domain
             // Assert
             var transactions = inventoryAssignment.InventoryItemTransactions;
 
-            transactions.Count.ShouldEqual(2);
+            Assert.Equal(2, transactions.Count);
 
             var reservation = transactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
             var consumption = transactions.First(t => t.Reason.Equals(reasons.Consumption));
 
-            reservation.Quantity.ShouldEqual(10);
-            consumption.Quantity.ShouldEqual(10);
+            Assert.Equal(10, reservation.Quantity);
+            Assert.Equal(10, consumption.Quantity);
 
-            part.QuantityCommittedOut.ShouldEqual(0);
-            part.QuantityOnHand.ShouldEqual(90);
+            Assert.Equal(0, part.QuantityCommittedOut);
+            Assert.Equal(90, part.QuantityOnHand);
         }
 
         [Fact]
@@ -244,15 +244,15 @@ namespace Allors.Domain
             var consumption = transactions.First(t => t.Reason.Equals(reasons.Consumption) && (t.Quantity > 0));
             var consumptionCancellation = transactions.First(t => t.Reason.Equals(reasons.Consumption) && (t.Quantity < 0));
 
-            transactions.Count.ShouldEqual(4);
+            Assert.Equal(4, transactions.Count);
 
-            reservation.Quantity.ShouldEqual(10);
-            reservationCancellation.Quantity.ShouldEqual(-10);
-            consumption.Quantity.ShouldEqual(10);
-            consumptionCancellation.Quantity.ShouldEqual(-10);
+            Assert.Equal(10, reservation.Quantity);
+            Assert.Equal(-10, reservationCancellation.Quantity);
+            Assert.Equal(10, consumption.Quantity);
+            Assert.Equal(-10, consumptionCancellation.Quantity);
 
-            part.QuantityCommittedOut.ShouldEqual(0);
-            part.QuantityOnHand.ShouldEqual(0);
+            Assert.Equal(0, part.QuantityCommittedOut);
+            Assert.Equal(0, part.QuantityOnHand);
         }
 
         [Fact]
@@ -300,14 +300,14 @@ namespace Allors.Domain
             var part2Reservations = part2Transactions.Where(t => t.Reason.Equals(reasons.Reservation));
             var part2Consumption = part2Transactions.Where(t => t.Reason.Equals(reasons.Consumption));
 
-            part1Reservations.Sum(r => r.Quantity).ShouldEqual(0);
-            part2Reservations.Sum(r => r.Quantity).ShouldEqual(5);
-            part2Consumption.Sum(c => c.Quantity).ShouldEqual(5);
+            Assert.Equal(0, part1Reservations.Sum(r => r.Quantity));
+            Assert.Equal(5, part2Reservations.Sum(r => r.Quantity));
+            Assert.Equal(5, part2Consumption.Sum(c => c.Quantity));
 
-            part1.QuantityCommittedOut.ShouldEqual(0);
-            part1.QuantityOnHand.ShouldEqual(0);
-            part2.QuantityCommittedOut.ShouldEqual(0);
-            part2.QuantityOnHand.ShouldEqual(5);
+            Assert.Equal(0, part1.QuantityCommittedOut);
+            Assert.Equal(0, part1.QuantityOnHand);
+            Assert.Equal(0, part2.QuantityCommittedOut);
+            Assert.Equal(5, part2.QuantityOnHand);
         }
 
         [Fact]
@@ -358,15 +358,15 @@ namespace Allors.Domain
             var part1Consumption = part1Transactions.Where(t => t.Reason.Equals(reasons.Consumption));
             var part2Reservations = part2Transactions.Where(t => t.Reason.Equals(reasons.Reservation));
 
-            part1Reservations.Sum(r => r.Quantity).ShouldEqual(0);
-            part1Consumption.Sum(c => c.Quantity).ShouldEqual(0);
-            part2Reservations.Sum(r => r.Quantity).ShouldEqual(5);
+            Assert.Equal(0, part1Reservations.Sum(r => r.Quantity));
+            Assert.Equal(0, part1Consumption.Sum(c => c.Quantity));
+            Assert.Equal(5, part2Reservations.Sum(r => r.Quantity));
 
-            part1.QuantityCommittedOut.ShouldEqual(0);
-            part1.QuantityOnHand.ShouldEqual(0);
+            Assert.Equal(0, part1.QuantityCommittedOut);
+            Assert.Equal(0, part1.QuantityOnHand);
 
-            part2.QuantityCommittedOut.ShouldEqual(5);
-            part2.QuantityOnHand.ShouldEqual(5);
+            Assert.Equal(5, part2.QuantityCommittedOut);
+            Assert.Equal(5, part2.QuantityOnHand);
         }
 
         [Fact]
@@ -397,7 +397,7 @@ namespace Allors.Domain
 
             // Assert
             var reservation = inventoryAssignment.InventoryItemTransactions.First(t => t.Reason.Equals(reasons.Reservation) && (t.Quantity > 0));
-            reservation.Quantity.ShouldEqual(5);
+            Assert.Equal(5, reservation.Quantity);
 
             // Re-arrange
             inventoryAssignment.Quantity = 10;
@@ -407,7 +407,7 @@ namespace Allors.Domain
 
             // Assert
             var reservations = inventoryAssignment.InventoryItemTransactions.Where(t => t.Reason.Equals(reasons.Reservation));
-            reservations.Sum(r => r.Quantity).ShouldEqual(10);
+            Assert.Equal(10, reservations.Sum(r => r.Quantity));
 
             // Re-arrange
             workEffort.Complete();
@@ -419,13 +419,13 @@ namespace Allors.Domain
             reservations = inventoryAssignment.InventoryItemTransactions.Where(t => t.Reason.Equals(reasons.Reservation));
             var consumption = inventoryAssignment.InventoryItemTransactions.First(t => t.Reason.Equals(reasons.Consumption));
 
-            inventoryAssignment.InventoryItemTransactions.Count.ShouldEqual(3);
+            Assert.Equal(3, inventoryAssignment.InventoryItemTransactions.Count);
 
-            reservations.Sum(r => r.Quantity).ShouldEqual(10);
-            consumption.Quantity.ShouldEqual(10);
+            Assert.Equal(10, reservations.Sum(r => r.Quantity));
+            Assert.Equal(10, consumption.Quantity);
 
-            part.QuantityCommittedOut.ShouldEqual(0);
-            part.QuantityOnHand.ShouldEqual(10);
+            Assert.Equal(0, part.QuantityCommittedOut);
+            Assert.Equal(10, part.QuantityOnHand);
         }
     }
 }

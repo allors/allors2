@@ -22,7 +22,6 @@
 namespace Allors.Domain
 {
     using Meta;
-    using Should;
     using System.Linq;
     using Xunit;
 
@@ -74,8 +73,8 @@ namespace Allors.Domain
             var derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.SelectMany(e => e.RoleTypes).Contains(M.InventoryItemTransaction.Quantity).ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
+            Assert.Contains(M.InventoryItemTransaction.Quantity, derivation.Errors.SelectMany(e => e.RoleTypes));
 
             // Re-Arrange
             variance.Quantity = -10;
@@ -84,8 +83,8 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.SelectMany(e => e.RoleTypes).Contains(M.InventoryItemTransaction.Quantity).ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
+            Assert.Contains(M.InventoryItemTransaction.Quantity, derivation.Errors.SelectMany(e => e.RoleTypes));
         }
 
         private Part CreatePart(string partId, InventoryItemKind kind)
