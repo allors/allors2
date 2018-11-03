@@ -109,6 +109,15 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         public Brand Brand { get; set; }
+        
+        #region Allors
+        [Id("B6EB8A17-3092-44F0-86D1-59162208D5B9")]
+        [AssociationId("89E99C39-BD79-4261-AD72-2FDFA574E663")]
+        [RoleId("B8D42797-6D96-4A18-B953-DB33840044FB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public Model Model { get; set; }
 
         #region Allors
         [Id("8dc701e0-1f66-44ee-acc6-9726aa7d5853")]
