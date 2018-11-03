@@ -129,6 +129,67 @@ namespace Allors
 
                 new SalesRepRelationshipBuilder(session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).WithSalesRepresentative(salesrep).Build();
 
+                var vatRate21 = new VatRateBuilder(session).WithRate(21).Build();
+                var package1 = new PackageBuilder(session).WithName("package1").Build();
+                var package2 = new PackageBuilder(session).WithName("package2").Build();
+
+                var catMain = new ProductCategoryBuilder(session).WithName("main cat").Build();
+                var cat1 = new ProductCategoryBuilder(session)
+                    .WithName("cat for good1")
+                    .WithParent(catMain)
+                    .WithPackage(package1)
+                    .Build();
+                var cat2 = new ProductCategoryBuilder(session)
+                    .WithName("cat for good2")
+                    .WithParent(catMain)
+                    .WithPackage(package2)
+                    .Build();
+
+                new GoodBuilder(session)
+                    .WithGoodIdentification(new ProductNumberBuilder(session)
+                        .WithIdentification("1")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(session).Good).Build())
+                    .WithVatRate(vatRate21)
+                    .WithName("good1")
+                    .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
+                    .WithPrimaryProductCategory(cat1)
+                    .WithPart(new PartBuilder(session)
+                        .WithGoodIdentification(new PartNumberBuilder(session)
+                            .WithIdentification("1")
+                            .WithGoodIdentificationType(new GoodIdentificationTypes(session).Part).Build())
+                        .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                    .Build();
+
+                new GoodBuilder(session)
+                    .WithGoodIdentification(new ProductNumberBuilder(session)
+                        .WithIdentification("2")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(session).Good).Build())
+                    .WithVatRate(vatRate21)
+                    .WithName("good2")
+                    .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
+                    .WithPrimaryProductCategory(cat2)
+                    .WithPart(new PartBuilder(session)
+                        .WithGoodIdentification(new PartNumberBuilder(session)
+                            .WithIdentification("2")
+                            .WithGoodIdentificationType(new GoodIdentificationTypes(session).Part).Build())
+                        .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                    .Build();
+
+                new GoodBuilder(session)
+                    .WithGoodIdentification(new ProductNumberBuilder(session)
+                        .WithIdentification("3")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(session).Good).Build())
+                    .WithVatRate(vatRate21)
+                    .WithName("good3")
+                    .WithUnitOfMeasure(new UnitsOfMeasure(session).Piece)
+                    .WithPrimaryProductCategory(cat2)
+                    .WithPart(new PartBuilder(session)
+                        .WithGoodIdentification(new PartNumberBuilder(session)
+                            .WithIdentification("3")
+                            .WithGoodIdentificationType(new GoodIdentificationTypes(session).Part).Build())
+                        .WithInventoryItemKind(new InventoryItemKinds(session).NonSerialised).Build())
+                    .Build();
+
                 session.Derive();
                 session.Commit();
             }

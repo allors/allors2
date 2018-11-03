@@ -34,7 +34,9 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new PartBuilder(this.Session)
-                            .WithPartId("1")
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("1")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
                 .Build();
@@ -50,7 +52,9 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new PartBuilder(this.Session)
-                            .WithPartId("1")
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("1")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                             .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                             .Build())
                 .Build();
@@ -65,7 +69,9 @@ namespace Allors.Domain
         {
             var item = new NonSerialisedInventoryItemBuilder(this.Session)
                 .WithPart(new PartBuilder(this.Session)
-                                .WithPartId("1")
+                                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                    .WithIdentification("1")
+                                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                                 .Build())
                 .Build();
@@ -84,7 +90,9 @@ namespace Allors.Domain
         public void GivenInventoryItemForPart_WhenDerived_ThenNameIsPartName()
         {
             var part = new PartBuilder(this.Session)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -102,7 +110,9 @@ namespace Allors.Domain
         {
             var uom = new UnitsOfMeasure(this.Session).Centimeter;
             var part = new PartBuilder(this.Session)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithUnitOfMeasure(uom)
                 .Build();
@@ -405,11 +415,17 @@ namespace Allors.Domain
         //}
 
         private Part CreatePart(string partId, InventoryItemKind kind)
-            => new PartBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+            => new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification(partId)
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(kind).Build();
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new GoodBuilder(this.Session)
-                .WithSku(sku)
+                .WithGoodIdentification(new SkuBuilder(this.Session)
+                    .WithIdentification(sku)
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)

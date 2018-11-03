@@ -21,6 +21,8 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     using Xunit;
 
     public class QuoteTests : DomainTest
@@ -111,14 +113,7 @@ namespace Allors.Domain
         {
             var party = new PersonBuilder(this.Session).WithLastName("party").Build();
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var quote = new ProductQuoteBuilder(this.Session)
                 .WithReceiver(party)

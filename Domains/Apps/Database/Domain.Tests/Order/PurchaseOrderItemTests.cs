@@ -51,10 +51,8 @@ namespace Allors.Domain
 
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            this.finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            this.finishedGood = good1.Part;
 
             var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
@@ -109,7 +107,11 @@ namespace Allors.Domain
             var mechelen = new CityBuilder(this.Session).WithName("Mechelen").Build();
             var shipToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Haverwerf 15").Build();
             var partyContactMechanism = new PartyContactMechanismBuilder(this.Session).WithContactMechanism(shipToContactMechanism).Build();
-            var part = new PartBuilder(this.Session).WithPartId("2").Build();
+            var part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
             buyer.AddPartyContactMechanism(partyContactMechanism);
 
             this.Session.Derive();

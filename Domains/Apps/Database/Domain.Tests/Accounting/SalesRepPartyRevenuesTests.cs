@@ -37,17 +37,8 @@ namespace Allors.Domain
             var customer2 = new OrganisationBuilder(this.Session).WithName("customer2").Build();
             var salesRep1 = new PersonBuilder(this.Session).WithLastName("salesRep1").Build();
             var salesRep2 = new PersonBuilder(this.Session).WithLastName("salesRep2").Build();
-            var catMain = new ProductCategoryBuilder(this.Session)
-                .WithName("main cat")
-                .Build();
-            var cat1 = new ProductCategoryBuilder(this.Session)
-                .WithName("cat for good1")
-                .WithParent(catMain)
-                .Build();
-            var cat2 = new ProductCategoryBuilder(this.Session)
-                .WithName("cat for good2")
-                .WithParent(catMain)
-                .Build();
+            var cat1 = new ProductCategories(this.Session).FindBy(M.ProductCategory.Name, "cat for good1");
+            var cat2 = new ProductCategories(this.Session).FindBy(M.ProductCategory.Name, "cat for good2");
 
             new SalesRepRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithProductCategory(cat1).WithSalesRepresentative(salesRep1).Build();
             new SalesRepRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).WithProductCategory(cat2).WithSalesRepresentative(salesRep2).Build();
@@ -59,26 +50,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var good1 = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(cat1)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
-
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10102")
-                .WithVatRate(vatRate21)
-                .WithName("good2")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(cat2)
-                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer1).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer2).Build();

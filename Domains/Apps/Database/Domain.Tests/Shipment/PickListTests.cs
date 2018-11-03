@@ -123,35 +123,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var finishedGood1 = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var finishedGood2 = new PartBuilder(this.Session)
-                .WithPartId("2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good1 = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood1)
-                .Build();
-
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10102")
-                .WithVatRate(vatRate21)
-                .WithName("good2")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood2)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
@@ -168,7 +141,7 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood1)
+                .WithPart(good1.Part)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
@@ -176,13 +149,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
 
             this.Session.Derive();
 
-            var good1Inventory = (NonSerialisedInventoryItem)finishedGood1.InventoryItemsWherePart.First;
-            var good2Inventory = (NonSerialisedInventoryItem)finishedGood2.InventoryItemsWherePart.First;
+            var good1Inventory = (NonSerialisedInventoryItem)good1.Part.InventoryItemsWherePart.First;
+            var good2Inventory = (NonSerialisedInventoryItem)good2.Part.InventoryItemsWherePart.First;
 
             var colorWhite = new ColourBuilder(this.Session)
                 .WithName("white")
@@ -218,7 +191,7 @@ namespace Allors.Domain
 
             var shipment = (CustomerShipment)mechelenAddress.ShipmentsWhereShipToAddress[0];
 
-            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item5: only 4 out of 5 are actually picked
@@ -274,35 +247,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var finishedGood1 = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var finishedGood2 = new PartBuilder(this.Session)
-                .WithPartId("2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good1 = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood1)
-                .Build();
-
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10102")
-                .WithVatRate(vatRate21)
-                .WithName("good2")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood2)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
@@ -319,14 +265,14 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood1)
+                .WithPart(good1.Part)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood2)
+                .WithPart(good2.Part)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
@@ -334,8 +280,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood1).Build();
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood2).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good2.Part).Build();
 
             this.Session.Derive();
 
@@ -357,7 +303,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             //// item3: only 4 out of 5 are actually picked
@@ -411,35 +357,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var finishedGood1 = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var finishedGood2 = new PartBuilder(this.Session)
-                .WithPartId("2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good1 = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood1)
-                .Build();
-
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10102")
-                .WithVatRate(vatRate21)
-                .WithName("good2")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood2)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
@@ -456,14 +375,14 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood1)
+                .WithPart(good1.Part)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood2)
+                .WithPart(good2.Part)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
@@ -471,13 +390,13 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood1).Build();
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood2).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good2.Part).Build();
 
             this.Session.Derive();
 
-            var good1Inventory = finishedGood1.InventoryItemsWherePart.First;
-            var good2Inventory = finishedGood2.InventoryItemsWherePart.First;
+            var good1Inventory = good1.Part.InventoryItemsWherePart.First;
+            var good2Inventory = good2.Part.InventoryItemsWherePart.First;
 
             var order = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
@@ -498,7 +417,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
             pickList.PickListItems.Count.ShouldEqual(2);
 
@@ -534,35 +453,8 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var finishedGood1 = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var finishedGood2 = new PartBuilder(this.Session)
-                .WithPartId("2")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good1 = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood1)
-                .Build();
-
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10102")
-                .WithVatRate(vatRate21)
-                .WithName("good2")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood2)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
@@ -579,14 +471,14 @@ namespace Allors.Domain
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood1)
+                .WithPart(good1.Part)
                 .WithProductPurchasePrice(good1PurchasePrice)
                 .WithFromDate(DateTime.UtcNow)
                 .WithSupplier(supplier)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood2)
+                .WithPart(good2.Part)
                 .WithProductPurchasePrice(good2PurchasePrice)
                 .WithFromDate(DateTime.UtcNow)
                 .WithSupplier(supplier)
@@ -594,8 +486,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood1).Build();
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood2).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good2.Part).Build();
 
             this.Session.Derive();
 
@@ -634,7 +526,7 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var pickList = finishedGood1.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
+            var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
             pickList.Picker = new People(this.Session).FindBy(M.Person.LastName, "orderProcessor");
 
             pickList.SetPicked();

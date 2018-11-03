@@ -188,7 +188,12 @@ namespace Allors
 
             var finishedGood = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
-                .WithPartId("10101")
+                .WithGoodIdentification(new SkuBuilder(this.Session)
+                    .WithIdentification("10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -198,27 +203,27 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithSku("10101")
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood)
-                .Build();
-
-            new ProductFeatureApplicabilityBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithAvailableFor(good1)
-                .WithProductFeature(new BrandBuilder(this.Session).WithName("brand 1").Build())
-                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("Art 1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
 
             var finishedGood2 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
-                .WithPartId("2-2")
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
+                .WithGoodIdentification(new SkuBuilder(this.Session)
+                    .WithIdentification("10102")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -226,17 +231,12 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithSku("10102")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("Art 2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood2)
-                .Build();
-
-            new ProductFeatureApplicabilityBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithAvailableFor(good2)
-                .WithProductFeature(new BrandBuilder(this.Session).WithName("brand 2").Build())
-                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
             var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
@@ -244,7 +244,12 @@ namespace Allors
 
             var finishedGood3 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(internalOrganisation)
-                .WithPartId("3-3")
+                .WithGoodIdentification(new SkuBuilder(this.Session)
+                    .WithIdentification("10103")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P3")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
@@ -254,17 +259,12 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithSku("10103")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("Art 3")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood3)
-                .Build();
-
-            new ProductFeatureApplicabilityBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithAvailableFor(good3)
-                .WithProductFeature(new BrandBuilder(this.Session).WithName("brand 3").Build())
-                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.Session).Required)
                 .Build();
 
             this.Session.Derive();

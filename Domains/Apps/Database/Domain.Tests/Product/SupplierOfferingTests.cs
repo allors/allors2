@@ -32,7 +32,9 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("organisation").Build();
             var part = new PartBuilder(this.Session)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -75,6 +77,7 @@ namespace Allors.Domain
         {
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             var internalOrganisation = this.InternalOrganisation;
+            var before = internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count;
 
             var secondFacility = new FacilityBuilder(this.Session)
                 .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
@@ -94,73 +97,23 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
             var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithName("good1")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("1")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood)
-                .WithSupplier(supplier)
-                .WithProductPurchasePrice(purchasePrice)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            this.Session.Derive(); 
-
-            Assert.Equal(2, finishedGood.InventoryItemsWherePart.Count);
-            Assert.Equal(1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
-            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
-        }
-
-        [Fact]
-        public void GivenNewGoodBasedOnPart_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryPartAndFacility()
-        {
-            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
-
-            var secondFacility = new FacilityBuilder(this.Session)
-                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
-                .WithName("second facility")
-                .WithOwner(this.InternalOrganisation)
-                .Build();
-
-            new SupplierRelationshipBuilder(this.Session)
-                .WithSupplier(supplier)
-                .WithFromDate(DateTime.UtcNow)
-                .Build();
-
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithPart(finishedGood)
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .Build();
-
-            new SupplierOfferingBuilder(this.Session)
-                .WithPart(finishedGood)
+                .WithPart(good.Part)
                 .WithSupplier(supplier)
                 .WithProductPurchasePrice(purchasePrice)
                 .WithFromDate(DateTime.UtcNow)
@@ -169,7 +122,60 @@ namespace Allors.Domain
             this.Session.Derive(); 
 
             Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
-            Assert.Equal(1, this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(before + 1, internalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
+            Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
+        }
+
+        [Fact]
+        public void GivenNewGoodBasedOnPart_WhenDeriving_ThenNonSerialisedInventryItemIsCreatedForEveryPartAndFacility()
+        {
+            var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
+            var before = this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count;
+
+            var secondFacility = new FacilityBuilder(this.Session)
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithName("second facility")
+                .WithOwner(this.InternalOrganisation)
+                .Build();
+
+            new SupplierRelationshipBuilder(this.Session)
+                .WithSupplier(supplier)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            var good = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
+                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
+                .WithName("good1")
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrimaryProductCategory(new ProductCategoryBuilder(this.Session).WithName("cat").Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("1")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .Build();
+
+            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithFromDate(DateTime.UtcNow)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithPrice(1)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .Build();
+
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(good.Part)
+                .WithSupplier(supplier)
+                .WithProductPurchasePrice(purchasePrice)
+                .WithFromDate(DateTime.UtcNow)
+                .Build();
+
+            this.Session.Derive(); 
+
+            Assert.Equal(2, good.Part.InventoryItemsWherePart.Count);
+            Assert.Equal(before + 1, this.InternalOrganisation.DefaultFacility.InventoryItemsWhereFacility.Count);
             Assert.Equal(1, secondFacility.InventoryItemsWhereFacility.Count);
         }
     }

@@ -24,7 +24,6 @@ namespace Allors.Domain
     using Meta;
     using Xunit;
 
-    
     public class ProductCategoryTests : DomainTest
     {
         [Fact]
@@ -457,52 +456,100 @@ namespace Allors.Domain
 
             var good1 = new GoodBuilder(this.Session)
                 .WithName("good1")
-                .WithSku("good1")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory1)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("1")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
             var good2 = new GoodBuilder(this.Session)
                 .WithName("good2")
-                .WithSku("good2")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory2)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("2")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
             var good11 = new GoodBuilder(this.Session)
                 .WithName("good11")
-                .WithSku("good11")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good11")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory11)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("3").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("3")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
             var good12 = new GoodBuilder(this.Session)
                 .WithName("good12")
-                .WithSku("good12")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good12")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory12)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("4").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                            .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                                .WithIdentification("4")
+                                .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                            .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
             var good111 = new GoodBuilder(this.Session)
                 .WithName("good111")
-                .WithSku("good111")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good111")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory111)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("5").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("5")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
             var good121 = new GoodBuilder(this.Session)
                 .WithName("good121")
-                .WithSku("good121")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good121")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory121)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("6").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("6")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
+
             var good122 = new GoodBuilder(this.Session)
                 .WithName("good122")
-                .WithSku("good122")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("good122")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithPrimaryProductCategory(productCategory122)
                 .WithVatRate(vatRate21)
-                .WithPart(new PartBuilder(this.Session).WithPartId("7").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("7")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.Session.Derive();

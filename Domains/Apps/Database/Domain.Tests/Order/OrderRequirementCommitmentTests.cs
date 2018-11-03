@@ -21,6 +21,8 @@
 
 namespace Allors.Domain
 {
+    using Allors.Meta;
+
     using Xunit;
 
     public class OrderRequirementCommitmentTests : DomainTest
@@ -41,15 +43,7 @@ namespace Allors.Domain
                 
                 .Build();
 
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
-                .WithName("Gizmo")
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
 

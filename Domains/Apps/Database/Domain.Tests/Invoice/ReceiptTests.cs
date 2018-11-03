@@ -38,23 +38,10 @@ namespace Allors.Domain
 
             this.singleton = this.Session.GetSingleton();
             this.billToCustomer = new OrganisationBuilder(this.Session).WithName("billToCustomer").WithPreferredCurrency(euro).Build();
+            this.good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").WithLocale(new Locales(this.Session).EnglishGreatBritain).Build();
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
-
-            this.finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            this.good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(this.finishedGood)
-                .Build();
 
             var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)

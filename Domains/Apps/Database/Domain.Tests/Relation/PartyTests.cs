@@ -105,14 +105,7 @@ namespace Allors.Domain
                   .WithGeographicBoundary(mechelen)
                   .Build();
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
 
@@ -162,13 +155,7 @@ namespace Allors.Domain
 
             var partyFinancial = customer.PartyFinancialRelationshipsWhereParty.First(v => Equals(v.InternalOrganisation, customerRelationship.InternalOrganisation));
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithName("goof")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             this.Session.Derive();
 
