@@ -13,10 +13,10 @@ namespace Intranet.Pages.Relations
 
         public Button EditButton => new Button(this.Driver, By.XPath("//button/span[contains(text(), 'Edit')]"));
 
-        public PersonPage Edit()
+        public PersonEditPage Edit()
         {
             this.EditButton.Click();
-            return new PersonPage(this.Driver);
+            return new PersonEditPage(this.Driver);
         }
     }
 }

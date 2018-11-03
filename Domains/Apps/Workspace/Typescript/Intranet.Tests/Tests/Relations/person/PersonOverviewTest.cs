@@ -23,7 +23,7 @@ namespace Intranet.Tests.RelationsPerson
         [Fact]
         public void Title()
         {
-            var person = new People(this.Session).FindBy(M.Person.PartyName, "contact1");
+            var person = new People(this.Session).FindBy(M.Person.PartyName, "John0 Doe0");
             this.people.Select(person);
             Assert.Equal("Person Overview", this.Driver.Title);
         }

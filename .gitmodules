@@ -1,0 +1,3 @@
+[submodule "Domains/Base/External/maltreport"]
+	path = Domains/Base/External/maltreport
+	url = https://github.com/oldrev/maltreport.git

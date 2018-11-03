@@ -19,15 +19,5 @@ namespace Intranet.Tests.RelationsPerson
         {
             Assert.Equal("People", this.Driver.Title);
         }
-
-        [Fact]
-        public void Search()
-        {
-            var page = new PersonListPage(this.Driver);
-
-            page.LastName.Text = "jos";
-
-            Assert.Equal("jos", page.LastName.Text);
-        }
     }
 }

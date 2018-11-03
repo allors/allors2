@@ -22,6 +22,8 @@ namespace Allors.Domain
 {
     public  partial class Part
     {
+        public new string ToString() => this.Name ?? this.Id.ToString();
+
         public InventoryStrategy GetInventoryStrategy
             => this.InventoryStrategy ?? (this.InternalOrganisation?.InventoryStrategy ?? new InventoryStrategies(this.strategy.Session).Standard);
 

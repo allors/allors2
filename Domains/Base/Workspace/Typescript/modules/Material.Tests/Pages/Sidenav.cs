@@ -40,16 +40,16 @@ namespace Intranet.Tests
             return new DashboardPage(this.Driver);
         }
 
-        public PeopleOverviewPage NavigateToPeople()
+        public PersonListPage NavigateToPeople()
         {
             this.Navigate(this.RelationsGroup, this.People);
-            return new PeopleOverviewPage(this.Driver);
+            return new PersonListPage(this.Driver);
         }
 
-        public OrganisationsOverviewPage NavigateToOrganisations()
+        public OrganisationListPage NavigateToOrganisations()
         {
             this.Navigate(this.RelationsGroup, this.Organisations);
-            return new OrganisationsOverviewPage(this.Driver);
+            return new OrganisationListPage(this.Driver);
         }
 
         public FormPage NavigateToForm()

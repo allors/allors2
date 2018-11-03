@@ -11,7 +11,7 @@ namespace Intranet.Tests.Relations
     [Collection("Test collection")]
     public class PersonOverviewTest : Test
     {
-        private readonly PeopleOverviewPage people;
+        private readonly PersonListPage people;
 
         public PersonOverviewTest(TestFixture fixture)
             : base(fixture)

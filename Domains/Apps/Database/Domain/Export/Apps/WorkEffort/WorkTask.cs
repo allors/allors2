@@ -19,9 +19,6 @@ namespace Allors.Domain
     using System.Linq;
 
     using Allors.Meta;
-    using Allors.Services;
-
-    using Microsoft.Extensions.DependencyInjection;
 
     public partial class WorkTask
     {
@@ -53,6 +50,28 @@ namespace Allors.Domain
             }
 
             var model = new Dictionary<string, object> { { "workTask", this } };
+
+            var timeEntries = new List<TimeEntry>();
+
+            foreach (ServiceEntry serviceEntry in this.ServiceEntriesWhereWorkEffort)
+            {
+                if (serviceEntry is TimeEntry timeEntry)
+                {
+                    timeEntries.Add(timeEntry);
+                }
+            }
+
+            if (timeEntries.Count() > 0)
+            {
+                model.Add("timeEntries", timeEntries.ToArray());
+            }
+
+            var inventoryAssignments = this.WorkEffortInventoryAssignmentsWhereAssignment.ToArray();
+            if (inventoryAssignments.Count() > 0)
+            {
+                model.Add("inventory", inventoryAssignments);
+            }
+
             this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, model);
         }
 
@@ -69,4 +88,4 @@ namespace Allors.Domain
         //    }
         //}
     }
-    }
+}
