@@ -60,4 +60,4 @@ export { PersonListComponent } from './person-list.component';
     RouterModule,
   ],
 })
-export class PeopleOverviewModule { }
+export class PersonListModule { }

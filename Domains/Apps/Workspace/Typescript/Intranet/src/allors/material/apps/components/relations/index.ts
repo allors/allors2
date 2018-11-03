@@ -23,7 +23,7 @@ export * from './communicationevent/list/communicationevent-list.module';
 export * from './communicationevent/worktask/communicationevent-worktask.module';
 
 import { PeopleExportModule } from './person/export/person-export.module';
-import { PeopleOverviewModule } from './person/list/person-list.module';
+import { PersonListModule } from './person/list/person-list.module';
 import { PersonOverviewModule } from './person/overview/person-overview.module';
 import { PersonModule } from './person/edit/person-edit.module';
 
@@ -46,7 +46,7 @@ import { CommunicationEventsOverviewModule } from './communicationevent/list/com
 import { CommunicationEventWorkTaskModule } from './communicationevent/worktask/communicationevent-worktask.module';
 
 export const Modules = [
-  PeopleExportModule, PeopleOverviewModule, PersonOverviewModule, PersonModule,
+  PeopleExportModule, PersonListModule, PersonOverviewModule, PersonModule,
   OrganisationOverviewModule, OrganisationModule, OrganisationsOverviewModule,
   EmailAddressdModule, PostalAddressModule, TelecommunicationsNumberModule, EditWebAddressModule,
   EmailCommunicationModule, FaceToFaceCommunicationModule, LetterCorrespondenceModule, PhoneCommunicationModule,

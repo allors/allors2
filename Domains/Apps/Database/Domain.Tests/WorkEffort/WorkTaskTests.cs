@@ -211,9 +211,21 @@ namespace Allors.Domain
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Task").Build();
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).Build();
-            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
-            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
-            var part3 = new PartBuilder(this.Session).WithPartId("P3").Build();
+            var part1 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
+            var part2 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
+            var part3 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P3")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             this.Session.Derive(true);
 

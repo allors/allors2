@@ -21,7 +21,7 @@ import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module
 import { CategoriesOverviewModule } from './category/categories-overview.module';
 import { CategoryModule } from './category/category.module';
 
-import { GoodsOverviewModule } from './good/list/good-list.module';
+import { GoodListModule } from './good/list/good-list.module';
 import { NewGoodDialogModule } from './good/newgood-dialog.module';
 
 import { ProductCharacteristicModule } from './productcharacteristic/productcharacteristic.module';
@@ -35,7 +35,7 @@ import { GoodEditModule } from './good/edit/good-edit.module';
 export const Modules = [
   CataloguesOverviewModule, CatalogueModule,
   CategoriesOverviewModule, CategoryModule,
-  GoodsOverviewModule, NewGoodDialogModule,
+  GoodListModule, NewGoodDialogModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
   GoodEditModule,

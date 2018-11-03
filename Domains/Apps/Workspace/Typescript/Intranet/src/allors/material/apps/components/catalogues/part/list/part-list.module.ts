@@ -14,15 +14,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { GoodListComponent } from './good-list.component';
-export { GoodListComponent } from './good-list.component';
+import { PartListComponent } from './part-list.component';
+export { PartListComponent } from './part-list.component';
 
 @NgModule({
   declarations: [
-    GoodListComponent,
+    PartListComponent,
   ],
   exports: [
-    GoodListComponent,
+    PartListComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -62,4 +62,4 @@ export { GoodListComponent } from './good-list.component';
   entryComponents: [
   ]
 })
-export class GoodListModule { }
+export class PartListModule { }

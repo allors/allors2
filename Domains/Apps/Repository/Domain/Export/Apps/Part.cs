@@ -47,6 +47,7 @@ namespace Allors.Repository
         [AssociationId("6f267a60-802b-454f-9ac7-762a92746255")]
         [RoleId("a9efc713-6574-4b82-b20e-0fc22747566a")]
         #endregion
+        [Workspace]
         [Size(256)]
         public string Name { get; set; }
 
@@ -58,6 +59,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.OneToMany)]
         [Required]
+        [Workspace]
         public IGoodIdentification[] GoodIdentifications { get; set; }
 
         #region Allors

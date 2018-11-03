@@ -25,10 +25,10 @@ interface Row {
 }
 
 @Component({
-  templateUrl: './good-list.component.html',
+  templateUrl: './part-list.component.html',
   providers: [Allors, AllorsFilterService]
 })
-export class GoodListComponent implements OnInit, OnDestroy {
+export class PartListComponent implements OnInit, OnDestroy {
 
   public title = 'Products';
 
