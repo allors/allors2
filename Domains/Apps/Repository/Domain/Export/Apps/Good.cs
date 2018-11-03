@@ -68,6 +68,17 @@ namespace Allors.Repository
         #endregion
 
         #region Allors
+        [Id("1A5619BE-43D0-47CF-B906-0A15277B86A6")]
+        [AssociationId("3E3E2DEE-FABB-41C3-A0DD-6A457A829A8C")]
+        [RoleId("DE123A63-F0AC-41ED-9CF8-76ED588EA9E2")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Required]
+        [Workspace]
+        public IGoodIdentification[] GoodIdentifications { get; set; }
+
+        #region Allors
         [Id("4e8eceff-aec2-44f8-9820-4e417ed904c1")]
         [AssociationId("30f4ec83-5854-4a53-a594-ba1247d02b2f")]
         [RoleId("80361383-e1fc-4256-9b69-7cd43469d0de")]
@@ -85,15 +96,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Part Part { get; set; }
-
-        #region Allors
-        [Id("859487f7-9759-4c30-8528-8cd5d014b0a2")]
-        [AssociationId("e293bfae-afd7-4f15-8e01-58c9078364b6")]
-        [RoleId("3a499b07-0d4f-4f5a-b679-7d76118f8441")]
-        #endregion
-        [Size(256)]
-        [Workspace]
-        public string Sku { get; set; }
 
         #region Allors
         [Id("50C3BAB5-9BB9-48C0-B41A-9E9072D70C06")]

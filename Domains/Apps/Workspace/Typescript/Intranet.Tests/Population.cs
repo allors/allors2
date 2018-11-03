@@ -184,13 +184,17 @@ namespace Intranet.Tests
 
             var finishedGood1 = new PartBuilder(this.session)
                 .WithName("finished good1")
-                .WithPartId("1-1")
+                .WithGoodIdentification(new PartNumberBuilder(this.session)
+                    .WithIdentification("1-1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .Build();
 
             var finishedGood2 = new PartBuilder(this.session)
                 .WithName("finished good2")
-                .WithPartId("1-2")
+                .WithGoodIdentification(new PartNumberBuilder(this.session)
+                    .WithIdentification("1-2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.session).NonSerialised)
                 .Build();
 
@@ -199,17 +203,12 @@ namespace Intranet.Tests
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine blauwe ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect blue with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect blauw met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithSku("10101")
+                .WithGoodIdentification(new ProductNumberBuilder(this.session)
+                    .WithIdentification("10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood1)
-                .Build();
-
-            new ProductFeatureApplicabilityBuilder(this.session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithAvailableFor(good1)
-                .WithProductFeature(new BrandBuilder(this.session).WithName("brand 1").Build())
-                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
             new InventoryItemTransactionBuilder(this.session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.session).Unknown).Build();
@@ -220,17 +219,12 @@ namespace Intranet.Tests
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithSku("10102")
+                .WithGoodIdentification(new ProductNumberBuilder(this.session)
+                    .WithIdentification("10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood2)
-                .Build();
-
-            new ProductFeatureApplicabilityBuilder(this.session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithAvailableFor(good2)
-                .WithProductFeature(new BrandBuilder(this.session).WithName("brand 2").Build())
-                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
             var serialisedItem = new SerialisedItemBuilder(this.session).WithSerialNumber("1").Build();
@@ -241,16 +235,11 @@ namespace Intranet.Tests
                 .WithLocalisedName(new LocalisedTextBuilder(this.session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithSku("10103")
+                .WithGoodIdentification(new ProductNumberBuilder(this.session)
+                    .WithIdentification("10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
-                .Build();
-
-            new ProductFeatureApplicabilityBuilder(this.session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithAvailableFor(good3)
-                .WithProductFeature(new BrandBuilder(this.session).WithName("brand 3").Build())
-                .WithProductFeatureApplicabilityKind(new ProductFeatureApplicabilityKinds(this.session).Required)
                 .Build();
 
             this.session.Derive();

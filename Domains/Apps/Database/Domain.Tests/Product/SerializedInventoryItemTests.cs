@@ -34,7 +34,9 @@ namespace Allors.Domain
             // Arrange
             var part = new PartBuilder(this.Session).WithName("part")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .Build();
             var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
 
@@ -157,7 +159,9 @@ namespace Allors.Domain
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new GoodBuilder(this.Session)
-                .WithSku(sku)
+                .WithGoodIdentification(new SkuBuilder(this.Session)
+                    .WithIdentification(sku)
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
                 .WithVatRate(vatRate)
                 .WithName(name)
                 .WithUnitOfMeasure(uom)
@@ -166,7 +170,11 @@ namespace Allors.Domain
                 .Build();        
 
         private Part CreatePart(string partId, InventoryItemKind kind)
-            => new PartBuilder(this.Session).WithPartId(partId).WithInventoryItemKind(kind).Build();
+            => new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification(partId)
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(kind).Build();
 
         private InventoryItemTransaction CreateInventoryTransaction(int quantity, InventoryTransactionReason reason, Part part, SerialisedItem serialisedItem)
            => new InventoryItemTransactionBuilder(this.Session).WithQuantity(quantity).WithReason(reason).WithPart(part).WithSerialisedItem(serialisedItem).Build();

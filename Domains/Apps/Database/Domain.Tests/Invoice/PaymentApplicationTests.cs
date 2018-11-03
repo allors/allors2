@@ -37,16 +37,14 @@ namespace Allors.Domain
                 .WithCustomer(customer)
                 .Build();
 
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+
             new SalesInvoiceBuilder(this.Session)
                 .WithBillToCustomer(customer)
                 .WithBillToContactMechanism(billToContactMechanism)
                 .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                 .WithSalesInvoiceItem(new SalesInvoiceItemBuilder(this.Session)
-                                        .WithProduct(new GoodBuilder(this.Session)
-                                                            .WithName("good")
-                                                            .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                                                            .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                                                            .Build())  
+                                        .WithProduct(good1)  
                                         .WithInvoiceItemType(new InvoiceItemTypes(this.Session).ProductItem)
                                         .WithQuantity(1)
                                         .WithActualUnitPrice(100M)
@@ -56,13 +54,6 @@ namespace Allors.Domain
             var builder = new PaymentApplicationBuilder(this.Session);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithAmountApplied(0);
-            builder.Build();
-
             Assert.False(this.Session.Derive(false).HasErrors);
         }
 
@@ -70,15 +61,7 @@ namespace Allors.Domain
         public void GivenPaymentApplication_WhenDeriving_ThenAmountAppliedCannotBeLargerThenAmountReceived()
         {
             var contactMechanism = new ContactMechanisms(this.Session).Extent().First;
-
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var customer = new PersonBuilder(this.Session).WithLastName("customer").Build();
             new CustomerRelationshipBuilder(this.Session)

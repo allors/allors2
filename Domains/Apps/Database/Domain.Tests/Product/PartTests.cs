@@ -37,8 +37,11 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithPartId("1");
-            finishedGood = builder.Build();
+            builder.WithGoodIdentification(
+                new PartNumberBuilder(this.Session).WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build());
+
+            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
         }
@@ -47,7 +50,9 @@ namespace Allors.Domain
         public void GivenPart_WhenBuild_ThenPostBuildRelationsMustExist()
         {
             var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -58,7 +63,9 @@ namespace Allors.Domain
         public void GivenNewPart_WhenDeriving_ThenInventoryItemIsCreated()
         {
             var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 

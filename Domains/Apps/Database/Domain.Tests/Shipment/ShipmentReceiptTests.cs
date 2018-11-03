@@ -43,26 +43,14 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(finishedGood).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).PhysicalCount).WithPart(good1.Part).Build();
 
             this.Session.Derive();
             this.Session.Commit();
 
-            var inventoryItem = finishedGood.InventoryItemsWherePart.First;
+            var inventoryItem = good1.Part.InventoryItemsWherePart.First;
             var builder = new ShipmentReceiptBuilder(this.Session);
             builder.Build();
 
@@ -78,7 +66,7 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             builder.WithShipmentItem(shipmentItem);
@@ -94,7 +82,9 @@ namespace Allors.Domain
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
             var part = new PartBuilder(this.Session)
-                .WithPartId("1")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .Build();
 
             var order = new PurchaseOrderBuilder(this.Session)
@@ -139,23 +129,11 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(finishedGood).WithQuantityOrdered(1).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(good1.Part).WithQuantityOrdered(1).Build();
             order.AddPurchaseOrderItem(item1);
 
             this.Session.Derive();
@@ -164,7 +142,7 @@ namespace Allors.Domain
             order.Confirm();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             var receipt = new ShipmentReceiptBuilder(this.Session)
@@ -179,7 +157,7 @@ namespace Allors.Domain
             shipment.AppsComplete();
 
             Assert.Equal(new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse), receipt.InventoryItem.Facility);
-            Assert.Equal(finishedGood.InventoryItemsWherePart[0], receipt.InventoryItem);
+            Assert.Equal(good1.Part.InventoryItemsWherePart[0], receipt.InventoryItem);
 
             this.Session.Rollback();
         }
@@ -201,25 +179,13 @@ namespace Allors.Domain
             var customer = new PersonBuilder(this.Session).WithLastName("customer").WithPartyContactMechanism(shipToMechelen).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(customer).Build();
 
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(20).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good1.Part).Build();
 
             this.Session.Derive();
 
-            var inventoryItem = finishedGood.InventoryItemsWherePart.First;
+            var inventoryItem = good1.Part.InventoryItemsWherePart.First;
 
             var order1 = new SalesOrderBuilder(this.Session)
                 .WithBillToCustomer(customer)
@@ -227,7 +193,7 @@ namespace Allors.Domain
                 .WithDeliveryDate(DateTime.UtcNow)
                 .Build();
 
-            var salesItem = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good).WithQuantityOrdered(30).WithActualUnitPrice(15).Build();
+            var salesItem = new SalesOrderItemBuilder(this.Session).WithDescription("item1").WithProduct(good1).WithQuantityOrdered(30).WithActualUnitPrice(15).Build();
             order1.AddSalesOrderItem(salesItem);
 
             this.Session.Derive();
@@ -250,7 +216,7 @@ namespace Allors.Domain
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(finishedGood).WithQuantityOrdered(10).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(good1.Part).WithQuantityOrdered(10).Build();
             order.AddPurchaseOrderItem(item1);
 
             this.Session.Derive();
@@ -259,7 +225,7 @@ namespace Allors.Domain
             order.Confirm();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)
@@ -289,23 +255,11 @@ namespace Allors.Domain
             var supplier = new OrganisationBuilder(this.Session).WithName("supplier").Build();
             new SupplierRelationshipBuilder(this.Session).WithSupplier(supplier).Build();
 
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            var good = new GoodBuilder(this.Session)
-                .WithName("good")
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(21).Build())
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood)
-                .Build();
+            var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var order = new PurchaseOrderBuilder(this.Session).WithTakenViaSupplier(supplier).Build();
 
-            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(finishedGood).WithQuantityOrdered(10).Build();
+            var item1 = new PurchaseOrderItemBuilder(this.Session).WithPart(good1.Part).WithQuantityOrdered(10).Build();
             order.AddPurchaseOrderItem(item1);
 
             this.Session.Derive();
@@ -314,7 +268,7 @@ namespace Allors.Domain
             order.Confirm();
 
             var shipment = new PurchaseShipmentBuilder(this.Session).WithShipmentMethod(new ShipmentMethods(this.Session).Ground).WithShipFromParty(supplier).Build();
-            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good).Build();
+            var shipmentItem = new ShipmentItemBuilder(this.Session).WithGood(good1).Build();
             shipment.AddShipmentItem(shipmentItem);
 
             new ShipmentReceiptBuilder(this.Session)

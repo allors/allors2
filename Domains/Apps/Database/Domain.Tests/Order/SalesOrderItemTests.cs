@@ -87,7 +87,9 @@ namespace Allors.Domain
                                                             .Build());
 
             this.part = new PartBuilder(this.Session)
-                .WithPartId("99")
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -107,7 +109,9 @@ namespace Allors.Domain
             this.productCategory.AddParent(this.parentProductCategory);
 
             this.good = new GoodBuilder(this.Session)
-                .WithSku("10101")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
@@ -159,25 +163,39 @@ namespace Allors.Domain
             //    .Build();
 
             this.variantGood = new GoodBuilder(this.Session)
-                .WithSku("v10101")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("2")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
-                .WithSku("v10102")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10102")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("3")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
-                .WithSku("v10103")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10103")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)
@@ -613,14 +631,7 @@ namespace Allors.Domain
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10102")
-                .WithVatRate(this.vatRate21)
-                .WithName("good2")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("3").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             new SupplierRelationshipBuilder(this.Session)
                 .WithSupplier(this.supplier)
@@ -1343,24 +1354,12 @@ namespace Allors.Domain
 
             var manual = new OrderKindBuilder(this.Session).WithDescription("manual").WithScheduleManually(true).Build();
 
-            var testPart = new PartBuilder(this.Session)
-                .WithPartId("3")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var testgood = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(this.vatRate21)
-                .WithName("good1")
-                .WithPart(testPart)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(testPart).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(110).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
             var item = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(testgood)
+                .WithProduct(good)
                 .WithQuantityOrdered(120)
                 .WithActualUnitPrice(5)
                 .Build();
@@ -1648,21 +1647,9 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            var finishedGood = new PartBuilder(this.Session)
-                .WithPartId("3")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var good2 = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithName("good1")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(finishedGood)
-                .Build();
-
-            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(finishedGood).Build();
+            new InventoryItemTransactionBuilder(this.Session).WithQuantity(10).WithReason(new InventoryTransactionReasons(this.Session).Unknown).WithPart(good.Part).Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -1682,7 +1669,7 @@ namespace Allors.Domain
                 .Build();
 
             var item3 = new SalesOrderItemBuilder(this.Session)
-                .WithProduct(good2)
+                .WithProduct(good)
                 .WithQuantityOrdered(7)
                 .WithActualUnitPrice(5)
                 .Build();

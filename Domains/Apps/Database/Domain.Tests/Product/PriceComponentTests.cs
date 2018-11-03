@@ -22,6 +22,9 @@
 namespace Allors.Domain
 {
     using System;
+
+    using Allors.Meta;
+
     using Xunit;
 
     public class PriceComponentTests : DomainTest
@@ -30,14 +33,7 @@ namespace Allors.Domain
         public void GivenBasePrice_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
-                .WithName("Gizmo")
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var colorFeature = new ColourBuilder(this.Session)
                 .WithVatRate(vatRate21)
@@ -93,20 +89,16 @@ namespace Allors.Domain
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
             var virtualGood = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithName("virtual gizmo")
                 .WithVatRate(vatRate21)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
-            var physicalGood = new GoodBuilder(this.Session)
-                .WithName("real gizmo")
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var physicalGood = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             virtualGood.AddVariant(physicalGood);
 
@@ -129,16 +121,7 @@ namespace Allors.Domain
         [Fact]
         public void GivenBasePriceForNonVirtualProduct_WhenDeriving_ThenProductVirtualProductPriceComponentIsNull()
         {
-            var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-
-            var physicalGood = new GoodBuilder(this.Session)
-                .WithName("real gizmo")
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var physicalGood = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             new BasePriceBuilder(this.Session)
                 .WithDescription("baseprice")
@@ -154,14 +137,7 @@ namespace Allors.Domain
         public void GivenDiscount_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
-                .WithName("gizmo")
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var colorFeature = new ColourBuilder(this.Session)
              .WithVatRate(vatRate21)
@@ -273,14 +249,7 @@ namespace Allors.Domain
         public void GivenSurcharge_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             var vatRate21 = new VatRateBuilder(this.Session).WithRate(21).Build();
-            var good = new GoodBuilder(this.Session)
-                .WithName("gizmo")
-                .WithSku("10101")
-                .WithVatRate(vatRate21)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
             var colorFeature = new ColourBuilder(this.Session)
                 .WithVatRate(vatRate21)

@@ -29,7 +29,11 @@ namespace Allors.Domain
         [Fact]
         public void GivenInvoiceItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
-            var rawMaterial = new PartBuilder(this.Session).WithPartId("1").Build();
+            var rawMaterial = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
             
             this.Session.Derive();
             this.Session.Commit();

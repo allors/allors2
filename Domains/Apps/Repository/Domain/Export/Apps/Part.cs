@@ -51,6 +51,16 @@ namespace Allors.Repository
         public string Name { get; set; }
 
         #region Allors
+        [Id("210AB5B0-746E-4332-A475-0B17FF4A9E1B")]
+        [AssociationId("2093223B-6746-4BDA-946E-4D7D0E5C7CA5")]
+        [RoleId("30739B0E-B5CD-49AB-8D77-985002222D77")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Required]
+        public IGoodIdentification[] GoodIdentifications { get; set; }
+
+        #region Allors
         [Id("527c0d02-7723-4715-b975-ec9474d0d22d")]
         [AssociationId("b8cce82f-8555-4d15-8012-3b122ad47b3d")]
         [RoleId("72e60215-a8fb-40a1-ac9b-0204421adde0")]
@@ -92,12 +102,22 @@ namespace Allors.Repository
         public Party ManufacturedBy { get; set; }
 
         #region Allors
-        [Id("89a29d59-b56f-4846-a9d2-cf7d094826dc")]
-        [AssociationId("8527c099-3ea0-486c-b288-ebf7e642952e")]
-        [RoleId("84e90f5a-ce0f-4f88-b964-829154e682dd")]
+        [Id("B615880B-DA81-4437-A59B-F6350A812249")]
+        [AssociationId("C8C3FB82-05C1-4680-8F48-0542046D4CD3")]
+        [RoleId("C4095B6C-D5ED-49F2-B7E1-54A011A6C2B0")]
+        [Indexed]
         #endregion
-        [Size(256)]
-        public string ManufacturerId { get; set; }
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public Brand Brand { get; set; }
+        
+        #region Allors
+        [Id("B6EB8A17-3092-44F0-86D1-59162208D5B9")]
+        [AssociationId("89E99C39-BD79-4261-AD72-2FDFA574E663")]
+        [RoleId("B8D42797-6D96-4A18-B953-DB33840044FB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        public Model Model { get; set; }
 
         #region Allors
         [Id("8dc701e0-1f66-44ee-acc6-9726aa7d5853")]
@@ -152,16 +172,6 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public SerialisedItem[] SerialisedItems { get; set; }
-
-        #region Allors
-        [Id("43b4b5c7-f94d-4e9b-9ea9-32a4414b11a6")]
-        [AssociationId("bb51ade7-37c0-4c7c-b32c-59cb06fa2c9c")]
-        [RoleId("ffdc1a53-6fd9-4a21-a576-77c84fc893eb")]
-        #endregion
-        [Unique]
-        [Required]
-        [Size(256)]
-        public string PartId { get; set; }
 
         #region Allors
         [Id("30C81CF6-6295-44C4-ACDD-2A408DA3DC6D")]

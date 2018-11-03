@@ -72,19 +72,8 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            this.finishedGood = new PartBuilder(this.Session)
-                .WithPartId("1")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
-            this.good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(this.vatRate21)
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(this.finishedGood)
-                .Build();
+            this.good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            this.finishedGood = this.good.Part;
 
             this.feature1 = new ColourBuilder(this.Session)
                 .WithVatRate(this.vatRate21)

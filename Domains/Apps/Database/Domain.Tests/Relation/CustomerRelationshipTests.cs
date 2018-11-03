@@ -26,6 +26,9 @@ using System.Linq;
 namespace Allors.Domain
 {
     using System;
+
+    using Allors.Meta;
+
     using Xunit;
 
     public class CustomerRelationshipTests : DomainTest
@@ -182,14 +185,8 @@ namespace Allors.Domain
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();
 
             this.Session.Derive();
 
@@ -254,14 +251,8 @@ namespace Allors.Domain
 
             var billToContactMechanism = new PostalAddressBuilder(this.Session).WithGeographicBoundary(mechelen).WithAddress1("Mechelen").Build();
 
-            var good = new GoodBuilder(this.Session)
-                .WithSku("10101")
-                .WithVatRate(new VatRateBuilder(this.Session).WithRate(0).Build())
-                .WithName("good")
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
-                .Build();
+            var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
+            good.VatRate = new VatRateBuilder(this.Session).WithRate(0).Build();
 
             this.Session.Derive();
 

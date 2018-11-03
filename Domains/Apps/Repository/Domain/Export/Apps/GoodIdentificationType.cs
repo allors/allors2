@@ -5,17 +5,11 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("273e69b7-6cda-44d4-b1d6-605b32a6a70d")]
+    [Id("A38A516C-4A0B-4D05-AD86-4F548B78F699")]
     #endregion
-    public partial class Model : Enumeration
+    public partial class GoodIdentificationType : Enumeration
     {
         #region inherited properties
-
-        public string Name { get; set; }
-
-        public LocalisedText[] LocalisedNames { get; set; }
-
-        public bool IsActive { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
@@ -23,10 +17,15 @@ namespace Allors.Repository
 
         public Guid UniqueId { get; set; }
 
+        public string Name { get; set; }
+
+        public LocalisedText[] LocalisedNames { get; set; }
+
+        public bool IsActive { get; set; }
+
         #endregion
 
         #region inherited methods
-
 
         public void OnBuild(){}
 

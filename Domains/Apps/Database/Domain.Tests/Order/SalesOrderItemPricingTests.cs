@@ -88,11 +88,6 @@ namespace Allors.Domain
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(billToCustomer).Build();
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(shipToCustomer).Build();
 
-            this.part = new PartBuilder(this.Session)
-                .WithPartId("99")
-                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
-                .Build();
-
             this.ancestorProductCategory = new ProductCategoryBuilder(this.Session)
                 .WithName("ancestor")
                 .Build();
@@ -108,8 +103,17 @@ namespace Allors.Domain
 
             this.productCategory.AddParent(this.parentProductCategory);
 
+            this.part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .Build();
+
             this.good = new GoodBuilder(this.Session)
-                .WithSku("10101")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("good")
                 .WithPrimaryProductCategory(this.productCategory)
@@ -118,24 +122,39 @@ namespace Allors.Domain
                 .Build();
 
             this.variantGood = new GoodBuilder(this.Session)
-                .WithSku("v10101")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.parentProductCategory)
-                .WithPart(new PartBuilder(this.Session).WithPartId("1").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("p1")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.variantGood2 = new GoodBuilder(this.Session)
-                .WithSku("v10102")
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v10102")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("variant good2")
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrimaryProductCategory(this.parentProductCategory)
-                .WithPart(new PartBuilder(this.Session).WithPartId("2").WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
+                .WithPart(new PartBuilder(this.Session)
+                    .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                        .WithIdentification("p2")
+                        .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                    .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
             this.virtualGood = new GoodBuilder(this.Session)
+                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
+                    .WithIdentification("v101")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(this.vatRate21)
                 .WithName("virtual good")
                 .WithVariant(this.variantGood)
@@ -1450,7 +1469,7 @@ namespace Allors.Domain
             Assert.Equal(this.currentGoodBasePrice.Price - amount1, item1.CalculatedUnitPrice);
             Assert.Equal(this.goodPurchasePrice.Price, item1.UnitPurchasePrice);
 
-            //this.parentProductCategoryRevenueHistory.Quantity = 11;
+            // this.parentProductCategoryRevenueHistory.Quantity = 11;
             this.order.RemoveSalesOrderItem(item1);
             this.order.AddSalesOrderItem(item1);
 

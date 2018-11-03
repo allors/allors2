@@ -34,7 +34,11 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             // Act
             this.Session.Derive(true);
@@ -71,8 +75,16 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
-            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
+            var part1 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
+            var part2 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             this.Session.Derive(true);
 
@@ -117,7 +129,11 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             this.Session.Derive(true);
 
@@ -154,7 +170,11 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part).WithQuantity(100).WithReason(reasons.PhysicalCount).Build();
 
@@ -194,7 +214,11 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             this.Session.Derive(true);
 
@@ -238,8 +262,16 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
-            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
+            var part1 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
+            var part2 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(10).WithReason(reasons.PhysicalCount).Build();
 
@@ -285,8 +317,16 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part1 = new PartBuilder(this.Session).WithPartId("P1").Build();
-            var part2 = new PartBuilder(this.Session).WithPartId("P2").Build();
+            var part1 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
+            var part2 = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P2")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part2).WithQuantity(5).WithReason(reasons.PhysicalCount).Build();
 
@@ -336,7 +376,11 @@ namespace Allors.Domain
             var reasons = new InventoryTransactionReasons(this.Session);
 
             var workEffort = new WorkTaskBuilder(this.Session).WithName("Activity").Build();
-            var part = new PartBuilder(this.Session).WithPartId("P1").Build();
+            var part = new PartBuilder(this.Session)
+                .WithGoodIdentification(new PartNumberBuilder(this.Session)
+                    .WithIdentification("P1")
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(part).WithQuantity(20).WithReason(reasons.PhysicalCount).Build();
 
