@@ -101,7 +101,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                   Locale: x,
                 },
                 ProductCategories: x,
-                SuppliedBy: x,
+                // SuppliedBy: x,
               }
             }),
             // TODO:
@@ -160,7 +160,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 if (this.good === undefined) {
                   this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
-                  this.good.Sku = '';
 
                   this.inventoryItem = scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
                   // TODO:
@@ -172,12 +171,12 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                   this.vendorProduct.Product = this.good;
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
                 } else {
-                  this.suppliers = this.good.SuppliedBy as Organisation[];
-                  this.selectedSuppliers = this.suppliers;
-                  this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
-                  this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
-                  this.inventoryItem = this.inventoryItems[0];
-                  // TODO:
+                  // this.suppliers = this.good.SuppliedBy as Organisation[];
+                  // this.selectedSuppliers = this.suppliers;
+                  // this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
+                  // this.inventoryItems = loaded.collections.inventoryItems as NonSerialisedInventoryItem[];
+                  // this.inventoryItem = this.inventoryItems[0];
+                  // // TODO:
                   // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
                   //   if (feature.objectType.name === 'Brand') {
                   //     this.selectedBrand = feature as Brand;

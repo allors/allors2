@@ -3,7 +3,7 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigation.list(m.Good)">Goods</a><span *ngIf="good"> / <a (click)="navigation.overview(good)">{{good.Name}}</a></span>
+        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigation.overview(party)">{{party.displayName}}</a></span>
         / {{title}}
       </div>
     </div>
@@ -85,6 +85,18 @@
             </div>
 
             <div class="row">
+              <mat-form-field class="col-md">
+                <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+                  <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.HsCode"></a-mat-input>
+            </div>
+
+            <div class="row">
               <mat-expansion-panel class="col" *ngIf="locales">
                 <mat-expansion-panel-header>
                   <mat-panel-title>
@@ -112,7 +124,9 @@
 
                   <div class="row pt-3">
                     <a-mat-static class="col-md" [object]="goodIdentification.GoodIdentificationType" [roleType]="m.GoodIdentificationType.Name"></a-mat-static>
-                    <a-mat-static class="col-md" [object]="goodIdentification" [roleType]="m.GoodIdentification.Identification"></a-mat-static>
+                    <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
+                    <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
+                    <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
                   </div>
 
                   <mat-divider *ngIf="!last" mat-inset></mat-divider>

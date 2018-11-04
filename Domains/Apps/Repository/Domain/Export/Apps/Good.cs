@@ -98,17 +98,6 @@ namespace Allors.Repository
         public Part Part { get; set; }
 
         #region Allors
-        [Id("50C3BAB5-9BB9-48C0-B41A-9E9072D70C06")]
-        [AssociationId("FB33E29C-7338-46C7-A612-A86ACC9051C8")]
-        [RoleId("4A324844-A835-4CD7-ACC6-24A817D03BDC")]
-        [Indexed]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToMany)]
-        [Workspace]
-        [Derived]
-        public Party[] SuppliedBy { get; set; }
-
-        #region Allors
         [Id("acbe2dc6-63ad-4910-9752-4cab83e24afb")]
         [AssociationId("70d193cf-8985-4c25-84a5-31f4e2fd2a34")]
         [RoleId("73361510-c5a2-4c4f-afe5-94d2b9eaeea3")]
@@ -147,15 +136,6 @@ namespace Allors.Repository
         [Workspace]
         [Multiplicity(Multiplicity.ManyToMany)]
         public Media[] Photos { get; set; }
-
-        #region Allors
-        [Id("DCDC68FD-B69B-4320-8224-0B304EBDD62C")]
-        [AssociationId("B99B9347-1EAD-4761-9E9E-093FE9D6D485")]
-        [RoleId("2BC21680-B7A8-47B7-97BD-66A883FC3AB7")]
-        #endregion
-        [Workspace]
-        [Size(10)]
-        public string HsCode { get; set; }
 
         #region Allors
         [Id("19449147-C4FB-4FB9-94AB-32B200DD519A")]

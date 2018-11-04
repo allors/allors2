@@ -20,6 +20,8 @@ using Allors.Meta;
 
 namespace Allors.Domain
 {
+    using System;
+
     public  partial class Part
     {
         public new string ToString() => this.Name ?? this.Id.ToString();
@@ -78,6 +80,21 @@ namespace Allors.Domain
             if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
                 this.SyncDefaultInventoryItem();
+            }
+
+            foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
+            {
+                if (supplierOffering.FromDate <= DateTime.UtcNow
+                    && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
+                {
+                    this.AddSuppliedBy(supplierOffering.Supplier);
+                }
+
+                if (supplierOffering.FromDate > DateTime.UtcNow
+                    || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < DateTime.UtcNow))
+                {
+                    this.RemoveSuppliedBy(supplierOffering.Supplier);
+                }
             }
 
             this.DeriveQuantityOnHand();

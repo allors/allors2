@@ -24,14 +24,14 @@
               <button [disabled]="!hasSelection" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/goods']">
                 <mat-icon>save_alt</mat-icon>
               </button>
-           
+
             </div>
           </mat-toolbar-row>
         </mat-toolbar>
       </div>
 
       <div style="position: relative">
-        <a style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1" mat-fab (click)="addNew()">
+        <a style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1" mat-fab (click)="navigation.add(allors.m.Good)">
           <mat-icon>add</mat-icon>
         </a>
       </div>

@@ -7,16 +7,15 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, And, Like, Sort, Equals, Contains, SessionObject, ContainedIn, Filter } from '../../../../../../framework';
+import { PullRequest, And, Like, Sort, SessionObject } from '../../../../../../framework';
 import { ErrorService, MediaService, x, Allors, NavigationService, Invoked } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
 import { StateService } from '../../../../services/StateService';
 
-import { Good, Part, ProductCategory, ProductType, Ownership, Organisation, SerialisedInventoryItemState, InternalOrganisation } from '../../../../../../domain';
+import { Good } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';
-import { GoodEditComponent } from '../../good/edit/good-edit.component';
 
 interface Row {
   good: Good;
@@ -51,7 +50,6 @@ export class GoodListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
@@ -72,43 +70,43 @@ export class GoodListComponent implements OnInit, OnDestroy {
     const predicate = new And([
       new Like({ roleType: m.Good.Name, parameter: 'Name' }),
       new Like({ roleType: m.Good.Keywords, parameter: 'Keyword' }),
-      new ContainedIn({
-        propertyType: m.Good.GoodIdentifications,
-        extent: new Filter({
-          objectType: m.GoodIdentification,
-          predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'Sku' })
-        })
-      }),
-      new Contains({ propertyType: m.Good.ProductCategories, parameter: 'Category' }),
-      new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' })
-        })
-      }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.Brand, parameter: 'Brand' })
-        })
-      }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.Model, parameter: 'Model' })
-        })
-      }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.InventoryItemKind, parameter: 'InventoryItemKind' })
-        })
-      }),
+      // new ContainedIn({
+      //   propertyType: m.Good.GoodIdentifications,
+      //   extent: new Filter({
+      //     objectType: m.GoodIdentification,
+      //     predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'Sku' })
+      //   })
+      // }),
+      // new Contains({ propertyType: m.Good.ProductCategories, parameter: 'Category' }),
+      // new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
+      // new ContainedIn({
+      //   propertyType: m.Good.Part,
+      //   extent: new Filter({
+      //     objectType: m.Part,
+      //     predicate: new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' })
+      //   })
+      // }),
+      // new ContainedIn({
+      //   propertyType: m.Good.Part,
+      //   extent: new Filter({
+      //     objectType: m.Part,
+      //     predicate: new Like({ roleType: m.Part.Brand, parameter: 'Brand' })
+      //   })
+      // }),
+      // new ContainedIn({
+      //   propertyType: m.Good.Part,
+      //   extent: new Filter({
+      //     objectType: m.Part,
+      //     predicate: new Like({ roleType: m.Part.Model, parameter: 'Model' })
+      //   })
+      // }),
+      // new ContainedIn({
+      //   propertyType: m.Good.Part,
+      //   extent: new Filter({
+      //     objectType: m.Part,
+      //     predicate: new Like({ roleType: m.Part.InventoryItemKind, parameter: 'InventoryItemKind' })
+      //   })
+      // }),
     ]);
 
     this.filterService.init(predicate);
@@ -130,7 +128,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
             internalOrganisationId,
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -140,7 +138,8 @@ export class GoodListComponent implements OnInit, OnDestroy {
               include: {
                 LocalisedNames: x,
                 PrimaryProductCategory: x,
-                PrimaryPhoto: x
+                PrimaryPhoto: x,
+                Part: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -155,6 +154,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         scope.session.reset();
         this.total = loaded.values.Goods_total;
+
         const goods = loaded.collections.Goods as Good[];
 
         this.dataSource.data = goods.map((v) => {
@@ -235,10 +235,10 @@ export class GoodListComponent implements OnInit, OnDestroy {
         .subscribe((confirm: boolean) => {
           if (confirm) {
             scope.invoke(methods)
-              .subscribe((invoked: Invoked) => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
+              .subscribe(() => {
+                  this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                  this.refresh();
+                },
                 (error: Error) => {
                   this.errorService.handle(error);
                 });
@@ -246,31 +246,4 @@ export class GoodListComponent implements OnInit, OnDestroy {
         });
     }
   }
-
-  public addNew() {
-    const dialogRef = this.dialog.open(GoodEditComponent, {
-      autoFocus: false,
-      disableClose: true
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.refresh();
-    });
-  }
-
-  // public addNew(): void {
-  //   const dialogRef = this.dialog.open(NewGoodDialogComponent, {
-  //     data: { chosenGood: this.chosenGood },
-  //     height: '300px',
-  //     width: '700px',
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((answer: string) => {
-  //     if (answer === 'Serialised') {
-  //       this.router.navigate(['/serialisedGood']);
-  //     }
-  //     if (answer === 'NonSerialised') {
-  //       this.router.navigate(['/nonSerialisedGood']);
-  //     }
-  //   });
-  // }
 }

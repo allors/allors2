@@ -2,23 +2,24 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation } from '../../../../../../domain';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, SerialisedInventoryItem, VendorProduct, SerialisedInventoryItemState, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { StateService } from 'src/allors/material/apps/services/StateService';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
-  templateUrl: './good-edit.component.html',
+  templateUrl: './part-edit.component.html',
   providers: [Allors]
 })
-export class GoodEditComponent implements OnInit, OnDestroy {
+export class PartEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Good';
+  public title = 'Email Address';
 
   public m: MetaDomain;
   public good: Good;
@@ -29,6 +30,10 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   public categories: ProductCategory[];
   public productTypes: ProductType[];
   public manufacturers: Organisation[];
+  public suppliers: Organisation[];
+  public activeSuppliers: Organisation[];
+  public selectedSuppliers: Organisation[];
+  public supplierOfferings: SupplierOffering[];
   public brands: Brand[];
   public selectedBrand: Brand;
   public models: Model[];
@@ -48,10 +53,11 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
-    public navigation: NavigationService,
+    private navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
+    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.m = this.allors.m;
@@ -63,12 +69,29 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, scope } = this.allors;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, refresh, internalOrganisationId]) => {
+        switchMap(([refresh, internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.param();
+
+          // const fetch = new FetchFactory(this.workspaceService.metaPopulation);
+          // const query = new QueryFactory(this.workspaceService.metaPopulation);
+
+          // const fetches: Fetch[] = [
+          //   this.fetcher.locales,
+          //   this.fetcher.internalOrganisation,
+          //   fetch.Good({
+          //     id,
+          //     include: {
+          //       PrimaryPhoto: {},
+          //       Photos: {},
+          //       Product_LocalisedNames: {
+          //         Localised_Locale: {}
+          //       },
+          //     },
+          //   }),
 
           const pulls = [
             this.fetcher.locales,
@@ -101,8 +124,23 @@ export class GoodEditComponent implements OnInit, OnDestroy {
                 }
               }
             ),
+            pull.Product(
+              {
+                object: id,
+                fetch: {
+                  // TODO:
+                  // SupplierOfferingsWhereProduct: x
+                }
+              }
+            ),
             pull.VatRate(),
-            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) })
+            pull.Ownership({
+              sort: new Sort(m.Ownership.Name),
+            }),
+            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }
+            ),
+            pull.Brand({ sort: new Sort(m.Brand.Name) })
           ];
 
           return scope
@@ -116,9 +154,14 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
                 this.good = loaded.objects.good as Good;
                 this.categories = loaded.collections.productCategories as ProductCategory[];
+                this.productTypes = loaded.collections.productTypes as ProductType[];
                 this.vatRates = loaded.collections.VatRates as VatRate[];
+                this.brands = loaded.collections.brands as Brand[];
+                this.ownerships = loaded.collections.ownerships as Ownership[];
                 this.locales = loaded.collections.locales as Locale[];
                 this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];
+                this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+                this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
                 const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
 
@@ -129,9 +172,26 @@ export class GoodEditComponent implements OnInit, OnDestroy {
                   this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
                   this.vendorProduct.Product = this.good;
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
+
+                } else {
+                  // this.suppliers = this.good.SuppliedBy as Organisation[];
+                  // this.selectedSuppliers = this.suppliers;
+                  // this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
+
+                  // TODO:
+                  // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+                  //   if (feature.objectType.name === 'Brand') {
+                  //     this.selectedBrand = feature as Brand;
+                  //     this.brandSelected(this.selectedBrand);
+                  //   }
+                  //   if (feature.objectType.name === 'Model') {
+                  //     this.selectedModel = feature as Model;
+                  //   }
+                  // });
                 }
 
                 this.title = this.good.Name;
+                this.subTitle = 'Serialised';
 
                 const pulls2 = [
                   pull.Organisation({
@@ -197,8 +257,10 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
     scope
       .load('Pull', new PullRequest({ pulls }))
-      .subscribe(() => {
-        },
+      .subscribe((loaded) => {
+        // TODO:
+        // this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+      },
         (error: Error) => {
           this.errorService.handle(error);
           this.navigation.back();
@@ -221,9 +283,9 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
     scope
       .save()
-      .subscribe(() => {
-          this.navigation.back();
-        },
+      .subscribe((saved: Saved) => {
+        this.navigation.back();
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
@@ -233,6 +295,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
     const { scope } = this.allors;
 
     const isNew = this.good.isNew;
+    this.onSave();
 
     scope
       .save()
@@ -247,5 +310,69 @@ export class GoodEditComponent implements OnInit, OnDestroy {
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  private onSave() {
+    // TODO:
+    // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
+    //   this.good.RemoveStandardFeature(feature);
+    // });
+
+    // if (this.selectedBrand != null) {
+    //   this.good.AddStandardFeature(this.selectedBrand);
+    // }
+
+    // if (this.selectedModel != null) {
+    //   this.good.AddStandardFeature(this.selectedModel);
+    // }
+
+    if (this.suppliers !== undefined) {
+      const suppliersToDelete = this.suppliers.filter(v => v);
+
+      if (this.selectedSuppliers !== undefined) {
+        this.selectedSuppliers.forEach((supplier: Organisation) => {
+          const index = suppliersToDelete.indexOf(supplier);
+          if (index > -1) {
+            suppliersToDelete.splice(index, 1);
+          }
+
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+            (v.ThroughDate === null || v.ThroughDate >= now));
+
+          if (supplierOffering === undefined) {
+            this.supplierOfferings.push(this.newSupplierOffering(supplier));
+          } else {
+            supplierOffering.ThroughDate = null;
+          }
+        });
+      }
+
+      if (suppliersToDelete !== undefined) {
+        suppliersToDelete.forEach((supplier: Organisation) => {
+          const now = new Date();
+          const supplierOffering = this.supplierOfferings.find((v) =>
+            v.Supplier === supplier &&
+            v.FromDate <= now &&
+            (v.ThroughDate === null || v.ThroughDate >= now));
+
+          if (supplierOffering !== undefined) {
+            supplierOffering.ThroughDate = new Date();
+          }
+        });
+      }
+    }
+  }
+
+  private newSupplierOffering(supplier: Organisation): SupplierOffering {
+    const { scope } = this.allors;
+
+    const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
+    supplierOffering.Supplier = supplier;
+    // TODO:
+    // supplierOffering.Product = good;
+    return supplierOffering;
   }
 }

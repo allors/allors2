@@ -40,6 +40,7 @@ namespace Allors.Domain
         private static readonly Guid ShippingInquiriesFaxId = new Guid("5AF74DFA-65FF-4512-A0A4-0F9905C94102");
         private static readonly Guid PersonalEmailAddressId = new Guid("A3DBFB0C-3542-4a70-B2FD-EABFC34F8BF3");
         private static readonly Guid MobilePhoneNumberId = new Guid("C81E8F99-169B-4c8e-8C88-761CCCD5BBB0");
+        private static readonly Guid OperationsId = new Guid("0078904B-6611-4DFA-BDC9-2A2E139ECD59");
 
         private UniquelyIdentifiableSticky<ContactMechanismPurpose> cache;
 
@@ -80,6 +81,8 @@ namespace Allors.Domain
         public ContactMechanismPurpose PersonalEmailAddress => this.Cache[PersonalEmailAddressId];
 
         public ContactMechanismPurpose MobilePhoneNumber => this.Cache[MobilePhoneNumberId];
+
+        public ContactMechanismPurpose Operations => this.Cache[OperationsId];
 
         private UniquelyIdentifiableSticky<ContactMechanismPurpose> Cache => this.cache ?? (this.cache = new UniquelyIdentifiableSticky<ContactMechanismPurpose>(this.Session));
 
@@ -223,6 +226,13 @@ namespace Allors.Domain
             new ContactMechanismPurposeBuilder(this.Session)
                 .WithName("Cellphone")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Mobiel nummer").WithLocale(dutchLocale).Build())
+                .WithUniqueId(MobilePhoneNumberId)
+                .WithIsActive(true)
+                .Build();
+
+            new ContactMechanismPurposeBuilder(this.Session)
+                .WithName("Operations")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Operations").WithLocale(dutchLocale).Build())
                 .WithUniqueId(MobilePhoneNumberId)
                 .WithIsActive(true)
                 .Build();

@@ -30,9 +30,9 @@ interface Row {
 })
 export class PartListComponent implements OnInit, OnDestroy {
 
-  public title = 'Products';
+  public title = 'Parts';
 
-  public displayedColumns = ['select', 'name', 'category', 'qty on hand', 'menu'];
+  public displayedColumns = ['select', 'Part No.', 'name', 'Product Type', 'Brand', 'Model', 'menu'];
   public selection = new SelectionModel<Row>(true, []);
 
   public total: number;
@@ -70,16 +70,14 @@ export class PartListComponent implements OnInit, OnDestroy {
     const { m, pull, scope } = this.allors;
 
     const predicate = new And([
-      new Like({ roleType: m.Good.Name, parameter: 'Name' }),
-      new Like({ roleType: m.Good.Keywords, parameter: 'Keyword' }),
+      new Like({ roleType: m.Part.Name, parameter: 'Name' }),
       new ContainedIn({
-        propertyType: m.Good.GoodIdentifications,
+        propertyType: m.Part.GoodIdentifications,
         extent: new Filter({
           objectType: m.GoodIdentification,
-          predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'Sku' })
+          predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'PartNo' })
         })
       }),
-      new Contains({ propertyType: m.Good.ProductCategories, parameter: 'Category' }),
       new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
       new ContainedIn({
         propertyType: m.Good.Part,

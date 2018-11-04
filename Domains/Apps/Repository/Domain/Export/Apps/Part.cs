@@ -104,14 +104,35 @@ namespace Allors.Repository
         public Party ManufacturedBy { get; set; }
 
         #region Allors
+        [Id("50C3BAB5-9BB9-48C0-B41A-9E9072D70C06")]
+        [AssociationId("FB33E29C-7338-46C7-A612-A86ACC9051C8")]
+        [RoleId("4A324844-A835-4CD7-ACC6-24A817D03BDC")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        [Derived]
+        public Party[] SuppliedBy { get; set; }
+
+        #region Allors
         [Id("B615880B-DA81-4437-A59B-F6350A812249")]
         [AssociationId("C8C3FB82-05C1-4680-8F48-0542046D4CD3")]
         [RoleId("C4095B6C-D5ED-49F2-B7E1-54A011A6C2B0")]
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         public Brand Brand { get; set; }
-        
+
+        #region Allors
+        [Id("DCDC68FD-B69B-4320-8224-0B304EBDD62C")]
+        [AssociationId("B99B9347-1EAD-4761-9E9E-093FE9D6D485")]
+        [RoleId("2BC21680-B7A8-47B7-97BD-66A883FC3AB7")]
+        #endregion
+        [Workspace]
+        [Size(10)]
+        public string HsCode { get; set; }
+
         #region Allors
         [Id("B6EB8A17-3092-44F0-86D1-59162208D5B9")]
         [AssociationId("89E99C39-BD79-4261-AD72-2FDFA574E663")]
@@ -119,6 +140,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
         public Model Model { get; set; }
 
         #region Allors

@@ -63,24 +63,6 @@ namespace Allors.Domain
 
             this.AddProductCategory(this.PrimaryProductCategory);
 
-            if (this.ExistPart)
-            {
-                foreach (SupplierOffering supplierOffering in this.Part.SupplierOfferingsWherePart)
-                {
-                    if (supplierOffering.FromDate <= DateTime.UtcNow
-                        && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= DateTime.UtcNow))
-                    {
-                        this.AddSuppliedBy(supplierOffering.Supplier);
-                    }
-
-                    if (supplierOffering.FromDate > DateTime.UtcNow
-                        || (supplierOffering.ExistThroughDate && supplierOffering.ThroughDate < DateTime.UtcNow))
-                    {
-                        this.RemoveSuppliedBy(supplierOffering.Supplier);
-                    }
-                }
-            }
-
             this.DeriveVirtualProductPriceComponent();
             this.DeriveProductCategoriesExpanded(derivation);
         }

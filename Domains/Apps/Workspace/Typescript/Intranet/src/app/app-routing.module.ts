@@ -125,6 +125,7 @@ export const routes: Routes = [
           { path: 'catalogues', data: pageListData({ id: ids.Catalogue, icon: 'share' }), component: catalogues.CataloguesOverviewComponent },
           { path: 'categories', data: pageListData({ id: ids.ProductCategory, icon: 'share' }), component: catalogues.CategoriesOverviewComponent },
           { path: 'goods', data: pageListData({ id: ids.Product, icon: 'share' }), component: catalogues.GoodListComponent },
+          { path: 'parts', data: pageListData({ id: ids.Part, icon: 'share' }), component: catalogues.PartListComponent },
           { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType, icon: 'share' }), component: catalogues.ProductCharacteristicsOverviewComponent },
           { path: 'productTypes', data: pageListData({ id: ids.ProductType, icon: 'share' }), component: catalogues.ProductTypesOverviewComponent },
         ],

@@ -121,7 +121,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                   Locale: x,
                 },
                 ProductCategories: x,
-                SuppliedBy: x,
+                // SuppliedBy: x,
                 // InventoryItemKind: x,
                 // ManufacturedBy: x,
                 // StandardFeatures: x,
@@ -199,7 +199,6 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 if (this.good === undefined) {
                   this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
-                  this.good.Sku = '';
 
                   this.inventoryItem = scope.session.create('SerialisedInventoryItem') as SerialisedInventoryItem;
                   // TODO:
@@ -212,11 +211,11 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
 
                 } else {
-                  this.suppliers = this.good.SuppliedBy as Organisation[];
-                  this.selectedSuppliers = this.suppliers;
-                  this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
-                  this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
-                  this.inventoryItem = this.inventoryItems[0];
+                  // this.suppliers = this.good.SuppliedBy as Organisation[];
+                  // this.selectedSuppliers = this.suppliers;
+                  // this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
+                  // this.inventoryItems = loaded.collections.inventoryItems as SerialisedInventoryItem[];
+                  // this.inventoryItem = this.inventoryItems[0];
 
                   // TODO:
                   // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
