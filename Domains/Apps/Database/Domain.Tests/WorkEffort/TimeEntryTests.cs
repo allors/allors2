@@ -24,7 +24,6 @@ namespace Allors.Domain
     using Allors.Meta;
     using System;
     using System.Linq;
-    using Should;
     using Xunit;
     
     public class TimeEntryTests : DomainTest
@@ -40,7 +39,7 @@ namespace Allors.Domain
             var originalCount = derivation.Errors.Count();
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
+            Assert.True(derivation.HasErrors);
 
             //// Re-arrange
             var tomorrow = DateTime.UtcNow.AddDays(1);
@@ -50,8 +49,8 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.Count().ShouldEqual(originalCount - 1);
+            Assert.True(derivation.HasErrors);
+            Assert.Equal(originalCount - 1, derivation.Errors.Count());
 
             //// Re-arrange
             var workOrder = new WorkTaskBuilder(this.Session).WithName("Work").Build();
@@ -61,8 +60,8 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.Count().ShouldEqual(originalCount - 2);
+            Assert.True(derivation.HasErrors);
+            Assert.Equal(originalCount - 2, derivation.Errors.Count());
 
             //// Re-arrange
             var worker = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
@@ -77,7 +76,7 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeFalse();
+            Assert.False(derivation.HasErrors);
         }
 
         [Fact]
@@ -107,8 +106,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            timeEntry.AmountOfTime.ShouldEqual(4.00M);
-            timeEntry.ActualHours.ShouldEqual(4.00M);
+            Assert.Equal(4.00M, timeEntry.AmountOfTime);
+            Assert.Equal(4.00M, timeEntry.ActualHours);
 
             //// Re-arrange
             timeEntry.RemoveAmountOfTime();
@@ -118,8 +117,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            timeEntry.AmountOfTime.ShouldEqual(Math.Round(4.0M / 24.0M, M.TimeEntry.AmountOfTime.Scale ?? 2));
-            timeEntry.ActualHours.ShouldEqual(4.00M);
+            Assert.Equal(Math.Round(4.0M / 24.0M, M.TimeEntry.AmountOfTime.Scale ?? 2), timeEntry.AmountOfTime);
+            Assert.Equal(4.00M, timeEntry.ActualHours);
 
             //// Re-arrange
             timeEntry.RemoveAmountOfTime();
@@ -129,8 +128,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            timeEntry.AmountOfTime.ShouldEqual(4.0M * 60.0M);
-            timeEntry.ActualHours.ShouldEqual(4.00M);
+            Assert.Equal(4.0M * 60.0M, timeEntry.AmountOfTime);
+            Assert.Equal(4.00M, timeEntry.ActualHours);
         }
 
         [Fact]
@@ -161,8 +160,8 @@ namespace Allors.Domain
 
             // Assert
             var timeSpan = timeEntry.ThroughDate - timeEntry.FromDate;
-            timeSpan.Value.TotalHours.ShouldEqual(4.00);
-            timeEntry.ActualHours.ShouldEqual(4.0M);
+            Assert.Equal(4.00, timeSpan.Value.TotalHours);
+            Assert.Equal(4.0M, timeEntry.ActualHours);
 
             //// Re-arrange
             timeEntry.RemoveThroughDate();
@@ -173,8 +172,8 @@ namespace Allors.Domain
 
             // Assert
             timeSpan = timeEntry.ThroughDate - timeEntry.FromDate;
-            timeSpan.Value.TotalMinutes.ShouldEqual(4.00);
-            timeEntry.ActualHours.ShouldEqual(Math.Round(4.0M / 60.0M, M.TimeEntry.AmountOfTime.Scale ?? 2));
+            Assert.Equal(4.00, timeSpan.Value.TotalMinutes);
+            Assert.Equal(Math.Round(4.0M / 60.0M, M.TimeEntry.AmountOfTime.Scale ?? 2), timeEntry.ActualHours);
 
             //// Re-arrange
             timeEntry.RemoveThroughDate();
@@ -185,8 +184,8 @@ namespace Allors.Domain
 
             // Assert
             timeSpan = timeEntry.ThroughDate - timeEntry.FromDate;
-            timeSpan.Value.TotalDays.ShouldEqual(4.00);
-            timeEntry.ActualHours.ShouldEqual(4.00M * 24.00M);
+            Assert.Equal(4.00, timeSpan.Value.TotalDays);
+            Assert.Equal(4.00M * 24.00M, timeEntry.ActualHours);
         }
     }
 }

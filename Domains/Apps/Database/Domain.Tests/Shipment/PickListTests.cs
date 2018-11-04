@@ -21,7 +21,6 @@
 
 namespace Allors.Domain
 {
-    using Should;
     using System;
     using Meta;
     using Xunit;
@@ -419,15 +418,15 @@ namespace Allors.Domain
 
             var pickList = good1.Part.InventoryItemsWherePart[0].PickListItemsWhereInventoryItem[0].PickListWherePickListItem;
 
-            pickList.PickListItems.Count.ShouldEqual(2);
+            Assert.Equal(2, pickList.PickListItems.Count);
 
             var extent1 = pickList.PickListItems;
             extent1.Filter.AddEquals(M.PickListItem.InventoryItem, good1Inventory);
-            extent1.First.RequestedQuantity.ShouldEqual(3);
+            Assert.Equal(3, extent1.First.RequestedQuantity);
 
             var extent2 = pickList.PickListItems;
             extent2.Filter.AddEquals(M.PickListItem.InventoryItem, good2Inventory);
-            extent2.First.RequestedQuantity.ShouldEqual(5);
+            Assert.Equal(5, extent2.First.RequestedQuantity);
         }
 
         [Fact]
@@ -533,10 +532,10 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            customer.ShipmentsWhereBillToParty.Count.ShouldEqual(1);
+            Assert.Single(customer.ShipmentsWhereBillToParty); 
 
             var customerShipment = (CustomerShipment)customer.ShipmentsWhereBillToParty.First;
-            customerShipment.CustomerShipmentState.ShouldEqual(new CustomerShipmentStates(this.Session).Picked);
+            Assert.Equal(new CustomerShipmentStates(this.Session).Picked, customerShipment.CustomerShipmentState);
         }
     }
 }

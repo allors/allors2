@@ -21,13 +21,12 @@
 
 namespace Allors.Domain
 {
-    using Should;
-    using System;
     using System.Linq;
-    using Xunit;
 
     using Allors.Meta;
-    
+
+    using Xunit;
+
     public class WorkTaskTests : DomainTest
     {
         [Fact]
@@ -63,8 +62,8 @@ namespace Allors.Domain
             var derivation = this.Session.Derive(false);
 
             // Assert
-            derivation.HasErrors.ShouldBeTrue();
-            derivation.Errors.SelectMany(e => e.RoleTypes).ShouldContain(M.WorkTask.WorkEffortNumber);
+            Assert.True(derivation.HasErrors);
+            Assert.Contains(M.WorkTask.WorkEffortNumber, derivation.Errors.SelectMany(e => e.RoleTypes));
 
             //// Re-arrange
             workOrder.TakenBy = organisation2;
@@ -73,7 +72,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.WorkEffortNumber.ShouldNotBeNull();
+            Assert.NotNull(workOrder.WorkEffortNumber);
         }
 
         [Fact]
@@ -126,7 +125,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.ActualHours.ShouldEqual(13.0M);
+            Assert.Equal(13.0M, workOrder.ActualHours);
         }
 
         [Fact]
@@ -163,8 +162,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.ActualStart.ShouldEqual(today);
-            workOrder.ActualCompletion.ShouldEqual(laterToday);
+            Assert.Equal(today, workOrder.ActualStart);
+            Assert.Equal(laterToday,workOrder.ActualCompletion);
 
             //// Re-arrange
             var timeEntryYesterday = new TimeEntryBuilder(this.Session)
@@ -180,8 +179,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.ActualStart.ShouldEqual(yesterday);
-            workOrder.ActualCompletion.ShouldEqual(laterToday);
+            Assert.Equal(yesterday, workOrder.ActualStart);
+            Assert.Equal(laterToday, workOrder.ActualCompletion);
 
             //// Re-arrange
 
@@ -198,8 +197,8 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.ActualStart.ShouldEqual(yesterday);
-            workOrder.ActualCompletion.ShouldEqual(laterTomorrow);
+            Assert.Equal(yesterday, workOrder.ActualStart);
+            Assert.Equal(laterTomorrow, workOrder.ActualCompletion);
         }
 
         [Fact]
@@ -285,7 +284,7 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            workOrder.PrintDocument.ShouldNotBeNull();
+            Assert.NotNull(workOrder.PrintDocument);
             //var result = workOrder.PrintDocument;
 
             //var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

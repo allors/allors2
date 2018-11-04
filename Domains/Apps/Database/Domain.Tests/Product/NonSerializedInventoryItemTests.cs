@@ -24,8 +24,6 @@ namespace Allors.Domain
     using System;
     using Meta;
     using Xunit;
-    using Should;
-
 
     public class NonSerialisedInventoryItemTests : DomainTest
     {
@@ -180,28 +178,28 @@ namespace Allors.Domain
             this.Session.Commit();
 
             // Assert
-            salesItem1.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem1.QuantityPendingShipment.ShouldEqual(5);
-            salesItem1.QuantityReserved.ShouldEqual(10);
-            salesItem1.QuantityShortFalled.ShouldEqual(5);
+            Assert.Equal(0, salesItem1.QuantityRequestsShipping);
+            Assert.Equal(5, salesItem1.QuantityPendingShipment);
+            Assert.Equal(10, salesItem1.QuantityReserved);
+            Assert.Equal(5, salesItem1.QuantityShortFalled);
 
-            salesItem2.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem2.QuantityPendingShipment.ShouldEqual(0);
-            salesItem2.QuantityReserved.ShouldEqual(20);
-            salesItem2.QuantityShortFalled.ShouldEqual(20);
+            Assert.Equal(0, salesItem2.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem2.QuantityPendingShipment);
+            Assert.Equal(20, salesItem2.QuantityReserved);
+            Assert.Equal(20, salesItem2.QuantityShortFalled);
 
-            salesitem3.QuantityRequestsShipping.ShouldEqual(0);
-            salesitem3.QuantityPendingShipment.ShouldEqual(0);
-            salesitem3.QuantityReserved.ShouldEqual(10);
-            salesitem3.QuantityShortFalled.ShouldEqual(10);
+            Assert.Equal(0, salesitem3.QuantityRequestsShipping);
+            Assert.Equal(0, salesitem3.QuantityPendingShipment);
+            Assert.Equal(10, salesitem3.QuantityReserved);
+            Assert.Equal(10, salesitem3.QuantityShortFalled);
 
-            salesItem4.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem4.QuantityPendingShipment.ShouldEqual(0);
-            salesItem4.QuantityReserved.ShouldEqual(20);
-            salesItem4.QuantityShortFalled.ShouldEqual(20);
+            Assert.Equal(0, salesItem4.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem4.QuantityPendingShipment);
+            Assert.Equal(20, salesItem4.QuantityReserved);
+            Assert.Equal(20, salesItem4.QuantityShortFalled);
 
-            salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise.ShouldEqual(0);
-            salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(5);
+            Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(5, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             // Re-arrange
             CreateInventoryTransaction(15, varianceReasons.Unknown, finishedGood);
@@ -212,28 +210,28 @@ namespace Allors.Domain
 
             // Assert
             // Orderitems are sorted as follows: item1, item2, item3, item4
-            salesItem1.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem1.QuantityPendingShipment.ShouldEqual(10);
-            salesItem1.QuantityReserved.ShouldEqual(10);
-            salesItem1.QuantityShortFalled.ShouldEqual(0);
+            Assert.Equal(0, salesItem1.QuantityRequestsShipping);
+            Assert.Equal(10, salesItem1.QuantityPendingShipment);
+            Assert.Equal(10, salesItem1.QuantityReserved);
+            Assert.Equal(0, salesItem1.QuantityShortFalled);
 
-            salesItem2.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem2.QuantityPendingShipment.ShouldEqual(10);
-            salesItem2.QuantityReserved.ShouldEqual(20);
-            salesItem2.QuantityShortFalled.ShouldEqual(10);
+            Assert.Equal(0, salesItem2.QuantityRequestsShipping);
+            Assert.Equal(10, salesItem2.QuantityPendingShipment);
+            Assert.Equal(20, salesItem2.QuantityReserved);
+            Assert.Equal(10, salesItem2.QuantityShortFalled);
 
-            salesitem3.QuantityRequestsShipping.ShouldEqual(0);
-            salesitem3.QuantityPendingShipment.ShouldEqual(0);
-            salesitem3.QuantityReserved.ShouldEqual(10);
-            salesitem3.QuantityShortFalled.ShouldEqual(10);
+            Assert.Equal(0, salesitem3.QuantityRequestsShipping);
+            Assert.Equal(0, salesitem3.QuantityPendingShipment);
+            Assert.Equal(10, salesitem3.QuantityReserved);
+            Assert.Equal(10, salesitem3.QuantityShortFalled);
 
-            salesItem4.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem4.QuantityPendingShipment.ShouldEqual(0);
-            salesItem4.QuantityReserved.ShouldEqual(20);
-            salesItem4.QuantityShortFalled.ShouldEqual(20);
+            Assert.Equal(0, salesItem4.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem4.QuantityPendingShipment);
+            Assert.Equal(20, salesItem4.QuantityReserved);
+            Assert.Equal(20, salesItem4.QuantityShortFalled);
 
-            salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise.ShouldEqual(0);
-            salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(20);
+            Assert.Equal(0, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(20, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
 
             // Re-arrange
             CreateInventoryTransaction(85, varianceReasons.Unknown, finishedGood);
@@ -244,28 +242,28 @@ namespace Allors.Domain
 
             // Assert
             // Orderitems are sorted as follows: item2, item1, item4, item 3
-            salesItem1.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem1.QuantityPendingShipment.ShouldEqual(10);
-            salesItem1.QuantityReserved.ShouldEqual(10);
-            salesItem1.QuantityShortFalled.ShouldEqual(0);
+            Assert.Equal(0, salesItem1.QuantityRequestsShipping);
+            Assert.Equal(10, salesItem1.QuantityPendingShipment);
+            Assert.Equal(10, salesItem1.QuantityReserved);
+            Assert.Equal(0, salesItem1.QuantityShortFalled);
 
-            salesItem2.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem2.QuantityPendingShipment.ShouldEqual(20);
-            salesItem2.QuantityReserved.ShouldEqual(20);
-            salesItem2.QuantityShortFalled.ShouldEqual(0);
+            Assert.Equal(0, salesItem2.QuantityRequestsShipping);
+            Assert.Equal(20, salesItem2.QuantityPendingShipment);
+            Assert.Equal(20, salesItem2.QuantityReserved);
+            Assert.Equal(0, salesItem2.QuantityShortFalled);
 
-            salesitem3.QuantityRequestsShipping.ShouldEqual(0);
-            salesitem3.QuantityPendingShipment.ShouldEqual(10);
-            salesitem3.QuantityReserved.ShouldEqual(10);
-            salesitem3.QuantityShortFalled.ShouldEqual(0);
+            Assert.Equal(0, salesitem3.QuantityRequestsShipping);
+            Assert.Equal(10, salesitem3.QuantityPendingShipment);
+            Assert.Equal(10, salesitem3.QuantityReserved);
+            Assert.Equal(0, salesitem3.QuantityShortFalled);
 
-            salesItem4.QuantityRequestsShipping.ShouldEqual(0);
-            salesItem4.QuantityPendingShipment.ShouldEqual(20);
-            salesItem4.QuantityReserved.ShouldEqual(20);
-            salesItem4.QuantityShortFalled.ShouldEqual(0);
+            Assert.Equal(0, salesItem4.QuantityRequestsShipping);
+            Assert.Equal(20, salesItem4.QuantityPendingShipment);
+            Assert.Equal(20, salesItem4.QuantityReserved);
+            Assert.Equal(0, salesItem4.QuantityShortFalled);
 
-            salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise.ShouldEqual(45);
-            salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand.ShouldEqual(105);
+            Assert.Equal(45, salesItem1.ReservedFromNonSerialisedInventoryItem.AvailableToPromise);
+            Assert.Equal(105, salesItem1.ReservedFromNonSerialisedInventoryItem.QuantityOnHand);
         }
 
         [Fact]
@@ -305,10 +303,10 @@ namespace Allors.Domain
             this.Session.Derive(true);
 
             // Assert
-            salesItem.QuantityRequestsShipping.ShouldEqual(5);
-            salesItem.QuantityPendingShipment.ShouldEqual(0);
-            salesItem.QuantityReserved.ShouldEqual(10);
-            salesItem.QuantityShortFalled.ShouldEqual(5);
+            Assert.Equal(5, salesItem.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem.QuantityPendingShipment);
+            Assert.Equal(10, salesItem.QuantityReserved);
+            Assert.Equal(5, salesItem.QuantityShortFalled);
             
             // Rearrange
             CreateInventoryTransaction(-2, varianceReasons.Unknown, finishedGood);
@@ -317,10 +315,10 @@ namespace Allors.Domain
             this.Session.Derive();
 
             // Assert
-            salesItem.QuantityRequestsShipping.ShouldEqual(3);
-            salesItem.QuantityPendingShipment.ShouldEqual(0);
-            salesItem.QuantityReserved.ShouldEqual(10);
-            salesItem.QuantityShortFalled.ShouldEqual(7);
+            Assert.Equal(3, salesItem.QuantityRequestsShipping);
+            Assert.Equal(0, salesItem.QuantityPendingShipment);
+            Assert.Equal(10, salesItem.QuantityReserved);
+            Assert.Equal(7, salesItem.QuantityShortFalled);
         }
 
         //[Fact]
