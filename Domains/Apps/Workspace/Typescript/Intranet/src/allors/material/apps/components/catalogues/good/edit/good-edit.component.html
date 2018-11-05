@@ -28,13 +28,8 @@
             </div>
 
             <div class="row">
-              <a-mat-textarea class="col-md" [object]="good" [roleType]="m.Good.Description"></a-mat-textarea>
-            </div>
-
-            <div class="row">
               <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
-              <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.Part" [options]="parts"
-                display="Name"></a-mat-select>
+              <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.Part" [options]="parts" display="Name"></a-mat-select>
             </div>
 
             <div class="row">
@@ -66,23 +61,6 @@
                   </div>
                 </div>
               </mat-expansion-panel>
-            </div>
-          </mat-tab>
-
-          <mat-tab label="Identifications">
-            <div class="container-fluid">
-              <mat-list>
-                <mat-list-item *ngFor="let goodIdentification of good.GoodIdentifications; let last=last"
-                  [attr.data-allors-id]="goodIdentification.id" style="cursor: pointer;">
-
-                  <div class="row pt-3">
-                    <a-mat-static class="col-md" [object]="goodIdentification.GoodIdentificationType" [roleType]="m.GoodIdentificationType.Name"></a-mat-static>
-                    <a-mat-static class="col-md" [object]="goodIdentification" [roleType]="m.GoodIdentification.Identification"></a-mat-static>
-                  </div>
-
-                  <mat-divider *ngIf="!last" mat-inset></mat-divider>
-                </mat-list-item>
-              </mat-list>
             </div>
           </mat-tab>
 
@@ -137,8 +115,8 @@
 
     <a-mat-footer>
       <button mat-raised-button (click)="navigationService.back()" type="button">CANCEL</button>
-      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">Save</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE & CLOSE</button>
     </a-mat-footer>
 
   </form>

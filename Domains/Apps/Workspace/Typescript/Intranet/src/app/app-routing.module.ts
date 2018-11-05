@@ -68,6 +68,9 @@ export const routes: Routes = [
       { path: 'phonecommunication', data: addData({ id: ids.PhoneCommunication }), component: relations.EditPhoneCommunicationComponent },
       { path: 'phonecommunication/:id', data: editData({ id: ids.PhoneCommunication }), component: relations.EditPhoneCommunicationComponent },
 
+      { path: 'goodidentification', data: addData({ id: ids.GoodIdentification }), component: catalogues.EditGoodIdentificationComponent },
+      { path: 'goodidentification/:id', data: editData({ id: ids.GoodIdentification }), component: catalogues.EditGoodIdentificationComponent },
+
       {
         path: 'communicationevent',
         children: [
@@ -128,7 +131,8 @@ export const routes: Routes = [
         children: [
           { path: 'catalogues', data: pageListData({ id: ids.Catalogue, icon: 'share' }), component: catalogues.CataloguesOverviewComponent },
           { path: 'categories', data: pageListData({ id: ids.ProductCategory, icon: 'share' }), component: catalogues.CategoriesOverviewComponent },
-          { path: 'goods', data: pageListData({ id: ids.Product, icon: 'share' }), component: catalogues.GoodListComponent },
+          { path: 'goods', data: pageListData({ id: ids.Good, icon: 'share' }), component: catalogues.GoodListComponent },
+          { path: 'good/:id', data: overviewData({ id: ids.Good, icon: 'share' }), component: catalogues.GoodOverviewComponent },
           { path: 'parts', data: pageListData({ id: ids.Part, icon: 'share' }), component: catalogues.PartListComponent },
           { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType, icon: 'share' }), component: catalogues.ProductCharacteristicsOverviewComponent },
           { path: 'productTypes', data: pageListData({ id: ids.ProductType, icon: 'share' }), component: catalogues.ProductTypesOverviewComponent },

@@ -4,8 +4,11 @@ export * from './catalogue/catalogue.module';
 export * from './category/categories-overview.module';
 export * from './category/category.module';
 
+export * from './goodidentification/edit/goodidentification.module';
+
 export * from './good/edit/good-edit.module';
 export * from './good/list/good-list.module';
+export * from './good/overview/good-overview.module';
 export * from './good/newgood-dialog.module';
 
 export * from './part/list/part-list.module';
@@ -23,8 +26,11 @@ import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module
 import { CategoriesOverviewModule } from './category/categories-overview.module';
 import { CategoryModule } from './category/category.module';
 
+import { GoodidentIdentificationModule } from './goodidentification/edit/goodidentification.module';
+
 import { GoodEditModule } from './good/edit/good-edit.module';
 import { GoodListModule } from './good/list/good-list.module';
+import { GoodOverviewModule } from './good/overview/good-overview.module';
 import { NewGoodDialogModule } from './good/newgood-dialog.module';
 
 import { PartEditModule } from './part/edit/part-edit.module';
@@ -39,7 +45,7 @@ import { ProductTypesOverviewModule } from './producttype/producttypes-overview.
 export const Modules = [
   CataloguesOverviewModule, CatalogueModule,
   CategoriesOverviewModule, CategoryModule,
-  GoodListModule, NewGoodDialogModule,
+  GoodidentIdentificationModule, GoodListModule, GoodOverviewModule, NewGoodDialogModule,
   PartListModule, PartEditModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
