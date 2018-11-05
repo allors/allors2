@@ -20,7 +20,7 @@
 
 namespace Commands
 {
-    using global::Commands.Verbs.Scheduler;
+    using global::Commands;
 
     using McMaster.Extensions.CommandLineUtils;
 

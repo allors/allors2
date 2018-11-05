@@ -40,7 +40,7 @@ namespace Intranet.Tests
             return new DashboardPage(this.Driver);
         }
 
-        public PersonListPage NavigateToPeople()
+        public PersonListPage NavigateToPersonList()
         {
             this.Navigate(this.RelationsGroup, this.People);
             return new PersonListPage(this.Driver);

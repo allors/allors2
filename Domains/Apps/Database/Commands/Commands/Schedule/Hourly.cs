@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Commands.Verbs.Scheduler
+namespace Commands
 {
     using Allors;
     using Allors.Domain;

@@ -5,9 +5,9 @@ namespace Intranet.Tests.RelationsPerson
     using Xunit;
 
     [Collection("Test collection")]
-    public class PeopleOverviewTest : Test
+    public class PersonListTest : Test
     {
-        public PeopleOverviewTest(TestFixture fixture)
+        public PersonListTest(TestFixture fixture)
             : base(fixture)
         {
             var dashboard = this.Login();
