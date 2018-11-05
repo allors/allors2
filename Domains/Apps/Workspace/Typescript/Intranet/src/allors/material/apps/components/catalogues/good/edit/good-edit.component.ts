@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation } from '../../../../../../domain';
+import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, GoodIdentification } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
@@ -18,43 +18,46 @@ import { MatSnackBar } from '@angular/material';
 })
 export class GoodEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Good';
+  m: MetaDomain;
+  scope: Scope;
+  good: Good;
+  add: boolean;
+  edit: boolean;
 
-  public m: MetaDomain;
-  public good: Good;
-
-  public subTitle: string;
-  public facility: Facility;
-  public locales: Locale[];
-  public categories: ProductCategory[];
-  public productTypes: ProductType[];
-  public manufacturers: Organisation[];
-  public brands: Brand[];
-  public selectedBrand: Brand;
-  public models: Model[];
-  public selectedModel: Model;
-  public vendorProduct: VendorProduct;
-  public vatRates: VatRate[];
-  public ownerships: Ownership[];
-  public invoiceItems: InvoiceItem[];
-  public salesInvoice: SalesInvoice;
-  public organisations: Organisation[];
-  public addBrand = false;
-  public addModel = false;
+  subTitle: string;
+  facility: Facility;
+  locales: Locale[];
+  categories: ProductCategory[];
+  productTypes: ProductType[];
+  manufacturers: Organisation[];
+  brands: Brand[];
+  selectedBrand: Brand;
+  models: Model[];
+  selectedModel: Model;
+  vendorProduct: VendorProduct;
+  vatRates: VatRate[];
+  ownerships: Ownership[];
+  organisations: Organisation[];
+  addBrand = false;
+  addModel = false;
+  parts: Part[];
+  goodIdentificationTypes: GoodIdentificationType[];
+  goodNumberIdentification: GoodIdentification;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
-    public navigation: NavigationService,
+    @Self() public allors: Allors,
+    public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
 
     this.m = this.allors.m;
+    this.scope = this.allors.scope;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
@@ -70,99 +73,99 @@ export class GoodEditComponent implements OnInit, OnDestroy {
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.param();
 
-          const pulls = [
+          const add = !id;
+
+          let pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
-            pull.Good({
-              include: {
-                PrimaryPhoto: x,
-                ProductCategories: x,
-                Photos: x,
-                ElectronicDocuments: x,
-                GoodIdentifications: {
-                  GoodIdentificationType: x,
-                },
-                LocalisedNames: {
-                  Locale: x,
-                },
-                LocalisedDescriptions: {
-                  Locale: x,
-                },
-                LocalisedComments: {
-                  Locale: x,
-                },
-              }
-            }),
-            pull.Good(
-              {
-                object: id,
-                fetch: {
-                  SalesInvoiceItemsWhereProduct: x
-                }
-              }
-            ),
             pull.VatRate(),
-            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) })
+            pull.GoodIdentificationType(),
+            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
+            pull.Part({
+              include: {
+                Brand: x,
+                Model: x
+              },
+              sort: new Sort(m.Part.Name),
+            })
           ];
+
+          if (!add) {
+            pulls = [
+              ...pulls,
+              pull.Good({
+                object: id,
+                include: {
+                  Part: {
+                    Brand: x,
+                    Model: x
+                  },
+                  PrimaryPhoto: x,
+                  ProductCategories: x,
+                  Photos: x,
+                  ElectronicDocuments: x,
+                  GoodIdentifications: {
+                    GoodIdentificationType: x,
+                  },
+                  LocalisedNames: {
+                    Locale: x,
+                  },
+                  LocalisedDescriptions: {
+                    Locale: x,
+                  },
+                  LocalisedComments: {
+                    Locale: x,
+                  },
+                },
+              }),
+            ];
+          }
 
           return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              switchMap((loaded) => {
-                scope.session.reset();
-
-                const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-                this.facility = internalOrganisation.DefaultFacility;
-
-                this.good = loaded.objects.good as Good;
-                this.categories = loaded.collections.productCategories as ProductCategory[];
-                this.vatRates = loaded.collections.VatRates as VatRate[];
-                this.locales = loaded.collections.locales as Locale[];
-                this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];
-
-                const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-
-                if (this.good === undefined) {
-                  this.good = scope.session.create('Good') as Good;
-                  this.good.VatRate = vatRateZero;
-                  // this.good.Sku = '';
-
-                  this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
-                  this.vendorProduct.Product = this.good;
-                  this.vendorProduct.InternalOrganisation = internalOrganisation;
-                }
-
-                this.title = this.good.Name;
-
-                const pulls2 = [
-                  pull.Organisation({
-                    predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
-                    sort: new Sort(m.Organisation.PartyName),
-                  })
-                ];
-
-                if (this.invoiceItems !== undefined && this.invoiceItems.length > 0) {
-                  pulls2.push(
-                    pull.SalesInvoiceItem({
-                      object: this.invoiceItems[0].id,
-                      fetch: {
-                        SalesInvoiceWhereSalesInvoiceItem: x
-                      }
-                    })
-                  );
-
-                  return scope.load('Pull', new PullRequest({ pulls: pulls2 }));
-                }
-              }));
+              map((loaded) => ({ loaded, add }))
+            );
         })
       )
-      .subscribe((loaded) => {
-        this.manufacturers = loaded.collections.manufacturers as Organisation[];
-        this.salesInvoice = loaded.objects.invoice as SalesInvoice;
+      .subscribe(({ loaded, add }) => {
+
+        scope.session.reset();
+
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.facility = internalOrganisation.DefaultFacility;
+
+        this.good = loaded.objects.Good as Good;
+        this.categories = loaded.collections.ProductCategories as ProductCategory[];
+        this.parts = loaded.collections.Parts as Part[];
+        this.vatRates = loaded.collections.VatRates as VatRate[];
+        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
+
+        const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
+        const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
+
+        if (add) {
+          this.add = !(this.edit = false);
+
+          this.good = scope.session.create('Good') as Good;
+          this.good.VatRate = vatRateZero;
+
+          this.goodNumberIdentification = scope.session.create('GoodIdentification') as GoodIdentification;
+          this.goodNumberIdentification.GoodIdentificationType = goodNumberType;
+
+          this.good.AddGoodIdentification(this.goodNumberIdentification);
+
+          this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
+          this.vendorProduct.Product = this.good;
+          this.vendorProduct.InternalOrganisation = internalOrganisation;
+        } else {
+          this.edit = !(this.add = false);
+        }
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.navigation.back();
+          this.navigationService.back();
         },
       );
   }
@@ -199,10 +202,10 @@ export class GoodEditComponent implements OnInit, OnDestroy {
     scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe(() => {
-        },
+      },
         (error: Error) => {
           this.errorService.handle(error);
-          this.navigation.back();
+          this.navigationService.back();
         },
       );
   }
@@ -223,8 +226,8 @@ export class GoodEditComponent implements OnInit, OnDestroy {
     scope
       .save()
       .subscribe(() => {
-          this.navigation.back();
-        },
+        this.navigationService.back();
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
@@ -238,15 +241,15 @@ export class GoodEditComponent implements OnInit, OnDestroy {
     scope
       .save()
       .subscribe(() => {
-          this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-          if (isNew) {
-            this.navigation.overview(this.good);
-          } else {
-            this.refresh();
-          }
-        },
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        this.goBack();
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
+  }
+
+  public goBack(): void {
+    window.history.back();
   }
 }

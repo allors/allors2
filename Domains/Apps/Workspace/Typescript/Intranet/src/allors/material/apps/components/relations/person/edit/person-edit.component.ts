@@ -158,7 +158,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
         this.organisation = loaded.objects.Organisation as Organisation;
         this.organisations = loaded.collections.Organisations as Organisation[];
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-        this.locales = loaded.collections.Locales as Locale[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.genders = loaded.collections.GenderTypes as Enumeration[];
         this.salutations = loaded.collections.Salutations as Enumeration[];
         this.roles = loaded.collections.PersonRoles as PersonRole[];

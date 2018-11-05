@@ -148,7 +148,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 this.brands = loaded.collections.brands as Brand[];
                 this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
                 this.inventoryItemObjectStates = loaded.collections.nonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
-                this.locales = loaded.collections.locales as Locale[];
+                this.locales = loaded.collections.AdditionalLocales as Locale[];
                 const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
                 this.facility = internalOrganisation.DefaultFacility;
                 this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];

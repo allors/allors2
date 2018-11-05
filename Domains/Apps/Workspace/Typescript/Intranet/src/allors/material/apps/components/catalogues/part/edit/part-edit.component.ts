@@ -5,7 +5,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, SerialisedInventoryItem, VendorProduct, SerialisedInventoryItemState, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation } from '../../../../../../domain';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, SerialisedInventoryItem, VendorProduct, SerialisedInventoryItemState, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation, GoodIdentificationType, GoodIdentification } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
@@ -19,33 +19,37 @@ import { MatSnackBar } from '@angular/material';
 })
 export class PartEditComponent implements OnInit, OnDestroy {
 
-  public title = 'Email Address';
+  title = 'Email Address';
+  m: MetaDomain;
 
-  public m: MetaDomain;
-  public good: Good;
+  add: boolean;
+  edit: boolean;
 
-  public subTitle: string;
-  public facility: Facility;
-  public locales: Locale[];
-  public categories: ProductCategory[];
-  public productTypes: ProductType[];
-  public manufacturers: Organisation[];
-  public suppliers: Organisation[];
-  public activeSuppliers: Organisation[];
-  public selectedSuppliers: Organisation[];
-  public supplierOfferings: SupplierOffering[];
-  public brands: Brand[];
-  public selectedBrand: Brand;
-  public models: Model[];
-  public selectedModel: Model;
-  public vendorProduct: VendorProduct;
-  public vatRates: VatRate[];
-  public ownerships: Ownership[];
-  public invoiceItems: InvoiceItem[];
-  public salesInvoice: SalesInvoice;
-  public organisations: Organisation[];
-  public addBrand = false;
-  public addModel = false;
+  good: Good;
+  subTitle: string;
+  facility: Facility;
+  locales: Locale[];
+  categories: ProductCategory[];
+  productTypes: ProductType[];
+  manufacturers: Organisation[];
+  suppliers: Organisation[];
+  activeSuppliers: Organisation[];
+  selectedSuppliers: Organisation[];
+  supplierOfferings: SupplierOffering[];
+  brands: Brand[];
+  selectedBrand: Brand;
+  models: Model[];
+  selectedModel: Model;
+  vendorProduct: VendorProduct;
+  vatRates: VatRate[];
+  ownerships: Ownership[];
+  invoiceItems: InvoiceItem[];
+  salesInvoice: SalesInvoice;
+  organisations: Organisation[];
+  addBrand = false;
+  addModel = false;
+  goodIdentificationTypes: GoodIdentificationType[];
+  goodNumberIdentification: GoodIdentification;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
@@ -75,6 +79,8 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.param();
+
+          const add = !id;
 
           // const fetch = new FetchFactory(this.workspaceService.metaPopulation);
           // const query = new QueryFactory(this.workspaceService.metaPopulation);
@@ -133,6 +139,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 }
               }
             ),
+            pull.GoodIdentificationType(),
             pull.VatRate(),
             pull.Ownership({
               sort: new Sort(m.Ownership.Name),
@@ -152,28 +159,39 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
                 this.facility = internalOrganisation.DefaultFacility;
 
-                this.good = loaded.objects.good as Good;
-                this.categories = loaded.collections.productCategories as ProductCategory[];
-                this.productTypes = loaded.collections.productTypes as ProductType[];
+                this.good = loaded.objects.Good as Good;
+                this.categories = loaded.collections.ProductCategories as ProductCategory[];
+                this.productTypes = loaded.collections.ProductTypes as ProductType[];
                 this.vatRates = loaded.collections.VatRates as VatRate[];
-                this.brands = loaded.collections.brands as Brand[];
-                this.ownerships = loaded.collections.ownerships as Ownership[];
-                this.locales = loaded.collections.locales as Locale[];
-                this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];
+                this.brands = loaded.collections.Brands as Brand[];
+                this.ownerships = loaded.collections.Ownerships as Ownership[];
+                this.locales = loaded.collections.AdditionalLocales as Locale[];
+                this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+                this.invoiceItems = loaded.collections.InvoiceItems as InvoiceItem[];
                 this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
                 this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
                 const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
+                const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
-                if (this.good === undefined) {
+                if (add) {
+                  this.add = !(this.edit = false);
+
                   this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
+
+                  this.goodNumberIdentification = scope.session.create('GoodIdentification') as GoodIdentification;
+                  this.goodNumberIdentification.GoodIdentificationType = partNumberType;
+
+                  this.good.AddGoodIdentification(this.goodNumberIdentification);
 
                   this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
                   this.vendorProduct.Product = this.good;
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
 
                 } else {
+                  this.edit = !(this.add = false);
+
                   // this.suppliers = this.good.SuppliedBy as Organisation[];
                   // this.selectedSuppliers = this.suppliers;
                   // this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];

@@ -87,7 +87,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.catalogue = loaded.objects.catalogue as Catalogue;
-        this.locales = loaded.collections.locales as Locale[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.categories = loaded.collections.categories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopes as CatScope[];
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;

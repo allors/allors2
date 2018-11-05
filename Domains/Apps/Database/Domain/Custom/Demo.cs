@@ -125,6 +125,11 @@ namespace Allors
 
             var vatRate = new VatRateBuilder(this.Session).WithRate(21).Build();
 
+            var brand = new BrandBuilder(this.Session)
+                .WithName("brand1")
+                .WithModel(new ModelBuilder(this.Session).WithName("model1").Build())
+                .Build();
+
             var finishedGood = new PartBuilder(this.Session)
                 .WithInternalOrganisation(allors)
                 .WithGoodIdentification(new SkuBuilder(this.Session)
@@ -134,6 +139,8 @@ namespace Allors
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good")
+                .WithBrand(brand)
+                .WithModel(brand.Models[0])
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 

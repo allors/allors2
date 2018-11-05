@@ -140,7 +140,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
           this.organisation.IsManufacturer = false;
         }
 
-        this.locales = loaded.collections.Locales as Locale[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];
         this.industries = loaded.collections.IndustryClassifications as IndustryClassification[];
         this.roles = loaded.collections.OrganisationRoles as OrganisationRole[];

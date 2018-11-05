@@ -78,7 +78,7 @@ export class PartListComponent implements OnInit, OnDestroy {
           predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'PartNo' })
         })
       }),
-      new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
+      // new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
       new ContainedIn({
         propertyType: m.Good.Part,
         extent: new Filter({
