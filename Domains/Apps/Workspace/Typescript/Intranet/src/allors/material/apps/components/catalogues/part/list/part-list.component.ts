@@ -14,14 +14,18 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { Sorter } from '../../../../../base/sorting';
 import { StateService } from '../../../../services/StateService';
 
-import { Good, Part, ProductCategory, ProductType, Ownership, Organisation, SerialisedInventoryItemState, InternalOrganisation } from '../../../../../../domain';
+import { Part, ProductType, Brand, Model, GoodIdentificationType } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';
-import { GoodEditComponent } from '../../good/edit/good-edit.component';
+import { stringify } from '@angular/core/src/render3/util';
 
 interface Row {
-  good: Good;
+  part: Part;
   name: string;
+  partNumber: string;
+  productType: string;
   qoh: number;
+  brand: string;
+  model: string;
 }
 
 @Component({
@@ -32,7 +36,7 @@ export class PartListComponent implements OnInit, OnDestroy {
 
   public title = 'Parts';
 
-  public displayedColumns = ['select', 'Part No.', 'name', 'Product Type', 'Brand', 'Model', 'menu'];
+  public displayedColumns = ['select', 'name', 'part No.', 'product type', 'qoh', 'brand', 'model', 'menu'];
   public selection = new SelectionModel<Row>(true, []);
 
   public total: number;
@@ -44,14 +48,14 @@ export class PartListComponent implements OnInit, OnDestroy {
 
   private subscription: Subscription;
   private readonly fetcher: Fetcher;
+  goodIdentificationTypes: GoodIdentificationType[];
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
     @Self() private filterService: AllorsFilterService,
-    public navigation: NavigationService,
+    public navigationService: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
@@ -71,49 +75,25 @@ export class PartListComponent implements OnInit, OnDestroy {
 
     const predicate = new And([
       new Like({ roleType: m.Part.Name, parameter: 'Name' }),
-      new ContainedIn({
-        propertyType: m.Part.GoodIdentifications,
-        extent: new Filter({
-          objectType: m.GoodIdentification,
-          predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'PartNo' })
-        })
-      }),
-      // new Contains({ propertyType: m.Good.SuppliedBy, parameter: 'Supplier' }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' })
-        })
-      }),
       // new ContainedIn({
-      //   propertyType: m.Good.Part,
+      //   propertyType: m.Part.GoodIdentifications,
       //   extent: new Filter({
-      //     objectType: m.Part,
-      //     predicate: new Like({ roleType: m.Part.Brand, parameter: 'Brand' })
+      //     objectType: m.GoodIdentification,
+      //     predicate: new Like({ roleType: m.GoodIdentification.Identification, parameter: 'PartNo' })
       //   })
       // }),
-      // new ContainedIn({
-      //   propertyType: m.Good.Part,
-      //   extent: new Filter({
-      //     objectType: m.Part,
-      //     predicate: new Like({ roleType: m.Part.Model, parameter: 'Model' })
-      //   })
-      // }),
-      new ContainedIn({
-        propertyType: m.Good.Part,
-        extent: new Filter({
-          objectType: m.Part,
-          predicate: new Like({ roleType: m.Part.InventoryItemKind, parameter: 'InventoryItemKind' })
-        })
-      }),
+      // new Contains({ propertyType: m.Part.SuppliedBy, parameter: 'Supplier' }),
+      // new Like({ roleType: m.Part.ProductType, parameter: 'ProductType' }),
+      // new Like({ roleType: m.Part.Brand, parameter: 'Brand' }),
+      // new Like({ roleType: m.Part.Model, parameter: 'Model' }),
+      // new Like({ roleType: m.Part.InventoryItemKind, parameter: 'InventoryItemKind' }),
     ]);
 
     this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
-        name: m.Good.Name
+        name: m.Part.Name
       }
     );
 
@@ -132,18 +112,22 @@ export class PartListComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Good({
+            pull.Part({
               predicate,
               sort: sorter.create(sort),
               include: {
-                LocalisedNames: x,
-                PrimaryProductCategory: x,
-                PrimaryPhoto: x
+                GoodIdentifications: {
+                  GoodIdentificationType: x
+                },
+                Brand: x,
+                Model: x,
+                ProductType: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
               take: pageEvent.pageSize,
             }),
+            pull.GoodIdentificationType(),
           ];
 
           return scope
@@ -153,14 +137,25 @@ export class PartListComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         scope.session.reset();
         this.total = loaded.values.Goods_total;
-        const goods = loaded.collections.Goods as Good[];
 
-        this.dataSource.data = goods.map((v) => {
+        const parts = loaded.collections.Parts as Part[];
+        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+
+        const partNumberByPart = parts.reduce((map, obj) => {
+          map[obj.id] = obj.GoodIdentifications.filter(v => v.GoodIdentificationType === partNumberType).map(w => w.Identification);
+          return map;
+        }, {});
+
+        this.dataSource.data = parts.map((v) => {
           return {
-            good: v,
+            part: v,
+            partNumber: partNumberByPart[v.id][0],
             name: v.Name,
-            category: v.PrimaryProductCategory,
-            qoh: v.Part.QuantityOnHand
+            qoh: v.QuantityOnHand,
+            productType: v.ProductType ? v.ProductType.Name : '',
+            brand: v.Brand ? v.Brand.Name : '',
+            model: v.Model ? v.Model.Name : '',
           } as Row;
         });
       },
@@ -182,11 +177,11 @@ export class PartListComponent implements OnInit, OnDestroy {
   }
 
   public get hasDeleteSelection() {
-    return this.selectedGoods.filter((v) => v.CanExecuteDelete).length > 0;
+    return this.selectedParts.filter((v) => v.CanExecuteDelete).length > 0;
   }
 
-  public get selectedGoods() {
-    return this.selection.selected.map(v => v.good);
+  public get selectedParts() {
+    return this.selection.selected.map(v => v.part);
   }
 
   public isAllSelected() {
@@ -217,19 +212,19 @@ export class PartListComponent implements OnInit, OnDestroy {
     this.pager$.next(event);
   }
 
-  public delete(good: Good | Good[]): void {
+  public delete(part: Part | Part[]): void {
 
     const { scope } = this.allors;
 
-    const goods = good instanceof SessionObject ? [good as Good] : good instanceof Array ? good : [];
-    const methods = goods.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
+    const parts = part instanceof SessionObject ? [part as Part] : part instanceof Array ? part : [];
+    const methods = parts.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
     if (methods.length > 0) {
       this.dialogService
         .confirm(
           methods.length === 1 ?
-            { message: 'Are you sure you want to delete this good?' } :
-            { message: 'Are you sure you want to delete these goods?' })
+            { message: 'Are you sure you want to delete this part?' } :
+            { message: 'Are you sure you want to delete these parts?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
             scope.invoke(methods)
@@ -244,31 +239,4 @@ export class PartListComponent implements OnInit, OnDestroy {
         });
     }
   }
-
-  public addNew() {
-    const dialogRef = this.dialog.open(GoodEditComponent, {
-      autoFocus: false,
-      disableClose: true
-    });
-    dialogRef.afterClosed().subscribe(result => {
-      this.refresh();
-    });
-  }
-
-  // public addNew(): void {
-  //   const dialogRef = this.dialog.open(NewGoodDialogComponent, {
-  //     data: { chosenGood: this.chosenGood },
-  //     height: '300px',
-  //     width: '700px',
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((answer: string) => {
-  //     if (answer === 'Serialised') {
-  //       this.router.navigate(['/serialisedGood']);
-  //     }
-  //     if (answer === 'NonSerialised') {
-  //       this.router.navigate(['/nonSerialisedGood']);
-  //     }
-  //   });
-  // }
 }
