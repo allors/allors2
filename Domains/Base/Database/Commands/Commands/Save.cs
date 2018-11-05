@@ -18,53 +18,47 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Commands.Verbs
+namespace Commands
 {
-    using System;
     using System.IO;
     using System.Xml;
 
     using Allors;
     using Allors.Services;
 
-    using CommandLine;
+    using McMaster.Extensions.CommandLineUtils;
 
     using Microsoft.Extensions.Logging;
 
+    [Command(Description = "Add file contents to the index")]
     public class Save
     {
-        private readonly IDatabase database;
+        private readonly IDatabaseService databaseService;
+
         private readonly ILogger<Save> logger;
 
         public Save(IDatabaseService databaseService, ILogger<Save> logger)
         {
-            this.database = databaseService.Database;
+            this.databaseService = databaseService;
             this.logger = logger;
         }
 
-        public int Execute(Options opts)
-        {
-            var fileInfo = new FileInfo(opts.File);
+        [Option("-f", Description = "File to save")]
+        public string FileName { get; set; } = "population.xml";
 
-            using (var stream = File.Create(fileInfo.FullName))
+        public int OnExecute(CommandLineApplication app)
+        {
+            var fileInfo = new FileInfo(this.FileName);
+
+            using (var reader = XmlReader.Create(fileInfo.FullName))
             {
-                using (var writer = XmlWriter.Create(stream))
-                {
-                    this.logger.LogInformation("Begin", fileInfo.FullName);
-                    this.logger.LogInformation("Saving {file}", fileInfo.FullName);
-                    this.database.Save(writer);
-                    this.logger.LogInformation("End", fileInfo.FullName);
-                }
+                this.logger.LogInformation("Begin", fileInfo.FullName);
+                this.logger.LogInformation("Loading {file}", fileInfo.FullName);
+                this.databaseService.Database.Load(reader);
+                this.logger.LogInformation("End");
             }
 
-            return 0;
-        }
-
-        [Verb("save", HelpText = "Save the database.")]
-        public class Options
-        {
-            [Option('f', "file", Required = false, Default = "population.xml", HelpText = "File to save to.")]
-            public string File { get; set; }
+            return ExitCode.Success;
         }
     }
 }

@@ -18,35 +18,37 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Commands.Verbs
+namespace Commands
 {
     using System;
-    using System.Data;
     using System.IO;
 
     using Allors;
     using Allors.Domain;
     using Allors.Services;
 
-    using CommandLine;
+    using McMaster.Extensions.CommandLineUtils;
 
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
 
+    [Command(Description = "Add file contents to the index")]
     public class Populate
     {
-        private readonly string dataPath;
-        private readonly IDatabase database;
+        private readonly IDatabaseService databaseService;
+
         private readonly ILogger<Populate> logger;
+
+        private readonly string dataPath;
 
         public Populate(IConfiguration configuration, IDatabaseService databaseService, ILogger<Populate> logger)
         {
             this.dataPath = configuration["datapath"];
-            this.database = databaseService.Database;
+            this.databaseService = databaseService;
             this.logger = logger;
         }
 
-        public int Execute()
+        public int OnExecute(CommandLineApplication app)
         {
             Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
 
@@ -55,9 +57,9 @@ namespace Commands.Verbs
             {
                 this.logger.LogInformation("Begin");
 
-                this.database.Init();
+                this.databaseService.Database.Init();
 
-                using (var session = this.database.CreateSession())
+                using (var session = this.databaseService.Database.CreateSession())
                 {
                     var directoryInfo = this.dataPath != null ? new DirectoryInfo(this.dataPath) : null;
                     new Setup(session, directoryInfo).Apply();
@@ -77,12 +79,7 @@ namespace Commands.Verbs
                 this.logger.LogInformation("End");
             }
 
-            return 0;
-        }
-
-        [Verb("populate", HelpText = "Load the database.")]
-        public class Options
-        {
+            return ExitCode.Success;
         }
     }
 }

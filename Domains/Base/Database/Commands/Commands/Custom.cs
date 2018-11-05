@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Load.cs" company="Allors bvba">
+// <copyright file="Custom.cs" company="Allors bvba">
 //   Copyright 2002-2017 Allors bvba.
 // 
 // Dual Licensed under
@@ -18,49 +18,49 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace Commands.Verbs
+namespace Commands
 {
-    using System.IO;
-    using System.Xml;
-
     using Allors;
+    using Allors.Domain;
     using Allors.Services;
 
-    using CommandLine;
+    using McMaster.Extensions.CommandLineUtils;
 
     using Microsoft.Extensions.Logging;
 
-    public class Load
+    [Command(Description = "Execute custom code")]
+    public class Custom
     {
-        private readonly IDatabase database;
-        private readonly ILogger<Load> logger;
+        private readonly IDatabaseService databaseService;
 
-        public Load(IDatabaseService databaseService, ILogger<Load> logger)
+        private readonly ILogger<Custom> logger;
+
+        public Custom(IDatabaseService databaseService, ILogger<Custom> logger)
         {
-            this.database = databaseService.Database;
+            this.databaseService = databaseService;
             this.logger = logger;
         }
 
-        public int Execute(Options opts)
-        {
-            var fileInfo = new FileInfo(opts.File);
+        private Commands Parent { get; set; }
 
-            using (var reader = XmlReader.Create(fileInfo.FullName))
+        public int OnExecute(CommandLineApplication app)
+        {
+            using (var session = this.databaseService.Database.CreateSession())
             {
-                this.logger.LogInformation("Begin", fileInfo.FullName);
-                this.logger.LogInformation("Loading {file}", fileInfo.FullName);
-                this.database.Load(reader);
+                this.logger.LogInformation("Begin");
+
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
+
+                // Custom code
+
+                session.Derive();
+                session.Commit();
+
                 this.logger.LogInformation("End");
             }
 
             return ExitCode.Success;
-        }
-
-        [Verb("load", HelpText = "Load the database.")]
-        public class Options
-        {
-            [Option('f', "file", Required = false, Default = "population.xml", HelpText = "File to load from.")]
-            public string File { get; set; }
         }
     }
 }
