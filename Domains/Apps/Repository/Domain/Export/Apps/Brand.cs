@@ -7,23 +7,24 @@ namespace Allors.Repository
     #region Allors
     [Id("0a7ac589-946b-4d49-b7e0-7e0b9bc90111")]
     #endregion
-    public partial class Brand : Enumeration
+    public partial class Brand : AccessControlledObject, Deletable
     {
         #region inherited properties
-
-        public string Name { get; set; }
-
-        public LocalisedText[] LocalisedNames { get; set; }
-
-        public bool IsActive { get; set; }
 
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
 
-        public Guid UniqueId { get; set; }
-
         #endregion
+
+        #region Allors
+        [Id("C603F7EA-5201-464A-B657-BE23D42EF6DB")]
+        [AssociationId("F733AB79-19D8-4829-97BB-51E3AC79D672")]
+        [RoleId("68C0B00C-E857-4B2F-A6BC-4804C8B6AFFD")]
+        [Required]
+        [Workspace]
+        #endregion
+        public string Name { get; set; }
 
         #region Allors
         [Id("0DA86868-CD0A-4370-BD47-34790A22860F")]
@@ -37,7 +38,6 @@ namespace Allors.Repository
 
         #region inherited methods
 
-
         public void OnBuild() { }
 
         public void OnPostBuild() { }
@@ -47,6 +47,8 @@ namespace Allors.Repository
         public void OnDerive() { }
 
         public void OnPostDerive() { }
+
+        public void Delete() { }
 
         #endregion
     }

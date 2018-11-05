@@ -8,6 +8,9 @@ namespace Allors.Repository
     public partial class GoodIdentification : IGoodIdentification
     {
         #region inherited properties
+        public Permission[] DeniedPermissions { get; set; }
+
+        public SecurityToken[] SecurityTokens { get; set; }
 
         public string Identification { get; set; }
 

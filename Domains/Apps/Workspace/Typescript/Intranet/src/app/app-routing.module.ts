@@ -38,13 +38,17 @@ export const routes: Routes = [
         ],
       },
 
+      { path: 'good', data: addData({ id: ids.Good }), component: catalogues.GoodEditComponent },
+      { path: 'good/:id', data: editData({ id: ids.Good }), component: catalogues.GoodEditComponent },
+
+      { path: 'part', data: addData({ id: ids.Part }), component: catalogues.PartEditComponent },
+      { path: 'part/:id', data: editData({ id: ids.Part }), component: catalogues.PartEditComponent },
+
       { path: 'person', data: addData({ id: ids.Person }), component: relations.PersonEditComponent },
       { path: 'person/:id', data: editData({ id: ids.Person }), component: relations.PersonEditComponent },
 
       { path: 'organisation', data: addData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
       { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
-
-      { path: 'good', data: addData({ id: ids.Good }), component: catalogues.GoodEditComponent },
 
       { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },

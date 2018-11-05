@@ -187,7 +187,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
                 this.ownerships = loaded.collections.ownerships as Ownership[];
                 this.inventoryItemKinds = loaded.collections.inventoryItemKinds as InventoryItemKind[];
                 this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
-                this.locales = loaded.collections.locales as Locale[];
+                this.locales = loaded.collections.AdditionalLocales as Locale[];
                 const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
                 this.facility = internalOrganisation.DefaultFacility;
                 this.invoiceItems = loaded.collections.invoiceItems as InvoiceItem[];

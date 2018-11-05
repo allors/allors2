@@ -5,7 +5,7 @@ namespace Allors.Repository
     #region Allors
     [Id("55DE0F4F-2ABD-4943-8319-39DC5D51B0D7")]
     #endregion
-    public partial interface IGoodIdentification : Deletable
+    public partial interface IGoodIdentification : AccessControlledObject, Deletable
     {
         #region Allors
         [Id("80CE30EE-71CF-4E74-8D40-C0BCD9239A9C")]

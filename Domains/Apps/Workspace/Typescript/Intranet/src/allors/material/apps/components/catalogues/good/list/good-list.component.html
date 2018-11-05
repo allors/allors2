@@ -87,6 +87,7 @@
               </button>
               <mat-menu #menu="matMenu">
                 <a (click)="navigation.overview(row.good)" mat-menu-item>Details</a>
+                <a (click)="navigation.edit(row.good)" mat-menu-item>Edit</a>
                 <button mat-menu-item (click)="delete(row.good)" [disabled]="!row.good.CanExecuteDelete">Delete</button>
               </mat-menu>
             </td>
