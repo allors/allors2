@@ -2,6 +2,10 @@ namespace Intranet.Tests
 {
     using System;
     using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Security.Cryptography;
+    using System.Xml;
 
     using Allors;
     using Allors.Adapters.Object.SqlClient;
@@ -23,8 +27,10 @@ namespace Intranet.Tests
         public const string ClientUrl = "http://localhost:4200";
         public const string ServerUrl = "http://localhost:5000";
 
-        public static readonly string DatabaseInithUrl = $"{ServerUrl}/Test/Init";
+        public static readonly string DatabaseInitUrl = $"{ServerUrl}/Test/Init";
         public static readonly string DatabaseTimeShiftUrl = $"{ServerUrl}/Test/TimeShift";
+
+        private static string population;
 
         protected Test(TestFixture fixture)
         {
@@ -32,14 +38,12 @@ namespace Intranet.Tests
             this.Driver = fixture.Driver;
 
             // Init Server
-            this.Driver.Navigate().GoToUrl(Test.DatabaseInithUrl);
+            this.Driver.Navigate().GoToUrl(Test.DatabaseInitUrl);
 
             // Init Allors
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
-            var appConfiguration = new ConfigurationBuilder()
-                .AddJsonFile(@"appSettings.json")
-                .Build();
+            var appConfiguration = new ConfigurationBuilder().AddJsonFile(@"appSettings.json").Build();
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
             var services = new ServiceCollection();
@@ -47,23 +51,63 @@ namespace Intranet.Tests
             var serviceProvider = services.BuildServiceProvider();
 
             var configuration = new Configuration
-                                    {
-                                        ConnectionString = appConfiguration["allors"],
-                                        ObjectFactory = objectFactory,
-                                    };
+            {
+                ConnectionString = appConfiguration["allors"],
+                ObjectFactory = objectFactory,
+            };
 
             var database = new Database(serviceProvider, configuration);
 
-            database.Init();
+            FileInfo fileInfo;
+            using (var md5 = MD5.Create())
+            {
+                var assemblyFile = typeof(User).Assembly.Location;
+                var assemblyBytes = File.ReadAllBytes(assemblyFile);
+                var assemblyHash = md5.ComputeHash(assemblyBytes);
+                var assemblyHashString = string.Concat(assemblyHash.Select(v => v.ToString("X2")));
+                fileInfo = new FileInfo($"population.{assemblyHashString}.xml");
+            }
+
+            if (population == null && fileInfo.Exists)
+            {
+                population = File.ReadAllText(fileInfo.FullName);
+            }
+
+            if (population != null)
+            {
+                using (var stringReader = new StringReader(population))
+                using (var reader = XmlReader.Create(stringReader))
+                {
+                    database.Load(reader);
+                }
+            }
+            else
+            {
+                database.Init();
+
+                using (var session = database.CreateSession())
+                {
+                    new Setup(session, null).Apply();
+                    session.Commit();
+
+                    // TODO: Using Demo instead of Test Population
+                    new Demo(session, null).Execute();
+                    // new Population(this.Session, null).Execute();
+
+                    session.Commit();
+
+                    using (var stringWriter = new StringWriter())
+                    using (var writer = XmlWriter.Create(stringWriter))
+                    {
+                        database.Save(writer);
+                        population = stringWriter.ToString();
+                        File.WriteAllText(fileInfo.FullName, population);
+                    }
+                }
+            }
+
             this.Session = database.CreateSession();
-            new Setup(this.Session, null).Apply();
-            this.Session.Commit();
 
-            // TODO: Using Demo instead of Test Population
-            new Demo(this.Session, null).Execute();
-            // new Population(this.Session, null).Execute();
-
-            this.Session.Commit();
         }
 
         public ISession Session { get; set; }

@@ -50,12 +50,15 @@ namespace Commands
         {
             var fileInfo = new FileInfo(this.FileName);
 
-            using (var reader = XmlReader.Create(fileInfo.FullName))
+            using (var stream = File.Create(fileInfo.FullName))
             {
-                this.logger.LogInformation("Begin", fileInfo.FullName);
-                this.logger.LogInformation("Loading {file}", fileInfo.FullName);
-                this.databaseService.Database.Load(reader);
-                this.logger.LogInformation("End");
+                using (var writer = XmlWriter.Create(stream))
+                {
+                    this.logger.LogInformation("Begin", fileInfo.FullName);
+                    this.logger.LogInformation("Saving {file}", fileInfo.FullName);
+                    this.databaseService.Database.Save(writer);
+                    this.logger.LogInformation("End", fileInfo.FullName);
+                }
             }
 
             return ExitCode.Success;

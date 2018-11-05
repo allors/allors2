@@ -159,6 +159,8 @@ namespace Intranet.Tests
 
         private void Navigate(Element group, Anchor link)
         {
+            this.Driver.WaitForAngular();
+
             if (!link.IsVisble)
             {
                 if (!group.IsVisible)

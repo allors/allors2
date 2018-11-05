@@ -17,7 +17,7 @@ namespace Intranet.Tests.Relations
             : base(fixture)
         {
             var dashboard = this.Login();
-            this.people = dashboard.Sidenav.NavigateToPeople();
+            this.people = dashboard.Sidenav.NavigateToPersonList();
         }
 
         [Fact]

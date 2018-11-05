@@ -23,7 +23,6 @@
     using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.DependencyInjection.Extensions;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
 
@@ -41,6 +40,8 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IConfiguration>(this.Configuration);
+
             // Allors
             services.AddAllors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
