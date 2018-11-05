@@ -5,7 +5,8 @@
       <div class="col">
         <a (click)="navigation.list(m.Good)">Product</a>
         <span *ngIf="add"> / Add Good Identification </span>
-        <span *ngIf="edit"> / <a (cklick)="navigation.overview(good)">{{good?.Name}}</a> / Edit Good Identification</span>
+        <span *ngIf="edit && good"> / <a (cklick)="navigation.overview(good)">{{good?.Name}}</a> / Edit Good Identification</span>
+        <span *ngIf="edit && part"> / <a (cklick)="navigation.overview(part)">{{part?.Name}}</a> / Edit Good Identification</span>
       </div>
     </div>
   </div>

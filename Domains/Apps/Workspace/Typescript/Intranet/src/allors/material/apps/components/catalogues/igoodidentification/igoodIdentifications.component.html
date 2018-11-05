@@ -12,7 +12,7 @@
 
     <mat-list>
       <mat-list-item *ngFor="let identification of igoodidentifications; let last=last" [attr.data-allors-id]="identification.id"
-        (click)="navigationService.edit(identification)" style="cursor: pointer;">
+        (click)="edit.emit(identification)" style="cursor: pointer;">
         <div mat-line>{{identification.GoodIdentificationType.Name }}</div>
         <p mat-line>{{ identification.Identification }} </p>
 

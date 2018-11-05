@@ -64,23 +64,6 @@
             </div>
           </mat-tab>
 
-          <mat-tab label="Identifications">
-            <div class="container-fluid">
-              <mat-list>
-                <mat-list-item *ngFor="let goodIdentification of good.GoodIdentifications; let last=last"
-                  [attr.data-allors-id]="goodIdentification.id" style="cursor: pointer;">
-
-                  <div class="row pt-3">
-                    <a-mat-static class="col-md" [object]="goodIdentification.GoodIdentificationType" [roleType]="m.GoodIdentificationType.Name"></a-mat-static>
-                    <a-mat-static class="col-md" [object]="goodIdentification" [roleType]="m.GoodIdentification.Identification"></a-mat-static>
-                  </div>
-
-                  <mat-divider *ngIf="!last" mat-inset></mat-divider>
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </mat-tab>
-
           <mat-tab label="Comments">
             <div class="container-fluid">
               <div class="row pt-3">

@@ -32,6 +32,7 @@ export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
+  item: Good | Part;
 
   constructor(
     @Self() private allors: Allors,

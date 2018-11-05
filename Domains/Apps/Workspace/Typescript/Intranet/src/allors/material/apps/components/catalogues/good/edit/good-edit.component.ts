@@ -104,9 +104,6 @@ export class GoodEditComponent implements OnInit, OnDestroy {
                   ProductCategories: x,
                   Photos: x,
                   ElectronicDocuments: x,
-                  GoodIdentifications: {
-                    GoodIdentificationType: x,
-                  },
                   LocalisedNames: {
                     Locale: x,
                   },
