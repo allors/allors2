@@ -45,7 +45,8 @@
             services.AddAllors();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IPolicyService, PolicyService>();
-            
+            services.AddSingleton<IExtentService, ExtentService>();
+
             // Identity
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .UseAllors()
@@ -100,7 +101,6 @@
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Allors
-
             var database = new Database(
                 app.ApplicationServices,
                 new Configuration

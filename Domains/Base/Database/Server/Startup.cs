@@ -11,6 +11,8 @@
     using Identity.Models;
     using Identity.Services;
 
+    using JSNLog;
+
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
@@ -21,6 +23,7 @@
     using Microsoft.AspNetCore.Mvc.Cors.Internal;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.Tokens;
 
     using Newtonsoft.Json;
@@ -97,10 +100,9 @@
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             // Allors
-
             var database = new Database(
                 app.ApplicationServices,
                 new Configuration
@@ -114,11 +116,21 @@
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var jsnlogConfiguration = new JsnlogConfiguration
+                                          {
+                                              corsAllowedOriginsRegex = ".*",
+                                              defaultAjaxUrl = "logging",
+                                              serverSideMessageFormat = env.IsDevelopment() ? "%requestId | %url | %message" :
+                                                                            "%requestId | %url | %userHostAddress | %userAgent | %message",
+                                          };
+            app.UseJSNLog(new LoggingAdapter(loggerFactory), jsnlogConfiguration);
 
             app.UseStaticFiles();
 
