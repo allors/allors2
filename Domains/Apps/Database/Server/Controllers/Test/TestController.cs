@@ -1,29 +1,29 @@
 ﻿namespace Allors.Server.Controllers
 {
     using System;
-
     using Allors.Services;
-
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.DependencyInjection;
 
     public class TestController : Controller
     {
-        public TestController(IDatabaseService databaseService)
+        private readonly IDatabaseService databaseService;
+
+        private readonly IStateService stateService;
+
+        private readonly ITimeService timeService;
+
+        public TestController(IDatabaseService databaseService, IStateService stateService, ITimeService timeService)
         {
-            this.Database = databaseService.Database;
+            this.databaseService = databaseService;
+            this.stateService = stateService;
+            this.timeService = timeService;
         }
-
-        public IDatabase Database { get; set; }
-
+        
         [HttpGet]
         public IActionResult Init()
         {
-            var stateService = this.Database.ServiceProvider.GetRequiredService<IStateService>();
-
-            var database = this.Database;
-            database.Init();
-            stateService.Clear();
+            this.databaseService.Database.Init();
+            this.stateService.Clear();
 
             return this.Ok("Init");
         }
@@ -31,8 +31,8 @@
         [HttpGet]
         public IActionResult TimeShift(int days, int hours = 0, int minutes = 0, int seconds = 0)
         {
-            var timeService = this.Database.ServiceProvider.GetRequiredService<ITimeService>();
-            timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
+            this.timeService.Shift = new TimeSpan(days, hours, minutes, seconds);
+
             return this.Ok("TimeShift");
         }
     }

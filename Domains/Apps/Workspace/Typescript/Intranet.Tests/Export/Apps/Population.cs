@@ -1,20 +1,21 @@
-namespace Allors
+namespace Tests.Intranet
 {
     using System;
     using System.IO;
     using System.Linq;
     using System.Reflection;
 
+    using Allors;
     using Allors.Domain;
     using Allors.Meta;
 
-    public class Demo
+    public class Population
     {
         private readonly ISession Session;
 
         private readonly DirectoryInfo DataPath;
 
-        public Demo(ISession session, DirectoryInfo dataPath)
+        public Population(ISession session, DirectoryInfo dataPath)
         {
             this.Session = session;
             this.DataPath = dataPath;
@@ -215,7 +216,7 @@ namespace Allors
 
             this.Session.Derive();
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var acmePostalAddress = new PostalAddressBuilder(this.Session)
                     .WithAddress1($"Acme{i} address 1")
@@ -595,7 +596,7 @@ line2")
                 .Build());
 
             if (phoneNumber != null)
-            { 
+            {
                 organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
                     .WithUseAsDefault(true)
                     .WithContactMechanism(phoneNumber)

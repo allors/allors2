@@ -8,6 +8,7 @@
 
   
 <ItemGroup>
+    <Compile Include="..\..\..\..\Base\Database\Tests\Export\**\*.cs" />
     <Compile Include="..\..\..\..\Base\Workspace\Typescript\modules\Material.Tests\Export\**\*.cs" />
   </ItemGroup>
 
@@ -42,11 +43,6 @@
     <None Update="appSettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Export\Apps\Pages\Relations\party\contactmechanism\" />
-    <Folder Include="Export\Apps\Pages\Relations\person\" />
   </ItemGroup>
 
 </Project>

@@ -1,8 +1,10 @@
-namespace Intranet.Tests
+namespace Tests.Components
 {
     using OpenQA.Selenium;
     using OpenQA.Selenium.Interactions;
     using OpenQA.Selenium.Support.PageObjects;
+
+    using Tests.Intranet;
 
     public abstract class Component
     {

@@ -1,27 +1,24 @@
-namespace Tests.Components.Html
+namespace Tests.Components.Material
 {
+    using Allors.Meta;
+
     using OpenQA.Selenium;
 
+    using Tests.Components;
     using Tests.Intranet;
 
-    public class Input : Component
+    public class MaterialInput
+    : Component
     {
-        public Input(IWebDriver driver, By selector = null, string formControlName = null)
-            : base(driver)
+        public MaterialInput(IWebDriver driver, RoleType roleType)
+        : base(driver)
         {
-            if (selector != null)
-            {
-                this.Selector = selector;
-            }
-            else if (formControlName != null)
-            {
-                this.Selector = By.CssSelector($"input[formcontrolname='{formControlName}']");
-            }
+            this.Selector = By.CssSelector($"a-mat-input *[data-allors-roletype='{roleType.IdAsNumberString}'] input");
         }
 
         public By Selector { get; }
 
-        public string Text
+        public string Value
         {
             get
             {

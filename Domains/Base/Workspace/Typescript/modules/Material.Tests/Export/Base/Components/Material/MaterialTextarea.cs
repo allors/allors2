@@ -1,27 +1,23 @@
-namespace Tests.Components.Html
+namespace Tests.Components.Material
 {
+    using Allors.Meta;
+
     using OpenQA.Selenium;
 
+    using Tests.Components;
     using Tests.Intranet;
 
-    public class Input : Component
+    public class MaterialTextArea : Component
     {
-        public Input(IWebDriver driver, By selector = null, string formControlName = null)
-            : base(driver)
+        public MaterialTextArea(IWebDriver driver, RoleType roleType)
+        : base(driver)
         {
-            if (selector != null)
-            {
-                this.Selector = selector;
-            }
-            else if (formControlName != null)
-            {
-                this.Selector = By.CssSelector($"input[formcontrolname='{formControlName}']");
-            }
+            this.Selector = By.CssSelector($"textarea[data-allors-roletype='{roleType.IdAsNumberString}']");
         }
 
         public By Selector { get; }
 
-        public string Text
+        public string Value
         {
             get
             {
@@ -40,5 +36,6 @@ namespace Tests.Components.Html
                 element.SendKeys(Keys.Tab);
             }
         }
+
     }
 }

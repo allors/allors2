@@ -1,6 +1,8 @@
-namespace Intranet.Tests
+namespace Tests.Components.Html
 {
     using OpenQA.Selenium;
+
+    using Tests.Intranet;
 
     public class Anchor : Component
     {
