@@ -60,13 +60,13 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.ContactMechanismPurpose" Collapsed="true">
-    <Position X="1.25" Y="7.25" Width="2.25" />
+    <Position X="1" Y="8.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.ContactMechanismType" Collapsed="true">
+  <Interface Name="Allors.Domain.ContactMechanismType">
     <Position X="10.25" Y="12.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
@@ -74,11 +74,11 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.PartyContactMechanism">
-    <Position X="4.25" Y="7" Width="2" />
+    <Position X="4" Y="7" Width="2" />
     <AssociationLine Name="ContactMechanism" Type="Allors.Domain.ContactMechanism" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="4.625" Y="8.813" />
-        <Point X="4.625" Y="13.277" />
+        <Point X="4.375" Y="8.813" />
+        <Point X="4.375" Y="13.277" />
         <Point X="7.5" Y="13.277" />
       </Path>
     </AssociationLine>
@@ -126,8 +126,8 @@
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.ElectronicAddress" Collapsed="true">
-    <Position X="8" Y="14.75" Width="1.5" />
+  <Interface Name="Allors.Domain.ElectronicAddress">
+    <Position X="7.25" Y="14.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -142,11 +142,9 @@
     </AssociationLine>
     <AssociationLine Name="Country" Type="Allors.Domain.Country" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="11.75" Y="16.25" />
-        <Point X="20.761" Y="16.25" Type="JumpStart" />
-        <Point X="20.927" Y="16.25" Type="JumpEnd" />
-        <Point X="21.438" Y="16.25" />
-        <Point X="21.438" Y="15.57" />
+        <Point X="11.75" Y="16.126" />
+        <Point X="20.5" Y="16.126" />
+        <Point X="20.5" Y="15.57" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -157,10 +155,11 @@
       <Property Name="GeographicBoundaries" />
       <Property Name="PostalBoundary" />
       <Property Name="Country" />
+      <Property Name="City" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.TelecommunicationsNumber" Collapsed="true">
-    <Position X="5" Y="14.75" Width="2.25" />
+  <Interface Name="Allors.Domain.TelecommunicationsNumber">
+    <Position X="4.25" Y="14.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>ACAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -232,6 +231,13 @@
   </Interface>
   <Interface Name="Allors.Domain.PostalBoundary">
     <Position X="15" Y="16.5" Width="1.75" />
+    <AssociationLine Name="Country" Type="Allors.Domain.Country" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="17.373" />
+        <Point X="21.438" Y="17.373" />
+        <Point X="21.438" Y="15.57" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAgAAAAAAAIAAAAAAAgAIAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>

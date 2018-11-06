@@ -91,6 +91,7 @@ namespace Allors.Domain
                 if (!this.ExistWorkEffortCounter)
                 {
                     this.WorkEffortCounter = new CounterBuilder(this.strategy.Session).Build();
+                    this.WorkEffortPrefix = "W";
                 }
 
                 if (!this.ExistInvoiceSequence)

@@ -22,7 +22,7 @@ namespace Allors.Domain
         public void AppsOnDerive(ObjectOnDerive method)
         {
             this.Description =
-                $"{(this.ExistCountryCode ? this.CountryCode : null)} {(this.ExistAreaCode ? this.AreaCode : null)} {(this.ExistContactNumber ? this.ContactNumber : null)}";
+                $"{(this.ExistCountryCode ? ("+"+this.CountryCode) : null)} {(this.ExistAreaCode ? this.AreaCode : null)} {(this.ExistContactNumber ? this.ContactNumber : null)}";
         }
     }
 }

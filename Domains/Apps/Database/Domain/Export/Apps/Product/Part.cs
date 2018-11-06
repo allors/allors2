@@ -26,6 +26,10 @@ namespace Allors.Domain
     {
         public new string ToString() => this.Name ?? this.Id.ToString();
 
+        public string PartIdentification => this.GoodIdentifications
+            .FirstOrDefault(g => g.GoodIdentificationType.Equals(new GoodIdentificationTypes(this.strategy.Session).Part))
+            .Identification;
+
         public InventoryStrategy GetInventoryStrategy
             => this.InventoryStrategy ?? (this.InternalOrganisation?.InventoryStrategy ?? new InventoryStrategies(this.strategy.Session).Standard);
 
@@ -80,6 +84,11 @@ namespace Allors.Domain
             if (derivation.HasChangedRoles(this, new RoleType[] { this.Meta.UnitOfMeasure, this.Meta.DefaultFacility }))
             {
                 this.SyncDefaultInventoryItem();
+            }
+
+            if (!this.ExistName)
+            {
+                this.Name = "Part " + this.PartIdentification ?? this.UniqueId.ToString();
             }
 
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)

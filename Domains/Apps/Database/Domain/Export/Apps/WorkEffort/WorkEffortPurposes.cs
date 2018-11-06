@@ -62,7 +62,7 @@ namespace Allors.Domain
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Phonecall")
+                .WithName("Phone Call")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Telefoon gesprek").WithLocale(dutchLocale).Build())
                 .WithUniqueId(PhonecallId)
                 .WithIsActive(true)
@@ -90,7 +90,7 @@ namespace Allors.Domain
                 .Build();
 
             new WorkEffortPurposeBuilder(this.Session)
-                .WithName("Production run")
+                .WithName("Production Run")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Productie run").WithLocale(dutchLocale).Build())
                 .WithUniqueId(ProductionRunId)
                 .WithIsActive(true)
