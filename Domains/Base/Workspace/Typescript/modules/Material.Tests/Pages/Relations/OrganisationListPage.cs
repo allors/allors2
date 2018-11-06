@@ -1,8 +1,8 @@
-namespace Intranet.Pages.Relations
+namespace Tests.Material.Pages.Relations
 {
-    using Intranet.Tests;
-
     using OpenQA.Selenium;
+
+    using Tests.Components.Html;
 
     public class OrganisationListPage : MainPage
     {

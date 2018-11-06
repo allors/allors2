@@ -299,8 +299,8 @@ namespace Allors
                 var administrator = (Person)new UserGroups(this.Session).Administrators.Members.First;
 
                 new FaceToFaceCommunicationBuilder(this.Session)
-                    .WithDescription($"Meeting ${i}")
-                    .WithSubject($"meeting ${i}")
+                    .WithDescription($"Meeting {i}")
+                    .WithSubject($"meeting {i}")
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
                     .WithParticipant(contact1)
                     .WithParticipant(contact2)
@@ -309,8 +309,8 @@ namespace Allors
                     .Build();
 
                 new EmailCommunicationBuilder(this.Session)
-                    .WithDescription($"Email ${i}")
-                    .WithSubject($"email ${i}")
+                    .WithDescription($"Email {i}")
+                    .WithSubject($"email {i}")
                     .WithOriginator(email2)
                     .WithAddressee(email2)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
@@ -319,8 +319,8 @@ namespace Allors
                     .Build();
 
                 new LetterCorrespondenceBuilder(this.Session)
-                    .WithDescription($"Letter ${i}")
-                    .WithSubject($"letter ${i}")
+                    .WithDescription($"Letter {i}")
+                    .WithSubject($"letter {i}")
                     .WithOriginator(administrator)
                     .WithReceiver(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)
@@ -329,8 +329,8 @@ namespace Allors
                     .Build();
 
                 new PhoneCommunicationBuilder(this.Session)
-                    .WithDescription($"Phone ${i}")
-                    .WithSubject($"phone ${i}")
+                    .WithDescription($"Phone {i}")
+                    .WithSubject($"phone {i}")
                     .WithCaller(administrator)
                     .WithReceiver(contact1)
                     .WithEventPurpose(new CommunicationEventPurposes(this.Session).Meeting)

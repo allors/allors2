@@ -1,4 +1,4 @@
-namespace Intranet.Tests
+namespace Tests.Material
 {
     using System.Linq;
 
@@ -6,7 +6,8 @@ namespace Intranet.Tests
     using Allors.Domain;
     using Allors.Meta;
 
-    using Intranet.Pages.Relations;
+    using Tests.Components;
+    using Tests.Material.Pages.Relations;
 
     using Xunit;
 

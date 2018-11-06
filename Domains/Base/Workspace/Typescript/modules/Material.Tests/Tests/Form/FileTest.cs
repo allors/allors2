@@ -1,12 +1,13 @@
-namespace Intranet.Tests
+namespace Tests.Material
 {
     using System.Linq;
 
     using Allors.Domain;
     using Allors.Meta;
 
-    using Intranet.Pages;
-    using Intranet.Pages.Relations;
+    using Tests.Components;
+    using Tests.Material.Pages;
+    using Tests.Material.Pages.Relations;
 
     using Xunit;
 

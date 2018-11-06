@@ -1,7 +1,6 @@
-namespace Intranet.Tests
+namespace Tests.Components.Html
 {
     using OpenQA.Selenium;
-
     public class Button : Component
     {
         public Button(IWebDriver driver, By selector)

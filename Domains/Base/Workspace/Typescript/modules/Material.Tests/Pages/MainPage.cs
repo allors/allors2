@@ -1,6 +1,6 @@
-namespace Intranet.Pages
+namespace Tests.Material.Pages
 {
-    using Intranet.Tests;
+    using Tests.Material;
 
     using OpenQA.Selenium;
 
