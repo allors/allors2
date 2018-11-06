@@ -51,7 +51,7 @@
     <None Include="Order\Overview.cd" />
     <None Include="Products\Inventory Storage.cd" />
     <None Include="Products\Overview.cd" />
-    <None Include="Relation\Overview.cd" />
+    <None Include="Relation\Relation.cd" />
     <None Include="Shipment\Overview.cd" />
     <None Include="Temp.cd" />
     <None Include="Workeffort\WorkEffort.cd" />

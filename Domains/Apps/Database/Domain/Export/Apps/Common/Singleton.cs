@@ -20,6 +20,9 @@
 
 namespace Allors.Domain
 {
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
     using Allors.Meta;
 
     /// <summary>
@@ -40,6 +43,14 @@ namespace Allors.Domain
                 {
                     derivation.AddDerivable(product);
                 }
+            }
+        }
+
+        public void AppsOnDerive(ObjectOnDerive method)
+        {
+            if (!this.ExistLogoImage)
+            {
+                this.LogoImage = new MediaBuilder(this.strategy.Session).WithInData(this.GetResourceBytes("allors.jpeg")).Build();
             }
         }
 
@@ -185,6 +196,23 @@ namespace Allors.Domain
             session.Commit();
             People.AppsOnDeriveCommissions(session);
             session.Commit();
+        }
+
+        private byte[] GetResourceBytes(string name)
+        {
+            var assembly = this.GetType().GetTypeInfo().Assembly;
+            var manifestResourceName = assembly.GetManifestResourceNames().First(v => v.Contains(name));
+            var resource = assembly.GetManifestResourceStream(manifestResourceName);
+            if (resource != null)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    resource.CopyTo(ms);
+                    return ms.ToArray();
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -11,7 +11,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.Period">
-    <Position X="7.75" Y="1.75" Width="1.75" />
+    <Position X="6.75" Y="1.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>

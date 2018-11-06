@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("75916246-b1b5-48ef-9578-d65980fd2623")]
     #endregion
-    public partial class Part : AccessControlledObject, UniquelyIdentifiable
+    public partial class Part : AccessControlledObject, UniquelyIdentifiable, Deletable
     {
         #region inheritedProperties
         public Permission[] DeniedPermissions { get; set; }
@@ -50,6 +50,26 @@ namespace Allors.Repository
         [Workspace]
         [Size(256)]
         public string Name { get; set; }
+
+        #region Allors
+        [Id("F7F94771-FCB6-4E81-9106-16C77059D64B")]
+        [AssociationId("6AFB2380-7BCA-46B5-A6DA-023F8DAB41FA")]
+        [RoleId("C2D9D6F9-0298-4F2D-B7DF-23417A57AEAF")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public Media PrimaryPhoto { get; set; }
+
+        #region Allors
+        [Id("6BAB2B93-9E5C-46FF-945A-B581C68ED065")]
+        [AssociationId("C0C77CDF-D353-452D-AD21-554DA8B9F06F")]
+        [RoleId("8ABBD05B-8939-4DFB-B5D4-AEB6A018F355")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToMany)]
+        [Workspace]
+        public Media[] Photos { get; set; }
 
         #region Allors
         [Id("210AB5B0-746E-4332-A475-0B17FF4A9E1B")]
@@ -266,6 +286,10 @@ namespace Allors.Repository
         public void OnPostBuild() { }
 
         public void OnPostDerive() { }
+
+        public void Delete()
+        {
+        }
 
         public void OnPreDerive() { }
         #endregion inheritedMethods

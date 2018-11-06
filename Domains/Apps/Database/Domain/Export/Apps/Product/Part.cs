@@ -22,9 +22,25 @@ namespace Allors.Domain
 {
     using System;
 
-    public  partial class Part
+    public partial class Part
     {
         public new string ToString() => this.Name ?? this.Id.ToString();
+
+        public string PartIdentification
+        {
+            get
+            {
+                if (this.GoodIdentifications.Count == 0)
+                {
+                    return null;
+                }
+
+                var partId = this.GoodIdentifications.FirstOrDefault(g => g.ExistGoodIdentificationType
+                        && g.GoodIdentificationType.Equals(new GoodIdentificationTypes(this.strategy.Session).Part));
+
+                return partId.Identification;
+            }
+        }
 
         public InventoryStrategy GetInventoryStrategy
             => this.InventoryStrategy ?? (this.InternalOrganisation?.InventoryStrategy ?? new InventoryStrategies(this.strategy.Session).Standard);
@@ -55,6 +71,8 @@ namespace Allors.Domain
             {
                 this.DefaultFacility = this.InternalOrganisation.FacilitiesWhereOwner.First;
             }
+
+            this.DeriveName();
         }
 
         public void AppsOnPreDerive(ObjectOnPreDerive method)
@@ -82,6 +100,8 @@ namespace Allors.Domain
                 this.SyncDefaultInventoryItem();
             }
 
+            this.DeriveName();
+
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
             {
                 if (supplierOffering.FromDate <= DateTime.UtcNow
@@ -101,6 +121,14 @@ namespace Allors.Domain
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
             this.DeriveQuantityExpectedIn();
+        }
+
+        private void DeriveName()
+        {
+            if (!this.ExistName)
+            {
+                this.Name = "Part " + (this.PartIdentification ?? this.UniqueId.ToString());
+            }
         }
 
         private void SyncDefaultInventoryItem()

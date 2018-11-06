@@ -89,6 +89,16 @@ namespace Allors.Repository
         [Indexed]
         public AccessControl AdministratorsAccessControl { get; set; }
 
+        #region Allors
+        [Id("B2166062-84DA-449D-B34F-983A0C81BC31")]
+        [AssociationId("22096B27-ED3C-4640-BB60-EB7338A779FB")]
+        [RoleId("1E931D15-5137-4C6D-91ED-9CC5C3C95BEF")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Media LogoImage { get; set; }
+
         #region inherited methods
 
         public void OnBuild() { }

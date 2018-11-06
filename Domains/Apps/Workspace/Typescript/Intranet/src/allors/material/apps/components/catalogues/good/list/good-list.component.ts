@@ -128,7 +128,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
             internalOrganisationId,
           ];
         }, []),
-        switchMap(([, filterFields, sort, pageEvent]) => {
+        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
