@@ -204,8 +204,8 @@ namespace Allors.Domain
                 this.BillingRate = Math.Round(timeEntry.BillingRate ?? 0.0m, 2);
                 this.Cost = Math.Round(timeEntry.Cost, 2);
                 this.TimeFrequency = frequency.ToUpperInvariant();
-                this.WorkerName = timeEntry.TimeSheetWhereTimeEntry.Worker.PartyName;
-                this.WorkerId = timeEntry.TimeSheetWhereTimeEntry.Worker.Id.ToString();
+                this.WorkerName = timeEntry.TimeSheetWhereTimeEntry?.Worker?.PartyName;
+                this.WorkerId = timeEntry.TimeSheetWhereTimeEntry?.Worker.Id.ToString();
                 this.Description = timeEntry.Description;
                 this.IsBillable = timeEntry.IsBillable != false;
                 this.FromDate = timeEntry.FromDate.ToString("yyyy-MM-dd");
