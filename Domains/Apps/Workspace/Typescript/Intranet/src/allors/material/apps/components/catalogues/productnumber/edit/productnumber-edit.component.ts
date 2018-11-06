@@ -118,7 +118,14 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
 
           this.iGoodIdentification = scope.session.create('ProductNumber') as ProductNumber;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
-          this.good.AddGoodIdentification(this.iGoodIdentification);
+
+          if (this.good) {
+            this.good.AddGoodIdentification(this.iGoodIdentification);
+          }
+
+          if (this.part) {
+            this.part.AddGoodIdentification(this.iGoodIdentification);
+          }
 
         } else {
           this.edit = !(this.add = false);

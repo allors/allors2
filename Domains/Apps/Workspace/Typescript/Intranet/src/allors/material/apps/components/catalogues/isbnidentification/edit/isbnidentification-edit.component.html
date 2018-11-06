@@ -3,7 +3,8 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigation.list(m.Good)">Product</a>
+        <a *ngIf="good" (click)="navigation.list(m.Good)">Products</a>
+        <a *ngIf="part" (click)="navigation.list(m.Part)">Parts</a>
         <span *ngIf="add"> / Add ISBN</span>
         <span *ngIf="edit && good"> / <a (click)="navigation.overview(good)">{{good?.Name}}</a> / Edit ISBN</span>
         <span *ngIf="edit && part"> / <a (click)="navigation.overview(part)">{{part?.Name}}</a> / Edit ISBN</span>
