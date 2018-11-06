@@ -7,12 +7,19 @@ namespace Allors.Repository
     #region Allors
     [Id("5E594A00-15A4-4871-84E9-B8010A78FD21")]
     #endregion
-    public partial class SerialisedItem : AccessControlledObject, Deletable
+    public partial class SerialisedItem : AccessControlledObject, Deletable, FixedAsset
     {
         #region InheritedProperties
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
+
+        public string Name { get; set; }
+        public DateTime LastServiceDate { get; set; }
+        public DateTime AcquiredDate { get; set; }
+        public string Description { get; set; }
+        public decimal ProductionCapacity { get; set; }
+        public DateTime NextServiceDate { get; set; }
         #endregion InheritedProperties
 
         #region Allors

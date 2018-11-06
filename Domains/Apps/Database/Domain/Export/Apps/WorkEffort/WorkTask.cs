@@ -82,7 +82,7 @@ namespace Allors.Domain
             public string ContactName;
             public string ContactTelephone;
             public string PaymentTerms;
-            public string Establishment;
+            public string Subsidiary;
             public string SalesRep;
 
             public WorkTaskPrintModel(WorkTask workTask)
@@ -113,6 +113,7 @@ namespace Allors.Domain
 
                         var salesOrder = salesOrderItem.SalesOrderWhereSalesOrderItem;
                         this.PurchaseOrder = salesOrder?.OrderNumber;
+                        //TODO: SalesOrder.SalesReps
                         this.SalesRep = salesOrder?.TakenByContactPerson?.PartyName;
 
                         if ((this.PaymentTerms == null) && salesOrder.ExistSalesTerms)
@@ -128,12 +129,13 @@ namespace Allors.Domain
                         this.ContactTelephone = contact.CellPhoneNumber?.Description ?? contact.GeneralPhoneNumber?.Description;
                     }
 
+                    //TODO: Look at SalesInvoice.PaymentNetDays
                     if (workTask.ExistSpecialTerms)
                     {
                         this.PaymentTerms = workTask.SpecialTerms;
                     }
 
-                    this.Establishment = workTask.Facility?.Name;
+                    this.Subsidiary = workTask.Facility?.Name;
                 }
             }
         }
