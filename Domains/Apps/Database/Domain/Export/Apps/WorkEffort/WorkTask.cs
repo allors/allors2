@@ -20,7 +20,9 @@ namespace Allors.Domain
     using System.Collections.Generic;
     
     using Allors.Meta;
+    using Allors.Services;
     using Sandwych.Reporting;
+    using Microsoft.Extensions.DependencyInjection;
 
     public partial class WorkTask
     {
@@ -73,6 +75,7 @@ namespace Allors.Domain
         private class WorkTaskPrintModel
         {
             public string Number;
+            public ImageBlob Barcode;
             public string Purpose;
             public string Date;
             public string PurchaseOrder;
@@ -85,6 +88,12 @@ namespace Allors.Domain
             public WorkTaskPrintModel(WorkTask workTask)
             {
                 this.Number = workTask.WorkEffortNumber;
+
+                var session = workTask.Strategy.Session;
+                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                var barcode = barcodeService.Generate(this.Number, BarcodeType.CODE_128, 230, 80);
+                this.Barcode = new ImageBlob("png", barcode);
+
                 this.Date = (workTask.ThroughDate() ?? DateTime.UtcNow).ToString("yyyy-MM-dd");
                 this.Purpose = String.Empty;
 
@@ -250,13 +259,13 @@ namespace Allors.Domain
 
             // Logo
             var singleton = workTask.Strategy.Session.GetSingleton();
-            ImageBlob logo = new ImageBlob("jpeg", singleton.LogoImage.MediaContent.Data);
+            ImageBlob logo = new ImageBlob("png", singleton.LogoImage.MediaContent.Data);
 
             if (workTask.ExistTakenBy && workTask.TakenBy.ExistLogoImage)
             {
-                logo = new ImageBlob("jpeg", workTask.TakenBy.LogoImage.MediaContent.Data);
+                logo = new ImageBlob("png", workTask.TakenBy.LogoImage.MediaContent.Data);
             }
-            this.Model.Add("image", logo);
+            this.Model.Add("logo", logo);
 
             // Customer
             if (workTask.ExistCustomer)

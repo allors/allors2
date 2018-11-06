@@ -50,7 +50,7 @@ namespace Allors.Domain
         {
             if (!this.ExistLogoImage)
             {
-                this.LogoImage = new MediaBuilder(this.strategy.Session).WithInData(this.GetResourceBytes("allors.jpeg")).Build();
+                this.LogoImage = new MediaBuilder(this.strategy.Session).WithInData(this.GetResourceBytes("allors.png")).Build();
             }
         }
 

@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Templates\allors.jpeg" />
+    <None Remove="Templates\allors.png" />
     <None Remove="Templates\ProductQuote.odt" />
     <None Remove="Templates\SalesInvoice.odt" />
     <None Remove="Templates\SalesOrder.odt" />
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Templates\allors.jpeg" />
+    <EmbeddedResource Include="Templates\allors.png" />
     <EmbeddedResource Include="Templates\WorkTask.odt" />
     <EmbeddedResource Include="Templates\SalesInvoice.odt" />
     <EmbeddedResource Include="Templates\SalesOrder.odt" />
