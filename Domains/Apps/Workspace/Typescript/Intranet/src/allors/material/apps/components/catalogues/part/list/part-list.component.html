@@ -72,6 +72,13 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="inventory">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Inventory </th>
+              <td mat-cell *matCellDef="let row">
+                {{row.inventoryItemKind}}
+              </td>
+            </ng-container>
+
           <ng-container matColumnDef="product type">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Product type </th>
             <td mat-cell *matCellDef="let row">

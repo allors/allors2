@@ -88,6 +88,9 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 Photos: x,
                 Documents: x,
                 ElectronicDocuments: x,
+                Brand: {
+                  Models: x
+                },
                 GoodIdentifications: {
                   GoodIdentificationType: x,
                 },
@@ -108,7 +111,12 @@ export class PartEditComponent implements OnInit, OnDestroy {
             pull.GoodIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
-            pull.Brand({ sort: new Sort(m.Brand.Name) })
+            pull.Brand({
+              include: {
+                  Models: x
+              },
+              sort: new Sort(m.Brand.Name)
+            })
           ];
 
           return scope
@@ -157,6 +165,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
           this.selectedBrand = this.part.Brand;
           this.selectedModel = this.part.Model;
+          this.brandSelected(this.selectedBrand);
 
           this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         }
@@ -219,6 +228,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
     const { scope } = this.allors;
+    this.onSave();
 
     scope
       .save()
