@@ -1,10 +1,10 @@
-namespace Intranet.Tests.Relations
+namespace Tests.Material.Relations
 {
     using System.Linq;
 
     using Allors.Domain;
     using Allors.Meta;
-    using Intranet.Pages.Relations;
+    using Tests.Material.Pages.Relations;
 
     using Xunit;
 

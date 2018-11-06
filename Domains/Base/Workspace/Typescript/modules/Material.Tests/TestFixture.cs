@@ -1,4 +1,4 @@
-﻿namespace Intranet.Tests
+﻿namespace Tests.Material
 {
     using System;
     using System.Diagnostics;

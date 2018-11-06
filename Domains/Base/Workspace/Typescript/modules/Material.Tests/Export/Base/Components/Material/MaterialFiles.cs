@@ -1,15 +1,11 @@
 namespace Tests.Components.Material
 {
-    using System;
     using System.IO;
 
     using Allors.Meta;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
-
-    using Tests.Components;
-    using Tests.Intranet;
 
     public class MaterialFiles : Component
     {

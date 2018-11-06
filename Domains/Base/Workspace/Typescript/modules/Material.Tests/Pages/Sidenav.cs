@@ -1,11 +1,12 @@
-namespace Intranet.Tests
+namespace Tests.Material
 {
-    using System;
-    using Intranet.Pages;
-    using Intranet.Pages.Relations;
-
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
+
+    using Tests.Components;
+    using Tests.Components.Html;
+    using Tests.Material.Pages;
+    using Tests.Material.Pages.Relations;
 
     public class Sidenav : Page
     {

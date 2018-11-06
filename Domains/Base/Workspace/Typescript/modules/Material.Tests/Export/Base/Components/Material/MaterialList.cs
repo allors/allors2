@@ -5,9 +5,6 @@ namespace Tests.Components.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    using Tests.Components;
-    using Tests.Intranet;
-
     public class MaterialList : Component
     {
         public MaterialList(IWebDriver driver, By selector = null)

@@ -1,8 +1,9 @@
-namespace Intranet.Pages
+namespace Tests.Material.Pages
 {
-    using Intranet.Tests;
-
     using OpenQA.Selenium;
+
+    using Tests.Components;
+    using Tests.Components.Html;
 
     public class LoginPage : Page
     {

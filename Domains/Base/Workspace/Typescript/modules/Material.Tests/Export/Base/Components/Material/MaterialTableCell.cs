@@ -2,9 +2,6 @@ namespace Tests.Components.Material
 {
     using OpenQA.Selenium;
 
-    using Tests.Components;
-    using Tests.Intranet;
-
     public class MaterialTableCell : Component
     {
         public MaterialTableCell(IWebDriver driver, IWebElement element)

@@ -1,9 +1,6 @@
 namespace Tests.Components.Html
 {
     using OpenQA.Selenium;
-    using OpenQA.Selenium.Support.PageObjects;
-
-    using Tests.Intranet;
 
     public class Element : Component
     {

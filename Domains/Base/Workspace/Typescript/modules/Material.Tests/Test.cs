@@ -1,4 +1,4 @@
-namespace Intranet.Tests
+namespace Tests.Material
 {
     using System;
     using System.Globalization;
@@ -9,7 +9,7 @@ namespace Intranet.Tests
     using Allors.Meta;
     using Allors.Services;
 
-    using Intranet.Pages;
+    using Tests.Material.Pages;
 
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;

@@ -2,8 +2,6 @@ namespace Tests.Components.Html
 {
     using OpenQA.Selenium;
 
-    using Tests.Intranet;
-
     public class Input : Component
     {
         public Input(IWebDriver driver, By selector = null, string formControlName = null)

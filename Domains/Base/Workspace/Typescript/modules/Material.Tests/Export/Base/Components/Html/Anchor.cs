@@ -2,8 +2,6 @@ namespace Tests.Components.Html
 {
     using OpenQA.Selenium;
 
-    using Tests.Intranet;
-
     public class Anchor : Component
     {
         public Anchor(IWebDriver driver, By selector)

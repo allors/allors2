@@ -1,14 +1,9 @@
 namespace Tests.Components.Material
 {
-    using System.Threading;
-
     using Allors.Meta;
 
     using OpenQA.Selenium;
     using OpenQA.Selenium.Interactions;
-
-    using Tests.Components;
-    using Tests.Intranet;
 
     public class MaterialSlider
     : Component

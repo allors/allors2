@@ -4,9 +4,6 @@ namespace Tests.Components.Material
 
     using OpenQA.Selenium;
 
-    using Tests.Components;
-    using Tests.Intranet;
-
     public class MaterialInput
     : Component
     {

@@ -5,9 +5,6 @@ namespace Tests.Components.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    using Tests.Components;
-    using Tests.Intranet;
-
     public class MaterialTable : Component
     {
         public MaterialTable(IWebDriver driver, By selector = null)

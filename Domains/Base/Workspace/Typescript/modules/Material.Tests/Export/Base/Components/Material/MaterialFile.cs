@@ -7,9 +7,6 @@ namespace Tests.Components.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    using Tests.Components;
-    using Tests.Intranet;
-
     public class MaterialFile : Component
     {
         public MaterialFile(IWebDriver driver, RoleType roleType)

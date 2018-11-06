@@ -1,4 +1,4 @@
-namespace Intranet.Tests
+namespace Tests.Material
 {
     using Xunit;
 

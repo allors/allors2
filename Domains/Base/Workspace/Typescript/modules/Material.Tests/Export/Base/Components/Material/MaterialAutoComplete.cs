@@ -5,9 +5,6 @@ namespace Tests.Components.Material
     using OpenQA.Selenium;
     using OpenQA.Selenium.Support.PageObjects;
 
-    using Tests.Components;
-    using Tests.Intranet;
-
     public class MaterialAutocomplete
     : Component
     {

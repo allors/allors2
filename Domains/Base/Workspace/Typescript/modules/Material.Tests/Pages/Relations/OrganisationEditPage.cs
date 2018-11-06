@@ -1,10 +1,11 @@
-namespace Intranet.Pages.Relations
+namespace Tests.Material.Pages.Relations
 {
     using Allors.Meta;
 
-    using Intranet.Tests;
-
     using OpenQA.Selenium;
+
+    using Tests.Components.Html;
+    using Tests.Components.Material;
 
     public class OrganisationEditPage : MainPage
     {
