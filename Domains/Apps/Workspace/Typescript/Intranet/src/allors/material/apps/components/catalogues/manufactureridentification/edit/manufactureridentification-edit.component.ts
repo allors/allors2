@@ -118,7 +118,14 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
 
           this.iGoodIdentification = scope.session.create('ManufacturerIdentification') as ManufacturerIdentification;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
-          this.good.AddGoodIdentification(this.iGoodIdentification);
+
+          if (this.good) {
+            this.good.AddGoodIdentification(this.iGoodIdentification);
+          }
+
+          if (this.part) {
+            this.part.AddGoodIdentification(this.iGoodIdentification);
+          }
 
         } else {
           this.edit = !(this.add = false);

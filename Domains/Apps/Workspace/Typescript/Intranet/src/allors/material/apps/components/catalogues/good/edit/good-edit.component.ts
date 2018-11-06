@@ -21,6 +21,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   m: MetaDomain;
   scope: Scope;
   good: Good;
+
   add: boolean;
   edit: boolean;
 
@@ -164,46 +165,6 @@ export class GoodEditComponent implements OnInit, OnDestroy {
         }
       },
         (error: any) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
-  }
-
-  public brandAdded(brand: Brand): void {
-    this.brands.push(brand);
-    this.selectedBrand = brand;
-    this.models = [];
-    this.selectedModel = undefined;
-  }
-
-  public modelAdded(model: Model): void {
-    // TODO:
-    // this.selectedBrand.AddModel(model);
-    // this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-    this.selectedModel = model;
-  }
-
-  public brandSelected(brand: Brand): void {
-
-    const { pull, scope } = this.allors;
-
-    const pulls = [
-      pull.Brand({
-        object: brand,
-        include: {
-          // TODO:
-          // Models: x,
-        }
-      }
-      )
-    ];
-
-    scope
-      .load('Pull', new PullRequest({ pulls }))
-      .subscribe(() => {
-      },
-        (error: Error) => {
           this.errorService.handle(error);
           this.navigationService.back();
         },

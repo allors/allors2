@@ -121,12 +121,13 @@ export class PartListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                Brand: x,
+                Model: x,
+                ProductType: x,
+                PrimaryPhoto: x,
                 GoodIdentifications: {
                   GoodIdentificationType: x
                 },
-                Brand: x,
-                Model: x,
-                ProductType: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
