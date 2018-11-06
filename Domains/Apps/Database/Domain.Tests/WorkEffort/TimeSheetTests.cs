@@ -47,7 +47,7 @@ namespace Allors.Domain
             derivation = this.Session.Derive(false);
 
             // Assert
-            Assert.True(derivation.HasErrors);
+            Assert.False(derivation.HasErrors);
         }
     }
 }
