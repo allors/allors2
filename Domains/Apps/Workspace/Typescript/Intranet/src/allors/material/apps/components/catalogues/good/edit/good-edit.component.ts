@@ -5,7 +5,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, GoodIdentification } from '../../../../../../domain';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
@@ -42,7 +42,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   addModel = false;
   parts: Part[];
   goodIdentificationTypes: GoodIdentificationType[];
-  goodNumberIdentification: GoodIdentification;
+  productNumber: ProductNumber;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
@@ -102,6 +102,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
                   },
                   PrimaryPhoto: x,
                   ProductCategories: x,
+                  GoodIdentifications: x,
                   Photos: x,
                   ElectronicDocuments: x,
                   LocalisedNames: {
@@ -148,16 +149,18 @@ export class GoodEditComponent implements OnInit, OnDestroy {
           this.good = scope.session.create('Good') as Good;
           this.good.VatRate = vatRateZero;
 
-          this.goodNumberIdentification = scope.session.create('GoodIdentification') as GoodIdentification;
-          this.goodNumberIdentification.GoodIdentificationType = goodNumberType;
+          this.productNumber = scope.session.create('ProductNumber') as ProductNumber;
+          this.productNumber.GoodIdentificationType = goodNumberType;
 
-          this.good.AddGoodIdentification(this.goodNumberIdentification);
+          this.good.AddGoodIdentification(this.productNumber);
 
           this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
           this.vendorProduct.Product = this.good;
           this.vendorProduct.InternalOrganisation = internalOrganisation;
         } else {
+
           this.edit = !(this.add = false);
+          this.productNumber = this.good.GoodIdentifications.find(v => v.GoodIdentificationType === goodNumberType);
         }
       },
         (error: any) => {

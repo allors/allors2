@@ -17,15 +17,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { EditGoodIdentificationComponent } from './goodidentification-edit.component';
-export { EditGoodIdentificationComponent } from './goodidentification-edit.component';
+import { EditIsbnIdentificationComponent } from './isbnidentification-edit.component';
+export { EditIsbnIdentificationComponent } from './isbnidentification-edit.component';
 
 @NgModule({
   declarations: [
-    EditGoodIdentificationComponent,
+    EditIsbnIdentificationComponent,
   ],
   exports: [
-    EditGoodIdentificationComponent,
+    EditIsbnIdentificationComponent,
   ],
   imports: [
     AllorsMaterialChipsModule,
@@ -60,4 +60,4 @@ export { EditGoodIdentificationComponent } from './goodidentification-edit.compo
     RouterModule,
   ],
 })
-export class GoodidentIdentificationModule { }
+export class IsbnIdentificationModule { }

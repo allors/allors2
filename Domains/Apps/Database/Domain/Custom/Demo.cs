@@ -132,7 +132,7 @@ namespace Allors
 
             var finishedGood = new PartBuilder(this.Session)
                 .WithInternalOrganisation(allors)
-                .WithGoodIdentification(new SkuBuilder(this.Session)
+                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
@@ -164,7 +164,7 @@ namespace Allors
                 .WithName("finished good2")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithProductType(productType)
-                .WithGoodIdentification(new SkuBuilder(this.Session)
+                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10102")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
@@ -190,7 +190,7 @@ namespace Allors
 
             var finishedGood3 = new PartBuilder(this.Session)
                 .WithInternalOrganisation(allors)
-                .WithGoodIdentification(new SkuBuilder(this.Session)
+                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)

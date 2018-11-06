@@ -158,7 +158,7 @@ namespace Allors.Domain
 
         private Good CreateGood(string sku, VatRate vatRate, string name, UnitOfMeasure uom, ProductCategory category, Part part)
             => new GoodBuilder(this.Session)
-                .WithGoodIdentification(new SkuBuilder(this.Session)
+                .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification(sku)
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
                 .WithVatRate(vatRate)

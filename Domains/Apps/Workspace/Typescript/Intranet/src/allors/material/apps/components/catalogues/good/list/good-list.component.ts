@@ -16,6 +16,7 @@ import { StateService } from '../../../../services/StateService';
 
 import { Good } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';
+import { MetaDomain } from 'src/allors/meta';
 
 interface Row {
   good: Good;
@@ -44,6 +45,8 @@ export class GoodListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private readonly fetcher: Fetcher;
 
+  public m: MetaDomain;
+
   constructor(
     @Self() private allors: Allors,
     @Self() private filterService: AllorsFilterService,
@@ -57,6 +60,8 @@ export class GoodListComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.titleService.setTitle(this.title);
+
+    this.m = this.allors.m;
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);

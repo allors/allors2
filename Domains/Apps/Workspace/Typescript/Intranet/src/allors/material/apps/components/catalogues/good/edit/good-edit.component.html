@@ -5,7 +5,7 @@
       <div class="col">
         <a (click)="navigationService.list(m.Good)">Products</a>
         <span *ngIf="add"> / Add a new Product </span>
-        <span *ngIf="edit"> / <a (cklick)="navigationService.overview(good)">{{good?.Name}}</a> / Edit</span>
+        <span *ngIf="edit"> / <a (click)="navigationService.overview(good)">{{good?.Name}}</a> / Edit</span>
       </div>
     </div>
   </div>
@@ -18,8 +18,8 @@
 
           <mat-tab label="General">
             <div class="row pt-3">
-              <a-mat-input class="col-md" *ngIf="add" [object]="goodNumberIdentification" [roleType]="m.GoodIdentification.Identification"></a-mat-input>
-              <a-mat-static class="col-md" *ngIf="edit" [object]="goodNumberIdentification" [roleType]="m.GoodIdentification.Identification"></a-mat-static>
+              <a-mat-input class="col-md" *ngIf="add" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-input>
+              <a-mat-static class="col-md" *ngIf="edit" [object]="productNumber" [roleType]="m.ProductNumber.Identification"></a-mat-static>
               <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Name"></a-mat-input>
             </div>
 

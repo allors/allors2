@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
-import { FaceToFaceCommunication, Organisation, OrganisationContactRelationship, Person, GoodIdentification, GoodIdentificationType, Good, Part } from '../../../../../../domain';
+import { GoodIdentificationType, Good, Part, PartNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -13,10 +13,10 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './goodidentification-edit.component.html',
+  templateUrl: './partnumber-edit.component.html',
   providers: [Allors]
 })
-export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
+export class EditPartNumberComponent implements OnInit, OnDestroy {
 
   title = 'Good Identification';
 
@@ -27,7 +27,7 @@ export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
 
   good: Good;
   part: Part;
-  goodIdentification: GoodIdentification;
+  iGoodIdentification: PartNumber;
   goodIdentificationTypes: GoodIdentificationType[];
 
   private refresh$: BehaviorSubject<Date>;
@@ -38,8 +38,6 @@ export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
     @Self() private allors: Allors,
     public navigation: NavigationService,
     private errorService: ErrorService,
-    private dialogService: AllorsMaterialDialogService,
-    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private stateService: StateService,
   ) {
@@ -89,7 +87,7 @@ export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
           if (!add) {
             pulls = [
               ...pulls,
-              pull.GoodIdentification({
+              pull.IGoodIdentification({
                 object: id,
                 include: {
                   GoodIdentificationType: x,
@@ -110,6 +108,7 @@ export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
         scope.session.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         this.good = loaded.objects.Good as Good;
         this.part = loaded.objects.Part as Part;
@@ -117,13 +116,14 @@ export class EditGoodIdentificationComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.goodIdentification = scope.session.create('GoodIdentification') as GoodIdentification;
-          this.good.AddGoodIdentification(this.goodIdentification);
+          this.iGoodIdentification = scope.session.create('PartNumber') as PartNumber;
+          this.iGoodIdentification.GoodIdentificationType = identificationType;
+          this.good.AddGoodIdentification(this.iGoodIdentification);
 
         } else {
           this.edit = !(this.add = false);
 
-          this.goodIdentification = loaded.objects.GoodIdentification as GoodIdentification;
+          this.iGoodIdentification = loaded.objects.IGoodIdentification as PartNumber;
         }
       },
         (error: any) => {

@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { InternalOrganisation, Organisation, Good, IGoodIdentification } from '../../../../../../domain';
+import { InternalOrganisation, Part, IGoodIdentification } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -15,19 +15,16 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './good-overview.component.html',
+  templateUrl: './part-overview.component.html',
   providers: [Allors]
 })
-export class GoodOverviewComponent implements OnInit, OnDestroy {
+export class PartOverviewComponent implements OnInit, OnDestroy {
 
   m: MetaDomain;
 
-  title = 'Product Overview';
-  good: Good;
-  organisation: Organisation;
+  title = 'Part Overview';
+  part: Part;
   internalOrganisation: InternalOrganisation;
-  categories: string;
-  productNumber: string;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -64,17 +61,14 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.Good({
+            pull.Part({
               object: id,
               include: {
                 GoodIdentifications: {
                   GoodIdentificationType: x
                 },
-                ProductCategories: x,
-                Part: {
-                  Brand: x,
-                  Model: x
-                }
+                Brand: x,
+                Model: x
               }
             }),
           ];
@@ -87,14 +81,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
         scope.session.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-        this.good = loaded.objects.Good as Good;
-
-        if (this.good.ProductCategories.length > 0) {
-          this.categories = this.good.ProductCategories
-            .map(v => v.Name)
-            .reduce((acc: string, cur: string) => acc + ', ' + cur);
-        }
-
+        this.part = loaded.objects.Part as Part;
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -112,9 +99,9 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
         if (confirm) {
           scope.invoke(goodIdentification.Delete)
             .subscribe(() => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
               (error: Error) => {
                 this.errorService.handle(error);
               });
