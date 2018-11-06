@@ -42,6 +42,7 @@ namespace Allors.Services
             services.AddSingleton<IExtentService, ExtentService>();
             services.AddSingleton<IFetchService, FetchService>();
             services.AddSingleton<IDerivationService>(new DerivationService(config.DerivationConfig));
+            services.AddSingleton<IBarcodeService, BarcodeService>();
 
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IUserService, UserService>();
