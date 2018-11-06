@@ -3,9 +3,9 @@ namespace Allors.Repository
     using Attributes;
 
     #region Allors
-    [Id("2F65A5A9-14A1-4469-87AD-F29A51B9D2EA")]
+    [Id("64DBA13D-BA9B-45C3-8D7D-00DA8CBA8815")]
     #endregion
-    public partial class GoodIdentification : IGoodIdentification
+    public partial class ManufacturerIdentification : IGoodIdentification
     {
         #region inherited properties
         public Permission[] DeniedPermissions { get; set; }

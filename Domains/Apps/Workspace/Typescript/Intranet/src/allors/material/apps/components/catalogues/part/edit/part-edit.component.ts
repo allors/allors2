@@ -5,7 +5,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, SerialisedInventoryItem, VendorProduct, SerialisedInventoryItemState, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation, GoodIdentificationType, GoodIdentification } from '../../../../../../domain';
+import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, SerialisedInventoryItem, VendorProduct, SerialisedInventoryItemState, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation, GoodIdentificationType, IGoodIdentification, PartNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
@@ -49,7 +49,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
   addBrand = false;
   addModel = false;
   goodIdentificationTypes: GoodIdentificationType[];
-  goodNumberIdentification: GoodIdentification;
+  goodNumberIdentification: IGoodIdentification;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
@@ -57,11 +57,10 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
-    private navigation: NavigationService,
+    public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.m = this.allors.m;
@@ -180,7 +179,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
                   this.good = scope.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
 
-                  this.goodNumberIdentification = scope.session.create('GoodIdentification') as GoodIdentification;
+                  this.goodNumberIdentification = scope.session.create('PartNumber') as PartNumber;
                   this.goodNumberIdentification.GoodIdentificationType = partNumberType;
 
                   this.good.AddGoodIdentification(this.goodNumberIdentification);
@@ -191,6 +190,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
                 } else {
                   this.edit = !(this.add = false);
+                  // this.productNumber = this.good.GoodIdentifications.find(v => v.GoodIdentificationType === goodNumberType);
 
                   // this.suppliers = this.good.SuppliedBy as Organisation[];
                   // this.selectedSuppliers = this.suppliers;
@@ -239,7 +239,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.navigation.back();
+          this.navigationService.back();
         },
       );
   }
@@ -281,7 +281,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       },
         (error: Error) => {
           this.errorService.handle(error);
-          this.navigation.back();
+          this.navigationService.back();
         },
       );
   }
@@ -302,7 +302,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
     scope
       .save()
       .subscribe((saved: Saved) => {
-        this.navigation.back();
+        this.navigationService.back();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -320,7 +320,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       .subscribe(() => {
           this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
           if (isNew) {
-            this.navigation.overview(this.good);
+            this.navigationService.overview(this.good);
           } else {
             this.refresh();
           }

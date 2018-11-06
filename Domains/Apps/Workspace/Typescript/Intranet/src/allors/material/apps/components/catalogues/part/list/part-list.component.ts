@@ -17,6 +17,7 @@ import { StateService } from '../../../../services/StateService';
 import { Part, ProductType, Brand, Model, GoodIdentificationType } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';
 import { stringify } from '@angular/core/src/render3/util';
+import { MetaDomain } from 'src/allors/meta';
 
 interface Row {
   part: Part;
@@ -50,6 +51,8 @@ export class PartListComponent implements OnInit, OnDestroy {
   private readonly fetcher: Fetcher;
   goodIdentificationTypes: GoodIdentificationType[];
 
+  public m: MetaDomain;
+
   constructor(
     @Self() public allors: Allors,
     @Self() private filterService: AllorsFilterService,
@@ -63,6 +66,8 @@ export class PartListComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.titleService.setTitle(this.title);
+
+    this.m = this.allors.m;
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);

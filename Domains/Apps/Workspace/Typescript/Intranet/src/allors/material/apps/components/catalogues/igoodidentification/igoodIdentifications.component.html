@@ -32,6 +32,16 @@
   </mat-card-content>
 
   <mat-card-actions>
-      <button mat-button (click)="add.emit(allors.m.GoodIdentification)">Add new</button>
-    </mat-card-actions>
+    <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
+    <mat-menu #menuAddComm="matMenu">
+      <button mat-menu-item (click)="add.emit(allors.m.EanIdentification)">EAN</button>
+      <button mat-menu-item (click)="add.emit(allors.m.IsbnIdentification)">ISBN</button>
+      <button mat-menu-item (click)="add.emit(allors.m.ManufacturerIdentification)">Manufacturer Id</button>
+      <button mat-menu-item (click)="add.emit(allors.m.PartNumber)">Part No.</button>
+      <button mat-menu-item (click)="add.emit(allors.m.ProductNumber)">Product No.</button>
+      <button mat-menu-item (click)="add.emit(allors.m.SkuIdentification)">SKU</button>
+      <button mat-menu-item (click)="add.emit(allors.m.UpcaIdentification)">UPCA</button>
+      <button mat-menu-item (click)="add.emit(allors.m.UpceIdentification)">UPCE</button>
+    </mat-menu>
+  </mat-card-actions>
 </mat-card>

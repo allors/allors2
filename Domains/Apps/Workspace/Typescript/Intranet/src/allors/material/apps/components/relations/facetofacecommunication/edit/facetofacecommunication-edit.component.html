@@ -5,7 +5,7 @@
       <div class="col">
         <a (click)="navigation.list(m.Person)">People</a>
         <span *ngIf="add"> / Add a new Meeting </span>
-        <span *ngIf="edit"> / <a (cklick)="navigation.overview(person)">{{person?.displayName}}</a> / Edit Meeting</span>
+        <span *ngIf="edit"> / <a (click)="navigation.overview(person)">{{person?.displayName}}</a> / Edit Meeting</span>
       </div>
     </div>
   </div>
