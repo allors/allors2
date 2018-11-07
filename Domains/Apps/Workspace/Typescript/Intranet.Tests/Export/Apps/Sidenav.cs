@@ -78,17 +78,17 @@ namespace Tests.Intranet
             return new PersonListPage(this.Driver);
         }
 
-        public OrganisationsOverviewPage NavigateToOrganisations()
-        {
-            this.Navigate(this.RelationsGroup, this.Organisations);
-            return new OrganisationsOverviewPage(this.Driver);
-        }
+        //public OrganisationsOverviewPage NavigateToOrganisations()
+        //{
+        //    this.Navigate(this.RelationsGroup, this.Organisations);
+        //    return new OrganisationsOverviewPage(this.Driver);
+        //}
 
-        public CommunicationsOverviewPage NavigateToCommunications()
-        {
-            this.Navigate(this.RelationsGroup, this.Communications);
-            return new CommunicationsOverviewPage(this.Driver);
-        }
+        //public CommunicationsOverviewPage NavigateToCommunications()
+        //{
+        //    this.Navigate(this.RelationsGroup, this.Communications);
+        //    return new CommunicationsOverviewPage(this.Driver);
+        //}
 
         public RequestsOverviewPage NavigateToRequests()
         {

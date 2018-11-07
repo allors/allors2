@@ -25,12 +25,5 @@ namespace Tests.Intranet.Relations
             this.EditButton.Click();
             return new PersonEditPage(this.Driver);
         }
-
-        internal PartyCommunicationEventPage Select(CommunicationEvent communicationEvent)
-        {
-            var listItem = this.List.FindListItem(communicationEvent);
-            listItem.Click();
-            return new PartyCommunicationEventPage(this.Driver);
-        }
     }
 }
