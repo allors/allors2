@@ -31,13 +31,14 @@ namespace Allors.Domain
         public void GivenInventoryItem_WhenDeriving_ThenRequiredRelationsMustExist()
         {
             // Arrange
+            var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var part = new PartBuilder(this.Session).WithName("part")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P1")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .WithSerialisedItem(serialItem)
                 .Build();
-            var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
 
             this.Session.Derive(true);
             this.Session.Commit();
@@ -72,8 +73,9 @@ namespace Allors.Domain
             var warehouse = new Facilities(this.Session).FindBy(M.Facility.FacilityType, new FacilityTypes(this.Session).Warehouse);
             var kinds = new InventoryItemKinds(this.Session);
 
-            var finishedGood = CreatePart("1", kinds.Serialised);
             var serialItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var finishedGood = CreatePart("1", kinds.Serialised);
+            finishedGood.AddSerialisedItem(serialItem);
             var serialInventoryItem = new SerialisedInventoryItemBuilder(this.Session).WithSerialisedItem(serialItem).WithPart(finishedGood).Build();
 
             // Act
@@ -101,6 +103,11 @@ namespace Allors.Domain
             var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var serialItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("2").Build();
             var serialItem3 = new SerialisedItemBuilder(this.Session).WithSerialNumber("3").Build();
+
+            serialPart.AddSerialisedItem(serialItem1);
+            serialPart.AddSerialisedItem(serialItem2);
+            serialPart.AddSerialisedItem(serialItem3);
+
             var good = CreateGood("10101", vatRate21, "good1", unitsOfMeasure.Piece, category, serialPart);
 
             // Act
@@ -133,6 +140,10 @@ namespace Allors.Domain
             var finishedGood = CreatePart("FG1", serialized);
             var serialItem1 = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
             var serialItem2 = new SerialisedItemBuilder(this.Session).WithSerialNumber("2").Build();
+
+            finishedGood.AddSerialisedItem(serialItem1);
+            finishedGood.AddSerialisedItem(serialItem2);
+
             var good = CreateGood("10101", vatRate21, "good1", piece, category, finishedGood);
 
             // Act
