@@ -27,6 +27,8 @@ export * from './productcharacteristic/productcharacteristic.module';
 export * from './producttype/producttypes-overview.module';
 export * from './producttype/producttype.module';
 
+export * from './serialiseditem/edit/serialiseditem.module';
+
 import { CatalogueModule } from './catalogue/catalogue.module';
 import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module';
 
@@ -56,6 +58,8 @@ import { ProductCharacteristicsOverviewModule } from './productcharacteristic/pr
 import { ProductTypeModule } from './producttype/producttype.module';
 import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';
 
+import { SerialisedItemModule } from './serialiseditem/edit/serialiseditem.module';
+
 export const Modules = [
   CataloguesOverviewModule, CatalogueModule,
   CategoriesOverviewModule, CategoryModule,
@@ -64,5 +68,5 @@ export const Modules = [
   PartListModule, PartEditModule, PartOverviewModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
-  GoodEditModule,
+  GoodEditModule, SerialisedItemModule
 ];

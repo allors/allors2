@@ -66,10 +66,56 @@
         </mat-card>
       </div>
 
-
       <div class="col-md-6">
         <igood-identifications [igoodidentifications]='part.GoodIdentifications' (add)="navigationService.add($event, part)"
           (edit)="navigationService.edit($event, part)" (delete)="deleteGoodIdentification($event)"></igood-identifications>
       </div>
+
+
+      <div class="col-md-6">
+        <mat-card>
+          <div class="row">
+            <div class="col">
+              <h2><mat-icon>subject</mat-icon> Serialised Items</h2>
+            </div>
+          </div>
+
+          <mat-card-content>
+
+            <ul *ngIf="part?.SerialisedItems?.length === 0">
+              <li>no items to display</li>
+            </ul>
+
+            <mat-list>
+              <mat-list-item *ngFor="let item of part.SerialisedItems; let last=last" [attr.data-allors-id]="partItem.id">
+                <!-- <h3 *ngIf="partItem.Product && part.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]">{{partItem.Quantity}} * {{partItem.Product.Name}}</h3>
+                <h3 *ngIf="partItem.Product && !part.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]">{{partItem.Quantity}} * {{partItem.Product.Name}}</h3>
+                 -->
+
+                <h4 mat-line>{{item.id}}</h4>
+
+                <!-- <span>
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <a *ngIf="part.CanWriteSalesInvoiceItems" [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]"
+                      mat-menu-item>Edit</a>
+                    <a *ngIf="!part.CanWriteSalesInvoiceItems" [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]"
+                      mat-menu-item>View</a>
+                    <button mat-menu-item (click)="deleteInvoiceItem(partItem)" [disabled]="!partItem.CanExecuteDelete">Delete</button>
+                  </mat-menu>
+                </span> -->
+                <mat-divider *ngIf="!last" mat-inset></mat-divider>
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button *ngIf="part.CanWriteSerialisedItems" mat-button (click)="navigationService.add(m.SerialisedItem, part)">Add new</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
     </div>
   </div>

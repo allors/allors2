@@ -186,6 +186,8 @@ namespace Allors
                 .Build();
 
             var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            finishedGood2.AddSerialisedItem(serialisedItem);
+
             new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.DefaultFacility).Build();
 
             var finishedGood3 = new PartBuilder(this.Session)

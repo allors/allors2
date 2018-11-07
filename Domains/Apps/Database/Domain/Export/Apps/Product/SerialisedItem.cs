@@ -26,6 +26,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistName && this.ExistPartWhereSerialisedItem)
+            {
+                this.Name = this.PartWhereSerialisedItem.Name;
+            }
+
             this.DeriveProductCharacteristics(derivation);
 
             if (derivation.IsCreated(this))

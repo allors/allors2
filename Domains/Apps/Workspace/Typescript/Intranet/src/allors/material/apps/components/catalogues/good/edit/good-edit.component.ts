@@ -197,8 +197,6 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   public update(): void {
     const { scope } = this.allors;
 
-    const isNew = this.good.isNew;
-
     scope
       .save()
       .subscribe(() => {

@@ -1,62 +1,54 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+
+import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { Facility, Good, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SupplierOffering, VendorProduct, SerialisedItem } from '../../../../../../domain';
+import { Equals, PullRequest, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/StateService';
+import { Fetcher } from '../../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
-import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, Ownership, InternalOrganisation, GoodIdentificationType, PartNumber, Part } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
-import { Fetcher } from '../../../Fetcher';
-import { StateService } from 'src/allors/material/apps/services/StateService';
-import { MatSnackBar } from '@angular/material';
-
 @Component({
-  templateUrl: './part-edit.component.html',
+  templateUrl: './serialiseditem.component.html',
   providers: [Allors]
 })
-export class PartEditComponent implements OnInit, OnDestroy {
+export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
-  scope: Scope;
   m: MetaDomain;
+  scope: Scope;
+  item: SerialisedItem;
 
   add: boolean;
   edit: boolean;
 
-  part: Part;
+  title: string;
   subTitle: string;
   facility: Facility;
   locales: Locale[];
-  inventoryItemKinds: InventoryItemKind[];
   productTypes: ProductType[];
-  manufacturers: Organisation[];
   suppliers: Organisation[];
   activeSuppliers: Organisation[];
   selectedSuppliers: Organisation[];
   supplierOfferings: SupplierOffering[];
-  brands: Brand[];
-  selectedBrand: Brand;
-  models: Model[];
-  selectedModel: Model;
-  vendorProduct: VendorProduct;
+  ownerships: Ownership[];
   organisations: Organisation[];
-  addBrand = false;
-  addModel = false;
-  goodIdentificationTypes: GoodIdentificationType[];
-  partNumber: PartNumber;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() private allors: Allors,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private stateService: StateService) {
+    private stateService: StateService,
+  ) {
 
     this.m = this.allors.m;
     this.scope = this.allors.scope;
@@ -70,7 +62,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, refresh, internalOrganisationId]) => {
+        switchMap(([, , internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.param();
@@ -80,42 +72,40 @@ export class PartEditComponent implements OnInit, OnDestroy {
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
-            pull.Part({
+            pull.SerialisedItem({
               object: id,
               include: {
                 PrimaryPhoto: x,
                 Photos: x,
-                Documents: x,
-                ElectronicDocuments: x,
-                Brand: {
-                  Models: x
-                },
-                GoodIdentifications: {
-                  GoodIdentificationType: x,
-                },
-                LocalisedComments: {
-                  Locale: x,
-                },
+                Ownership: x,
+                SerialisedItemCharacteristics: {
+                  SerialisedItemCharacteristicType: {
+                    UnitOfMeasure: x,
+                  },
+                  LocalisedValues: {
+                    Locale: x,
+                  }
+                }
               }
             }),
-            pull.Part(
+            pull.Product(
               {
                 object: id,
                 fetch: {
-                  SupplierOfferingsWherePart: x
+                  // TODO:
+                  // SupplierOfferingsWhereProduct: x
                 }
               }
             ),
-            pull.InventoryItemKind(),
-            pull.GoodIdentificationType(),
-            pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
-            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
-            pull.Brand({
-              include: {
-                  Models: x
-              },
-              sort: new Sort(m.Brand.Name)
-            })
+            pull.Ownership({
+              sort: new Sort(m.Ownership.Name),
+            }),
+            pull.SerialisedInventoryItemState({
+              predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
+              sort: new Sort(m.SerialisedInventoryItemState.Name),
+            }),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }
+            ),
           ];
 
           return scope
@@ -126,47 +116,27 @@ export class PartEditComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(({ loaded, add }) => {
-
         scope.session.reset();
 
-        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-        this.facility = internalOrganisation.DefaultFacility;
-
-        this.part = loaded.objects.Part as Part;
-        this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
-        this.productTypes = loaded.collections.ProductTypes as ProductType[];
-        this.brands = loaded.collections.Brands as Brand[];
+        this.item = loaded.objects.SerialisedItem as SerialisedItem;
+        this.productTypes = loaded.collections.productTypes as ProductType[];
+        this.ownerships = loaded.collections.ownerships as Ownership[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
-
+        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.facility = internalOrganisation.DefaultFacility;
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
-        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
-        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
-
-        if (add) {
+        if (this.item === undefined) {
           this.add = !(this.edit = false);
 
-          this.part = scope.session.create('Part') as Part;
+          this.item = scope.session.create('SerialisedItem') as SerialisedItem;
 
-          this.partNumber = scope.session.create('PartNumber') as PartNumber;
-          this.partNumber.GoodIdentificationType = partNumberType;
-
-          this.part.AddGoodIdentification(this.partNumber);
 
         } else {
           this.edit = !(this.add = false);
-          this.partNumber = this.part.GoodIdentifications.find(v => v.GoodIdentificationType === partNumberType);
-
-          this.suppliers = this.part.SuppliedBy as Organisation[];
-          this.selectedSuppliers = this.suppliers;
-
-          this.selectedBrand = this.part.Brand;
-          this.selectedModel = this.part.Model;
-          this.brandSelected(this.selectedBrand);
-
-          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
         }
+
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -174,45 +144,14 @@ export class PartEditComponent implements OnInit, OnDestroy {
         },
       );
   }
+  // const pulls2 = [
+  //   pull.Organisation({
+  //     predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
+  //     sort: new Sort(m.Organisation.PartyName),
+  //   })
+  // ];
+  // this.manufacturers = loaded.collections.manufacturers as Organisation[];
 
-  public brandAdded(brand: Brand): void {
-    this.brands.push(brand);
-    this.selectedBrand = brand;
-    this.models = [];
-    this.selectedModel = undefined;
-  }
-
-  public modelAdded(model: Model): void {
-    this.selectedBrand.AddModel(model);
-    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-    this.selectedModel = model;
-  }
-
-  public brandSelected(brand: Brand): void {
-
-    const { pull, scope } = this.allors;
-
-    const pulls = [
-      pull.Brand({
-        object: brand,
-        include: {
-          Models: x,
-        }
-      }
-      )
-    ];
-
-    scope
-      .load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-        this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
-  }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
@@ -226,12 +165,13 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
     const { scope } = this.allors;
+
     this.onSave();
 
     scope
       .save()
-      .subscribe((saved: Saved) => {
-        this.navigationService.back();
+      .subscribe(() => {
+        this.goBack();
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -241,28 +181,24 @@ export class PartEditComponent implements OnInit, OnDestroy {
   public update(): void {
     const { scope } = this.allors;
 
-    const isNew = this.part.isNew;
     this.onSave();
 
     scope
       .save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        if (isNew) {
-          this.navigationService.overview(this.part);
-        } else {
-          this.refresh();
-        }
+        this.goBack();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
   }
 
-  private onSave() {
+  public goBack(): void {
+    window.history.back();
+  }
 
-    this.part.Brand = this.selectedBrand;
-    this.part.Model = this.selectedModel;
+  private onSave() {
 
     if (this.suppliers !== undefined) {
       const suppliersToDelete = this.suppliers.filter(v => v);
@@ -309,7 +245,8 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
     const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
-    supplierOffering.Part = this.part;
+    // TODO:
+    // supplierOffering.Product = good;
     return supplierOffering;
   }
 }
