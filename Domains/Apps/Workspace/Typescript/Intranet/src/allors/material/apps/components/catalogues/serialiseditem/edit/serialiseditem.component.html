@@ -17,16 +17,16 @@
           <mat-tab label="General">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-input class="col-md" [object]="item" [roleType]="m.Good.ArticleNumber"></a-mat-input>
-                <a-mat-input class="col-md" [object]="item" [roleType]="m.Good.Name"></a-mat-input>
-                <a-mat-select class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-mat-select>
+                <a-mat-input *ngIf="edit" class="col-md" [object]="item" [roleType]="m.SerialisedItem.ItemNumber"></a-mat-input>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.Name"></a-mat-input>
+                <!-- <a-mat-select class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-mat-select>
                 <mat-form-field class="col-md" *ngIf="salesInvoice">
                   <input matInput placeholder="Invoice" [value]="salesInvoice.InvoiceNumber" readonly="true" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id]">
                 </mat-form-field>
-                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
+                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input> -->
               </div>
 
-              <div class="row">
+              <!-- <div class="row">
                 <a-mat-textarea class="col-md" [object]="item" [roleType]="m.Good.Description"></a-mat-textarea>
               </div>
 
@@ -119,10 +119,10 @@
                     </div>
                   </div>
                 </mat-expansion-panel>
-              </div>
+              </div> -->
             </div>
           </mat-tab>
-
+<!--
           <mat-tab label="Characteristics">
             <div class="container-fluid">
 
@@ -204,8 +204,8 @@
                 </mat-form-field>
               </div>
             </div>
-          </mat-tab>
-
+          </mat-tab> -->
+<!--
           <mat-tab label="Comments">
             <div class="container-fluid">
               <div class="row pt-3">
@@ -248,7 +248,7 @@
                 <a-mat-files class="col-md-12" [object]="item" [roleType]="m.Good.ElectronicDocuments" accept="image/*"></a-mat-files>
               </div>
             </div>
-          </mat-tab>
+          </mat-tab> -->
         </mat-tab-group>
 
       </mat-card-content>

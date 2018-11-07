@@ -49,6 +49,24 @@ namespace Allors.Repository
         [Workspace]
         public string SkuPrefix { get; set; }
 
+        #region Allors
+        [Id("01E190C7-B91E-4A48-A251-6F3E625CD6D3")]
+        [AssociationId("6B6B0A35-A4C2-40B4-A558-0A75BE0B199B")]
+        [RoleId("A838D5A1-2338-47A9-8E97-A94B2A78B907")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Counter SerialisedItemCounter { get; set; }
+
+        #region Allors
+        [Id("F0B93DF3-E9E7-408D-980B-FB0889707FBE")]
+        [AssociationId("31B15651-BE30-4B9D-8D68-A76180B2F886")]
+        [RoleId("D040DAAF-AB68-4F5D-931F-5F1C1A022B71")]
+        #endregion
+        [Workspace]
+        public string SerialisedItemPrefix { get; set; }
+
         #region inherited methods
         public void OnBuild() { }
 

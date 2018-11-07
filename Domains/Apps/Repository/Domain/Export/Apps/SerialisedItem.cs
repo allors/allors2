@@ -23,6 +23,17 @@ namespace Allors.Repository
         #endregion InheritedProperties
 
         #region Allors
+        [Id("B6DD4F80-EE97-446E-9779-610FF07F13B2")]
+        [AssociationId("3CC4D71C-3CBF-4F6B-997A-C1FD113FD25B")]
+        [RoleId("0CC2B6F1-69F7-404A-9620-57152FE2782C")]
+        #endregion
+        [Derived]
+        [Required]
+        [Size(256)]
+        [Workspace]
+        public string ItemNumber { get; set; }
+
+        #region Allors
         [Id("de9caf09-6ae7-412e-b9bc-19ece66724da")]
         [AssociationId("ba630eb8-3087-43c6-9082-650094a0226e")]
         [RoleId("c0ada954-d86e-46c3-9a99-09209fb812a5")]

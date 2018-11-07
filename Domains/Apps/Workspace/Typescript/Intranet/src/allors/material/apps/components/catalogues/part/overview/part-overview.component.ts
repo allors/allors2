@@ -70,6 +70,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 },
                 ProductType: x,
                 InventoryItemKind: x,
+                SerialisedItems: x,
                 Brand: x,
                 Model: x
               }

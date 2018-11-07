@@ -22,6 +22,14 @@ namespace Allors.Domain
 
     public partial class SerialisedItem
     {
+        public void AppsOnBuild(ObjectOnBuild method)
+        {
+            if (!this.ExistItemNumber)
+            {
+                this.ItemNumber = this.strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
+            }
+        }
+
         public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;

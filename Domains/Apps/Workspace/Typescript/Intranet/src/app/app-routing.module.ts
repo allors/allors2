@@ -50,6 +50,9 @@ export const routes: Routes = [
       { path: 'organisation', data: addData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
       { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: relations.OrganisationEditComponent },
 
+      { path: 'serialiseditem', data: addData({ id: ids.SerialisedItem }), component: catalogues.EditSerialisedItemComponent },
+      { path: 'serialiseditem/:id', data: editData({ id: ids.SerialisedItem }), component: catalogues.EditSerialisedItemComponent },
+
       { path: 'emailaddress', data: addData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'emailaddress/:id', data: editData({ id: ids.EmailAddress }), component: relations.EmailAddressEditComponent },
       { path: 'postaladdress', data: addData({ id: ids.PostalAddress }), component: relations.PostalAddressEditComponent },
