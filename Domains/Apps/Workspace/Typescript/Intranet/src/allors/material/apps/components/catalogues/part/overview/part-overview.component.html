@@ -32,11 +32,29 @@
               </div>
 
               <div class="row">
-                <a-mat-static class="col" *ngIf="part.Brand" [object]="part.Brand" [roleType]="m.Brand.Name"></a-mat-static>
+                <a-mat-static class="col" *ngIf="part.InventoryItemKind" [object]="part.InventoryItemKind" [roleType]="m.InventoryItemKind.Name" label="Inventory kind"></a-mat-static>
               </div>
 
               <div class="row">
-                <a-mat-static class="col" *ngIf="part.Model" [object]="part.Model" [roleType]="m.Model.Name"></a-mat-static>
+                <a-mat-static class="col" *ngIf="part.ProductType" [object]="part.ProductType" [roleType]="m.ProductType.Name" label="product Type"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" *ngIf="part.Brand" [object]="part.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" *ngIf="part.Model" [object]="part.Model" [roleType]="m.Model.Name" label="model"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" *ngIf="part.ManufacturedBy" [object]="part.ManufacturedBy" [roleType]="m.Organisation.Name" label="Manufacturer"></a-mat-static>
+              </div>
+
+              <div class="row" *ngIf="suppliers">
+                <mat-form-field class="col">
+                  <input matInput type="string" [ngModel]="suppliers" name="Name" placeholder="Suppliers" readonly />
+                </mat-form-field>
               </div>
 
             </div>

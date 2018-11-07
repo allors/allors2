@@ -27,6 +27,7 @@ interface Row {
   qoh: number;
   brand: string;
   model: string;
+  inventoryItemKind: string;
 }
 
 @Component({
@@ -37,7 +38,7 @@ export class PartListComponent implements OnInit, OnDestroy {
 
   public title = 'Parts';
 
-  public displayedColumns = ['select', 'name', 'part No.', 'product type', 'qoh', 'brand', 'model', 'menu'];
+  public displayedColumns = ['select', 'name', 'part No.', 'inventory', 'product type', 'qoh', 'brand', 'model', 'menu'];
   public selection = new SelectionModel<Row>(true, []);
 
   public total: number;
@@ -121,12 +122,14 @@ export class PartListComponent implements OnInit, OnDestroy {
               predicate,
               sort: sorter.create(sort),
               include: {
+                Brand: x,
+                Model: x,
+                ProductType: x,
+                PrimaryPhoto: x,
+                InventoryItemKind: x,
                 GoodIdentifications: {
                   GoodIdentificationType: x
                 },
-                Brand: x,
-                Model: x,
-                ProductType: x
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -161,6 +164,7 @@ export class PartListComponent implements OnInit, OnDestroy {
             productType: v.ProductType ? v.ProductType.Name : '',
             brand: v.Brand ? v.Brand.Name : '',
             model: v.Model ? v.Model.Name : '',
+            inventoryItemKind: v.InventoryItemKind.Name
           } as Row;
         });
       },

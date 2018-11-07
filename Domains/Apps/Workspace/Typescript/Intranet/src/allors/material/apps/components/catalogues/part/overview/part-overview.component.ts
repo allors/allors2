@@ -25,6 +25,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   title = 'Part Overview';
   part: Part;
   internalOrganisation: InternalOrganisation;
+  suppliers: string;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
@@ -67,6 +68,8 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 GoodIdentifications: {
                   GoodIdentificationType: x
                 },
+                ProductType: x,
+                InventoryItemKind: x,
                 Brand: x,
                 Model: x
               }
@@ -82,6 +85,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.part = loaded.objects.Part as Part;
+
+        if (this.part.SuppliedBy.length > 0) {
+          this.suppliers = this.part.SuppliedBy
+            .map(v => v.displayName)
+            .reduce((acc: string, cur: string) => acc + ', ' + cur);
+        }
       },
         (error: any) => {
           this.errorService.handle(error);

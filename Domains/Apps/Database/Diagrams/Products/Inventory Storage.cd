@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Interface Name="Allors.Domain.InternalOrganisation">
-    <Position X="17.5" Y="0.5" Width="1.75" />
+    <Position X="17.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>mAQAEAGESRYAAICAUAhQppIIBgGMgoIACAESAAAxSAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -21,14 +21,14 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.PriceComponent">
-    <Position X="14.75" Y="3" Width="2.25" />
+    <Position X="15.25" Y="3" Width="2.25" />
     <TypeIdentifier>
       <HashCode>QAQCAQAAAQAgAQABCBAABAAACKAAAAAAAAAgABAAEAE=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Product">
-    <Position X="11" Y="6.5" Width="2.5" />
+    <Position X="11.5" Y="7" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAgBIBEEAQAgAAAAABAAAAQAABAAAAACAAIAICAAKgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -46,7 +46,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.Good">
-    <Position X="11.25" Y="3.5" Width="2" />
+    <Position X="11.75" Y="3.5" Width="2" />
     <TypeIdentifier>
       <HashCode>AAACAAAAIAAAECABAAABAAAAAAAAAAABAAAAAAAAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -155,7 +155,7 @@
   <Interface Name="Allors.Domain.Part">
     <Position X="8" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAMQAQAAAAEACQAAAAQIWAQAAAAACiAAgCACABBBA=</HashCode>
+      <HashCode>AAAAMQAUAQAgECCRAAAAQIWAQAAAAACjAAgCACABhBA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -167,19 +167,19 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.ProductType" Collapsed="true">
-    <Position X="11.5" Y="2" Width="2.5" />
+    <Position X="11.5" Y="2.25" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.SerialisedInventoryItem">
-    <Position X="5.5" Y="5.25" Width="2.5" />
+    <Position X="5.5" Y="5.25" Width="2.25" />
     <AssociationLine Name="SerialisedItem" Type="Allors.Domain.SerialisedItem" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="7.188" Y="7.189" />
-        <Point X="7.188" Y="8.411" />
-        <Point X="8.5" Y="8.411" />
+        <Point X="7.019" Y="7.189" />
+        <Point X="7.019" Y="9.161" />
+        <Point X="9" Y="9.161" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -199,7 +199,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.SerialisedItem">
-    <Position X="8.5" Y="7.25" Width="2.25" />
+    <Position X="9" Y="8" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AACAAARAFAABASAAAABAAAAAAAEAAAABAAQRAAAAABA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -209,7 +209,7 @@
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.SerialisedItemCharacteristic">
-    <Position X="8.25" Y="11.75" Width="2.5" />
+    <Position X="9" Y="12.25" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAgBAAAAAAgAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
@@ -223,9 +223,16 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.EstimatedProductCost">
-    <Position X="15" Y="8" Width="1.75" />
+    <Position X="15.5" Y="8" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAAAAgAAAAAAAAABAACAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.FixedAsset" Collapsed="true">
+    <Position X="9.25" Y="7" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAoAAAAAAAAAAQAAAAAAAAACAAIAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

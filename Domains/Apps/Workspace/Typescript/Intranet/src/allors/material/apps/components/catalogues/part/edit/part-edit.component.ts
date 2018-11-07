@@ -4,12 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, SerialisedInventoryItem, VendorProduct, SerialisedInventoryItemState, VatRate, Ownership, InvoiceItem, SalesInvoice, InternalOrganisation, GoodIdentificationType, IGoodIdentification, PartNumber } from '../../../../../../domain';
+import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
+import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, Ownership, InternalOrganisation, GoodIdentificationType, PartNumber, Part } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { StateService } from 'src/allors/material/apps/services/StateService';
 import { MatSnackBar } from '@angular/material';
 
@@ -19,17 +18,17 @@ import { MatSnackBar } from '@angular/material';
 })
 export class PartEditComponent implements OnInit, OnDestroy {
 
-  title = 'Email Address';
+  scope: Scope;
   m: MetaDomain;
 
   add: boolean;
   edit: boolean;
 
-  good: Good;
+  part: Part;
   subTitle: string;
   facility: Facility;
   locales: Locale[];
-  categories: ProductCategory[];
+  inventoryItemKinds: InventoryItemKind[];
   productTypes: ProductType[];
   manufacturers: Organisation[];
   suppliers: Organisation[];
@@ -41,22 +40,19 @@ export class PartEditComponent implements OnInit, OnDestroy {
   models: Model[];
   selectedModel: Model;
   vendorProduct: VendorProduct;
-  vatRates: VatRate[];
   ownerships: Ownership[];
-  invoiceItems: InvoiceItem[];
-  salesInvoice: SalesInvoice;
   organisations: Organisation[];
   addBrand = false;
   addModel = false;
   goodIdentificationTypes: GoodIdentificationType[];
-  goodNumberIdentification: IGoodIdentification;
+  partNumber: PartNumber;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -64,6 +60,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.m = this.allors.m;
+    this.scope = this.allors.scope;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
@@ -72,170 +69,106 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, scope } = this.allors;
 
-    this.subscription = combineLatest(this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([refresh, internalOrganisationId]) => {
+        switchMap(([, refresh, internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.param();
 
           const add = !id;
 
-          // const fetch = new FetchFactory(this.workspaceService.metaPopulation);
-          // const query = new QueryFactory(this.workspaceService.metaPopulation);
-
-          // const fetches: Fetch[] = [
-          //   this.fetcher.locales,
-          //   this.fetcher.internalOrganisation,
-          //   fetch.Good({
-          //     id,
-          //     include: {
-          //       PrimaryPhoto: {},
-          //       Photos: {},
-          //       Product_LocalisedNames: {
-          //         Localised_Locale: {}
-          //       },
-          //     },
-          //   }),
-
           const pulls = [
             this.fetcher.locales,
             this.fetcher.internalOrganisation,
-            pull.Good({
+            pull.Part({
+              object: id,
               include: {
                 PrimaryPhoto: x,
-                ProductCategories: x,
                 Photos: x,
+                Documents: x,
                 ElectronicDocuments: x,
+                Brand: {
+                  Models: x
+                },
                 GoodIdentifications: {
                   GoodIdentificationType: x,
-                },
-                LocalisedNames: {
-                  Locale: x,
-                },
-                LocalisedDescriptions: {
-                  Locale: x,
                 },
                 LocalisedComments: {
                   Locale: x,
                 },
               }
             }),
-            pull.Good(
+            pull.Part(
               {
                 object: id,
                 fetch: {
-                  SalesInvoiceItemsWhereProduct: x
+                  SupplierOfferingsWherePart: x
                 }
               }
             ),
-            pull.Product(
-              {
-                object: id,
-                fetch: {
-                  // TODO:
-                  // SupplierOfferingsWhereProduct: x
-                }
-              }
-            ),
+            pull.InventoryItemKind(),
             pull.GoodIdentificationType(),
-            pull.VatRate(),
-            pull.Ownership({
-              sort: new Sort(m.Ownership.Name),
-            }),
-            pull.ProductCategory({ sort: new Sort(m.ProductCategory.Name) }),
-            pull.ProductType({ sort: new Sort(m.ProductType.Name) }
-            ),
-            pull.Brand({ sort: new Sort(m.Brand.Name) })
+            pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
+            pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
+            pull.Brand({
+              include: {
+                  Models: x
+              },
+              sort: new Sort(m.Brand.Name)
+            })
           ];
 
           return scope
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              switchMap((loaded) => {
-                scope.session.reset();
-
-                const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-                this.facility = internalOrganisation.DefaultFacility;
-
-                this.good = loaded.objects.Good as Good;
-                this.categories = loaded.collections.ProductCategories as ProductCategory[];
-                this.productTypes = loaded.collections.ProductTypes as ProductType[];
-                this.vatRates = loaded.collections.VatRates as VatRate[];
-                this.brands = loaded.collections.Brands as Brand[];
-                this.ownerships = loaded.collections.Ownerships as Ownership[];
-                this.locales = loaded.collections.AdditionalLocales as Locale[];
-                this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
-                this.invoiceItems = loaded.collections.InvoiceItems as InvoiceItem[];
-                this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
-                this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-
-                const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
-                const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
-
-                if (add) {
-                  this.add = !(this.edit = false);
-
-                  this.good = scope.session.create('Good') as Good;
-                  this.good.VatRate = vatRateZero;
-
-                  this.goodNumberIdentification = scope.session.create('PartNumber') as PartNumber;
-                  this.goodNumberIdentification.GoodIdentificationType = partNumberType;
-
-                  this.good.AddGoodIdentification(this.goodNumberIdentification);
-
-                  this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
-                  this.vendorProduct.Product = this.good;
-                  this.vendorProduct.InternalOrganisation = internalOrganisation;
-
-                } else {
-                  this.edit = !(this.add = false);
-                  // this.productNumber = this.good.GoodIdentifications.find(v => v.GoodIdentificationType === goodNumberType);
-
-                  // this.suppliers = this.good.SuppliedBy as Organisation[];
-                  // this.selectedSuppliers = this.suppliers;
-                  // this.supplierOfferings = loaded.collections.supplierOfferings as SupplierOffering[];
-
-                  // TODO:
-                  // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-                  //   if (feature.objectType.name === 'Brand') {
-                  //     this.selectedBrand = feature as Brand;
-                  //     this.brandSelected(this.selectedBrand);
-                  //   }
-                  //   if (feature.objectType.name === 'Model') {
-                  //     this.selectedModel = feature as Model;
-                  //   }
-                  // });
-                }
-
-                this.title = this.good.Name;
-                this.subTitle = 'Serialised';
-
-                const pulls2 = [
-                  pull.Organisation({
-                    predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
-                    sort: new Sort(m.Organisation.PartyName),
-                  })
-                ];
-
-                if (this.invoiceItems !== undefined && this.invoiceItems.length > 0) {
-                  pulls2.push(
-                    pull.SalesInvoiceItem({
-                      object: this.invoiceItems[0].id,
-                      fetch: {
-                        SalesInvoiceWhereSalesInvoiceItem: x
-                      }
-                    })
-                  );
-
-                  return scope.load('Pull', new PullRequest({ pulls: pulls2 }));
-                }
-              }));
+              map((loaded) => ({ loaded, add }))
+            );
         })
       )
-      .subscribe((loaded) => {
-        this.manufacturers = loaded.collections.manufacturers as Organisation[];
-        this.salesInvoice = loaded.objects.invoice as SalesInvoice;
+      .subscribe(({ loaded, add }) => {
+
+        scope.session.reset();
+
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+        this.facility = internalOrganisation.DefaultFacility;
+
+        this.part = loaded.objects.Part as Part;
+        this.inventoryItemKinds = loaded.collections.InventoryItemKinds as InventoryItemKind[];
+        this.productTypes = loaded.collections.ProductTypes as ProductType[];
+        this.brands = loaded.collections.Brands as Brand[];
+        this.ownerships = loaded.collections.Ownerships as Ownership[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
+
+        this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
+        this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+
+        this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
+        const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+
+        if (add) {
+          this.add = !(this.edit = false);
+
+          this.part = scope.session.create('Part') as Part;
+
+          this.partNumber = scope.session.create('PartNumber') as PartNumber;
+          this.partNumber.GoodIdentificationType = partNumberType;
+
+          this.part.AddGoodIdentification(this.partNumber);
+
+        } else {
+          this.edit = !(this.add = false);
+          this.partNumber = this.part.GoodIdentifications.find(v => v.GoodIdentificationType === partNumberType);
+
+          this.suppliers = this.part.SuppliedBy as Organisation[];
+          this.selectedSuppliers = this.suppliers;
+
+          this.selectedBrand = this.part.Brand;
+          this.selectedModel = this.part.Model;
+          this.brandSelected(this.selectedBrand);
+
+          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
+        }
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -252,9 +185,8 @@ export class PartEditComponent implements OnInit, OnDestroy {
   }
 
   public modelAdded(model: Model): void {
-    // TODO:
-    // this.selectedBrand.AddModel(model);
-    // this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+    this.selectedBrand.AddModel(model);
+    this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
     this.selectedModel = model;
   }
 
@@ -266,8 +198,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       pull.Brand({
         object: brand,
         include: {
-          // TODO:
-          // Models: x,
+          Models: x,
         }
       }
       )
@@ -276,8 +207,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
     scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        // TODO:
-        // this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
+        this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -298,6 +228,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
     const { scope } = this.allors;
+    this.onSave();
 
     scope
       .save()
@@ -312,37 +243,28 @@ export class PartEditComponent implements OnInit, OnDestroy {
   public update(): void {
     const { scope } = this.allors;
 
-    const isNew = this.good.isNew;
+    const isNew = this.part.isNew;
     this.onSave();
 
     scope
       .save()
       .subscribe(() => {
-          this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-          if (isNew) {
-            this.navigationService.overview(this.good);
-          } else {
-            this.refresh();
-          }
-        },
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        if (isNew) {
+          this.navigationService.overview(this.part);
+        } else {
+          this.refresh();
+        }
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
   }
 
   private onSave() {
-    // TODO:
-    // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
-    //   this.good.RemoveStandardFeature(feature);
-    // });
 
-    // if (this.selectedBrand != null) {
-    //   this.good.AddStandardFeature(this.selectedBrand);
-    // }
-
-    // if (this.selectedModel != null) {
-    //   this.good.AddStandardFeature(this.selectedModel);
-    // }
+    this.part.Brand = this.selectedBrand;
+    this.part.Model = this.selectedModel;
 
     if (this.suppliers !== undefined) {
       const suppliersToDelete = this.suppliers.filter(v => v);
@@ -389,8 +311,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
     const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
-    // TODO:
-    // supplierOffering.Product = good;
+    supplierOffering.Part = this.part;
     return supplierOffering;
   }
 }

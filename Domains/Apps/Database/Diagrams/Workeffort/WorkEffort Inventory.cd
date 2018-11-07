@@ -8,9 +8,9 @@
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="WorkEffortState" />
+      <Property Name="TakenBy" />
       <Property Name="Customer" />
       <Property Name="ContactPerson" />
-      <Property Name="TakenBy" />
       <Property Name="Children" />
       <Property Name="OrderItemFulfillment" />
     </ShowAsAssociation>
@@ -36,7 +36,7 @@
   <Interface Name="Allors.Domain.Part" Collapsed="true">
     <Position X="7" Y="4.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAMQAQAAAAEACQAAAAQIWAQAAAAACiAAgCACABBBA=</HashCode>
+      <HashCode>AAAAMQAUAQAgECCRAAAAQIWAQAAAAACjAAgCACABhBA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -44,8 +44,8 @@
     <Position X="4.25" Y="1.5" Width="2.5" />
     <AssociationLine Name="Assignment" Type="Allors.Domain.WorkEffort" FixedFromPoint="true">
       <Path>
-        <Point X="4.25" Y="2.046" />
-        <Point X="2.75" Y="2.046" />
+        <Point X="4.25" Y="2.47" />
+        <Point X="2.75" Y="2.47" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -98,7 +98,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="Allors.Domain.OrderItem" Collapsed="true">
-    <Position X="4.25" Y="7.5" Width="1.5" />
+    <Position X="4.25" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAgAAUAgCAAABAAAAAAAgBAAAAAAQAgAIAAAgQI=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>

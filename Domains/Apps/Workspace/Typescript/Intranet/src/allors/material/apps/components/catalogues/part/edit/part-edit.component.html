@@ -5,12 +5,12 @@
       <div class="col">
         <a (click)="navigationService.list(m.Part)">Parts</a>
         <span *ngIf="add"> / Add a new Part </span>
-        <span *ngIf="edit"> / <a (click)="navigationService.overview(good)">{{good?.Name}}</a> / Edit</span>
+        <span *ngIf="edit"> / <a (click)="navigationService.overview(part)">{{part?.Name}}</a> / Edit</span>
       </div>
     </div>
   </div>
 
-  <form *ngIf="good" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+  <form *ngIf="part" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
 
     <mat-card>
       <mat-card-content class="container-fluid">
@@ -18,22 +18,9 @@
 
           <mat-tab label="General">
             <div class="row pt-3">
-              <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.Name"></a-mat-input>
-              <mat-form-field class="col-md" *ngIf="salesInvoice">
-                <input matInput placeholder="Invoice" [value]="salesInvoice.InvoiceNumber" readonly="true" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id]">
-              </mat-form-field>
-            </div>
-
-            <div class="row">
-              <a-mat-textarea class="col-md" [object]="good" [roleType]="m.Good.Description"></a-mat-textarea>
-            </div>
-
-            <div class="row">
-              <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.PrimaryProductCategory" [options]="categories"
-                display="Name"></a-mat-select>
-              <a-mat-datepicker class="col-md" [object]="good" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
-              <a-mat-select class="col-md" [object]="good" [roleType]="m.Good.ProductCategories" [options]="categories"
-                display="Name"></a-mat-select>
+              <a-mat-input class="col-md" *ngIf="add" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-input>
+              <a-mat-static class="col-md" *ngIf="edit" [object]="partNumber" [roleType]="m.PartNumber.Identification"></a-mat-static>
+              <a-mat-input class="col-md" [object]="part" [roleType]="m.Part.Name"></a-mat-input>
             </div>
 
             <div class="row">
@@ -86,15 +73,22 @@
             </div>
 
             <div class="row">
-              <mat-form-field class="col-md">
-                <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-                  <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
-                </mat-select>
-              </mat-form-field>
+              <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ProductType" [options]="productTypes"
+                display="Name"></a-mat-select>
+                <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
+                display="Name"></a-mat-select>
             </div>
 
             <div class="row">
-              <a-mat-input class="col-md" [object]="good" [roleType]="m.Good.HsCode"></a-mat-input>
+                <mat-form-field class="col-md">
+                  <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+                    <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+            <div class="row">
+              <a-mat-input class="col-md" [object]="part" [roleType]="m.Part.HsCode"></a-mat-input>
             </div>
 
             <div class="row">
@@ -108,40 +102,19 @@
                 <div *ngFor="let locale of locales; let i = index">
                   <mat-divider *ngIf="i > 0"></mat-divider>
                   <div class="row">
-                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedNames" [locale]="locale"></a-mat-localised-text>
-                    <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedDescriptions"
-                      [locale]="locale"></a-mat-localised-text>
+                    <a-mat-localised-text class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedNames" [locale]="locale"></a-mat-localised-text>
                   </div>
                 </div>
               </mat-expansion-panel>
             </div>
           </mat-tab>
 
-          <mat-tab label="Identifications">
-            <div class="container-fluid">
-              <mat-list>
-                <mat-list-item *ngFor="let goodIdentification of good.GoodIdentifications; let last=last"
-                  [attr.data-allors-id]="goodIdentification.id" style="cursor: pointer;">
-
-                  <div class="row pt-3">
-                    <a-mat-static class="col-md" [object]="goodIdentification.GoodIdentificationType" [roleType]="m.GoodIdentificationType.Name"></a-mat-static>
-                    <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
-                    <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
-                    <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
-                  </div>
-
-                  <mat-divider *ngIf="!last" mat-inset></mat-divider>
-                </mat-list-item>
-              </mat-list>
-            </div>
-          </mat-tab>
-
           <mat-tab label="Comments">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.InternalComment"></a-mat-textarea>
-                <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Keywords"></a-mat-textarea>
-                <a-mat-textarea class="col-md-12" [object]="good" [roleType]="m.Good.Comment"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="part" [roleType]="m.Part.InternalComment"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="part" [roleType]="m.Part.Keywords"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="part" [roleType]="m.Part.Comment"></a-mat-textarea>
               </div>
 
               <div class="row">
@@ -155,7 +128,7 @@
                   <div *ngFor="let locale of locales; let i = index">
                     <mat-divider *ngIf="i > 0"></mat-divider>
                     <div class="row">
-                      <a-mat-localised-text class="col-md-12" [object]="good" [roleType]="m.Good.LocalisedComments"
+                      <a-mat-localised-text class="col-md-12" [object]="part" [roleType]="m.Part.LocalisedComments"
                         [locale]="locale"></a-mat-localised-text>
                     </div>
                   </div>
@@ -167,8 +140,8 @@
           <mat-tab label="Images">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-file class="col-md-12" [object]="good" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-file>
-                <a-mat-files class="col-md-12" [object]="good" [roleType]="m.Good.Photos" accept="image/*"></a-mat-files>
+                <a-mat-file class="col-md-12" [object]="part" [roleType]="m.Part.PrimaryPhoto" accept="image/*"></a-mat-file>
+                <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.Photos" accept="image/*"></a-mat-files>
               </div>
             </div>
           </mat-tab>
@@ -176,7 +149,7 @@
           <mat-tab label="Documents">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-files class="col-md-12" [object]="good" [roleType]="m.Good.ElectronicDocuments" accept="image/*"></a-mat-files>
+                <a-mat-files class="col-md-12" [object]="part" [roleType]="m.Part.ElectronicDocuments" accept="image/*"></a-mat-files>
               </div>
             </div>
           </mat-tab>
@@ -187,8 +160,8 @@
 
     <a-mat-footer>
       <button mat-raised-button (click)="navigationService.back()" type="button">CANCEL</button>
-      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">Save</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
     </a-mat-footer>
 
   </form>
