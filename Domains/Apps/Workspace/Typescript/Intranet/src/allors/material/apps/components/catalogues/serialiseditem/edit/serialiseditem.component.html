@@ -17,20 +17,19 @@
           <mat-tab label="General">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-input class="col-md" [object]="item" [roleType]="m.Good.ArticleNumber"></a-mat-input>
-                <a-mat-input class="col-md" [object]="item" [roleType]="m.Good.Name"></a-mat-input>
-                <a-mat-select class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialisedInventoryItemState" [options]="serialisedInventoryItemStates" display="Name" label="Status"></a-mat-select>
-                <mat-form-field class="col-md" *ngIf="salesInvoice">
-                  <input matInput placeholder="Invoice" [value]="salesInvoice.InvoiceNumber" readonly="true" [routerLink]="['/accountsreceivable/invoice/' + salesInvoice.id]">
-                </mat-form-field>
-                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.SerialNumber"></a-mat-input>
+                <a-mat-input *ngIf="edit" class="col-md" [object]="item" [roleType]="m.SerialisedItem.ItemNumber"></a-mat-input>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.Name"></a-mat-input>
               </div>
 
               <div class="row">
-                <a-mat-textarea class="col-md" [object]="item" [roleType]="m.Good.Description"></a-mat-textarea>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
               </div>
 
               <div class="row">
+                <a-mat-textarea class="col-md" [object]="item" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
+              </div>
+
+              <!-- <div class="row">
                 <a-mat-select class="col-md" [object]="item" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
                 <a-mat-datepicker class="col-md" [object]="item" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
                 <a-mat-select class="col-md" [object]="item" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
@@ -119,10 +118,10 @@
                     </div>
                   </div>
                 </mat-expansion-panel>
-              </div>
+              </div> -->
             </div>
           </mat-tab>
-
+<!--
           <mat-tab label="Characteristics">
             <div class="container-fluid">
 
@@ -204,14 +203,14 @@
                 </mat-form-field>
               </div>
             </div>
-          </mat-tab>
+          </mat-tab> -->
 
           <mat-tab label="Comments">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-textarea class="col-md-12" [object]="item" [roleType]="m.Good.InternalComment"></a-mat-textarea>
-                <a-mat-textarea class="col-md-12" [object]="item" [roleType]="m.Good.Keywords"></a-mat-textarea>
-                <a-mat-textarea class="col-md-12" [object]="item" [roleType]="m.Good.Comment"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.InternalComment"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.Keywords"></a-mat-textarea>
+                <a-mat-textarea class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.Comment"></a-mat-textarea>
               </div>
 
               <div class="row">
@@ -225,7 +224,7 @@
                   <div *ngFor="let locale of locales; let i = index">
                     <mat-divider *ngIf="i > 0"></mat-divider>
                     <div class="row">
-                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.Good.LocalisedComments" [locale]="locale"></a-mat-localised-text>
+                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.LocalisedComments" [locale]="locale"></a-mat-localised-text>
                     </div>
                   </div>
                 </mat-expansion-panel>
@@ -236,21 +235,13 @@
           <mat-tab label="Images">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-file class="col-md-12" [object]="item" [roleType]="m.Good.PrimaryPhoto" accept="image/*"></a-mat-file>
-                <a-mat-files class="col-md-12" [object]="item" [roleType]="m.Good.Photos" accept="image/*"></a-mat-files>
+                <a-mat-file class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.PrimaryPhoto" accept="image/*"></a-mat-file>
+                <a-mat-files class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.Photos" accept="image/*"></a-mat-files>
               </div>
             </div>
           </mat-tab>
 
-          <mat-tab label="Documents">
-            <div class="container-fluid">
-              <div class="row pt-3">
-                <a-mat-files class="col-md-12" [object]="item" [roleType]="m.Good.ElectronicDocuments" accept="image/*"></a-mat-files>
-              </div>
-            </div>
-          </mat-tab>
         </mat-tab-group>
-
       </mat-card-content>
     </mat-card>
   </div>
@@ -259,8 +250,8 @@
     <mat-toolbar-row class="row">
       <span class="col"></span>
       <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">SAVE</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE & CLOSE</button>
     </mat-toolbar-row>
   </mat-toolbar>
 

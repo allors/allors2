@@ -87,25 +87,19 @@
             </ul>
 
             <mat-list>
-              <mat-list-item *ngFor="let item of part.SerialisedItems; let last=last" [attr.data-allors-id]="partItem.id">
-                <!-- <h3 *ngIf="partItem.Product && part.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]">{{partItem.Quantity}} * {{partItem.Product.Name}}</h3>
-                <h3 *ngIf="partItem.Product && !part.CanWriteSalesInvoiceItems" mat-line [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]">{{partItem.Quantity}} * {{partItem.Product.Name}}</h3>
-                 -->
+              <mat-list-item *ngFor="let item of part.SerialisedItems; let last=last" [attr.data-allors-id]="item.id">
+                <h3 mat-line (click)="navigationService.edit(item)" >{{item.ItemNumber}}, {{item.Name}}</h3>
+                <h4 mat-line>{{item.SerialNumber}}</h4>
 
-                <h4 mat-line>{{item.id}}</h4>
-
-                <!-- <span>
+                <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
                     <mat-icon>more_vert</mat-icon>
                   </button>
                   <mat-menu #menu="matMenu">
-                    <a *ngIf="part.CanWriteSalesInvoiceItems" [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]"
-                      mat-menu-item>Edit</a>
-                    <a *ngIf="!part.CanWriteSalesInvoiceItems" [routerLink]="['/salespart/' + part.id + '/item/' + partItem.id ]"
-                      mat-menu-item>View</a>
-                    <button mat-menu-item (click)="deleteInvoiceItem(partItem)" [disabled]="!partItem.CanExecuteDelete">Delete</button>
+                    <a *ngIf="part.CanWriteSerialisedItems" (click)="navigationService.edit(item)" mat-menu-item>Edit</a>
+                    <button mat-menu-item (click)="deleteSerialisedItem(item)" [disabled]="!item.CanExecuteDelete">Delete</button>
                   </mat-menu>
-                </span> -->
+                </span>
                 <mat-divider *ngIf="!last" mat-inset></mat-divider>
               </mat-list-item>
             </mat-list>

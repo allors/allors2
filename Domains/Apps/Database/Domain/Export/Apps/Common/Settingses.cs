@@ -16,7 +16,10 @@
         protected override void AppsSetup(Setup setup)
         {
             var settings = new SettingsBuilder(this.Session)
+                .WithSkuPrefix("Sku")
                 .WithSkuCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .WithSerialisedItemPrefix("S")
+                .WithSerialisedItemCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .Build();
 

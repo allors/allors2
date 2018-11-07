@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Facility, Good, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SupplierOffering, VendorProduct, SerialisedItem } from '../../../../../../domain';
+import { Facility, Good, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SupplierOffering, VendorProduct, SerialisedItem, Part } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -40,6 +40,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
+  part: Part;
 
   constructor(
     @Self() private allors: Allors,
@@ -66,6 +67,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.param();
+          const partId = navRoute.queryParam(m.Part);
 
           const add = !id;
 
@@ -88,13 +90,9 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
                 }
               }
             }),
-            pull.Product(
+            pull.Part(
               {
-                object: id,
-                fetch: {
-                  // TODO:
-                  // SupplierOfferingsWhereProduct: x
-                }
+                object: partId,
               }
             ),
             pull.Ownership({
@@ -118,23 +116,24 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
       .subscribe(({ loaded, add }) => {
         scope.session.reset();
 
-        this.item = loaded.objects.SerialisedItem as SerialisedItem;
-        this.productTypes = loaded.collections.productTypes as ProductType[];
-        this.ownerships = loaded.collections.ownerships as Ownership[];
-        this.locales = loaded.collections.AdditionalLocales as Locale[];
-        const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
-        if (this.item === undefined) {
+        this.part = loaded.objects.Part as Part;
+        this.productTypes = loaded.collections.ProductTypes as ProductType[];
+        this.ownerships = loaded.collections.Ownerships as Ownership[];
+        this.locales = loaded.collections.AdditionalLocales as Locale[];
+
+        if (add) {
           this.add = !(this.edit = false);
 
           this.item = scope.session.create('SerialisedItem') as SerialisedItem;
-
-
+          this.part.AddSerialisedItem(this.item);
         } else {
           this.edit = !(this.add = false);
+          this.item = loaded.objects.SerialisedItem as SerialisedItem;
         }
 
       },

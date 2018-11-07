@@ -228,10 +228,15 @@ namespace Allors.Domain
 
             //// Work Effort Data
             var salesPerson = new PersonBuilder(this.Session).WithFirstName("Sales").WithLastName("Person").Build();
-            var salesOrder = this.CreateSalesOrder(customer, organisation, salesPerson);
+            var salesRepRelation = new SalesRepRelationshipBuilder(this.Session).WithCustomer(customer).WithSalesRepresentative(salesPerson).Build();
+            var salesOrder = this.CreateSalesOrder(customer, organisation);
             var workOrder = this.CreateWorkEffort(organisation, customer, customerContact, salesOrder.SalesOrderItems.First);
             var employee = new PersonBuilder(this.Session).WithFirstName("Good").WithLastName("Worker").Build();
             var employment = new EmploymentBuilder(this.Session).WithEmployee(employee).WithEmployer(organisation).Build();
+
+            var salesOrderItem = salesOrder.SalesOrderItems.First;
+            salesOrder.AddValidOrderItem(salesOrderItem);
+            salesOrderItem.SalesRep = salesPerson;
 
             //// Work Effort Inventory Assignmets
             var part1 = this.CreatePart("P1");
@@ -320,7 +325,7 @@ namespace Allors.Domain
             .WithUseAsDefault(true)
             .Build();
 
-        private SalesOrder CreateSalesOrder(Party customer, InternalOrganisation takenBy, Person salesPerson) =>
+        private SalesOrder CreateSalesOrder(Party customer, InternalOrganisation takenBy) =>
             new SalesOrderBuilder(this.Session)
             .WithShipToCustomer(customer)
             .WithTakenBy(takenBy)
@@ -330,7 +335,6 @@ namespace Allors.Domain
             .WithSalesTerm(new OrderTermBuilder(this.Session)
                 .WithDescription("Net 30")
                 .Build())
-            .WithTakenByContactPerson(salesPerson)
             .Build();
 
         private WorkEffort CreateWorkEffort(Organisation takenBy, Party customer, Person contact, SalesOrderItem salesOrderItem) =>

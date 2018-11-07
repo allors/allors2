@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { InternalOrganisation, Part, IGoodIdentification } from '../../../../../../domain';
+import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -70,6 +70,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 },
                 ProductType: x,
                 InventoryItemKind: x,
+                SerialisedItems: x,
                 Brand: x,
                 Model: x
               }
@@ -126,5 +127,24 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
   public refresh(): void {
     this.refresh$.next(new Date());
+  }
+
+  public deleteSerialisedItem(item: SerialisedItem): void {
+    const { scope } = this.allors;
+
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          scope.invoke(item.Delete)
+            .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
   }
 }
