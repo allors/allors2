@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4a3efb9c-1556-4e57-bb59-f09d297e607e")]
     #endregion
-	public partial interface FixedAsset : AccessControlledObject 
+	public partial interface FixedAsset : AccessControlledObject, Commentable 
     {
         #region Allors
         [Id("354107ce-4eb6-4b9a-83c8-5cfe5e3adb22")]
@@ -65,5 +65,14 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime NextServiceDate { get; set; }
+
+        #region Allors
+        [Id("822F98D5-D9B2-44DA-B097-911244609066")]
+        [AssociationId("4352BA8D-EE74-4E1D-805A-648E73E3FEC3")]
+        [RoleId("4210FC74-0F8B-4980-A600-98BE6DAB78DC")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        string Keywords { get; set; }
     }
 }

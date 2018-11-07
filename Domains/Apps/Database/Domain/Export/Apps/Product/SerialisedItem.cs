@@ -92,19 +92,15 @@ namespace Allors.Domain
                 builder.Append($", Manufacturer: {part.ManufacturedBy.PartyName}");
             }
 
-            //foreach (ProductFeature feature in this.ProductFeatureApplicabilitiesWhereAvailableFor)
-            //{
-            //    if (feature is Brand)
-            //    {
-            //        var brand = (Brand)feature;
-            //        builder.Append($", Brand: {brand.Name}");
-            //    }
-            //    if (feature is Model)
-            //    {
-            //        var model = (Model)feature;
-            //        builder.Append($", Model: {model.Name}");
-            //    }
-            //}
+            if (part != null && part.ExistManufacturedBy)
+            {
+                builder.Append($", Brand: {part.Brand.Name}");
+            }
+
+            if (part != null && part.ExistManufacturedBy)
+            {
+                builder.Append($", Model: {part.Model.Name}");
+            }
 
             builder.Append($", SN: {this.SerialNumber}");
 

@@ -10,6 +10,10 @@ namespace Allors.Repository
     public partial class SerialisedItem : AccessControlledObject, Deletable, FixedAsset
     {
         #region InheritedProperties
+
+        public string Comment { get; set; }
+
+        public LocalisedText[] LocalisedComments { get; set; }
         public Permission[] DeniedPermissions { get; set; }
 
         public SecurityToken[] SecurityTokens { get; set; }
@@ -20,6 +24,9 @@ namespace Allors.Repository
         public string Description { get; set; }
         public decimal ProductionCapacity { get; set; }
         public DateTime NextServiceDate { get; set; }
+
+        public string Keywords { get; set; }
+
         #endregion InheritedProperties
 
         #region Allors

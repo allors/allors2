@@ -93,9 +93,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
             pull.Part(
               {
                 object: partId,
-                fetch: {
-                  SupplierOfferingsWherePart: x
-                }
               }
             ),
             pull.Ownership({
