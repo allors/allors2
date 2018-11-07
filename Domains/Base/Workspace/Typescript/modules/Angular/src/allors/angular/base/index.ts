@@ -1,4 +1,5 @@
 export * from './authentication';
+export * from './barcode';
 export * from './data';
 export * from './focus';
 export * from './forms';
