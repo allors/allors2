@@ -19,16 +19,16 @@ namespace Tests.Intranet.Relations
 
         public Input LastName => new Input(this.Driver, formControlName: "lastName");
 
-        public Button Export => new Button(this.Driver, By.XPath("//button[.//mat-icon[contains(text(),'cloud_download')]]"));
-
         public Anchor AddNew => new Anchor(this.Driver, By.CssSelector("[mat-fab]"));
 
-        public MaterialList List => new MaterialList(this.Driver);
+        public MaterialTable Table => new MaterialTable(this.Driver);
 
         public PersonOverviewPage Select(Person person)
         {
-            var listItem = this.List.FindListItem(person);
-            listItem.Click();
+            var row = this.Table.FindRow(person);
+            var cell = row.FindCell("firstName");
+            cell.Click();
+
             return new PersonOverviewPage(this.Driver);
         }
     }

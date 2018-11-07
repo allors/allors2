@@ -2,16 +2,14 @@ namespace Tests.Intranet.Relations
 {
     using Allors.Meta;
 
-    using Tests.Intranet;
-
     using OpenQA.Selenium;
 
     using Tests.Components.Html;
     using Tests.Components.Material;
 
-    public class PersonPage : MainPage
+    public class PersonEditPage : MainPage
     {
-        public PersonPage(IWebDriver driver)
+        public PersonEditPage(IWebDriver driver)
             : base(driver)
         {
         }

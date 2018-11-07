@@ -9,9 +9,9 @@ namespace Tests.Intranet.Relations
     using Tests.Components.Html;
     using Tests.Components.Material;
 
-    public class OrganisationOverviewPage : MainPage
+    public class PersonOverviewPage : MainPage
     {
-        public OrganisationOverviewPage(IWebDriver driver)
+        public PersonOverviewPage(IWebDriver driver)
             : base(driver)
         {
         }
@@ -20,10 +20,10 @@ namespace Tests.Intranet.Relations
 
         public MaterialList List => new MaterialList(this.Driver);
 
-        public OrganisationPage Edit()
+        public PersonEditPage Edit()
         {
             this.EditButton.Click();
-            return new OrganisationPage(this.Driver);
+            return new PersonEditPage(this.Driver);
         }
 
         internal PartyCommunicationEventPage Select(CommunicationEvent communicationEvent)
