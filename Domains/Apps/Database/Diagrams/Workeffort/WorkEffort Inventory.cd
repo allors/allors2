@@ -11,7 +11,6 @@
       <Property Name="TakenBy" />
       <Property Name="Customer" />
       <Property Name="ContactPerson" />
-      <Property Name="Children" />
       <Property Name="OrderItemFulfillment" />
     </ShowAsAssociation>
   </Interface>

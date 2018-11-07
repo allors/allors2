@@ -89,10 +89,13 @@ namespace Allors.Domain
             {
                 this.Number = workTask.WorkEffortNumber;
 
-                var session = workTask.Strategy.Session;
-                var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                var barcode = barcodeService.Generate(this.Number, BarcodeType.CODE_128, 230, 80);
-                this.Barcode = new ImageBlob("png", barcode);
+                if (workTask.ExistWorkEffortNumber)
+                {
+                    var session = workTask.Strategy.Session;
+                    var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
+                    var barcode = barcodeService.Generate(this.Number, BarcodeType.CODE_128, 230, 80);
+                    this.Barcode = new ImageBlob("png", barcode);
+                }
 
                 this.Date = (workTask.ThroughDate() ?? DateTime.UtcNow).ToString("yyyy-MM-dd");
                 this.Purpose = String.Empty;
@@ -102,23 +105,46 @@ namespace Allors.Domain
                     this.Purpose = this.Purpose.Equals(string.Empty) ? purpose.Name : $", {purpose.Name}";
                 }
 
+                // Details from associated Sales Order
                 if (workTask.ExistOrderItemFulfillment)
                 {
                     if (workTask.OrderItemFulfillment is SalesOrderItem salesOrderItem)
                     {
                         if (salesOrderItem.ExistSalesTerms)
                         {
-                            this.PaymentTerms = salesOrderItem.SalesTerms.First.Description;
+                            var salesTerms = salesOrderItem.SalesTerms;
+                            this.PaymentTerms = salesTerms.First.Description;
+
+                            if (salesTerms.Count > 1)
+                            {
+                                this.PaymentTerms += $" (+ {salesTerms.Count - 1})";
+                            }
                         }
 
                         var salesOrder = salesOrderItem.SalesOrderWhereSalesOrderItem;
                         this.PurchaseOrder = salesOrder?.OrderNumber;
-                        //TODO: SalesOrder.SalesReps
-                        this.SalesRep = salesOrder?.TakenByContactPerson?.PartyName;
+
+                        if (salesOrder.ExistSalesReps)
+                        {
+                            var salesReps = salesOrder.SalesReps;
+
+                            this.SalesRep = salesReps.First.PartyName;
+                            
+                            if (salesReps.Count > 1)
+                            {
+                                this.SalesRep += $" (+{salesReps.Count - 1})";
+                            }
+                        }
 
                         if ((this.PaymentTerms == null) && salesOrder.ExistSalesTerms)
                         {
-                            this.PaymentTerms = salesOrder.SalesTerms.First.Description;
+                            var salesTerms = salesOrder.SalesTerms;
+                            this.PaymentTerms = salesTerms.First.Description;
+
+                            if (salesTerms.Count > 1)
+                            {
+                                this.PaymentTerms += $" (+ {salesTerms.Count - 1})";
+                            }
                         }
                     }
 
@@ -129,10 +155,9 @@ namespace Allors.Domain
                         this.ContactTelephone = contact.CellPhoneNumber?.Description ?? contact.GeneralPhoneNumber?.Description;
                     }
 
-                    //TODO: Look at SalesInvoice.PaymentNetDays
-                    if (workTask.ExistSpecialTerms)
+                    if ((this.PaymentTerms == null) && workTask.ExistCustomer && (workTask.Customer.PaymentNetDays() != null))
                     {
-                        this.PaymentTerms = workTask.SpecialTerms;
+                        this.PaymentTerms = workTask.Customer.PaymentNetDays().ToString();
                     }
 
                     this.Subsidiary = workTask.Facility?.Name;
