@@ -82,7 +82,7 @@ namespace Allors.Domain
             public string ContactName;
             public string ContactTelephone;
             public string PaymentTerms;
-            public string Subsidiary;
+            public string Facility;
             public string SalesRep;
 
             public WorkTaskPrintModel(WorkTask workTask)
@@ -93,7 +93,7 @@ namespace Allors.Domain
                 {
                     var session = workTask.Strategy.Session;
                     var barcodeService = session.ServiceProvider.GetRequiredService<IBarcodeService>();
-                    var barcode = barcodeService.Generate(this.Number, BarcodeType.CODE_128, 230, 80);
+                    var barcode = barcodeService.Generate(this.Number, BarcodeType.CODE_128, 320, 80);
                     this.Barcode = new ImageBlob("png", barcode);
                 }
 
@@ -110,6 +110,8 @@ namespace Allors.Domain
                 {
                     if (workTask.OrderItemFulfillment is SalesOrderItem salesOrderItem)
                     {
+                        this.SalesRep = salesOrderItem.SalesRep.PartyName;
+
                         if (salesOrderItem.ExistSalesTerms)
                         {
                             var salesTerms = salesOrderItem.SalesTerms;
@@ -120,21 +122,9 @@ namespace Allors.Domain
                                 this.PaymentTerms += $" (+ {salesTerms.Count - 1})";
                             }
                         }
-
+                        
                         var salesOrder = salesOrderItem.SalesOrderWhereSalesOrderItem;
                         this.PurchaseOrder = salesOrder?.OrderNumber;
-
-                        if (salesOrder.ExistSalesReps)
-                        {
-                            var salesReps = salesOrder.SalesReps;
-
-                            this.SalesRep = salesReps.First.PartyName;
-                            
-                            if (salesReps.Count > 1)
-                            {
-                                this.SalesRep += $" (+{salesReps.Count - 1})";
-                            }
-                        }
 
                         if ((this.PaymentTerms == null) && salesOrder.ExistSalesTerms)
                         {
@@ -160,7 +150,7 @@ namespace Allors.Domain
                         this.PaymentTerms = workTask.Customer.PaymentNetDays().ToString();
                     }
 
-                    this.Subsidiary = workTask.Facility?.Name;
+                    this.Facility = workTask.Facility?.Name;
                 }
             }
         }
@@ -168,6 +158,7 @@ namespace Allors.Domain
         private class CustomerPrintModel
         {
             public string Number;
+            public string Name;
             public string BillingAddress1;
             public string BillingAddress2;
             public string BillingAddress3;
@@ -184,6 +175,7 @@ namespace Allors.Domain
             public CustomerPrintModel(Party customer)
             {
                 this.Number = customer.Id.ToString();
+                this.Name = customer.PartyName;
 
                 if (customer.BillingAddress is PostalAddress billingAddress)
                 {
