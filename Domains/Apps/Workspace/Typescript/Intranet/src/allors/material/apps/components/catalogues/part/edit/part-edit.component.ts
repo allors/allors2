@@ -5,7 +5,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
-import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState } from '../../../../../../domain';
+import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
@@ -50,6 +50,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
   facilities: Facility[];
+  unitsOfMeasure: UnitOfMeasure[];
 
   constructor(
     @Self() public allors: Allors,
@@ -88,6 +89,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 Photos: x,
                 Documents: x,
                 ElectronicDocuments: x,
+                ManufacturedBy: x,
                 SerialisedItemCharacteristics: {
                   SerialisedItemCharacteristicType: {
                     UnitOfMeasure: x
@@ -112,6 +114,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 }
               }
             ),
+            pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.GoodIdentificationType(),
             pull.Ownership({ sort: new Sort(m.Ownership.Name) }),
@@ -124,6 +127,9 @@ export class PartEditComponent implements OnInit, OnDestroy {
             }),
             pull.Facility({
               predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
+            }),
+            pull.Organisation({
+              predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
             })
           ];
 
@@ -147,6 +153,8 @@ export class PartEditComponent implements OnInit, OnDestroy {
         this.brands = loaded.collections.Brands as Brand[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.facilities = loaded.collections.Facilities as Facility[];
+        this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
+        this.manufacturers = loaded.collections.Organisations as Organisation[];
 
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));

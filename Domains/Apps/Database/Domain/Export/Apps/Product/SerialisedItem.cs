@@ -110,12 +110,12 @@ namespace Allors.Domain
                 builder.Append($", Manufacturer: {part.ManufacturedBy.PartyName}");
             }
 
-            if (part != null && part.ExistManufacturedBy)
+            if (part != null && part.ExistBrand)
             {
                 builder.Append($", Brand: {part.Brand.Name}");
             }
 
-            if (part != null && part.ExistManufacturedBy)
+            if (part != null && part.ExistModel)
             {
                 builder.Append($", Model: {part.Model.Name}");
             }

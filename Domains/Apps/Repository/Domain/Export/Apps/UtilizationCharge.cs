@@ -27,6 +27,8 @@ namespace Allors.Repository
 
         public Product Product { get; set; }
 
+        public Part Part { get; set; }
+
         public RevenueQuantityBreak RevenueQuantityBreak { get; set; }
 
         public ProductFeature ProductFeature { get; set; }

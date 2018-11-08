@@ -50,7 +50,7 @@ namespace Tests.Intranet
                 websiteAddress: "www.allors.com",
                 taxNumber: "BE 0476967014",
                 bankName: "ING",
-                facilityName: "Allors Facility",
+                facilityName: "Allors warehouse 1",
                 bic: "BBRUBEBB",
                 iban: "BE89 3200 1467 7685",
                 currency: euro,
@@ -83,6 +83,14 @@ namespace Tests.Intranet
                 articleNumberPrefix: string.Empty,
                 requestCounterValue: 1,
                 quoteCounterValue: 1);
+
+            new FacilityBuilder(this.Session)
+                .WithName("Allors warehouse 2")
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithOwner(allors)
+                .Build();
+
+            var manufacturer = new OrganisationBuilder(this.Session).WithName("Gizmo inc.").WithIsManufacturer(true).Build();
 
             var productType = new ProductTypeBuilder(this.Session)
                 .WithName($"Gizmo Serialized")
@@ -142,6 +150,7 @@ namespace Tests.Intranet
                 .WithName("finished good")
                 .WithBrand(brand)
                 .WithModel(brand.Models[0])
+                .WithManufacturedBy(manufacturer)
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
@@ -171,6 +180,7 @@ namespace Tests.Intranet
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .WithManufacturedBy(manufacturer)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -201,6 +211,7 @@ namespace Tests.Intranet
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithManufacturedBy(manufacturer)
                 .Build();
 
             var good3 = new GoodBuilder(this.Session)

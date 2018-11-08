@@ -143,6 +143,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Required]
+        [Workspace]
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         #region Allors
@@ -220,6 +221,7 @@ namespace Allors.Repository
         [AssociationId("2b9103c7-7ff8-4733-aa02-53800bb6e9bc")]
         [RoleId("6d60fb2f-1893-48ac-9e7d-9aa2a9a89431")]
         #endregion
+        [Workspace]
         public int ReorderLevel { get; set; }
 
         #region Allors
@@ -227,16 +229,8 @@ namespace Allors.Repository
         [AssociationId("8c3d3a61-4d3a-477c-9701-a292435112e3")]
         [RoleId("f2ffce75-82d5-460f-83cc-621d63211d18")]
         #endregion
+        [Workspace]
         public int ReorderQuantity { get; set; }
-
-        #region Allors
-        [Id("a202a540-dc0d-4032-9963-d0aa1511c990")]
-        [AssociationId("0dd915a3-d517-46c5-8664-e59c56623564")]
-        [RoleId("ab316ee2-bf84-4501-a798-94832c55e73f")]
-        #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
-        public PriceComponent[] PriceComponents { get; set; }
 
         #region Allors
         [Id("f2c3407e-ab62-4f3e-94e5-7e9e65b89d6e")]

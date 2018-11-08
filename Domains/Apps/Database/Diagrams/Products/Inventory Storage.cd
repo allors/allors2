@@ -186,8 +186,8 @@
     <AssociationLine Name="SerialisedItem" Type="Allors.Domain.SerialisedItem" FixedFromPoint="true" FixedToPoint="true">
       <Path>
         <Point X="7.019" Y="7.939" />
-        <Point X="7.019" Y="9.911" />
-        <Point X="9" Y="9.911" />
+        <Point X="7.019" Y="10.016" />
+        <Point X="9" Y="10.016" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -209,7 +209,7 @@
   <Interface Name="Allors.Domain.SerialisedItem">
     <Position X="9" Y="8.75" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AACAAARAFQABASAAAABAAACAAAEAAAABAAQRAAAAABA=</HashCode>
+      <HashCode>AACIAARAFQABASAAAABAAACAAAEAAAABAAQRABAAABA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -240,7 +240,7 @@
   <Interface Name="Allors.Domain.FixedAsset" Collapsed="true">
     <Position X="9.25" Y="7.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAQAoAAAAAAAAAAQAAAAAAAAACAAIAAAAgAA=</HashCode>
+      <HashCode>AAAAAAAAAQAoAAAAAAAAAAQAAAAAAAAACAIIAAAAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

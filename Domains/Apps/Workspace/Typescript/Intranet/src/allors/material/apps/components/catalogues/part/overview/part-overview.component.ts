@@ -72,6 +72,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 },
                 ProductType: x,
                 InventoryItemKind: x,
+                ManufacturedBy: x,
                 SerialisedItems: {
                   PrimaryPhoto: x
                 },

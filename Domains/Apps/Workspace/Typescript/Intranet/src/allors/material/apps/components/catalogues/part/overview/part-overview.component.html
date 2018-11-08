@@ -57,6 +57,22 @@
                 </mat-form-field>
               </div>
 
+              <div class="row">
+                <a-mat-static class="col" [object]="part" [roleType]="m.Part.QuantityOnHand"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" [object]="part" [roleType]="m.Part.AvailableToPromise"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" [object]="part" [roleType]="m.Part.QuantityCommittedOut"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" [object]="part" [roleType]="m.Part.QuantityExpectedIn"></a-mat-static>
+              </div>
+
             </div>
           </mat-card-content>
 

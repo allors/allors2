@@ -79,8 +79,19 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         Product Product { get; set; }
-        
+
+        #region Allors
+        [Id("1712C7D7-A222-4D3F-BBD9-19F1A491E018")]
+        [AssociationId("16FD1137-F090-4473-8152-75BDB9DEA8B4")]
+        [RoleId("AF047399-4F14-42FD-80AC-FE27D29AE73E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        Part Part { get; set; }
+
         #region Allors
         [Id("5b91ebce-6ebe-4d5f-a8bc-22cd7e7d688a")]
         [AssociationId("de72aa4b-17f1-4037-99e5-95f30c1f8f90")]

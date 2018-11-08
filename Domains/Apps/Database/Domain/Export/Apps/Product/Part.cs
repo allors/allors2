@@ -72,6 +72,16 @@ namespace Allors.Domain
                 this.DefaultFacility = this.InternalOrganisation.FacilitiesWhereOwner.First;
             }
 
+            if (!this.ExistPriceComponentsWherePart)
+            {
+                new BasePriceBuilder(this.Strategy.Session)
+                    .WithDescription("baseprice")
+                    .WithPart(this)
+                    .WithFromDate(DateTime.UtcNow)
+                    .WithPrice(0)
+                    .Build();
+            }
+
             this.DeriveName();
         }
 
@@ -91,7 +101,7 @@ namespace Allors.Domain
             }
         }
 
-        public  void AppsOnDerive(ObjectOnDerive method)
+        public void AppsOnDerive(ObjectOnDerive method)
         {
             var derivation = method.Derivation;
 

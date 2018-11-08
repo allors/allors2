@@ -89,6 +89,8 @@ namespace Allors
                 .WithOwner(allors)
                 .Build();
 
+            var manufacturer = new OrganisationBuilder(this.Session).WithName("Gizmo inc.").WithIsManufacturer(true).Build();
+
             var productType = new ProductTypeBuilder(this.Session)
                 .WithName($"Gizmo Serialized")
                 .WithSerialisedItemCharacteristicType(new SerialisedItemCharacteristicTypeBuilder(this.Session)
@@ -148,6 +150,7 @@ namespace Allors
                 .WithBrand(brand)
                 .WithModel(brand.Models[0])
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithManufacturedBy(manufacturer)
                 .Build();
 
             var good1 = new GoodBuilder(this.Session)
@@ -176,6 +179,7 @@ namespace Allors
                 .WithGoodIdentification(new PartNumberBuilder(this.Session)
                     .WithIdentification("P2")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
+                .WithManufacturedBy(manufacturer)
                 .Build();
 
             var good2 = new GoodBuilder(this.Session)
@@ -206,6 +210,7 @@ namespace Allors
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
+                .WithManufacturedBy(manufacturer)
                 .Build();
 
             var good3 = new GoodBuilder(this.Session)
