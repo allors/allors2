@@ -12,6 +12,8 @@ namespace Allors.Repository
         #region inherited properties
         public string Name { get; set; }
 
+        public LocalisedText[] LocalisedNames { get; set; }
+
         public string Comment { get; set; }
 
         public LocalisedText[] LocalisedComments { get; set; }
@@ -21,6 +23,8 @@ namespace Allors.Repository
         public DateTime AcquiredDate { get; set; }
 
         public string Description { get; set; }
+
+        public LocalisedText[] LocalisedDescriptions { get; set; }
 
         public decimal ProductionCapacity { get; set; }
 

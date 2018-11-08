@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("5E594A00-15A4-4871-84E9-B8010A78FD21")]
     #endregion
-    public partial class SerialisedItem : AccessControlledObject, Deletable, FixedAsset
+    public partial class SerialisedItem : Deletable, FixedAsset
     {
         #region InheritedProperties
 
@@ -19,15 +19,75 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         public string Name { get; set; }
+
+        public LocalisedText[] LocalisedNames { get; set; }
+
         public DateTime LastServiceDate { get; set; }
         public DateTime AcquiredDate { get; set; }
         public string Description { get; set; }
+
+        public LocalisedText[] LocalisedDescriptions { get; set; }
+
         public decimal ProductionCapacity { get; set; }
         public DateTime NextServiceDate { get; set; }
 
         public string Keywords { get; set; }
 
         #endregion InheritedProperties
+
+        #region SerialisedItemState
+        #region Allors
+        [Id("B611C1C0-6AB4-4082-B464-0494F3DE2051")]
+        [AssociationId("C6DBB08B-9547-4235-9649-55411E6D0196")]
+        [RoleId("2829D2FE-1A27-490C-9F0B-5BA476C21FDC")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SerialisedItemState PreviousSerialisedItemState { get; set; }
+
+        #region Allors
+        [Id("424D5D46-A253-4E32-BFED-8160D20E3BBE")]
+        [AssociationId("F35DABA1-8726-4E25-BA1D-95D775B1E3F4")]
+        [RoleId("903C3573-8176-4C8F-83FE-4456DF42928D")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Derived]
+        public SerialisedItemState LastSerialisedItemState { get; set; }
+
+        #region Allors
+        [Id("9C9A7694-4E41-46D7-B33C-14A703370A5B")]
+        [AssociationId("FBF63B46-AD14-43EA-AD29-31652901BE89")]
+        [RoleId("106E5048-AC33-427C-8B9E-462A9A998879")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedItemState SerialisedItemState { get; set; }
+        #endregion
+
+        #region Versioning
+        #region Allors
+        [Id("414BDA46-B49A-4AB4-A9E2-02842414D572")]
+        [AssociationId("ED1EFFA3-BDE5-4F96-B286-2CC4D007D0D7")]
+        [RoleId("935BBA47-3AB3-4423-876F-8769855892C0")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public SerialisedItemVersion CurrentVersion { get; set; }
+
+        #region Allors
+        [Id("0318F8DE-D3D1-497D-870D-34E3A8F55ACC")]
+        [AssociationId("2359CBB0-AE07-48BC-A65A-E8E5DC194CEF")]
+        [RoleId("30DC64DC-6272-4A1A-B0D9-800D6971DCDB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        public SerialisedItemVersion[] AllVersions { get; set; }
+        #endregion
 
         #region Allors
         [Id("B6DD4F80-EE97-446E-9779-610FF07F13B2")]
@@ -163,6 +223,15 @@ namespace Allors.Repository
         public Media[] Photos { get; set; }
 
         #region Allors
+        [Id("18A320F1-2F65-4E49-A615-D88EDD15AC5C")]
+        [AssociationId("7909A953-6F94-4CCE-B214-F6BE9272DFB1")]
+        [RoleId("304C12C1-91F6-42DD-BB65-3DBF87A77F17")]
+        #endregion
+        [Workspace]
+        [Size(-1)]
+        public string InternalComment { get; set; }
+
+        #region Allors
         [Id("B5D9E50B-3004-47C0-9C8D-62935DB15ECC")]
         [AssociationId("609D27BC-96C9-48EF-9516-6B45AECBEC20")]
         [RoleId("DAEF2150-D69C-4255-B78E-70ACFA63EA06")]
@@ -170,6 +239,36 @@ namespace Allors.Repository
         [Size(-1)]
         [Workspace]
         public string Details { get; set; }
+
+        #region Allors
+        [Id("7A2A878B-1428-4C75-9A52-8725606FAA41")]
+        [AssociationId("98B173A0-51DA-48A6-9556-4B8F2CFDC72B")]
+        [RoleId("D86152FD-1D45-463E-B5FC-481F6E0D4CAE")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Party SuppliedBy { get; set; }
+
+        #region Allors
+        [Id("E9ACD0EE-693C-4459-9F40-D478F538659F")]
+        [AssociationId("0BA8139B-6910-441D-82B5-5318D074AC21")]
+        [RoleId("DA88A4DD-CB8D-48DC-BFFA-772CA75A1379")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Party OwnedBy { get; set; }
+
+        #region Allors
+        [Id("18F5FCB0-E48B-4DD2-8871-45540E040B80")]
+        [AssociationId("30ED486E-8142-4EBF-AAF4-377E9181FA55")]
+        [RoleId("03DF0077-B8E8-468D-8017-F11EB74F1A26")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public Party RentedBy { get; set; }
 
         #region inherited methods
         public void OnBuild(){}

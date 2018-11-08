@@ -75,17 +75,17 @@
             <div class="row">
               <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.ProductType" [options]="productTypes"
                 display="Name"></a-mat-select>
-                <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
+              <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.InventoryItemKind" [options]="inventoryItemKinds"
                 display="Name"></a-mat-select>
             </div>
 
             <div class="row">
-                <mat-form-field class="col-md">
-                  <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-                    <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
+              <mat-form-field class="col-md">
+                <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
+                  <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
 
             <div class="row">
               <a-mat-input class="col-md" [object]="part" [roleType]="m.Part.HsCode"></a-mat-input>

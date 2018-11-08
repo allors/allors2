@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="OrderValue.cs" company="Allors bvba">
+// <copyright file="SerialisedInventoryItemState.cs" company="Allors bvba">
 //   Copyright 2002-2012 Allors bvba.
 // Dual Licensed under
 //   a) the General Public Licence v3 (GPL)
@@ -30,10 +30,6 @@ namespace Allors.Domain
         public bool IsScrap => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Scrap);
 
         public bool IsAvailable => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Available);
-
-        public bool IsSold => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Sold);
-
-        public bool IsInRent => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).InRent);
 
         public bool IsAssigned => this.Equals(new SerialisedInventoryItemStates(this.strategy.Session).Assigned);
     }

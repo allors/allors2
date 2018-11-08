@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
 import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -25,6 +25,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   title = 'Part Overview';
   part: Part;
   internalOrganisation: InternalOrganisation;
+  serialised: boolean;
   suppliers: string;
 
   private refresh$: BehaviorSubject<Date>;
@@ -37,6 +38,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
+    public mediaService: MediaService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
@@ -70,7 +72,9 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 },
                 ProductType: x,
                 InventoryItemKind: x,
-                SerialisedItems: x,
+                SerialisedItems: {
+                  PrimaryPhoto: x
+                },
                 Brand: x,
                 Model: x
               }
@@ -85,7 +89,9 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
         scope.session.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
+
         this.part = loaded.objects.Part as Part;
+        this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
 
         if (this.part.SuppliedBy.length > 0) {
           this.suppliers = this.part.SuppliedBy

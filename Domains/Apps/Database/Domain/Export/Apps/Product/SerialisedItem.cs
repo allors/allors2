@@ -24,6 +24,11 @@ namespace Allors.Domain
     {
         public void AppsOnBuild(ObjectOnBuild method)
         {
+            if (!this.ExistSerialisedItemState)
+            {
+                this.SerialisedItemState = new SerialisedItemStates(this.Strategy.Session).NA;
+            }
+
             if (!this.ExistItemNumber)
             {
                 this.ItemNumber = this.strategy.Session.GetSingleton().Settings.NextSerialisedItemNumber();
@@ -80,6 +85,10 @@ namespace Allors.Domain
         public void AppsDelete(DeletableDelete method)
         {
             //TODO: Restrit Delete?
+            foreach (SerialisedItemVersion version in this.AllVersions)
+            {
+                version.Delete();
+            }
         }
 
         public string DeriveDetails()

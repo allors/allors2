@@ -1,15 +1,18 @@
-<form class="a-edit" #form="ngForm" (submit)="save()">
+<div class="a-main">
 
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a *ngIf="part" (click)="navigationService.list(m.Part)">Parts</a>
+        <span *ngIf="add"> / Add serialised item</span>
+        <span *ngIf="edit && item"> / <a (click)="navigationService.overview(part)">{{part?.Name}}</a> / Edit
+          serialised item</span>
+      </div>
+    </div>
+  </div>
 
-  <div>
-
-    <mat-card *ngIf="item">
+  <form *ngIf="item" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+    <mat-card>
       <mat-card-content>
 
         <mat-tab-group>
@@ -29,77 +32,19 @@
                 <a-mat-textarea class="col-md" [object]="item" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
               </div>
 
-              <!-- <div class="row">
-                <a-mat-select class="col-md" [object]="item" [roleType]="m.Good.PrimaryProductCategory" [options]="categories" display="Name"></a-mat-select>
-                <a-mat-datepicker class="col-md" [object]="item" [roleType]="m.Good.SalesDiscontinuationDate"></a-mat-datepicker>
-                <a-mat-select class="col-md" [object]="item" [roleType]="m.Good.ProductType" [options]="productTypes" display="Name"></a-mat-select>
-                <a-mat-select class="col-md" [object]="item" [roleType]="m.Good.ProductCategories" [options]="categories" display="Name"></a-mat-select>
+              <div class="row">
+                <a-mat-select class="col-md" [object]="item" [roleType]="m.SerialisedItem.Ownership" [options]="ownerships" display="Name"></a-mat-select>
+                <a-mat-autocomplete class="col-md" [object]="item" [roleType]="m.SerialisedItem.OwnedBy" [filter]="organisationFilter.create(scope)" display="Name"></a-mat-autocomplete>
               </div>
 
               <div class="row">
-                <div class="col">
-                  <div class="row">
-                    <mat-form-field class="col">
-                      <mat-select [(ngModel)]="selectedBrand" name="brandName" placeholder="Brand" multiple="false" (ngModelChange)="brandSelected($event)">
-                        <mat-option>None</mat-option>
-                        <mat-option *ngFor="let brand of brands" [value]="brand">{{ brand.Name }} </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <button mat-mini-fab color="accent" type="button" (click)="addBrand = !addBrand">
-                      <mat-icon *ngIf="!addBrand">add</mat-icon>
-                      <mat-icon *ngIf="addBrand">close</mat-icon>
-                    </button>
-                  </div>
-                </div>
-                <div class="col-md-12 pb-3" *ngIf="addBrand">
-                  <mat-card>
-                    <mat-card-header>Add a new brand</mat-card-header>
-                    <mat-card-content>
-                      <brand-inline [scope]="scope" (cancelled)="addBrand = false" (saved)="brandAdded($event); addBrand = false"></brand-inline>
-                    </mat-card-content>
-                  </mat-card>
-                </div>
-
-                <div class="col-md">
-                  <div class="row">
-                    <mat-form-field class="col">
-                      <mat-select [(ngModel)]="selectedModel" name="modelName" placeholder="Model" multiple="false">
-                        <mat-option>None</mat-option>
-                        <mat-option *ngFor="let model of models" [value]="model"> {{ model.Name }} </mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                    <button mat-mini-fab color="accent" type="button" (click)="addModel = !addModel">
-                      <mat-icon *ngIf="!addModel">add</mat-icon>
-                      <mat-icon *ngIf="addModel">close</mat-icon>
-                    </button>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <mat-card *ngIf="addModel" >
-                    <mat-card-header>Add a new model</mat-card-header>
-                    <mat-card-content>
-                      <model-inline [scope]="scope" (cancelled)="addModel = false" (saved)="modelAdded($event); addModel = false"></model-inline>
-                    </mat-card-content>
-                  </mat-card>
-                </div>
+                <a-mat-select class="col-md" [object]="item" [roleType]="m.SerialisedItem.SuppliedBy" [options]="activeSuppliers" display="Name"></a-mat-select>
+                <a-mat-autocomplete class="col-md" [object]="item" [roleType]="m.SerialisedItem.RentedBy" [filter]="organisationFilter.create(scope)" display="Name"></a-mat-autocomplete>
               </div>
 
               <div class="row">
-                <a-mat-select class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Ownership" [options]="ownerships" display="Name"></a-mat-select>
-                <a-mat-autocomplete class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.Owner" [filter]="organisationFilter.create(scope)" display="Name"></a-mat-autocomplete>
-              </div>
-
-              <div class="row">
-                <mat-form-field class="col-md">
-                  <mat-select name="suppliers" [(ngModel)]="selectedSuppliers" placeholder="Suppliers" multiple="true">
-                    <mat-option *ngFor="let supplier of activeSuppliers" [value]="supplier">{{ supplier.PartyName }}</mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <a-mat-select class="col-md" [object]="item" [roleType]="m.Good.ManufacturedBy" [options]="manufacturers" display="Name"></a-mat-select>
-              </div>
-
-              <div class="row">
-                <a-mat-input class="col-md" [object]="item" [roleType]="m.Good.HsCode"></a-mat-input>
+                <a-mat-datepicker class="col-md" [object]="item" [roleType]="m.SerialisedItem.LastServiceDate"></a-mat-datepicker>
+                <a-mat-datepicker class="col-md" [object]="item" [roleType]="m.SerialisedItem.NextServiceDate"></a-mat-datepicker>
               </div>
 
               <div class="row">
@@ -113,40 +58,42 @@
                   <div *ngFor="let locale of locales; let i = index">
                     <mat-divider *ngIf="i > 0"></mat-divider>
                     <div class="row">
-                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.Good.LocalisedNames" [locale]="locale"></a-mat-localised-text>
-                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.Good.LocalisedDescriptions" [locale]="locale"></a-mat-localised-text>
+                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.LocalisedNames"
+                        [locale]="locale"></a-mat-localised-text>
+                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.LocalisedDescriptions"
+                        [locale]="locale"></a-mat-localised-text>
                     </div>
                   </div>
                 </mat-expansion-panel>
-              </div> -->
+              </div>
             </div>
           </mat-tab>
-<!--
+
           <mat-tab label="Characteristics">
             <div class="container-fluid">
 
               <div class="row pt-3">
-                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.AcquisitionYear"></a-mat-input>
-                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ManufacturingYear"></a-mat-input>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.AcquisitionYear"></a-mat-input>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.ManufacturingYear"></a-mat-input>
                 <mat-form-field class="col-md">
-                  <input matInput [(ngModel)]="inventoryItem.age" name="age" placeholder="Age" readonly>
+                  <input matInput [(ngModel)]="item.age" name="age" placeholder="Age" readonly>
                 </mat-form-field>
-                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.LifeTime"></a-mat-input>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.LifeTime"></a-mat-input>
               </div>
 
               <div class="row">
                 <mat-form-field class="col-md">
-                  <input matInput [(ngModel)]="inventoryItem.yearsToGo" name="yearsToGo" placeholder="Years to go" readonly>
+                  <input matInput [(ngModel)]="item.yearsToGo" name="yearsToGo" placeholder="Years to go" readonly>
                 </mat-form-field>
-                <a-mat-input class="col-md" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.DepreciationYears"></a-mat-input>
+                <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.DepreciationYears"></a-mat-input>
               </div>
 
-              <div class="row" *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
-                <a-mat-input class="col-md" *ngIf="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
+              <div class="row" *ngFor="let productCharacteristicValue of item.SerialisedItemCharacteristics">
+                <a-mat-input class="col-md" *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
               </div>
 
-              <div class="row" *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
-                <a-mat-textarea class="col-md" *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"
+              <div class="row" *ngFor="let productCharacteristicValue of item.SerialisedItemCharacteristics">
+                <a-mat-textarea class="col-md" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"
                   class="col-md-12"></a-mat-textarea>
               </div>
 
@@ -159,8 +106,8 @@
                   </mat-expansion-panel-header>
                   <div *ngFor="let locale of locales; let i = index" class="row">
                     <mat-divider *ngIf="i > 0"></mat-divider>
-                    <div class="row" *ngFor="let productCharacteristicValue of inventoryItem.SerialisedInventoryItemCharacteristics">
-                      <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedInventoryItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedInventoryItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedInventoryItemCharacteristicType.Name"></a-mat-localised-text>
+                    <div class="row" *ngFor="let productCharacteristicValue of item.SerialisedItemCharacteristics">
+                      <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"></a-mat-localised-text>
                     </div>
                   </div>
                 </mat-expansion-panel>
@@ -172,38 +119,38 @@
           <mat-tab label="Financial">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ExpectedSalesPrice"></a-mat-input>
-                <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.PurchasePrice"></a-mat-input>
+                <a-mat-input class="col" [object]="item" [roleType]="m.SerialisedItem.ExpectedSalesPrice"></a-mat-input>
+                <a-mat-input class="col" [object]="item" [roleType]="m.SerialisedItem.PurchasePrice"></a-mat-input>
               </div>
 
               <div class="row">
-                <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.ReplacementValue"></a-mat-input>
+                <a-mat-input class="col" [object]="item" [roleType]="m.SerialisedItem.ReplacementValue"></a-mat-input>
                 <mat-form-field class="col">
-                  <input matInput [(ngModel)]="inventoryItem.goingConcern" name="goingConcern" placeholder="Going Concern" readonly>
+                  <input matInput [(ngModel)]="item.goingConcern" name="goingConcern" placeholder="Going Concern" readonly>
                 </mat-form-field>
               </div>
 
               <div class="row">
                 <mat-form-field class="col">
-                  <input matInput [(ngModel)]="inventoryItem.marketValue" name="marketValue" placeholder="Market Value" readonly>
+                  <input matInput [(ngModel)]="item.marketValue" name="marketValue" placeholder="Market Value" readonly>
                 </mat-form-field>
               </div>
 
               <div class="row">
-                <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.RefurbishCost"></a-mat-input>
-                <a-mat-input class="col" [object]="inventoryItem" [roleType]="m.SerialisedInventoryItem.TransportCost"></a-mat-input>
+                <a-mat-input class="col" [object]="item" [roleType]="m.SerialisedItem.RefurbishCost"></a-mat-input>
+                <a-mat-input class="col" [object]="item" [roleType]="m.SerialisedItem.TransportCost"></a-mat-input>
               </div>
 
               <div class="row">
                 <mat-form-field class="col">
-                  <input type="number" matInput [(ngModel)]="inventoryItem.grossBookValue" name="grossBookValue" placeholder="Gross Book Value" readonly>
+                  <input type="number" matInput [(ngModel)]="item.grossBookValue" name="grossBookValue" placeholder="Gross Book Value" readonly>
                 </mat-form-field>
                 <mat-form-field class="col">
-                  <input type="number" matInput [(ngModel)]="inventoryItem.expectedPosa" name="expectedPosa" placeholder="Expected Posa" readonly>
+                  <input type="number" matInput [(ngModel)]="item.expectedPosa" name="expectedPosa" placeholder="Expected Posa" readonly>
                 </mat-form-field>
               </div>
             </div>
-          </mat-tab> -->
+          </mat-tab>
 
           <mat-tab label="Comments">
             <div class="container-fluid">
@@ -224,12 +171,13 @@
                   <div *ngFor="let locale of locales; let i = index">
                     <mat-divider *ngIf="i > 0"></mat-divider>
                     <div class="row">
-                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.LocalisedComments" [locale]="locale"></a-mat-localised-text>
+                      <a-mat-localised-text class="col-md-12" [object]="item" [roleType]="m.SerialisedItem.LocalisedComments"
+                        [locale]="locale"></a-mat-localised-text>
                     </div>
                   </div>
                 </mat-expansion-panel>
               </div>
-          </div>
+            </div>
           </mat-tab>
 
           <mat-tab label="Images">
@@ -244,15 +192,12 @@
         </mat-tab-group>
       </mat-card-content>
     </mat-card>
-  </div>
 
-  <mat-toolbar class="a-footer">
-    <mat-toolbar-row class="row">
-      <span class="col"></span>
-      <button mat-raised-button (click)="goBack()" type="button">CANCEL</button>
-      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE & CLOSE</button>
-    </mat-toolbar-row>
-  </mat-toolbar>
+    <a-mat-footer>
+      <button mat-raised-button (click)="navigationService.back()" type="button">CANCEL</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid">Save</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid">SAVE & CLOSE</button>
+    </a-mat-footer>
 
-</form>
+  </form>
+</div>

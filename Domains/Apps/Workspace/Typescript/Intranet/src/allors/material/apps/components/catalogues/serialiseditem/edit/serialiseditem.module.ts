@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatAutocompleteModule, MatExpansionModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatAutocompleteModule, MatExpansionModule, MatFooterRow } from '@angular/material';
 
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../../base/components/autocomplete';
@@ -10,6 +10,7 @@ import { AllorsMaterialChipsModule } from '../../../../../base/components/chips'
 import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
 import { AllorsMaterialFilesModule } from '../../../../../base/components/files';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialLocalisedTextModule } from '../../../../../base/components/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
@@ -36,6 +37,7 @@ export { EditSerialisedItemComponent } from './serialiseditem.component';
     AllorsMaterialDatepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilesModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialLocalisedTextModule,
     AllorsMaterialSelectModule,

@@ -461,10 +461,10 @@ namespace Allors.Domain
                             if (salesOrderItem.ExistReservedFromSerialisedInventoryItem)
                             {
                                 pickListItem.InventoryItem = salesOrderItem.ReservedFromSerialisedInventoryItem;
-                                if (salesOrderItem.ExistNewSerialisedInventoryItemState)
+                                if (salesOrderItem.ExistNewSerialisedItemState)
                                 {
-                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedInventoryItemState =
-                                        salesOrderItem.NewSerialisedInventoryItemState;
+                                    salesOrderItem.ReservedFromSerialisedInventoryItem.SerialisedItem.SerialisedItemState =
+                                        salesOrderItem.NewSerialisedItemState;
                                 }
                             }
 

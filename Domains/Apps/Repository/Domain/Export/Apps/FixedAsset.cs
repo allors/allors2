@@ -7,7 +7,7 @@ namespace Allors.Repository
     #region Allors
     [Id("4a3efb9c-1556-4e57-bb59-f09d297e607e")]
     #endregion
-	public partial interface FixedAsset : AccessControlledObject, Commentable 
+    public partial interface FixedAsset : AccessControlledObject, Commentable
     {
         #region Allors
         [Id("354107ce-4eb6-4b9a-83c8-5cfe5e3adb22")]
@@ -19,6 +19,15 @@ namespace Allors.Repository
         [Workspace]
         string Name { get; set; }
 
+        #region Allors
+        [Id("54EC72A4-B9AC-44A0-A29F-10DAC2F58DEC")]
+        [AssociationId("31962D0B-3A42-49DF-B660-304206F2F1E5")]
+        [RoleId("0DDBA6CC-868E-45CB-BAA3-6FE971F06021")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        LocalisedText[] LocalisedNames { get; set; }
 
         #region Allors
         [Id("51133e4d-5135-4991-9f2f-8df9762fac78")]
@@ -28,7 +37,6 @@ namespace Allors.Repository
         [Workspace]
         DateTime LastServiceDate { get; set; }
 
-
         #region Allors
         [Id("54cf9225-9204-43ee-9984-7fd8b2cbf8bc")]
         [AssociationId("efb718b5-7d70-4696-81c8-961582ed01f2")]
@@ -36,7 +44,6 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         DateTime AcquiredDate { get; set; }
-
 
         #region Allors
         [Id("725c6b7d-68ed-4576-8b17-eac4e9f4db83")]
@@ -47,6 +54,15 @@ namespace Allors.Repository
         [Workspace]
         string Description { get; set; }
 
+        #region Allors
+        [Id("16B8D296-15ED-47F3-8278-C59ED863E0F8")]
+        [AssociationId("E3B33F6F-C51C-4EC7-88C5-10DF34F7D48B")]
+        [RoleId("94998B53-4AFE-4E91-894F-3D60E1E17D0B")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToMany)]
+        [Workspace]
+        LocalisedText[] LocalisedDescriptions { get; set; }
 
         #region Allors
         [Id("913cc338-f844-49ae-886a-2e32db190b78")]

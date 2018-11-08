@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime } from '../../../../../domain';
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/StateService';
@@ -33,7 +33,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public inventoryItems: InventoryItem[];
   public serialisedInventoryItem: SerialisedInventoryItem;
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
-  public serialisedInventoryItemStates: SerialisedInventoryItemState[];
+  public serialisedItemStates: SerialisedItemState[];
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
 
@@ -77,7 +77,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
                 SalesOrderItemPaymentState: x,
                 ReservedFromNonSerialisedInventoryItem: x,
                 ReservedFromSerialisedInventoryItem: x,
-                NewSerialisedInventoryItemState: x,
+                NewSerialisedItemState: x,
                 QuoteItem: x,
                 DiscountAdjustment: x,
                 SurchargeAdjustment: x,
@@ -89,6 +89,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             }),
             pull.VatRate(),
             pull.VatRegime(),
+            pull.SerialisedItemState(),
             pull.Good({ sort: new Sort(m.Good.Name) }),
             pull.InvoiceItemType({
               predicate: new Equals({ propertyType: m.InvoiceItemType.IsActive, value: true }),
@@ -115,7 +116,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         this.goods = loaded.collections.goods as Good[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.serialisedInventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.serialisedItemStates = loaded.collections.serialisedItemStates as SerialisedItemState[];
         this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44CB-8354-FB887ADA42AD');
 

@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { Facility, Good, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SupplierOffering, VendorProduct, SerialisedItem, Part } from '../../../../../../domain';
+import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute, SearchFactory } from '../../../../../../angular';
+import { Facility, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SerialisedItem, Part } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -29,18 +29,16 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   subTitle: string;
   facility: Facility;
   locales: Locale[];
-  productTypes: ProductType[];
   suppliers: Organisation[];
-  activeSuppliers: Organisation[];
-  selectedSuppliers: Organisation[];
-  supplierOfferings: SupplierOffering[];
   ownerships: Ownership[];
   organisations: Organisation[];
+  organisationFilter: SearchFactory;
+  part: Part;
+  activeSuppliers: Organisation[];
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
-  part: Part;
 
   constructor(
     @Self() private allors: Allors,
@@ -55,6 +53,11 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
     this.scope = this.allors.scope;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+
+    this.organisationFilter = new SearchFactory({
+      objectType: this.m.Organisation,
+      roleTypes: [this.m.Organisation.Name],
+    });
   }
 
   public ngOnInit(): void {
@@ -80,19 +83,34 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
                 PrimaryPhoto: x,
                 Photos: x,
                 Ownership: x,
+                OwnedBy: x,
+                RentedBy: x,
+                SuppliedBy: x,
+                LocalisedNames: {
+                  Locale: x,
+                },
+                LocalisedDescriptions: {
+                  Locale: x,
+                },
+                LocalisedComments: {
+                  Locale: x,
+                },
                 SerialisedItemCharacteristics: {
                   SerialisedItemCharacteristicType: {
                     UnitOfMeasure: x,
                   },
                   LocalisedValues: {
                     Locale: x,
-                  }
+                  },
                 }
               }
             }),
             pull.Part(
               {
                 object: partId,
+                include: {
+                  ProductType: x
+                }
               }
             ),
             pull.Ownership({
@@ -102,8 +120,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
               predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedInventoryItemState.Name),
             }),
-            pull.ProductType({ sort: new Sort(m.ProductType.Name) }
-            ),
           ];
 
           return scope
@@ -122,7 +138,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
         this.part = loaded.objects.Part as Part;
-        this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.ownerships = loaded.collections.Ownerships as Ownership[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
@@ -143,14 +158,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
         },
       );
   }
-  // const pulls2 = [
-  //   pull.Organisation({
-  //     predicate: new Equals({ propertyType: m.Organisation.IsManufacturer, value: true }),
-  //     sort: new Sort(m.Organisation.PartyName),
-  //   })
-  // ];
-  // this.manufacturers = loaded.collections.manufacturers as Organisation[];
-
 
   public ngOnDestroy(): void {
     if (this.subscription) {
@@ -165,8 +172,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   public save(): void {
     const { scope } = this.allors;
 
-    this.onSave();
-
     scope
       .save()
       .subscribe(() => {
@@ -179,8 +184,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
   public update(): void {
     const { scope } = this.allors;
-
-    this.onSave();
 
     scope
       .save()
@@ -195,57 +198,5 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
   public goBack(): void {
     window.history.back();
-  }
-
-  private onSave() {
-
-    if (this.suppliers !== undefined) {
-      const suppliersToDelete = this.suppliers.filter(v => v);
-
-      if (this.selectedSuppliers !== undefined) {
-        this.selectedSuppliers.forEach((supplier: Organisation) => {
-          const index = suppliersToDelete.indexOf(supplier);
-          if (index > -1) {
-            suppliersToDelete.splice(index, 1);
-          }
-
-          const now = new Date();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
-
-          if (supplierOffering === undefined) {
-            this.supplierOfferings.push(this.newSupplierOffering(supplier));
-          } else {
-            supplierOffering.ThroughDate = null;
-          }
-        });
-      }
-
-      if (suppliersToDelete !== undefined) {
-        suppliersToDelete.forEach((supplier: Organisation) => {
-          const now = new Date();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
-
-          if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = new Date();
-          }
-        });
-      }
-    }
-  }
-
-  private newSupplierOffering(supplier: Organisation): SupplierOffering {
-    const { scope } = this.allors;
-
-    const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
-    supplierOffering.Supplier = supplier;
-    // TODO:
-    // supplierOffering.Product = good;
-    return supplierOffering;
   }
 }
