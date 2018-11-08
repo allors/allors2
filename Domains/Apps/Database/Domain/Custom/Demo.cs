@@ -49,7 +49,7 @@ namespace Allors
                 websiteAddress: "www.allors.com",
                 taxNumber: "BE 0476967014",
                 bankName: "ING",
-                facilityName: "Allors Facility",
+                facilityName: "Allors Warehouse 1",
                 bic: "BBRUBEBB",
                 iban: "BE89 3200 1467 7685",
                 currency: euro,
@@ -82,6 +82,12 @@ namespace Allors
                 articleNumberPrefix: string.Empty,
                 requestCounterValue: 1,
                 quoteCounterValue: 1);
+
+            new FacilityBuilder(this.Session)
+                .WithName("Allors warehouse 2")
+                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithOwner(allors)
+                .Build();
 
             var productType = new ProductTypeBuilder(this.Session)
                 .WithName($"Gizmo Serialized")

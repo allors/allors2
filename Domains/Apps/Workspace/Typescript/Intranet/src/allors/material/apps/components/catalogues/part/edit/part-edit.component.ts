@@ -5,7 +5,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
-import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, Ownership, InternalOrganisation, GoodIdentificationType, PartNumber, Part } from '../../../../../../domain';
+import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
@@ -49,6 +49,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
+  facilities: Facility[];
 
   constructor(
     @Self() public allors: Allors,
@@ -87,6 +88,11 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 Photos: x,
                 Documents: x,
                 ElectronicDocuments: x,
+                SerialisedItemCharacteristics: {
+                  SerialisedItemCharacteristicType: {
+                    UnitOfMeasure: x
+                  }
+                },
                 Brand: {
                   Models: x
                 },
@@ -115,6 +121,9 @@ export class PartEditComponent implements OnInit, OnDestroy {
                   Models: x
               },
               sort: new Sort(m.Brand.Name)
+            }),
+            pull.Facility({
+              predicate: new Equals({ propertyType: m.Facility.Owner, object: internalOrganisationId }),
             })
           ];
 
@@ -137,6 +146,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
         this.brands = loaded.collections.Brands as Brand[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.facilities = loaded.collections.Facilities as Facility[];
 
         this.activeSuppliers = internalOrganisation.ActiveSuppliers as Organisation[];
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));

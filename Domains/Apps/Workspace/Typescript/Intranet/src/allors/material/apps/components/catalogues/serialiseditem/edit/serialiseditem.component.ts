@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute, SearchFactory } from '../../../../../../angular';
-import { Facility, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SerialisedItem, Part } from '../../../../../../domain';
+import { Facility, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SerialisedItem, Part, SerialisedItemState } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -39,6 +39,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
+  serialisedItemStates: SerialisedItemState[];
 
   constructor(
     @Self() private allors: Allors,
@@ -116,8 +117,8 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
             pull.Ownership({
               sort: new Sort(m.Ownership.Name),
             }),
-            pull.SerialisedInventoryItemState({
-              predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
+            pull.SerialisedItemState({
+              predicate: new Equals({ propertyType: m.SerialisedItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedInventoryItemState.Name),
             }),
           ];
@@ -138,6 +139,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
         this.activeSuppliers = this.activeSuppliers.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
 
         this.part = loaded.objects.Part as Part;
+        this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
         this.ownerships = loaded.collections.Ownerships as Ownership[];
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 

@@ -64,10 +64,19 @@ namespace Allors.Domain
                     var characteristic = this.SerialisedItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedItemCharacteristicType, characteristicType));
                     if (characteristic == null)
                     {
-                        this.AddSerialisedItemCharacteristic(
-                            new SerialisedItemCharacteristicBuilder(this.strategy.Session)
-                            .WithSerialisedItemCharacteristicType(characteristicType)
-                            .Build());
+                        var newCharacteristic = new SerialisedItemCharacteristicBuilder(this.strategy.Session)
+                            .WithSerialisedItemCharacteristicType(characteristicType).Build();
+
+                        this.AddSerialisedItemCharacteristic(newCharacteristic);
+
+                        var partCharacteristics = part.SerialisedItemCharacteristics;
+                        partCharacteristics.Filter.AddEquals(M.SerialisedItemCharacteristic.SerialisedItemCharacteristicType, characteristicType);
+                        var fromPart = partCharacteristics.FirstOrDefault();
+
+                        if (fromPart != null)
+                        {
+                            newCharacteristic.Value = fromPart.Value;
+                        }
                     }
                     else
                     {

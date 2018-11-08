@@ -24,6 +24,11 @@
             </div>
 
             <div class="row">
+              <a-mat-select class="col-md" [object]="part" [roleType]="m.Part.DefaultFacility" [options]="facilities"
+                display="Name"></a-mat-select>
+            </div>
+
+            <div class="row">
               <div class="col">
                 <div class="row">
                   <mat-form-field class="col">
@@ -106,6 +111,37 @@
                   </div>
                 </div>
               </mat-expansion-panel>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Characteristics">
+            <div class="container-fluid">
+
+              <div class="row" *ngFor="let productCharacteristicValue of part.SerialisedItemCharacteristics">
+                <a-mat-input class="col-md" *ngIf="productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name + ' (' + productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure.Name + ')'"></a-mat-input>
+              </div>
+
+              <div class="row" *ngFor="let productCharacteristicValue of part.SerialisedItemCharacteristics">
+                <a-mat-textarea class="col-md" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.Value" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"
+                  class="col-md-12"></a-mat-textarea>
+              </div>
+
+              <div class="row">
+                <mat-expansion-panel class="col" *ngIf="locales">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Translations
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <div *ngFor="let locale of locales; let i = index" class="row">
+                    <mat-divider *ngIf="i > 0"></mat-divider>
+                    <div class="row" *ngFor="let productCharacteristicValue of part.SerialisedItemCharacteristics">
+                      <a-mat-localised-text class="col-md-12" *ngIf="!productCharacteristicValue.SerialisedItemCharacteristicType.UnitOfMeasure" [object]="productCharacteristicValue" [roleType]="m.SerialisedItemCharacteristic.LocalisedValues" [locale]="locale" [label]="productCharacteristicValue.SerialisedItemCharacteristicType.Name"></a-mat-localised-text>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+
             </div>
           </mat-tab>
 

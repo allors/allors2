@@ -117,6 +117,7 @@ namespace Allors.Domain
                 }
             }
 
+            this.DeriveProductCharacteristics(derivation);
             this.DeriveQuantityOnHand();
             this.DeriveAvailableToPromise();
             this.DeriveQuantityCommittedOut();
@@ -145,6 +146,35 @@ namespace Allors.Domain
                       .WithPart(this)
                       .Build();
                 }
+            }
+        }
+
+        private void DeriveProductCharacteristics(IDerivation derivation)
+        {
+            var characteristicsToDelete = this.SerialisedItemCharacteristics.ToList();
+
+            if (this.ExistProductType)
+            {
+                foreach (SerialisedItemCharacteristicType characteristicType in this.ProductType.SerialisedItemCharacteristicTypes)
+                {
+                    var characteristic = this.SerialisedItemCharacteristics.FirstOrDefault(v => Equals(v.SerialisedItemCharacteristicType, characteristicType));
+                    if (characteristic == null)
+                    {
+                        this.AddSerialisedItemCharacteristic(
+                            new SerialisedItemCharacteristicBuilder(this.strategy.Session)
+                                .WithSerialisedItemCharacteristicType(characteristicType)
+                                .Build());
+                    }
+                    else
+                    {
+                        characteristicsToDelete.Remove(characteristic);
+                    }
+                }
+            }
+
+            foreach (SerialisedItemCharacteristic characteristic in characteristicsToDelete)
+            {
+                this.RemoveSerialisedItemCharacteristic(characteristic);
             }
         }
 

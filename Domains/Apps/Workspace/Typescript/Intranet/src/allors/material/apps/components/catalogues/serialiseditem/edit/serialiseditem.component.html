@@ -26,6 +26,7 @@
 
               <div class="row">
                 <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
+                <a-mat-select class="col-md" [object]="item" [roleType]="m.SerialisedItem.SerialisedItemState" [options]="serialisedItemStates" display="Name"></a-mat-select>
               </div>
 
               <div class="row">
