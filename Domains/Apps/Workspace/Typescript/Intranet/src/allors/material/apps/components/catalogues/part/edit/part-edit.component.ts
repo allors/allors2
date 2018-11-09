@@ -5,8 +5,8 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
-import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure } from '../../../../../../domain';
-import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../../domain';
+import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
 import { StateService } from 'src/allors/material/apps/services/StateService';
@@ -45,12 +45,14 @@ export class PartEditComponent implements OnInit, OnDestroy {
   addModel = false;
   goodIdentificationTypes: GoodIdentificationType[];
   partNumber: PartNumber;
+  facilities: Facility[];
+  unitsOfMeasure: UnitOfMeasure[];
+  priceComponents: PriceComponent[];
+  currentSellingPrice: PriceComponent;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
-  facilities: Facility[];
-  unitsOfMeasure: UnitOfMeasure[];
 
   constructor(
     @Self() public allors: Allors,
@@ -114,6 +116,14 @@ export class PartEditComponent implements OnInit, OnDestroy {
                 }
               }
             ),
+            pull.Part(
+              {
+                object: id,
+                fetch: {
+                  PriceComponentsWherePart: x
+                }
+              }
+            ),
             pull.UnitOfMeasure(),
             pull.InventoryItemKind(),
             pull.GoodIdentificationType(),
@@ -121,7 +131,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
             pull.ProductType({ sort: new Sort(m.ProductType.Name) }),
             pull.Brand({
               include: {
-                  Models: x
+                Models: x
               },
               sort: new Sort(m.Brand.Name)
             }),
@@ -161,6 +171,14 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+
+        this.manufacturers = loaded.collections.Organisations as Organisation[];
+
+        this.priceComponents = loaded.collections.PriceComponents as PriceComponent[];
+        const now = new Date();
+        this.currentSellingPrice = this.priceComponents.find((v) =>
+          v.FromDate <= now &&
+          (v.ThroughDate === null || v.ThroughDate >= now));
 
         if (add) {
           this.add = !(this.edit = false);

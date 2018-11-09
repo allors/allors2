@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
-import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem } from '../../../../../../domain';
+import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -32,6 +32,8 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private fetcher: Fetcher;
+  basePrices: BasePrice[];
+  sellingPrice: BasePrice;
 
   constructor(
     @Self() private allors: Allors,
@@ -64,6 +66,11 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
+            pull.BasePrice({
+              include: {
+                Part: x
+              }
+            }),
             pull.Part({
               object: id,
               include: {
@@ -93,6 +100,11 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
         this.part = loaded.objects.Part as Part;
         this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
+
+        this.basePrices = loaded.collections.BasePrices as BasePrice[];
+        const now = new Date();
+        this.sellingPrice = this.basePrices
+          .find(v => v.Part === this.part && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
 
         if (this.part.SuppliedBy.length > 0) {
           this.suppliers = this.part.SuppliedBy

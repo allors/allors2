@@ -72,6 +72,13 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="selling price">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Selling price </th>
+            <td mat-cell *matCellDef="let row">
+              {{row.price}}
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="inventory">
               <th mat-header-cell *matHeaderCellDef mat-sort-header> Inventory </th>
               <td mat-cell *matCellDef="let row">

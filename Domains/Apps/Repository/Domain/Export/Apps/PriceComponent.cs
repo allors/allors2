@@ -25,6 +25,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         GeographicBoundary GeographicBoundary { get; set; }
         
         #region Allors
@@ -34,6 +35,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal Rate { get; set; }
         
         #region Allors
@@ -43,6 +45,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         RevenueValueBreak RevenueValueBreak { get; set; }
         
         #region Allors
@@ -52,6 +55,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         PartyClassification PartyClassification { get; set; }
         
         #region Allors
@@ -61,6 +65,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         OrderQuantityBreak OrderQuantityBreak { get; set; }
         
         #region Allors
@@ -70,6 +75,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         PackageQuantityBreak PackageQuantityBreak { get; set; }
         
         #region Allors
@@ -99,6 +105,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         RevenueQuantityBreak RevenueQuantityBreak { get; set; }
       
         #region Allors
@@ -108,6 +115,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         ProductFeature ProductFeature { get; set; }
         
         #region Allors
@@ -117,6 +125,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         AgreementPricingProgram AgreementPricingProgram { get; set; }
         
         #region Allors
@@ -126,6 +135,7 @@ namespace Allors.Repository
         #endregion
         [Required]
         [Size(-1)]
+        [Workspace]
         string Description { get; set; }
         
         #region Allors
@@ -136,6 +146,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Derived]
         [Indexed]
+        [Workspace]
         Currency Currency { get; set; }
         
         #region Allors
@@ -145,6 +156,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         OrderKind OrderKind { get; set; }
         
         #region Allors
@@ -154,6 +166,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         OrderValue OrderValue { get; set; }
 
         #region Allors
@@ -163,6 +176,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         decimal Price { get; set; }
 
         #region Allors
@@ -172,6 +186,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         ProductCategory ProductCategory { get; set; }
         
         #region Allors
@@ -181,6 +196,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         SalesChannel SalesChannel { get; set; }
     }
 }

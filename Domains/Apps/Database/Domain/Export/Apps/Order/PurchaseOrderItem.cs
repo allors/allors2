@@ -47,7 +47,7 @@ namespace Allors.Domain
                         if (offering.FromDate <= this.PurchaseOrderWherePurchaseOrderItem.OrderDate &&
                             (!offering.ExistThroughDate || offering.ThroughDate >= this.PurchaseOrderWherePurchaseOrderItem.OrderDate))
                         {
-                            return offering.ReferenceNumber;
+                            return offering.SupplierProductId;
                         }
                     }
                 }

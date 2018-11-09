@@ -33,7 +33,7 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
-            derivation.Validation.AssertAtLeastOne(this, M.BasePrice.Product, M.BasePrice.ProductFeature);
+            derivation.Validation.AssertAtLeastOne(this, M.BasePrice.Part, M.BasePrice.Product, M.BasePrice.ProductFeature);
 
             if (this.ExistOrderQuantityBreak)
             {

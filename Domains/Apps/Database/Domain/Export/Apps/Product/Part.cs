@@ -76,6 +76,7 @@ namespace Allors.Domain
             {
                 new BasePriceBuilder(this.Strategy.Session)
                     .WithDescription("baseprice")
+                    .WithPricedBy(this.InternalOrganisation)
                     .WithPart(this)
                     .WithFromDate(DateTime.UtcNow)
                     .WithPrice(0)

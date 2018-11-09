@@ -14,7 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { Sorter } from '../../../../../base/sorting';
 import { StateService } from '../../../../services/StateService';
 
-import { Part, ProductType, Brand, Model, GoodIdentificationType } from '../../../../../../domain';
+import { Part, ProductType, Brand, Model, GoodIdentificationType, BasePrice } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';
 import { stringify } from '@angular/core/src/render3/util';
 import { MetaDomain } from 'src/allors/meta';
@@ -28,6 +28,7 @@ interface Row {
   brand: string;
   model: string;
   inventoryItemKind: string;
+  price: string;
 }
 
 @Component({
@@ -38,7 +39,7 @@ export class PartListComponent implements OnInit, OnDestroy {
 
   public title = 'Parts';
 
-  public displayedColumns = ['select', 'name', 'part No.', 'inventory', 'product type', 'qoh', 'brand', 'model', 'menu'];
+  public displayedColumns = ['select', 'name', 'part No.', 'selling price', 'inventory', 'product type', 'qoh', 'brand', 'model', 'menu'];
   public selection = new SelectionModel<Row>(true, []);
 
   public total: number;
@@ -53,6 +54,7 @@ export class PartListComponent implements OnInit, OnDestroy {
   goodIdentificationTypes: GoodIdentificationType[];
 
   public m: MetaDomain;
+  basePrices: BasePrice[];
 
   constructor(
     @Self() public allors: Allors,
@@ -136,6 +138,7 @@ export class PartListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             }),
             pull.GoodIdentificationType(),
+            pull.BasePrice(),
           ];
 
           return scope
@@ -147,8 +150,17 @@ export class PartListComponent implements OnInit, OnDestroy {
         this.total = loaded.values.Goods_total;
 
         const parts = loaded.collections.Parts as Part[];
+        this.basePrices = loaded.collections.BasePrices as BasePrice[];
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
+
+        const now = new Date();
+        const priceByPart = this.basePrices
+          .filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now))
+          .reduce((map, obj) => {
+            map[obj.Part.id] = obj.Price;
+            return map;
+          }, {});
 
         const partNumberByPart = parts.reduce((map, obj) => {
           map[obj.id] = obj.GoodIdentifications.filter(v => v.GoodIdentificationType === partNumberType).map(w => w.Identification);
@@ -164,7 +176,8 @@ export class PartListComponent implements OnInit, OnDestroy {
             productType: v.ProductType ? v.ProductType.Name : '',
             brand: v.Brand ? v.Brand.Name : '',
             model: v.Model ? v.Model.Name : '',
-            inventoryItemKind: v.InventoryItemKind.Name
+            inventoryItemKind: v.InventoryItemKind.Name,
+            price: priceByPart[v.id]
           } as Row;
         });
       },

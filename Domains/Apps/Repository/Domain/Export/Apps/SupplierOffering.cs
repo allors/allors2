@@ -51,7 +51,17 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public ProductPurchasePrice[] ProductPurchasePrices { get; set; }
-        
+
+        #region Allors
+        [Id("B1552295-EA57-4B64-AD34-A8C64F89841C")]
+        [AssociationId("64314429-18F9-417E-94C5-743C127A4A71")]
+        [RoleId("B589C109-62B5-43B1-A7AE-176DD531016F")]
+        #endregion
+        [Derived]
+        [Precision(19)]
+        [Scale(2)]
+        public decimal CurrentPrice { get; set; }
+
         #region Allors
         [Id("9c3458aa-7062-4c4c-9160-2f978b088082")]
         [AssociationId("2efde592-4a60-4c79-bc20-f389c5df5966")]
@@ -88,9 +98,15 @@ namespace Allors.Repository
         [AssociationId("3e237d3b-6d44-4afd-a248-f9d15e7822d7")]
         [RoleId("79affcb8-28b2-4629-a918-c863089f1dbc")]
         #endregion
-        [Size(256)]
-        public string ReferenceNumber { get; set; }
-        
+        public string SupplierProductName { get; set; }
+
+        #region Allors
+        [Id("E7CBF9F3-9762-4102-9CAA-78D1B5F1F39C")]
+        [AssociationId("E253BB7F-95C0-45AB-B2D0-0F41AF17122B")]
+        [RoleId("067D9FB0-A4F5-447D-A039-89A1F92DDEF7")]
+        #endregion
+        public string SupplierProductId { get; set; }
+
         #region Allors
         [Id("ea5e3f12-417c-40c4-97e0-d8c7dd41300c")]
         [AssociationId("ba708825-f930-445c-8eaf-29221a405edf")]
