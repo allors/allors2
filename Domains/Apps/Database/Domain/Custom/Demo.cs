@@ -4,6 +4,7 @@ namespace Allors
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Security.Cryptography.X509Certificates;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -37,7 +38,8 @@ namespace Allors
 
             var allorsLogo = this.DataPath + @"\www\admin\images\logo.png";
 
-            var allors = this.SetupInternalOrganisation(
+            var allors = Organisations.CreateInternalOrganisation(
+                session: this.Session,
                 name: "Allors BVBA",
                 address: "Kleine Nieuwedijkstraat 4",
                 postalCode: "2800",
@@ -54,13 +56,20 @@ namespace Allors
                 iban: "BE89 3200 1467 7685",
                 currency: euro,
                 logo: allorsLogo,
-                requestNumberPrefix: "requestno:",
-                quoteNumberPrefix: "quoteno:",
-                articleNumberPrefix: "A-",
+                storeName: "Allors Store",
+                outgoingShipmentNumberPrefix: "a-CS",
+                salesInvoiceNumberPrefix: "a-SI",
+                salesOrderNumberPrefix: "a-SO",
+                requestNumberPrefix: "a-RFQ",
+                quoteNumberPrefix: "a-Q",
+                productNumberPrefix: "A-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1);
+                quoteCounterValue: 1,
+                partNumberPrefix: "a-P",
+                usePartNumberCounter: true);
 
-            var dipu = this.SetupInternalOrganisation(
+            var dipu = Organisations.CreateInternalOrganisation(
+                session: this.Session,
                 name: "Dipu BVBA",
                 address: "Kleine Nieuwedijkstraat 2",
                 postalCode: "2800",
@@ -77,11 +86,17 @@ namespace Allors
                 iban: "BE23 3300 6167 6391",
                 currency: euro,
                 logo: allorsLogo,
-                requestNumberPrefix: string.Empty,
-                quoteNumberPrefix: string.Empty,
-                articleNumberPrefix: string.Empty,
+                storeName: "Dipu Store",
+                outgoingShipmentNumberPrefix: "d-CS",
+                salesInvoiceNumberPrefix: "d-SI",
+                salesOrderNumberPrefix: "d-SO",
+                requestNumberPrefix: "d-RFQ",
+                quoteNumberPrefix: "d-Q",
+                productNumberPrefix: "D-",
                 requestCounterValue: 1,
-                quoteCounterValue: 1);
+                quoteCounterValue: 1,
+                partNumberPrefix: "d-P",
+                usePartNumberCounter: false);
 
             new FacilityBuilder(this.Session)
                 .WithName("Allors warehouse 2")
@@ -143,9 +158,6 @@ namespace Allors
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10101")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("P1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good")
                 .WithBrand(brand)
                 .WithModel(brand.Models[0])
@@ -161,9 +173,6 @@ namespace Allors
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood)
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
-                    .WithIdentification("Art 1")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .Build();
 
             new InventoryItemTransactionBuilder(this.Session).WithPart(finishedGood).WithQuantity(100).WithReason(new InventoryTransactionReasons(this.Session).Unknown).Build();
@@ -176,9 +185,6 @@ namespace Allors
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10102")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("P2")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithManufacturedBy(manufacturer)
                 .Build();
 
@@ -187,9 +193,6 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine rode ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect rood met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
-                    .WithIdentification("Art 2")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood2)
@@ -205,9 +208,6 @@ namespace Allors
                 .WithGoodIdentification(new SkuIdentificationBuilder(this.Session)
                     .WithIdentification("10103")
                     .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Sku).Build())
-                .WithGoodIdentification(new PartNumberBuilder(this.Session)
-                    .WithIdentification("P3")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Part).Build())
                 .WithName("finished good3")
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .WithManufacturedBy(manufacturer)
@@ -218,9 +218,6 @@ namespace Allors
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine groene ronde gizmo").WithLocale(dutchLocale).Build())
                 .WithDescription("Perfect red with nice curves")
                 .WithLocalisedDescription(new LocalisedTextBuilder(this.Session).WithText("Perfect groen met mooie rondingen").WithLocale(dutchLocale).Build())
-                .WithGoodIdentification(new ProductNumberBuilder(this.Session)
-                    .WithIdentification("Art 3")
-                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.Session).Good).Build())
                 .WithVatRate(vatRate)
                 .WithPrimaryProductCategory(productCategory3)
                 .WithPart(finishedGood3)
@@ -518,139 +515,6 @@ line2")
             new UserGroups(this.Session).Creators.AddMember(person);
 
             person.SetPassword(password);
-        }
-
-        private Organisation SetupInternalOrganisation(
-            string name,
-            string address,
-            string postalCode,
-            string locality,
-            Country country,
-            string countryCode,
-            string phone,
-            string emailAddress,
-            string websiteAddress,
-            string taxNumber,
-            string bankName,
-            string facilityName,
-            string bic,
-            string iban,
-            Currency currency,
-            string logo,
-            string requestNumberPrefix,
-            string quoteNumberPrefix,
-            string articleNumberPrefix,
-            int? requestCounterValue,
-            int? quoteCounterValue)
-        {
-            var postalAddress1 = new PostalAddressBuilder(this.Session)
-                    .WithAddress1(address)
-                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithPostalCode(postalCode).WithLocality(locality).WithCountry(country).Build())
-                    .Build();
-
-            TelecommunicationsNumber phoneNumber = null;
-            if (!string.IsNullOrEmpty(phone))
-            {
-                phoneNumber = new TelecommunicationsNumberBuilder(this.Session).WithCountryCode(countryCode).WithContactNumber(phone).Build();
-            }
-
-            var email = new EmailAddressBuilder(this.Session)
-                .WithElectronicAddressString(emailAddress)
-                .Build();
-
-            var webSite = new WebAddressBuilder(this.Session)
-                .WithElectronicAddressString(websiteAddress)
-                .Build();
-
-            var bank = new BankBuilder(this.Session).WithName(bankName).WithBic(bic).WithCountry(country).Build();
-            var bankaccount = new BankAccountBuilder(this.Session)
-                .WithBank(bank)
-                .WithIban(iban)
-                .WithNameOnAccount(name)
-                .WithCurrency(currency)
-                .Build();
-
-            var organisation = new OrganisationBuilder(this.Session)
-                .WithIsInternalOrganisation(true)
-                .WithTaxNumber(taxNumber)
-                .WithName(name)
-                .WithBankAccount(bankaccount)
-                .WithDefaultCollectionMethod(new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Huisbank").Build())
-                .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
-                .WithFiscalYearStartMonth(01)
-                .WithFiscalYearStartDay(01)
-                .WithDoAccounting(false)
-                .WithRequestNumberPrefix(requestNumberPrefix)
-                .WithQuoteNumberPrefix(quoteNumberPrefix)
-                .WithInternetAddress(webSite)
-                .Build();
-
-            if (requestCounterValue != null)
-            {
-                organisation.RequestCounter = new CounterBuilder(this.Session).WithValue(requestCounterValue).Build();
-            }
-
-            if (quoteCounterValue != null)
-            {
-                organisation.QuoteCounter = new CounterBuilder(this.Session).WithValue(quoteCounterValue).Build();
-            }
-
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(email)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralEmail)
-                .Build());
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(postalAddress1)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
-                .Build());
-
-            if (phoneNumber != null)
-            { 
-                organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
-                    .WithUseAsDefault(true)
-                    .WithContactMechanism(phoneNumber)
-                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).SalesOffice)
-                    .Build());
-            }
-
-            if (File.Exists(logo))
-            {
-                var fileInfo = new FileInfo(logo);
-
-                var fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
-                var content = File.ReadAllBytes(fileInfo.FullName);
-                var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
-                organisation.LogoImage = image;
-            }
-
-            var magazijn = new FacilityBuilder(this.Session)
-                .WithName(facilityName)
-                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
-                .WithOwner(organisation)
-                .Build();
-
-            organisation.DefaultFacility = magazijn;
-
-            var paymentMethod = new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
-
-            new StoreBuilder(this.Session)
-                .WithName($"{organisation.Name} store")
-                .WithOutgoingShipmentNumberPrefix("shipmentno: ")
-                .WithSalesInvoiceNumberPrefix("invoiceno: ")
-                .WithSalesOrderNumberPrefix("orderno: ")
-                .WithDefaultCollectionMethod(paymentMethod)
-                .WithDefaultShipmentMethod(new ShipmentMethods(this.Session).Ground)
-                .WithDefaultCarrier(new Carriers(this.Session).Fedex)
-                .WithBillingProcess(new BillingProcesses(this.Session).BillingForShipmentItems)
-                .WithSalesInvoiceCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
-                .WithIsImmediatelyPicked(true)
-                .WithInternalOrganisation(organisation)
-                .Build();
-
-            return organisation;
         }
     }
 }

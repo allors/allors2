@@ -553,6 +553,33 @@ namespace Allors.Repository
         [Workspace]
         string WorkEffortPrefix { get; set; }
 
+        #region Allors
+        [Id("5F85CAE6-B43C-400E-A2C0-D86FD7A080FA")]
+        [AssociationId("9321472C-FE61-4AE4-ACFA-7441AABFDFD3")]
+        [RoleId("688D383D-FB35-49E4-A483-4D9D339302BA")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        Counter PartNumberCounter { get; set; }
+
+        #region Allors
+        [Id("FDFFDB77-D1DC-4479-8326-69722639E03B")]
+        [AssociationId("2CCEF250-1919-45F0-BC8C-251B952381A9")]
+        [RoleId("DED5FECC-4F27-461B-A595-6FE2192FD150")]
+        #endregion
+        [Size(256)]
+        [Workspace]
+        string PartNumberPrefix { get; set; }
+
+        #region Allors
+        [Id("840F8939-7CB8-4977-9BAC-A3375E50B3E6")]
+        [AssociationId("C43DC79A-637D-4853-9564-E1ABA3256418")]
+        [RoleId("F23B3F70-A8A8-443B-8357-348B608A74E0")]
+        [Required]
+        #endregion
+        bool UsePartNumberCounter { get; set; }
+
         /// <summary>
         /// Gets or sets a flag to indicate if this InternalOrganisation Requires Existing WorkEffortPartyAssignment
         /// objects to exist before allowing TimeEntry objects to attach to WorkEffort objects.

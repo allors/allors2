@@ -176,6 +176,12 @@ namespace Allors.Domain
                     @this.InvoiceSequence = new InvoiceSequences(@this.Strategy.Session).RestartOnFiscalYear;
                 }
 
+                if (@this.UsePartNumberCounter && !@this.ExistPartNumberCounter)
+                {
+                    @this.PartNumberCounter = new CounterBuilder(@this.Strategy.Session).WithUniqueId(Guid.NewGuid())
+                        .WithValue(0).Build();
+                }
+
                 if (!@this.ExistFiscalYearStartMonth)
                 {
                     @this.FiscalYearStartMonth = 1;
@@ -222,6 +228,12 @@ namespace Allors.Domain
         {
             var purchaseOrderNumber = @this.PurchaseInvoiceCounter.NextValue();
             return string.Concat(@this.PurchaseOrderNumberPrefix, purchaseOrderNumber);
+        }
+
+        public static string NextPartNumber(this InternalOrganisation @this)
+        {
+            var partNumber = @this.PartNumberCounter.NextValue();
+            return string.Concat(@this.PartNumberPrefix, partNumber);
         }
 
         public static string NextWorkEffortNumber(this InternalOrganisation @this)

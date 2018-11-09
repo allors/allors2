@@ -45,6 +45,18 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
             var defaultLocale = this.strategy.Session.GetSingleton().DefaultLocale;
+            var settings = this.strategy.Session.GetSingleton().Settings;
+
+            var identifications = this.GoodIdentifications;
+            identifications.Filter.AddEquals(M.IGoodIdentification.GoodIdentificationType, new GoodIdentificationTypes(this.strategy.Session).Good);
+            var goodNumber = identifications.FirstOrDefault();
+
+            if (goodNumber == null && settings.UseGlobalProductNumber)
+            {
+                this.AddGoodIdentification(new ProductNumberBuilder(this.strategy.Session)
+                    .WithIdentification(settings.NextGlobalProductNumber())
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Good).Build());
+            }
 
             if (!this.ExistVariants)
             {

@@ -21,6 +21,8 @@
                 .WithSerialisedItemPrefix("S")
                 .WithSerialisedItemCounter(new CounterBuilder(this.Session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
                 .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithGlobalProductNumberPrefix("art-")
+                .WithUseGlobalProductNumber(true)
                 .Build();
 
             this.Session.GetSingleton().Settings = settings;

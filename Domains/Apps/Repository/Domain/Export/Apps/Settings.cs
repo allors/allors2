@@ -38,7 +38,7 @@ namespace Allors.Repository
         [Indexed]
         #endregion
         [Workspace]
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         public Counter SkuCounter { get; set; }
 
         #region Allors
@@ -55,7 +55,7 @@ namespace Allors.Repository
         [RoleId("A838D5A1-2338-47A9-8E97-A94B2A78B907")]
         [Indexed]
         #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
+        [Multiplicity(Multiplicity.OneToOne)]
         [Workspace]
         public Counter SerialisedItemCounter { get; set; }
 
@@ -66,6 +66,32 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public string SerialisedItemPrefix { get; set; }
+
+        #region Allors
+        [Id("8438F903-1BFF-419D-9E89-D7A3943821D3")]
+        [AssociationId("DB872406-A43E-4383-8928-E0DA02E7C676")]
+        [RoleId("0167899D-957F-4323-BD05-4A9B1AB25B4F")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.OneToOne)]
+        [Workspace]
+        public Counter GlobalProductNumberCounter { get; set; }
+
+        #region Allors
+        [Id("E14816F1-65DA-4042-91E3-6F0906611D10")]
+        [AssociationId("DE163874-FD5D-448B-841C-C13D3733129A")]
+        [RoleId("8822D37A-DA68-4CE0-8DEE-F1A8414C49D1")]
+        #endregion
+        [Workspace]
+        public string GlobalProductNumberPrefix { get; set; }
+
+        #region Allors
+        [Id("C1FA075A-2607-476D-BC27-A13656C56684")]
+        [AssociationId("06D7AA12-6398-4074-8584-046AA66E7B2A")]
+        [RoleId("434C5608-147F-4B00-8BD1-461980B2576C")]
+        #endregion
+        [Required]
+        public bool UseGlobalProductNumber { get; set; }
 
         #region inherited methods
         public void OnBuild() { }

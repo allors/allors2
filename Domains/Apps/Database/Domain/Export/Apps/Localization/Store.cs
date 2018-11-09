@@ -75,12 +75,6 @@ namespace Allors.Domain
             return string.Concat(this.SalesOrderNumberPrefix, salesOrderNumber);
         }
 
-        //public string DeriveNextWorkEffortNumber()
-        //{
-        //    var salesOrderNumber = this.WorkEffortCounter.NextValue();
-        //    return string.Concat(this.WorkEffortNumberPrefix, salesOrderNumber);
-        //}
-
         public string DeriveNextCreditNoteNumber(int year)
         {
             int creditNoteNumber;

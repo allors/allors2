@@ -16,6 +16,7 @@
 
 namespace Allors.Domain
 {
+    using System;
     using System.IO;
 
     using Meta;
@@ -32,12 +33,15 @@ namespace Allors.Domain
             setup.AddDependency(this.Meta.ObjectType, M.FacilityType);
         }
 
-        private void CreateInternalOrganisation(
+        public static Organisation CreateInternalOrganisation(
+            ISession session,
             string name,
             string address,
             string postalCode,
             string locality,
             Country country,
+            string countryCode,
+            string phone,
             string emailAddress,
             string websiteAddress,
             string taxNumber,
@@ -47,89 +51,96 @@ namespace Allors.Domain
             string iban,
             Currency currency,
             string logo,
+            string storeName,
+            string outgoingShipmentNumberPrefix,
+            string salesInvoiceNumberPrefix,
+            string salesOrderNumberPrefix,
             string requestNumberPrefix,
             string quoteNumberPrefix,
-            string articleNumberPrefix,
+            string productNumberPrefix,
             int? requestCounterValue,
-            int? quoteCounterValue)
+            int? quoteCounterValue,
+            string partNumberPrefix,
+            bool usePartNumberCounter)
         {
-            var postalAddress1 = new PostalAddressBuilder(this.Session)
+            var postalAddress1 = new PostalAddressBuilder(session)
                     .WithAddress1(address)
-                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithPostalCode(postalCode).WithLocality(locality).WithCountry(country).Build())
+                    .WithPostalBoundary(new PostalBoundaryBuilder(session).WithPostalCode(postalCode).WithLocality(locality).WithCountry(country).Build())
                     .Build();
 
-            var phoneSales = new TelecommunicationsNumberBuilder(this.Session)
-                .WithCountryCode("+32")
-                .WithContactNumber("471 94 27 80")
-                .Build();
+            TelecommunicationsNumber phoneNumber = null;
+            if (!string.IsNullOrEmpty(phone))
+            {
+                phoneNumber = new TelecommunicationsNumberBuilder(session).WithContactNumber(phone).Build();
+                if (!string.IsNullOrEmpty(countryCode))
+                {
+                    phoneNumber.CountryCode = countryCode;
+                }
+            }
 
-            var phoneOperations = new TelecommunicationsNumberBuilder(this.Session)
-                .WithCountryCode("+31")
-                .WithContactNumber("6 53 76 5332")
-                .Build();
-
-            var email = new EmailAddressBuilder(this.Session)
+            var email = new EmailAddressBuilder(session)
                 .WithElectronicAddressString(emailAddress)
                 .Build();
 
-            var webSite = new WebAddressBuilder(this.Session)
+            var webSite = new WebAddressBuilder(session)
                 .WithElectronicAddressString(websiteAddress)
                 .Build();
 
-            var bank = new BankBuilder(this.Session).WithName(bankName).WithBic(bic).WithCountry(country).Build();
-            var bankaccount = new BankAccountBuilder(this.Session)
+            var bank = new BankBuilder(session).WithName(bankName).WithBic(bic).WithCountry(country).Build();
+            var bankaccount = new BankAccountBuilder(session)
                 .WithBank(bank)
                 .WithIban(iban)
                 .WithNameOnAccount(name)
                 .WithCurrency(currency)
                 .Build();
 
-            var organisation = new OrganisationBuilder(this.Session)
+            var organisation = new OrganisationBuilder(session)
                 .WithIsInternalOrganisation(true)
                 .WithTaxNumber(taxNumber)
                 .WithName(name)
                 .WithBankAccount(bankaccount)
-                .WithDefaultCollectionMethod(new OwnBankAccountBuilder(this.Session).WithBankAccount(bankaccount).WithDescription("Huisbank").Build())
-                .WithPreferredCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithInvoiceSequence(new InvoiceSequences(this.Session).EnforcedSequence)
+                .WithDefaultCollectionMethod(new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Huisbank").Build())
+                .WithPreferredCurrency(new Currencies(session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithInvoiceSequence(new InvoiceSequences(session).EnforcedSequence)
                 .WithFiscalYearStartMonth(01)
                 .WithFiscalYearStartDay(01)
                 .WithDoAccounting(false)
                 .WithRequestNumberPrefix(requestNumberPrefix)
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
+                .WithPartNumberPrefix(partNumberPrefix)
                 .WithInternetAddress(webSite)
+                .WithUsePartNumberCounter(usePartNumberCounter)
                 .Build();
 
             if (requestCounterValue != null)
             {
-                organisation.RequestCounter = new CounterBuilder(this.Session).WithValue(requestCounterValue).Build();
+                organisation.RequestCounter = new CounterBuilder(session).WithValue(requestCounterValue).Build();
             }
 
             if (quoteCounterValue != null)
             {
-                organisation.QuoteCounter = new CounterBuilder(this.Session).WithValue(quoteCounterValue).Build();
+                organisation.QuoteCounter = new CounterBuilder(session).WithValue(quoteCounterValue).Build();
             }
 
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(email)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralEmail)
+                .WithContactPurpose(new ContactMechanismPurposes(session).GeneralEmail)
                 .Build());
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(phoneSales)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).SalesOffice)
-                .Build());
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
-                .WithUseAsDefault(true)
-                .WithContactMechanism(phoneOperations)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).Operations)
-                .Build());
-            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(this.Session)
+            organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
                 .WithUseAsDefault(true)
                 .WithContactMechanism(postalAddress1)
-                .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
+                .WithContactPurpose(new ContactMechanismPurposes(session).GeneralCorrespondence)
                 .Build());
+
+            if (phoneNumber != null)
+            {
+                organisation.AddPartyContactMechanism(new PartyContactMechanismBuilder(session)
+                    .WithUseAsDefault(true)
+                    .WithContactMechanism(phoneNumber)
+                    .WithContactPurpose(new ContactMechanismPurposes(session).SalesOffice)
+                    .Build());
+            }
 
             if (File.Exists(logo))
             {
@@ -137,17 +148,35 @@ namespace Allors.Domain
 
                 var fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName).ToLowerInvariant();
                 var content = File.ReadAllBytes(fileInfo.FullName);
-                var image = new MediaBuilder(this.Session).WithFileName(fileName).WithInData(content).Build();
+                var image = new MediaBuilder(session).WithFileName(fileName).WithInData(content).Build();
                 organisation.LogoImage = image;
             }
 
-            var magazijn = new FacilityBuilder(this.Session)
+            var magazijn = new FacilityBuilder(session)
                 .WithName(facilityName)
-                .WithFacilityType(new FacilityTypes(this.Session).Warehouse)
+                .WithFacilityType(new FacilityTypes(session).Warehouse)
                 .WithOwner(organisation)
                 .Build();
 
             organisation.DefaultFacility = magazijn;
+
+            var paymentMethod = new OwnBankAccountBuilder(session).WithBankAccount(bankaccount).WithDescription("Hoofdbank").Build();
+
+            new StoreBuilder(session)
+                .WithName(storeName)
+                .WithOutgoingShipmentNumberPrefix(outgoingShipmentNumberPrefix)
+                .WithSalesInvoiceNumberPrefix(salesInvoiceNumberPrefix)
+                .WithSalesOrderNumberPrefix(salesOrderNumberPrefix)
+                .WithDefaultCollectionMethod(paymentMethod)
+                .WithDefaultShipmentMethod(new ShipmentMethods(session).Ground)
+                .WithDefaultCarrier(new Carriers(session).Fedex)
+                .WithBillingProcess(new BillingProcesses(session).BillingForShipmentItems)
+                .WithSalesInvoiceCounter(new CounterBuilder(session).WithUniqueId(Guid.NewGuid()).WithValue(0).Build())
+                .WithIsImmediatelyPicked(true)
+                .WithInternalOrganisation(organisation)
+                .Build();
+
+            return organisation;
         }
     }
 }

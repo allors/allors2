@@ -226,6 +226,12 @@ namespace Allors.Repository
 
         public string WorkEffortPrefix { get; set; }
 
+        public Counter PartNumberCounter { get; set; }
+
+        public string PartNumberPrefix { get; set; }
+
+        public bool UsePartNumberCounter { get; set; }
+
         public bool RequireExistingWorkEffortPartyAssignment { get; set; }
         #endregion
 

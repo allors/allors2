@@ -102,6 +102,17 @@ namespace Allors.Domain
 
             this.DeriveName();
 
+            var identifications = this.GoodIdentifications;
+            identifications.Filter.AddEquals(M.IGoodIdentification.GoodIdentificationType, new GoodIdentificationTypes(this.strategy.Session).Part);
+            var partNumber = identifications.FirstOrDefault();
+
+            if (partNumber == null && this.InternalOrganisation.UsePartNumberCounter)
+            {
+                this.AddGoodIdentification(new PartNumberBuilder(this.strategy.Session)
+                    .WithIdentification(this.InternalOrganisation.NextPartNumber())
+                    .WithGoodIdentificationType(new GoodIdentificationTypes(this.strategy.Session).Part).Build());
+            }
+
             foreach (SupplierOffering supplierOffering in this.SupplierOfferingsWherePart)
             {
                 if (supplierOffering.FromDate <= DateTime.UtcNow
