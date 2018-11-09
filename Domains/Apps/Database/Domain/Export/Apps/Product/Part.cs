@@ -72,17 +72,6 @@ namespace Allors.Domain
                 this.DefaultFacility = this.InternalOrganisation.FacilitiesWhereOwner.First;
             }
 
-            if (!this.ExistPriceComponentsWherePart)
-            {
-                new BasePriceBuilder(this.Strategy.Session)
-                    .WithDescription("baseprice")
-                    .WithPricedBy(this.InternalOrganisation)
-                    .WithPart(this)
-                    .WithFromDate(DateTime.UtcNow)
-                    .WithPrice(0)
-                    .Build();
-            }
-
             this.DeriveName();
         }
 
