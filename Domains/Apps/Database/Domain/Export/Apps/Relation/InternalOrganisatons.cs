@@ -23,6 +23,7 @@ namespace Allors.Domain
         {
             base.BasePrepare(config);
 
+            config.AddDependency(this.ObjectType, M.Locale.ObjectType);
             config.AddDependency(this.ObjectType, M.TemplateType.ObjectType);
             config.AddDependency(this.ObjectType, M.ShipmentMethod.ObjectType);
             config.AddDependency(this.ObjectType, M.Carrier.ObjectType);
