@@ -61,6 +61,7 @@ namespace Allors.Domain
             int? requestCounterValue,
             int? quoteCounterValue,
             string partNumberPrefix,
+            bool useProductNumberCounter,
             bool usePartNumberCounter)
         {
             var postalAddress1 = new PostalAddressBuilder(session)
@@ -109,6 +110,7 @@ namespace Allors.Domain
                 .WithQuoteNumberPrefix(quoteNumberPrefix)
                 .WithPartNumberPrefix(partNumberPrefix)
                 .WithInternetAddress(webSite)
+                .WithUseProductNumberCounter(useProductNumberCounter)
                 .WithUsePartNumberCounter(usePartNumberCounter)
                 .Build();
 

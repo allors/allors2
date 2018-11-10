@@ -230,6 +230,8 @@ namespace Allors.Repository
 
         public string PartNumberPrefix { get; set; }
 
+        public bool UseProductNumberCounter { get; set; }
+
         public bool UsePartNumberCounter { get; set; }
 
         public bool RequireExistingWorkEffortPartyAssignment { get; set; }

@@ -66,6 +66,7 @@ namespace Tests.Intranet
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 partNumberPrefix: "a-P",
+                useProductNumberCounter: true,
                 usePartNumberCounter: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -96,6 +97,7 @@ namespace Tests.Intranet
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 partNumberPrefix: "d-P",
+                useProductNumberCounter: false,
                 usePartNumberCounter: false);
 
             new FacilityBuilder(this.Session)

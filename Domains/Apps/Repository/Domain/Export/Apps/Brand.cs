@@ -16,6 +16,17 @@ namespace Allors.Repository
         public SecurityToken[] SecurityTokens { get; set; }
 
         #endregion
+        
+        #region Allors
+        [Id("2A45A70B-ECF0-441E-AD89-52FC123BC79E")]
+        [AssociationId("12157031-C8EA-4047-8FD5-969FF6B07C4C")]
+        [RoleId("5F97231D-FEF9-4FC1-8F00-2E6BCFDF75FF")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        public Media LogoImage { get; set; }
+
 
         #region Allors
         [Id("C603F7EA-5201-464A-B657-BE23D42EF6DB")]

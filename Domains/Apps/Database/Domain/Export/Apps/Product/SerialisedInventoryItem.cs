@@ -45,6 +45,11 @@ namespace Allors.Domain
         {
             var derivation = method.Derivation;
 
+            if (!this.ExistFacility && this.ExistPart && this.Part.ExistDefaultFacility)
+            {
+                this.Facility = this.Part.DefaultFacility;
+            }
+
             if (!this.ExistName && this.ExistPart && this.Part.ExistName)
             {
                 this.Name = this.Part.Name;

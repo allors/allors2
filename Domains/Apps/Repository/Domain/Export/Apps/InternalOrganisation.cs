@@ -573,6 +573,14 @@ namespace Allors.Repository
         string PartNumberPrefix { get; set; }
 
         #region Allors
+        [Id("EBBCBBB4-6688-40A0-8E53-3426479D71F4")]
+        [AssociationId("9EAC0CCB-B7B2-42CA-9F5C-63A61EFC9489")]
+        [RoleId("ED07DC4D-B415-4FBD-AA26-9C1AB16E6A01")]
+        [Required]
+        #endregion
+        bool UseProductNumberCounter { get; set; }
+
+        #region Allors
         [Id("840F8939-7CB8-4977-9BAC-A3375E50B3E6")]
         [AssociationId("C43DC79A-637D-4853-9564-E1ABA3256418")]
         [RoleId("F23B3F70-A8A8-443B-8357-348B608A74E0")]
