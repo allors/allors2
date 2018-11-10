@@ -12,6 +12,11 @@
     <Compile Include="..\..\..\..\Base\Workspace\Typescript\modules\Material.Tests\Export\**\*.cs" />
   </ItemGroup>
 
+  
+<ItemGroup>
+  <Compile Remove="..\..\..\..\Base\Workspace\Typescript\modules\Material.Tests\Export\Base\Components\Extensions\AssemblyExtension.cs" />
+</ItemGroup>
+
 
 
   

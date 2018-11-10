@@ -66,6 +66,7 @@ namespace Allors
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 partNumberPrefix: "a-P",
+                useProductNumberCounter: true,
                 usePartNumberCounter: true);
 
             var dipu = Organisations.CreateInternalOrganisation(
@@ -96,6 +97,7 @@ namespace Allors
                 requestCounterValue: 1,
                 quoteCounterValue: 1,
                 partNumberPrefix: "d-P",
+                useProductNumberCounter: true,
                 usePartNumberCounter: false);
 
             new FacilityBuilder(this.Session)
