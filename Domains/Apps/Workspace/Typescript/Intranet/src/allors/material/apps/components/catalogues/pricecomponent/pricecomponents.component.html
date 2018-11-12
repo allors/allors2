@@ -13,8 +13,9 @@
     <mat-list>
       <mat-list-item *ngFor="let pricecomponent of pricecomponents; let last=last" [attr.data-allors-id]="pricecomponent.id"
         (click)="edit.emit(pricecomponent)" style="cursor: pointer;">
-        <div mat-line>{{pricecomponent.Description }}</div>
-        <p mat-line>{{ pricecomponent.Price }} </p>
+
+        <h4 mat-line>default price {{pricecomponent.Currency.IsoCode}} {{pricecomponent.Price}}</h4>
+        <h3 mat-line (click)="navigationService.edit(pricecomponent)" >valid from: {{pricecomponent.FromDate | date}}  through: {{pricecomponent.ThroughDate | date}}</h3>
 
         <div (click)="$event.stopPropagation()">
           <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">

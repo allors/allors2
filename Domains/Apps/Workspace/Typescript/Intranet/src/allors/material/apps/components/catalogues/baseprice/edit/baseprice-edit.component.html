@@ -3,11 +3,11 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a *ngIf="good" (click)="navigation.list(m.Good)">Products</a>
-        <a *ngIf="part" (click)="navigation.list(m.Part)">Parts</a>
+        <a *ngIf="good" (click)="navigationService.list(m.Good)">Products</a>
+        <a *ngIf="part" (click)="navigationService.list(m.Part)">Parts</a>
         <span *ngIf="add"> / Add default price </span>
-        <span *ngIf="edit && good"> / <a (click)="navigation.overview(good)">{{good?.Name}}</a> / Edit default price</span>
-        <span *ngIf="edit && part"> / <a (click)="navigation.overview(part)">{{part?.Name}}</a> / Edit default price</span>
+        <span *ngIf="edit && good"> / <a (click)="navigationService.overview(good)">{{good?.Name}}</a> / Edit default price</span>
+        <span *ngIf="edit && part"> / <a (click)="navigationService.overview(part)">{{part?.Name}}</a> / Edit default price</span>
       </div>
     </div>
   </div>
@@ -18,6 +18,11 @@
       <mat-card-content class="container-fluid">
 
         <div class="row">
+          <a-mat-datepicker class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.FromDate" class="col-md"></a-mat-datepicker>
+          <a-mat-datepicker class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.ThroughDate" class="col-md"></a-mat-datepicker>
+        </div>
+
+        <div class="row">
           <a-mat-input class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.Price" class="col-md"></a-mat-input>
           <a-mat-input class="col-md" [object]="priceComponent" [roleType]="m.PriceComponent.Description" class="col-md"></a-mat-input>
         </div>
@@ -26,7 +31,7 @@
     </mat-card>
 
     <a-mat-footer>
-      <button mat-raised-button (click)="navigation.back()" type="button">CANCEL</button>
+      <button mat-raised-button (click)="navigationService.back()" type="button">CANCEL</button>
       <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE</button>
     </a-mat-footer>
 

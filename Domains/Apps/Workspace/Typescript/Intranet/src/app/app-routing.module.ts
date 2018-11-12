@@ -88,6 +88,9 @@ export const routes: Routes = [
       { path: 'upceidentification', data: addData({ id: ids.UpceIdentification }), component: catalogues.EditUpceIdentificationComponent },
       { path: 'upceidentification/:id', data: editData({ id: ids.UpceIdentification }), component: catalogues.EditUpceIdentificationComponent },
 
+      { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: catalogues.EditBasepriceComponent },
+      { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: catalogues.EditBasepriceComponent },
+
       {
         path: 'communicationevent',
         children: [

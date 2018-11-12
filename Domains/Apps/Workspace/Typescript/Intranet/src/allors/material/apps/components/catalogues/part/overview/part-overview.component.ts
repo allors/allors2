@@ -68,7 +68,8 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
             this.fetcher.internalOrganisation,
             pull.PriceComponent({
               include: {
-                Part: x
+                Part: x,
+                Currency: x
               }
             }),
             pull.Part({

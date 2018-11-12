@@ -129,7 +129,7 @@
 
       <div class="col-md-6">
         <price-component [pricecomponents]='pricecomponents' (add)="navigationService.add($event, part)"
-          (edit)="navigationService.edit($event, part)" (delete)="deletePriceComponent($event)"></price-component>
+          (edit)="navigationService.edit($event)" (delete)="deletePriceComponent($event)"></price-component>
       </div>
 
     </div>

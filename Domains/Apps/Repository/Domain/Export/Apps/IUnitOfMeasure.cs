@@ -32,8 +32,8 @@ namespace Allors.Repository
         [RoleId("0543bd39-be9a-49cb-ae23-5df243ee7ea5")]
         #endregion
         [Size(-1)]
+        [Workspace]
         string Description { get; set; }
-
 
         #region Allors
         [Id("65c75f72-3bb4-415c-8aa7-b291d96dd157")]
@@ -45,12 +45,12 @@ namespace Allors.Repository
 
         UnitOfMeasureConversion[] UnitOfMeasureConversions { get; set; }
 
-
         #region Allors
         [Id("D35B0EDF-4196-4FE9-8DAA-8B93AEE3B70D")]
         [AssociationId("F3249A01-7C98-4991-B361-078EA6D1DDD8")]
         [RoleId("5530284E-3249-4FD0-979B-C28A2443EF13")]
         #endregion
+        [Workspace]
         string Symbol { get; set; }
     }
 }

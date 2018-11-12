@@ -19,5 +19,7 @@ export class PriceComponentsComponent {
 
   @Output() delete: EventEmitter<PriceComponent> = new EventEmitter<PriceComponent>();
 
-  constructor(public allors: Allors) { }
+  constructor(
+    public allors: Allors,
+    public navigationService: NavigationService) { }
 }

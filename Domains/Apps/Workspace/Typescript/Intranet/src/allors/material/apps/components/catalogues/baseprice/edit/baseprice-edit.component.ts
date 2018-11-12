@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
-import { Good, Part, PriceComponent } from '../../../../../../domain';
+import { Good, Part, PriceComponent, InternalOrganisation } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { switchMap, map } from 'rxjs/operators';
+import { Fetcher } from '../../../Fetcher';
 
 @Component({
   templateUrl: './baseprice-edit.component.html',
@@ -26,20 +27,23 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
   good: Good;
   part: Part;
   priceComponent: PriceComponent;
+  item: Good | Part;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  item: Good | Part;
+  private fetcher: Fetcher;
+  internalOrganisation: InternalOrganisation;
 
   constructor(
     @Self() private allors: Allors,
-    public navigation: NavigationService,
+    public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private stateService: StateService,
   ) {
     this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
@@ -55,7 +59,9 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
           const goodId = navRoute.queryParam(m.Good);
           const partId = navRoute.queryParam(m.Part);
 
-          let pulls = [];
+          let pulls = [
+            this.fetcher.internalOrganisation,
+          ];
 
           if (!!goodId) {
             pulls = [
@@ -82,6 +88,9 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
               ...pulls,
               pull.PriceComponent({
                 object: id,
+                include: {
+                  Currency: x,
+                }
               }),
             ];
           }
@@ -97,6 +106,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
 
         scope.session.reset();
 
+        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.good = loaded.objects.Good as Good;
         this.part = loaded.objects.Part as Part;
 
@@ -104,6 +114,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
           this.add = !(this.edit = false);
 
           this.priceComponent = scope.session.create('BasePrice') as PriceComponent;
+          this.priceComponent.PricedBy = this.internalOrganisation;
 
           if (this.good) {
             this.priceComponent.Product = this.good;
@@ -116,7 +127,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
         } else {
           this.edit = !(this.add = false);
 
-          this.priceComponent = loaded.objects.BasePrice as PriceComponent;
+          this.priceComponent = loaded.objects.PriceComponent as PriceComponent;
         }
       },
         (error: any) => {
