@@ -49,7 +49,7 @@ namespace Commands
         {
             var databaseConfiguration = new Configuration
             {
-                ConnectionString = configuration["allors"],
+                ConnectionString = configuration["ConnectionStrings:DefaultConnection"],
                 ObjectFactory = new Allors.ObjectFactory(MetaPopulation.Instance, typeof(User)),
                 IsolationLevel = this.IsolationLevel,
                 CommandTimeout = this.CommandTimeout

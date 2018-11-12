@@ -47,7 +47,12 @@ namespace Tests.Intranet
             // Init Allors
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
-            var appConfiguration = new ConfigurationBuilder().AddJsonFile(@"appSettings.json").Build();
+            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/apps.appSettings.json";
+            
+            var appConfiguration = new ConfigurationBuilder()
+                .AddJsonFile(@"appSettings.json")
+                .AddJsonFile(myAppSettings)
+                .Build();
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
             var services = new ServiceCollection();
@@ -56,7 +61,7 @@ namespace Tests.Intranet
 
             var configuration = new Configuration
             {
-                ConnectionString = appConfiguration["allors"],
+                ConnectionString = appConfiguration["ConnectionStrings:DefaultConnection"],
                 ObjectFactory = objectFactory,
             };
 

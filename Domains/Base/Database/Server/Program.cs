@@ -1,4 +1,6 @@
-﻿namespace Allors.Server
+﻿using Microsoft.Extensions.Configuration;
+
+namespace Allors.Server
 {
     using System;
 
@@ -28,10 +30,16 @@
                 NLog.LogManager.Shutdown();
             }
         }
-
+        
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
+                    config.AddJsonFile(myAppSettings);
+                })
                 .ConfigureLogging(logging =>
                     {
                         logging.ClearProviders();

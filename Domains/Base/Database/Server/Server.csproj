@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-{Project Name}-{GUID}</UserSecretsId>
+    <!-- Next line errors on MacOS -->
+    <!-- <UserSecretsId>aspnet-{Project Name}-{GUID}</UserSecretsId> -->
+    <UserSecretsId>aspnet-Server-8B0BF624-6A9D-4B7C-A120-C8480C2E2071</UserSecretsId>
  </PropertyGroup>
 
   <ItemGroup>

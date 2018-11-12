@@ -257,6 +257,9 @@ namespace Allors.Domain
 
 								User Guest {set;}
 
+
+								Media LogoImage {set;}
+
 				}
 				public interface UnitSample 
 				{

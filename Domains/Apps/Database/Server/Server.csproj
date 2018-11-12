@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>aspnet-{Project Name}-{GUID}</UserSecretsId>
+    <!-- <UserSecretsId>aspnet-{Project Name}-{GUID}</UserSecretsId> -->
+    <UserSecretsId>aspnet-Server-055EA6FB-B4C3-42E1-8E25-C2840F1DFC4E</UserSecretsId>
  </PropertyGroup>
 
   <ItemGroup>

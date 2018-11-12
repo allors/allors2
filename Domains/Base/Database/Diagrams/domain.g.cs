@@ -783,6 +783,8 @@ namespace Allors.Domain
 
 						AccessControl AdministratorsAccessControl {set;}
 
+						Media LogoImage {set;}
+
 		}
 		public interface StatefulCompany  : Object 
 		{

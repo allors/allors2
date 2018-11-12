@@ -1,4 +1,6 @@
-﻿namespace Tests.Material
+﻿using System.Runtime.InteropServices;
+
+namespace Tests.Material
 {
     using System;
     using System.Diagnostics;
@@ -48,8 +50,16 @@
             this.Driver = new ChromeDriver(Environment.CurrentDirectory, options);
 
             // Move to monitor on the left
-            this.Driver.Manage().Window.Position = new Point(-1000, 0);
-            this.Driver.Manage().Window.Maximize();
+            this.Driver.Manage().Window.Position = new Point(-800, 0);
+            try
+            {
+                this.Driver.Manage().Window.Maximize();
+            }
+            catch
+            {
+                // MacOS will throw an error on Maximize()
+                this.Driver.Manage().Window.FullScreen();
+            }
         }
 
         private void StopWebdriver()
@@ -66,23 +76,27 @@
                 }
                 finally
                 {
-                    if (this.Driver is ChromeDriver)
+                    if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                     {
-                        Process.Start("taskkill", "/F /IM chrome.exe");
-                        Process.Start("taskkill", "/F /IM chromedriver.exe");
-                        Directory.Delete(this.DownloadPath, true);
-                    }
-                    else if (this.Driver is FirefoxDriver)
-                    {
-                        Process.Start("taskkill", "/F /IM firefox.exe");
-                    }
-                    else if (this.Driver is InternetExplorerDriver)
-                    {
-                        Process.Start("taskkill", "/F /IM iexplore.exe");
-                    }
-                    else
-                    {
-                        throw new Exception("Can not kill driver of type " + this.Driver.GetType().Name);
+                        if (this.Driver is ChromeDriver)
+                        {
+                            Process.Start("taskkill", "/F /IM chrome.exe");
+                            Process.Start("taskkill", "/F /IM chromedriver.exe");
+                            Directory.Delete(this.DownloadPath, true);
+                        }
+                        else if (this.Driver is FirefoxDriver)
+                        {
+                            Process.Start("taskkill", "/F /IM firefox.exe");
+                        }
+                        else if (this.Driver is InternetExplorerDriver)
+                        {
+                            Process.Start("taskkill", "/F /IM iexplore.exe");
+                        }
+                        else
+                        {
+                            throw new Exception("Can not kill driver of type " + this.Driver.GetType().Name);
+                        }
+                        
                     }
                 }
             }

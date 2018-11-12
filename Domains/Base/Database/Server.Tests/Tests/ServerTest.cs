@@ -49,9 +49,12 @@ namespace Server.Tests
 
         protected ServerTest()
         {
+            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(new FileInfo("../../..").FullName)
-                .AddJsonFile("appsettings.json", false, true);
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile(myAppSettings);
             this.Configuration = builder.Build();
 
             this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));

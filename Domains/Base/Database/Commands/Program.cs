@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace Commands
 {
     using Allors.Services;
@@ -35,8 +37,11 @@ namespace Commands
             var services = new ServiceCollection();
             services.AddAllors();
 
+            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
+            
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
+                .AddJsonFile(myAppSettings)
                 .Build();
             services.AddSingleton<IConfiguration>(configuration);
 

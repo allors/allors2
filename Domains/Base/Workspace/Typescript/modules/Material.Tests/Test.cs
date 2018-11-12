@@ -37,8 +37,11 @@ namespace Tests.Material
             // Init Allors
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
+            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
+            
             var appConfiguration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
+                .AddJsonFile(myAppSettings)
                 .Build();
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 
@@ -48,7 +51,7 @@ namespace Tests.Material
 
             var configuration = new Configuration
                                     {
-                                        ConnectionString = appConfiguration["allors"],
+                                        ConnectionString = appConfiguration["ConnectionStrings:DefaultConnection"],
                                         ObjectFactory = objectFactory,
                                     };
 

@@ -50,39 +50,33 @@ namespace Commands
 
         public int OnExecute(CommandLineApplication app)
         {
-            Console.WriteLine("Are you sure, all current data will be destroyed? (Y/N)\n");
+            this.logger.LogInformation("Begin");
 
-            var confirmationKey = Console.ReadKey(true).KeyChar.ToString();
-            if (confirmationKey.ToLower().Equals("y"))
+            this.databaseService.Database.Init();
+
+            using (var session = this.databaseService.Database.CreateSession())
             {
-                this.logger.LogInformation("Begin");
+                var directoryInfo = this.dataPath != null ? new DirectoryInfo(this.dataPath) : null;
+                new Setup(session, directoryInfo).Apply();
 
-                this.databaseService.Database.Init();
+                session.Derive();
+                session.Commit();
 
-                using (var session = this.databaseService.Database.CreateSession())
-                {
-                    var directoryInfo = this.dataPath != null ? new DirectoryInfo(this.dataPath) : null;
-                    new Setup(session, directoryInfo).Apply();
+                var administrator = new Users(session).GetUser("administrator");
+                session.SetUser(administrator);
 
-                    session.Derive();
-                    session.Commit();
+                new Allors.Upgrade(session, directoryInfo).Execute();
 
-                    var administrator = new Users(session).GetUser("administrator");
-                    session.SetUser(administrator);
+                session.Derive();
+                session.Commit();
 
-                    new Allors.Upgrade(session, directoryInfo).Execute();
+                new Demo(session, directoryInfo).Execute();
 
-                    session.Derive();
-                    session.Commit();
-
-                    new Demo(session, directoryInfo).Execute();
-
-                    session.Derive();
-                    session.Commit();
-                }
-
-                this.logger.LogInformation("End");
+                session.Derive();
+                session.Commit();
             }
+
+            this.logger.LogInformation("End");
 
             return ExitCode.Success;
         }
