@@ -54,11 +54,11 @@ namespace Commands
 
         private readonly ILogger<Upgrade> logger;
 
-        private readonly string dataPath;
+        private readonly DirectoryInfo dataPath;
 
         public Upgrade(IConfiguration configuration, IDatabaseService databaseService, ILogger<Upgrade> logger)
         {
-            this.dataPath = configuration["datapath"];
+            this.dataPath = new DirectoryInfo(".").GetAncestorSibling(configuration["datapath"]);
             this.databaseService = databaseService;
             this.logger = logger;
         }
@@ -127,7 +127,7 @@ namespace Commands
 
             using (var session = this.databaseService.Database.CreateSession())
             {
-                new Allors.Upgrade(session, new DirectoryInfo(this.dataPath)).Execute();
+                new Allors.Upgrade(session, this.dataPath).Execute();
                 session.Commit();
 
                 new Permissions(session).Sync();

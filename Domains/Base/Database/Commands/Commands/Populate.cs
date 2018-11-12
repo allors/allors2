@@ -39,11 +39,11 @@ namespace Commands
 
         private readonly ILogger<Populate> logger;
 
-        private readonly string dataPath;
+        private readonly DirectoryInfo dataPath;
 
         public Populate(IConfiguration configuration, IDatabaseService databaseService, ILogger<Populate> logger)
         {
-            this.dataPath = configuration["datapath"];
+            this.dataPath = new DirectoryInfo(".").GetAncestorSibling(configuration["datapath"]);
             this.databaseService = databaseService;
             this.logger = logger;
         }
@@ -56,8 +56,7 @@ namespace Commands
 
             using (var session = this.databaseService.Database.CreateSession())
             {
-                var directoryInfo = this.dataPath != null ? new DirectoryInfo(this.dataPath) : null;
-                new Setup(session, directoryInfo).Apply();
+                new Setup(session, this.dataPath).Apply();
 
                 session.Derive();
                 session.Commit();
@@ -65,7 +64,7 @@ namespace Commands
                 var administrator = new Users(session).GetUser("administrator");
                 session.SetUser(administrator);
 
-                new Allors.Upgrade(session, directoryInfo).Execute();
+                new Allors.Upgrade(session, this.dataPath).Execute();
 
                 session.Derive();
                 session.Commit();

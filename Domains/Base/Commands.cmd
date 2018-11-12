@@ -1,14 +1,13 @@
 @echo off
+IF "%~1"=="" GOTO Interactive
 
-dotnet run --project Database/Commands
+dotnet run -v q --project Database/Commands -- %*
+GOTO End
 
+:Interactive
+dotnet run -v q --project Database/Commands
 set /p args="Enter arguments: "
-
 echo.
+dotnet run -v q --project Database/Commands -- %args%
 
-dotnet run --project Database/Commands -- %args%
-
-echo.
-pause
-
-
+:End
