@@ -30,15 +30,15 @@ namespace Allors.Server
                 NLog.LogManager.Shutdown();
             }
         }
-        
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            
+
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
-                    config.AddJsonFile(myAppSettings);
+                    config.AddJsonFile(myAppSettings, true);
                 })
                 .ConfigureLogging(logging =>
                     {

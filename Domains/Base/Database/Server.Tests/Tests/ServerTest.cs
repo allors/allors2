@@ -54,7 +54,7 @@ namespace Server.Tests
             var builder = new ConfigurationBuilder()
                 .SetBasePath(new FileInfo("../../..").FullName)
                 .AddJsonFile("appsettings.json", false, true)
-                .AddJsonFile(myAppSettings);
+                .AddJsonFile(myAppSettings, true);
             this.Configuration = builder.Build();
 
             this.ObjectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));

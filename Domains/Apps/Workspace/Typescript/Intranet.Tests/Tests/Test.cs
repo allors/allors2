@@ -51,7 +51,7 @@ namespace Tests.Intranet
             
             var appConfiguration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(myAppSettings)
+                .AddJsonFile(myAppSettings, true)
                 .Build();
             var objectFactory = new ObjectFactory(MetaPopulation.Instance, typeof(User));
 

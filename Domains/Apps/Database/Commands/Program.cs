@@ -41,7 +41,7 @@ namespace Commands
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(myAppSettings)
+                .AddJsonFile(myAppSettings, true)
                 .Build();
             services.AddSingleton<IConfiguration>(configuration);
 
