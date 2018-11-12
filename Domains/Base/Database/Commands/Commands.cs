@@ -35,7 +35,7 @@ namespace Commands
 
     using NLog.Extensions.Logging;
 
-    [Command(Description = "Allors Apps Commands")]
+    [Command(Description = "Allors Base Commands")]
     [Subcommand(
         typeof(Save),
         typeof(Load),
