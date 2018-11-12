@@ -13,6 +13,8 @@ export * from './skuidentification/edit/skuidentification.module';
 export * from './upcaidentification/edit/upcaidentification.module';
 export * from './upceidentification/edit/upceidentification.module';
 
+export * from './baseprice/edit/baseprice.module';
+
 export * from './good/edit/good-edit.module';
 export * from './good/list/good-list.module';
 export * from './good/overview/good-overview.module';
@@ -44,6 +46,8 @@ import { SkuIdentificationModule } from './skuidentification/edit/skuidentificat
 import { UpcaIdentificationModule } from './upcaidentification/edit/upcaidentification.module';
 import { UpceIdentificationModule } from './upceidentification/edit/upceidentification.module';
 
+import { BasepriceModule } from './baseprice/edit/baseprice.module';
+
 import { GoodEditModule } from './good/edit/good-edit.module';
 import { GoodListModule } from './good/list/good-list.module';
 import { GoodOverviewModule } from './good/overview/good-overview.module';
@@ -61,6 +65,7 @@ import { ProductTypesOverviewModule } from './producttype/producttypes-overview.
 import { SerialisedItemModule } from './serialiseditem/edit/serialiseditem.module';
 
 export const Modules = [
+  BasepriceModule,
   CataloguesOverviewModule, CatalogueModule,
   CategoriesOverviewModule, CategoryModule,
   EanIdentificationModule, IsbnIdentificationModule, ManufacturerIdentificationModule, PartNumberModule, ProductNumberModule, SkuIdentificationModule, UpcaIdentificationModule, UpceIdentificationModule,

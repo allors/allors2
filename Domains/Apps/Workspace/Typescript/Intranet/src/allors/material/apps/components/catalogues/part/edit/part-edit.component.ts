@@ -47,7 +47,6 @@ export class PartEditComponent implements OnInit, OnDestroy {
   partNumber: PartNumber;
   facilities: Facility[];
   unitsOfMeasure: UnitOfMeasure[];
-  priceComponents: PriceComponent[];
   currentSellingPrice: PriceComponent;
 
   private subscription: Subscription;
@@ -173,12 +172,6 @@ export class PartEditComponent implements OnInit, OnDestroy {
         const partNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === '5735191a-cdc4-4563-96ef-dddc7b969ca6');
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
-
-        this.priceComponents = loaded.collections.PriceComponents as PriceComponent[];
-        const now = new Date();
-        this.currentSellingPrice = this.priceComponents.find((v) =>
-          v.FromDate <= now &&
-          (v.ThroughDate === null || v.ThroughDate >= now));
 
         if (add) {
           this.add = !(this.edit = false);

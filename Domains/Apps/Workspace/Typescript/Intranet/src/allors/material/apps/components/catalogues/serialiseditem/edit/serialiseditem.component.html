@@ -49,6 +49,11 @@
               </div>
 
               <div class="row">
+                <a-mat-textarea class="col-md" [object]="item" [roleType]="m.SerialisedItem.Details"
+                  label="Print details" class="col-md-12"></a-mat-textarea>
+              </div>
+
+              <div class="row">
                 <mat-expansion-panel class="col" *ngIf="locales">
                   <mat-expansion-panel-header>
                     <mat-panel-title>

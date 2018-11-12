@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
-import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice } from '../../../../../../domain';
+import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
@@ -32,7 +32,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private fetcher: Fetcher;
-  basePrices: BasePrice[];
+  pricecomponents: BasePrice[];
   sellingPrice: BasePrice;
 
   constructor(
@@ -66,7 +66,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
           const pulls = [
             this.fetcher.internalOrganisation,
-            pull.BasePrice({
+            pull.PriceComponent({
               include: {
                 Part: x
               }
@@ -101,10 +101,10 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
         this.part = loaded.objects.Part as Part;
         this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
 
-        this.basePrices = loaded.collections.BasePrices as BasePrice[];
-        const now = new Date();
-        this.sellingPrice = this.basePrices
-          .find(v => v.Part === this.part && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.pricecomponents = loaded.collections.PriceComponents as PriceComponent[];
+        // const now = new Date();
+        // this.sellingPrice = this.pricecomponents
+        //   .find(v => v.Part === this.part && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
 
         if (this.part.SuppliedBy.length > 0) {
           this.suppliers = this.part.SuppliedBy
@@ -127,6 +127,25 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
       .subscribe((confirm: boolean) => {
         if (confirm) {
           scope.invoke(goodIdentification.Delete)
+            .subscribe(() => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
+  }
+
+  public deletePriceComponent(pricecomponent: PriceComponent): void {
+    const { scope } = this.allors;
+
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          scope.invoke(pricecomponent.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

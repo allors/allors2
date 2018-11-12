@@ -1,0 +1,40 @@
+<mat-card>
+
+  <div class="row">
+    <div class="col">
+      <h2>
+        <mat-icon>money</mat-icon>Prices
+      </h2>
+    </div>
+  </div>
+
+  <mat-card-content>
+
+    <mat-list>
+      <mat-list-item *ngFor="let pricecomponent of pricecomponents; let last=last" [attr.data-allors-id]="pricecomponent.id"
+        (click)="edit.emit(pricecomponent)" style="cursor: pointer;">
+        <div mat-line>{{pricecomponent.Description }}</div>
+        <p mat-line>{{ pricecomponent.Price }} </p>
+
+        <div (click)="$event.stopPropagation()">
+          <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menuEditCom="matMenu">
+            <button mat-menu-item (click)="edit.emit(pricecomponent)">Edit</button>
+            <button [disabled]="!pricecomponent.CanExecuteDelete" mat-menu-item (click)="delete.emit(pricecomponent)">Delete</button>
+          </mat-menu>
+        </div>
+
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
+    <mat-menu #menuAddComm="matMenu">
+      <button mat-menu-item (click)="add.emit(allors.m.BasePrice)">Default Price</button>
+    </mat-menu>
+  </mat-card-actions>
+</mat-card>

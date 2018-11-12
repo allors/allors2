@@ -893,7 +893,7 @@ namespace Allors.Domain
             extent = new PriceComponents(this.strategy.Session).Extent();
             foreach (PriceComponent priceComponent in extent)
             {
-                if (!priceComponent.ExistProduct && !priceComponent.ExistProductFeature &&
+                if (!priceComponent.ExistProduct && !priceComponent.ExistPart && !priceComponent.ExistProductFeature &&
                     priceComponent.FromDate <= this.SalesOrderWhereSalesOrderItem.OrderDate &&
                     (!priceComponent.ExistThroughDate || priceComponent.ThroughDate >= this.SalesOrderWhereSalesOrderItem.OrderDate))
                 {

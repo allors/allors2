@@ -1,35 +1,38 @@
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule } from '@angular/material';
 
+
+import { AllorsMaterialChipsModule } from '../../../../../base/components/chips';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
+import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
+import { AllorsMaterialDatetimepickerModule } from '../../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
-import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
-import { IGoodIdentificationsModule } from '../../igoodidentification/igoodIdentifications.module';
-import { PriceComponentsModule } from '../../pricecomponent/pricecomponents.module';
 
-import { PartOverviewComponent } from './part-overview.component';
-export { PartOverviewComponent } from './part-overview.component';
+import { EditBasepriceComponent } from './baseprice-edit.component';
+export { EditBasepriceComponent } from './baseprice-edit.component';
 
 @NgModule({
   declarations: [
-    PartOverviewComponent,
+    EditBasepriceComponent,
   ],
   exports: [
-    PartOverviewComponent,
+    EditBasepriceComponent,
   ],
   imports: [
-    IGoodIdentificationsModule,
-    PriceComponentsModule,
+    AllorsMaterialChipsModule,
+    AllorsMaterialDatepickerModule,
+    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
-    AllorsMaterialHeaderModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -37,22 +40,19 @@ export { PartOverviewComponent } from './part-overview.component';
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
+
     FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
     MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
@@ -60,4 +60,4 @@ export { PartOverviewComponent } from './part-overview.component';
     RouterModule,
   ],
 })
-export class PartOverviewModule { }
+export class BasepriceModule { }
