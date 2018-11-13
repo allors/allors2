@@ -60,25 +60,18 @@ namespace Allors.Domain
             builder.WithProduct(good);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithProductFeature(colorFeature);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
-            builder.Build();
-
-            Assert.True(this.Session.Derive(false).HasErrors);
-
-            this.Session.Rollback();
-
-            builder.WithDescription("description");
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -157,24 +150,23 @@ namespace Allors.Domain
             builder.WithPrice(1);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
-
-            builder.WithDescription("description");
-            builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProduct(good);
             builder.Build();
+
+            this.Session.Rollback();
 
             Assert.False(this.Session.Derive(false).HasErrors);
 
@@ -269,21 +261,16 @@ namespace Allors.Domain
             builder.WithPrice(1);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
 
             builder.WithFromDate(DateTime.UtcNow);
             builder.Build();
 
-            Assert.True(this.Session.Derive(false).HasErrors);
+            Assert.False(this.Session.Derive(false).HasErrors);
 
             this.Session.Rollback();
-
-            builder.WithDescription("description");
-            builder.Build();
-
-            Assert.False(this.Session.Derive(false).HasErrors);
 
             builder.WithProduct(good);
             builder.Build();
@@ -294,6 +281,8 @@ namespace Allors.Domain
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
 
             builder.WithPercentage(10);
             builder.Build();
