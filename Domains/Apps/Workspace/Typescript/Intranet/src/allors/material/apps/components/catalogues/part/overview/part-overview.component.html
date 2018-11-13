@@ -32,11 +32,13 @@
               </div>
 
               <div class="row">
-                <a-mat-static class="col" *ngIf="part.InventoryItemKind" [object]="part.InventoryItemKind" [roleType]="m.InventoryItemKind.Name" label="Inventory kind"></a-mat-static>
+                <a-mat-static class="col" *ngIf="part.InventoryItemKind" [object]="part.InventoryItemKind" [roleType]="m.InventoryItemKind.Name"
+                  label="Inventory kind"></a-mat-static>
               </div>
 
               <div class="row">
-                <a-mat-static class="col" *ngIf="part.ProductType" [object]="part.ProductType" [roleType]="m.ProductType.Name" label="product Type"></a-mat-static>
+                <a-mat-static class="col" *ngIf="part.ProductType" [object]="part.ProductType" [roleType]="m.ProductType.Name"
+                  label="product Type"></a-mat-static>
               </div>
 
               <div class="row">
@@ -48,7 +50,8 @@
               </div>
 
               <div class="row">
-                <a-mat-static class="col" *ngIf="part.ManufacturedBy" [object]="part.ManufacturedBy" [roleType]="m.Organisation.Name" label="Manufacturer"></a-mat-static>
+                <a-mat-static class="col" *ngIf="part.ManufacturedBy" [object]="part.ManufacturedBy" [roleType]="m.Organisation.Name"
+                  label="Manufacturer"></a-mat-static>
               </div>
 
               <div class="row" *ngIf="suppliers">
@@ -91,7 +94,9 @@
         <mat-card>
           <div class="row">
             <div class="col">
-              <h2><mat-icon>subject</mat-icon> Serialised Items</h2>
+              <h2>
+                <mat-icon>subject</mat-icon> Serialised Items
+              </h2>
             </div>
           </div>
 
@@ -104,8 +109,9 @@
             <mat-list>
               <mat-list-item *ngFor="let item of part.SerialisedItems; let last=last" [attr.data-allors-id]="item.id">
 
-                <h3 mat-line (click)="navigationService.edit(item, part)" >{{item.ItemNumber}}, {{item.Name}}</h3>
-                <h4 mat-line>{{item.SerialNumber}}</h4>
+                <h3 mat-line (click)="navigationService.edit(item, part)">{{item.ItemNumber}}, serialnumber:
+                  {{item.SerialNumber}}</h3>
+                <h4 mat-line>status: {{item.SerialisedItemState.Name}}, owner: {{item.OwnedBy?.displayName}}</h4>
 
                 <span>
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
@@ -122,14 +128,16 @@
           </mat-card-content>
 
           <mat-card-actions>
-            <button *ngIf="part.CanWriteSerialisedItems" mat-button (click)="navigationService.add(m.SerialisedItem, part)">Add new</button>
+            <button *ngIf="part.CanWriteSerialisedItems" mat-button (click)="navigationService.add(m.SerialisedItem, part)">Add
+              new</button>
           </mat-card-actions>
         </mat-card>
       </div>
 
       <div class="col-md-6">
-        <price-component [pricecomponents]='pricecomponents' (add)="navigationService.add($event, part)"
-          (edit)="navigationService.edit($event)" (delete)="deletePriceComponent($event)"></price-component>
+        <price-component [currentPricecomponents]='currentPricecomponents' [inactivePricecomponents]='inactivePricecomponents'
+          [allPricecomponents]='allPricecomponents' (add)="navigationService.add($event, part)" (edit)="navigationService.edit($event)"
+          (delete)="deletePriceComponent($event)"></price-component>
       </div>
 
     </div>

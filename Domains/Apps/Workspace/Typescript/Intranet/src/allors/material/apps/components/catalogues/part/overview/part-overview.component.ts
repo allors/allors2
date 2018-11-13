@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
 import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent } from '../../../../../../domain';
-import { PullRequest } from '../../../../../../framework';
+import { PullRequest, Equals, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/StateService';
 import { Fetcher } from '../../../Fetcher';
@@ -27,13 +27,15 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   internalOrganisation: InternalOrganisation;
   serialised: boolean;
   suppliers: string;
+  sellingPrice: BasePrice;
+  currentPricecomponents: PriceComponent[] = [];
+  inactivePricecomponents: PriceComponent[] = [];
+  allPricecomponents: PriceComponent[] = [];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   private fetcher: Fetcher;
-  pricecomponents: BasePrice[];
-  sellingPrice: BasePrice;
 
   constructor(
     @Self() private allors: Allors,
@@ -55,7 +57,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { pull, tree, scope } = this.allors;
+    const { m, pull, tree, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -67,10 +69,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
           const pulls = [
             this.fetcher.internalOrganisation,
             pull.PriceComponent({
+              predicate: new Equals({ propertyType: m.PriceComponent.Part, object: id }),
               include: {
                 Part: x,
                 Currency: x
-              }
+              },
+              sort: new Sort({ roleType: m.PriceComponent.FromDate, descending: true })
             }),
             pull.Part({
               object: id,
@@ -82,7 +86,9 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 InventoryItemKind: x,
                 ManufacturedBy: x,
                 SerialisedItems: {
-                  PrimaryPhoto: x
+                  PrimaryPhoto: x,
+                  SerialisedItemState: x,
+                  OwnedBy: x
                 },
                 Brand: x,
                 Model: x
@@ -97,12 +103,17 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         scope.session.reset();
 
+        const now = new Date();
+
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
         this.part = loaded.objects.Part as Part;
         this.serialised = this.part.InventoryItemKind.UniqueId === '2596E2DD-3F5D-4588-A4A2-167D6FBE3FAE'.toLowerCase();
 
-        this.pricecomponents = loaded.collections.PriceComponents as PriceComponent[];
+        this.allPricecomponents = loaded.collections.PriceComponents as PriceComponent[];
+        this.currentPricecomponents = this.allPricecomponents.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.inactivePricecomponents = this.allPricecomponents.filter(v => v.FromDate > now || (v.ThroughDate !== null && v.ThroughDate < now));
+
         // const now = new Date();
         // this.sellingPrice = this.pricecomponents
         //   .find(v => v.Part === this.part && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));

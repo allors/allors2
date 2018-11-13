@@ -11,7 +11,11 @@ import { ObjectType } from '../../../../../framework';
 })
 export class PriceComponentsComponent {
 
-  @Input() pricecomponents: PriceComponent[];
+  @Input() currentPricecomponents: PriceComponent[];
+
+  @Input() inactivePricecomponents: PriceComponent[];
+
+  @Input() allPricecomponents: PriceComponent[];
 
   @Output() add: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
 
@@ -19,7 +23,22 @@ export class PriceComponentsComponent {
 
   @Output() delete: EventEmitter<PriceComponent> = new EventEmitter<PriceComponent>();
 
+  pricecomponentsCollection = 'Current';
+
   constructor(
     public allors: Allors,
     public navigationService: NavigationService) { }
+
+  get prices(): any {
+
+    switch (this.pricecomponentsCollection) {
+      case 'Current':
+        return this.currentPricecomponents;
+      case 'Inactive':
+        return this.inactivePricecomponents;
+      case 'All':
+      default:
+        return this.allPricecomponents;
+    }
+  }
 }

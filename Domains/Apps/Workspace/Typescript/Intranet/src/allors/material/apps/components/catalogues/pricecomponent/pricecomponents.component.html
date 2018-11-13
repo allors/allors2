@@ -6,16 +6,29 @@
         <mat-icon>money</mat-icon>Prices
       </h2>
     </div>
+
+    <div class="col">
+      <mat-button-toggle-group [(ngModel)]="pricecomponentsCollection">
+        <mat-button-toggle value="Current">Current</mat-button-toggle>
+        <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
+        <mat-button-toggle value="All">All</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
   </div>
 
   <mat-card-content>
 
+    <ul *ngIf="prices?.length == 0">
+      <li>no info to display</li>
+    </ul>
+
     <mat-list>
-      <mat-list-item *ngFor="let pricecomponent of pricecomponents; let last=last" [attr.data-allors-id]="pricecomponent.id"
+      <mat-list-item *ngFor="let pricecomponent of prices; let last=last" [attr.data-allors-id]="pricecomponent.id"
         (click)="edit.emit(pricecomponent)" style="cursor: pointer;">
 
         <h4 mat-line>default price {{pricecomponent.Currency.IsoCode}} {{pricecomponent.Price}}</h4>
-        <h3 mat-line (click)="navigationService.edit(pricecomponent)" >valid from: {{pricecomponent.FromDate | date}}  through: {{pricecomponent.ThroughDate | date}}</h3>
+        <h3 mat-line (click)="navigationService.edit(pricecomponent)">valid from: {{pricecomponent.FromDate | date}}
+          through: {{pricecomponent.ThroughDate | date}}</h3>
 
         <div (click)="$event.stopPropagation()">
           <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">

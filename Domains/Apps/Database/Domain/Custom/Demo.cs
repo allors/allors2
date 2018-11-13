@@ -200,7 +200,7 @@ namespace Allors
                 .WithPart(finishedGood2)
                 .Build();
 
-            var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").Build();
+            var serialisedItem = new SerialisedItemBuilder(this.Session).WithSerialNumber("1").WithAvailableForSale(true).Build();
             finishedGood2.AddSerialisedItem(serialisedItem);
 
             new SerialisedInventoryItemBuilder(this.Session).WithPart(finishedGood2).WithSerialisedItem(serialisedItem).WithFacility(allors.DefaultFacility).Build();
@@ -463,6 +463,17 @@ line2")
                     .WithVatRegime(new VatRegimes(this.Session).Assessable)
                     .Build();
             }
+
+            var acme0 = new Organisations(this.Session).FindBy(M.Organisation.Name, "Acme0");
+
+            var sold = new SerialisedItemBuilder(this.Session)
+                .WithSerialNumber("112")
+                .WithSerialisedItemState(new SerialisedItemStates(this.Session).Sold)
+                .WithAvailableForSale(false)
+                .WithOwnedBy(acme0)
+                .Build();
+
+            finishedGood2.AddSerialisedItem(sold);
 
             this.Session.Derive();
         }
