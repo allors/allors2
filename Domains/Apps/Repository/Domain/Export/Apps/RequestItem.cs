@@ -175,7 +175,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
         [Workspace]
-        public SerialisedInventoryItem SerialisedInventoryItem { get; set; }
+        public SerialisedItem SerialisedItem { get; set; }
 
         #region Allors
         [Id("fa33c3e6-53c4-428a-bd9c-feba1dd9ed45")]

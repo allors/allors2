@@ -270,6 +270,15 @@ namespace Allors.Repository
         [Workspace]
         public Party RentedBy { get; set; }
 
+        #region Allors
+        [Id("56FBFE00-2480-476C-86C0-140D419C33DE")]
+        [AssociationId("6D33AAA1-8F48-4454-9583-E250B9B5B6BD")]
+        [RoleId("6ED98788-BD73-495F-B2DE-871299372165")]
+        #endregion
+        [Required]
+        [Workspace]
+        public bool AvailableForSale { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 
