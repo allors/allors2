@@ -102,19 +102,17 @@ namespace Allors.Adapters.Object.SqlClient
 
         internal void CheckAssociation(IAssociationType associationType)
         {
-            // TODO: Optimize
-            if (!new List<IAssociationType>(this.objectType.AssociationTypes).Contains(associationType))
+            if (!this.objectType.ExistAssociationType(associationType))
             {
-                throw new ArgumentException("Extent does not implement association " + associationType.SingularFullName);
+                throw new ArgumentException("Extent does not have association " + associationType);
             }
         }
 
         internal void CheckRole(IRoleType roleType)
         {
-            // TODO: Optimize
-            if (!new List<IRoleType>(this.objectType.RoleTypes).Contains(roleType))
+            if (!this.objectType.ExistRoleType(roleType))
             {
-                throw new ArgumentException("Extent does not implement role " + roleType.SingularFullName);
+                throw new ArgumentException("Extent does not have role " + roleType.SingularName);
             }
         }
 

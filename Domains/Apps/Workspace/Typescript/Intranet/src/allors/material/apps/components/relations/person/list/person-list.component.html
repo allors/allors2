@@ -100,7 +100,7 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="navigation.overview(row.person)" style="cursor: pointer;">
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="navigation.overview(row.person)" style="cursor: pointer;" [attr.data-allors-id]="row.person.id">
           </tr>
         </table>
       </div>

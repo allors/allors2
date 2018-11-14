@@ -26,7 +26,7 @@ namespace Tests.Intranet.Relations
         public PersonOverviewPage Select(Person person)
         {
             var row = this.Table.FindRow(person);
-            var cell = row.FindCell("firstName");
+            var cell = row.FindCell("name");
             cell.Click();
 
             return new PersonOverviewPage(this.Driver);

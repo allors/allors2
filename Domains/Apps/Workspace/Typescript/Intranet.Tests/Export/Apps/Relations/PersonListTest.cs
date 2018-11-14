@@ -26,9 +26,9 @@ namespace Tests.Intranet.Relations
         [Fact]
         public void Table()
         {
-            var person = new People(this.Session).FindBy(M.Person.FirstName, "John");
+            var person = new People(this.Session).FindBy(M.Person.FirstName, "John0");
             var row = this.page.Table.FindRow(person);
-            var cell = row.FindCell("firstName");
+            var cell = row.FindCell("name");
             cell.Click();
         }
     }

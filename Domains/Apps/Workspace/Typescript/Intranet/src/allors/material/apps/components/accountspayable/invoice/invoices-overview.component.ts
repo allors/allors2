@@ -96,7 +96,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
             pull.PurchaseInvoiceItemState({
               sort: new Sort(m.PurchaseInvoiceItemState.Name)
             }),
-            pull.InternalOrganisation({
+            pull.Organisation({
               predicate: new Equals({propertyType: m.Organisation.IsInternalOrganisation, value: true}),
               sort: [
                 new Sort(m.Organisation.PartyName),
