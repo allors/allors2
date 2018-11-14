@@ -1,66 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="0.5" Y="0.75" Width="1.5" />
+  <Interface Name="Allors.Domain.SerialisedInventoryItem">
+    <Position X="6.75" Y="3.75" Width="2.5" />
     <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACgoAgUAAAACAIFBANAgEI=</HashCode>
+      <HashCode>AAAAAAgACAAAAAAAAAAAhAAAAAAAAAgAAAAAACAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="PartyContactMechanisms" />
+      <Property Name="SerialisedItem" />
+      <Property Name="SerialisedInventoryItemState" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.PartyContactMechanism" Collapsed="true">
-    <Position X="4" Y="0.75" Width="2" />
+  <Interface Name="Allors.Domain.SerialisedItem" Collapsed="true">
+    <Position X="3.25" Y="4.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAgAAABAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <HashCode>AACIAAxAFQABASAgAABAAQCAAAEAAAgBAAQRAJAABBA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="ContactMechanism" />
+      <Property Name="SerialisedItemState" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.ContactMechanism" Collapsed="true">
-    <Position X="7.5" Y="0.75" Width="1.75" />
+  <Interface Name="Allors.Domain.RequestItem">
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAgAAAgAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <HashCode>QAAiIAgAAQAgAAAEAAAAQAIAAJoAAAgAAAABgCAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Product" />
+      <Property Name="SerialisedInventoryItem" />
+      <Property Name="SerialisedItem" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Product">
+    <Position X="12.75" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAgBIBEEAQAgAAAAABAAAAQAABAAAAACAAIAICAAKgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.ElectronicAddress" Collapsed="true">
-    <Position X="7.25" Y="2.25" Width="1.75" />
+  <Interface Name="Allors.Domain.SerialisedItemState" Collapsed="true">
+    <Position X="3.25" Y="6" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.PostalAddress">
-    <Position X="9.75" Y="2.25" Width="1.5" />
+  <Interface Name="Allors.Domain.SerialisedInventoryItemState" Collapsed="true">
+    <Position X="6.5" Y="6.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>ACAAAAAAAAAAAAAJIAAEAAAAABIAAAAARAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.TelecommunicationsNumber" Collapsed="true">
-    <Position X="12" Y="2.25" Width="1.5" />
+  <Interface Name="Allors.Domain.InventoryItem">
+    <Position X="7.25" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ACAAABAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAIIAAAIAAAAAAAAAAAAAQAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Part" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.Part" Collapsed="true">
+    <Position X="10" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAMQAUAQAgECCRAAAAQIWAQAAAAACjAAgBACABhBA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.EmailAddress" Collapsed="true">
-    <Position X="6.25" Y="3.75" Width="1.5" />
+  <Interface Name="Allors.Domain.Good">
+    <Position X="13.25" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAIAAAECABAAABAAAAAAAAAAABAAAAAAAAgAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.WebAddress" Collapsed="true">
-    <Position X="8.25" Y="3.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Part" />
+    </ShowAsAssociation>
   </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
