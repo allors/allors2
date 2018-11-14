@@ -35,6 +35,7 @@ namespace Tests.Material
             this.Driver.Navigate().GoToUrl(Test.DatabaseInithUrl);
 
             // Init Allors
+            CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
             CultureInfo.CurrentUICulture = CultureInfo.CurrentCulture;
 
             var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
