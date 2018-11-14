@@ -1,6 +1,7 @@
 export * from './authentication';
 export * from './barcode';
 export * from './data';
+export * from './filter';
 export * from './focus';
 export * from './forms';
 export * from './framework';

@@ -8,8 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter, ContainedIn } from '../../../../../../framework';
-import { ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
-import { AllorsFilterService } from '../../../../../../angular/base/filter';
+import { AllorsFilterService, ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
 
@@ -49,7 +48,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private location: Location,
@@ -137,7 +135,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
         });
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
