@@ -27,6 +27,8 @@ namespace Tests.Material
         [Fact]
         public void Initial()
         {
+            CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
+
             var before = new Datas(this.Session).Extent().ToArray();
 
             var date = this.Session.Now();
