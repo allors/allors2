@@ -1,5 +1,6 @@
 namespace Tests.Material
 {
+    using System.Globalization;
     using System.Linq;
     using System.Threading;
 
@@ -34,9 +35,6 @@ namespace Tests.Material
             this.page.Save.Click();
 
             this.Driver.WaitForAngular();
-
-            System.Threading.Tasks.Task.Delay(2000).Wait();
-
             this.Session.Rollback();
 
             var after = new Datas(this.Session).Extent().ToArray();

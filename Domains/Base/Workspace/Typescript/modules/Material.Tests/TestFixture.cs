@@ -5,6 +5,7 @@ namespace Tests.Material
     using System;
     using System.Diagnostics;
     using System.Drawing;
+    using System.Globalization;
     using System.IO;
 
     using OpenQA.Selenium;
@@ -16,6 +17,8 @@ namespace Tests.Material
     {
         public TestFixture()
         {
+            CultureInfo.CurrentCulture = new CultureInfo("nl-BE");
+
             this.StartWebdriver();
         }
 
