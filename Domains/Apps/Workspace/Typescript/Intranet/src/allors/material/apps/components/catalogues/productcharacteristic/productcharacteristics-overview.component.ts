@@ -82,11 +82,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
       )
       .subscribe((loaded) => {
         this.characteristicTypes = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   public delete(characteristicType: SerialisedItemCharacteristicType): void {

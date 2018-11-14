@@ -52,10 +52,10 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
           const termId: string = this.route.snapshot.paramMap.get('termId');
 
           const pulls = [
-            pull.SalesOrder({object: id}),
+            pull.SalesOrder({ object: id }),
             pull.SalesTerm({
               object: id,
-              include: { TermType: x}
+              include: { TermType: x }
             }),
             pull.OrderTermType({
               predicate: new Equals({ propertyType: m.OrderTermType.IsActive, value: true }),
@@ -78,12 +78,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
           this.salesTerm = scope.session.create('OrderTerm') as SalesTerm;
           this.order.AddSalesTerm(this.salesTerm);
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

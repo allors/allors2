@@ -125,11 +125,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
         });
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigation.back();
-        });
+      },this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

@@ -107,12 +107,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
         scope.session.reset();
         this.request = loaded.objects.request as RequestForQuote;
         this.quote = loaded.objects.quote as ProductQuote;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -158,11 +153,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         const quote = loaded.objects.quote as ProductQuote;
         this.router.navigate(['/orders/productQuote/' + quote.id]);
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   public submit(): void {

@@ -95,7 +95,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
               sort: new Sort(m.Currency.Name),
             }),
             pull.PurchaseInvoiceType({
-              predicate: new Equals({propertyType: m.PurchaseInvoiceType.IsActive, value: true}),
+              predicate: new Equals({ propertyType: m.PurchaseInvoiceType.IsActive, value: true }),
               sort: new Sort(m.PurchaseInvoiceType.Name),
             })
           ];
@@ -167,12 +167,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         this.previousBilledFrom = this.invoice.BilledFrom;
         this.previousShipToEndCustomer = this.invoice.ShipToEndCustomer;
         this.previousBillToCustomer = this.invoice.BillToCustomer;
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public billedFromContactPersonCancelled(): void {
@@ -421,12 +416,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         }
 
         this.billedFromContacts = loaded.collections.currentContacts as Person[];
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   private updateBillToCustomer(party: Party) {
@@ -483,12 +473,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.billToContactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.billToContacts = loaded.collections.currentContacts as Person[];
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   private updateShipToEndCustomer(party: Party) {
@@ -536,11 +521,6 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.shipToEndCustomerAddresses = partyContactMechanisms.filter((v: PartyContactMechanism) => v.ContactMechanism.objectType.name === 'PostalAddress').map((v: PartyContactMechanism) => v.ContactMechanism);
         this.shipToEndCustomerContacts = loaded.collections.currentContacts as Person[];
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 }

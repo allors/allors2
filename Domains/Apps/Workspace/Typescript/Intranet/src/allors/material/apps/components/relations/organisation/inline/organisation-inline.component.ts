@@ -37,11 +37,7 @@ export class OrganisationInlineComponent implements OnInit {
       .load('Pull', new PullRequest({}))
       .subscribe((loaded) => {
         this.organisation = scope.session.create('Organisation') as Organisation;
-      },
-        (error: any) => {
-          this.cancelled.emit();
-        },
-      );
+      },this.errorService.handler);
   }
 
   public cancel(): void {

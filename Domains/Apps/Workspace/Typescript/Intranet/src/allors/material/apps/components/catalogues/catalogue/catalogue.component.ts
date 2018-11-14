@@ -98,12 +98,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         }
 
         this.title = this.catalogue.Name;
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

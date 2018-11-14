@@ -201,12 +201,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             .map((v: PersonRole) => v.Name)
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigation.back();
-        },
-      );
+      },this.errorService.handler);
   }
 
   public cancelCommunication(communicationEvent: CommunicationEvent): void {

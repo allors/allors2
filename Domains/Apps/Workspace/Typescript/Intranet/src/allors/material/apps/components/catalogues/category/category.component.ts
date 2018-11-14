@@ -100,12 +100,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
         this.title = 'Category';
         this.subTitle = this.category.Name;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

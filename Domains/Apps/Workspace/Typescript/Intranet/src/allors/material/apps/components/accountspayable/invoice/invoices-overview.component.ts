@@ -171,11 +171,7 @@ export class InvoicesOverviewComponent implements OnDestroy {
       .subscribe((loaded) => {
         this.data = loaded.collections.PurchaseInvoice as PurchaseInvoice[];
         this.total = loaded.values.PurchaseInvoices_total;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   public goBack(): void {

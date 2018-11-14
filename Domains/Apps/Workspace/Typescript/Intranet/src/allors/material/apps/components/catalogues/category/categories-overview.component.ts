@@ -87,11 +87,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.productCategories = loaded.collections.ProductCategories as ProductCategory[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   public delete(category: ProductCategory): void {

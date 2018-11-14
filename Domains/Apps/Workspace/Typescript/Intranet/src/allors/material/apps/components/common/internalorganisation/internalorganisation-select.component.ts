@@ -49,11 +49,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisations = loaded.collections.Organisations as Organisation[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-        },
-      );
+      }, this.errorService.handler);
   }
 
   ngOnDestroy(): void {

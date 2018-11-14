@@ -116,12 +116,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public print() {
@@ -227,10 +222,6 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         const order = loaded.objects.order as SalesOrder;
         this.router.navigate(['/orders/salesOrder/' + order.id]);
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      },this.errorService.handler);
   }
 }

@@ -163,12 +163,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
         if (this.organisation.IsManufacturer) {
           this.activeRoles.push(this.manufacturerRole);
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      },this.errorService.handler );
   }
 
   public ngOnDestroy(): void {

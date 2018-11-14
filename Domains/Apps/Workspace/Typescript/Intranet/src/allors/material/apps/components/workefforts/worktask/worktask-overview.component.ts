@@ -68,12 +68,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         scope.session.reset();
         this.task = loaded.objects.task as WorkTask;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public cancel(): void {

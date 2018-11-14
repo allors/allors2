@@ -108,12 +108,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
         this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      },this.errorService.handler );
   }
 
   public ngOnDestroy(): void {

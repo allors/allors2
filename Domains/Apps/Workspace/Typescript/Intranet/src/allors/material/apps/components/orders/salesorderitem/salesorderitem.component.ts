@@ -144,12 +144,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             this.surcharge = this.orderItem.SurchargeAdjustment.Amount;
           }
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -316,11 +311,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
         if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
           this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 }

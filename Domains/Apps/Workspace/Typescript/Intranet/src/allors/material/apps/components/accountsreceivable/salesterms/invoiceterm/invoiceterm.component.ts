@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
-import { BehaviorSubject,  Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
 import { InvoiceTermType, SalesInvoice, SalesTerm } from '../../../../../../domain';
@@ -75,12 +75,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
           this.salesTerm = scope.session.create('InvoiceTerm') as SalesTerm;
           this.invoice.AddSalesTerm(this.salesTerm);
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

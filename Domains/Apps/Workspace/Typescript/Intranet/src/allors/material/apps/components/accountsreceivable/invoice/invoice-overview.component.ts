@@ -149,12 +149,7 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         } else {
           this.repeatingInvoice = undefined;
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public print() {

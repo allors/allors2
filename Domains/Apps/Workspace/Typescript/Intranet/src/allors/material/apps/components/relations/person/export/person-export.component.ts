@@ -114,11 +114,7 @@ export class PersonExportComponent implements OnDestroy {
           fields: ['FirstName', 'LastName'],
           data: this.data.map((v: Person) => ([v.FirstName, v.LastName])),
         });
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      },this.errorService.handler);
   }
 
   public copy(): void {

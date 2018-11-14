@@ -84,11 +84,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.productTypes = loaded.collections.ProductTypes as ProductType[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   public delete(productType: ProductType): void {

@@ -157,11 +157,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.data = loaded.collections.quotes as ProductQuote[];
         this.total = loaded.values.invoices_total;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

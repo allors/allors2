@@ -88,11 +88,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         scope.session.reset();
         this.catalogues = loaded.collections.Catalogues as Catalogue[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      },this.errorService.handler);
   }
 
   public delete(catalogue: Catalogue): void {

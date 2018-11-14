@@ -60,11 +60,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
         this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
         this.telecommunicationsNumber = scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
         this.partyContactMechanism.ContactMechanism = this.telecommunicationsNumber;
-      },
-        (error: any) => {
-          this.cancelled.emit();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

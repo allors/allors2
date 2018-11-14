@@ -124,12 +124,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         }
 
         this.previousReceiver = this.quote.Receiver;
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public personCancelled(): void {
@@ -349,12 +344,7 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         const partyContactMechanisms: PartyContactMechanism[] = loaded.collections.partyContactMechanisms as PartyContactMechanism[];
         this.contactMechanisms = partyContactMechanisms.map((v: PartyContactMechanism) => v.ContactMechanism);
         this.contacts = loaded.collections.currentContacts as Person[];
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
 
   }
 }

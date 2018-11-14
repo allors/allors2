@@ -43,11 +43,11 @@ export class PersonInlineComponent implements OnInit {
         sort: new Sort(this.m.Locale.Name)
       }),
       pull.GenderType({
-        predicate: new Equals({propertyType: this.m.GenderType.IsActive, value: true}),
+        predicate: new Equals({ propertyType: this.m.GenderType.IsActive, value: true }),
         sort: new Sort(this.m.GenderType.Name),
       }),
       pull.Salutation({
-        predicate: new Equals({propertyType: this.m.Salutation.IsActive, value: true}),
+        predicate: new Equals({ propertyType: this.m.Salutation.IsActive, value: true }),
         sort: new Sort(this.m.Salutation.Name)
       })
     ];
@@ -60,11 +60,7 @@ export class PersonInlineComponent implements OnInit {
         this.salutations = loaded.collections.salutations as Enumeration[];
 
         this.person = scope.session.create('Person') as Person;
-      },
-        (error: any) => {
-          this.cancelled.emit();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public cancel(): void {

@@ -208,12 +208,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             this.itemTitle = 'Outgoing Phone call';
           }
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      },this.errorService.handler );
   }
 
   public deleteWorkEffort(worktask: WorkTask): void {

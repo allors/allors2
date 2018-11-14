@@ -215,12 +215,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
             .map((v: OrganisationRole) => v.Name)
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      },this.errorService.handler );
   }
 
   public ngOnDestroy(): void {

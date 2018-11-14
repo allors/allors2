@@ -81,8 +81,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     const { m, pull, scope } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
-    .pipe(
-      switchMap(([, , internalOrganisationId]) => {
+      .pipe(
+        switchMap(([, , internalOrganisationId]) => {
 
           const id: string = this.route.snapshot.paramMap.get('id');
 
@@ -257,12 +257,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
         this.salesInvoice = loaded.objects.invoice as SalesInvoice;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public brandAdded(brand: Brand): void {
@@ -299,12 +294,7 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         // TODO:
         // this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -321,8 +311,8 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     scope
       .save()
       .subscribe(() => {
-          this.goBack();
-        },
+        this.goBack();
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });
@@ -337,13 +327,13 @@ export class SerialisedGoodComponent implements OnInit, OnDestroy {
     scope
       .save()
       .subscribe(() => {
-          this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-          if (isNew) {
-            this.router.navigate(['/serialisedGood/' + this.good.id]);
-          } else {
-            this.refresh();
-          }
-        },
+        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
+        if (isNew) {
+          this.router.navigate(['/serialisedGood/' + this.good.id]);
+        } else {
+          this.refresh();
+        }
+      },
         (error: Error) => {
           this.errorService.handle(error);
         });

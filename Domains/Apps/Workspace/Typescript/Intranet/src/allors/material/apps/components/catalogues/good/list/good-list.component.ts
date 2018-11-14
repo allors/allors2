@@ -170,12 +170,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
             qoh: v.Part.QuantityOnHand
           } as Row;
         });
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -241,9 +236,9 @@ export class GoodListComponent implements OnInit, OnDestroy {
           if (confirm) {
             scope.invoke(methods)
               .subscribe(() => {
-                  this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                  this.refresh();
-                },
+                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                this.refresh();
+              },
                 (error: Error) => {
                   this.errorService.handle(error);
                 });

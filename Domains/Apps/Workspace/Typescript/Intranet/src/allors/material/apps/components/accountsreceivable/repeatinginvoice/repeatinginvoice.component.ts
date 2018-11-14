@@ -88,12 +88,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
           this.repeatinginvoice = scope.session.create('RepeatingSalesInvoice') as RepeatingSalesInvoice;
           this.repeatinginvoice.Source = this.invoice;
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

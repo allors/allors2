@@ -84,12 +84,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
           this.salesTerm = scope.session.create('IncoTerm') as SalesTerm;
           this.order.AddSalesTerm(this.salesTerm);
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

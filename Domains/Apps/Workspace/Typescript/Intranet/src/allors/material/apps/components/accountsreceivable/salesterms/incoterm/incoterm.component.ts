@@ -52,7 +52,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
           const termId: string = this.route.snapshot.paramMap.get('termId');
 
           const pulls = [
-            pull.SalesInvoice({object: id}),
+            pull.SalesInvoice({ object: id }),
             pull.SalesTerm(
               {
                 object: termId,
@@ -60,12 +60,12 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
                   TermType: x,
                 }
               }),
-              pull.IncoTermType({
-                predicate: new Equals({ propertyType: m.IncoTermType.IsActive, value: true }),
-                sort: [
-                  new Sort(m.IncoTermType.Name),
-                ],
-              })
+            pull.IncoTermType({
+              predicate: new Equals({ propertyType: m.IncoTermType.IsActive, value: true }),
+              sort: [
+                new Sort(m.IncoTermType.Name),
+              ],
+            })
           ];
 
           return scope
@@ -83,12 +83,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
           this.salesTerm = scope.session.create('IncoTerm') as SalesTerm;
           this.invoice.AddSalesTerm(this.salesTerm);
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

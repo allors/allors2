@@ -85,12 +85,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
           this.salesTerm = scope.session.create('OrderTerm') as SalesTerm;
           this.invoice.AddSalesTerm(this.salesTerm);
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

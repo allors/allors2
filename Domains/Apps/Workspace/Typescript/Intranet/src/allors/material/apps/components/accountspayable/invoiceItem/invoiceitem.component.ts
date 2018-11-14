@@ -115,12 +115,7 @@ export class InvoiceItemEditComponent
             // this.goodSelected(this.invoiceItem.Product);
           }
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

@@ -209,12 +209,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.manufacturers = loaded.collections.manufacturers as Organisation[];
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public brandAdded(brand: Brand): void {
@@ -250,12 +245,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
         const selectedBrand = loaded.objects.selectedbrand as Brand;
         // this.models = selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

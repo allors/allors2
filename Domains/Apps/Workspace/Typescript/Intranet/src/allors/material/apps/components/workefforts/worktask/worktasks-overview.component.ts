@@ -162,11 +162,7 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
 
         this.data = loaded.collections.worktasks as WorkTask[];
         this.total = loaded.values.worktasks_total;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
   ngOnInit(): void {
@@ -199,9 +195,9 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
         if (confirm) {
           scope.invoke(worktask.Delete)
             .subscribe(() => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
               (error: Error) => {
                 this.errorService.handle(error);
               });

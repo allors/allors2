@@ -62,11 +62,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
         this.postalBoundary = scope.session.create('PostalBoundary') as PostalBoundary;
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
         this.postalAddress.PostalBoundary = this.postalBoundary;
-      },
-        (error: any) => {
-          this.cancelled.emit();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

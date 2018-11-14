@@ -193,12 +193,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
           this.person = scope.session.create('Person') as Person;
         }
 
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.location.back();
-        },
-      );
+      },this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

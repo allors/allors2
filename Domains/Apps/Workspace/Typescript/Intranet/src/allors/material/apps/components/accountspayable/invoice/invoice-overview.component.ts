@@ -116,12 +116,8 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
         this.goods = loaded.collections.Goods as Good[];
         this.order = loaded.objects.Order as PurchaseOrder;
         this.invoice = loaded.objects.Invoice as PurchaseInvoice;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -276,10 +272,6 @@ export class InvoiceOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         const invoice = loaded.objects.SalesInvoiceWherePurchaseInvoice as SalesInvoice;
         this.router.navigate(['/accountsreceivable/invoice/' + invoice.id]);
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 }

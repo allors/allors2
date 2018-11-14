@@ -190,11 +190,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
         this.data = loaded.collections.workEffortAssignments as WorkEffortPartyAssignment[];
         this.total = loaded.values.workEffortAssignments_total;
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      },this.errorService.handler);
   }
 
   public more(): void {

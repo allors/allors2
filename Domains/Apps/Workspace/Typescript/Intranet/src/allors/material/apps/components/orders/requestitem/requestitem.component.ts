@@ -60,7 +60,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           const pulls = [
             pull.RequestForQuote({ object: id }),
             pull.RequestItem({ object: itemId, include: { RequestItemState: x } }),
-            pull.Good({sort: new Sort(m.Good.Name)}),
+            pull.Good({ sort: new Sort(m.Good.Name) }),
             pull.UnitOfMeasure({
               predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: new Sort(m.UnitOfMeasure.Name)
@@ -95,12 +95,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
           this.refreshInventory(this.requestItem.Product);
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public goodSelected(object: any): void {
@@ -197,11 +192,6 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
           this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
         }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 }

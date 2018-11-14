@@ -95,12 +95,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
 
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public deleteGoodIdentification(goodIdentification: IGoodIdentification): void {
@@ -112,9 +107,9 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
         if (confirm) {
           scope.invoke(goodIdentification.Delete)
             .subscribe(() => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
               (error: Error) => {
                 this.errorService.handle(error);
               });

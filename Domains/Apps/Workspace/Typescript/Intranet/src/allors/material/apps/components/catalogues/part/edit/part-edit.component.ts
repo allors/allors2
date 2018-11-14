@@ -235,12 +235,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

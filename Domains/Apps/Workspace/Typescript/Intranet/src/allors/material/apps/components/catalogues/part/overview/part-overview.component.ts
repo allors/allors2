@@ -123,12 +123,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
             .map(v => v.displayName)
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public deleteGoodIdentification(goodIdentification: IGoodIdentification): void {

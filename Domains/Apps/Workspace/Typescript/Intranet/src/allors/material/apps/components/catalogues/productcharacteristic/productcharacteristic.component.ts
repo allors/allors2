@@ -98,12 +98,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
         this.uoms = loaded.collections.uoms as UnitOfMeasure[];
         this.timeFrequencies = loaded.collections.timeFrequencies as TimeFrequency[];
         this.allUoms = this.uoms.concat(this.timeFrequencies).sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

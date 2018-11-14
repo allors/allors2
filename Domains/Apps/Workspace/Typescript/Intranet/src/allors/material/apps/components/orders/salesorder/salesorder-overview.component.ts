@@ -158,12 +158,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         if (this.order) {
           this.orderItems = this.order.SalesOrderItems;
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        },
-      );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -380,10 +375,6 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
         if (invoices.length === 1) {
           this.router.navigate(['/accountsreceivable/invoice/' + invoices[0].id]);
         }
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 }

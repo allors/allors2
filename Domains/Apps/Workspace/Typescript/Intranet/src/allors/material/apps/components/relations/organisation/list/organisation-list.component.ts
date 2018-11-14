@@ -136,11 +136,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
         });
-      },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        });
+      },this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
