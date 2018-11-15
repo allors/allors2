@@ -10,7 +10,7 @@ import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allor
 import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 

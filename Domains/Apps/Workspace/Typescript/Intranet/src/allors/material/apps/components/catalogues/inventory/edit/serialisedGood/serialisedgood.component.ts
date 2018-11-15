@@ -8,7 +8,7 @@ import { ErrorService, SearchFactory, MediaService, Saved, Scope, x, Allors } fr
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, InvoiceItem, Locale, Model, Organisation, Ownership, ProductCategory, ProductType, SalesInvoice, SerialisedInventoryItem, SerialisedInventoryItemState, SupplierOffering, VatRate, VendorProduct } from '../../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
-import { StateService } from '../../../../../services/StateService';
+import { StateService } from '../../../../../services/state/state.service';
 import { Fetcher } from '../../../../Fetcher';
 import { switchMap } from 'rxjs/operators';
 

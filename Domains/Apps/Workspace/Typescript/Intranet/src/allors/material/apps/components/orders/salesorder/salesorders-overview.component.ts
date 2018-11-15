@@ -9,7 +9,7 @@ import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, x, Allors } 
 import { InternalOrganisation, SalesOrder, SalesOrderState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, switchMap, scan } from 'rxjs/operators';
 

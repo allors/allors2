@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SearchFactory, WorkspaceService } from '../../../angular';
-import { And, ContainedIn, Equals, Filter } from '../../../framework';
-import { MetaDomain } from '../../../meta';
-import { StateService } from './StateService';
+import { SearchFactory, WorkspaceService } from '../../../../angular';
+import { And, ContainedIn, Equals, Filter } from '../../../../framework';
+import { MetaDomain } from '../../../../meta';
+import { StateService } from './state.service';
 
 @Injectable()
 export class DefaultStateService extends StateService {

@@ -26,3 +26,6 @@ export * from './base/components/footer';
 export * from './base/services/dialog';
 export * from './base/services/error';
 export * from './base/services/sidenav';
+
+// Apps Services
+export * from './apps/services/state';

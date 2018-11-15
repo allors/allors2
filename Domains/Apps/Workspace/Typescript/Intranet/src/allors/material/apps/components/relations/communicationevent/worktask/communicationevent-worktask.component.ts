@@ -8,7 +8,7 @@ import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from 
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Title } from '../../../../../../../../node_modules/@angular/platform-browser';
 import { combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -83,7 +83,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
             }),
             pull.WorkEffortPurpose({
               predicate: new Equals({ propertyType: m.WorkEffortPurpose.IsActive, value: true }),
-              sort: new Sort( m.WorkEffortPurpose.Name),
+              sort: new Sort(m.WorkEffortPurpose.Name),
             }),
             pull.WorkEffortPartyAssignment()
           ];
@@ -108,7 +108,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
         this.workEffortPurposes = loaded.collections.workEffortPurposes as WorkEffortPurpose[];
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
         this.employees = internalOrganisation.ActiveEmployees;
-      },this.errorService.handler );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

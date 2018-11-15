@@ -16,8 +16,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ConfigService } from './app.config.service';
 
-import { DefaultStateService } from '../allors/material/apps/services/DefaultStateService';
-import { StateService } from '../allors/material/apps/services/StateService';
+import { StateService } from '../allors/material';
+import { DefaultStateService } from '../allors/material/apps/services/state/default.state.service';
 import { AllorsMaterialFilterModule } from '../allors/material/base/components/filter';
 
 import * as ap from '../allors/material/apps/components/accountspayable';

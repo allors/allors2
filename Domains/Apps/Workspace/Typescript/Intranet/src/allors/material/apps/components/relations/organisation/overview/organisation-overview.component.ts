@@ -8,7 +8,7 @@ import { ErrorService, Invoked, Saved, x, Allors, NavigationService } from '../.
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Title } from '@angular/platform-browser';
@@ -215,7 +215,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
             .map((v: OrganisationRole) => v.Name)
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
-      },this.errorService.handler );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

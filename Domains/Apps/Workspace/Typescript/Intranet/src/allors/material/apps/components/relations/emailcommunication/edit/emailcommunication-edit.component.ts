@@ -8,7 +8,7 @@ import { ErrorService, x, Allors, NavigationService, NavigationActivatedRoute } 
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 

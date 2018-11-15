@@ -8,7 +8,7 @@ import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } 
 import { GoodIdentificationType, Good, Part, IsbnIdentification } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 

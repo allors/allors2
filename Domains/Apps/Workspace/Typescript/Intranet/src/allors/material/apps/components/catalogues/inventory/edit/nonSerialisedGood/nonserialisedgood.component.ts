@@ -9,7 +9,7 @@ import { ErrorService, MediaService, Saved, Scope, WorkspaceService, x, Allors }
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Locale, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VatRate, VendorProduct } from '../../../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
-import { StateService } from '../../../../../services/StateService';
+import { StateService } from '../../../../../services/state/state.service';
 import { Fetcher } from '../../../../Fetcher';
 
 @Component({

@@ -8,7 +8,7 @@ import { ErrorService, Invoked, Saved, x, Allors, NavigationActivatedRoute, Navi
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, TelecommunicationsNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({

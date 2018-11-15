@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { Catalogue } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort, Equals } from '../../../../../framework';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
@@ -88,7 +88,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         scope.session.reset();
         this.catalogues = loaded.collections.Catalogues as Catalogue[];
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public delete(catalogue: Catalogue): void {

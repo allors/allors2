@@ -1,12 +1,14 @@
-<div class="a-detail">
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-    </mat-toolbar-row>
-  </mat-toolbar>
+<div class="a-main">
 
-  <div class="container-fluid">
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a [routerLink]="['/workefforts/worktasks']">WorkTasks</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview container-fluid">
     <div *ngIf="task" class="row">
 
       <div class="col-md-6">
@@ -50,8 +52,8 @@
           </mat-card-content>
 
           <mat-card-actions>
-            <button *ngIf="task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">Edit</button>
-            <button *ngIf="!task.CanWriteName" mat-button [routerLink]="['/worktask/' + task.id]">View</button>
+            <button *ngIf="task.CanWriteName" mat-button (click)="navigation.edit(task)">Edit</button>
+            <button *ngIf="!task.CanWriteName" mat-button (click)="navigation.edit(task)">View</button>
             <button mat-button [routerLink]="['/printworktask/' + task.id ]">Preview</button>
             <button mat-button (click)="print()">Print</button>
             <button *ngIf="task.CanExecuteCancel" mat-button (click)="cancel()">Cancel</button>

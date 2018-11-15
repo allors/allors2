@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
 import { ProductCategory } from '../../../../../domain';
 import { And, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, switchMap, scan } from 'rxjs/operators';
 

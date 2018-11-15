@@ -10,7 +10,7 @@ import { ErrorService, Invoked, x, Allors } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, WorkEffortState, WorkTask, WorkEffortPartyAssignment } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
@@ -83,7 +83,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        scan(([previousData, , ], [data, take, date, internalOrganisationId]) => {
+        scan(([previousData], [data, take, date, internalOrganisationId]) => {
           return [
             data,
             data !== previousData ? 50 : take,
@@ -97,7 +97,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
     this.subscription = combined$
       .pipe(
-        switchMap(([data, , ]) => {
+        switchMap(([data]) => {
 
           const pulls = [
             this.fetcher.internalOrganisation,
@@ -190,7 +190,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
 
         this.data = loaded.collections.workEffortAssignments as WorkEffortPartyAssignment[];
         this.total = loaded.values.workEffortAssignments_total;
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public more(): void {

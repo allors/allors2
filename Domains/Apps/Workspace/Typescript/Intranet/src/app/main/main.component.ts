@@ -7,7 +7,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
 import { MenuService, Loaded, Allors } from '../../allors/angular';
 import { Equals, PullRequest } from '../../allors/framework';
-import { StateService } from '../../allors/material/apps/services/StateService';
+import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
 

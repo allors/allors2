@@ -9,7 +9,7 @@ import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationA
 import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent } from '../../../../../../domain';
 import { PullRequest, Equals, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';

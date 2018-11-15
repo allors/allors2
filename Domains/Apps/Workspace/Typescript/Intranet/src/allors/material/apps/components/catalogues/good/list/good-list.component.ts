@@ -12,7 +12,7 @@ import { ErrorService, MediaService, x, Allors, NavigationService, Invoked } fro
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 
 import { Good } from '../../../../../../domain';
 import { Fetcher } from '../../../Fetcher';

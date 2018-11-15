@@ -10,7 +10,7 @@ import { ErrorService, Scope, WorkspaceService, x, Invoked, Allors } from '../..
 import { SerialisedItemCharacteristicType } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 
 interface SearchData {
   name?: string;

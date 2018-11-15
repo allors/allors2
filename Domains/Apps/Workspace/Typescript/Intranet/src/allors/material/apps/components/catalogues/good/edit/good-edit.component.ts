@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
 import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
-import { StateService } from 'src/allors/material/apps/services/StateService';
-import { MatSnackBar } from '@angular/material';
+import { StateService } from '../../../../..';
 
 @Component({
   templateUrl: './good-edit.component.html',

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { SearchFactory } from '../../../angular';
+import { SearchFactory } from '../../../../angular';
 
 export abstract class StateService {
     public singletonId: string;

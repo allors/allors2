@@ -8,7 +8,7 @@ import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationAct
 import { Facility, InternalOrganisation, Locale, Organisation, Ownership, ProductType, SerialisedItem, Part, SerialisedItemState } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
 

@@ -10,7 +10,7 @@ import { ProductType } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 
 interface SearchData {
   name?: string;

@@ -8,7 +8,7 @@ import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../.
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Title } from '@angular/platform-browser';
@@ -163,7 +163,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
         if (this.organisation.IsManufacturer) {
           this.activeRoles.push(this.manufacturerRole);
         }
-      },this.errorService.handler );
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

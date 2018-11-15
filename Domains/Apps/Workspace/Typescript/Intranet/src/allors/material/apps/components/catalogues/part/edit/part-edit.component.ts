@@ -1,16 +1,15 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
 import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
 import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../../domain';
 import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { Fetcher } from '../../../Fetcher';
-import { StateService } from 'src/allors/material/apps/services/StateService';
-import { MatSnackBar } from '@angular/material';
+import { StateService } from '../../../../../';
 
 @Component({
   templateUrl: './part-edit.component.html',

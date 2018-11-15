@@ -5,7 +5,7 @@ import { WorkspaceService, Allors } from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
 import { Loaded } from '../allors/angular';
-import { StateService } from '../allors/material/apps/services/StateService';
+import { StateService } from '../allors/material';
 import { tap } from 'rxjs/operators';
 
 @Injectable()

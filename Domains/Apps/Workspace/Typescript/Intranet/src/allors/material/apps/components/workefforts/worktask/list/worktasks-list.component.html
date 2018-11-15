@@ -21,7 +21,7 @@
       </div>
 
       <div style="position: relative">
-        <a style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1" mat-fab (click)="navigation.add(allors.m.PurchaseInvoice)">
+        <a style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1" mat-fab (click)="navigation.add(allors.m.WorkTask)">
           <mat-icon>add</mat-icon>
         </a>
       </div>
@@ -101,7 +101,7 @@
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="navigation.overview(row.purchaseInvoice)" style="cursor: pointer;" [attr.data-allors-id]="row.purchaseInvoice.id">
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="navigation.overview(row.workTask)" style="cursor: pointer;" [attr.data-allors-id]="row.workTask.id">
           </tr>
         </table>
       </div>

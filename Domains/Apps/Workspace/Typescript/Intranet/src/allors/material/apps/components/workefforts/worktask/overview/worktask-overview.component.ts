@@ -1,15 +1,17 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
+import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, PdfService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
-import { WorkTask } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Invoked, x, Allors, NavigationService } from '../../../../../../angular';
+import { StateService } from '../../../../../../material';
+import { WorkTask } from '../../../../../../domain';
+import { PullRequest } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './worktask-overview.component.html',
@@ -27,12 +29,14 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: Allors,
+    public navigation: NavigationService,
     private errorService: ErrorService,
+    private titleService: Title,
     private route: ActivatedRoute,
+    private router: Router,
     private snackBar: MatSnackBar,
-    public mediaService: MediaService,
-    public pdfService: PdfService,
-    private dialogService: AllorsMaterialDialogService) {
+    private dialogService: AllorsMaterialDialogService,
+    private stateService: StateService) {
 
     this.m = this.allors.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -67,7 +71,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         scope.session.reset();
-        this.task = loaded.objects.task as WorkTask;
+        this.task = loaded.objects.WorkTask as WorkTask;
       }, this.errorService.handler);
   }
 
@@ -85,7 +89,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
   }
 
   public print() {
-    this.pdfService.display(this.task);
+    // this.pdfService.display(this.task);
   }
 
   public ngOnDestroy(): void {

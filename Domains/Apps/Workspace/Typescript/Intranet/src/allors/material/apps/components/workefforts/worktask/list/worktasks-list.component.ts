@@ -7,12 +7,12 @@ import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, Loaded, Scope, WorkspaceService, x, Allors, NavigationService, MediaService } from '../../../../../angular';
-import { InternalOrganisation, WorkTask } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { AllorsFilterService, ErrorService, Loaded, Scope, WorkspaceService, x, Allors, NavigationService, MediaService } from '../../../../../../angular';
+import { InternalOrganisation, WorkTask } from '../../../../../../domain';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../../framework';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Sorter } from '../../../../base/sorting';
+import { Sorter } from '../../../../../base/sorting';
 
 interface Row {
   workTask: WorkTask;
@@ -25,7 +25,7 @@ interface Row {
 }
 
 @Component({
-  templateUrl: './worktasks-overview.component.html',
+  templateUrl: './worktasks-list.component.html',
   providers: [Allors, AllorsFilterService]
 })
 export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
@@ -121,10 +121,10 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
           return {
             workTask: v,
             name: v.Name,
-            state: v.WorkEffortState.Name,
+            state: v.WorkEffortState && v.WorkEffortState.Name,
             description: v.Description,
-            priority: v.Priority.Name,
-            createdBy: v.CreatedBy.displayName,
+            priority: v.Priority && v.Priority.Name,
+            createdBy: v.CreatedBy && v.CreatedBy.displayName,
             lastModifiedDate: v.LastModifiedDate
           } as Row;
         });

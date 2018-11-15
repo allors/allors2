@@ -10,7 +10,7 @@ import { ErrorService, Saved, x, Allors, NavigationService } from '../../../../.
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 
 @Component({
@@ -46,8 +46,8 @@ export class PersonEditComponent implements OnInit, OnDestroy {
   private employeeRole: PersonRole;
   private isActiveCustomer: boolean;
   private isActiveEmployee: boolean;
-  private subscription: Subscription;
 
+  private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
   private readonly fetcher: Fetcher;
 
@@ -70,7 +70,11 @@ export class PersonEditComponent implements OnInit, OnDestroy {
 
     const { scope, m, pull } = this.allors;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(
+      this.route.url,
+      this.refresh$,
+      this.stateService.internalOrganisationId$
+    )
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
@@ -83,11 +87,11 @@ export class PersonEditComponent implements OnInit, OnDestroy {
               sort: new Sort(m.Locale.Name)
             }),
             pull.GenderType({
-              predicate: new Equals({propertyType: m.GenderType.IsActive, value: true}),
+              predicate: new Equals({ propertyType: m.GenderType.IsActive, value: true }),
               sort: new Sort(m.GenderType.Name),
             }),
             pull.Salutation({
-              predicate: new Equals({propertyType: m.Salutation.IsActive, value: true}),
+              predicate: new Equals({ propertyType: m.Salutation.IsActive, value: true }),
               sort: new Sort(m.Salutation.Name),
             }),
             pull.PersonRole({
@@ -118,8 +122,8 @@ export class PersonEditComponent implements OnInit, OnDestroy {
               pull.CustomerRelationship({
                 predicate: new And({
                   operands: [
-                    new Equals({propertyType: m.CustomerRelationship.Customer, object: id}),
-                    new Equals({propertyType: m.CustomerRelationship.InternalOrganisation, object: internalOrganisationId}),
+                    new Equals({ propertyType: m.CustomerRelationship.Customer, object: id }),
+                    new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, object: internalOrganisationId }),
                     new Not({
                       operand: new Exists({ propertyType: m.CustomerRelationship.ThroughDate }),
                     })
@@ -129,8 +133,8 @@ export class PersonEditComponent implements OnInit, OnDestroy {
               pull.Employment({
                 predicate: new And({
                   operands: [
-                    new Equals({propertyType: m.Employment.Employee, object: id}),
-                    new Equals({propertyType: m.Employment.Employer, object: internalOrganisationId}),
+                    new Equals({ propertyType: m.Employment.Employee, object: id }),
+                    new Equals({ propertyType: m.Employment.Employer, object: internalOrganisationId }),
                     new Not({
                       operand: new Exists({ propertyType: m.Employment.ThroughDate })
                     })
@@ -193,7 +197,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
           this.person = scope.session.create('Person') as Person;
         }
 
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

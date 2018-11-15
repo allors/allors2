@@ -7,7 +7,7 @@ import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } 
 import { Good, Part, PriceComponent, InternalOrganisation } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../../Fetcher';
 

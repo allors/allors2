@@ -9,7 +9,7 @@ import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationA
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortPartyAssignment } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
@@ -201,7 +201,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             .map((v: PersonRole) => v.Name)
             .reduce((acc: string, cur: string) => acc + ', ' + cur);
         }
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public cancelCommunication(communicationEvent: CommunicationEvent): void {

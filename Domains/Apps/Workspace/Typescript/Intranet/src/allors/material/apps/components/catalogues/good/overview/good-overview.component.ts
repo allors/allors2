@@ -9,7 +9,7 @@ import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationA
 import { InternalOrganisation, Organisation, Good, IGoodIdentification } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
-import { StateService } from '../../../../services/StateService';
+import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';

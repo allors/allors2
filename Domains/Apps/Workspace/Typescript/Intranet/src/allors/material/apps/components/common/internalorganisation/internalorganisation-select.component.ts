@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { ErrorService, Allors } from '../../../../../angular';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';

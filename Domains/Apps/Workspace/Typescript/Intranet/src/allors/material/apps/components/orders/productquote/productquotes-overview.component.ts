@@ -9,7 +9,7 @@ import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from '
 import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
 import { InternalOrganisation, ProductQuote, QuoteState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
-import { StateService } from '../../../services/StateService';
+import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 interface SearchData {

@@ -238,17 +238,11 @@ export const routes: Routes = [
         children: [
           { path: '', component: workefforts.WorkEffortsOverviewComponent },
           { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: workefforts.WorkTasksOverviewComponent },
-          { path: 'worktask/:id', component: workefforts.WorkTaskOverviewComponent },
+          { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: workefforts.WorkTaskOverviewComponent },
         ],
       },
-      {
-        path: 'worktask',
-        children: [
-          { path: '', component: workefforts.WorkTaskEditComponent },
-          { path: ':id', component: workefforts.WorkTaskEditComponent },
-        ],
-      },
-
+      { path: 'worktask', data: addData({ id: ids.WorkTask }), component: workefforts.WorkTaskEditComponent },
+      { path: 'worktask/:id', data: editData({ id: ids.WorkTask }), component: workefforts.WorkTaskEditComponent },
     ],
   },
 ];
