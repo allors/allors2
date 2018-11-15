@@ -237,7 +237,7 @@ export const routes: Routes = [
         path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
         children: [
           { path: '', component: workefforts.WorkEffortsOverviewComponent },
-          { path: 'worktasks', data: pageListData({ id: ids.Task, icon: 'timer' }), component: workefforts.WorkTasksOverviewComponent },
+          { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: workefforts.WorkTasksOverviewComponent },
           { path: 'worktask/:id', component: workefforts.WorkTaskOverviewComponent },
         ],
       },

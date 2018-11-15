@@ -1,171 +1,134 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { Component, OnDestroy, Self, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, PdfService, x, Allors } from '../../../../../angular';
-import { InternalOrganisation, Person, Priority, WorkEffortState, WorkTask } from '../../../../../domain';
-import { And, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/StateService';
-import { Fetcher } from '../../Fetcher';
+import { AllorsFilterService, ErrorService, Loaded, Scope, WorkspaceService, x, Allors, NavigationService, MediaService } from '../../../../../angular';
+import { InternalOrganisation, WorkTask } from '../../../../../domain';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Sorter } from '../../../../base/sorting';
 
+interface Row {
+  workTask: WorkTask;
+  name: string;
+  state: string;
+  description: string;
+  priority: string;
+  createdBy: string;
+  lastModifiedDate: Date;
+}
 
 @Component({
   templateUrl: './worktasks-overview.component.html',
-  providers: [Allors]
+  providers: [Allors, AllorsFilterService]
 })
 export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
-  public m: MetaDomain;
-
-  public total: number;
-
-  public title = 'Work Tasks';
 
   public searchForm: FormGroup; public advancedSearch: boolean;
 
-  public data: WorkTask[];
+  public title = 'Work Tasks';
 
-  public workEffortStates: WorkEffortState[];
-  public selectedWorkEffortState: WorkEffortState;
-  public workEffortState: WorkEffortState;
+  public displayedColumns = ['select', 'name', 'state', 'description', 'priority', 'createdBy', 'lastModifiedDate', 'menu'];
+  public selection = new SelectionModel<Row>(true, []);
 
-  public priorities: Priority[];
-  public selectedPriority: Priority;
-  public priority: Priority;
+  public total: number;
+  public dataSource = new MatTableDataSource<Row>();
 
-  public assignees: Person[];
-  public selectedAssignee: Person;
-  public assignee: Person;
-
+  private sort$: BehaviorSubject<Sort>;
   private refresh$: BehaviorSubject<Date>;
-  private fetcher: Fetcher;
+  private pager$: BehaviorSubject<PageEvent>;
+
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
+    @Self() private filterService: AllorsFilterService,
+    public navigation: NavigationService,
+    public mediaService: MediaService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
-    private titleService: Title,
-    private router: Router,
     private dialogService: AllorsMaterialDialogService,
-    public pdfService: PdfService,
-    private stateService: StateService) {
+    private location: Location,
+    titleService: Title) {
 
     titleService.setTitle(this.title);
-    this.m = this.allors.m;
+
+    this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+  }
 
-    this.searchForm = this.formBuilder.group({
-      assignee: [''],
-      description: [''],
-      name: [''],
-      priority: [''],
-      state: [''],
-    });
-
-    const search$ = this.searchForm.valueChanges
-      .pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        startWith({}),
-      );
-
-    const combined$ = combineLatest(search$, this.refresh$)
-      .pipe(
-        scan(([], [data, date]) => {
-          return [data, date];
-        }, [])
-      );
+  public ngOnInit(): void {
 
     const { m, pull, scope } = this.allors;
 
-    this.subscription = combined$
+    const predicate = new And([
+      new Like({ roleType: m.WorkTask.Name, parameter: 'name' }),
+      new Like({ roleType: m.WorkTask.Description, parameter: 'description' }),
+      // TODO: State, Priority
+    ]);
+
+    this.filterService.init(predicate);
+
+    const sorter = new Sorter(
+      {
+        name: m.WorkTask.Name,
+        lastModifiedDate: m.Person.LastModifiedDate,
+      }
+    );
+
+    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
       .pipe(
-        switchMap(([data]) => {
-          const pulls = [
-            this.fetcher.internalOrganisation,
-            pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: new Sort(m.Organisation.PartyName),
-            }),
-            pull.WorkEffortState({
-              sort: new Sort(m.WorkEffortState.Name),
-            }),
-            pull.Priority({
-              predicate: new Equals({ propertyType: m.Priority.IsActive, value: true }),
-              sort: new Sort(m.Priority.Name),
-            })
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+          return [
+            refresh,
+            filterFields,
+            sort,
+            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
+        }, []),
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
-          return scope
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded) => {
-                this.workEffortStates = loaded.collections.workEffortStates as WorkEffortState[];
-                this.workEffortState = this.workEffortStates.find((v: WorkEffortState) => v.Name === data.state);
+          const pulls = [
+            pull.WorkTask({
+              predicate,
+              sort: sorter.create(sort),
+              include: {
+                WorkEffortState: x,
+                Priority: x,
+                CreatedBy: x,
+              },
+              arguments: this.filterService.arguments(filterFields),
+              skip: pageEvent.pageIndex * pageEvent.pageSize,
+              take: pageEvent.pageSize,
+            })];
 
-                this.priorities = loaded.collections.priorities as Priority[];
-                this.priority = this.priorities.find((v: Priority) => v.Name === data.priority);
-
-                const internalOrganisation: InternalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
-                this.assignees = internalOrganisation.ActiveEmployees;
-                this.assignee = this.assignees.find((v: Person) => v.displayName === data.assignee);
-
-                const predicate: And = new And();
-                const predicates: Predicate[] = predicate.operands;
-
-                if (data.name) {
-                  const like: string = '%' + data.name + '%';
-                  predicates.push(new Like({ roleType: m.WorkTask.Name, value: like }));
-                }
-
-                if (data.description) {
-                  const like: string = '%' + data.description + '%';
-                  predicates.push(new Like({ roleType: m.WorkTask.Description, value: like }));
-                }
-
-                if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.WorkTask.WorkEffortState, object: this.workEffortState }));
-                }
-
-                if (data.priority) {
-                  predicates.push(new Equals({ propertyType: m.WorkTask.Priority, object: this.priority }));
-                }
-
-                const pulls2 = [
-                  pull.WorkTask({
-                    predicate,
-                    include: {
-                      WorkEffortState: x,
-                      Priority: x,
-                      CreatedBy: x,
-                    }
-                  })];
-
-                return scope
-                  .load('Pull', new PullRequest({ pulls: pulls2 }));
-              })
-            );
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-
         scope.session.reset();
+        this.total = loaded.values.People_total;
+        const workTasks = loaded.collections.WorkTasks as WorkTask[];
 
-        this.data = loaded.collections.worktasks as WorkTask[];
-        this.total = loaded.values.worktasks_total;
+        this.dataSource.data = workTasks.map((v) => {
+          return {
+            workTask: v,
+            name: v.Name,
+            state: v.WorkEffortState.Name,
+            description: v.Description,
+            priority: v.Priority.Name,
+            createdBy: v.CreatedBy.displayName,
+            lastModifiedDate: v.LastModifiedDate
+          } as Row;
+        });
       }, this.errorService.handler);
-  }
-
-  ngOnInit(): void {
   }
 
   public ngOnDestroy(): void {
@@ -174,38 +137,39 @@ export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  public print(worktask: WorkTask) {
-    this.pdfService.display(worktask);
+  public get hasSelection() {
+    return !this.selection.isEmpty();
+  }
+
+  public get selectedPeople() {
+    return this.selection.selected.map(v => v.workTask);
+  }
+
+  public isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  public masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   public goBack(): void {
-    window.history.back();
+    this.location.back();
   }
 
   public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  public delete(worktask: WorkTask): void {
-    const { scope } = this.allors;
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this work task?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          scope.invoke(worktask.Delete)
-            .subscribe(() => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
+  public sort(event: Sort): void {
+    this.sort$.next(event);
   }
 
-  public onView(person: Person): void {
-    this.router.navigate(['/relations/person/' + person.id]);
+  public page(event: PageEvent): void {
+    this.pager$.next(event);
   }
 }

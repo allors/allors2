@@ -1,17 +1,13 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatTableModule, MatSortModule, MatDialogModule, MatPaginatorModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
 
-
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
+import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
+import { AllorsMaterialFilterModule } from '../../../../base/components/filter';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -30,30 +26,36 @@ export { WorkTasksOverviewComponent } from './worktasks-overview.component';
   ],
   imports: [
     AllorsMaterialFileModule,
+    AllorsMaterialFilterModule,
+    AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
-    AllorsMaterialLocalisedTextModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
     CommonModule,
-
     FormsModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
+    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
     MatMenuModule,
-    MatExpansionModule,
+    MatPaginatorModule,
     MatRadioModule,
     MatSelectModule,
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+    MatTableModule,
+    MatSortModule,
     ReactiveFormsModule,
     RouterModule,
   ],
