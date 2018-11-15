@@ -193,7 +193,7 @@ export const routes: Routes = [
         path: 'accountspayable', data: moduleData({ title: 'Accounts Payable', icon: 'dashboard' }),
         children: [
           { path: 'invoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: ap.InvoicesOverviewComponent },
-          { path: 'invoice/:id', component: ap.InvoiceOverviewComponent },
+          { path: 'invoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: ap.InvoiceOverviewComponent },
         ],
       },
       {
@@ -211,7 +211,7 @@ export const routes: Routes = [
         path: 'accountsreceivable', data: moduleData({ title: 'Accounts Receivable', icon: 'dashboard' }),
         children: [
           { path: 'invoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: ar.InvoicesOverviewComponent },
-          { path: 'invoice/:id', component: ar.InvoiceOverviewComponent },
+          { path: 'invoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: ar.InvoiceOverviewComponent },
         ],
       },
       {

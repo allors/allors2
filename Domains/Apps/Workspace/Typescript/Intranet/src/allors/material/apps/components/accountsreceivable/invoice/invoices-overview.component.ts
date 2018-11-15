@@ -1,215 +1,129 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, Self } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnDestroy, Self, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Invoked, Saved, x, Allors } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, Loaded, Scope, WorkspaceService, x, Allors, NavigationService, MediaService } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
-import { StateService } from '../../../services/StateService';
+import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { MatSnackBar } from '@angular/material';
+import { SelectionModel } from '@angular/cdk/collections';
+import { Sorter } from '../../../../base/sorting';
 
-interface SearchData {
-  internalOrganisation: string;
-  company: string;
+interface Row {
+  salesInvoice: SalesInvoice;
+  number: string;
+  billedTo: string;
   reference: string;
-  invoiceNumber: string;
-  repeating: boolean;
-  state: string;
-  product: string;
+  description: string;
+  lastModifiedDate: Date;
 }
 
 @Component({
   templateUrl: './invoices-overview.component.html',
-  providers: [Allors]
+  providers: [Allors, AllorsFilterService]
 })
-export class InvoicesOverviewComponent implements OnDestroy {
+export class InvoicesOverviewComponent implements OnInit, OnDestroy {
 
   public searchForm: FormGroup; public advancedSearch: boolean;
 
   public title = 'Sales Invoices';
-  public data: SalesInvoice[];
-  public filtered: SalesInvoice[];
+
+  public displayedColumns = ['select', 'number', 'billedTo', 'reference', 'description', 'lastModifiedDate', 'menu'];
+  public selection = new SelectionModel<Row>(true, []);
+
   public total: number;
+  public dataSource = new MatTableDataSource<Row>();
 
-  public internalOrganisations: InternalOrganisation[];
-  public selectedInternalOrganisation: InternalOrganisation;
-  public billToInternalOrganisation: InternalOrganisation;
-
-  public salesInvoiceStates: SalesInvoiceState[];
-  public selectedSalesInvoiceState: SalesInvoiceState;
-  public salesInvoiceState: SalesInvoiceState;
-  public readyForPostingState: SalesInvoiceState;
-
+  private sort$: BehaviorSubject<Sort>;
   private refresh$: BehaviorSubject<Date>;
+  private pager$: BehaviorSubject<PageEvent>;
+
   private subscription: Subscription;
 
-  private page$: BehaviorSubject<number>;
-
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: Allors,
+    @Self() private filterService: AllorsFilterService,
+    public navigation: NavigationService,
+    public mediaService: MediaService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
-    private titleService: Title,
     private snackBar: MatSnackBar,
-    private router: Router,
     private dialogService: AllorsMaterialDialogService,
-    public pdfService: PdfService,
-    private stateService: StateService) {
+    private location: Location,
+    titleService: Title) {
 
-    this.titleService.setTitle('Sales Invoices');
+    titleService.setTitle(this.title);
 
+    this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+  }
 
-    this.searchForm = this.formBuilder.group({
-      internalOrganisation: [''],
-      company: [''],
-      invoiceNumber: [''],
-      reference: [''],
-      repeating: [''],
-      state: [''],
-      product: [''],
-    });
-
-    this.page$ = new BehaviorSubject<number>(50);
-
-    const search$ = this.searchForm.valueChanges
-      .pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        startWith({})
-      );
-
-    const combined$ = combineLatest(search$, this.page$, this.refresh$, this.stateService.internalOrganisationId$)
-      .pipe(
-        scan(([previousData, previousTake, previousDate, previousInternalOrganisationId], [data, take, date, internalOrganisationId]) => {
-          return [
-            data,
-            data !== previousData ? 50 : take,
-            date,
-            internalOrganisationId,
-          ];
-        }, [])
-      );
+  public ngOnInit(): void {
 
     const { m, pull, scope } = this.allors;
 
-    this.subscription = combined$
+    const predicate = new And([
+      new Like({ roleType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),
+    ]);
+
+    this.filterService.init(predicate);
+
+    const sorter = new Sorter(
+      {
+        number: m.SalesInvoice.InvoiceNumber,
+        lastModifiedDate: m.Person.LastModifiedDate,
+      }
+    );
+
+    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
       .pipe(
-        switchMap(([data, take, , internalOrganisationId]) => {
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+          return [
+            refresh,
+            filterFields,
+            sort,
+            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+          ];
+        }, []),
+        switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
-            pull.SalesInvoiceState({
-              sort: new Sort(m.SalesInvoiceState.Name),
-            }),
-            pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: [
-                new Sort(m.Organisation.PartyName),
-              ],
-            })
-          ];
+            pull.SalesInvoice({
+              predicate,
+              sort: sorter.create(sort),
+              include: {
+                BillToCustomer: x,
+                SalesInvoiceState: x,
+              },
+              arguments: this.filterService.arguments(filterFields),
+              skip: pageEvent.pageIndex * pageEvent.pageSize,
+              take: pageEvent.pageSize,
+            })];
 
-          return scope
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded: Loaded) => {
-                this.salesInvoiceStates = loaded.collections.salesinvoiceStates as SalesInvoiceState[];
-                this.salesInvoiceState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.Name === data.state);
-
-                this.readyForPostingState = this.salesInvoiceStates.find((v: SalesInvoiceState) => v.UniqueId.toUpperCase() === '488F61FF-F474-44BA-9925-49AF7BCB0CD0');
-
-                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
-                this.billToInternalOrganisation = this.internalOrganisations.find(
-                  (v) => v.PartyName === data.internalOrganisation,
-                );
-
-                const predicate: And = new And();
-                const predicates: Predicate[] = predicate.operands;
-
-                predicates.push(new Equals({ propertyType: m.SalesInvoice.BilledFrom, value: internalOrganisationId }));
-
-                if (data.invoiceNumber) {
-                  const like: string = '%' + data.invoiceNumber + '%';
-                  predicates.push(new Like({ roleType: m.SalesInvoice.InvoiceNumber, value: like }));
-                }
-
-                if (data.company) {
-                  const partyFilter = new Filter({
-                    objectType: m.Party,
-                    predicate: new Like({
-                      roleType: m.Party.PartyName, value: data.company.replace('*', '%') + '%',
-                    }),
-                  });
-
-                  const containedIn: ContainedIn = new ContainedIn({ propertyType: m.SalesInvoice.BillToCustomer, extent: partyFilter });
-                  predicates.push(containedIn);
-                }
-
-                if (data.product) {
-                  const productFilter = new Filter({
-                    objectType: m.Good,
-                    predicate: new Like({
-                      roleType: m.Good.Name, value: data.company.replace('*', '%') + '%',
-                    }),
-                  });
-
-                  const containedIn: ContainedIn = new ContainedIn({ propertyType: m.SalesInvoiceItem.Product, extent: productFilter });
-                  predicates.push(containedIn);
-                }
-
-                if (data.internalOrganisation) {
-                  predicates.push(
-                    new Equals({ propertyType: m.SalesInvoice.BillToCustomer, object: this.billToInternalOrganisation }),
-                  );
-                }
-
-                if (data.reference) {
-                  const like: string = data.reference.replace('*', '%') + '%';
-                  predicates.push(new Like({ roleType: m.SalesInvoice.CustomerReference, value: like }));
-                }
-
-                if (data.repeating) {
-                  predicates.push(new Equals({ propertyType: m.SalesInvoice.IsRepeatingInvoice, value: true }));
-                }
-
-                if (data.state) {
-                  predicates.push(new Equals({ propertyType: m.SalesInvoice.SalesInvoiceState, object: this.salesInvoiceState }));
-                }
-
-                const queries = [
-                  pull.SalesInvoice({
-                    predicate,
-                    include: {
-                      BillToCustomer: x,
-                      SalesInvoiceState: x,
-                      SalesOrder: x,
-                    },
-                    sort: [new Sort(m.SalesInvoice.InvoiceNumber)],
-                    skip: 0, take
-                  })
-                ];
-
-                return scope.load('Pull', new PullRequest({ pulls: queries }));
-              }));
+          return scope.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.data = loaded.collections.invoices as SalesInvoice[];
-        this.total = loaded.values.invoices_total;
+        scope.session.reset();
+        this.total = loaded.values.People_total;
+        const salesInvoices = loaded.collections.SalesInvoices as SalesInvoice[];
+
+        this.dataSource.data = salesInvoices.map((v) => {
+          return {
+            salesInvoice: v,
+            number: v.InvoiceNumber,
+            billedTo: v.BillToCustomer.displayName,
+            reference: `${v.CustomerReference} - ${v.SalesInvoiceState.Name}`,
+            description: v.Description,
+            lastModifiedDate: v.LastModifiedDate,
+          } as Row;
+        });
       }, this.errorService.handler);
-  }
-
-  public print(invoice: SalesInvoice) {
-    this.pdfService.display(invoice);
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 
   public ngOnDestroy(): void {
@@ -218,178 +132,39 @@ export class InvoicesOverviewComponent implements OnDestroy {
     }
   }
 
-  public onView(invoice: SalesInvoice): void {
-    this.router.navigate(['/accountsreceivable/invoices/' + invoice.id]);
+  public get hasSelection() {
+    return !this.selection.isEmpty();
+  }
+
+  public get selectedPeople() {
+    return this.selection.selected.map(v => v.salesInvoice);
+  }
+
+  public isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  public masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  public goBack(): void {
+    this.location.back();
   }
 
   public refresh(): void {
     this.refresh$.next(new Date());
   }
 
-  public send(invoice: SalesInvoice): void {
-    const { scope } = this.allors;
-
-    const sendFn: () => void = () => {
-      scope.invoke(invoice.Send)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (scope.session.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            scope
-              .save()
-              .subscribe((saved: Saved) => {
-                scope.session.reset();
-                sendFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            sendFn();
-          }
-        });
-    } else {
-      sendFn();
-    }
+  public sort(event: Sort): void {
+    this.sort$.next(event);
   }
 
-  public cancel(invoice: SalesInvoice): void {
-    const { scope } = this.allors;
-
-    const cancelFn: () => void = () => {
-      scope.invoke(invoice.CancelInvoice)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (scope.session.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            scope
-              .save()
-              .subscribe((saved: Saved) => {
-                scope.session.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
-  }
-
-  public writeOff(invoice: SalesInvoice): void {
-    const { scope } = this.allors;
-
-    const writeOffFn: () => void = () => {
-      scope.invoke(invoice.WriteOff)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (scope.session.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            scope
-              .save()
-              .subscribe((saved: Saved) => {
-                scope.session.reset();
-                writeOffFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            writeOffFn();
-          }
-        });
-    } else {
-      writeOffFn();
-    }
-  }
-
-  public reopen(invoice: SalesInvoice): void {
-    const { scope } = this.allors;
-
-    const reopenFn: () => void = () => {
-      scope.invoke(invoice.Reopen)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (scope.session.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            scope
-              .save()
-              .subscribe((saved: Saved) => {
-                scope.session.reset();
-                reopenFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            reopenFn();
-          }
-        });
-    } else {
-      reopenFn();
-    }
-  }
-
-  public delete(invoice: SalesInvoice): void {
-    const { scope } = this.allors;
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this invoice?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          scope.invoke(invoice.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
+  public page(event: PageEvent): void {
+    this.pager$.next(event);
   }
 }
