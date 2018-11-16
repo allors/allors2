@@ -125,25 +125,13 @@ namespace Allors.Domain
             var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
-                .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithPrice(7)
                 .Build();
 
             this.Session.Derive();
@@ -249,32 +237,22 @@ namespace Allors.Domain
             var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
-                .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good2.Part)
-                .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .Build();
 
             this.Session.Derive();
@@ -359,32 +337,22 @@ namespace Allors.Domain
             var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
-                .WithProductPurchasePrice(good1PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithPrice(7)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good2.Part)
-                .WithProductPurchasePrice(good2PurchasePrice)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithPrice(7)
                 .Build();
 
             this.Session.Derive();
@@ -455,31 +423,21 @@ namespace Allors.Domain
             var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
-            var good1PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good1.Part)
-                .WithProductPurchasePrice(good1PurchasePrice)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithPrice(7)
                 .WithSupplier(supplier)
                 .Build();
 
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good2.Part)
-                .WithProductPurchasePrice(good2PurchasePrice)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithPrice(7)
                 .WithSupplier(supplier)
                 .Build();
 

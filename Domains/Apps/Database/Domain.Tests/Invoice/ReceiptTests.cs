@@ -43,18 +43,13 @@ namespace Allors.Domain
 
             new CustomerRelationshipBuilder(this.Session).WithFromDate(DateTime.UtcNow).WithCustomer(this.billToCustomer).Build();
 
-            var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithCurrency(euro)
+                .WithPrice(7)
                 .Build();
 
             new BasePriceBuilder(this.Session)

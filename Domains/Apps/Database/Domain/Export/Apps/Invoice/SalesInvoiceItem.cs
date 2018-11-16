@@ -2,6 +2,7 @@ namespace Allors.Domain
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
 
     using Meta;
@@ -465,33 +466,27 @@ namespace Allors.Domain
             if (this.Product is Good good &&
                 this.ExistQuantity && this.Quantity > 0 &&
                 good.Part.ExistSupplierOfferingsWherePart &&
-                good.Part.SupplierOfferingsWherePart.Count == 1 &&
-                good.Part.SupplierOfferingsWherePart.First.ExistProductPurchasePrices)
+                good.Part.SupplierOfferingsWherePart.Select(v => v.Supplier).Distinct().Count() == 1)
             {
-                ProductPurchasePrice productPurchasePrice = null;
-                var prices = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices;
-                foreach (ProductPurchasePrice purchasePrice in prices)
+                decimal price = 0;
+                UnitOfMeasure uom = null;
+
+                foreach (SupplierOffering supplierOffering in good.Part.SupplierOfferingsWherePart)
                 {
-                    if (purchasePrice.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
-                        (!purchasePrice.ExistThroughDate || purchasePrice.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
+                    if (supplierOffering.FromDate <= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate &&
+                        (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= this.SalesInvoiceWhereSalesInvoiceItem.InvoiceDate))
                     {
-                        productPurchasePrice = purchasePrice;
+                        price = supplierOffering.Price;
+                        uom = supplierOffering.UnitOfMeasure;
                     }
                 }
 
-                if (productPurchasePrice == null)
+                if (price != 0)
                 {
-                    var index = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices.Count;
-                    var lastKownPrice = good.Part.SupplierOfferingsWherePart.First.ProductPurchasePrices[index - 1];
-                    productPurchasePrice = lastKownPrice;
-                }
-
-                if (productPurchasePrice != null)
-                {
-                    this.UnitPurchasePrice = productPurchasePrice.Price;
-                    if (!productPurchasePrice.UnitOfMeasure.Equals(this.Product.UnitOfMeasure))
+                    this.UnitPurchasePrice = price;
+                    if (uom != null && !uom.Equals(this.Product.UnitOfMeasure))
                     {
-                        foreach (UnitOfMeasureConversion unitOfMeasureConversion in productPurchasePrice.UnitOfMeasure.UnitOfMeasureConversions)
+                        foreach (UnitOfMeasureConversion unitOfMeasureConversion in uom.UnitOfMeasureConversions)
                         {
                             if (unitOfMeasureConversion.ToUnitOfMeasure.Equals(this.Product.UnitOfMeasure))
                             {

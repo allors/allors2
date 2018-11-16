@@ -35,8 +35,7 @@ namespace Allors.Domain
         private Organisation billToCustomer;
         private Organisation shipToCustomer;
         private Organisation supplier;
-        private ProductPurchasePrice goodPurchasePrice;
-        private SupplierOffering goodSupplierOffering;
+        private SupplierOffering goodPurchasePrice;
         private City mechelen;
         private City kiev;
         private PostalAddress billToContactMechanismMechelen;
@@ -84,18 +83,13 @@ namespace Allors.Domain
                 .WithName("black")
                 .Build();
 
-            this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            this.goodSupplierOffering = new SupplierOfferingBuilder(this.Session)
+            this.goodPurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
-                .WithProductPurchasePrice(this.goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
             this.currentBasePriceGeoBoundary = new BasePriceBuilder(this.Session)
@@ -2447,8 +2441,7 @@ namespace Allors.Domain
             this.kiev = (City)session.Instantiate(this.kiev);
             this.billToContactMechanismMechelen = (PostalAddress)session.Instantiate(this.billToContactMechanismMechelen);
             this.shipToContactMechanismKiev = (PostalAddress)session.Instantiate(this.shipToContactMechanismKiev);
-            this.goodPurchasePrice = (ProductPurchasePrice)session.Instantiate(this.goodPurchasePrice);
-            this.goodSupplierOffering = (SupplierOffering)session.Instantiate(this.goodSupplierOffering);
+            this.goodPurchasePrice = (SupplierOffering)session.Instantiate(this.goodPurchasePrice);
             this.currentBasePriceGeoBoundary = (BasePrice)session.Instantiate(this.currentBasePriceGeoBoundary);
             this.currentFeature1BasePrice = (BasePrice)session.Instantiate(this.currentFeature1BasePrice);
             this.currentGood1BasePrice = (BasePrice)session.Instantiate(this.currentGood1BasePrice);

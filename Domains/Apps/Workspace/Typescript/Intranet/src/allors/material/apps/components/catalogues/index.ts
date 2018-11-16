@@ -31,6 +31,8 @@ export * from './producttype/producttype.module';
 
 export * from './serialiseditem/edit/serialiseditem.module';
 
+export * from './supplieroffering/edit/supplieroffering.module';
+
 import { CatalogueModule } from './catalogue/catalogue.module';
 import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module';
 
@@ -47,6 +49,8 @@ import { UpcaIdentificationModule } from './upcaidentification/edit/upcaidentifi
 import { UpceIdentificationModule } from './upceidentification/edit/upceidentification.module';
 
 import { BasepriceModule } from './baseprice/edit/baseprice.module';
+
+import { SupplierOfferingModule } from './supplieroffering/edit/supplieroffering.module';
 
 import { GoodEditModule } from './good/edit/good-edit.module';
 import { GoodListModule } from './good/list/good-list.module';
@@ -71,7 +75,7 @@ export const Modules = [
   CategoriesOverviewModule, CategoryModule,
   EanIdentificationModule, IsbnIdentificationModule, ManufacturerIdentificationModule, PartNumberModule, ProductNumberModule, SkuIdentificationModule, UpcaIdentificationModule, UpceIdentificationModule,
   GoodListModule, GoodOverviewModule,
-  PartListModule, PartEditModule, PartOverviewModule,
+  PartListModule, PartEditModule, PartOverviewModule, SupplierOfferingModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
   GoodEditModule, SerialisedItemModule, SerialisedItemsModule

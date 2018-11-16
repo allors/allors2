@@ -48,9 +48,8 @@ namespace Allors.Domain
         private BasePrice currentGoodBasePrice;
         private BasePrice currentGood1Feature1BasePrice;
         private BasePrice currentFeature2BasePrice;
-        private ProductPurchasePrice goodPurchasePrice;
-        private ProductPurchasePrice virtualGoodPurchasePrice;
-        private SupplierOffering goodSupplierOffering;
+        private SupplierOffering goodPurchasePrice;
+        private SupplierOffering virtualGoodPurchasePrice;
         private SalesOrder order;
         private VatRate vatRate21;
 
@@ -204,23 +203,19 @@ namespace Allors.Domain
                 .WithPrimaryProductCategory(this.Session.Extent<ProductCategory>().First)
                 .Build();
 
-            this.goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            this.goodSupplierOffering = new SupplierOfferingBuilder(this.Session)
+            this.goodPurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.part)
                 .WithSupplier(this.supplier)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(this.goodPurchasePrice)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
-            this.virtualGoodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+            this.virtualGoodPurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithCurrency(euro)
                 .WithFromDate(DateTime.UtcNow)
+                .WithSupplier(this.supplier)
                 .WithPrice(8)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
@@ -624,13 +619,6 @@ namespace Allors.Domain
         {
             this.InstantiateObjects(this.Session);
 
-            var good2PurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             var good2 = new Goods(this.Session).FindBy(M.Good.Name, "good2");
 
             new SupplierRelationshipBuilder(this.Session)
@@ -638,11 +626,13 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            new SupplierOfferingBuilder(this.Session)
+            var good2PurchasePrice = new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.part)
-                .WithFromDate(DateTime.UtcNow)
                 .WithSupplier(this.supplier)
-                .WithProductPurchasePrice(good2PurchasePrice)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithFromDate(DateTime.UtcNow)
+                .WithPrice(7)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .Build();
 
             //// good with part as inventory item
@@ -1929,10 +1919,9 @@ namespace Allors.Domain
             this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
             this.currentGood1Feature1BasePrice = (BasePrice)session.Instantiate(this.currentGood1Feature1BasePrice);
             this.currentFeature2BasePrice = (BasePrice)session.Instantiate(this.currentFeature2BasePrice);
-            this.goodPurchasePrice = (ProductPurchasePrice)session.Instantiate(this.goodPurchasePrice);
-            this.virtualGoodPurchasePrice = (ProductPurchasePrice)session.Instantiate(this.virtualGoodPurchasePrice);
+            this.goodPurchasePrice = (SupplierOffering)session.Instantiate(this.goodPurchasePrice);
+            this.virtualGoodPurchasePrice = (SupplierOffering)session.Instantiate(this.virtualGoodPurchasePrice);
             this.currentGoodBasePrice = (BasePrice)session.Instantiate(this.currentGoodBasePrice);
-            this.goodSupplierOffering = (SupplierOffering)session.Instantiate(this.goodSupplierOffering);
             this.order = (SalesOrder)session.Instantiate(this.order);
             this.vatRate21 = (VatRate)session.Instantiate(this.vatRate21);
         }

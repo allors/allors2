@@ -594,18 +594,13 @@ namespace Allors.Domain
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
             var productItem = new InvoiceItemTypes(this.Session).ProductItem;

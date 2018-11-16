@@ -19,9 +19,9 @@ namespace Allors.Domain
 
     public partial class SupplierOfferings
     {
-        public ProductPurchasePrice PurchasePrice(Party supplier, DateTime orderDate, Part part = null)
+        public decimal PurchasePrice(Party supplier, DateTime orderDate, Part part = null)
         {
-            ProductPurchasePrice purchasePrice = null;
+            decimal price = 0;
 
             foreach (SupplierOffering supplierOffering in supplier.SupplierOfferingsWhereSupplier)
             {
@@ -29,24 +29,13 @@ namespace Allors.Domain
                 {
                     if (supplierOffering.FromDate <= orderDate && (!supplierOffering.ExistThroughDate || supplierOffering.ThroughDate >= orderDate))
                     {
-                        foreach (ProductPurchasePrice productPurchasePrice in supplierOffering.ProductPurchasePrices)
-                        {
-                            if (productPurchasePrice.FromDate <= orderDate && (!productPurchasePrice.ExistThroughDate || productPurchasePrice.ThroughDate >= orderDate))
-                            {
-                                purchasePrice = productPurchasePrice;
-                                break;
-                            }
-                        }
-                    }                    
-                }   
-
-                if (purchasePrice != null)
-                {
-                    break;
+                        price = supplierOffering.Price;
+                        break;
+                    }
                 }
             }
 
-            return purchasePrice;
+            return price;
         }
     }
 }

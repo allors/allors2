@@ -216,8 +216,7 @@ namespace Allors.Domain
             else
             {
                 var order = this.PurchaseOrderWherePurchaseOrderItem;
-                var productPurchasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
-                this.UnitBasePrice = productPurchasePrice != null ? productPurchasePrice.Price : 0M;
+                this.UnitBasePrice = new SupplierOfferings(this.Strategy.Session).PurchasePrice(order.TakenViaSupplier, order.OrderDate, this.Part);
             }
 
             this.UnitVat = 0;

@@ -1860,18 +1860,13 @@ namespace Allors.Domain
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            new SupplierOfferingBuilder(this.Session)
+            var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
             this.Session.Derive();
@@ -1898,7 +1893,7 @@ namespace Allors.Domain
             Assert.Equal(52.5m, order.TotalExVat);
             Assert.Equal(11.03m, order.TotalVat);
             Assert.Equal(63.53m, order.TotalIncVat);
-            Assert.Equal(goodPurchasePrice.Price, order.TotalPurchasePrice);
+            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -1918,18 +1913,13 @@ namespace Allors.Domain
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            new SupplierOfferingBuilder(this.Session)
+            var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
             this.Session.Derive();
@@ -1955,7 +1945,7 @@ namespace Allors.Domain
             Assert.Equal(47.25m, order.TotalExVat);
             Assert.Equal(9.92m, order.TotalVat);
             Assert.Equal(57.17m, order.TotalIncVat);
-            Assert.Equal(goodPurchasePrice.Price, order.TotalPurchasePrice);
+            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -1975,18 +1965,13 @@ namespace Allors.Domain
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            new SupplierOfferingBuilder(this.Session)
+            var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
             this.Session.Derive();
@@ -2012,7 +1997,7 @@ namespace Allors.Domain
             Assert.Equal(52.5m, order.TotalExVat);
             Assert.Equal(11.03m, order.TotalVat);
             Assert.Equal(63.53m, order.TotalIncVat);
-            Assert.Equal(goodPurchasePrice.Price, order.TotalPurchasePrice);
+            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]
@@ -2032,18 +2017,13 @@ namespace Allors.Domain
 
             var good = new Goods(this.Session).FindBy(M.Good.Name, "good1");
 
-            var goodPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithFromDate(DateTime.UtcNow)
-                .WithPrice(7)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
-            new SupplierOfferingBuilder(this.Session)
+            var supplierOffering = new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
                 .WithFromDate(DateTime.UtcNow)
-                .WithProductPurchasePrice(goodPurchasePrice)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(7)
+                .WithCurrency(euro)
                 .Build();
 
             this.Session.Derive();
@@ -2069,7 +2049,7 @@ namespace Allors.Domain
             Assert.Equal(47.25m, order.TotalExVat);
             Assert.Equal(9.92m, order.TotalVat);
             Assert.Equal(57.17m, order.TotalIncVat);
-            Assert.Equal(goodPurchasePrice.Price, order.TotalPurchasePrice);
+            Assert.Equal(supplierOffering.Price, order.TotalPurchasePrice);
         }
 
         [Fact]

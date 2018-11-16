@@ -41,16 +41,38 @@ namespace Allors.Repository
         #endregion
         [Workspace]
         public int StandardLeadTime { get; set; }
-        
+
         #region Allors
-        [Id("806da6e8-b58d-46cf-b703-7e67aa7dfcf9")]
-        [AssociationId("05a12a65-920d-4d6e-9490-1a5d8ae651c3")]
-        [RoleId("ce335230-1191-484e-93f1-8bf0533090d4")]
+        [Id("a59d91cc-610f-46b6-8935-e95a42edc31e")]
+        [AssociationId("668c50de-36ba-4ba4-9e89-5319a466d5b0")]
+        [RoleId("728b18f7-cfaf-4bc0-84d4-5f2c8d0e8b8c")]
         #endregion
-        [Multiplicity(Multiplicity.OneToMany)]
-        [Indexed]
+        [Required]
+        [Precision(19)]
+        [Scale(2)]
         [Workspace]
-        public ProductPurchasePrice[] ProductPurchasePrices { get; set; }
+        public decimal Price { get; set; }
+        #region Allors
+        [Id("aa7af527-e616-4d01-86b4-e116c3087a37")]
+        [AssociationId("54e165e0-61ac-46cb-bf92-7aa5d62493d0")]
+        [RoleId("4a60cdad-817e-4ae8-801a-13dce2d2c772")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public UnitOfMeasure UnitOfMeasure { get; set; }
+
+        #region Allors
+        [Id("c16a7bec-e1fc-4034-8eb7-0223b776db7a")]
+        [AssociationId("64d0db60-e291-4113-b471-8ac78f9f381d")]
+        [RoleId("cc93b5e0-d7f3-4ae4-910e-f7b2539049e0")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Required]
+        [Workspace]
+        public Currency Currency { get; set; }
 
         #region Allors
         [Id("B1552295-EA57-4B64-AD34-A8C64F89841C")]
@@ -83,6 +105,16 @@ namespace Allors.Repository
         public decimal MinimalOrderQuantity { get; set; }
         
         #region Allors
+        [Id("459274A7-2A3C-45DF-B1B8-14171A279AE4")]
+        [AssociationId("E1C11BF6-451B-4AC5-84B1-D330DC6B9B36")]
+        [RoleId("B7BDC180-8482-4113-A015-F2D3CE734E1E")]
+        #endregion
+        [Precision(19)]
+        [Scale(2)]
+        [Workspace]
+        public int QuantityIncrements { get; set; }
+        
+        #region Allors
         [Id("d2de1e9e-196f-43d7-903e-566a4858bc02")]
         [AssociationId("a78c953d-0feb-463a-a7c6-e00640db9e44")]
         [RoleId("4dfd5ba4-ebdf-4ea1-b4d4-ecff642525cb")]
@@ -98,6 +130,7 @@ namespace Allors.Repository
         [AssociationId("3e237d3b-6d44-4afd-a248-f9d15e7822d7")]
         [RoleId("79affcb8-28b2-4629-a918-c863089f1dbc")]
         #endregion
+        [Workspace]
         public string SupplierProductName { get; set; }
 
         #region Allors
@@ -105,6 +138,7 @@ namespace Allors.Repository
         [AssociationId("E253BB7F-95C0-45AB-B2D0-0F41AF17122B")]
         [RoleId("067D9FB0-A4F5-447D-A039-89A1F92DDEF7")]
         #endregion
+        [Workspace]
         public string SupplierProductId { get; set; }
 
         #region Allors
@@ -116,7 +150,7 @@ namespace Allors.Repository
         [Indexed]
         [Workspace]
         public Part Part { get; set; }
-        
+
         #region inherited methods
 
 

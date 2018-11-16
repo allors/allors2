@@ -91,6 +91,9 @@ export const routes: Routes = [
       { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: catalogues.EditBasepriceComponent },
       { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: catalogues.EditBasepriceComponent },
 
+      { path: 'supplieroffering', data: addData({ id: ids.SupplierOffering }), component: catalogues.EditSupplierOfferingComponent },
+      { path: 'supplieroffering/:id', data: editData({ id: ids.SupplierOffering }), component: catalogues.EditSupplierOfferingComponent },
+
       {
         path: 'communicationevent',
         children: [

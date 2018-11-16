@@ -38,13 +38,6 @@ namespace Allors.Domain
                 .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised)
                 .Build();
 
-            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             this.Session.Commit();
 
             var builder = new SupplierOfferingBuilder(this.Session);
@@ -54,7 +47,7 @@ namespace Allors.Domain
 
             this.Session.Rollback();
 
-            builder.WithProductPurchasePrice(purchasePrice);
+            builder.WithPrice(1);
             builder.Build();
 
             Assert.True(this.Session.Derive(false).HasErrors);
@@ -62,6 +55,20 @@ namespace Allors.Domain
             this.Session.Rollback();
 
             builder.WithSupplier(supplier);
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Pack);
+            builder.Build();
+
+            Assert.True(this.Session.Derive(false).HasErrors);
+
+            this.Session.Rollback();
+
+            builder.WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"));
             builder.Build();
 
             Assert.False(this.Session.Derive(false).HasErrors);
@@ -90,13 +97,6 @@ namespace Allors.Domain
                 .WithFromDate(DateTime.UtcNow)
                 .Build();
 
-            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             var good = new GoodBuilder(this.Session)
                 .WithGoodIdentification(new ProductNumberBuilder(this.Session)
                     .WithIdentification("1")
@@ -115,8 +115,10 @@ namespace Allors.Domain
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
-                .WithProductPurchasePrice(purchasePrice)
                 .WithFromDate(DateTime.UtcNow)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .WithPrice(1)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
                 .Build();
 
             this.Session.Derive(); 
@@ -158,18 +160,13 @@ namespace Allors.Domain
                     .WithInventoryItemKind(new InventoryItemKinds(this.Session).NonSerialised).Build())
                 .Build();
 
-            var purchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithFromDate(DateTime.UtcNow)
-                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
-                .WithPrice(1)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .Build();
-
             new SupplierOfferingBuilder(this.Session)
                 .WithPart(good.Part)
                 .WithSupplier(supplier)
-                .WithProductPurchasePrice(purchasePrice)
+                .WithCurrency(new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR"))
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithFromDate(DateTime.UtcNow)
+                .WithPrice(1)
                 .Build();
 
             this.Session.Derive(); 

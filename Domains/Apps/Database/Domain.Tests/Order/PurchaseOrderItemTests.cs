@@ -29,7 +29,7 @@ namespace Allors.Domain
     public class PurchaseOrderItemTests : DomainTest
     {
         private Part finishedGood;
-        private ProductPurchasePrice currentPurchasePrice;
+        private SupplierOffering currentPurchasePrice;
         private PurchaseOrder order;
         private Organisation supplier;
         
@@ -54,38 +54,34 @@ namespace Allors.Domain
             var good1 = new Goods(this.Session).FindBy(M.Good.Name, "good1");
             this.finishedGood = good1.Part;
 
-            var supplierOffering = new SupplierOfferingBuilder(this.Session)
+            new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .Build();
-
-            var previousPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .WithCurrency(euro)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .WithPrice(8)
                 .Build();
 
-            this.currentPurchasePrice = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+            this.currentPurchasePrice = new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow)
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
+                .WithCurrency(euro)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
                 .WithPrice(10)
                 .Build();
 
-            var futurePurchasePrice = new ProductPurchasePriceBuilder(this.Session)
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
+                .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .WithCurrency(euro)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFromDate(DateTime.UtcNow.AddYears(1))
                 .WithPrice(8)
                 .Build();
-
-            supplierOffering.AddProductPurchasePrice(previousPurchasePrice);
-            supplierOffering.AddProductPurchasePrice(this.currentPurchasePrice);
-            supplierOffering.AddProductPurchasePrice(futurePurchasePrice);
 
             this.order = new PurchaseOrderBuilder(this.Session)
                 .WithTakenViaSupplier(this.supplier)
@@ -190,38 +186,34 @@ namespace Allors.Domain
         {
             var euro = new Currencies(this.Session).FindBy(M.Currency.IsoCode, "EUR");
 
-            var supplierOffering = new SupplierOfferingBuilder(this.Session)
+            new SupplierOfferingBuilder(this.Session)
                 .WithPart(this.finishedGood)
                 .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .Build();
-
-            var previousPurchasePriceGood = new ProductPurchasePriceBuilder(this.Session)
+                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .WithCurrency(euro)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFromDate(DateTime.UtcNow.AddYears(-1))
-                .WithThroughDate(DateTime.UtcNow.AddDays(-1))
                 .WithPrice(8)
                 .Build();
 
-            var currentPurchasePriceGood = new ProductPurchasePriceBuilder(this.Session)
-                .WithCurrency(euro)
-                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+            var currentOffer = new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
                 .WithFromDate(DateTime.UtcNow.AddMinutes(-1))
                 .WithThroughDate(DateTime.UtcNow.AddYears(1).AddDays(-1))
                 .WithPrice(10)
-                .Build();
-
-            var futurePurchasePriceGood = new ProductPurchasePriceBuilder(this.Session)
                 .WithCurrency(euro)
                 .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
-                .WithFromDate(DateTime.UtcNow.AddYears(1))
-                .WithPrice(8)
                 .Build();
 
-            supplierOffering.AddProductPurchasePrice(previousPurchasePriceGood);
-            supplierOffering.AddProductPurchasePrice(currentPurchasePriceGood);
-            supplierOffering.AddProductPurchasePrice(futurePurchasePriceGood);
+            new SupplierOfferingBuilder(this.Session)
+                .WithPart(this.finishedGood)
+                .WithSupplier(this.supplier)
+                .WithFromDate(DateTime.UtcNow.AddYears(1))
+                .WithPrice(8)
+                .WithCurrency(euro)
+                .WithUnitOfMeasure(new UnitsOfMeasure(this.Session).Piece)
+                .Build();
 
             this.Session.Derive();
             this.Session.Commit();
@@ -234,20 +226,20 @@ namespace Allors.Domain
 
             this.Session.Derive();
 
-            Assert.Equal(currentPurchasePriceGood.Price, item1.UnitBasePrice);
+            Assert.Equal(currentOffer.Price, item1.UnitBasePrice);
             Assert.Equal(0, item1.UnitDiscount);
             Assert.Equal(0, item1.UnitSurcharge);
-            Assert.Equal(currentPurchasePriceGood.Price, item1.CalculatedUnitPrice);
+            Assert.Equal(currentOffer.Price, item1.CalculatedUnitPrice);
 
-            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, item1.TotalBasePrice);
+            Assert.Equal(currentOffer.Price * QuantityOrdered, item1.TotalBasePrice);
             Assert.Equal(0, item1.TotalDiscount);
             Assert.Equal(0, item1.TotalSurcharge);
-            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, item1.TotalExVat);
+            Assert.Equal(currentOffer.Price * QuantityOrdered, item1.TotalExVat);
 
-            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, this.order.TotalBasePrice);
+            Assert.Equal(currentOffer.Price * QuantityOrdered, this.order.TotalBasePrice);
             Assert.Equal(0, this.order.TotalDiscount);
             Assert.Equal(0, this.order.TotalSurcharge);
-            Assert.Equal(currentPurchasePriceGood.Price * QuantityOrdered, this.order.TotalExVat);
+            Assert.Equal(currentOffer.Price * QuantityOrdered, this.order.TotalExVat);
         }
 
         [Fact]
@@ -637,7 +629,7 @@ namespace Allors.Domain
         private void InstantiateObjects(ISession session)
         {
             this.finishedGood = (Part)session.Instantiate(this.finishedGood);
-            this.currentPurchasePrice = (ProductPurchasePrice)session.Instantiate(this.currentPurchasePrice);
+            this.currentPurchasePrice = (SupplierOffering)session.Instantiate(this.currentPurchasePrice);
             this.order = (PurchaseOrder)session.Instantiate(this.order);
             this.supplier = (Organisation)session.Instantiate(this.supplier);
         }
