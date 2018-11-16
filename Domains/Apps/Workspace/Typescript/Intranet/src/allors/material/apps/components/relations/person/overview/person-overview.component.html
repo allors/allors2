@@ -73,6 +73,11 @@
       </div>
 
       <div class="col-md-6">
+        <serialised-items [owner]='person' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
+          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialised-items>
+      </div>
+
+      <div class="col-md-6">
         <party-workeffortpartyassignements [workEffortPartyAssignments]="workEffortPartyAssignments" (add)="navigation.add($event, person)" (edit)="navigation.edit($event)" (delete)="deleteWorkEffort($event)"></party-workeffortpartyassignements>
       </div>
     </div>

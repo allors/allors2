@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
@@ -12,27 +12,17 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyCommunicationEventsModule } from '../../party/communicationevents/party-communicationevents.module';
-import { PartyPartyContactMechanismsModule } from '../../party/partycontactmechanisms/party-partycontactmechanisms.module';
-import { PartyWorkEffortPartyAssignmentsModule } from '../../party/workefforts/party-workeffortpartyassignments.module';
-import { SerialisedItemsModule } from '../../../catalogues/serialiseditem/overview/serialiseditems.module';
-
-import { OrganisationOverviewComponent } from './organisation-overview.component';
-export { OrganisationOverviewComponent } from './organisation-overview.component';
+import { SerialisedItemsComponent } from './serialiseditems.component';
+export { SerialisedItemsComponent } from './serialiseditems.component';
 
 @NgModule({
   declarations: [
-    OrganisationOverviewComponent,
+    SerialisedItemsComponent,
   ],
   exports: [
-    OrganisationOverviewComponent,
+    SerialisedItemsComponent,
   ],
   imports: [
-    PartyCommunicationEventsModule,
-    PartyPartyContactMechanismsModule,
-    PartyWorkEffortPartyAssignmentsModule,
-    SerialisedItemsModule,
-
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -40,15 +30,12 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-
+    CommonModule,
+    FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -58,11 +45,8 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-
-    CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class OrganisationOverviewModule { }
+export class SerialisedItemsModule { }

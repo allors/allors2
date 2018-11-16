@@ -14,6 +14,7 @@ import { AllorsMaterialStaticModule } from '../../../../../base/components/stati
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 import { IGoodIdentificationsModule } from '../../igoodidentification/igoodIdentifications.module';
 import { PriceComponentsModule } from '../../pricecomponent/pricecomponents.module';
+import { SerialisedItemsModule } from '../../serialiseditem/overview/serialiseditems.module';
 
 import { PartOverviewComponent } from './part-overview.component';
 export { PartOverviewComponent } from './part-overview.component';
@@ -28,6 +29,7 @@ export { PartOverviewComponent } from './part-overview.component';
   imports: [
     IGoodIdentificationsModule,
     PriceComponentsModule,
+    SerialisedItemsModule,
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,

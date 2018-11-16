@@ -91,47 +91,8 @@
       </div>
 
       <div *ngIf="serialised" class="col-md-6">
-        <mat-card>
-          <div class="row">
-            <div class="col">
-              <h2>
-                <mat-icon>subject</mat-icon> Serialised Items
-              </h2>
-            </div>
-          </div>
-
-          <mat-card-content>
-
-            <ul *ngIf="part?.SerialisedItems?.length === 0">
-              <li>no items to display</li>
-            </ul>
-
-            <mat-list>
-              <mat-list-item *ngFor="let item of part.SerialisedItems; let last=last" [attr.data-allors-id]="item.id">
-
-                <h3 mat-line (click)="navigationService.edit(item, part)">{{item.ItemNumber}}, serialnumber:
-                  {{item.SerialNumber}}</h3>
-                <h4 mat-line>status: {{item.SerialisedItemState.Name}}, owner: {{item.OwnedBy?.displayName}}</h4>
-
-                <span>
-                  <button mat-icon-button [mat-menu-trigger-for]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu="matMenu">
-                    <a *ngIf="part.CanWriteSerialisedItems" (click)="navigationService.edit(item, part)" mat-menu-item>Edit</a>
-                    <button mat-menu-item (click)="deleteSerialisedItem(item)" [disabled]="!item.CanExecuteDelete">Delete</button>
-                  </mat-menu>
-                </span>
-                <mat-divider *ngIf="!last" mat-inset></mat-divider>
-              </mat-list-item>
-            </mat-list>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <button *ngIf="part.CanWriteSerialisedItems" mat-button (click)="navigationService.add(m.SerialisedItem, part)">Add
-              new</button>
-          </mat-card-actions>
-        </mat-card>
+        <serialised-items [part]='part' [serialisedItems]='part.SerialisedItems' (add)="navigationService.add($event, part)"
+          (edit)="navigationService.edit($event, part)" (delete)="deleteSerialisedItem($event)"></serialised-items>
       </div>
 
       <div class="col-md-6">

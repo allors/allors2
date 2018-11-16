@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService } from '../../../../../../angular';
-import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber } from '../../../../../../domain';
+import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber, SerialisedItem } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -26,6 +26,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public organisation: Organisation;
   public internalOrganisation: InternalOrganisation;
   public communicationEvents: CommunicationEvent[];
+  public serialisedItems: SerialisedItem[];
 
   public contactsCollection = 'Current';
   public currentContactRelationships: OrganisationContactRelationship[] = [];
@@ -167,6 +168,28 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
                 }
               }
             }),
+            pull.Party({
+              object: id,
+              name: 'OwnedSerialisedItems',
+              fetch: {
+                SerialisedItemsWhereOwnedBy: {
+                  include: {
+                    SerialisedItemState: x
+                  }
+                }
+              }
+            }),
+            pull.Party({
+              object: id,
+              name: 'RentedSerialisedItems',
+              fetch: {
+                SerialisedItemsWhereRentedBy: {
+                  include: {
+                    SerialisedItemState: x
+                  }
+                }
+              }
+            }),
             pull.OrganisationRole()
           ];
 
@@ -180,6 +203,10 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
         this.organisation = loaded.objects.Organisation as Organisation;
         this.communicationEvents = loaded.collections.CommunicationEvents as CommunicationEvent[];
+
+        const ownedSerialisedItems = loaded.collections.OwnedSerialisedItems as SerialisedItem[];
+        const rentedSerialisedItems = loaded.collections.RentedSerialisedItems as SerialisedItem[];
+        this.serialisedItems = ownedSerialisedItems.concat(rentedSerialisedItems);
 
         this.currentContactRelationships = this.organisation.CurrentOrganisationContactRelationships as OrganisationContactRelationship[];
         this.inactiveContactRelationships = this.organisation.InactiveOrganisationContactRelationships as OrganisationContactRelationship[];
@@ -388,6 +415,28 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
         if (confirm) {
           scope.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
+  }
+
+  public deleteSerialisedItem(item: SerialisedItem): void {
+    const { scope } = this.allors;
+
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          scope.invoke(item.Delete)
+            .subscribe((invoked: Invoked) => {
+
+              this.serialisedItems = this.serialisedItems.filter(v => v !== item);
+
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },

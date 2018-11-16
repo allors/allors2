@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
-import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortPartyAssignment } from '../../../../../../domain';
+import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactKind, OrganisationContactRelationship, PartyContactMechanism, Person, PersonRole, WorkEffort, WorkEffortPartyAssignment, SerialisedItem } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -50,6 +50,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   private fetcher: Fetcher;
+  serialisedItems: SerialisedItem[];
 
   constructor(
     @Self() private allors: Allors,
@@ -145,6 +146,28 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
                 }
               }
             }),
+            pull.Party({
+              object: id,
+              name: 'OwnedSerialisedItems',
+              fetch: {
+                SerialisedItemsWhereOwnedBy: {
+                  include: {
+                    SerialisedItemState: x
+                  }
+                }
+              }
+            }),
+            pull.Party({
+              object: id,
+              name: 'RentedSerialisedItems',
+              fetch: {
+                SerialisedItemsWhereRentedBy: {
+                  include: {
+                    SerialisedItemState: x
+                  }
+                }
+              }
+            }),
             pull.PersonRole()
           ];
 
@@ -174,6 +197,10 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
         this.inactiveContactMechanisms = this.person.InactivePartyContactMechanisms as PartyContactMechanism[];
         this.allContactMechanisms = this.currentContactMechanisms.concat(this.inactiveContactMechanisms);
+
+        const ownedSerialisedItems = loaded.collections.OwnedSerialisedItems as SerialisedItem[];
+        const rentedSerialisedItems = loaded.collections.RentedSerialisedItems as SerialisedItem[];
+        this.serialisedItems = ownedSerialisedItems.concat(rentedSerialisedItems);
 
         this.roles = loaded.collections.PersonRoles as PersonRole[];
         this.customerRole = this.roles.find((v) => v.UniqueId.toUpperCase() === 'B29444EF-0950-4D6F-AB3E-9C6DC44C050F');
@@ -338,6 +365,28 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
         if (confirm) {
           scope.invoke(workEffort.Delete)
             .subscribe((invoked: Invoked) => {
+              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+              this.refresh();
+            },
+              (error: Error) => {
+                this.errorService.handle(error);
+              });
+        }
+      });
+  }
+
+  public deleteSerialisedItem(item: SerialisedItem): void {
+    const { scope } = this.allors;
+
+    this.dialogService
+      .confirm({ message: 'Are you sure you want to delete this?' })
+      .subscribe((confirm: boolean) => {
+        if (confirm) {
+          scope.invoke(item.Delete)
+            .subscribe((invoked: Invoked) => {
+
+              this.serialisedItems = this.serialisedItems.filter(v => v !== item);
+
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
             },

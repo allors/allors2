@@ -4,9 +4,11 @@
     <div class="row">
       <div class="col">
         <a *ngIf="part" (click)="navigationService.list(m.Part)">Parts</a>
+        <a *ngIf="owner?.objectType === allors.m.Organisation" (click)="navigationService.list(m.Organisation)">Organisations</a>
+        <a *ngIf="owner?.objectType === allors.m.Person" (click)="navigationService.list(m.Person)">People</a>
         <span *ngIf="add"> / Add serialised item</span>
-        <span *ngIf="edit && item"> / <a (click)="navigationService.overview(part)">{{part?.Name}}</a> / Edit
-          serialised item</span>
+        <span *ngIf="part && edit && item"> / <a (click)="navigationService.overview(part)">{{part.Name}}</a> / Edit serialised item</span>
+        <span *ngIf="owner && edit && item"> / <a (click)="navigationService.overview(owner)">{{owner.displayName}}</a> / Edit serialised item</span>
       </div>
     </div>
   </div>
@@ -20,17 +22,26 @@
           <mat-tab label="General">
             <div class="container-fluid">
               <div class="row pt-3">
-                <a-mat-input *ngIf="edit" class="col-md" [object]="item" [roleType]="m.SerialisedItem.ItemNumber"></a-mat-input>
+                <a-mat-input *ngIf="edit" class="col-md-6" [object]="item" [roleType]="m.SerialisedItem.ItemNumber"></a-mat-input>
+              </div>
+
+              <div class="row">
+                <mat-form-field class="col-md">
+                  <mat-select [(ngModel)]="part" name="partName" placeholder="Part" multiple="false">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let part of parts" [value]="part"> {{ part.Name }} </mat-option>
+                  </mat-select>
+                </mat-form-field>
                 <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.Name"></a-mat-input>
+              </div>
+
+              <div class="row">
+                <a-mat-textarea class="col-md" [object]="item" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
               </div>
 
               <div class="row">
                 <a-mat-input class="col-md" [object]="item" [roleType]="m.SerialisedItem.SerialNumber"></a-mat-input>
                 <a-mat-select class="col-md" [object]="item" [roleType]="m.SerialisedItem.SerialisedItemState" [options]="serialisedItemStates" display="Name"></a-mat-select>
-              </div>
-
-              <div class="row">
-                <a-mat-textarea class="col-md" [object]="item" [roleType]="m.SerialisedItem.Description"></a-mat-textarea>
               </div>
 
               <div class="row">

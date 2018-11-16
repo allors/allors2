@@ -225,6 +225,22 @@ namespace Allors
                 .WithPart(finishedGood3)
                 .Build();
 
+            var finishedGood4 = new PartBuilder(this.Session)
+                .WithInternalOrganisation(allors)
+                .WithName("finished good4")
+                .WithInventoryItemKind(new InventoryItemKinds(this.Session).Serialised)
+                .WithProductType(productType)
+                .WithManufacturedBy(manufacturer)
+                .Build();
+
+            var good4 = new GoodBuilder(this.Session)
+                .WithName("Tiny purple round gizmo")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Zeer kleine paarse ronde gizmo").WithLocale(dutchLocale).Build())
+                .WithVatRate(vatRate)
+                .WithPrimaryProductCategory(productCategory3)
+                .WithPart(finishedGood4)
+                .Build();
+
             this.Session.Derive();
 
             for (int i = 0; i < 100; i++)

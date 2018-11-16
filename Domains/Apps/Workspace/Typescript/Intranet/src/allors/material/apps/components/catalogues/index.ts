@@ -63,6 +63,7 @@ import { ProductTypeModule } from './producttype/producttype.module';
 import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';
 
 import { SerialisedItemModule } from './serialiseditem/edit/serialiseditem.module';
+import { SerialisedItemsModule } from './serialiseditem/overview/serialiseditems.module';
 
 export const Modules = [
   BasepriceModule,
@@ -73,5 +74,5 @@ export const Modules = [
   PartListModule, PartEditModule, PartOverviewModule,
   ProductCharacteristicsOverviewModule, ProductCharacteristicModule,
   ProductTypesOverviewModule, ProductTypeModule,
-  GoodEditModule, SerialisedItemModule
+  GoodEditModule, SerialisedItemModule, SerialisedItemsModule
 ];

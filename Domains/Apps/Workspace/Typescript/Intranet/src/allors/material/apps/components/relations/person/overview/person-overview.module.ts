@@ -16,6 +16,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../../base/components/tex
 import { PartyCommunicationEventsModule } from '../../party/communicationevents/party-communicationevents.module';
 import { PartyPartyContactMechanismsModule } from '../../party/partycontactmechanisms/party-partycontactmechanisms.module';
 import { PartyWorkEffortPartyAssignmentsModule } from '../../party/workefforts/party-workeffortpartyassignments.module';
+import { SerialisedItemsModule } from '../../../catalogues/serialiseditem/overview/serialiseditems.module';
 
 import { PersonOverviewComponent } from './person-overview.component';
 export { PersonOverviewComponent } from './person-overview.component';
@@ -31,6 +32,8 @@ export { PersonOverviewComponent } from './person-overview.component';
     PartyCommunicationEventsModule,
     PartyPartyContactMechanismsModule,
     PartyWorkEffortPartyAssignmentsModule,
+    SerialisedItemsModule,
+
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
