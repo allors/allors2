@@ -1,4 +1,3 @@
-
 import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Location } from '@angular/common';
 import { Title } from '@angular/platform-browser';
@@ -14,11 +13,12 @@ import { ErrorService, Invoked, MediaService, x, Allors, NavigationService } fro
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
+import { ActionTarget } from '../../../../../base/actions';
 
 import { Organisation } from '../../../../../../domain';
 // import { OrganisationAddComponent } from '../add/organisation-add.module';
 
-interface Row {
+interface Row extends ActionTarget {
   organisation: Organisation;
   name: string;
   classification: string;
@@ -136,7 +136,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
         });
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {

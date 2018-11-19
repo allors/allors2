@@ -17,6 +17,7 @@ export * from './base/components/slider/slider.module';
 export * from './base/components/slidetoggle/slidetoggle.module';
 export * from './base/components/static/static.module';
 export * from './base/components/textarea/textarea.module';
+export * from './base/components/table/table.module';
 export * from './base/components/datepicker/MomentUtcDateAdapter';
 
 export * from './base/components/filter/filter.module';
@@ -25,3 +26,6 @@ export * from './base/components/filter/filter.module';
 export * from './base/services/dialog/index';
 export * from './base/services/error/index';
 export * from './base/services/sidenav/index';
+
+// Base Actions
+export * from './base/actions';

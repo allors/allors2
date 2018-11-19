@@ -7,7 +7,7 @@ import {
   MatMenuModule, MatToolbarModule, MatCheckboxModule, MatTableModule, MatSortModule
 } from '@angular/material';
 
-import { AllorsMaterialChipsModule, AllorsMaterialFilterModule, AllorsMaterialStaticModule, AllorsMaterialSelectModule, AllorsMaterialSideNavToggleModule } from '../../../../material';
+import { AllorsMaterialChipsModule, AllorsMaterialDialogModule, AllorsMaterialFilterModule, AllorsMaterialStaticModule, AllorsMaterialSelectModule, AllorsMaterialSideNavToggleModule } from '../../../../material';
 
 import { PeopleComponent } from './people.component';
 export { PeopleComponent } from './people.component';
@@ -35,6 +35,7 @@ export { PeopleComponent } from './people.component';
     MatToolbarModule,
 
     AllorsMaterialChipsModule,
+    AllorsMaterialDialogModule,
     AllorsMaterialFilterModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialStaticModule,

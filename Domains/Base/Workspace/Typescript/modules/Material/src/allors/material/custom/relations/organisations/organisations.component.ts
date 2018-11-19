@@ -1,12 +1,20 @@
 import { AfterViewInit, Component, OnDestroy, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService, Allors, x, NavigationService } from '../../../../angular';
-import { Organisation } from '../../../../domain';
+import { Organisation, Deletable } from '../../../../domain';
 import { MetaDomain } from '../../../../meta';
-import { PullRequest } from '../../../../framework';
+import { PullRequest, SessionObject } from '../../../../framework';
+import { Loaded, Scope, WorkspaceService, Allors, x, NavigationService, Invoked, ErrorService } from '../../../../angular';
+import { Table, AllorsMaterialDialogService, ActionTarget } from '../../../../material';
+
+interface Row extends ActionTarget {
+  object: Organisation;
+  name: string;
+  owner: string;
+}
 
 @Component({
   templateUrl: './organisations.component.html',
@@ -14,10 +22,11 @@ import { PullRequest } from '../../../../framework';
 })
 export class OrganisationsComponent implements AfterViewInit, OnDestroy {
 
-  public title: string;
+  title: string;
 
-  public m: MetaDomain;
-  public data: Organisation[];
+  m: MetaDomain;
+
+  table: Table<Row>;
 
   private subscription: Subscription;
   private scope: Scope;
@@ -25,6 +34,9 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   constructor(
     @Self() public allors: Allors,
     public navigation: NavigationService,
+    private errorService: ErrorService,
+    private dialogService: AllorsMaterialDialogService,
+    private snackBar: MatSnackBar,
     private workspaceService: WorkspaceService,
     private titleService: Title,
     private router: Router) {
@@ -33,10 +45,23 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     this.titleService.setTitle(this.title);
     this.scope = this.workspaceService.createScope();
     this.m = this.workspaceService.metaPopulation.metaDomain;
-  }
 
-  public goBack(): void {
-    this.router.navigate(['/']);
+    this.table = new Table({
+      selection: true,
+      columns: ['name', 'owner'],
+      actions: [
+        {
+          name: () => 'Details',
+          handler: (target: ActionTarget) => {
+            this.navigation.overview(target.object);
+          }
+        },
+        {
+          method: this.m.Deletable.Delete,
+          handler: (target: ActionTarget) => this.delete(target)
+        }
+      ]
+    });
   }
 
   public ngAfterViewInit(): void {
@@ -50,8 +75,6 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
   }
 
   public search(): void {
-
-    const name = 'FASDFSFDSDSDFSD';
 
     if (this.subscription) {
       this.subscription.unsubscribe();
@@ -74,7 +97,14 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
     this.subscription = this.scope
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
-        this.data = loaded.collections.Organisations as Organisation[];
+        const organisations = loaded.collections.Organisations as Organisation[];
+        this.table.data = organisations.map((v) => {
+          return {
+            object: v,
+            name: v.Name,
+            owner: v.Owner && v.Owner.UserName
+          };
+        });
       },
         (error: any) => {
           alert(error);
@@ -82,17 +112,39 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
         });
   }
 
-  public delete(): void {
-    /*     this.dialogService
-          .openConfirm({ message: 'Are you sure you want to delete this organisation?' })
-          .afterClosed().subscribe((confirm: boolean) => {
-            if (confirm) {
-              // TODO: Logical, physical or workflow delete
-            }
-          }); */
+  public goBack(): void {
+    this.router.navigate(['/']);
   }
 
-  public onView(organisation: Organisation): void {
-    this.router.navigate(['/relations/organisations/' + organisation.id + '/overview']);
+  public refresh() {
+    this.search();
+  }
+
+  public delete(target: ActionTarget | ActionTarget[]): void {
+
+    const { scope } = this.allors;
+
+    const objects: Deletable[] = (target instanceof Array ? target.map(v => v.object) : [target.object]) as Deletable[];
+    const methods = objects.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
+
+    if (methods.length > 0) {
+      this.dialogService
+        .confirm(
+          methods.length === 1 ?
+            { message: 'Are you sure you want to delete this organisation?' } :
+            { message: 'Are you sure you want to delete these organisations?' })
+        .subscribe((confirm: boolean) => {
+          if (confirm) {
+            scope.invoke(methods)
+              .subscribe((invoked: Invoked) => {
+                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                this.refresh();
+              },
+                (error: Error) => {
+                  this.errorService.handle(error);
+                });
+          }
+        });
+    }
   }
 }

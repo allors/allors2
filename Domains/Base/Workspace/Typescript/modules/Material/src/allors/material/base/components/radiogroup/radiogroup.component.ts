@@ -1,7 +1,7 @@
 import { Component, Input, Optional } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field } from '../../../../angular';
+import { Field, humanize } from '../../../../angular';
 
 export interface RadioGroupOption {
   label?: string;
@@ -26,7 +26,7 @@ export class AllorsMaterialRadioGroupComponent extends Field {
   }
 
   public optionLabel(option: RadioGroupOption): string {
-    return option.label ? option.label : this.humanize(option.value.toString());
+    return option.label ? option.label : humanize(option.value.toString());
   }
 
   public optionValue(option: RadioGroupOption): any {

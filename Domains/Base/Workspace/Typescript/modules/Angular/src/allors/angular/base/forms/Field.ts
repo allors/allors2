@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ISessionObject, RoleType } from '../../../framework';
+import { humanize } from '../humanize';
 
 export abstract class Field implements AfterViewInit, OnDestroy {
 
@@ -87,7 +88,7 @@ export abstract class Field implements AfterViewInit, OnDestroy {
   }
 
   get label(): string {
-    return this.assignedLabel ? this.assignedLabel : this.humanize(this.roleType.name);
+    return this.assignedLabel ? this.assignedLabel : humanize(this.roleType.name);
   }
 
   get required(): boolean {
@@ -125,13 +126,6 @@ export abstract class Field implements AfterViewInit, OnDestroy {
       });
     }
   }
-
-  protected humanize(input: string): string {
-    return input ? input.replace(/([a-z\d])([A-Z])/g, '$1 $2')
-      .replace(/([A-Z]+)([A-Z][a-z\d]+)/g, '$1 $2')
-      : undefined;
-  }
-
 
   get dataAllorsId(): string {
     return this.object ? this.object.id : null;

@@ -159,14 +159,17 @@ export class MetaPopulation {
         };
         this.metaDomain[objectTypeName] = metaObjectType;
 
-        Object.keys(objectType.roleTypeByName)
-          .forEach((roleTypeName) => {
-            const roleType = objectType.roleTypeByName[roleTypeName];
-            metaObjectType[roleTypeName] = roleType;
-          });
+        Object.keys(objectType.roleTypeByName).forEach((roleTypeName) => {
+          const roleType = objectType.roleTypeByName[roleTypeName];
+          metaObjectType[roleTypeName] = roleType;
+        });
 
         Object.keys(objectType.associationTypeByName).forEach((name) => {
           metaObjectType[name] = objectType.associationTypeByName[name];
+        });
+
+        Object.keys(objectType.methodTypeByName).forEach((name) => {
+          metaObjectType[name] = objectType.methodTypeByName[name];
         });
       });
   }

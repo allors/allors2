@@ -27,5 +27,8 @@ export * from './base/services/dialog';
 export * from './base/services/error';
 export * from './base/services/sidenav';
 
+// Base Actions
+export * from './base/actions';
+
 // Apps Services
 export * from './apps/services/state';

@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, Optional , SimpleChange, SimpleChanges } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { Field } from '../../../../angular';
+import { Field, humanize } from '../../../../angular';
 import { Locale, LocalisedText } from '../../../../domain';
 
 @Component({
@@ -52,7 +52,7 @@ export class AllorsMaterialLocalisedTextComponent extends Field {
       name = name.slice(0, name.length - 1);
     }
 
-    const label = this.assignedLabel ? this.assignedLabel : this.humanize(name);
+    const label = this.assignedLabel ? this.assignedLabel : humanize(name);
     return label + ' (' + this.locale.Language.Name + ')';
   }
 }

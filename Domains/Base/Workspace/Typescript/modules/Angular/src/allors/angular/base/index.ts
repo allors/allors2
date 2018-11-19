@@ -5,6 +5,7 @@ export * from './filter';
 export * from './focus';
 export * from './forms';
 export * from './framework';
+export * from './humanize';
 export * from './media';
 export * from './menu';
 export * from './navigation';
