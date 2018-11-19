@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
-import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent } from '../../../../../../domain';
+import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent, SupplierOffering } from '../../../../../../domain';
 import { PullRequest, Equals, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -31,11 +31,15 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   currentPricecomponents: PriceComponent[] = [];
   inactivePricecomponents: PriceComponent[] = [];
   allPricecomponents: PriceComponent[] = [];
+  supplierOfferingsCollection = 'Current';
+  allSupplierOfferings: SupplierOffering[];
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-
   private fetcher: Fetcher;
+  currentSupplierOfferings: SupplierOffering[];
+  inactiveSupplierOfferings: SupplierOffering[];
+
 
   constructor(
     @Self() private allors: Allors,
@@ -94,6 +98,16 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
                 Model: x
               }
             }),
+            pull.Part({
+              object: id,
+              fetch: {
+                SupplierOfferingsWherePart: {
+                  include: {
+                    Currency: x
+                  }
+                }
+              }
+            }),
           ];
 
           return scope
@@ -114,9 +128,9 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
         this.currentPricecomponents = this.allPricecomponents.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
         this.inactivePricecomponents = this.allPricecomponents.filter(v => v.FromDate > now || (v.ThroughDate !== null && v.ThroughDate < now));
 
-        // const now = new Date();
-        // this.sellingPrice = this.pricecomponents
-        //   .find(v => v.Part === this.part && v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.allSupplierOfferings  = loaded.collections.SupplierOfferings as SupplierOffering[];
+        this.currentSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate <= now && (v.ThroughDate === null || v.ThroughDate >= now));
+        this.inactiveSupplierOfferings = this.allSupplierOfferings.filter(v => v.FromDate > now || (v.ThroughDate !== null && v.ThroughDate < now));
 
         if (this.part.SuppliedBy.length > 0) {
           this.suppliers = this.part.SuppliedBy
@@ -191,5 +205,18 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
               });
         }
       });
+  }
+
+  get offerings(): any {
+
+    switch (this.supplierOfferingsCollection) {
+      case 'Current':
+        return this.currentSupplierOfferings;
+      case 'Inactive':
+        return this.inactiveSupplierOfferings;
+      case 'All':
+      default:
+        return this.allSupplierOfferings;
+    }
   }
 }

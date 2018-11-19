@@ -49,4 +49,18 @@ export class Fetcher {
       },
     });
   }
+
+  public get Settings(): Pull {
+
+    return this.pull.Singleton({
+      object: this.stateService.singletonId,
+      fetch: {
+        Settings: {
+          include: {
+            PreferredCurrency: x
+          }
+        }
+      },
+    });
+  }
 }

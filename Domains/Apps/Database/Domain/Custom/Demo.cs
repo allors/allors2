@@ -304,12 +304,6 @@ namespace Allors
                     .WithFromDate(DateTime.UtcNow)
                     .Build();
 
-                new SupplierRelationshipBuilder(this.Session)
-                    .WithSupplier(acme)
-                    .WithInternalOrganisation(allors)
-                    .WithFromDate(DateTime.UtcNow)
-                    .Build();
-
                 new OrganisationContactRelationshipBuilder(this.Session)
                     .WithOrganisation(acme)
                     .WithContact(contact1)
@@ -440,6 +434,33 @@ line2")
                     .WithSalesInvoiceType(new SalesInvoiceTypes(this.Session).SalesInvoice)
                     .WithVatRegime(new VatRegimes(this.Session).Assessable)
                     .Build();
+            }
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                var supplierPostalAddress = new PostalAddressBuilder(this.Session)
+                    .WithAddress1($"Supplier{i} address 1")
+                    .WithPostalBoundary(new PostalBoundaryBuilder(this.Session).WithLocality($"Supplier{i} city").WithPostalCode("1111").WithCountry(us).Build())
+                    .Build();
+
+                var supplierBillingAddress = new PartyContactMechanismBuilder(this.Session)
+                    .WithContactMechanism(supplierPostalAddress)
+                    .WithContactPurpose(new ContactMechanismPurposes(this.Session).GeneralCorrespondence)
+                    .WithUseAsDefault(true)
+                    .Build();
+
+                var supplier = new OrganisationBuilder(this.Session)
+                    .WithName($"Supplier{i}")
+                    .WithLocale(new Locales(this.Session).EnglishUnitedStates)
+                    .WithPartyContactMechanism(supplierBillingAddress)
+                    .Build();
+
+                new SupplierRelationshipBuilder(this.Session)
+                    .WithSupplier(supplier)
+                    .WithInternalOrganisation(allors)
+                    .WithFromDate(DateTime.UtcNow)
+                    .Build();
 
                 var purchaseInvoiceItem1 = new PurchaseInvoiceItemBuilder(this.Session)
                     .WithDescription("first item")
@@ -468,7 +489,7 @@ line2")
                 var purchaseInvoice = new PurchaseInvoiceBuilder(this.Session)
                     .WithBilledTo(allors)
                     .WithInvoiceNumber("1")
-                    .WithBilledFrom(acme)
+                    .WithBilledFrom(supplier)
                     .WithBillToCustomer(allors)
                     .WithPurchaseInvoiceItem(purchaseInvoiceItem1)
                     .WithPurchaseInvoiceItem(purchaseInvoiceItem2)

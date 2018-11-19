@@ -36,7 +36,6 @@
           </button>
           <mat-menu #menuEditCom="matMenu">
             <button mat-menu-item (click)="edit.emit(pricecomponent)">Edit</button>
-            <button [disabled]="!pricecomponent.CanExecuteDelete" mat-menu-item (click)="delete.emit(pricecomponent)">Delete</button>
           </mat-menu>
         </div>
 

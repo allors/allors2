@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
-import { SupplierOffering, Part, RatingType, Ordinal, InternalOrganisation, Organisation, UnitOfMeasure, Currency } from '../../../../../../domain';
+import { SupplierOffering, Part, RatingType, Ordinal, InternalOrganisation, Organisation, UnitOfMeasure, Currency, Settings } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -36,6 +36,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
   activeSuppliers: Organisation[];
   unitsOfMeasure: UnitOfMeasure[];
   currencies: Currency[];
+  settings: Settings;
 
   constructor(
     @Self() private allors: Allors,
@@ -64,6 +65,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
 
           let pulls = [
             this.fetcher.internalOrganisation,
+            this.fetcher.Settings,
             pull.RatingType({ sort: new Sort(m.RateType.Name) }),
             pull.Ordinal({ sort: new Sort(m.Ordinal.Name) }),
             pull.UnitOfMeasure({ sort: new Sort(m.UnitOfMeasure.Name) }),
@@ -112,6 +114,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
         this.preferences = loaded.collections.Ordinals as Ordinal[];
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         this.currencies = loaded.collections.Currencies as Currency[];
+        this.settings = loaded.objects.Settings as Settings;
 
         this.supplierOffering = loaded.objects.SupplierOffering as SupplierOffering;
         this.part = loaded.objects.Part as Part;
@@ -123,6 +126,8 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
           this.add = !(this.edit = false);
 
           this.supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
+          this.supplierOffering.Part = this.part;
+          this.supplierOffering.Currency = this.settings.PreferredCurrency;
 
         } else {
           this.edit = !(this.add = false);

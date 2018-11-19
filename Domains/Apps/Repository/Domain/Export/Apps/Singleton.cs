@@ -23,6 +23,7 @@ namespace Allors.Repository
         [Multiplicity(Multiplicity.OneToOne)]
         [Indexed]
         #endregion
+        [Workspace]
         public Settings Settings { get; set; }
 
         #region Allors
