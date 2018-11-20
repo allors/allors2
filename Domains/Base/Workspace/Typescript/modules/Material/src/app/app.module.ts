@@ -23,6 +23,7 @@ import * as tests from '../allors/material/custom/tests';
     AuthModule.forRoot(),
     MainModule,
     DashboardModule,
+
     relations.Modules,
     tests.Modules,
 

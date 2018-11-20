@@ -19,34 +19,8 @@
           <h3>No organisations to display.</h3>
         </div>
 
-        <a-mat-table [table]="table" (action)="tableAction($event)"></a-mat-table>
-
-        <!-- <mat-list>
-
-          <mat-list-item *ngFor="let organisation of data; let last = last" (click)="navigation.overview(organisation)" [attr.data-allors-id]="organisation.id" style="cursor: pointer;">
-
-            <mat-icon *ngIf="!organisation.Picture" mat-list-avatar>business_center</mat-icon>
-
-            <h3 mat-line>{{organisation.Name}}</h3>
-            <p mat-line> {{organisation.Owner?.UserName}} </p>
-
-            <span flex></span>
-
-            <div (click)="$event.stopPropagation()">
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu x-position="before" #menu="matMenu">
-                <a (click)="navigation.overview(organisation)" mat-menu-item>Details</a>
-                <button mat-menu-item (click)="delete(organisation)">Delete</button>
-              </mat-menu>
-            </div>
-
-            <mat-divider *ngIf="!last" mat-inset></mat-divider>
-
-          </mat-list-item>
-        </mat-list> -->
-
+        <a-mat-table [table]="table"></a-mat-table>
+      
       </mat-card-content>
     </mat-card>
   </div>

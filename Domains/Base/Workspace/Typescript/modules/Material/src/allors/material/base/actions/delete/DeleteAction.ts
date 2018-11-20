@@ -6,10 +6,12 @@ import { DeleteService } from './delete.service';
 
 export class DeleteAction {
 
-  method: MethodType;
   name: (target: ActionTarget) => string;
   description: (target: ActionTarget) => string;
   handler: (target: ActionTarget) => void;
+  disabled: (target: ActionTarget) => boolean;
+
+  method: MethodType;
 
   constructor(deleteService: DeleteService, sessionService: SessionService) {
     const { m } = sessionService;
@@ -24,7 +26,7 @@ export class DeleteAction {
         deleteService.dialogService
           .confirm(
             methods.length === 1 ?
-              { message: 'Are you sure you want to delete this organisation?' } :
+              { message: `Are you sure you want to delete this ${target.object.objectType.name}?` } :
               { message: 'Are you sure you want to delete these organisations?' })
           .subscribe((confirm: boolean) => {
             if (confirm) {

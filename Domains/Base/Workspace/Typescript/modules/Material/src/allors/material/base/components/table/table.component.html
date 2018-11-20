@@ -25,8 +25,6 @@
       </button>
       <mat-menu #menu="matMenu">
         <button  *ngFor="let action of table.actions" mat-menu-item (click)="handle(action, row)" [disabled]="disabled(action, row)">{{name(action, row)}}</button>
-        <!-- <a (click)="navigation.overview(row.person)" mat-menu-item>Details</a>
-        <button mat-menu-item (click)="delete(row.person)" [disabled]="!row.person.CanExecuteDelete">Delete</button> -->
       </mat-menu>
     </td>
   </ng-container>

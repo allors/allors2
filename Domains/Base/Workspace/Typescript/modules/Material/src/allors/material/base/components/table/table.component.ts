@@ -27,10 +27,16 @@ export class AllorsMaterialTableComponent {
   }
 
   handle(action: Action, target: ActionTarget) {
-    action.handler(target);
+    if (action.handler) {
+      action.handler(target);
+    }
   }
 
   disabled(action: Action, target: ActionTarget): boolean {
+    if (action.disabled) {
+      return action.disabled(target);
+    }
+
     if (action.method) {
       const object = target.object;
       object.canExecute(action.method.name);
