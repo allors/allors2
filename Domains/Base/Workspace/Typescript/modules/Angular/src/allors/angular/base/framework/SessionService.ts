@@ -1,23 +1,41 @@
-import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 
-import {
-  InvokeResponse, ISession, ISessionObject, Method, PullResponse,
-  PushRequest, PushRequestObject, PushResponse, Session, SyncRequest,
-  SyncResponse, Workspace, InvokeOptions,
-} from '../../../framework';
+import { MetaDomain, PullFactory, FetchFactory, TreeFactory } from '../../../meta';
+import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse } from '../../../framework';
 
+import { WorkspaceService } from './WorkspaceService';
+import { Loaded } from './responses/Loaded';
+import { switchMap, map } from 'rxjs/operators';
+import { Saved } from './responses/Saved';
+import { Invoked } from './responses/Invoked';
 import { Database } from './Database';
 
-import { Invoked } from './responses/Invoked';
-import { Loaded } from './responses/Loaded';
-import { Saved } from './responses/Saved';
+@Injectable()
+export class SessionService {
 
-export class Scope {
-  public session: ISession;
+  x = {};
 
-  constructor(public database: Database, public workspace: Workspace) {
+  m: MetaDomain;
+
+  pull: PullFactory;
+  fetch: FetchFactory;
+  tree: TreeFactory;
+
+  database: Database;
+  workspace: IWorkspace;
+  session: ISession;
+
+  constructor(public workspaceService: WorkspaceService) {
+    this.database = workspaceService.databaseService.database;
+    this.workspace = workspaceService.workspace;
     this.session = new Session(this.workspace);
+
+    const metaPopulation = workspaceService.metaPopulation;
+    this.m = metaPopulation.metaDomain;
+    this.pull = new PullFactory(metaPopulation);
+    this.fetch = new FetchFactory(metaPopulation);
+    this.tree = new TreeFactory(metaPopulation);
   }
 
   public load(service: string, params?: any): Observable<Loaded> {

@@ -1,0 +1,13 @@
+import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
+
+@Injectable()
+export class RefreshService {
+
+  refresh$: Observable<Date>;
+  private refreshSubject$: BehaviorSubject<Date>;
+
+  refresh() {
+    this.refreshSubject$.next(new Date());
+  }
+}

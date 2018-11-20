@@ -85,10 +85,12 @@ const ALLORS_MATERIAL_MODULES: any[] = [
     HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+
     AllorsModule.forRoot(),
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
     AllorsFilterModule.forRoot(),
+
     AllorsMaterialFilterModule,
     InternalOrganisationSelectModule,
 

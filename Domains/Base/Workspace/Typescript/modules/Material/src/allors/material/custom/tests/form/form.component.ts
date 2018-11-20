@@ -1,19 +1,20 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, SearchFactory, Loaded, Saved, Scope, WorkspaceService } from '../../../../angular';
+import { MetaDomain } from '../../../../meta';
 import { Person, Data } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
-import { MetaDomain } from '../../../../meta';
+import { ErrorService, SearchFactory, Loaded, WorkspaceService, SessionService } from '../../../../angular';
 import { RadioGroupOption } from '../../../base/components/radiogroup/radiogroup.component';
 import { PullFactory } from '../../../../meta/generated/pull.g';
 
 @Component({
   templateUrl: './form.component.html',
+  providers: [SessionService]
 })
 export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -35,9 +36,9 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
+    @Self() private sessionService: SessionService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -46,8 +47,8 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.title = 'Form';
     this.titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+
+    this.m = this.sessionService.m;
 
     this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
@@ -80,12 +81,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
             pull.Person(),
           ];
 
-          return this.scope
+          return this.sessionService
             .load('Pull', new PullRequest({ pulls }));
         }))
       .subscribe((loaded: Loaded) => {
 
-        this.scope.session.reset();
+        this.sessionService.session.reset();
 
         this.people = loaded.collections.People as Person[];
         const datas = loaded.collections.Datas as Data[];
@@ -93,7 +94,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (datas && datas.length > 0) {
           this.data = datas[0];
         } else {
-          this.data = this.scope.session.create('Data') as Data;
+          this.data = this.sessionService.session.create('Data') as Data;
         }
       },
         (error: any) => {
@@ -118,7 +119,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public save(): void {
 
-    this.scope
+    this.sessionService
       .save()
       .subscribe(() => {
         this.data = undefined;

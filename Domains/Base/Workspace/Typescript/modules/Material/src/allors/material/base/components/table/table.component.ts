@@ -1,7 +1,8 @@
 import { Component, Input } from '@angular/core';
 
+import { Action, ActionTarget } from '../../../../angular';
+
 import { humanize } from '../../../../angular';
-import { Action, ActionTarget } from '../../actions';
 import { BaseTable } from './BaseTable';
 
 @Component({

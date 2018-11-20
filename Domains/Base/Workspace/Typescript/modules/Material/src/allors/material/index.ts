@@ -19,13 +19,12 @@ export * from './base/components/static/static.module';
 export * from './base/components/textarea/textarea.module';
 export * from './base/components/table/table.module';
 export * from './base/components/datepicker/MomentUtcDateAdapter';
-
 export * from './base/components/filter/filter.module';
 
 // Base Services
-export * from './base/services/dialog/index';
-export * from './base/services/error/index';
-export * from './base/services/sidenav/index';
+export * from './base/services/dialog';
+export * from './base/services/error';
+export * from './base/services/sidenav';
 
-// Base Actions
+export * from './base/sorting';
 export * from './base/actions';

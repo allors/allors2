@@ -1,7 +1,6 @@
-import { MethodType } from '../../../../../allors/framework';
+import { Action } from '../../../../angular';
 
 import { Column } from './Column';
-import { Action } from '../../actions';
 
 export interface TableConfig {
     selection?: boolean;

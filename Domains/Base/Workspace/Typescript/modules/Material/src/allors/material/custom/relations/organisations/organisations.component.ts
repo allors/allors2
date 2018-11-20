@@ -1,14 +1,13 @@
-import { AfterViewInit, Component, OnDestroy, Self } from '@angular/core';
+import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
-import { Subscription } from 'rxjs';
+import { PageEvent, MatSnackBar } from '@angular/material';
+import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { scan, switchMap } from 'rxjs/operators';
 
-import { Organisation, Deletable } from '../../../../domain';
-import { MetaDomain } from '../../../../meta';
-import { PullRequest, SessionObject } from '../../../../framework';
-import { Loaded, Scope, WorkspaceService, Allors, x, NavigationService, Invoked, ErrorService } from '../../../../angular';
-import { Table, AllorsMaterialDialogService, ActionTarget } from '../../../../material';
+import { Organisation } from '../../../../domain';
+import { PullRequest, And, Like, Sort } from '../../../../framework';
+import { SessionService, x, NavigationService, ActionTarget, AllorsFilterService, ErrorService } from '../../../../angular';
+import { Table, Sorter, DeleteAction, AllorsMaterialDialogService} from '../../../../material';
 
 interface Row extends ActionTarget {
   object: Organisation;
@@ -18,33 +17,33 @@ interface Row extends ActionTarget {
 
 @Component({
   templateUrl: './organisations.component.html',
-  providers: [Allors]
+  providers: [SessionService, AllorsFilterService]
 })
-export class OrganisationsComponent implements AfterViewInit, OnDestroy {
+export class OrganisationsComponent implements OnInit, OnDestroy {
 
   title: string;
 
-  m: MetaDomain;
-
+  total: number;
   table: Table<Row>;
 
+  private sort$: BehaviorSubject<Sort>;
+  private pager$: BehaviorSubject<PageEvent>;
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
+    @Self() private filterService: AllorsFilterService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
     private snackBar: MatSnackBar,
-    private workspaceService: WorkspaceService,
-    private titleService: Title,
-    private router: Router) {
+    private titleService: Title) {
+
+    this.sort$ = new BehaviorSubject<Sort>(undefined);
+    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
 
     this.title = 'Organisations';
     this.titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
 
     this.table = new Table({
       selection: true,
@@ -56,47 +55,58 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
             this.navigation.overview(target.object);
           }
         },
-        {
-          method: this.m.Deletable.Delete,
-          handler: (target: ActionTarget) => this.delete(target)
-        }
+        new DeleteAction(allors, errorService, dialogService, snackBar)
       ]
     });
   }
 
-  public ngAfterViewInit(): void {
-    this.search();
-  }
-
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
-
-  public search(): void {
-
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+  public ngOnInit(): void {
 
     const { m, pull } = this.allors;
 
-    const pulls = [
+    const predicate = new And([
+      new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
+    ]);
 
-      pull.Organisation({
-        include: {
-          Owner: x,
-          Employees: x,
-        }
-      })
-    ];
+    this.filterService.init(predicate);
 
-    this.scope.session.reset();
+    const sorter = new Sorter(
+      {
+        name: m.Organisation.Name,
+      }
+    );
 
-    this.subscription = this.scope
-      .load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded: Loaded) => {
+    this.subscription = combineLatest(this.allors.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+      .pipe(
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+          return [
+            refresh,
+            filterFields,
+            sort,
+            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
+          ];
+        }, []),
+        switchMap(([refresh, filterFields, sort, pageEvent]) => {
+
+          const pulls = [
+            pull.Organisation({
+              predicate,
+              sort: sorter.create(sort),
+              include: {
+                Owner: x,
+                Employees: x,
+              },
+              arguments: this.filterService.arguments(filterFields),
+              skip: pageEvent.pageIndex * pageEvent.pageSize,
+              take: pageEvent.pageSize,
+            })];
+
+          return this.allors.load('Pull', new PullRequest({ pulls }));
+        })
+      )
+      .subscribe((loaded) => {
+        this.allors.session.reset();
+        this.total = loaded.values.Organisations_total;
         const organisations = loaded.collections.Organisations as Organisation[];
         this.table.data = organisations.map((v) => {
           return {
@@ -105,46 +115,12 @@ export class OrganisationsComponent implements AfterViewInit, OnDestroy {
             owner: v.Owner && v.Owner.UserName
           };
         });
-      },
-        (error: any) => {
-          alert(error);
-          this.goBack();
-        });
+      }, this.errorService.handler);
   }
 
-  public goBack(): void {
-    this.router.navigate(['/']);
-  }
-
-  public refresh() {
-    this.search();
-  }
-
-  public delete(target: ActionTarget | ActionTarget[]): void {
-
-    const { scope } = this.allors;
-
-    const objects: Deletable[] = (target instanceof Array ? target.map(v => v.object) : [target.object]) as Deletable[];
-    const methods = objects.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
-
-    if (methods.length > 0) {
-      this.dialogService
-        .confirm(
-          methods.length === 1 ?
-            { message: 'Are you sure you want to delete this organisation?' } :
-            { message: 'Are you sure you want to delete these organisations?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            scope.invoke(methods)
-              .subscribe((invoked: Invoked) => {
-                this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                this.refresh();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          }
-        });
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
     }
   }
 }

@@ -1,7 +1,7 @@
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { Action, ActionTarget } from '../../actions';
+import { Action, ActionTarget } from '../../../../angular';
 import { TableConfig } from './TableConfig';
 import { Column } from './Column';
 

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Database } from './Database';
 import { DatabaseConfig } from './DatabaseConfig';
 

@@ -38,7 +38,8 @@ const MATERIAL_MODULES: any[] = [
 
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
-  DatabaseConfig, ErrorService, LoggingService, MediaService, MenuService, AllorsModule, AllorsFocusModule, NavigationService
+  DatabaseConfig, ErrorService, LoggingService, MediaService, MenuService, AllorsModule,
+  AllorsFocusModule, NavigationService, AllorsBarcodeModule, AllorsFilterModule
 } from '../allors/angular';
 
 import {
@@ -83,7 +84,10 @@ const BASE_MATERIAL_MODULES: any[] = [
     BrowserAnimationsModule,
 
     AllorsModule.forRoot(),
+    AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
+    AllorsFilterModule.forRoot(),
+
     AppRoutingModule,
     relations.Modules,
     tests.Modules,

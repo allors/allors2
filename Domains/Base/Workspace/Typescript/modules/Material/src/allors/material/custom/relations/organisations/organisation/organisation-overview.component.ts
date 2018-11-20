@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,10 +8,11 @@ import { Locale, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain, PullFactory } from '../../../../../meta';
 
-import { ErrorService, Loaded, Scope, WorkspaceService } from '../../../../../angular';
+import { Loaded, SessionService, WorkspaceService, ErrorService } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
+  providers: [SessionService]
 })
 export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -23,24 +24,23 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   public locales: Locale[];
 
   private subscription: Subscription;
-  private scope: Scope;
 
   constructor(
-    private workspaceService: WorkspaceService,
+    @Self() private sessionService: SessionService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute) {
 
     this.title = 'Organisation Overview';
     this.titleService.setTitle(this.title);
-    this.scope = this.workspaceService.createScope();
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+
+    this.m = this.sessionService.m;
   }
 
   public ngOnInit(): void {
 
-    const x = {};
-    const pull = new PullFactory(this.workspaceService.metaPopulation);
+
+    const { x, pull } = this.sessionService;
 
     this.subscription = this.route.url
       .pipe(
@@ -59,9 +59,9 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             })
           ];
 
-          this.scope.session.reset();
+          this.sessionService.session.reset();
 
-          return this.scope
+          return this.sessionService
             .load('Pull', new PullRequest({ pulls }));
         })
       )

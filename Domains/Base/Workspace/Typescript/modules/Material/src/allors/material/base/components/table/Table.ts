@@ -1,10 +1,10 @@
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
+import { ActionTarget } from '../../../../angular';
 import { TableConfig } from './TableConfig';
 import { BaseTable } from './BaseTable';
 import { Column } from './Column';
-import { ActionTarget } from '../../actions';
 
 export class Table<Row extends ActionTarget> extends BaseTable {
 

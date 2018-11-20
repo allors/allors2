@@ -8,12 +8,11 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter } from '../../../../../../framework';
-import { ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
+import { PullRequest, SessionObject, And, Like } from '../../../../../../framework';
+import { ErrorService, Invoked, MediaService, x, Allors, NavigationService, ActionTarget } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
-import { ActionTarget } from '../../../../../base/actions';
 
 import { Organisation } from '../../../../../../domain';
 // import { OrganisationAddComponent } from '../add/organisation-add.module';
