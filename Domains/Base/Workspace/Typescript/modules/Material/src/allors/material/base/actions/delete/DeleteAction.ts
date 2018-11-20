@@ -1,10 +1,8 @@
-import { MatSnackBar } from '@angular/material';
+import { MethodType } from '../../../../framework';
+import { Deletable } from '../../../../domain';
+import { ActionTarget, SessionService, Invoked, ErrorService } from '../../../../angular';
 
-import { MethodType } from '../../../framework';
-import { Deletable } from '../../../domain';
-import { ActionTarget, SessionService, Invoked, ErrorService } from '../../../angular';
-
-import { AllorsMaterialDialogService } from '../services/dialog';
+import { DeleteService } from './delete.service';
 
 export class DeleteAction {
 
@@ -13,13 +11,8 @@ export class DeleteAction {
   description: (target: ActionTarget) => string;
   handler: (target: ActionTarget) => void;
 
-  constructor(
-    private sessionService: SessionService,
-    private errorService: ErrorService,
-    private dialogService: AllorsMaterialDialogService,
-    private snackBar: MatSnackBar,
-  ) {
-    const { m } = this.sessionService;
+  constructor(deleteService: DeleteService, sessionService: SessionService) {
+    const { m } = sessionService;
 
     this.method = m.Deletable.Delete;
     this.handler = (target: ActionTarget) => {
@@ -28,20 +21,20 @@ export class DeleteAction {
       const methods = objects.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
       if (methods.length > 0) {
-        this.dialogService
+        deleteService.dialogService
           .confirm(
             methods.length === 1 ?
               { message: 'Are you sure you want to delete this organisation?' } :
               { message: 'Are you sure you want to delete these organisations?' })
           .subscribe((confirm: boolean) => {
             if (confirm) {
-              this.sessionService.invoke(methods)
+              sessionService.invoke(methods)
                 .subscribe((invoked: Invoked) => {
-                  this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-                  this.sessionService.refresh();
+                  deleteService.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
+                  deleteService.refreshService.refresh();
                 },
                   (error: Error) => {
-                    this.errorService.handle(error);
+                    deleteService.errorService.handle(error);
                   });
             }
           });

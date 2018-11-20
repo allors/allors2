@@ -7,6 +7,6 @@ export { Invoked } from './responses/Invoked';
 
 export { DatabaseService } from './DatabaseService';
 export { WorkspaceService } from './WorkspaceService';
-export { SessionService, x } from './SessionService';
+export { SessionService } from './SessionService';
 
 export { AllorsModule } from './allors.module';

@@ -6,8 +6,9 @@ import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
 import { PullRequest, And, Like, Sort } from '../../../../framework';
-import { SessionService, x, NavigationService, ActionTarget, AllorsFilterService, ErrorService } from '../../../../angular';
-import { Table, Sorter, DeleteAction, AllorsMaterialDialogService} from '../../../../material';
+import { SessionService, NavigationService, ActionTarget, AllorsFilterService, ErrorService, AllorsRefreshService } from '../../../../angular';
+import { Table, Sorter } from '../../../../material';
+import { DeleteService } from 'src/allors/material/base/actions/delete/delete.service';
 
 interface Row extends ActionTarget {
   object: Organisation;
@@ -33,10 +34,10 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
+    public refreshService: AllorsRefreshService,
+    public deleteService: DeleteService,
     public navigation: NavigationService,
     private errorService: ErrorService,
-    private dialogService: AllorsMaterialDialogService,
-    private snackBar: MatSnackBar,
     private titleService: Title) {
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
@@ -55,14 +56,14 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
             this.navigation.overview(target.object);
           }
         },
-        new DeleteAction(allors, errorService, dialogService, snackBar)
+        deleteService.action(allors)
       ]
     });
   }
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.allors;
+    const { x, m, pull } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
@@ -76,7 +77,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.allors.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [

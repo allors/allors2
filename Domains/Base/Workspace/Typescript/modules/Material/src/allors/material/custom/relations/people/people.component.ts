@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter, ContainedIn } from '../../../../framework';
-import { ErrorService, Invoked, MediaService, x, SessionService, NavigationService } from '../../../../angular';
+import { ErrorService, Invoked, MediaService, SessionService, NavigationService } from '../../../../angular';
 import { AllorsFilterService } from '../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../base/services/dialog';
 import { Sorter } from '../../../base/sorting';
@@ -63,7 +63,7 @@ export class PeopleComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull } = this.allors;
+    const { x, m, pull } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),

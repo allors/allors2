@@ -39,18 +39,19 @@ const MATERIAL_MODULES: any[] = [
 import {
   AuthenticationConfig, AuthenticationInterceptor, AuthenticationService,
   DatabaseConfig, ErrorService, LoggingService, MediaService, MenuService, AllorsModule,
-  AllorsFocusModule, NavigationService, AllorsBarcodeModule, AllorsFilterModule
+  AllorsFocusModule, NavigationService, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule
 } from '../allors/angular';
 
 import {
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialFileModule,
   AllorsMaterialFilesModule, AllorsMaterialInputModule, AllorsMaterialLocalisedTextModule,
   AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule, AllorsMaterialSideMenuModule, AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule,
-  AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, AllorsMaterialDefaultErrorService, AllorsMaterialErrorDialogComponent,
+  AllorsMaterialStaticModule, AllorsMaterialTextAreaModule, AllorsMaterialDefaultErrorService,  AllorsMaterialDialogModule,
   MomentUtcDateAdapter,
   AllorsMaterialSideNavService,
-  AllorsMaterialDialogService,
   AllorsMaterialSideNavToggleModule,
+  DeleteModule,
+  AllorsMaterialDialogService,
 } from '../allors/material';
 
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
@@ -60,7 +61,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 const BASE_MATERIAL_MODULES: any[] = [
   AllorsMaterialAutoCompleteModule, AllorsMaterialCheckboxModule, AllorsMaterialDatepickerModule, AllorsMaterialErrorDialogModule, AllorsMaterialInputModule,
   AllorsMaterialFileModule, AllorsMaterialFilesModule, AllorsMaterialLocalisedTextModule, AllorsMaterialRadioGroupModule, AllorsMaterialSelectModule,
-  AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule,
+  AllorsMaterialSideMenuModule, AllorsMaterialSideNavToggleModule, AllorsMaterialDialogModule,
   AllorsMaterialSliderModule, AllorsMaterialSlideToggleModule, AllorsMaterialStaticModule, AllorsMaterialTextAreaModule,
 ];
 
@@ -87,6 +88,9 @@ const BASE_MATERIAL_MODULES: any[] = [
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
     AllorsFilterModule.forRoot(),
+    AllorsRefreshModule.forRoot(),
+
+    DeleteModule.forRoot(),
 
     AppRoutingModule,
     relations.Modules,
