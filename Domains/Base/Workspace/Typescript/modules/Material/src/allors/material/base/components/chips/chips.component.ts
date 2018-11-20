@@ -91,7 +91,7 @@ export class AllorsMaterialChipsComponent extends Field implements OnInit, OnDes
     this.searchInput.nativeElement.value = '';
   }
 
-  public focusout(): void {
+  public focusout(event): void {
     if (this.searchControl.value && this.trigger.autocomplete.options.length === 1) {
       const option = this.trigger.autocomplete.options.first.value;
       this.add(option);

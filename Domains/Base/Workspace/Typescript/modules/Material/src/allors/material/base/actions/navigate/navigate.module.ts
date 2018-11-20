@@ -2,8 +2,8 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material';
 import { AllorsMaterialDialogModule } from '../../components/dialog';
 
-import { DeleteService } from './delete.service';
-export { DeleteService } from './delete.service';
+import { NavigateService } from './navigate.service';
+export { NavigateService } from './navigate.service';
 
 @NgModule({
   declarations: [
@@ -11,18 +11,16 @@ export { DeleteService } from './delete.service';
   exports: [
   ],
   imports: [
-    MatSnackBarModule,
-    AllorsMaterialDialogModule,
   ],
   providers: [
-    DeleteService
+    NavigateService
   ]
 })
-export class DeleteModule {
+export class NavigateModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: DeleteModule,
-      providers: [ DeleteService ]
+      ngModule: NavigateModule,
+      providers: [ NavigateService ]
     };
   }
 }

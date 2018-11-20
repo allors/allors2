@@ -7,16 +7,14 @@ import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/materia
 import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 
 import { environment } from '../environments/environment';
-import { DefaultLoggingService } from './app.logging.service';
 
 import {
-  ErrorService, LoggingService, MediaService, MenuService, AllorsModule, AllorsFocusModule, NavigationService, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule
+  ErrorService, AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule, MenuModule
 } from '../allors/angular';
 
 import {
-  MomentUtcDateAdapter, AllorsMaterialSideNavService, DeleteModule, AllorsMaterialDialogService, AllorsMaterialDefaultErrorService,
+  MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, ErrorModule, SideNavModule
 } from '../allors/material';
-
 
 @NgModule({
   imports: [
@@ -27,26 +25,29 @@ import {
 
     AllorsModule.forRoot({ url: environment.url }),
     AuthenticationModule.forRoot({ url: environment.url + environment.authenticationUrl }),
+    LoggingModule.forRoot({ console: true }),
+    ErrorModule.forRoot({ log: true, display: true }),
 
     AllorsBarcodeModule.forRoot(),
     AllorsFocusModule.forRoot(),
     AllorsFilterModule.forRoot(),
     AllorsRefreshModule.forRoot(),
+    DialogModule.forRoot(),
+    MediaModule.forRoot({ url: environment.url }),
+
+    // Menu/Navigation
+    NavigationModule.forRoot(),
+    SideNavModule.forRoot(),
+    MenuModule.forRoot(),
 
     // Actions
     DeleteModule.forRoot(),
+    NavigateModule.forRoot(),
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
-    { provide: LoggingService, useClass: DefaultLoggingService },
-    { provide: ErrorService, useClass: AllorsMaterialDefaultErrorService },
-    AllorsMaterialSideNavService,
-    AllorsMaterialDialogService,
-    NavigationService,
-    MenuService,
-    MediaService
   ],
 })
 export class CoreModule {

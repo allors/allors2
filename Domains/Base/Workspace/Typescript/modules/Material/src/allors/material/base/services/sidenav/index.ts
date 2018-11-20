@@ -1,2 +1,2 @@
-export * from './sidenav.service';
+export * from './sidenav.module';
 

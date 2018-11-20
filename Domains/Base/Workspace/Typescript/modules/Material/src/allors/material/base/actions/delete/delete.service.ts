@@ -15,7 +15,7 @@ export class DeleteService {
     public snackBar: MatSnackBar
   ) { }
 
-  action(sessionService: SessionService) {
+  delete(sessionService: SessionService) {
     return new DeleteAction(this, sessionService);
   }
 

@@ -1,2 +1,1 @@
-export { MediaService } from './MediaService';
-export { PdfService } from './PdfService';
+export * from './media.module';

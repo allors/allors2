@@ -1,6 +1,6 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { PageEvent, MatSnackBar } from '@angular/material';
+import { PageEvent } from '@angular/material';
 import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
@@ -8,7 +8,8 @@ import { Organisation } from '../../../../domain';
 import { PullRequest, And, Like, Sort } from '../../../../framework';
 import { SessionService, NavigationService, ActionTarget, AllorsFilterService, ErrorService, AllorsRefreshService } from '../../../../angular';
 import { Table, Sorter } from '../../../../material';
-import { DeleteService } from 'src/allors/material/base/actions/delete/delete.service';
+
+import { NavigateService, DeleteService } from '../../../../material';
 
 interface Row extends ActionTarget {
   object: Organisation;
@@ -35,6 +36,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
     public refreshService: AllorsRefreshService,
+    public navigateService: NavigateService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -50,13 +52,8 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
       selection: true,
       columns: ['name', 'owner'],
       actions: [
-        {
-          name: () => 'Details',
-          handler: (target: ActionTarget) => {
-            this.navigation.overview(target.object);
-          }
-        },
-        deleteService.action(allors)
+        navigateService.overview(),
+        deleteService.delete(allors)
       ]
     });
   }

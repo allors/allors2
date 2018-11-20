@@ -15,8 +15,6 @@ export class NavigationService {
     private router: Router,
     private location: Location
   ) {
-    const metaPopulation = workspaceService.metaPopulation;
-
     this.navigationItems = [];
     this.router.config.map((route: Route) => new NavigationItem(workspaceService.metaPopulation, this.navigationItems, route));
   }

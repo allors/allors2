@@ -1,10 +1,8 @@
 import { Sort } from '@angular/material';
 
-import { Injectable } from '@angular/core';
 import { RoleType } from '../../../framework';
 import { Sort as AllorsSort } from './../../../framework';
 
-@Injectable()
 export class Sorter {
     private config: { [index: string]: RoleType | RoleType[] };
 
