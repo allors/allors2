@@ -38,7 +38,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private sessionService: SessionService,
+    @Self() public allors: SessionService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -48,7 +48,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.title = 'Form';
     this.titleService.setTitle(this.title);
 
-    this.m = this.sessionService.m;
+    this.m = this.allors.m;
 
     this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
@@ -81,12 +81,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
             pull.Person(),
           ];
 
-          return this.sessionService
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         }))
       .subscribe((loaded: Loaded) => {
 
-        this.sessionService.session.reset();
+        this.allors.session.reset();
 
         this.people = loaded.collections.People as Person[];
         const datas = loaded.collections.Datas as Data[];
@@ -94,7 +94,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (datas && datas.length > 0) {
           this.data = datas[0];
         } else {
-          this.data = this.sessionService.session.create('Data') as Data;
+          this.data = this.allors.session.create('Data') as Data;
         }
       },
         (error: any) => {
@@ -119,7 +119,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public save(): void {
 
-    this.sessionService
+    this.allors
       .save()
       .subscribe(() => {
         this.data = undefined;
