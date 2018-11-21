@@ -1,49 +1,33 @@
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
 
-import { AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseConfig, AllorsFocusModule, AllorsModule } from '../allors/angular';
+import { CoreModule } from './core.module';
+import { AuthModule } from './auth/auth.module';
+import { FetchModule } from './fetch/fetch.module';
+import { HomeModule } from './home/home.module';
+import { QueryModule } from './query/query.module';
+import { FormModule } from './form/form.module';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-import { environment } from '../environments/environment';
-
-import { AuthorizationService } from './auth/authorization.service';
-import { LoginComponent } from './auth/login.component';
-
-import { FetchComponent } from './fetch/fetch.component';
-import { FormComponent } from './form/form.component';
-import { HomeComponent } from './home/home.component';
-import { QueryComponent } from './query/query.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   bootstrap: [AppComponent],
   declarations: [
     AppComponent,
-    LoginComponent,
-    HomeComponent,
-    FormComponent,
-    QueryComponent,
-    FetchComponent,
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
+    CoreModule,
     AppRoutingModule,
-    AllorsModule.forRoot(),
-    AllorsFocusModule.forRoot()
-  ],
-  providers: [
-    Title,
-    { provide: DatabaseConfig, useValue: { url: environment.url } },
-    { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl} },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-    AuthenticationService,
-    AuthorizationService,
+
+    AuthModule,
+    FetchModule,
+    FormModule,
+    HomeModule,
+    QueryModule
   ],
 })
 export class AppModule { }

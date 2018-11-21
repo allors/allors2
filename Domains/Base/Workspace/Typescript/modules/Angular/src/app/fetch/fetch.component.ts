@@ -3,31 +3,26 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService, x, Allors } from '../../allors/angular';
+import { Loaded, SessionService } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
 import { PullRequest } from '../../allors/framework';
 
 @Component({
   templateUrl: './fetch.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class FetchComponent implements OnInit, OnDestroy {
 
   public organisation: Organisation;
   public organisations: Organisation[];
 
-  private scope: Scope;
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private title: Title,
     private route: ActivatedRoute,
-    workspace: WorkspaceService
-  ) {
-
-    this.scope = workspace.createScope();
-  }
+  ) { }
 
   public ngOnInit() {
     this.title.setTitle('Fetch');
@@ -39,7 +34,8 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const { pull } = this.allors;
+    const { pull, x } = this.allors;
+
     const id = this.route.snapshot.paramMap.get('id');
 
     const pulls = [
@@ -57,8 +53,9 @@ export class FetchComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.scope.session.reset();
-    this.subscription = this.scope
+    this.allors.session.reset();
+
+    this.subscription = this.allors
       .load('Pull', new PullRequest({
         pulls,
       }))

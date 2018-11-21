@@ -1,20 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthorizationService } from './auth/authorization.service';
-import { LoginComponent } from './auth/login.component';
+import { AuthorizationService } from './auth/auth.module';
 
-import { FetchComponent } from './fetch/fetch.component';
-import { FormComponent } from './form/form.component';
-import { HomeComponent } from './home/home.component';
-import { QueryComponent } from './query/query.component';
+import { LoginComponent } from './auth/auth.module';
+import { FetchComponent } from './fetch/fetch.module';
+import { FormComponent } from './form/form.module';
+import { HomeComponent } from './home/home.module';
+import { QueryComponent } from './query/query.module';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent },
   {
-    component: LoginComponent,
-    path: 'login',
-  },
-  {
+    path: '',
     canActivate: [AuthorizationService],
     children: [
       {
@@ -34,12 +32,11 @@ const routes: Routes = [
         path: 'fetch/:id',
       },
     ],
-    path: '',
   },
 ];
 
 @NgModule({
-  exports: [RouterModule],
   imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

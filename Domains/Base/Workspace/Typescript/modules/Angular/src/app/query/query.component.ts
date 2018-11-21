@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
-import { Loaded, Scope, WorkspaceService, x, Allors } from '../../allors/angular';
+import { Loaded, SessionService } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
 import { Like, PullRequest, Sort } from '../../allors/framework';
 
 @Component({
   templateUrl: './query.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class QueryComponent implements OnInit, OnDestroy {
 
@@ -21,7 +21,7 @@ export class QueryComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private title: Title,
   ) {
   }
@@ -36,7 +36,7 @@ export class QueryComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Organisation({
@@ -53,8 +53,9 @@ export class QueryComponent implements OnInit, OnDestroy {
     ];
 
 
-    scope.session.reset();
-    this.subscription = scope
+    this.allors.session.reset();
+
+    this.subscription = this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded: Loaded) => {
         this.organisations = loaded.collections.Organisations as Organisation[];
