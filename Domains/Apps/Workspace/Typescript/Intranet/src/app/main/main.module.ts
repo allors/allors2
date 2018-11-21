@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatSidenavModule, MatToolbarModule, MatIconModule } from '@angular/material';
+import { MatSidenavModule, MatToolbarModule, MatIconModule, MatButtonModule } from '@angular/material';
 
 import { AllorsMaterialSideMenuModule } from '../../allors/material';
 import { InternalOrganisationSelectModule } from '../../allors/material';
@@ -17,6 +17,7 @@ import { MainComponent } from './main.component';
   imports: [
     CommonModule,
     RouterModule ,
+    MatButtonModule,
     MatIconModule,
     MatSidenavModule,
     MatToolbarModule,
