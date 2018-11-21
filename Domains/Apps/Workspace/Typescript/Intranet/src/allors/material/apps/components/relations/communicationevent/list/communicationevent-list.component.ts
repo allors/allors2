@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, x, Allors, NavigationService } from '../../../../../../angular';
+import { ErrorService, Invoked, SessionService, NavigationService } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { Sorter } from '../../../../../base/sorting';
 import { CommunicationEvent } from '../../../../../../domain';
@@ -26,7 +26,7 @@ interface Row {
 
 @Component({
   templateUrl: './communicationevent-list.component.html',
-  providers: [Allors, AllorsFilterService]
+  providers: [SessionService, AllorsFilterService]
 })
 export class CommunicationEventListComponent implements OnInit, OnDestroy {
 
@@ -45,7 +45,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     @Self() private filterService: AllorsFilterService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -63,7 +63,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
@@ -106,11 +106,11 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.total = loaded.values.CommunicationEvents_total;
         const communicationEvents = loaded.collections.CommunicationEvents as CommunicationEvent[];
 
@@ -125,7 +125,7 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
             lastModifiedDate: v.LastModifiedDate,
           } as Row;
         });
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
@@ -175,13 +175,12 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
   }
 
   public cancel(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Cancel)
+          this.allors.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
@@ -194,13 +193,12 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
   }
 
   public close(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Close)
+          this.allors.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
@@ -213,13 +211,12 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
   }
 
   public reopen(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Reopen)
+          this.allors.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
@@ -231,14 +228,13 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
       });
   }
 
-  public delete(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
+  public delete(communicationEvents: CommunicationEvent[]): void {
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this communication event?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Delete)
+          this.allors.invoke(communicationEvents.map((v) => v.Delete))
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

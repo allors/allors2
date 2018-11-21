@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService } from '../../../../../../angular';
 import { OrderTermType, SalesOrder, SalesTerm } from '../../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './orderterm.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class OrderTermEditComponent implements OnInit, OnDestroy {
 
@@ -29,7 +29,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -42,7 +42,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -63,7 +63,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -75,7 +75,7 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
 
         if (!this.salesTerm) {
           this.title = 'Add Sales Order Order Term';
-          this.salesTerm = scope.session.create('OrderTerm') as SalesTerm;
+          this.salesTerm = this.allors.session.create('OrderTerm') as SalesTerm;
           this.order.AddSalesTerm(this.salesTerm);
         }
       }, this.errorService.handler);
@@ -88,9 +88,8 @@ export class OrderTermEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);

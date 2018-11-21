@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../../angular';
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -9,7 +9,6 @@ import { MetaDomain } from '../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-postaladdress',
   templateUrl: './postaladdress-inline.component.html',
-  providers: [Allors]
 })
 export class PartyContactMechanismPostalAddressInlineComponent implements OnInit, OnDestroy {
 
@@ -18,8 +17,6 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   @Output()
   public cancelled: EventEmitter<any> = new EventEmitter();
-
-  @Input() public scope: Scope;
 
   public countries: Country[];
   public contactMechanismPurposes: ContactMechanismPurpose[];
@@ -31,7 +28,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
   public m: MetaDomain;
 
   constructor(
-    @Self() private allors: Allors,
+    private allors: SessionService,
     private errorService: ErrorService) {
 
     this.m = this.allors.m;
@@ -39,7 +36,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Country({
@@ -51,27 +48,26 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.countries = loaded.collections.countries as Country[];
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 
-        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.postalAddress = scope.session.create('PostalAddress') as PostalAddress;
-        this.postalBoundary = scope.session.create('PostalBoundary') as PostalBoundary;
+        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.postalAddress = this.allors.session.create('PostalAddress') as PostalAddress;
+        this.postalBoundary = this.allors.session.create('PostalBoundary') as PostalBoundary;
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
         this.postalAddress.PostalBoundary = this.postalBoundary;
       }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
-    const { scope } = this.allors;
 
     if (!!this.partyContactMechanism) {
-      scope.session.delete(this.partyContactMechanism);
-      scope.session.delete(this.postalAddress);
-      scope.session.delete(this.postalBoundary);
+      this.allors.session.delete(this.partyContactMechanism);
+      this.allors.session.delete(this.postalAddress);
+      this.allors.session.delete(this.postalBoundary);
     }
   }
 

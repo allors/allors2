@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SearchFactory, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, SearchFactory, Loaded, Saved, SessionService } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, PullRequest, TreeNode, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceitem.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 
 })
 export class InvoiceItemEditComponent
@@ -41,7 +41,7 @@ export class InvoiceItemEditComponent
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -69,7 +69,7 @@ export class InvoiceItemEditComponent
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -117,11 +117,11 @@ export class InvoiceItemEditComponent
             })
           ];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.invoice = loaded.objects.salesInvoice as SalesInvoice;
         this.invoiceItem = loaded.objects.invoiceItem as SalesInvoiceItem;
@@ -139,7 +139,7 @@ export class InvoiceItemEditComponent
 
         if (!this.invoiceItem) {
           this.title = 'Add invoice Item';
-          this.invoiceItem = scope.session.create('SalesInvoiceItem') as SalesInvoiceItem;
+          this.invoiceItem = this.allors.session.create('SalesInvoiceItem') as SalesInvoiceItem;
           this.invoice.AddSalesInvoiceItem(this.invoiceItem);
         } else {
           if (this.invoiceItem.InvoiceItemType === this.productItemType) {
@@ -156,7 +156,6 @@ export class InvoiceItemEditComponent
   }
 
   public goodSelected(product: Product): void {
-    const { scope } = this.allors;
 
     this.invoiceItem.InvoiceItemType = this.productItemType;
 
@@ -172,7 +171,7 @@ export class InvoiceItemEditComponent
       })
     ];
 
-    scope.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.inventoryItems = loaded.collections
           .inventoryItem as InventoryItem[];
@@ -193,7 +192,6 @@ export class InvoiceItemEditComponent
   }
 
   public facilitySelected(facility: Facility): void {
-    const { scope } = this.allors;
 
     if (facility !== undefined) {
       this.goodsFacilityFilter = new SearchFactory({
@@ -212,10 +210,9 @@ export class InvoiceItemEditComponent
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     const isNew = this.invoiceItem.isNew;
-    scope.save().subscribe(
+    this.allors.save().subscribe(
       (saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);
       },
@@ -226,11 +223,10 @@ export class InvoiceItemEditComponent
   }
 
   public update(): void {
-    const { scope } = this.allors;
 
     const isNew = this.invoiceItem.isNew;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, SessionService } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './request-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class RequestOverviewComponent implements OnInit, OnDestroy {
 
@@ -34,7 +34,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -53,7 +53,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -99,12 +99,12 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
             );
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.request = loaded.objects.request as RequestForQuote;
         this.quote = loaded.objects.quote as ProductQuote;
       }, this.errorService.handler);
@@ -122,9 +122,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public createQuote(): void {
 
-    const { scope } = this.allors;
-
-    scope.invoke(this.request.CreateQuote)
+    this.allors.invoke(this.request.CreateQuote)
       .subscribe((invoked: Invoked) => {
         this.snackBar.open('Quote successfully created.', 'close', { duration: 5000 });
         this.gotoQuote();
@@ -136,7 +134,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public gotoQuote(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.RequestForQuote(
@@ -149,7 +147,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
       )
     ];
 
-    scope.load('Pull', new PullRequest({ pulls }))
+    this.allors.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const quote = loaded.objects.quote as ProductQuote;
         this.router.navigate(['/orders/productQuote/' + quote.id]);
@@ -157,9 +155,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.request.Submit)
+    this.allors.invoke(this.request.Submit)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
@@ -170,9 +167,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.request.Cancel)
+    this.allors.invoke(this.request.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -183,9 +179,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public hold(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.request.Hold)
+    this.allors.invoke(this.request.Hold)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
@@ -196,9 +191,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public reject(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.request.Reject)
+    this.allors.invoke(this.request.Reject)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
@@ -209,9 +203,8 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancelRequestItem(requestItem: RequestItem): void {
-    const { scope } = this.allors;
 
-    scope.invoke(requestItem.Cancel)
+    this.allors.invoke(requestItem.Cancel)
       .subscribe((invoked: Invoked) => {
         this.snackBar.open('Request Item successfully cancelled.', 'close', { duration: 5000 });
         this.refresh();
@@ -222,13 +215,12 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteRequestItem(requestItem: RequestItem): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(requestItem.Delete)
+          this.allors.invoke(requestItem.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

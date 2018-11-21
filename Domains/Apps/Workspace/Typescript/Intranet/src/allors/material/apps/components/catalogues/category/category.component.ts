@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
 
 @Component({
   templateUrl: './category.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
@@ -37,7 +37,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -51,7 +51,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -81,7 +81,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -94,7 +94,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
         if (!this.category) {
-          this.category = scope.session.create('ProductCategory') as ProductCategory;
+          this.category = this.allors.session.create('ProductCategory') as ProductCategory;
           this.category.InternalOrganisation = this.internalOrganisation;
         }
 
@@ -111,9 +111,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    const { scope } = this.allors;
-
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

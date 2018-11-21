@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Scope, WorkspaceService, x, Invoked, Allors } from '../../../../../angular';
+import { ErrorService, SessionService, Invoked } from '../../../../../angular';
 import { ProductType } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -18,7 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './producttypes-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
@@ -31,7 +31,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private titleService: Title,
     private snackBar: MatSnackBar,
@@ -47,7 +47,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -79,7 +79,7 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
             )
           ];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -88,14 +88,13 @@ export class ProductTypesOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(productType: ProductType): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this product type?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
           if (confirm) {
-            scope.invoke(productType.Delete)
+            this.allors.invoke(productType.Delete)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

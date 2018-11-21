@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
 import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -13,12 +13,11 @@ import { StateService } from '../../../../..';
 
 @Component({
   templateUrl: './good-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class GoodEditComponent implements OnInit, OnDestroy {
 
   m: MetaDomain;
-  scope: Scope;
   good: Good;
 
   add: boolean;
@@ -49,7 +48,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -57,14 +56,13 @@ export class GoodEditComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.m = this.allors.m;
-    this.scope = this.allors.scope;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -119,7 +117,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -128,7 +126,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
@@ -146,15 +144,15 @@ export class GoodEditComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.good = scope.session.create('Good') as Good;
+          this.good = this.allors.session.create('Good') as Good;
           this.good.VatRate = vatRateZero;
 
-          this.productNumber = scope.session.create('ProductNumber') as ProductNumber;
+          this.productNumber = this.allors.session.create('ProductNumber') as ProductNumber;
           this.productNumber.GoodIdentificationType = goodNumberType;
 
           this.good.AddGoodIdentification(this.productNumber);
 
-          this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
+          this.vendorProduct = this.allors.session.create('VendorProduct') as VendorProduct;
           this.vendorProduct.Product = this.good;
           this.vendorProduct.InternalOrganisation = internalOrganisation;
         } else {
@@ -181,9 +179,8 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.navigationService.back();
@@ -194,9 +191,8 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceitem.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class InvoiceItemEditComponent
   implements OnInit, OnDestroy {
@@ -38,7 +38,7 @@ export class InvoiceItemEditComponent
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -52,7 +52,7 @@ export class InvoiceItemEditComponent
 
   public ngOnInit(): void {
 
-    const { pull, scope } = this.allors;
+    const { pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -86,11 +86,11 @@ export class InvoiceItemEditComponent
             pull.VatRegime()
           ];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.invoiceItem as PurchaseInvoiceItem;
@@ -105,7 +105,7 @@ export class InvoiceItemEditComponent
 
         if (!this.invoiceItem) {
           this.title = 'Add invoice Item';
-          this.invoiceItem = scope.session.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
+          this.invoiceItem = this.allors.session.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
           if (
@@ -125,7 +125,7 @@ export class InvoiceItemEditComponent
   }
 
   public goodSelected(product: Product): void {
-    const { pull, scope } = this.allors;
+    const { pull } = this.allors;
 
     this.invoiceItem.InvoiceItemType = this.productItemType;
 
@@ -137,7 +137,7 @@ export class InvoiceItemEditComponent
       })
     ];
 
-    scope.load('Pull', new PullRequest({ pulls }))
+    this.allors.load('Pull', new PullRequest({ pulls }))
       .subscribe(
         (loaded) => {
           this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
@@ -159,9 +159,7 @@ export class InvoiceItemEditComponent
 
   public save(): void {
 
-    const { m, pull, scope } = this.allors;
-
-    scope.save().subscribe(
+    this.allors.save().subscribe(
       (saved: Saved) => {
         this.router.navigate(['/accountspayable/invoice/' + this.invoice.id]);
       },
@@ -173,11 +171,9 @@ export class InvoiceItemEditComponent
 
   public update(): void {
 
-    const { scope } = this.allors;
-
     const isNew = this.invoiceItem.isNew;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

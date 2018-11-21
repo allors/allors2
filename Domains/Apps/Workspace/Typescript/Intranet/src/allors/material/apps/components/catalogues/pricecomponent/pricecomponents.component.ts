@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors } from '../../../../../angular';
+import { NavigationService, SessionService } from '../../../../../angular';
 import { PriceComponent } from '../../../../../domain';
 import { ObjectType } from '../../../../../framework';
 
@@ -26,7 +26,7 @@ export class PriceComponentsComponent {
   pricecomponentsCollection = 'Current';
 
   constructor(
-    public allors: Allors,
+    public allors: SessionService,
     public navigationService: NavigationService) { }
 
   get prices(): any {

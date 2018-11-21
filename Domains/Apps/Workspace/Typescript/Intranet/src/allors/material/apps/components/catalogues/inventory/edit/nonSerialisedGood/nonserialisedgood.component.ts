@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, MediaService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../../angular';
+import { ErrorService, MediaService, Saved, SessionService } from '../../../../../../../angular';
 import { Brand, Facility, Good, InternalOrganisation, InventoryItemKind, Locale, Model, NonSerialisedInventoryItem, NonSerialisedInventoryItemState, Organisation, OrganisationRole, Party, ProductCategory, ProductFeature, ProductType, Singleton, SupplierOffering, VatRate, VendorProduct } from '../../../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../../../framework';
 import { MetaDomain } from '../../../../../../../meta';
@@ -14,7 +14,7 @@ import { Fetcher } from '../../../../Fetcher';
 
 @Component({
   templateUrl: './nonserialisedgood.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
@@ -47,7 +47,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   public actualQuantityOnHand: number;
   public addBrand = false;
   public addModel = false;
-  public scope: Scope;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
@@ -55,7 +54,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private stateService: StateService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -69,7 +68,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -135,7 +134,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
             pull.Brand({ sort: new Sort(m.Brand.Name) })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -158,17 +157,17 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                 const inventoryItemKindNonSerialised = this.inventoryItemKinds.find((v: InventoryItemKind) => v.UniqueId === 'eaa6c331-0dd9-4bb1-8245-12a673304468');
 
                 if (this.good === undefined) {
-                  this.good = scope.session.create('Good') as Good;
+                  this.good = this.allors.session.create('Good') as Good;
                   this.good.VatRate = vatRateZero;
                   // this.good.Sku = '';
 
-                  this.inventoryItem = scope.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
+                  this.inventoryItem = this.allors.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
                   // TODO:
                   // this.good.InventoryItemKind = inventoryItemKindNonSerialised;
                   // this.inventoryItem.Good = this.good;
                   this.inventoryItem.Facility = this.facility;
 
-                  this.vendorProduct = scope.session.create('VendorProduct') as VendorProduct;
+                  this.vendorProduct = this.allors.session.create('VendorProduct') as VendorProduct;
                   this.vendorProduct.Product = this.good;
                   this.vendorProduct.InternalOrganisation = internalOrganisation;
                 } else {
@@ -201,7 +200,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: queries2 }));
+                return this.allors.load('Pull', new PullRequest({ pulls: queries2 }));
               })
             )
             ;
@@ -228,7 +227,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     // TODO: include Model
     const pulls = [
@@ -239,7 +238,7 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
       )
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -260,7 +259,6 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     // TODO:
     // this.good.StandardFeatures.forEach((feature: ProductFeature) => {
@@ -322,7 +320,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
         }
       });
     }
-    scope
+
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();
@@ -337,9 +336,8 @@ export class NonSerialisedGoodComponent implements OnInit, OnDestroy {
   }
 
   private newSupplierOffering(supplier: Organisation, good: Good): SupplierOffering {
-    const { scope } = this.allors;
 
-    const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
+    const supplierOffering = this.allors.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
     // TODO:
     // supplierOffering.Product = good;

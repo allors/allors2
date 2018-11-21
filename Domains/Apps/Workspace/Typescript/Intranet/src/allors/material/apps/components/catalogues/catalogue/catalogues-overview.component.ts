@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, SessionService } from '../../../../../angular';
 import { Catalogue } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort, Equals } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -18,7 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './catalogues-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
@@ -31,7 +31,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private titleService: Title,
     private snackBar: MatSnackBar,
@@ -48,7 +48,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -82,23 +82,22 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
               }
             )];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.catalogues = loaded.collections.Catalogues as Catalogue[];
       }, this.errorService.handler);
   }
 
   public delete(catalogue: Catalogue): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this catalogue?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(catalogue.Delete)
+          this.allors.invoke(catalogue.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

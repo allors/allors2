@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService } from '../../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -8,8 +8,7 @@ import { MetaDomain } from '../../../../../../meta';
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'person-inline',
-  templateUrl: './person-inline.component.html',
-  providers: [Allors]
+  templateUrl: './person-inline.component.html'
 })
 export class PersonInlineComponent implements OnInit {
 
@@ -28,7 +27,7 @@ export class PersonInlineComponent implements OnInit {
   public salutations: Enumeration[];
 
   constructor(
-    @Self() private allors: Allors,
+    private allors: SessionService,
     private errorService: ErrorService) {
 
     this.m = this.allors.m;
@@ -36,7 +35,7 @@ export class PersonInlineComponent implements OnInit {
 
   public ngOnInit(): void {
 
-    const { pull, scope } = this.allors;
+    const { pull, x } = this.allors;
 
     const pulls = [
       pull.Locale({
@@ -52,14 +51,14 @@ export class PersonInlineComponent implements OnInit {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.locales = loaded.collections.locales as Locale[];
         this.genders = loaded.collections.genders as Enumeration[];
         this.salutations = loaded.collections.salutations as Enumeration[];
 
-        this.person = scope.session.create('Person') as Person;
+        this.person = this.allors.session.create('Person') as Person;
       }, this.errorService.handler);
   }
 
@@ -68,9 +67,8 @@ export class PersonInlineComponent implements OnInit {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.saved.emit(this.person.id);

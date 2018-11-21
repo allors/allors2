@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter, ContainedIn } from '../../../../../../framework';
-import { AllorsFilterService, ErrorService, Invoked, MediaService, x, Allors, NavigationService } from '../../../../../../angular';
+import { AllorsFilterService, ErrorService, Invoked, MediaService, SessionService, NavigationService } from '../../../../../../angular';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
 
@@ -24,7 +24,7 @@ interface Row {
 
 @Component({
   templateUrl: './person-list.component.html',
-  providers: [Allors, AllorsFilterService]
+  providers: [SessionService, AllorsFilterService]
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
@@ -43,7 +43,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -62,7 +62,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
@@ -118,11 +118,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.total = loaded.values.People_total;
         const people = loaded.collections.People as Person[];
 
@@ -186,8 +186,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
   public delete(person: Person | Person[]): void {
 
-    const { scope } = this.allors;
-
     const people = person instanceof SessionObject ? [person as Person] : person instanceof Array ? person : [];
     const methods = people.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
@@ -199,7 +197,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             { message: 'Are you sure you want to delete these people?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope.invoke(methods)
+            this.allors.invoke(methods)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

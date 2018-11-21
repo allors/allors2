@@ -25,10 +25,16 @@ export * from './base/components/footer';
 // Base Services
 export * from './base/services/dialog';
 export * from './base/services/error';
+export * from './base/services/logging';
 export * from './base/services/sidenav';
 
 // Base Actions
 export * from './base/actions';
+
+export * from './base/sorting';
+
+// Apps Components
+export * from './apps/components/common/internalorganisation/internalorganisation-select.module';
 
 // Apps Services
 export * from './apps/services/state';

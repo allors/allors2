@@ -7,7 +7,7 @@ import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, Loaded, Scope, WorkspaceService, x, Allors, NavigationService, MediaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, SessionService, NavigationService, MediaService } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -25,7 +25,7 @@ interface Row {
 
 @Component({
   templateUrl: './invoices-overview.component.html',
-  providers: [Allors, AllorsFilterService]
+  providers: [SessionService, AllorsFilterService]
 })
 export class InvoicesOverviewComponent implements OnInit, OnDestroy {
 
@@ -46,7 +46,7 @@ export class InvoicesOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -65,7 +65,7 @@ export class InvoicesOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, parameter: 'number' }),
@@ -106,11 +106,11 @@ export class InvoicesOverviewComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.total = loaded.values.People_total;
         const purchaseInvoices = loaded.collections.PurchaseInvoices as PurchaseInvoice[];
 

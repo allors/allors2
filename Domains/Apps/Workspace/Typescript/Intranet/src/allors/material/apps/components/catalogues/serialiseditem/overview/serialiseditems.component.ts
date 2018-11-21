@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors } from '../../../../../../angular';
+import { NavigationService, SessionService } from '../../../../../../angular';
 import { MetaDomain } from '../../../../../../meta';
 import { SerialisedItem, Part, Party } from '../../../../../../domain';
 import { ObjectType } from '../../../../../../framework';
@@ -27,7 +27,7 @@ export class SerialisedItemsComponent {
   m: MetaDomain;
 
   constructor(
-    public allors: Allors,
+    public allors: SessionService,
     public navigationService: NavigationService) {
       this.m = allors.m;
      }

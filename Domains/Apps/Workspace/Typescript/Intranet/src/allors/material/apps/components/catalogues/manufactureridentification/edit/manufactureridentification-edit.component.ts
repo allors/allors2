@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { GoodIdentificationType, Good, Part, ManufacturerIdentification } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './manufactureridentification-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditManufacturerIdentificationComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
   item: Good | Part;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -47,7 +47,7 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -96,7 +96,7 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -105,7 +105,7 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === '3c349265-1794-4403-adcf-c7d957527607');
@@ -116,7 +116,7 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
         if (add) {
           this.add = !(this.edit = false);
 
-          this.iGoodIdentification = scope.session.create('ManufacturerIdentification') as ManufacturerIdentification;
+          this.iGoodIdentification = this.allors.session.create('ManufacturerIdentification') as ManufacturerIdentification;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
 
           if (this.good) {
@@ -147,9 +147,8 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();

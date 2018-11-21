@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Field, Invoked, Loaded, Saved, SessionService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,13 +15,12 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './invoice.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class InvoiceComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public scope: Scope;
   public title: string;
   public subTitle: string;
   public invoice: SalesInvoice;
@@ -87,7 +86,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -103,7 +102,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -125,11 +124,11 @@ export class InvoiceComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
                 this.currencies = loaded.collections.currencies as Currency[];
@@ -164,7 +163,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: fetches }));
+                return this.allors.load('Pull', new PullRequest({ pulls: fetches }));
               })
             );
         })
@@ -176,7 +175,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.invoice) {
-          this.invoice = scope.session.create('SalesInvoice') as SalesInvoice;
+          this.invoice = this.allors.session.create('SalesInvoice') as SalesInvoice;
           this.invoice.BilledFrom = internalOrganisation;
           this.invoice.AdvancePayment = 0;
           this.title = 'Add Sales Invoice';
@@ -212,13 +211,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public billToContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addBillToContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -231,13 +229,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public billToEndCustomerContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addBillToEndCustomerContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -250,13 +247,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public shipToContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addShipToContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -269,13 +265,12 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public shipToEndCustomerContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addShipToEndCustomerContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -332,10 +327,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public send(): void {
-    const { scope } = this.allors;
 
     const sendFn: () => void = () => {
-      scope.invoke(this.invoice.Send)
+      this.allors.invoke(this.invoice.Send)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
@@ -345,15 +339,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 sendFn();
               },
                 (error: Error) => {
@@ -369,10 +363,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.invoice.CancelInvoice)
+      this.allors.invoke(this.invoice.CancelInvoice)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -382,15 +375,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -406,10 +399,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public writeOff(): void {
-    const { scope } = this.allors;
 
     const writeOffFn: () => void = () => {
-      scope.invoke(this.invoice.WriteOff)
+      this.allors.invoke(this.invoice.WriteOff)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
@@ -419,15 +411,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 writeOffFn();
               },
                 (error: Error) => {
@@ -443,10 +435,9 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public reopen(): void {
-    const { scope } = this.allors;
 
     const reopenFn: () => void = () => {
-      scope.invoke(this.invoice.Reopen)
+      this.allors.invoke(this.invoice.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -456,15 +447,15 @@ export class InvoiceComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 reopenFn();
               },
                 (error: Error) => {
@@ -486,9 +477,8 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);
@@ -531,7 +521,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
   }
 
   private updateShipToCustomer(party: Party): void {
-    const { pull, tree, scope } = this.allors;
+    const { pull, tree, x } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -554,7 +544,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -577,7 +567,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { pull, tree, scope } = this.allors;
+    const { pull, tree, x } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -603,7 +593,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -626,7 +616,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateBillToEndCustomer(party: Party) {
 
-    const { pull, tree, scope } = this.allors;
+    const { pull, tree, x } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -651,7 +641,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -674,7 +664,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { pull, tree, scope } = this.allors;
+    const { pull, tree, x } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -696,7 +686,7 @@ export class InvoiceComponent implements OnInit, OnDestroy {
       }),
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 

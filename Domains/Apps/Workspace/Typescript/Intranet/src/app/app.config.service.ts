@@ -1,7 +1,7 @@
 import { Injectable, Self } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { WorkspaceService, Allors } from '../allors/angular';
+import { SessionService } from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
 import { Loaded } from '../allors/angular';
@@ -12,13 +12,13 @@ import { tap } from 'rxjs/operators';
 export class ConfigService {
 
     constructor(
-        @Self() private allors: Allors,
+        @Self() private allors: SessionService,
         private stateService: StateService
     ) { }
 
     public setup(): Observable<any> {
 
-        const { m, pull, scope } = this.allors;
+        const { m, pull, x } = this.allors;
 
         const pulls = [
             pull.Organisation({
@@ -27,7 +27,7 @@ export class ConfigService {
             pull.Singleton()
         ];
 
-        return scope
+        return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
                 tap((loaded: Loaded) => {

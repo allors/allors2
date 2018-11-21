@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@angular/core';
 
-import { ErrorService, Scope, WorkspaceService } from '../../../../../angular';
+import { SessionService, WorkspaceService } from '../../../../../angular';
 import { Model } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 
@@ -14,24 +14,22 @@ export class InlineModelComponent implements OnInit, OnDestroy {
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
 
-  @Input() public scope: Scope;
-
   public model: Model;
 
   public m: MetaDomain;
 
-  constructor(private workspaceService: WorkspaceService) {
+  constructor(private allors: SessionService) {
 
-    this.m = this.workspaceService.metaPopulation.metaDomain;
+    this.m = this.allors.m;
   }
 
   ngOnInit(): void {
-    this.model = this.scope.session.create('Model') as Model;
+    this.model = this.allors.session.create('Model') as Model;
   }
 
   public ngOnDestroy(): void {
     if (!!this.model) {
-      this.scope.session.delete(this.model);
+      this.allors.session.delete(this.model);
     }
   }
 

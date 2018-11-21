@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors } from '../../../../../../angular';
+import { SessionService } from '../../../../../../angular';
 import { CommunicationEvent, PartyContactMechanism } from '../../../../../../domain';
 import { ObjectType } from '../../../../../../framework';
 
@@ -29,7 +29,7 @@ export class PartyPartyContactMechanismsComponent {
 
   contactMechanismsCollection = 'Current';
 
-  constructor(public allors: Allors) { }
+  constructor(public allors: SessionService) { }
 
   get contactMechanisms(): any {
 

@@ -75,7 +75,7 @@
             <mat-card>
               <mat-card-header>Add a new address</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="addressCancelled($event); addAddress = false" (saved)="addressAdded($event); addAddress = false">
+                <party-contactmechanism-postaladdress (cancelled)="addressCancelled($event); addAddress = false" (saved)="addressAdded($event); addAddress = false">
                 </party-contactmechanism-postaladdress>
               </mat-card-content>
             </mat-card>

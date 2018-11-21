@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -15,7 +15,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './communicationevent-worktask.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
@@ -37,7 +37,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -53,7 +53,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -88,7 +88,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
             pull.WorkEffortPartyAssignment()
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -99,7 +99,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
         if (!this.workTask) {
           this.subTitle = 'add a new work task';
-          this.workTask = scope.session.create('WorkTask') as WorkTask;
+          this.workTask = this.allors.session.create('WorkTask') as WorkTask;
           communicationEvent.AddWorkEffort(this.workTask);
         }
 
@@ -118,15 +118,14 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     this.assignees.forEach((assignee: Person) => {
-      const workEffortPartyAssignment: WorkEffortPartyAssignment = scope.session.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
+      const workEffortPartyAssignment: WorkEffortPartyAssignment = this.allors.session.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
       workEffortPartyAssignment.Assignment = this.workTask;
       workEffortPartyAssignment.Party = assignee;
     });
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

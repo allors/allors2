@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../../angular';
 import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -9,14 +9,11 @@ import { MetaDomain } from '../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-webAddress',
   templateUrl: './webaddress-inline.component.html',
-  providers: [Allors]
 })
 export class InlineWebAddressComponent implements OnInit, OnDestroy {
   @Output() public saved: EventEmitter<PartyContactMechanism> = new EventEmitter<PartyContactMechanism>();
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
-
-  @Input() public scope: Scope;
 
   public contactMechanismPurposes: ContactMechanismPurpose[];
 
@@ -26,7 +23,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   constructor(
-    @Self() private allors: Allors,
+    private allors: SessionService,
     private errorService: ErrorService,
   ) {
     this.m = this.allors.m;
@@ -34,7 +31,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.ContactMechanismPurpose({
@@ -43,11 +40,11 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
-        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.webAddress = scope.session.create('WebAddress') as WebAddress;
+        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.webAddress = this.allors.session.create('WebAddress') as WebAddress;
         this.partyContactMechanism.ContactMechanism = this.webAddress;
       },
       (error: any) => {
@@ -57,11 +54,10 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    const { scope } = this.allors;
 
     if (!!this.partyContactMechanism) {
-      scope.session.delete(this.partyContactMechanism);
-      scope.session.delete(this.webAddress);
+      this.allors.session.delete(this.partyContactMechanism);
+      this.allors.session.delete(this.webAddress);
     }
   }
 

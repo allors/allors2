@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors } from '../../../../../angular';
+import { SessionService } from '../../../../../angular';
 import { IGoodIdentification } from '../../../../../domain';
-import { ObjectType } from '../../../../../framework';
+import { ObjectType, MetaObjectType } from '../../../../../framework';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,5 +19,5 @@ export class IGoodIdentificationsComponent {
 
   @Output() delete: EventEmitter<IGoodIdentification> = new EventEmitter<IGoodIdentification>();
 
-  constructor(public allors: Allors) { }
+  constructor(public allors: SessionService) { }
 }

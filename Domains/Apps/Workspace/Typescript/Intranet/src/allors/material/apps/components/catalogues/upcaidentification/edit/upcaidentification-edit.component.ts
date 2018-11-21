@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { GoodIdentificationType, Good, Part, UpcaIdentification } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './upcaidentification-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
   item: Good | Part;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -47,7 +47,7 @@ export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -96,7 +96,7 @@ export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -105,7 +105,7 @@ export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === '27b32b96-0dca-4414-ac09-1638b7ca4651');
@@ -116,7 +116,7 @@ export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.iGoodIdentification = scope.session.create('UpcaIdentification') as UpcaIdentification;
+          this.iGoodIdentification = this.allors.session.create('UpcaIdentification') as UpcaIdentification;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
 
           if (this.good) {
@@ -147,9 +147,8 @@ export class EditUpcaIdentificationComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();

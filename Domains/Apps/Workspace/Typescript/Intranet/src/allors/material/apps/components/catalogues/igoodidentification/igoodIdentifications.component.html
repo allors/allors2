@@ -34,14 +34,14 @@
   <mat-card-actions>
     <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
     <mat-menu #menuAddComm="matMenu">
-      <button mat-menu-item (click)="add.emit(allors.m.EanIdentification)">EAN</button>
-      <button mat-menu-item (click)="add.emit(allors.m.IsbnIdentification)">ISBN</button>
-      <button mat-menu-item (click)="add.emit(allors.m.ManufacturerIdentification)">Manufacturer Id</button>
-      <button mat-menu-item (click)="add.emit(allors.m.PartNumber)">Part No.</button>
-      <button mat-menu-item (click)="add.emit(allors.m.ProductNumber)">Product No.</button>
-      <button mat-menu-item (click)="add.emit(allors.m.SkuIdentification)">SKU</button>
-      <button mat-menu-item (click)="add.emit(allors.m.UpcaIdentification)">UPCA</button>
-      <button mat-menu-item (click)="add.emit(allors.m.UpceIdentification)">UPCE</button>
+      <button mat-menu-item (click)="add.emit(allors.m.EanIdentification._objectType)">EAN</button>
+      <button mat-menu-item (click)="add.emit(allors.m.IsbnIdentification._objectType)">ISBN</button>
+      <button mat-menu-item (click)="add.emit(allors.m.ManufacturerIdentification._objectType)">Manufacturer Id</button>
+      <button mat-menu-item (click)="add.emit(allors.m.PartNumber._objectType)">Part No.</button>
+      <button mat-menu-item (click)="add.emit(allors.m.ProductNumber._objectType)">Product No.</button>
+      <button mat-menu-item (click)="add.emit(allors.m.SkuIdentification._objectType)">SKU</button>
+      <button mat-menu-item (click)="add.emit(allors.m.UpcaIdentification._objectType)">UPCA</button>
+      <button mat-menu-item (click)="add.emit(allors.m.UpceIdentification._objectType)">UPCE</button>
     </mat-menu>
   </mat-card-actions>
 </mat-card>

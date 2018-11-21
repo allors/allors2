@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, RequestForQuote } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './request.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class RequestEditComponent implements OnInit, OnDestroy {
 
@@ -27,7 +27,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   public currencies: Currency[];
   public contactMechanisms: ContactMechanism[];
   public contacts: Person[];
-  public scope: Scope;
+  public scope: SessionService;
 
   public addContactPerson = false;
   public addContactMechanism = false;
@@ -46,7 +46,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -62,7 +62,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -74,11 +74,11 @@ export class RequestEditComponent implements OnInit, OnDestroy {
             pull.Currency({ sort: new Sort(m.Currency.Name) })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 this.currencies = loaded.collections.currencies as Currency[];
 
                 const fetches = [
@@ -101,7 +101,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
                   ),
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: fetches }));
+                return this.allors.load('Pull', new PullRequest({ pulls: fetches }));
               })
             );
         })
@@ -113,7 +113,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.request) {
-          this.request = scope.session.create('RequestForQuote') as RequestForQuote;
+          this.request = this.allors.session.create('RequestForQuote') as RequestForQuote;
           this.request.Recipient = internalOrganisation;
           this.request.RequestDate = new Date();
           this.title = 'Add Request';
@@ -131,10 +131,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
-    const { scope } = this.allors;
 
     const submitFn: () => void = () => {
-      scope.invoke(this.request.Submit)
+      this.allors.invoke(this.request.Submit)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
@@ -144,15 +143,15 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 submitFn();
               },
                 (error: Error) => {
@@ -168,10 +167,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.request.Cancel)
+      this.allors.invoke(this.request.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -181,15 +179,15 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -205,10 +203,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   public hold(): void {
-    const { scope } = this.allors;
 
     const holdFn: () => void = () => {
-      scope.invoke(this.request.Hold)
+      this.allors.invoke(this.request.Hold)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully held.', 'close', { duration: 5000 });
@@ -218,15 +215,15 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 holdFn();
               },
                 (error: Error) => {
@@ -242,10 +239,9 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   public reject(): void {
-    const { scope } = this.allors;
 
     const rejectFn: () => void = () => {
-      scope.invoke(this.request.Reject)
+      this.allors.invoke(this.request.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
@@ -255,15 +251,15 @@ export class RequestEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 rejectFn();
               },
                 (error: Error) => {
@@ -283,13 +279,12 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   public personAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.request.Originator as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -316,9 +311,8 @@ export class RequestEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/request/' + this.request.id]);
@@ -344,7 +338,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
 
   private update(party: Party): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -369,7 +363,7 @@ export class RequestEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 

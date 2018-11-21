@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, SearchFactory, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SearchFactory, SessionService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,13 +14,12 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './quoteitem.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public scope: Scope;
   public title = 'Edit Quote Item';
   public subTitle: string;
   public quote: ProductQuote;
@@ -38,7 +37,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -53,7 +52,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -96,12 +95,12 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.quote = loaded.objects.productQuote as ProductQuote;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
         this.requestItem = loaded.objects.requestItem as RequestItem;
@@ -111,7 +110,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.quoteItem) {
           this.title = 'Add Quote Item';
-          this.quoteItem = scope.session.create('QuoteItem') as QuoteItem;
+          this.quoteItem = this.allors.session.create('QuoteItem') as QuoteItem;
           this.quoteItem.UnitOfMeasure = piece;
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
@@ -133,10 +132,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   }
 
   public submit(): void {
-    const { scope } = this.allors;
 
     const submitFn: () => void = () => {
-      scope.invoke(this.quoteItem.Submit)
+      this.allors.invoke(this.quoteItem.Submit)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
@@ -146,15 +144,15 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 submitFn();
               },
                 (error: Error) => {
@@ -170,10 +168,9 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.quoteItem.Cancel)
+      this.allors.invoke(this.quoteItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -183,15 +180,15 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -207,9 +204,8 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/productQuote/' + this.quote.id]);
@@ -229,7 +225,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   private update(product: Product) {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Good(
@@ -243,7 +239,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];

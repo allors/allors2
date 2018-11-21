@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors} from '../../../../../../angular';
+import { NavigationService, SessionService} from '../../../../../../angular';
 import { CommunicationEvent, WorkEffortPartyAssignment, WorkEffort} from '../../../../../../domain';
 import { ObjectType } from '../../../../../../framework';
 
@@ -20,7 +20,7 @@ export class PartyWorkEffortPartyAssignmentsComponent {
   @Output() delete: EventEmitter<WorkEffort> = new EventEmitter<WorkEffort>();
 
   constructor(
-    public allors: Allors,
+    public allors: SessionService,
     public navigation: NavigationService
   ) { }
 }

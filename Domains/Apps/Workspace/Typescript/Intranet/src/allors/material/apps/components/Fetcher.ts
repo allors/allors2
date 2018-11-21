@@ -1,7 +1,8 @@
 import { Pull } from '../../../framework';
 import { StateService } from '../services/state';
 import { PullFactory } from '../../../meta';
-import { x, Allors } from '../../../angular';
+
+const x = {};
 
 export class Fetcher {
 

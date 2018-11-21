@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, x, Allors, NavigationService } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService } from '../../../../../../angular';
 import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -15,7 +15,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './worktask-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class WorkTaskEditComponent implements OnInit, OnDestroy {
   m: MetaDomain;
@@ -40,14 +40,13 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   contacts: Person[];
   addContactPerson = false;
   addContactMechanism: boolean;
-  scope: Scope;
 
   private subscription: Subscription;
   private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     public navigation: NavigationService,
     public location: Location,
     private errorService: ErrorService,
@@ -63,7 +62,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(
       this.route.url,
@@ -117,7 +116,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -132,7 +131,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         this.employees = internalOrganisation.ActiveEmployees;
 
         if (add) {
-          this.workTask = scope.session.create('WorkTask') as WorkTask;
+          this.workTask = this.allors.session.create('WorkTask') as WorkTask;
           this.workTask.TakenBy = internalOrganisation;
 
         } else {
@@ -153,13 +152,12 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   public contactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -186,12 +184,11 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     if (this.assignees) {
       this.assignees.forEach((assignee: Person) => {
         if (this.existingAssignees.indexOf(assignee) < 0) {
-          const workEffortAssignment: WorkEffortPartyAssignment = scope.session.create(
+          const workEffortAssignment: WorkEffortPartyAssignment = this.allors.session.create(
             'WorkEffortAssignment',
           ) as WorkEffortPartyAssignment;
           workEffortAssignment.Assignment = this.workTask;
@@ -199,7 +196,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         }
       });
     }
-    scope.save().subscribe(
+    this.allors.save().subscribe(
       (saved: Saved) => {
         this.goBack();
       },
@@ -215,7 +212,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   private updateCustomer(party: Party) {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Party({
@@ -240,7 +237,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         const partyContactMechanisms: PartyContactMechanism[] = loaded
           .collections.partyContactMechanisms as PartyContactMechanism[];

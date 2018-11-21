@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, MediaService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, SessionService } from '../../../../../angular';
 import { ProductCategory } from '../../../../../domain';
 import { And, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -18,7 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './categories-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
@@ -31,7 +31,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private titleService: Title,
     private snackBar: MatSnackBar,
@@ -48,7 +48,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -82,7 +82,7 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
               }
             )];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -91,13 +91,12 @@ export class CategoriesOverviewComponent implements OnInit, OnDestroy {
   }
 
   public delete(category: ProductCategory): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this category?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(category.Delete)
+          this.allors.invoke(category.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { GoodIdentificationType, Good, Part, EanIdentification } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -12,7 +12,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './eanidentification-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditEanIdentificationComponent implements OnInit, OnDestroy {
 
@@ -33,7 +33,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
   item: Good | Part;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -45,7 +45,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -94,7 +94,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -103,7 +103,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b2f15a78-0728-4041-86b2-6ac4c0fa9c7d');
@@ -114,7 +114,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.iGoodIdentification = scope.session.create('EanIdentification') as EanIdentification;
+          this.iGoodIdentification = this.allors.session.create('EanIdentification') as EanIdentification;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
 
           if (this.good) {
@@ -145,9 +145,8 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();

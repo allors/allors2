@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Scope, WorkspaceService, x, Invoked, Allors } from '../../../../../angular';
+import { ErrorService, SessionService, Invoked } from '../../../../../angular';
 import { SerialisedItemCharacteristicType } from '../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -18,7 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './productcharacteristics-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
 
@@ -31,7 +31,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private titleService: Title,
     private snackBar: MatSnackBar,
@@ -47,7 +47,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.search$
       .pipe(
@@ -76,7 +76,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
               sort: new Sort(m.SerialisedItemCharacteristicType.Name),
             })];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
 
         })
       )
@@ -86,13 +86,12 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
   }
 
   public delete(characteristicType: SerialisedItemCharacteristicType): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this characteristic?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(characteristicType.Delete)
+          this.allors.invoke(characteristicType.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

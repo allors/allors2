@@ -36,7 +36,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism-postaladdress [scope]="scope" (cancelled)="shipToAddressCancelled($event); addShipToAddress = false" (saved)="shipToAddressAdded($event); addShipToAddress = false">
+                <party-contactmechanism-postaladdress (cancelled)="shipToAddressCancelled($event); addShipToAddress = false" (saved)="shipToAddressAdded($event); addShipToAddress = false">
                 </party-contactmechanism-postaladdress>
               </mat-card-content>
             </mat-card>
@@ -80,7 +80,7 @@
             <mat-card>
               <mat-card-header>Add a new person</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism [scope]="scope" (saved)="billToContactMechanismAdded($event)" (cancelled)="billToContactMechanismCancelled()">
+                <party-contactmechanism (saved)="billToContactMechanismAdded($event)" (cancelled)="billToContactMechanismCancelled()">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>
@@ -124,7 +124,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism-postaladdress [scope]="scope" (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="shipToEndCustomerAddressCancelled()">
+                <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="shipToEndCustomerAddressCancelled()">
                 </party-contactmechanism-postaladdress>
               </mat-card-content>
             </mat-card>
@@ -168,7 +168,7 @@
             <mat-card>
               <mat-card-header>Add a new contact mechanism</mat-card-header>
               <mat-card-content>
-                <party-contactmechanism [scope]="scope" (saved)="billToEndCustomerContactMechanismAdded($event)" (cancelled)="billToEndCustomerContactMechanismCancelled()">
+                <party-contactmechanism (saved)="billToEndCustomerContactMechanismAdded($event)" (cancelled)="billToEndCustomerContactMechanismCancelled()">
                 </party-contactmechanism>
               </mat-card-content>
             </mat-card>

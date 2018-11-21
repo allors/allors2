@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { NavigationService, Allors } from '../../../../../../angular';
+import { NavigationService, SessionService } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
 import { ObjectType } from '../../../../../../framework';
 
@@ -19,5 +19,5 @@ export class PartyCommnunicationEventsComponent {
 
   @Output() delete: EventEmitter<CommunicationEvent> = new EventEmitter<CommunicationEvent>();
 
-  constructor(public allors: Allors) { }
+  constructor(public allors: SessionService) { }
 }

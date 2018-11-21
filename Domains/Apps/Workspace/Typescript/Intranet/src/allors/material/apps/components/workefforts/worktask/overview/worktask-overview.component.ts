@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
+import { ActivatedRoute,  Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, x, Allors, NavigationService } from '../../../../../../angular';
+import { ErrorService, Invoked, SessionService, NavigationService } from '../../../../../../angular';
 import { StateService } from '../../../../../../material';
 import { WorkTask } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
@@ -15,7 +15,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './worktask-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
@@ -28,7 +28,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -44,7 +44,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -65,20 +65,19 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.task = loaded.objects.WorkTask as WorkTask;
       }, this.errorService.handler);
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.task.Cancel)
+    this.allors.invoke(this.task.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });

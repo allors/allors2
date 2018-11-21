@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, x, Allors, NavigationService } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService, NavigationService } from '../../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber, SerialisedItem } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
@@ -52,7 +52,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     public navigation: NavigationService,
     public router: Router,
     private errorService: ErrorService,
@@ -97,7 +97,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, tree, scope } = this.allors;
+    const { m, pull, tree, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -193,12 +193,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
             pull.OrganisationRole()
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
         this.organisation = loaded.objects.Organisation as Organisation;
@@ -252,13 +252,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public removeContact(organisationContactRelationship: OrganisationContactRelationship): void {
-    const { scope } = this.allors;
-
+ 
     organisationContactRelationship.ThroughDate = new Date();
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -267,13 +266,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public activateContact(organisationContactRelationship: OrganisationContactRelationship): void {
-    const { scope } = this.allors;
 
     organisationContactRelationship.ThroughDate = undefined;
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -282,13 +280,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteContact(person: Person): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(person.Delete)
+          this.allors.invoke(person.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -301,13 +298,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
-    const { scope } = this.allors;
 
     partyContactMechanism.ThroughDate = new Date();
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -316,13 +312,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
-    const { scope } = this.allors;
 
     partyContactMechanism.ThroughDate = undefined;
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -331,13 +326,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteContactMechanism(contactMechanism: ContactMechanism): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(contactMechanism.Delete)
+          this.allors.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -350,13 +344,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancelCommunication(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Cancel)
+          this.allors.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
@@ -369,13 +362,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public closeCommunication(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Close)
+          this.allors.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
@@ -388,13 +380,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public reopenCommunication(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Reopen)
+          this.allors.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
@@ -407,13 +398,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteCommunication(communicationEvent: CommunicationEvent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(communicationEvent.Delete)
+          this.allors.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -426,13 +416,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteSerialisedItem(item: SerialisedItem): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(item.Delete)
+          this.allors.invoke(item.Delete)
             .subscribe((invoked: Invoked) => {
 
               this.serialisedItems = this.serialisedItems.filter(v => v !== item);

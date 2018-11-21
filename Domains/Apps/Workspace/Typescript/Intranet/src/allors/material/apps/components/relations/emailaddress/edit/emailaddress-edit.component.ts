@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
 import { EmailAddress, Enumeration, Party, PartyContactMechanism } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -12,7 +12,7 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 
 @Component({
   templateUrl: './emailaddress-edit.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
@@ -28,8 +28,8 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
-    private navigation: NavigationService,
+    @Self() private allors: SessionService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -39,7 +39,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -105,7 +105,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -118,8 +118,8 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
         if (add) {
           this.party = loaded.objects.Party as Party;
-          this.contactMechanism = scope.session.create('EmailAddress') as EmailAddress;
-          this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+          this.contactMechanism = this.allors.session.create('EmailAddress') as EmailAddress;
+          this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
           this.partyContactMechanism.UseAsDefault = true;
           this.party.AddPartyContactMechanism(this.partyContactMechanism);
@@ -147,9 +147,8 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.navigation.back();

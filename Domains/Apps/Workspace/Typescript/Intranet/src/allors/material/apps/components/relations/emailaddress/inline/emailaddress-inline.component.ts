@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Scope, Allors } from '../../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../../angular';
 import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -9,7 +9,6 @@ import { MetaDomain } from '../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-emailAddress',
   templateUrl: './emailaddress-inline.component.html',
-  providers: [Allors]
 })
 export class PartyContactMechanismEmailAddressInlineComponent
   implements OnInit, OnDestroy {
@@ -18,7 +17,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
 
-  @Input() public scope: Scope;
+  @Input() public scope: SessionService;
 
   public contactMechanismPurposes: ContactMechanismPurpose[];
 
@@ -28,7 +27,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
   public m: MetaDomain;
 
   constructor(
-    @Self() private allors: Allors,
+    private allors: SessionService,
     private errorService: ErrorService,
   ) {
     this.m = this.allors.m;
@@ -36,7 +35,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.ContactMechanismPurpose(
@@ -47,12 +46,12 @@ export class PartyContactMechanismEmailAddressInlineComponent
       )
     ];
 
-    scope.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 
-        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.emailAddress = scope.session.create('EmailAddress') as EmailAddress;
+        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.emailAddress = this.allors.session.create('EmailAddress') as EmailAddress;
         this.partyContactMechanism.ContactMechanism = this.emailAddress;
       },
       (error: any) => {
@@ -62,11 +61,10 @@ export class PartyContactMechanismEmailAddressInlineComponent
   }
 
   public ngOnDestroy(): void {
-    const { scope } = this.allors;
 
     if (!!this.partyContactMechanism) {
-      scope.session.delete(this.partyContactMechanism);
-      scope.session.delete(this.emailAddress);
+      this.allors.session.delete(this.partyContactMechanism);
+      this.allors.session.delete(this.emailAddress);
     }
   }
 

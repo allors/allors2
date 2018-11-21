@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { ErrorService, Saved, NavigationService, SessionService, NavigationActivatedRoute } from '../../../../../../angular';
 import { Enumeration, PartyContactMechanism, TelecommunicationsNumber, Party, ContactMechanismType } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -12,7 +12,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './telecommunicationsnumber-edit.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy {
 
@@ -29,8 +29,8 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
-    private navigation: NavigationService,
+    @Self() private allors: SessionService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -40,7 +40,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -116,7 +116,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -132,9 +132,9 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
           this.party = loaded.objects.Party as Party;
           // TODO: Should be lookup on UniqueId
           const phone: ContactMechanismType = this.contactMechanismTypes.find((v: ContactMechanismType) => v.Name === 'Phone');
-          this.contactMechanism = scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+          this.contactMechanism = this.allors.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
           this.contactMechanism.ContactMechanismType = phone;
-          this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+          this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
           this.partyContactMechanism.UseAsDefault = true;
           this.party.AddPartyContactMechanism(this.partyContactMechanism);
@@ -161,9 +161,8 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.navigation.back();

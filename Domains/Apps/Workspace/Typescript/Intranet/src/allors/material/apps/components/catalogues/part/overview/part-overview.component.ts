@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
+import { ErrorService, Invoked, SessionService, NavigationService, NavigationActivatedRoute, MediaService } from '../../../../../../angular';
 import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent, SupplierOffering } from '../../../../../../domain';
 import { PullRequest, Equals, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './part-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class PartOverviewComponent implements OnInit, OnDestroy {
 
@@ -42,7 +42,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -61,7 +61,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, tree, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -110,12 +110,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         const now = new Date();
 
@@ -141,13 +141,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteGoodIdentification(goodIdentification: IGoodIdentification): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(goodIdentification.Delete)
+          this.allors.invoke(goodIdentification.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -160,13 +159,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deletePriceComponent(pricecomponent: PriceComponent): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(pricecomponent.Delete)
+          this.allors.invoke(pricecomponent.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -189,13 +187,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteSerialisedItem(item: SerialisedItem): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(item.Delete)
+          this.allors.invoke(item.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, Saved, x, Allors, NavigationService, NavigationActivatedRoute, Scope } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
 import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../../domain';
 import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -13,11 +13,10 @@ import { StateService } from '../../../../../';
 
 @Component({
   templateUrl: './part-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class PartEditComponent implements OnInit, OnDestroy {
 
-  scope: Scope;
   m: MetaDomain;
 
   add: boolean;
@@ -53,7 +52,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -61,14 +60,14 @@ export class PartEditComponent implements OnInit, OnDestroy {
     private stateService: StateService) {
 
     this.m = this.allors.m;
-    this.scope = this.allors.scope;
+
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -141,7 +140,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -150,7 +149,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
@@ -175,9 +174,9 @@ export class PartEditComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.part = scope.session.create('Part') as Part;
+          this.part = this.allors.session.create('Part') as Part;
 
-          this.partNumber = scope.session.create('PartNumber') as PartNumber;
+          this.partNumber = this.allors.session.create('PartNumber') as PartNumber;
           this.partNumber.GoodIdentificationType = partNumberType;
 
           this.part.AddGoodIdentification(this.partNumber);
@@ -218,7 +217,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const { pull, scope } = this.allors;
+    const { pull, x } = this.allors;
 
     const pulls = [
       pull.Brand({
@@ -230,7 +229,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
@@ -248,10 +247,9 @@ export class PartEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
     this.onSave();
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.navigationService.back();
@@ -262,12 +260,11 @@ export class PartEditComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-    const { scope } = this.allors;
 
     const isNew = this.part.isNew;
     this.onSave();
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
@@ -328,9 +325,8 @@ export class PartEditComponent implements OnInit, OnDestroy {
   }
 
   private newSupplierOffering(supplier: Organisation): SupplierOffering {
-    const { scope } = this.allors;
 
-    const supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
+    const supplierOffering = this.allors.session.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
     supplierOffering.Part = this.part;
     return supplierOffering;

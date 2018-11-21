@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Loaded, SessionService } from '../../../../../angular';
 import { InternalOrganisation, Request, RequestState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -21,7 +21,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './requests-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class RequestsOverviewComponent implements OnInit, OnDestroy {
   public total: number;
@@ -45,7 +45,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
@@ -67,7 +67,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -96,7 +96,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load(
               'Pull',
               new PullRequest({ pulls })
@@ -168,7 +168,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
                   )
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: queries }));
+                return this.allors.load('Pull', new PullRequest({ pulls: queries }));
               })
             );
         })

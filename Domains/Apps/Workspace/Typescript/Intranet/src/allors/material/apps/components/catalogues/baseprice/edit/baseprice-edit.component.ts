@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -13,7 +13,7 @@ import { Fetcher } from '../../../Fetcher';
 
 @Component({
   templateUrl: './baseprice-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditBasepriceComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
   internalOrganisation: InternalOrganisation;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -48,7 +48,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -95,7 +95,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -104,7 +104,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.good = loaded.objects.Good as Good;
@@ -113,7 +113,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.priceComponent = scope.session.create('BasePrice') as PriceComponent;
+          this.priceComponent = this.allors.session.create('BasePrice') as PriceComponent;
           this.priceComponent.PricedBy = this.internalOrganisation;
 
           if (this.good) {
@@ -144,9 +144,8 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();

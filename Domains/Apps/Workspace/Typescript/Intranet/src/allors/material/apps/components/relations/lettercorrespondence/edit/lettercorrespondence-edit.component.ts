@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,11 +14,10 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './lettercorrespondence-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditLetterCorrespondenceComponent
   implements OnInit, OnDestroy {
-  public scope: Scope;
   public title = 'Letter Correspondence';
 
   public addSender = false;
@@ -41,7 +40,7 @@ export class EditLetterCorrespondenceComponent
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
@@ -59,7 +58,7 @@ export class EditLetterCorrespondenceComponent
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -160,7 +159,7 @@ export class EditLetterCorrespondenceComponent
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -168,7 +167,7 @@ export class EditLetterCorrespondenceComponent
         })
       )
       .subscribe(({ loaded, add }) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -194,7 +193,7 @@ export class EditLetterCorrespondenceComponent
             this.contacts.push(this.person);
           }
 
-          this.communicationEvent = scope.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent = this.allors.session.create('LetterCorrespondence') as LetterCorrespondence;
           this.communicationEvent.IncomingLetter = true;
 
         } else {
@@ -202,7 +201,7 @@ export class EditLetterCorrespondenceComponent
         }
 
         if (!this.communicationEvent) {
-          this.communicationEvent = scope.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent = this.allors.session.create('LetterCorrespondence') as LetterCorrespondence;
           this.communicationEvent.IncomingLetter = true;
         }
       },
@@ -232,12 +231,11 @@ export class EditLetterCorrespondenceComponent
   }
 
   public senderAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addSender = false;
 
-    const sender: Person = scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const sender: Person = this.allors.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = sender;
     relationShip.Organisation = this.organisation;
 
@@ -245,12 +243,11 @@ export class EditLetterCorrespondenceComponent
   }
 
   public receiverAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addReceiver = false;
 
-    const receiver: Person = scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const receiver: Person = this.allors.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = receiver;
     relationShip.Organisation = this.organisation;
 
@@ -268,10 +265,9 @@ export class EditLetterCorrespondenceComponent
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Cancel).subscribe(
+      this.allors.invoke(this.communicationEvent.Cancel).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', {
@@ -284,14 +280,14 @@ export class EditLetterCorrespondenceComponent
       );
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope.save().subscribe(
+            this.allors.save().subscribe(
               (saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -308,10 +304,9 @@ export class EditLetterCorrespondenceComponent
   }
 
   public close(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Close).subscribe(
+      this.allors.invoke(this.communicationEvent.Close).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', {
@@ -324,14 +319,14 @@ export class EditLetterCorrespondenceComponent
       );
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope.save().subscribe(
+            this.allors.save().subscribe(
               (saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -348,10 +343,9 @@ export class EditLetterCorrespondenceComponent
   }
 
   public reopen(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Reopen).subscribe(
+      this.allors.invoke(this.communicationEvent.Reopen).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', {
@@ -364,14 +358,14 @@ export class EditLetterCorrespondenceComponent
       );
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope.save().subscribe(
+            this.allors.save().subscribe(
               (saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -388,9 +382,8 @@ export class EditLetterCorrespondenceComponent
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope.save().subscribe(
+    this.allors.save().subscribe(
       (saved: Saved) => {
         this.goBack();
       },

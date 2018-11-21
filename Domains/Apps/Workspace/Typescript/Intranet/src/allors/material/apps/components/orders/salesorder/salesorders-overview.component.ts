@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Loaded, SessionService } from '../../../../../angular';
 import { InternalOrganisation, SalesOrder, SalesOrderState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -23,7 +23,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './salesorders-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
   public searchForm: FormGroup;
@@ -46,13 +46,12 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
     private router: Router,
     private dialogService: AllorsMaterialDialogService,
-    public pdfService: PdfService,
     private stateService: StateService
   ) {
     titleService.setTitle(this.title);
@@ -70,7 +69,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -102,7 +101,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded: Loaded) => {
@@ -174,7 +173,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: pulls2 }));
+                return this.allors.load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
         })
@@ -198,7 +197,7 @@ export class SalesOrdersOverviewComponent implements OnInit, OnDestroy {
   }
 
   public print(order: SalesOrder) {
-    this.pdfService.display(order);
+    // this.pdfService.display(order);
   }
 
   public goBack(): void {

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, x, Allors, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../../angular';
 import { InternalOrganisation, Organisation, Good, IGoodIdentification } from '../../../../../../domain';
 import { PullRequest } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './good-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class GoodOverviewComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -53,7 +53,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { pull, tree, scope } = this.allors;
+    const { pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -79,12 +79,12 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.good = loaded.objects.Good as Good;
@@ -99,13 +99,12 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteGoodIdentification(goodIdentification: IGoodIdentification): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(goodIdentification.Delete)
+          this.allors.invoke(goodIdentification.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

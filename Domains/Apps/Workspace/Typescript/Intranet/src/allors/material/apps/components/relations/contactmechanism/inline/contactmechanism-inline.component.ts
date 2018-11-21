@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Scope } from '../../../../../../angular';
+import { SessionService } from '../../../../../../angular';
 import { PartyContactMechanism } from '../../../../../../domain';
 
 @Component({
@@ -13,5 +13,5 @@ export class ContactMechanismInlineComponent {
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
 
-  @Input() public scope: Scope;
+  constructor(public allors: SessionService) { }
 }

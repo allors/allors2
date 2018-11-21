@@ -3,7 +3,7 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigationService.overview(party)">{{party.displayName}}</a></span> / {{title}}
+        <a (click)="navigation.list(m.Person)">People</a><span *ngIf="party"> / <a (click)="navigation.overview(party)">{{party.displayName}}</a></span> / {{title}}
       </div>
     </div>
   </div>

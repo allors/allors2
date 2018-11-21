@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService } from '../../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './organisation-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class OrganisationEditComponent implements OnInit, OnDestroy {
 
@@ -49,7 +49,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -65,7 +65,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -121,7 +121,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
             );
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -136,7 +136,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
           this.supplierRelationship = loaded.collections.SupplierRelationships[0] as SupplierRelationship;
         } else {
           this.subTitle = 'add a new organisation';
-          this.organisation = scope.session.create('Organisation') as Organisation;
+          this.organisation = this.allors.session.create('Organisation') as Organisation;
           this.organisation.IsManufacturer = false;
         }
 
@@ -173,10 +173,9 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     if (this.activeRoles.indexOf(this.customerRole) > -1 && !this.isActiveCustomer) {
-      const customerRelationship = scope.session.create('CustomerRelationship') as CustomerRelationship;
+      const customerRelationship = this.allors.session.create('CustomerRelationship') as CustomerRelationship;
       customerRelationship.Customer = this.organisation;
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
@@ -190,7 +189,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.supplierRole) > -1 && !this.isActiveSupplier) {
-      const supplierRelationship = scope.session.create('SupplierRelationship') as SupplierRelationship;
+      const supplierRelationship = this.allors.session.create('SupplierRelationship') as SupplierRelationship;
       supplierRelationship.Supplier = this.organisation;
       supplierRelationship.InternalOrganisation = this.internalOrganisation;
     }
@@ -203,7 +202,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
       this.supplierRelationship.ThroughDate = new Date();
     }
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, PdfService, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Saved, SessionService } from '../../../../../angular';
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './productquote-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
@@ -28,13 +28,12 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
     public mediaService: MediaService,
-    public pdfService: PdfService,
     private dialogService: AllorsMaterialDialogService) {
 
     this.m = this.allors.m;
@@ -46,9 +45,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
@@ -60,7 +58,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -107,12 +105,12 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
             );
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;
@@ -120,7 +118,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public print() {
-    this.pdfService.display(this.quote);
+    //
   }
 
   public ngOnDestroy(): void {
@@ -134,9 +132,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public approve(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.quote.Approve)
+    this.allors.invoke(this.quote.Approve)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
@@ -147,9 +144,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public reject(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.quote.Reject)
+    this.allors.invoke(this.quote.Reject)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
@@ -160,9 +156,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public Order(): void {
-    const { scope } = this.allors;
 
-    scope.invoke(this.quote.Order)
+    this.allors.invoke(this.quote.Order)
       .subscribe((invoked: Invoked) => {
         this.goBack();
         this.snackBar.open('Order successfully created.', 'close', { duration: 5000 });
@@ -174,9 +169,8 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public cancelQuoteItem(quoteItem: QuoteItem): void {
-    const { scope } = this.allors;
 
-    scope.invoke(quoteItem.Cancel)
+    this.allors.invoke(quoteItem.Cancel)
       .subscribe((invoked: Invoked) => {
         this.snackBar.open('Quote Item successfully cancelled.', 'close', { duration: 5000 });
         this.refresh();
@@ -187,13 +181,12 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   }
 
   public deleteQuoteItem(quoteItem: QuoteItem): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(quoteItem.Delete)
+          this.allors.invoke(quoteItem.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Quote Item successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -207,7 +200,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public gotoOrder(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.ProductQuote({
@@ -218,10 +211,10 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope.load('Pull', new PullRequest({ pulls }))
+    this.allors.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const order = loaded.objects.order as SalesOrder;
         this.router.navigate(['/orders/salesOrder/' + order.id]);
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 }

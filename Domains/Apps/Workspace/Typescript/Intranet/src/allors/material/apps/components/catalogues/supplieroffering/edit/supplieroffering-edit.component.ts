@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { SupplierOffering, Part, RatingType, Ordinal, InternalOrganisation, Organisation, UnitOfMeasure, Currency, Settings } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,7 +14,7 @@ import { Fetcher } from '../../../Fetcher';
 
 @Component({
   templateUrl: './supplieroffering-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
   settings: Settings;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -53,7 +53,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -99,7 +99,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -108,7 +108,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.ratingTypes = loaded.collections.RatingTypes as RatingType[];
         this.preferences = loaded.collections.Ordinals as Ordinal[];
@@ -125,7 +125,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.supplierOffering = scope.session.create('SupplierOffering') as SupplierOffering;
+          this.supplierOffering = this.allors.session.create('SupplierOffering') as SupplierOffering;
           this.supplierOffering.Part = this.part;
           this.supplierOffering.Currency = this.settings.PreferredCurrency;
 
@@ -149,9 +149,8 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();

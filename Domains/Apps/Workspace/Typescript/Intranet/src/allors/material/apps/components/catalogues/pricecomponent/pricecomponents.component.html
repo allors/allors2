@@ -47,7 +47,7 @@
   <mat-card-actions>
     <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
     <mat-menu #menuAddComm="matMenu">
-      <button mat-menu-item (click)="add.emit(allors.m.BasePrice)">Default Price</button>
+      <button mat-menu-item (click)="add.emit(allors.m.BasePrice._objectType)">Default Price</button>
     </mat-menu>
   </mat-card-actions>
 </mat-card>

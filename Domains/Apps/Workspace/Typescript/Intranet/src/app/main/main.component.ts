@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, Loaded, Allors } from '../../allors/angular';
+import { MenuService, Loaded, SessionService } from '../../allors/angular';
 import { Equals, PullRequest } from '../../allors/framework';
 import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
@@ -14,7 +14,7 @@ import { Router, NavigationEnd } from '@angular/router';
 @Component({
   styleUrls: ['main.component.scss'],
   templateUrl: './main.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class MainComponent implements OnInit, OnDestroy {
 
@@ -31,7 +31,7 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('drawer') private sidenav: MatSidenav;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private stateService: StateService,
     private router: Router,
     private sideNavService: AllorsMaterialSideNavService,
@@ -79,7 +79,7 @@ export class MainComponent implements OnInit, OnDestroy {
       this.sidenav.close();
     });
 
-    const { scope, m, pull } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = this.stateService.internalOrganisationId$
       .pipe(
@@ -94,12 +94,12 @@ export class MainComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
         this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
       });

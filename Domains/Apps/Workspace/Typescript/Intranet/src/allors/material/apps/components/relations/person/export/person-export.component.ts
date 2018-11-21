@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
 import * as Papa from 'papaparse';
 
-import { ErrorService, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../../angular';
 import { Person } from '../../../../../../domain';
 import { And, Like, Predicate, PullRequest, Sort, TreeNode } from '../../../../../../framework';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
@@ -18,7 +18,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './person-export.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class PersonExportComponent implements OnDestroy {
 
@@ -37,7 +37,7 @@ export class PersonExportComponent implements OnDestroy {
   private page$: BehaviorSubject<number>;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     titleService: Title) {
@@ -70,7 +70,7 @@ export class PersonExportComponent implements OnDestroy {
         }, [])
       );
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combined$
       .pipe(
@@ -80,12 +80,12 @@ export class PersonExportComponent implements OnDestroy {
 
           if (data.firstName) {
             const like = '%' + data.firstName + '%';
-            operands.push(new Like({roleType: m.Person.FirstName, value: like}));
+            operands.push(new Like({ roleType: m.Person.FirstName, value: like }));
           }
 
           if (data.lastName) {
             const like = data.lastName.replace('*', '%') + '%';
-            operands.push(new Like({roleType: m.Person.LastName, value: like}));
+            operands.push(new Like({ roleType: m.Person.LastName, value: like }));
           }
 
           const pulls = [
@@ -100,12 +100,12 @@ export class PersonExportComponent implements OnDestroy {
               take
             })];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.data = loaded.collections.people as Person[];
         this.total = loaded.values.people_total;
@@ -114,7 +114,7 @@ export class PersonExportComponent implements OnDestroy {
           fields: ['FirstName', 'LastName'],
           data: this.data.map((v: Person) => ([v.FirstName, v.LastName])),
         });
-      },this.errorService.handler);
+      }, this.errorService.handler);
   }
 
   public copy(): void {

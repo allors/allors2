@@ -9,7 +9,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like } from '../../../../../../framework';
-import { ErrorService, Invoked, MediaService, x, Allors, NavigationService, ActionTarget } from '../../../../../../angular';
+import { ErrorService, Invoked, MediaService, SessionService, NavigationService, ActionTarget } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
@@ -30,7 +30,7 @@ interface Row extends ActionTarget {
 
 @Component({
   templateUrl: './organisation-list.component.html',
-  providers: [Allors, AllorsFilterService]
+  providers: [SessionService, AllorsFilterService]
 })
 export class OrganisationListComponent implements OnInit, OnDestroy {
 
@@ -49,7 +49,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -70,7 +70,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
@@ -115,11 +115,11 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.total = loaded.values.Organisations_total;
         const people = loaded.collections.Organisations as Organisation[];
 
@@ -186,8 +186,6 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
 
   public delete(organisation: Organisation | Organisation[]): void {
 
-    const { scope } = this.allors;
-
     const people = organisation instanceof SessionObject ? [organisation as Organisation] : organisation instanceof Array ? organisation : [];
     const methods = people.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
@@ -199,7 +197,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
             { message: 'Are you sure you want to delete these people?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope.invoke(methods)
+            this.allors.invoke(methods)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

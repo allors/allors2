@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, x, Allors } from '../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../angular';
 import { InternalOrganisation, Person, Priority, WorkEffortState, WorkTask, WorkEffortPartyAssignment } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -18,7 +18,7 @@ import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from '
 
 @Component({
   templateUrl: './workeffortassignments-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   public m: MetaDomain;
@@ -50,7 +50,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   private page$: BehaviorSubject<number>;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private snackBar: MatSnackBar,
@@ -93,7 +93,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
         }, [])
       );
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combined$
       .pipe(
@@ -115,7 +115,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -178,7 +178,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
                   })
                 ];
 
-                return scope
+                return this.allors
                   .load('Pull', new PullRequest({ pulls: assignmentsQuery }));
               })
             );
@@ -186,7 +186,7 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
       )
       .subscribe((loaded) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.data = loaded.collections.workEffortAssignments as WorkEffortPartyAssignment[];
         this.total = loaded.values.workEffortAssignments_total;
@@ -212,13 +212,12 @@ export class WorkEffortAssignmentsOverviewComponent implements OnDestroy {
   }
 
   public delete(worktask: WorkTask): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(worktask.Delete)
+          this.allors.invoke(worktask.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

@@ -12,6 +12,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
+import { InternalOrganisationSelectModule } from '../../common/internalorganisation/internalorganisation-select.module';
+
 import { IGoodIdentificationsComponent } from './igoodIdentifications.component';
 export { IGoodIdentificationsComponent } from './igoodIdentifications.component';
 
@@ -23,13 +25,6 @@ export { IGoodIdentificationsComponent } from './igoodIdentifications.component'
     IGoodIdentificationsComponent,
   ],
   imports: [
-    AllorsMaterialFileModule,
-    AllorsMaterialInputModule,
-    AllorsMaterialSelectModule,
-    AllorsMaterialSideNavToggleModule,
-    AllorsMaterialSlideToggleModule,
-    AllorsMaterialStaticModule,
-    AllorsMaterialTextAreaModule,
     CommonModule,
     FormsModule,
     MatButtonModule,
@@ -47,6 +42,16 @@ export { IGoodIdentificationsComponent } from './igoodIdentifications.component'
     MatOptionModule,
     ReactiveFormsModule,
     RouterModule,
+
+    AllorsMaterialFileModule,
+    AllorsMaterialInputModule,
+    AllorsMaterialSelectModule,
+    AllorsMaterialSideNavToggleModule,
+    AllorsMaterialSlideToggleModule,
+    AllorsMaterialStaticModule,
+    AllorsMaterialTextAreaModule,
+
+    InternalOrganisationSelectModule,
   ],
 })
 export class IGoodIdentificationsModule { }

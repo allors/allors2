@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Sort, SessionObject, } from '../../../../../../framework';
-import { ErrorService, MediaService, x, Allors, NavigationService, Invoked } from '../../../../../../angular';
+import { ErrorService, MediaService, SessionService, NavigationService, Invoked } from '../../../../../../angular';
 import { AllorsFilterService } from '../../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { Sorter } from '../../../../../base/sorting';
@@ -32,7 +32,7 @@ interface Row {
 
 @Component({
   templateUrl: './part-list.component.html',
-  providers: [Allors, AllorsFilterService]
+  providers: [SessionService, AllorsFilterService]
 })
 export class PartListComponent implements OnInit, OnDestroy {
 
@@ -55,7 +55,7 @@ export class PartListComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
     public navigationService: NavigationService,
     public mediaService: MediaService,
@@ -77,7 +77,7 @@ export class PartListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const predicate = new And([
       new Like({ roleType: m.Part.Name, parameter: 'Name' }),
@@ -139,12 +139,12 @@ export class PartListComponent implements OnInit, OnDestroy {
             pull.BasePrice(),
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.total = loaded.values.Goods_total;
 
         const parts = loaded.collections.Parts as Part[];
@@ -219,8 +219,6 @@ export class PartListComponent implements OnInit, OnDestroy {
 
   public delete(part: Part | Part[]): void {
 
-    const { scope } = this.allors;
-
     const parts = part instanceof SessionObject ? [part as Part] : part instanceof Array ? part : [];
     const methods = parts.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
@@ -232,7 +230,7 @@ export class PartListComponent implements OnInit, OnDestroy {
             { message: 'Are you sure you want to delete these parts?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope.invoke(methods)
+            this.allors.invoke(methods)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

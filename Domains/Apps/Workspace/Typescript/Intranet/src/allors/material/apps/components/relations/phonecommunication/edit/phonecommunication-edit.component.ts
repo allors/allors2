@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, TelecommunicationsNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './phonecommunication-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -56,7 +56,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -143,7 +143,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -152,7 +152,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -174,7 +174,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
             this.contacts.push(this.person);
           }
 
-          this.communicationEvent = scope.session.create('PhoneCommunication') as PhoneCommunication;
+          this.communicationEvent = this.allors.session.create('PhoneCommunication') as PhoneCommunication;
         } else {
           this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;
         }
@@ -218,12 +218,11 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public callerAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addCaller = false;
 
-    const person: Person = scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const person: Person = this.allors.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
     relationShip.Organisation = this.organisation;
 
@@ -235,12 +234,11 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public receiverAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addReceiver = false;
 
-    const person: Person = scope.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const person: Person = this.allors.session.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
     relationShip.Organisation = this.organisation;
 
@@ -248,10 +246,9 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Cancel)
+      this.allors.invoke(this.communicationEvent.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -261,7 +258,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       // TODO:
       /*  this.dialogService
         .openConfirm({ message: 'Save changes?' })
@@ -286,10 +283,9 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public close(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Close)
+      this.allors.invoke(this.communicationEvent.Close)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -299,7 +295,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       // TODO:
       /*  this.dialogService
         .openConfirm({ message: 'Save changes?' })
@@ -324,10 +320,9 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public reopen(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Reopen)
+      this.allors.invoke(this.communicationEvent.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -337,7 +332,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       // TODO:
       /*  this.dialogService
          .openConfirm({ message: 'Save changes?' })
@@ -362,9 +357,8 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

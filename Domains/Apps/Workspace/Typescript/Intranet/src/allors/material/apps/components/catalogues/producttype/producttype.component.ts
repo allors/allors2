@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
 import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './producttype.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class ProductTypeComponent implements OnInit, OnDestroy {
 
@@ -28,7 +28,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -38,7 +38,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -58,7 +58,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -66,7 +66,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
         this.productType = loaded.objects.productType as ProductType;
         if (!this.productType) {
-          this.productType = scope.session.create('ProductType') as ProductType;
+          this.productType = this.allors.session.create('ProductType') as ProductType;
         }
 
         this.characteristics = loaded.collections.characteristics as SerialisedItemCharacteristicType[];
@@ -80,9 +80,8 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

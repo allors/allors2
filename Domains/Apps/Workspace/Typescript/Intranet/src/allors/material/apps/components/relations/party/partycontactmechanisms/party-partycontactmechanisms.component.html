@@ -58,10 +58,10 @@
 
         <button mat-button [matMenuTriggerFor]="menuAddContact">Add new</button>
         <mat-menu #menuAddContact="matMenu">
-            <button mat-menu-item (click)="add.emit(allors.m.WebAddress)">Web</button>
-            <button mat-menu-item (click)="add.emit(allors.m.EmailAddress)">Email</button>
-            <button mat-menu-item (click)="add.emit(allors.m.PostalAddress)">Postal</button>
-            <button mat-menu-item (click)="add.emit(allors.m.TelecommunicationsNumber)">Telecom</button>
+            <button mat-menu-item (click)="add.emit(allors.m.WebAddress._objectType)">Web</button>
+            <button mat-menu-item (click)="add.emit(allors.m.EmailAddress._objectType)">Email</button>
+            <button mat-menu-item (click)="add.emit(allors.m.PostalAddress._objectType)">Postal</button>
+            <button mat-menu-item (click)="add.emit(allors.m.TelecommunicationsNumber._objectType)">Telecom</button>
         </mat-menu>
 
     </mat-card-actions>

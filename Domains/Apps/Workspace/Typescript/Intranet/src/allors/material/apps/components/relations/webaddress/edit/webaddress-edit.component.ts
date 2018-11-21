@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { Enumeration, PartyContactMechanism, WebAddress, Party } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -12,7 +12,7 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 
 @Component({
   templateUrl: './webaddress-edit.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditWebAddressComponent implements OnInit, OnDestroy {
 
@@ -28,8 +28,8 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
-    private navigation: NavigationService,
+    @Self() private allors: SessionService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
@@ -39,7 +39,7 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = this.route.url
       .pipe(
@@ -105,7 +105,7 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -117,8 +117,8 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
         if (add) {
           this.party = loaded.objects.Party as Party;
-          this.contactMechanism = scope.session.create('WebAddress') as WebAddress;
-          this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
+          this.contactMechanism = this.allors.session.create('WebAddress') as WebAddress;
+          this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
           this.partyContactMechanism.UseAsDefault = true;
           this.party.AddPartyContactMechanism(this.partyContactMechanism);
@@ -145,9 +145,8 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.navigation.back();

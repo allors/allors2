@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../services/state';
-import { ErrorService, Allors } from '../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../angular';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
@@ -10,7 +10,7 @@ import { Organisation } from '../../../../../domain';
   // tslint:disable-next-line:component-selector
   selector: 'internalorganisation-select',
   templateUrl: './internalorganisation-select.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
@@ -28,13 +28,13 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private stateService: StateService,
     private errorService: ErrorService) { }
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Organisation(
@@ -45,7 +45,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.subscription = scope
+    this.subscription = this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisations = loaded.collections.Organisations as Organisation[];

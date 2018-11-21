@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, x, Allors, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './facetofacecommunication-edit.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
@@ -53,7 +53,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -138,7 +138,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -147,7 +147,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -170,7 +170,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.communicationEvent = scope.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
+          this.communicationEvent = this.allors.session.create('FaceToFaceCommunication') as FaceToFaceCommunication;
           this.communicationEvent.AddParticipant(this.person);
 
         } else {
@@ -191,15 +191,14 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public participantAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addParticipant = false;
 
-    const participant: Person = scope.session.get(id) as Person;
+    const participant: Person = this.allors.session.get(id) as Person;
     this.communicationEvent.AddParticipant(participant);
 
     if (!!this.organisation) {
-      const relationShip: OrganisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
       relationShip.Contact = participant;
       relationShip.Organisation = this.organisation;
     }
@@ -213,10 +212,9 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Cancel)
+      this.allors.invoke(this.communicationEvent.Cancel)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -226,15 +224,15 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe(() => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -250,10 +248,9 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public close(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.communicationEvent.Close)
+      this.allors.invoke(this.communicationEvent.Close)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -263,15 +260,15 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe(() => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -287,10 +284,9 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public reopen(): void {
-    const { scope } = this.allors;
 
     const cancelFn = () => {
-      scope.invoke(this.communicationEvent.Reopen)
+      this.allors.invoke(this.communicationEvent.Reopen)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -300,15 +296,15 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe(() => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -324,9 +320,8 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();

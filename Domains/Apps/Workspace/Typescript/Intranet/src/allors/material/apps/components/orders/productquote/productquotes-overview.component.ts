@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
 
-import { ErrorService, Loaded, PdfService, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
+import { ErrorService, Loaded, SessionService } from '../../../../../angular';
 import { InternalOrganisation, ProductQuote, QuoteState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
 import { StateService } from '../../../services/state';
@@ -21,7 +21,7 @@ interface SearchData {
 
 @Component({
   templateUrl: './productquotes-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   public searchForm: FormGroup; public advancedSearch: boolean;
@@ -42,13 +42,12 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private formBuilder: FormBuilder,
     private titleService: Title,
     private router: Router,
     private dialogService: AllorsMaterialDialogService,
-    public pdfService: PdfService,
     private stateService: StateService) {
 
     titleService.setTitle(this.title);
@@ -65,7 +64,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const search$ = this.searchForm.valueChanges
       .pipe(
@@ -97,7 +96,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded: Loaded) => {
@@ -149,7 +148,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
                   )
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: queries }));
+                return this.allors.load('Pull', new PullRequest({ pulls: queries }));
               })
             );
         })
@@ -167,7 +166,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   }
 
   public print(quote: ProductQuote) {
-    this.pdfService.display(quote);
+    // this.pdfService.display(quote);
   }
 
   public goBack(): void {

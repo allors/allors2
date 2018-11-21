@@ -27,5 +27,8 @@ export * from './base/services/error';
 export * from './base/services/logging';
 export * from './base/services/sidenav';
 
-export * from './base/sorting';
+// Base Actions
 export * from './base/actions';
+
+export * from './base/sorting';
+

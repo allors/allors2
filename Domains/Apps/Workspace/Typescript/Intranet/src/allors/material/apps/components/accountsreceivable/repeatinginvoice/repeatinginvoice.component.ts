@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, SearchFactory, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Field, SearchFactory, Loaded, Saved, SessionService } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
 import { PullRequest, Fetch, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './repeatinginvoice.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 
 })
 export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
@@ -32,7 +32,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -45,7 +45,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { pull, scope } = this.allors;
+    const { pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -72,7 +72,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
             pull.DayOfWeek()
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -85,7 +85,7 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
 
         if (!this.repeatinginvoice) {
           this.title = 'Add Repeating Invoice';
-          this.repeatinginvoice = scope.session.create('RepeatingSalesInvoice') as RepeatingSalesInvoice;
+          this.repeatinginvoice = this.allors.session.create('RepeatingSalesInvoice') as RepeatingSalesInvoice;
           this.repeatinginvoice.Source = this.invoice;
         }
       }, this.errorService.handler);
@@ -98,9 +98,8 @@ export class RepeatingInvoiceEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);

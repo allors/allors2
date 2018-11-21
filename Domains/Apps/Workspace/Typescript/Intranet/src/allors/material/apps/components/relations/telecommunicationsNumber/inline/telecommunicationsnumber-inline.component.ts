@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Loaded, Scope, WorkspaceService, Allors } from '../../../../../../angular';
+import { ErrorService, SessionService } from '../../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -9,7 +9,6 @@ import { MetaDomain } from '../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'party-contactmechanism-telecommunicationsnumber',
   templateUrl: './telecommunicationsnumber-inline.component.html',
-  providers: [Allors]
 })
 export class PartyContactMechanismTelecommunicationsNumberInlineComponent implements OnInit, OnDestroy {
 
@@ -18,8 +17,6 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
   @Output()
   public cancelled: EventEmitter<any> = new EventEmitter();
-
-  @Input() public scope: Scope;
 
   public contactMechanismPurposes: Enumeration[];
   public contactMechanismTypes: ContactMechanismType[];
@@ -30,7 +27,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
   public m: MetaDomain;
 
   constructor(
-    @Self() private allors: Allors,
+    private allors: SessionService,
     private errorService: ErrorService) {
 
     this.m = this.allors.m;
@@ -38,7 +35,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { pull } = this.allors;
 
     const pulls = [
       pull.ContactMechanismPurpose({
@@ -51,24 +48,23 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
 
-        this.partyContactMechanism = scope.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.telecommunicationsNumber = scope.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
+        this.telecommunicationsNumber = this.allors.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
         this.partyContactMechanism.ContactMechanism = this.telecommunicationsNumber;
       }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
-    const { scope } = this.allors;
 
     if (!!this.partyContactMechanism) {
-      scope.session.delete(this.partyContactMechanism);
-      scope.session.delete(this.telecommunicationsNumber);
+      this.allors.session.delete(this.partyContactMechanism);
+      this.allors.session.delete(this.telecommunicationsNumber);
     }
   }
 

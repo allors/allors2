@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, Scope, WorkspaceService, Allors, x } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './catalogue.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -54,7 +54,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -81,7 +81,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
             ,
             pull.CatScope()];
 
-          return scope.load('Pull', new PullRequest({ pulls }));
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -93,7 +93,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.catalogue) {
-          this.catalogue = scope.session.create('Catalogue') as Catalogue;
+          this.catalogue = this.allors.session.create('Catalogue') as Catalogue;
           this.catalogue.InternalOrganisation = this.internalOrganisation;
         }
 
@@ -113,9 +113,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();
@@ -126,9 +125,8 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

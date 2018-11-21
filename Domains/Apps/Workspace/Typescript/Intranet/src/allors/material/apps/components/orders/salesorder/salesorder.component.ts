@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Field, Invoked, Loaded, Saved, SessionService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -21,13 +21,12 @@ import { switchMap } from 'rxjs/operators';
     border-right: 1px solid #CCCCCC;}
   `],
   templateUrl: './salesorder.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public scope: Scope;
   public title: string;
   public subTitle: string;
   public order: SalesOrder;
@@ -94,7 +93,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -110,7 +109,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -133,11 +132,11 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
                 this.stores = loaded.collections.stores as Store[];
@@ -167,7 +166,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return scope.load('Pull', new PullRequest({ pulls: pulls2 }));
+                return this.allors.load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
         })
@@ -177,7 +176,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.order) {
-          this.order = scope.session.create('SalesOrder') as SalesOrder;
+          this.order = this.allors.session.create('SalesOrder') as SalesOrder;
           this.order.TakenBy = internalOrganisation;
 
           if (this.stores.length === 1) {
@@ -217,13 +216,12 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public billToContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addBillToContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -236,13 +234,12 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public billToEndCustomerContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addBillToEndCustomerContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -255,13 +252,12 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public shipToContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addShipToContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -274,13 +270,12 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public shipToEndCustomerContactPersonAdded(id: string): void {
-    const { scope } = this.allors;
 
     this.addShipToEndCustomerContactPerson = false;
 
-    const contact: Person = scope.session.get(id) as Person;
+    const contact: Person = this.allors.session.get(id) as Person;
 
-    const organisationContactRelationship = scope.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -337,10 +332,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public approve(): void {
-    const { scope } = this.allors;
 
     const submitFn: () => void = () => {
-      scope.invoke(this.order.Approve)
+      this.allors.invoke(this.order.Approve)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
@@ -350,15 +344,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 submitFn();
               },
                 (error: Error) => {
@@ -374,10 +368,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
 
     const cancelFn: () => void = () => {
-      scope.invoke(this.order.Reject)
+      this.allors.invoke(this.order.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -387,15 +380,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -411,10 +404,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public reject(): void {
-    const { scope } = this.allors;
 
     const rejectFn: () => void = () => {
-      scope.invoke(this.order.Reject)
+      this.allors.invoke(this.order.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
@@ -424,15 +416,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 rejectFn();
               },
                 (error: Error) => {
@@ -448,10 +440,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public hold(): void {
-    const { scope } = this.allors;
 
     const holdFn: () => void = () => {
-      scope.invoke(this.order.Hold)
+      this.allors.invoke(this.order.Hold)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
@@ -461,15 +452,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 holdFn();
               },
                 (error: Error) => {
@@ -485,10 +476,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public continue(): void {
-    const { scope } = this.allors;
 
     const continueFn: () => void = () => {
-      scope.invoke(this.order.Continue)
+      this.allors.invoke(this.order.Continue)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
@@ -498,15 +488,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 continueFn();
               },
                 (error: Error) => {
@@ -522,10 +512,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public confirm(): void {
-    const { scope } = this.allors;
 
     const confirmFn: () => void = () => {
-      scope.invoke(this.order.Confirm)
+      this.allors.invoke(this.order.Confirm)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
@@ -535,15 +524,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 confirmFn();
               },
                 (error: Error) => {
@@ -559,10 +548,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public finish(): void {
-    const { scope } = this.allors;
 
     const finishFn: () => void = () => {
-      scope.invoke(this.order.Continue)
+      this.allors.invoke(this.order.Continue)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
@@ -572,15 +560,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 finishFn();
               },
                 (error: Error) => {
@@ -602,9 +590,8 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
@@ -642,7 +629,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private updateShipToCustomer(party: Party): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Party(
@@ -669,7 +656,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       }),
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -692,7 +679,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Party(
@@ -721,7 +708,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -744,7 +731,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private updateBillToEndCustomer(party: Party) {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Party(
@@ -773,7 +760,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -796,7 +783,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     const pulls = [
       pull.Party(
@@ -823,7 +810,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 

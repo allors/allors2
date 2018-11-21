@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, Scope, WorkspaceService, x, Allors } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './salesorderitem.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
@@ -37,13 +37,11 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
 
-  public scope: Scope;
-
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() public allors: SessionService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -57,7 +55,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -103,12 +101,12 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             ),
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
@@ -122,7 +120,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.orderItem) {
           this.title = 'Add Order Item';
-          this.orderItem = scope.session.create('SalesOrderItem') as SalesOrderItem;
+          this.orderItem = this.allors.session.create('SalesOrderItem') as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
 
@@ -160,7 +158,6 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     // if (this.discount !== 0) {
     //   const discountAdjustment = scope.session.create("DiscountAdjustment") as DiscountAdjustment;
@@ -174,7 +171,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     //   this.orderItem.SurchargeAdjustment = surchargeAdjustment;
     // }
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
@@ -185,11 +182,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-    const { scope } = this.allors;
-
     const isNew = this.orderItem.isNew;
 
-    scope
+    this.allors
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
@@ -213,10 +208,8 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   }
 
   public cancel(): void {
-    const { scope } = this.allors;
-
-    const cancelFn: () => void = () => {
-      scope.invoke(this.orderItem.Cancel)
+     const cancelFn: () => void = () => {
+      this.allors.invoke(this.orderItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -226,15 +219,15 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -250,10 +243,9 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   }
 
   public reject(): void {
-    const { scope } = this.allors;
 
     const rejectFn: () => void = () => {
-      scope.invoke(this.orderItem.Reject)
+      this.allors.invoke(this.orderItem.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reejcted.', 'close', { duration: 5000 });
@@ -263,15 +255,15 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (scope.session.hasChanges) {
+    if (this.allors.session.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            scope
+            this.allors
               .save()
               .subscribe((saved: Saved) => {
-                scope.session.reset();
+                this.allors.session.reset();
                 rejectFn();
               },
                 (error: Error) => {
@@ -288,7 +280,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   private refreshInventory(product: Product): void {
 
-    const { m, pull, scope } = this.allors;
+    const { pull  } = this.allors;
 
     const pulls = [
       pull.Good({
@@ -300,7 +292,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    scope
+    this.allors
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];

@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Scope, WorkspaceService, x, Allors } from '../../../../../../angular';
+import { ErrorService, Invoked, SessionService } from '../../../../../../angular';
 import { CommunicationEvent, EmailCommunication, FaceToFaceCommunication, LetterCorrespondence, Party, PhoneCommunication, WorkTask } from '../../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './communicationevent-overview.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
@@ -49,7 +49,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: Allors,
+    @Self() private allors: SessionService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -64,7 +64,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -78,7 +78,7 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             pull.Party({ object: id })
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
@@ -160,26 +160,26 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
                 ];
 
                 if (this.isEmail) {
-                  return scope.load('Pull', new PullRequest({ pulls: fetchEmail }));
+                  return this.allors.load('Pull', new PullRequest({ pulls: fetchEmail }));
                 }
 
                 if (this.isMeeting) {
-                  return scope.load('Pull', new PullRequest({ pulls: fetchMeeting }));
+                  return this.allors.load('Pull', new PullRequest({ pulls: fetchMeeting }));
                 }
 
                 if (this.isLetter) {
-                  return scope.load('Pull', new PullRequest({ pulls: fetchLetter }));
+                  return this.allors.load('Pull', new PullRequest({ pulls: fetchLetter }));
                 }
 
                 if (this.isPhone) {
-                  return scope.load('Pull', new PullRequest({ pulls: fetchPhone }));
+                  return this.allors.load('Pull', new PullRequest({ pulls: fetchPhone }));
                 }
               })
             );
         })
       )
       .subscribe((loaded) => {
-        scope.session.reset();
+        this.allors.session.reset();
         this.communicationEvent = loaded.objects.communicationEvent as CommunicationEvent;
 
         if (this.isEmail) {
@@ -208,17 +208,16 @@ export class CommunicationEventOverviewComponent implements OnInit, OnDestroy {
             this.itemTitle = 'Outgoing Phone call';
           }
         }
-      },this.errorService.handler );
+      }, this.errorService.handler);
   }
 
   public deleteWorkEffort(worktask: WorkTask): void {
-    const { scope } = this.allors;
 
     this.dialogService
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          scope.invoke(worktask.Delete)
+          this.allors.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

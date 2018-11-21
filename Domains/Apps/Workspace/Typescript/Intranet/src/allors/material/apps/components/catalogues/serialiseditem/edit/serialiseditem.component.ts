@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, Scope, x, Allors, NavigationService, NavigationActivatedRoute, SearchFactory } from '../../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute, SearchFactory } from '../../../../../../angular';
 import { Facility, InternalOrganisation, Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
@@ -14,12 +14,11 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './serialiseditem.component.html',
-  providers: [Allors]
+  providers: [SessionService]
 })
 export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
   m: MetaDomain;
-  scope: Scope;
   item: SerialisedItem;
 
   add: boolean;
@@ -48,7 +47,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: Allors,
+    @Self() public allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -57,7 +56,6 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   ) {
 
     this.m = this.allors.m;
-    this.scope = this.allors.scope;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.allors.pull);
 
@@ -69,7 +67,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, scope } = this.allors;
+    const { m, pull, x } = this.allors;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -148,7 +146,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return scope
+          return this.allors
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -156,7 +154,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(({ loaded, add }) => {
-        scope.session.reset();
+        this.allors.session.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
@@ -178,7 +176,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.item = scope.session.create('SerialisedItem') as SerialisedItem;
+          this.item = this.allors.session.create('SerialisedItem') as SerialisedItem;
 
           if (this.fromPart) {
             this.item.AvailableForSale = true;
@@ -212,11 +210,10 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   }
 
   public save(): void {
-    const { scope } = this.allors;
 
     this.onSave();
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.goBack();
@@ -227,11 +224,10 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
   }
 
   public update(): void {
-    const { scope } = this.allors;
 
     this.onSave();
 
-    scope
+    this.allors
       .save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
