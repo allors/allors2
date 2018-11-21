@@ -18,13 +18,13 @@ describe('Instantiate', () => {
   beforeEach(async () => {
     await fixture.init();
 
-    const { scope, pull } = fixture.allors;
+    const { pull } = fixture.allors;
 
     const pulls = [
       pull.Person()
     ];
 
-    const loaded = await scope
+    const loaded = await fixture.allors
       .load('Pull', new PullRequest({ pulls }))
       .toPromise();
 
@@ -35,8 +35,6 @@ describe('Instantiate', () => {
     () => {
       it('should return person', async () => {
 
-        const { m, scope } = fixture.allors;
-
         const object = people[0].id;
 
         const pulls = [
@@ -45,9 +43,9 @@ describe('Instantiate', () => {
           }),
         ];
 
-        scope.session.reset();
+        fixture.allors.session.reset();
 
-        const loaded = await scope
+        const loaded = await fixture.allors
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 
@@ -62,7 +60,7 @@ describe('Instantiate', () => {
     () => {
       it('should return all people', async () => {
 
-        const { m, scope } = fixture.allors;
+        const { m } = fixture.allors;
 
         const pulls = [
           new Pull({
@@ -86,9 +84,9 @@ describe('Instantiate', () => {
           }),
         ];
 
-        scope.session.reset();
+        fixture.allors.session.reset();
 
-        const loaded = await scope
+        const loaded = await fixture.allors
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 

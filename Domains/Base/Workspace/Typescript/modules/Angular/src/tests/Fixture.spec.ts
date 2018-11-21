@@ -1,11 +1,12 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { DatabaseConfig, AuthenticationConfig, AuthenticationInterceptor, AuthenticationService, DatabaseService, AllorsModule, Allors } from 'src/allors/angular';
-import { environment } from 'src/environments/environment';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { SessionService, AuthenticationService, AllorsModule, AuthenticationModule } from 'src/allors/angular';
+import { RouterTestingModule } from '@angular/router/testing';
+import { environment } from '../environments/environment';
 
 export class Fixture {
 
-    allors: Allors;
+    allors: SessionService;
 
     private testbed: TestBed;
 
@@ -13,14 +14,10 @@ export class Fixture {
         TestBed.configureTestingModule({
             imports: [
                 HttpClientModule,
-                AllorsModule.forRoot(),
+                RouterTestingModule,
+                AllorsModule.forRoot({ url: environment.url }),
+                AuthenticationModule.forRoot({ url: environment.url + environment.authenticationUrl }),
             ],
-            providers: [
-                { provide: DatabaseConfig, useValue: { url: environment.url } },
-                { provide: AuthenticationConfig, useValue: { url: environment.url + environment.authenticationUrl } },
-                { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-                AuthenticationService,
-            ]
         });
 
         this.testbed = getTestBed();
@@ -28,12 +25,12 @@ export class Fixture {
 
     async init() {
         const httpClient: HttpClient = this.testbed.get(HttpClient);
-        await httpClient.get(environment.url + 'Test/Setup');
+        await (httpClient.get(environment.url + 'Test/Setup', { responseType: 'text' }).toPromise());
 
         const authenticationService: AuthenticationService = this.testbed.get(AuthenticationService);
         const authResult = await authenticationService.login$('administrator', '').toPromise();
         expect(authResult.authenticated).toBeTruthy();
 
-        this.allors = this.testbed.get(Allors);
+        this.allors = this.testbed.get(SessionService);
     }
 }
