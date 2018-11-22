@@ -8,14 +8,14 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter, ContainedIn } from '../../../../framework';
-import { ErrorService, Invoked, MediaService, SessionService, NavigationService } from '../../../../angular';
+import { ErrorService, Invoked, MediaService, SessionService, NavigationService, ActionTarget } from '../../../../angular';
 import { AllorsFilterService } from '../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../base/services/dialog';
 import { Sorter } from '../../../base/sorting';
 
 import { Person } from '../../../../domain';
 
-interface Row {
+interface Row extends ActionTarget {
   person: Person;
   firstName: string;
   lastName: string;

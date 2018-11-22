@@ -1,10 +1,11 @@
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, Sort, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { ActionTarget } from '../../../../angular';
 import { TableConfig } from './TableConfig';
 import { BaseTable } from './BaseTable';
 import { Column } from './Column';
+import { BehaviorSubject } from 'rxjs';
 
 export class Table<Row extends ActionTarget> extends BaseTable {
 
@@ -12,9 +13,9 @@ export class Table<Row extends ActionTarget> extends BaseTable {
   selection: SelectionModel<Row>;
 
   constructor(config?: TableConfig) {
-    super(config);
+    super();
 
-    this.dataSource = new MatTableDataSource();
+    let sort: Sort;
 
     if (config) {
 
@@ -23,7 +24,27 @@ export class Table<Row extends ActionTarget> extends BaseTable {
       if (config.selection) {
         this.selection = new SelectionModel<Row>(true, []);
       }
+
+      const column = this.columns && this.columns.find(v => v.sort);
+      sort = column && { active: column.name, direction: 'asc' };
+
+      const initialSort = config.sort;
+      if (sort && initialSort) {
+        if (initialSort.active) {
+          sort.active = initialSort.active;
+        }
+
+        if (initialSort.direction) {
+          sort.direction = initialSort.direction;
+        }
+      }
     }
+
+    this.dataSource = new MatTableDataSource();
+    this.actions = (config && config.actions) || [];
+    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+
+    this.sort$ = new BehaviorSubject<Sort>(sort);
   }
 
   get data(): Row[] {

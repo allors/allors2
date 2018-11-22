@@ -4,6 +4,7 @@ export class Column {
 
   name: string;
   assignedLabel: string;
+  sort: boolean;
 
   constructor(fields?: Partial<Column> | string) {
 

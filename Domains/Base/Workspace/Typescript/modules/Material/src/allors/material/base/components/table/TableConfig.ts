@@ -1,5 +1,6 @@
-import { Action } from '../../../../angular';
+import { Sort } from '@angular/material';
 
+import { Action } from '../../../../angular';
 import { Column } from './Column';
 
 export interface TableConfig {
@@ -8,4 +9,6 @@ export interface TableConfig {
     columns?: (Partial<Column> | string)[];
 
     actions?: Action[];
+
+    sort?: Partial<Sort>;
 }

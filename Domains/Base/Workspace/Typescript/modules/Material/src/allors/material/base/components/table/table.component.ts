@@ -9,6 +9,7 @@ import { BaseTable } from './BaseTable';
   // tslint:disable-next-line:component-selector
   selector: 'a-mat-table',
   templateUrl: './table.component.html',
+  styleUrls: ['./table.component.scss']
 })
 export class AllorsMaterialTableComponent {
   @Input()

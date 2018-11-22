@@ -1,7 +1,6 @@
 import { Component, OnDestroy, Self, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { PageEvent } from '@angular/material';
-import { Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
@@ -25,11 +24,8 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
 
   title: string;
 
-  total: number;
   table: Table<Row>;
 
-  private sort$: BehaviorSubject<Sort>;
-  private pager$: BehaviorSubject<PageEvent>;
   private subscription: Subscription;
 
   constructor(
@@ -42,19 +38,19 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private titleService: Title) {
 
-    this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
-
     this.title = 'Organisations';
     this.titleService.setTitle(this.title);
 
     this.table = new Table({
       selection: true,
-      columns: ['name', 'owner'],
+      columns: [
+        { name: 'name', sort: true },
+        'owner'
+      ],
       actions: [
         navigateService.overview(),
         deleteService.delete(allors)
-      ]
+      ],
     });
   }
 
@@ -74,7 +70,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
       .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
@@ -104,8 +100,9 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.session.reset();
-        this.total = loaded.values.Organisations_total;
         const organisations = loaded.collections.Organisations as Organisation[];
+
+        this.table.total = loaded.values.Organisations_total;
         this.table.data = organisations.map((v) => {
           return {
             object: v,
@@ -113,6 +110,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
             owner: v.Owner && v.Owner.UserName
           };
         });
+
       }, this.errorService.handler);
   }
 

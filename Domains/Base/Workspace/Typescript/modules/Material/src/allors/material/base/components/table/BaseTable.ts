@@ -1,18 +1,24 @@
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, PageEvent, Sort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
 import { Action, ActionTarget } from '../../../../angular';
-import { TableConfig } from './TableConfig';
 import { Column } from './Column';
+import { BehaviorSubject } from 'rxjs';
 
 export abstract class BaseTable {
+
   columns: Column[];
   dataSource: MatTableDataSource<ActionTarget>;
   selection: SelectionModel<ActionTarget>;
   actions: Action[];
 
-  constructor(config?: TableConfig) {
-    this.actions = (config && config.actions) || [];
+  sort$: BehaviorSubject<Sort>;
+  pager$: BehaviorSubject<PageEvent>;
+
+  total: number;
+
+  get sortValue(): Sort {
+    return this.sort$.getValue();
   }
 
   get hasActions(): boolean {
@@ -42,9 +48,17 @@ export abstract class BaseTable {
     return numSelected === numRows;
   }
 
-  public masterToggle() {
+  masterToggle() {
     this.isAllSelected ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
+  }
+
+  page(event: PageEvent): void {
+    this.pager$.next(event);
+  }
+
+  sort(event: Sort): void {
+    this.sort$.next(event);
   }
 }

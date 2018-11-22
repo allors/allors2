@@ -13,15 +13,21 @@
 
   <div>
     <mat-card *ngIf="table.data">
-      <mat-card-content class="container-fluid a-list">
 
-        <div *ngIf="table.data && table.data.length === 0">
+      <mat-card-content class="container-fluid a-search">
+        <a-mat-filter></a-mat-filter>
+      </mat-card-content>
+
+      <mat-card-content *ngIf="table.data && table.data.length === 0" class="container-fluid a-noresult">
+        <div >
           <h3>No organisations to display.</h3>
         </div>
-
-        <a-mat-table [table]="table"></a-mat-table>
-      
       </mat-card-content>
+
+      <mat-card-content *ngIf="table.data && table.data.length > 0" class="container-fluid a-result">
+        <a-mat-table [table]="table"></a-mat-table>
+      </mat-card-content>
+
     </mat-card>
   </div>
 
@@ -33,6 +39,5 @@
       </a>
     </mat-toolbar-row>
   </mat-toolbar>
-
 
 </div>

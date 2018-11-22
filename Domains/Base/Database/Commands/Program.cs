@@ -34,26 +34,31 @@ namespace Commands
     {
         public static void Main(string[] args)
         {
-            var services = new ServiceCollection();
-            services.AddAllors();
+            try
+            {
+                var services = new ServiceCollection();
+                services.AddAllors();
 
-            var myAppSettings = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
-            
-            var configuration = new ConfigurationBuilder()
-                .AddJsonFile(@"appSettings.json")
-                .AddJsonFile(myAppSettings, true)
-                .Build();
-            services.AddSingleton<IConfiguration>(configuration);
+                var myAppSettings =
+                    $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}/base.appSettings.json";
 
-            services.AddSingleton<ILoggerFactory, LoggerFactory>();
-            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
-            services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
+                var configuration = new ConfigurationBuilder().AddJsonFile(@"appSettings.json")
+                    .AddJsonFile(myAppSettings, true).Build();
+                services.AddSingleton<IConfiguration>(configuration);
 
-            var app = new CommandLineApplication<Commands>();
-            app.Conventions
-                .UseDefaultConventions()
-                .UseConstructorInjection(services.BuildServiceProvider());
-            app.Execute(args);
+                services.AddSingleton<ILoggerFactory, LoggerFactory>();
+                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+                services.AddLogging(builder => builder.SetMinimumLevel(LogLevel.Trace));
+
+                var app = new CommandLineApplication<Commands>();
+                app.Conventions.UseDefaultConventions().UseConstructorInjection(services.BuildServiceProvider());
+                app.Execute(args);
+
+            }
+            catch 
+            {
+                throw;
+            }
         }
     }
 }

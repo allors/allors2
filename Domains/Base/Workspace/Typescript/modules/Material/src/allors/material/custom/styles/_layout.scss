@@ -21,9 +21,15 @@
         >mat-card-content.a-search {
           flex: 0 0 auto;
         }
-        >mat-card-content.a-list {
+        >mat-card-content.a-noresult {
           flex: 1 1 0;
           overflow: auto;
+        }
+        >mat-card-content.a-result {
+          flex: 1 1 0;
+          display: flex;
+          flex-direction: column;
+          align-items: stretch;
         }
       }
     }
@@ -127,4 +133,5 @@
       flex: 0 0 auto;
     }
   }
+  
   

@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material';
+import { AllorsMaterialErrorDialogModule } from '../../components/errordialog';
 
 import { ErrorService } from '../../../../angular';
 
@@ -16,7 +17,9 @@ import { ErrorConfig } from './error.config';
   ],
   imports: [
     CommonModule,
-    MatDialogModule
+    MatDialogModule,
+    AllorsMaterialErrorDialogModule,
+
   ],
   providers: [
     AllorsMaterialDefaultErrorService
