@@ -22,7 +22,7 @@ interface Row extends TableRow {
 })
 export class OrganisationsComponent implements OnInit, OnDestroy {
 
-  title: string;
+  title = 'Organisations';
 
   table: Table<Row>;
 
@@ -40,7 +40,6 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private titleService: Title) {
 
-    this.title = 'Organisations';
     this.titleService.setTitle(this.title);
 
     this.delete = deleteService.delete(allors);
@@ -108,7 +107,6 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
         this.allors.session.reset();
         const organisations = loaded.collections.Organisations as Organisation[];
-
         this.table.total = loaded.values.Organisations_total;
         this.table.data = organisations.map((v) => {
           return {

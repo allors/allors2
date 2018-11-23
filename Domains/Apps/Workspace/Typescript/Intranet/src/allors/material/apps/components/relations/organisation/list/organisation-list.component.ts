@@ -15,9 +15,10 @@ import { AllorsMaterialDialogService } from '../../../../../base/services/dialog
 import { Sorter } from '../../../../../base/sorting';
 
 import { Organisation } from '../../../../../../domain';
+import { TableRow } from '../../../../../../material';
 // import { OrganisationAddComponent } from '../add/organisation-add.module';
 
-interface Row extends ActionTarget {
+interface Row extends TableRow {
   organisation: Organisation;
   name: string;
   classification: string;
