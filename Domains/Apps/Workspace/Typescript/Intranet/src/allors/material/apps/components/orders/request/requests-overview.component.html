@@ -1,98 +1,46 @@
-<div class="a-master">
-  <mat-toolbar class="a-header">
-    <mat-toolbar-row class="row">
-      <a-mat-sidenavtoggle></a-mat-sidenavtoggle>
-      <h1>{{title}}</h1>
-      <span class="col"></span>
-      <internalorganisation-select></internalorganisation-select>
-    </mat-toolbar-row>
-  </mat-toolbar>
+<div class="a-main">
 
-  <div>
-    <mat-card>
-      <mat-card-content class="container-fluid a-search">
-
-        <form class="row" novalidate [formGroup]="searchForm">
-
-          <mat-form-field class="col" *ngIf="!advancedSearch" appearance="outline">
-            <mat-label>Search by Organisation</mat-label>
-            <input matInput autocomplete="off" formControlName="company">
-            <button matSuffix mat-icon-button (click)="advancedSearch = !advancedSearch" title="Advanced Search">
-              <mat-icon>expand_more</mat-icon>
-            </button>
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Search by Organisation</mat-label>
-            <input matInput formControlName="company">
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Number</mat-label>
-            <input matInput formControlName="requestNumber">
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>Description</mat-label>
-            <input matInput formControlName="description">
-          </mat-form-field>
-
-          <mat-form-field class="col" *ngIf="advancedSearch" appearance="outline">
-            <mat-label>State</mat-label>
-            <mat-select formControlName="state" name="state" [(ngModel)]="selectedRequestState">
-              <mat-option>None</mat-option>
-              <mat-option *ngFor="let objectState of requestStates" [value]="objectState.Name">{{ objectState.Name }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <div class="col-1 pt-2" *ngIf="advancedSearch">
-            <button mat-icon-button type="button" class="mat-icon-button" (click)="searchForm.reset(); advancedSearch = !advancedSearch;"
-              title="Reset Search">
-              <mat-icon>close</mat-icon>
-            </button>
-          </div>
-
-        </form>
-      </mat-card-content>
-
-      <mat-card-content class="container-fluid a-list">
-
-        <div *ngIf="data?.length === 0">
-          <h3>No requests to display.</h3>
-        </div>
-
-        <mat-list>
-          <mat-list-item *ngFor="let request of data; let last = last" (click)="router.navigate(['/orders/request/', request.id])" style="cursor: pointer;">
-
-            <h3 *ngIf="request.Originator" mat-line>{{request.Originator.displayName}}</h3>
-            <h4 mat-line>{{request.RequestNumber }}: {{request.Description}} ({{request.RequestState.Name}})</h4>
-            <p mat-line> Response required date: {{request.RequiredResponseDate | date}} </p>
-            <p mat-line> last modified: {{ request.LastModifiedDate | date : shortDate }} </p>
-
-            <div (click)="$event.stopPropagation()">
-              <button mat-icon-button [mat-menu-trigger-for]="menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <a [routerLink]="['/orders/request/' + request.id ]" mat-menu-item>Details</a>
-                <!-- <button mat-menu-item (click)="delete(organisation)">Delete</button> -->
-              </mat-menu>
-            </div>
-            <mat-divider *ngIf="!last" mat-inset></mat-divider>
-          </mat-list-item>
-        </mat-list>
-
-      </mat-card-content>
-
-    </mat-card>
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        {{title}}
+      </div>
+    </div>
   </div>
 
-  <mat-toolbar class="a-footer">
-    <mat-toolbar-row class="row">
-      <span class="col"></span>
-      <a mat-raised-button [routerLink]="['/request']">
-        Add New
-      </a>
-    </mat-toolbar-row>
-  </mat-toolbar>
+  <div class="a-list">
+
+    <div class="a-content mat-elevation-z8">
+
+      <div class="a-header">
+        <mat-toolbar style="background-color: transparent">
+          <mat-toolbar-row>
+            <div class="pl-3 mr-auto">{{title}}</div>
+            <div>
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
+                <mat-icon>delete</mat-icon>
+              </button>
+
+            </div>
+          </mat-toolbar-row>
+        </mat-toolbar>
+      </div>
+
+      <div style="position: relative">
+        <a style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1" mat-fab (click)="navigation.add(allors.m.Request)">
+          <mat-icon>add</mat-icon>
+        </a>
+      </div>
+
+      <div class="a-search container-fluid">
+        <a-mat-filter></a-mat-filter>
+      </div>
+
+      <div class="a-items">
+        <a-mat-table *ngIf="table.data && table.data.length > 0" [table]="table"></a-mat-table>
+      </div>
+
+    </div>
+
+  </div>
 </div>

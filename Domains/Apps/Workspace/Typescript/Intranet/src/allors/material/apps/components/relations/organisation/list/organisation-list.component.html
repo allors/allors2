@@ -17,12 +17,8 @@
           <mat-toolbar-row>
             <div class="pl-3 mr-auto">{{title}}</div>
             <div>
-              <button [disabled]="!hasDeleteSelection" mat-icon-button matTooltip="Delete" (click)="delete(selectedOrganisations)">
+              <button [disabled]="!hasDeleteSelection" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selection)">
                 <mat-icon>delete</mat-icon>
-              </button>
-
-              <button [disabled]="!hasSelection" mat-icon-button matTooltip="Export to CSV" [routerLink]="['/export/organisations']">
-                <mat-icon>save_alt</mat-icon>
               </button>
 
             </div>

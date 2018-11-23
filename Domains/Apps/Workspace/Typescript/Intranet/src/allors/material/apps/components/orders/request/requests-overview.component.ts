@@ -1,67 +1,68 @@
 import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, scan, switchMap } from 'rxjs/operators';
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap, scan } from 'rxjs/operators';
 
-import { ErrorService, Loaded, SessionService } from '../../../../../angular';
-import { InternalOrganisation, Request, RequestState } from '../../../../../domain';
-import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort, TreeNode, Filter } from '../../../../../framework';
-import { StateService } from '../../../services/state';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { PullRequest, And, Like, Equals } from '../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../angular';
+import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../../../material';
 
-interface SearchData {
-  requestNumber: string;
-  company: string;
+import { Request } from '../../../../../domain';
+
+interface Row extends TableRow {
+  object: Request;
+  originator: string;
   description: string;
-  state: string;
+  responseRequired: Date;
+  lastModifiedDate: Date;
 }
 
 @Component({
   templateUrl: './requests-overview.component.html',
-  providers: [SessionService]
+  providers: [SessionService, AllorsFilterService]
 })
 export class RequestsOverviewComponent implements OnInit, OnDestroy {
-  public total: number;
-
-  public searchForm: FormGroup;
-  public advancedSearch: boolean;
 
   public title = 'Requests';
-  public data: Request[];
-  public filtered: Request[];
 
-  public internalOrganisations: InternalOrganisation[];
-  public selectedInternalOrganisation: InternalOrganisation;
+  table: Table<Row>;
 
-  public requestStates: RequestState[];
-  public selectedRequestState: RequestState;
-  public requestState: RequestState;
-
-  private refresh$: BehaviorSubject<Date>;
+  delete: Action;
 
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() public allors: SessionService,
+    @Self() private filterService: AllorsFilterService,
+    public refreshService: AllorsRefreshService,
+    public navigateService: NavigateService,
+    public deleteService: DeleteService,
+    public navigation: NavigationService,
+    public mediaService: MediaService,
     private errorService: ErrorService,
-    private formBuilder: FormBuilder,
-    private titleService: Title,
-    private router: Router,
-    private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService
+    private stateService: StateService,
+    titleService: Title,
   ) {
     titleService.setTitle(this.title);
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    this.delete = deleteService.delete(allors);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
 
-    this.searchForm = this.formBuilder.group({
-      company: [''],
-      description: [''],
-      requestNumber: [''],
-      state: ['']
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'originator' },
+        { name: 'description' },
+        { name: 'responseRequired' },
+        'lastModifiedDate'
+      ],
+      actions: [
+        navigateService.overview(),
+        this.delete
+      ],
     });
   }
 
@@ -69,133 +70,69 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.allors;
 
-    const search$ = this.searchForm.valueChanges
-      .pipe(
-        debounceTime(400),
-        distinctUntilChanged(),
-        startWith({})
-      );
+    const internalOrganisationPredicate = new Equals({ propertyType: m.Request.Recipient });
+    const predicate = new And([
+      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
+      internalOrganisationPredicate
+    ]);
 
-    const combined$ = combineLatest(search$, this.refresh$, this.stateService.internalOrganisationId$)
-      .pipe(
-        scan(([previousData, previousDate, previousInternalOrganisationId], [data, date, internalOrganisationId]) => {
-          return [data, date, internalOrganisationId];
-        }, [])
-      );
+    this.filterService.init(predicate);
 
-    this.subscription = combined$
+    const sorter = new Sorter(
+      {
+        lastModifiedDate: m.Person.LastModifiedDate,
+      }
+    );
+
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([data, , internalOrganisationId]) => {
-          const pulls = [
-            pull.RequestState({
-              sort: new Sort(m.RequestState.Name)
-            }),
-            pull.Organisation({
-              predicate: new Equals({ propertyType: m.Organisation.IsInternalOrganisation, value: true }),
-              sort: new Sort(m.Organisation.PartyName)
-            })
+        scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
+          return [
+            refresh,
+            filterFields,
+            sort,
+            (previousRefresh !== refresh || filterFields !== previousFilterFields) ? Object.assign({ pageIndex: 0 }, pageEvent) : pageEvent,
           ];
+        }, []),
+        switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
-          return this.allors
-            .load(
-              'Pull',
-              new PullRequest({ pulls })
-            )
-            .pipe(
-              switchMap((loaded: Loaded) => {
-                this.requestStates = loaded.collections
-                  .requestStates as RequestState[];
-                this.requestState = this.requestStates.find(
-                  (v: RequestState) => v.Name === data.state
-                );
+          internalOrganisationPredicate.value = internalOrganisationId;
 
-                this.internalOrganisations = loaded.collections
-                  .internalOrganisations as InternalOrganisation[];
+          const pulls = [
+            pull.Request({
+              predicate,
+              sort: sorter.create(sort),
+              include: {
+                Originator: x,
+                RequestState: x,
+              },
+              arguments: this.filterService.arguments(filterFields),
+              skip: pageEvent.pageIndex * pageEvent.pageSize,
+              take: pageEvent.pageSize,
+            })];
 
-                const predicate: And = new And();
-                const predicates: Predicate[] = predicate.operands;
-
-                predicates.push(
-                  new Equals({ propertyType: m.Request.Recipient, value: internalOrganisationId })
-                );
-
-                if (data.requestNumber) {
-                  const like: string = '%' + data.requestNumber + '%';
-                  predicates.push(
-                    new Like({ roleType: m.Request.RequestNumber, value: like })
-                  );
-                }
-
-                if (data.company) {
-                  const partyQuery = new Filter({
-                    objectType: m.Party,
-                    predicate: new Like({
-                      roleType: m.Party.PartyName,
-                      value: data.company.replace('*', '%') + '%'
-                    })
-                  });
-
-                  const containedIn: ContainedIn = new ContainedIn({
-                    propertyType: m.Request.Originator,
-                    extent: partyQuery
-                  });
-                  predicates.push(containedIn);
-                }
-
-                if (data.description) {
-                  const like: string = data.description.replace('*', '%') + '%';
-                  predicates.push(
-                    new Like({ roleType: m.Request.Description, value: like })
-                  );
-                }
-
-                if (data.state) {
-                  predicates.push(
-                    new Equals({propertyType: m.Request.RequestState, object: this.requestState})
-                  );
-                }
-
-                const queries = [
-                  pull.Request(
-                    {
-                      predicate,
-                      include: {
-                        Originator: x,
-                        RequestState: x,
-                      },
-                      sort: new Sort(m.Request.RequestNumber)
-                    }
-                  )
-                ];
-
-                return this.allors.load('Pull', new PullRequest({ pulls: queries }));
-              })
-            );
+          return this.allors.load('Pull', new PullRequest({ pulls }));
         })
       )
-      .subscribe(
-        loaded => {
-          this.data = loaded.collections.requests as Request[];
-          this.total = loaded.values.invoices_total;
-        },
-        (error: any) => {
-          this.errorService.handle(error);
-          this.goBack();
-        }
-      );
+      .subscribe((loaded) => {
+        this.allors.session.reset();
+        const requests = loaded.collections.Requests as Request[];
+        this.table.total = loaded.values.Request_total;
+        this.table.data = requests.map((v) => {
+          return {
+            object: v,
+            originator: v.Originator.displayName,
+            description: `${v.RequestNumber} ${v.Description} ${v.RequestState.Name}`,
+            responseRequired: v.RequiredResponseDate,
+            lastModifiedDate: v.LastModifiedDate
+          } as Row;
+        });
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public onView(request: Request): void {
-    this.router.navigate(['/orders/requests/' + request.id + '/edit']);
   }
 }
