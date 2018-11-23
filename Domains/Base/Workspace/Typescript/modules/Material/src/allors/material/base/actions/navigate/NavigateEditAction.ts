@@ -1,18 +1,31 @@
+import { Subject } from 'rxjs';
 
-import { ActionTarget } from '../../../../angular';
+import { ActionTarget, Action } from '../../../../angular';
 
 import { NavigateService } from './navigate.service';
 
-export class NavigateEditAction {
+export class NavigateEditAction implements Action {
+
+  constructor(private navigateService: NavigateService) {
+  }
+
+  result = new Subject<boolean>();
 
   name = () => 'Edit';
 
-  description = (target: ActionTarget) => `Edit ${target.object.toString()}`;
+  description = (target: ActionTarget) => `Edit ${target.toString()}`;
 
-  handler = (target: ActionTarget) => {
-    this.navigateService.navigationService.edit(target.object);
-  }
+  disabled = () => false;
 
-  constructor(private navigateService: NavigateService) {
+  execute = (target: ActionTarget) => {
+    if (Array.isArray(target)) {
+      if (target.length > 0) {
+        this.navigateService.navigationService.edit(target[0]);
+      }
+    } else {
+      this.navigateService.navigationService.edit(target);
+    }
+
+    this.result.next(true);
   }
 }

@@ -1,19 +1,35 @@
-import { MethodType } from '../../../../framework';
-import { Deletable } from '../../../../domain';
-import { ActionTarget, SessionService, Invoked, ErrorService } from '../../../../angular';
+import { Subject } from 'rxjs';
+
+import { ActionTarget, Action } from '../../../../angular';
 
 import { NavigateService } from './navigate.service';
 
-export class NavigateOverviewAction {
+function objectTypeName(target: ActionTarget) {
+  return Array.isArray(target) ? (target.length > 0) && target[0].objectType.name : target.objectType.name;
+}
+
+export class NavigateOverviewAction implements Action {
+
+  constructor(private navigateService: NavigateService) {
+  }
+
+  result = new Subject<boolean>();
 
   name = (target: ActionTarget) => 'Overview';
 
-  description = (target: ActionTarget) => `Go to ${target.object.objectType.name} overview`;
+  description = (target: ActionTarget) => `Go to ${objectTypeName(target)} overview`;
 
-  handler = (target: ActionTarget) => {
-    this.navigateService.navigationService.overview(target.object);
-  }
+  disabled = () => false;
 
-  constructor(private navigateService: NavigateService) {
+  execute = (target: ActionTarget) => {
+    if (Array.isArray(target)) {
+      if (target.length > 0) {
+        this.navigateService.navigationService.overview(target[0]);
+      }
+    } else {
+      this.navigateService.navigationService.overview(target);
+    }
+
+    this.result.next(true);
   }
 }

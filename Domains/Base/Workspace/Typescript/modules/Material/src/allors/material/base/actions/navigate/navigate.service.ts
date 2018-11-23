@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { NavigationService } from '../../../../angular';
+import { NavigationService, Action } from '../../../../angular';
 
 import { NavigateOverviewAction } from './NavigateOverviewAction';
 import { NavigateEditAction } from './NavigateEditAction';
@@ -12,11 +12,11 @@ export class NavigateService {
     public navigationService: NavigationService
   ) { }
 
-  overview() {
+  overview(): Action {
     return new NavigateOverviewAction(this);
   }
 
-  edit() {
+  edit(): Action {
     return new NavigateEditAction(this);
   }
 

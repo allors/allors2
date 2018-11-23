@@ -119,6 +119,12 @@ namespace Allors.Server
             }
 
             var obj = this.session.Instantiate(invocation.I);
+            if (obj == null)
+            {
+                invokeResponse.AddMissingError(invocation.I);
+                return true;
+            }
+
             var composite = (Composite)obj.Strategy.Class;
             var methodTypes = composite.WorkspaceMethodTypes;
             var methodType = methodTypes.FirstOrDefault(x => x.Name.Equals(invocation.M));

@@ -1,13 +1,13 @@
 import { MatTableDataSource, Sort, PageEvent } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { ActionTarget } from '../../../../angular';
 import { TableConfig } from './TableConfig';
 import { BaseTable } from './BaseTable';
 import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
+import { TableRow } from './TableRow';
 
-export class Table<Row extends ActionTarget> extends BaseTable {
+export class Table<Row extends TableRow> extends BaseTable {
 
   dataSource: MatTableDataSource<Row>;
   selection: SelectionModel<Row>;

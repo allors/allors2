@@ -1,5 +1,3 @@
-import {ISessionObject} from '../../../framework';
+import { ISessionObject } from '../../../framework';
 
-export interface ActionTarget {
-  object: ISessionObject;
-}
+export type ActionTarget = ISessionObject | ISessionObject[];

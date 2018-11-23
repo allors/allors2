@@ -1,15 +1,17 @@
 import { MatTableDataSource, PageEvent, Sort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 
-import { Action, ActionTarget } from '../../../../angular';
+import { Action } from '../../../../angular';
 import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
+import { TableRow } from './TableRow';
+import { ISessionObject } from 'src/allors/framework';
 
 export abstract class BaseTable {
 
   columns: Column[];
-  dataSource: MatTableDataSource<ActionTarget>;
-  selection: SelectionModel<ActionTarget>;
+  dataSource: MatTableDataSource<TableRow>;
+  selection: SelectionModel<TableRow>;
   actions: Action[];
 
   sort$: BehaviorSubject<Sort>;
@@ -38,18 +40,22 @@ export abstract class BaseTable {
     return result;
   }
 
-  get isAnySelectd() {
+  get anySelected() {
     return !this.selection.isEmpty();
   }
 
-  get isAllSelected() {
+  get allSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
+  get selected(): ISessionObject[] {
+    return this.selection.selected.map((v => v.object));
+  }
+
   masterToggle() {
-    this.isAllSelected ?
+    this.allSelected ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }

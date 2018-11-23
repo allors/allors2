@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
-import { SessionService, ErrorService, AllorsRefreshService } from '../../../../angular';
+import { SessionService, ErrorService, AllorsRefreshService, Action } from '../../../../angular';
 import { AllorsMaterialDialogService } from '../../services/dialog';
 import { DeleteAction } from './DeleteAction';
 
@@ -15,7 +15,7 @@ export class DeleteService {
     public snackBar: MatSnackBar
   ) { }
 
-  delete(sessionService: SessionService) {
+  delete(sessionService: SessionService): Action {
     return new DeleteAction(this, sessionService);
   }
 

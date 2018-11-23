@@ -21,10 +21,12 @@ export class AllorsMaterialErrorDialogComponent {
       if (response.accessErrors && response.accessErrors.length > 0) {
         this.title = 'Access Error';
         this.message = 'You do not have the required rights.';
-      } else if ((response.versionErrors && response.versionErrors.length > 0) ||
-        (response.missingErrors && response.missingErrors.length > 0)) {
+      } else if (response.versionErrors && response.versionErrors.length > 0) {
         this.title = 'Concurrency Error';
-        this.message += 'Modifications were detected since last access.';
+        this.message = 'Modifications were detected since last access.';
+      } else if (response.missingErrors && response.missingErrors.length > 0) {
+        this.title = 'Missing Error';
+        this.message = 'Access to a deleted object was requested.';
       } else if (response.derivationErrors && response.derivationErrors.length > 0) {
         this.title = 'Derivation Errors';
         response.derivationErrors.map((derivationError: DerivationError) => {

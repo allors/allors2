@@ -7,15 +7,12 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
-import { PullRequest, SessionObject, And, Like, Sort as AllorsSort, RoleType, Extent, Filter, ContainedIn } from '../../../../framework';
-import { ErrorService, Invoked, MediaService, SessionService, NavigationService, ActionTarget } from '../../../../angular';
-import { AllorsFilterService } from '../../../../angular/base/filter';
-import { AllorsMaterialDialogService } from '../../../base/services/dialog';
-import { Sorter } from '../../../base/sorting';
-
+import { PullRequest, SessionObject, And, Like } from '../../../../framework';
+import { ErrorService, Invoked, MediaService, SessionService, NavigationService, AllorsFilterService } from '../../../../angular';
 import { Person } from '../../../../domain';
+import { TableRow, Sorter, AllorsMaterialDialogService } from '../../../../material';
 
-interface Row extends ActionTarget {
+interface Row extends TableRow {
   person: Person;
   firstName: string;
   lastName: string;

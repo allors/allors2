@@ -4,13 +4,13 @@ import { Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
-import { PullRequest, And, Like, Sort } from '../../../../framework';
-import { SessionService, NavigationService, ActionTarget, AllorsFilterService, ErrorService, AllorsRefreshService } from '../../../../angular';
-import { Table, Sorter } from '../../../../material';
+import { PullRequest, And, Like } from '../../../../framework';
+import { SessionService, NavigationService, AllorsFilterService, ErrorService, AllorsRefreshService, Action } from '../../../../angular';
+import { Table, TableRow, Sorter } from '../../../../material';
 
 import { NavigateService, DeleteService } from '../../../../material';
 
-interface Row extends ActionTarget {
+interface Row extends TableRow {
   object: Organisation;
   name: string;
   owner: string;
@@ -25,6 +25,8 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
   title: string;
 
   table: Table<Row>;
+
+  delete: Action;
 
   private subscription: Subscription;
 
@@ -41,6 +43,11 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
     this.title = 'Organisations';
     this.titleService.setTitle(this.title);
 
+    this.delete = deleteService.delete(allors);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
+
     this.table = new Table({
       selection: true,
       columns: [
@@ -49,7 +56,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
       ],
       actions: [
         navigateService.overview(),
-        deleteService.delete(allors)
+        this.delete
       ],
     });
   }

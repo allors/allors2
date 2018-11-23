@@ -30,4 +30,5 @@ export class AllorsMaterialTableModule {
 }
 
 export * from './Table';
+export * from './TableRow';
 export * from './Column';

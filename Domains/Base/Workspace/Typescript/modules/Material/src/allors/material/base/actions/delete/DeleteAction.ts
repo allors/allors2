@@ -1,42 +1,35 @@
-import { MethodType } from '../../../../framework';
+import { Subject } from 'rxjs';
+
 import { Deletable } from '../../../../domain';
-import { ActionTarget, SessionService, Invoked, ErrorService } from '../../../../angular';
+import { Action, ActionTarget, SessionService, Invoked, ErrorService } from '../../../../angular';
 
 import { DeleteService } from './delete.service';
 
-export class DeleteAction {
-
-  name: (target: ActionTarget) => string;
-  description: (target: ActionTarget) => string;
-  handler: (target: ActionTarget) => void;
-  disabled: (target: ActionTarget) => boolean;
-
-  method: MethodType;
+export class DeleteAction implements Action {
 
   constructor(deleteService: DeleteService, sessionService: SessionService) {
-    const { m } = sessionService;
+    this.execute = (target: ActionTarget) => {
 
-    this.method = m.Deletable.Delete;
-    this.handler = (target: ActionTarget) => {
-
-      const objects: Deletable[] = (target instanceof Array ? target.map(v => v.object) : [target.object]) as Deletable[];
-      const methods = objects.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
+      const deletables = Array.isArray(target) ? target as Deletable[] : [target as Deletable];
+      const methods = deletables.filter((v) => v.CanExecuteDelete).map((v) => v.Delete);
 
       if (methods.length > 0) {
         deleteService.dialogService
           .confirm(
             methods.length === 1 ?
-              { message: `Are you sure you want to delete this ${target.object.objectType.name}?` } :
-              { message: 'Are you sure you want to delete these organisations?' })
+              { message: `Are you sure you want to delete this ${methods[0].object.objectType.name}?` } :
+              { message: `Are you sure you want to delete these objects?` })
           .subscribe((confirm: boolean) => {
             if (confirm) {
               sessionService.invoke(methods)
                 .subscribe((invoked: Invoked) => {
                   deleteService.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                   deleteService.refreshService.refresh();
+                  this.result.next(true);
                 },
                   (error: Error) => {
                     deleteService.errorService.handle(error);
+                    this.result.next(false);
                   });
             }
           });
@@ -44,4 +37,17 @@ export class DeleteAction {
     };
   }
 
+  result = new Subject<boolean>();
+
+  execute: (target: ActionTarget) => void;
+
+  name = () => 'Delete';
+  description = () => 'Delete';
+  disabled = (target: ActionTarget) => {
+    if (Array.isArray(target)) {
+      return target.length > 0 ? !(target[0] as Deletable).CanExecuteDelete : true;
+    } else {
+      return !(target as Deletable).CanExecuteDelete;
+    }
+  }
 }
