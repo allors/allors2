@@ -1,20 +1,17 @@
-import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
-import { MatSnackBar, PageEvent, MatTableDataSource } from '@angular/material';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-import { scan, switchMap } from 'rxjs/operators';
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap, scan } from 'rxjs/operators';
 
-import { ErrorService, Invoked, SessionService, NavigationService } from '../../../../../../angular';
-import { AllorsFilterService } from '../../../../../../angular/base/filter';
-import { Sorter } from '../../../../../base/sorting';
+import { PullRequest, And, Like } from '../../../../../../framework';
+import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
+import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../../../../material';
+
 import { CommunicationEvent } from '../../../../../../domain';
-import { And, Like, PullRequest, Sort } from '../../../../../../framework';
-import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
-import { SelectionModel } from '@angular/cdk/collections';
 
-interface Row {
-  communicationEvent: CommunicationEvent;
+interface Row extends TableRow {
+  object: CommunicationEvent;
   name: string;
   state: string;
   subject: string;
@@ -32,33 +29,45 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
 
   public title = 'Communications';
 
-  public displayedColumns = ['select', 'state', 'subject', 'involved', 'started', 'ended', 'lastModifiedDate', 'menu'];
-  public selection = new SelectionModel<Row>(true, []);
+  table: Table<Row>;
 
-  public total: number;
-  public dataSource = new MatTableDataSource<Row>();
-
-  private sort$: BehaviorSubject<Sort>;
-  private refresh$: BehaviorSubject<Date>;
-  private pager$: BehaviorSubject<PageEvent>;
+  delete: Action;
 
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
+    public refreshService: AllorsRefreshService,
+    public navigateService: NavigateService,
+    public deleteService: DeleteService,
     public navigation: NavigationService,
+    public mediaService: MediaService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
-    titleService: Title,
-  ) {
+    titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.sort$ = new BehaviorSubject<Sort>(undefined);
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
+    this.delete = deleteService.delete(allors);
+    this.delete.result.subscribe((v) => {
+      this.table.selection.clear();
+    });
+
+    this.table = new Table({
+      selection: true,
+      columns: [
+        { name: 'state' },
+        { name: 'subject', sort: true },
+        { name: 'involved' },
+        { name: 'started' },
+        { name: 'ended' },
+        'lastModifiedDate'
+      ],
+      actions: [
+        navigateService.overview(),
+        this.delete
+      ],
+    });
   }
 
   ngOnInit(): void {
@@ -66,21 +75,20 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     const { m, pull, x } = this.allors;
 
     const predicate = new And([
-      new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      new Like({ roleType: m.Person.LastName, parameter: 'lasttName' }),
+      new Like({ roleType: m.CommunicationEvent.Subject, parameter: 'subject' }),
     ]);
 
     this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
-        name: [m.Person.FirstName, m.Person.LastName],
-        lastModifiedDate: m.Person.LastModifiedDate,
+        subject: m.CommunicationEvent.Subject,
+        lastModifiedDate: m.CommunicationEvent.LastModifiedDate,
       }
     );
 
-    this.subscription = combineLatest(this.refresh$, this.filterService.filterFields$, this.sort$, this.pager$)
-      .pipe(
+    this.subscription = combineLatest(this.refreshService.refresh$, this.filterService.filterFields$, this.table.sort$, this.table.pager$)
+    .pipe(
         scan(([previousRefresh, previousFilterFields], [refresh, filterFields, sort, pageEvent]) => {
           return [
             refresh,
@@ -97,8 +105,6 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
               sort: sorter.create(sort),
               include: {
                 CommunicationEventState: x,
-                FromParties: x,
-                ToParties: x,
                 InvolvedParties: x,
               },
               arguments: this.filterService.arguments(filterFields),
@@ -111,12 +117,11 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.session.reset();
-        this.total = loaded.values.CommunicationEvents_total;
         const communicationEvents = loaded.collections.CommunicationEvents as CommunicationEvent[];
-
-        this.dataSource.data = communicationEvents.map((v) => {
+        this.table.total = loaded.values.CommunicationEvents_total;
+        this.table.data = communicationEvents.map((v) => {
           return {
-            communicationEvent: v,
+            object: v,
             state: v.CommunicationEventState && v.CommunicationEventState.Name,
             subject: v.Subject,
             involved: v.InvolvedParties.map((w) => w.displayName).join(', '),
@@ -132,117 +137,5 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public sort(event: Sort): void {
-    this.sort$.next(event);
-  }
-
-  public page(event: PageEvent): void {
-    this.pager$.next(event);
-  }
-
-  public get hasSelection() {
-    return !this.selection.isEmpty();
-  }
-
-  public get hasDeleteSelection() {
-    return this.selectedPeople.filter((v) => v.CanExecuteDelete).length > 0;
-  }
-
-  public get selectedPeople() {
-    return this.selection.selected.map(v => v.communicationEvent);
-  }
-
-  public isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  public masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  public addNew() {
-    // TODO:
-  }
-
-  public cancel(communicationEvent: CommunicationEvent): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to cancel this?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.invoke(communicationEvent.Cancel)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public close(communicationEvent: CommunicationEvent): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to close this?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.invoke(communicationEvent.Close)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public reopen(communicationEvent: CommunicationEvent): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to reopen this?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.invoke(communicationEvent.Reopen)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public delete(communicationEvents: CommunicationEvent[]): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this communication event?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.invoke(communicationEvents.map((v) => v.Delete))
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
   }
 }

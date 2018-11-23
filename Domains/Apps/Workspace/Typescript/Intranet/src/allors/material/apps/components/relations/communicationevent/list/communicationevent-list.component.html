@@ -17,7 +17,7 @@
           <mat-toolbar-row>
             <div class="pl-3 mr-auto">{{title}}</div>
             <div>
-              <button [disabled]="!hasDeleteSelection" mat-icon-button matTooltip="Delete" (click)="delete(selectedPeople)">
+              <button [disabled]="!table.anySelected" mat-icon-button matTooltip="Delete" (click)="delete.execute(table.selected)">
                 <mat-icon>delete</mat-icon>
               </button>
 
@@ -41,81 +41,9 @@
       </div>
 
       <div class="a-items">
-        <table mat-table matSort matSortActive="name" matSortDirection="asc" (matSortChange)="sort($event)" [dataSource]="dataSource">
-          <!-- Selection Column -->
-          <ng-container matColumnDef="select" sticky>
-            <th mat-header-cell *matHeaderCellDef (click)="$event.stopPropagation()">
-              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()" [indeterminate]="selection.hasValue() && !isAllSelected()">
-              </mat-checkbox>
-            </th>
-            <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()">
-              <mat-checkbox (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
-              </mat-checkbox>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="state">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> State </th>
-            <td mat-cell *matCellDef="let row">
-              {{row.state}}
-            </td>
-          </ng-container>
-          
-          <ng-container matColumnDef="subject">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Subject </th>
-            <td mat-cell *matCellDef="let row">
-              {{row.subject}}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="involved">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Involved Parties </th>
-            <td mat-cell *matCellDef="let row">
-              {{row.involved}}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="started">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Started </th>
-            <td mat-cell *matCellDef="let row">
-              {{row.started | date }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="ended">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Ended </th>
-            <td mat-cell *matCellDef="let row">
-              {{row.ended | date }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="lastModifiedDate">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Modified </th>
-            <td mat-cell *matCellDef="let row">
-              {{ row.lastModifiedDate | date }}
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="menu" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef> </th>
-            <td mat-cell *matCellDef="let row" (click)="$event.stopPropagation()" [mat-menu-trigger-for]="menu">
-              <button type="button" mat-icon-button>
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <a (click)="navigation.overview(row.communicationEvent)" mat-menu-item>Details</a>
-                <button mat-menu-item (click)="delete(row.communicationEvent)" [disabled]="!row.communicationEvent.CanExecuteDelete">Delete</button>
-              </mat-menu>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="navigation.overview(row.communicationEvent)" style="cursor: pointer;">
-          </tr>
-        </table>
+        <a-mat-table *ngIf="table.data && table.data.length > 0" [table]="table"></a-mat-table>
       </div>
 
-      <mat-paginator [length]="total" [pageSize]="50" [pageSizeOptions]="[50, 100, 500]" (page)="page($event)"></mat-paginator>
     </div>
 
   </div>

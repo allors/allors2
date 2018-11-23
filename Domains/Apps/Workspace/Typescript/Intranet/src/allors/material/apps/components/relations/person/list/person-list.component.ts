@@ -1,16 +1,14 @@
-import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
-import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MatSnackBar} from '@angular/material';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like } from '../../../../../../framework';
-import { Person } from '../../../../../../domain';
-import { AllorsFilterService, ErrorService, Invoked, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
-import { AllorsMaterialDialogService, Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../../../../material';
+import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
+import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../../../../material';
 
+import { Person } from '../../../../../../domain';
 
 interface Row extends TableRow {
   object: Person;
@@ -43,9 +41,6 @@ export class PersonListComponent implements OnInit, OnDestroy {
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
-    private location: Location,
     titleService: Title) {
 
     titleService.setTitle(this.title);

@@ -51,11 +51,9 @@ mat-sidenav-content > div {
           }
           > .a-items {
             flex: 1 1 0;
-            overflow: auto;
-            mat-list-item {
-              padding-top: 1rem;
-              padding-bottom: 1rem;
-            }
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
           }
         }
       }
