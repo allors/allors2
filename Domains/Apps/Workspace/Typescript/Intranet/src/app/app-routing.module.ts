@@ -172,8 +172,8 @@ export const routes: Routes = [
       {
         path: 'category',
         children: [
-          { path: '', component: catalogues.CategoryComponent },
-          { path: ':id', component: catalogues.CategoryComponent },
+          { path: '', data: addData({ id: ids.ProductCategory }), component: catalogues.CategoryComponent },
+          { path: ':id', data: editData({ id: ids.ProductCategory }), component: catalogues.CategoryComponent },
         ],
       },
       {

@@ -4,17 +4,17 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatExpansionModule } from '@angular/material';
 
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialLocalisedTextModule } from '../../../../../base/components/localisedtext';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { CategoryComponent } from './category.component';
-export { CategoryComponent } from './category.component';
+import { CategoryComponent } from './category-edit.component';
+export { CategoryComponent } from './category-edit.component';
 
 @NgModule({
   declarations: [

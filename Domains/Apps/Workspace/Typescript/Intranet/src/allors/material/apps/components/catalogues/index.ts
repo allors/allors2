@@ -1,8 +1,8 @@
 export * from './catalogue/list/catalogue-list.module';
 export * from './catalogue/edit/catalogue-edit.module';
 
-export * from './category/categories-overview.module';
-export * from './category/category.module';
+export * from './category/list/category-list.module';
+export * from './category/edit/category-edit.module';
 
 export * from './eanidentification/edit/eanidentification.module';
 export * from './isbnidentification/edit/isbnidentification.module';
@@ -36,8 +36,8 @@ export * from './supplieroffering/edit/supplieroffering.module';
 import { CatalogueModule } from './catalogue/edit/catalogue-edit.module';
 import { CataloguesOverviewModule } from './catalogue/list/catalogue-list.module';
 
-import { CategoriesOverviewModule } from './category/categories-overview.module';
-import { CategoryModule } from './category/category.module';
+import { CategoriesOverviewModule } from './category/list/category-list.module';
+import { CategoryModule } from './category/edit/category-edit.module';
 
 import { EanIdentificationModule } from './eanidentification/edit/eanidentification.module';
 import { IsbnIdentificationModule } from './isbnidentification/edit/isbnidentification.module';

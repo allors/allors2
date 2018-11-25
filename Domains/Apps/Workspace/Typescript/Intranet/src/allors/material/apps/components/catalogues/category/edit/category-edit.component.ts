@@ -4,18 +4,18 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
-import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../../angular';
+import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../../domain';
+import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
-import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
+import { LocalisedText } from '../../../../../../domain/generated/LocalisedText.g';
 
 @Component({
-  templateUrl: './category.component.html',
+  templateUrl: './category-edit.component.html',
   providers: [SessionService]
 })
 export class CategoryComponent implements OnInit, OnDestroy {
