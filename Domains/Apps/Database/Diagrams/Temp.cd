@@ -1,48 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.Quote">
-    <Position X="3" Y="4.75" Width="1.5" />
+  <Interface Name="Allors.Domain.SalesOrder">
+    <Position X="4.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAIAAA4AgAAAABACAAAEACgAEgAAAAAAAAAAIQAg=</HashCode>
+      <HashCode>gAuhAQhIAAAIEgwQABEAAgIAkEAYNAiQAAYRESJC0AA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Issuer" />
-      <Property Name="QuoteItems" />
+      <Property Name="TakenBy" />
     </ShowAsAssociation>
   </Interface>
   <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
-    <Position X="6.5" Y="4.75" Width="1.5" />
+    <Position X="8" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>mAQAEAGESRYAAoCAUAhQppKIBgGOgoICCAESAAAxSAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.ProductQuote" Collapsed="true">
-    <Position X="0.75" Y="10.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.Proposal" Collapsed="true">
-    <Position X="3" Y="10.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.StatementOfWork" Collapsed="true">
-    <Position X="5.25" Y="10.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.QuoteItem">
-    <Position X="8" Y="6.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>OAEiIIgAAQABAAEEAAAgAAABAIAAAAgAAAgBgAAAAgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

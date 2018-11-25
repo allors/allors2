@@ -4,13 +4,13 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, SessionService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Field, Invoked, Loaded, Saved, SessionService } from '../../../../../../angular';
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../../domain';
+import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
@@ -20,7 +20,7 @@ import { switchMap } from 'rxjs/operators';
     border-left: 1px solid #CCCCCC;
     border-right: 1px solid #CCCCCC;}
   `],
-  templateUrl: './salesorder.component.html',
+  templateUrl: './salesorder-edit.component.html',
   providers: [SessionService]
 })
 export class SalesOrderEditComponent implements OnInit, OnDestroy {

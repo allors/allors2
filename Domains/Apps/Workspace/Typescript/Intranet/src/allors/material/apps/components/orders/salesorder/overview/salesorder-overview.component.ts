@@ -5,11 +5,11 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService } from '../../../../../angular';
-import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService } from '../../../../../../angular';
+import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './salesorder-overview.component.html',
