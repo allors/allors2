@@ -186,8 +186,8 @@ export const routes: Routes = [
       {
         path: 'productType',
         children: [
-          { path: '', component: catalogues.ProductTypeComponent },
-          { path: ':id', component: catalogues.ProductTypeComponent },
+          { path: '', data: addData({ id: ids.ProductType }), component: catalogues.ProductTypeComponent },
+          { path: ':id', data: editData({ id: ids.ProductType }), component: catalogues.ProductTypeComponent },
         ],
       },
 

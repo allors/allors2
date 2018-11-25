@@ -26,8 +26,8 @@ export * from './part/overview/part-overview.module';
 export * from './productcharacteristic/list/productcharacteristic-list.module';
 export * from './productcharacteristic/edit/productcharacteristic-edit.module';
 
-export * from './producttype/producttypes-overview.module';
-export * from './producttype/producttype.module';
+export * from './producttype/list/producttype-list.module';
+export * from './producttype/edit/producttype-edit.module';
 
 export * from './serialiseditem/edit/serialiseditem.module';
 
@@ -63,8 +63,8 @@ import { PartOverviewModule } from './part/overview/part-overview.module';
 import { ProductCharacteristicModule } from './productcharacteristic/edit/productcharacteristic-edit.module';
 import { ProductCharacteristicsOverviewModule } from './productcharacteristic/list/productcharacteristic-list.module';
 
-import { ProductTypeModule } from './producttype/producttype.module';
-import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';
+import { ProductTypeModule } from './producttype/edit/producttype-edit.module';
+import { ProductTypesOverviewModule } from './producttype/list/producttype-list.module';
 
 import { SerialisedItemModule } from './serialiseditem/edit/serialiseditem.module';
 import { SerialisedItemsModule } from './serialiseditem/overview/serialiseditems.module';

@@ -3,15 +3,15 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
-import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../../angular';
+import { ProductType, SerialisedItemCharacteristicType } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './producttype.component.html',
+  templateUrl: './producttype-edit.component.html',
   providers: [SessionService]
 })
 export class ProductTypeComponent implements OnInit, OnDestroy {

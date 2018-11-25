@@ -5,21 +5,21 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatAutocompleteModule, MatExpansionModule } from '@angular/material';
 
 
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialAutoCompleteModule } from '../../../../../base/components/autocomplete';
+import { AllorsMaterialChipsModule } from '../../../../../base/components/chips';
+import { AllorsMaterialDatepickerModule } from '../../../../../base/components/datepicker';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialFilesModule } from '../../../../../base/components/files';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialLocalisedTextModule } from '../../../../../base/components/localisedtext';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { ProductTypeComponent } from './producttype.component';
-export { ProductTypeComponent } from './producttype.component';
+import { ProductTypeComponent } from './producttype-edit.component';
+export { ProductTypeComponent } from './producttype-edit.component';
 
 @NgModule({
   declarations: [
