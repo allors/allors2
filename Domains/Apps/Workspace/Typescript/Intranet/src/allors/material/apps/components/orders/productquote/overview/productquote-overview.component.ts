@@ -5,11 +5,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, Saved, SessionService } from '../../../../../angular';
-import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Invoked, MediaService, Saved, SessionService } from '../../../../../../angular';
+import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../../domain';
+import { PullRequest, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './productquote-overview.component.html',

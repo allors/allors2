@@ -9,25 +9,25 @@ import { PullRequest, And, Equals } from '../../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../../..';
 
-import { Request } from '../../../../../../domain';
+import { Quote } from '../../../../../../domain';
 
 interface Row extends TableRow {
-  object: Request;
+  object: Quote;
   number: string;
-  originator: string;
+  receiver: string;
   state: string;
-  description: string;
   responseRequired: string;
+  description: string;
   lastModifiedDate: string;
 }
 
 @Component({
-  templateUrl: './request-list.component.html',
+  templateUrl: './productquote-list.component.html',
   providers: [SessionService, AllorsFilterService]
 })
-export class RequestsOverviewComponent implements OnInit, OnDestroy {
+export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
-  public title = 'Requests';
+  public title = 'Quotes';
 
   table: Table<Row>;
 
@@ -75,7 +75,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.allors;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.Request.Recipient });
+    const internalOrganisationPredicate = new Equals({ propertyType: m.Quote.Issuer });
     const predicate = new And([
       // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
       internalOrganisationPredicate
@@ -85,7 +85,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
 
     const sorter = new Sorter(
       {
-        lastModifiedDate: m.Request.LastModifiedDate,
+        lastModifiedDate: m.Quote.LastModifiedDate,
       }
     );
 
@@ -104,12 +104,12 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
           internalOrganisationPredicate.value = internalOrganisationId;
 
           const pulls = [
-            pull.Request({
+            pull.Quote({
               predicate,
               sort: sorter.create(sort),
               include: {
-                Originator: x,
-                RequestState: x,
+                Receiver: x,
+                QuoteState: x,
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -121,14 +121,14 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.session.reset();
-        const requests = loaded.collections.Requests as Request[];
+        const requests = loaded.collections.Quotes as Quote[];
         this.table.total = loaded.values.Requests_total;
         this.table.data = requests.map((v) => {
           return {
             object: v,
-            number: `${v.RequestNumber}`,
-            originator: v.Originator && v.Originator.displayName,
-            state: `${v.RequestState && v.RequestState.Name}`,
+            number: `${v.QuoteNumber}`,
+            receiver: v.Receiver && v.Receiver.displayName,
+            state: `${v.QuoteState && v.QuoteState.Name}`,
             description: `${v.Description || ''}`,
             responseRequired: v.RequiredResponseDate && moment(v.RequiredResponseDate).format('MMM Do YY'),
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()

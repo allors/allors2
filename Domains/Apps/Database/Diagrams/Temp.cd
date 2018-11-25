@@ -1,26 +1,48 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.Request">
-    <Position X="4.25" Y="3.25" Width="1.5" />
+  <Interface Name="Allors.Domain.Quote">
+    <Position X="3" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAEAAIIAA4AggAAwBAAAAQAECAAAAAAEAAABAgAAQAA=</HashCode>
+      <HashCode>AAEAAIAAA4AgAAAABACAAAEACgAEgAAAAAAAAAAIQAg=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="RequestItems" />
+      <Property Name="Issuer" />
+      <Property Name="QuoteItems" />
     </ShowAsAssociation>
   </Interface>
-  <Interface Name="Allors.Domain.RequestForQuote">
-    <Position X="4.25" Y="9" Width="1.5" />
+  <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
+    <Position X="6.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>mAQAEAGESRYAAoCAUAhQppKIBgGOgoICCAESAAAxSAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.ProductQuote" Collapsed="true">
+    <Position X="0.75" Y="10.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.RequestItem">
-    <Position X="7.75" Y="5.5" Width="1.5" />
+  <Interface Name="Allors.Domain.Proposal" Collapsed="true">
+    <Position X="3" Y="10.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAACIAgAAQAgAAAEAAAAQAIAAJoAAAgAAAABgCAAAAA=</HashCode>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.StatementOfWork" Collapsed="true">
+    <Position X="5.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Allors.Domain.QuoteItem">
+    <Position X="8" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>OAEiIIgAAQABAAEEAAAgAAABAIAAAAgAAAgBgAAAAgA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
