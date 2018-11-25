@@ -107,11 +107,11 @@ export const routes: Routes = [
         path: 'orders', data: moduleData({ title: 'Orders', icon: 'share' }),
         children: [
           { path: 'requests', data: pageListData({ id: ids.Request, icon: 'share' }), component: orders.RequestsOverviewComponent },
-          { path: 'request/:id', component: orders.RequestOverviewComponent },
+          { path: 'request/:id', data: overviewData({ id: ids.Request }), component: orders.RequestOverviewComponent },
           { path: 'productQuotes', data: pageListData({ id: ids.Quote, icon: 'share' }), component: orders.ProductQuotesOverviewComponent },
-          { path: 'productQuote/:id', component: orders.ProductQuoteOverviewComponent },
+          { path: 'productQuote/:id', data: overviewData({ id: ids.Quote }), component: orders.ProductQuoteOverviewComponent },
           { path: 'salesOrders', data: pageListData({ id: ids.SalesOrder, icon: 'share' }), component: orders.SalesOrdersOverviewComponent },
-          { path: 'salesOrder/:id', component: orders.SalesOrderOverviewComponent },
+          { path: 'salesOrder/:id', data: overviewData({ id: ids.SalesOrder }), component: orders.SalesOrderOverviewComponent },
         ],
       },
       {

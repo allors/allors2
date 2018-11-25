@@ -5,16 +5,16 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, SessionService } from '../../../../../angular';
-import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, RequestForQuote } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Invoked, Saved, SessionService } from '../../../../../../angular';
+import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, RequestForQuote } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 @Component({
-  templateUrl: './request.component.html',
+  templateUrl: './request-edit.component.html',
   providers: [SessionService]
 })
 export class RequestEditComponent implements OnInit, OnDestroy {

@@ -6,13 +6,13 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, SessionService } from '../../../../../angular';
-import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Invoked, SessionService } from '../../../../../../angular';
+import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from '../../../../../../domain';
+import { Fetch, PullRequest, TreeNode } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 
 @Component({
   templateUrl: './request-overview.component.html',

@@ -1,23 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
-    <Position X="8.5" Y="2.5" Width="2.25" />
+  <Interface Name="Allors.Domain.Request">
+    <Position X="4.25" Y="3.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>mAQAEAGESRYAAoCAUAhQppKIBgGOgoICCAESAAAxSAA=</HashCode>
+      <HashCode>AAEAAIIAA4AggAAwBAAAAQAECAAAAAAEAAABAgAAQAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="RequestItems" />
+    </ShowAsAssociation>
+  </Interface>
+  <Interface Name="Allors.Domain.RequestForQuote">
+    <Position X="4.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="8.5" Y="0.75" Width="2.25" />
+  <Interface Name="Allors.Domain.RequestItem">
+    <Position X="7.75" Y="5.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACooAgUAAAACAIFBANAgEI=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.Organisation">
-    <Position X="8.5" Y="4" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAACoAgAAAAAAIAAAAAEAAUAAAgAAAhAAAEBAAAAAQA=</HashCode>
+      <HashCode>QAACIAgAAQAgAAAEAAAAQAIAAJoAAAgAAAABgCAAAAA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

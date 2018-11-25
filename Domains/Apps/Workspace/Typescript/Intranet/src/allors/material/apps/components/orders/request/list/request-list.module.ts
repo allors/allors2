@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule,  MatIconModule, MatToolbarModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFilterModule, AllorsMaterialTableModule} from '../../../../../material';
+import { AllorsMaterialFilterModule, AllorsMaterialTableModule} from '../../../../..';
 
-import { RequestsOverviewComponent } from './requests-overview.component';
-export { RequestsOverviewComponent } from './requests-overview.component';
+import { RequestsOverviewComponent } from './request-list.component';
+export { RequestsOverviewComponent } from './request-list.component';
 
 @NgModule({
   declarations: [

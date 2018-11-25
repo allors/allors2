@@ -360,6 +360,22 @@ namespace Allors
                     .WithActualStart(DateTime.UtcNow)
                     .Build();
 
+                var requestForQuote = new RequestForQuoteBuilder(this.Session)
+                    .WithEmailAddress($"customer{i}@acme.com")
+                    .WithTelephoneNumber("+1 234 56789")
+                    .WithRecipient(allors)
+                    .Build();
+
+                // TODO: User SerializedInventoryItem instead of SerializedItem
+                var requestItem = new RequestItemBuilder(this.Session)
+                    .WithSerialisedItem(serialisedItem)
+                    .WithComment($"Comment {i}")
+                    .WithQuantity(i)
+                    .Build();
+
+                requestForQuote.AddRequestItem(requestItem);
+
+
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)

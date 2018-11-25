@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
@@ -16,9 +17,9 @@ interface Row extends TableRow {
   state: string;
   subject: string;
   involved: string;
-  started: Date;
-  ended: Date;
-  lastModifiedDate: Date;
+  started: string;
+  ended: string;
+  lastModifiedDate: string;
 }
 
 @Component({
@@ -125,9 +126,9 @@ export class CommunicationEventListComponent implements OnInit, OnDestroy {
             state: v.CommunicationEventState && v.CommunicationEventState.Name,
             subject: v.Subject,
             involved: v.InvolvedParties.map((w) => w.displayName).join(', '),
-            started: v.ActualStart,
-            ended: v.ActualEnd,
-            lastModifiedDate: v.LastModifiedDate,
+            started: v.ActualStart && moment(v.ActualStart).format('MMM Do YY'),
+            ended: v.ActualEnd && moment(v.ActualEnd).format('MMM Do YY'),
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       }, this.errorService.handler);

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { switchMap, scan } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, AllorsRefreshService, Action } from '../../../../../../angular';
@@ -17,7 +18,7 @@ interface Row extends TableRow {
   locality: string;
   country: string;
   phone: string;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
 }
 
 @Component({
@@ -133,7 +134,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
             locality: v.displayAddress2,
             country: v.displayAddress3,
             phone: v.displayPhone,
-            lastModifiedDate: v.LastModifiedDate,
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       }, this.errorService.handler);
