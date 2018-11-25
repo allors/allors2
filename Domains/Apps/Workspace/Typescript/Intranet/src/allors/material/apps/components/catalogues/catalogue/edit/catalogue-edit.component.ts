@@ -4,17 +4,17 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
-import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, Loaded, Saved, SessionService } from '../../../../../../angular';
+import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../../domain';
+import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './catalogue.component.html',
+  templateUrl: './catalogue-edit.component.html',
   providers: [SessionService]
 })
 export class CatalogueComponent implements OnInit, OnDestroy {

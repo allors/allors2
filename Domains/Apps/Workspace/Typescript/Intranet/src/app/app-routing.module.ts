@@ -27,7 +27,7 @@ export const routes: Routes = [
       },
       // Relations
       {
-        path: 'relations', data: moduleData({ title: 'Relations', icon: 'dashboard' }),
+        path: 'relations', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
         children: [
           { path: 'people', data: pageListData({ id: ids.Person, icon: 'people' }), component: relations.PersonListComponent, },
           { path: 'person/:id', data: overviewData({ id: ids.Person }), component: relations.PersonOverviewComponent },
@@ -104,7 +104,7 @@ export const routes: Routes = [
 
       // Orders
       {
-        path: 'orders', data: moduleData({ title: 'Orders', icon: 'share' }),
+        path: 'orders', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
         children: [
           { path: 'requests', data: pageListData({ id: ids.Request, icon: 'share' }), component: orders.RequestsOverviewComponent },
           { path: 'request/:id', data: overviewData({ id: ids.Request }), component: orders.RequestOverviewComponent },
@@ -150,14 +150,14 @@ export const routes: Routes = [
 
       // Catalogues
       {
-        path: 'catalogues', data: moduleData({ title: 'Catalogues', icon: 'share' }),
+        path: 'catalogues', data: moduleData({ title: 'Products', icon: 'build' }),
         children: [
-          { path: 'catalogues', data: pageListData({ id: ids.Catalogue, icon: 'share' }), component: catalogues.CataloguesOverviewComponent },
-          { path: 'categories', data: pageListData({ id: ids.ProductCategory, icon: 'share' }), component: catalogues.CategoriesOverviewComponent },
           { path: 'goods', data: pageListData({ id: ids.Good, icon: 'share' }), component: catalogues.GoodListComponent },
           { path: 'good/:id', data: overviewData({ id: ids.Good, icon: 'share' }), component: catalogues.GoodOverviewComponent },
           { path: 'parts', data: pageListData({ id: ids.Part, icon: 'share' }), component: catalogues.PartListComponent },
           { path: 'part/:id', data: overviewData({ id: ids.Part, icon: 'share' }), component: catalogues.PartOverviewComponent },
+          { path: 'catalogues', data: pageListData({ id: ids.Catalogue, icon: 'share' }), component: catalogues.CataloguesOverviewComponent },
+          { path: 'categories', data: pageListData({ id: ids.ProductCategory, icon: 'share' }), component: catalogues.CategoriesOverviewComponent },
           { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType, icon: 'share' }), component: catalogues.ProductCharacteristicsOverviewComponent },
           { path: 'productTypes', data: pageListData({ id: ids.ProductType, icon: 'share' }), component: catalogues.ProductTypesOverviewComponent },
         ],
@@ -165,8 +165,8 @@ export const routes: Routes = [
       {
         path: 'catalogue',
         children: [
-          { path: '', component: catalogues.CatalogueComponent },
-          { path: ':id', component: catalogues.CatalogueComponent },
+          { path: '', data: addData({ id: ids.Catalogue }), component: catalogues.CatalogueComponent },
+          { path: ':id', data: editData({ id: ids.Catalogue }), component: catalogues.CatalogueComponent },
         ],
       },
       {
@@ -193,7 +193,7 @@ export const routes: Routes = [
 
       // Accounts Payable
       {
-        path: 'accountspayable', data: moduleData({ title: 'Accounts Payable', icon: 'dashboard' }),
+        path: 'accountspayable', data: moduleData({ title: 'Accounts Payable', icon: 'payment' }),
         children: [
           { path: 'invoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: ap.InvoicesOverviewComponent },
           { path: 'invoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: ap.InvoiceOverviewComponent },
@@ -211,7 +211,7 @@ export const routes: Routes = [
 
       // Accounts Receivable
       {
-        path: 'accountsreceivable', data: moduleData({ title: 'Accounts Receivable', icon: 'dashboard' }),
+        path: 'accountsreceivable', data: moduleData({ title: 'Accounts Receivable', icon: 'payment' }),
         children: [
           { path: 'invoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: ar.InvoicesOverviewComponent },
           { path: 'invoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: ar.InvoiceOverviewComponent },

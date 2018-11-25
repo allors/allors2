@@ -1,5 +1,5 @@
-export * from './catalogue/catalogues-overview.module';
-export * from './catalogue/catalogue.module';
+export * from './catalogue/list/catalogue-list.module';
+export * from './catalogue/edit/catalogue-edit.module';
 
 export * from './category/categories-overview.module';
 export * from './category/category.module';
@@ -33,8 +33,8 @@ export * from './serialiseditem/edit/serialiseditem.module';
 
 export * from './supplieroffering/edit/supplieroffering.module';
 
-import { CatalogueModule } from './catalogue/catalogue.module';
-import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module';
+import { CatalogueModule } from './catalogue/edit/catalogue-edit.module';
+import { CataloguesOverviewModule } from './catalogue/list/catalogue-list.module';
 
 import { CategoriesOverviewModule } from './category/categories-overview.module';
 import { CategoryModule } from './category/category.module';
