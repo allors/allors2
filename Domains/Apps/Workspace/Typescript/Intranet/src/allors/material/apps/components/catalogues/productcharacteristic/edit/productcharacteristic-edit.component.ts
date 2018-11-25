@@ -4,14 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, SessionService } from '../../../../../angular';
-import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
-import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { Title } from '../../../../../../../node_modules/@angular/platform-browser';
+import { ErrorService, Saved, SessionService } from '../../../../../../angular';
+import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../../domain';
+import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-  templateUrl: './productcharacteristic.component.html',
+  templateUrl: './productcharacteristic-edit.component.html',
   providers: [SessionService]
 })
 export class ProductCharacteristicComponent implements OnInit, OnDestroy {

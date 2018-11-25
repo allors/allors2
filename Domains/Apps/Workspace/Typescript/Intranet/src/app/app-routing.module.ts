@@ -179,8 +179,8 @@ export const routes: Routes = [
       {
         path: 'productCharacteristic',
         children: [
-          { path: '', component: catalogues.ProductCharacteristicComponent },
-          { path: ':id', component: catalogues.ProductCharacteristicComponent },
+          { path: '', data: addData({ id: ids.SerialisedItemCharacteristicType }), component: catalogues.ProductCharacteristicComponent },
+          { path: ':id', data: editData({ id: ids.SerialisedItemCharacteristicType }), component: catalogues.ProductCharacteristicComponent },
         ],
       },
       {

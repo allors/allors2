@@ -23,8 +23,8 @@ export * from './part/list/part-list.module';
 export * from './part/edit/part-edit.module';
 export * from './part/overview/part-overview.module';
 
-export * from './productcharacteristic/productcharacteristics-overview.module';
-export * from './productcharacteristic/productcharacteristic.module';
+export * from './productcharacteristic/list/productcharacteristic-list.module';
+export * from './productcharacteristic/edit/productcharacteristic-edit.module';
 
 export * from './producttype/producttypes-overview.module';
 export * from './producttype/producttype.module';
@@ -60,8 +60,8 @@ import { PartEditModule } from './part/edit/part-edit.module';
 import { PartListModule } from './part/list/part-list.module';
 import { PartOverviewModule } from './part/overview/part-overview.module';
 
-import { ProductCharacteristicModule } from './productcharacteristic/productcharacteristic.module';
-import { ProductCharacteristicsOverviewModule } from './productcharacteristic/productcharacteristics-overview.module';
+import { ProductCharacteristicModule } from './productcharacteristic/edit/productcharacteristic-edit.module';
+import { ProductCharacteristicsOverviewModule } from './productcharacteristic/list/productcharacteristic-list.module';
 
 import { ProductTypeModule } from './producttype/producttype.module';
 import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';

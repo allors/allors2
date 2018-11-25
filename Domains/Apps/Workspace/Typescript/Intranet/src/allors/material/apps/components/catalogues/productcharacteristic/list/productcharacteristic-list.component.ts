@@ -5,25 +5,26 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { PullRequest, And, Equals } from '../../../../../../framework';
+import { PullRequest, And, Equals, Like } from '../../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../../..';
 
-import { Catalogue } from '../../../../../../domain';
+import { SerialisedItemCharacteristicType } from '../../../../../../domain';
 
 interface Row extends TableRow {
-  object: Catalogue;
+  object: SerialisedItemCharacteristicType;
   name: string;
-  description: string;
+  active: boolean;
+  uom: string;
 }
 
 @Component({
-  templateUrl: './catalogue-list.component.html',
+  templateUrl: './productcharacteristic-list.component.html',
   providers: [SessionService, AllorsFilterService]
 })
-export class CataloguesOverviewComponent implements OnInit, OnDestroy {
+export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
 
-  public title = 'Catalogue';
+  public title = 'Product Characteristic';
 
   table: Table<Row>;
 
@@ -67,17 +68,15 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.allors;
 
-    const internalOrganisationPredicate = new Equals({ propertyType: m.Catalogue.InternalOrganisation });
     const predicate = new And([
-      // new Like({ roleType: m.Person.FirstName, parameter: 'firstName' }),
-      internalOrganisationPredicate
+      new Like({ roleType: m.Person.FirstName, parameter: 'name' }),
     ]);
 
     this.filterService.init(predicate);
 
     const sorter = new Sorter(
       {
-        name: m.Catalogue.Name,
+        name: m.SerialisedItemCharacteristicType.Name,
         description: m.Catalogue.Description,
       }
     );
@@ -94,15 +93,12 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
         }, []),
         switchMap(([, filterFields, sort, pageEvent, internalOrganisationId]) => {
 
-          internalOrganisationPredicate.value = internalOrganisationId;
-
           const pulls = [
-            pull.Catalogue({
+            pull.SerialisedItemCharacteristicType({
               predicate,
               sort: sorter.create(sort),
               include: {
-                CatalogueImage: x,
-                ProductCategories: x,
+                UnitOfMeasure: x,
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -114,13 +110,14 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.session.reset();
-        const requests = loaded.collections.Catalogues as Catalogue[];
-        this.table.total = loaded.values.Catalogues_total;
+        const requests = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
+        this.table.total = loaded.values.SerialisedItemCharacteristicTypes_total;
         this.table.data = requests.map((v) => {
           return {
             object: v,
             name: `${v.Name}`,
-            description: `${v.Description || ''}`,
+            active: v.IsActive,
+            uom: `${v.UnitOfMeasure && v.UnitOfMeasure.Name}`,
           } as Row;
         });
       }, this.errorService.handler);
