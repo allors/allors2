@@ -9,8 +9,6 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { MainModule } from './main/main.module';
 import { InternalOrganisationSelectModule } from '../allors/material/apps/components/common/internalorganisation/internalorganisation-select.module';
 
-import * as ap from '../allors/material/apps/components/accountspayable';
-import * as ar from '../allors/material/apps/components/accountsreceivable';
 import * as catalogues from '../allors/material/apps/components/catalogues';
 import * as orders from '../allors/material/apps/components/orders';
 import * as relations from '../allors/material/apps/components/relations';
@@ -34,8 +32,6 @@ import * as workefforts from '../allors/material/apps/components/workefforts';
     relations.Modules,
     orders.Modules,
     catalogues.Modules,
-    ap.modules,
-    ar.modules,
     workefforts.Modules,
   ],
 })

@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import * as ap from '../allors/material/apps/components/accountspayable';
-import * as ar from '../allors/material/apps/components/accountsreceivable';
 import * as catalogues from '../allors/material/apps/components/catalogues';
 import * as orders from '../allors/material/apps/components/orders';
 import * as relations from '../allors/material/apps/components/relations';
@@ -15,6 +13,38 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ids } from '../allors/meta/generated';
 import { moduleData, pageListData, overviewData, editData, addData } from '../allors/angular';
+
+import * as PurchaseInvoiceList from '../allors/material/apps/components/purchaseinvoice/list/purchaseinvoice-list.module';
+import * as PurchaseInvoiceOverview from '../allors/material/apps/components/purchaseinvoice/overview/purchaseinvoice-overview.module';
+import * as PurchaseInvoiceEdit from '../allors/material/apps/components/purchaseinvoice/edit/purchaseinvoice-edit.module';
+import * as PurchaseInvoiceItemEdit from '../allors/material/apps/components/purchaseinvoiceItem/edit/purchaseinvoiceitem-edit.module';
+
+import * as SalesInvoiceList from '../allors/material/apps/components/salesinvoice/list/salesinvoice-list.module';
+import * as SalesInvoiceOverview from '../allors/material/apps/components/salesinvoice/overview/salesinvoice-overview.module';
+import * as SalesInvoiceEdit from '../allors/material/apps/components/salesinvoice/edit/salesinvoice-edit.module';
+import * as SalesInvoiceItemEdit from '../allors/material/apps/components/salesinvoiceitem/edit/salesinvoiceitem-edit.module';
+import * as RepeatingSalesInvoiceEdit from '../allors/material/apps/components/repeatingsalesinvoice/edit/repeatingsalesinvoice-edit.module';
+
+import * as IncoTermEdit from '../allors/material/apps/components/incoterm/edit/incoterm-edit.module';
+import * as InvoiceTermEdit from '../allors/material/apps/components/invoiceterm/edit/invoiceterm-edit.module';
+import * as OrderTermEdit from '../allors/material/apps/components/orderterm/edit/orderterm-edit.module';
+
+const modules = [
+  PurchaseInvoiceList.PurchaseInvoiceListModule,
+  PurchaseInvoiceOverview.PurchaseInvoiceOverviewModule,
+  PurchaseInvoiceEdit.PurchaseInvoiceEditModule,
+  PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditModule,
+
+  SalesInvoiceList.SalesInvoiceListModule,
+  SalesInvoiceOverview.SalesInvoiceOverviewModule,
+  SalesInvoiceEdit.SalesInvoiceEditModule,
+  SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
+  RepeatingSalesInvoiceEdit.RepeatingSalesInvoiceEditModule,
+
+  IncoTermEdit.IncoTermEditModule,
+  InvoiceTermEdit.InvoiceTermEditModule,
+  OrderTermEdit.OrderTermEditModule,
+];
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -191,47 +221,41 @@ export const routes: Routes = [
         ],
       },
 
-      // Accounts Payable
+      // Accounting
       {
-        path: 'accountspayable', data: moduleData({ title: 'Accounts Payable', icon: 'payment' }),
+        path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
         children: [
-          { path: 'invoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: ap.InvoicesOverviewComponent },
-          { path: 'invoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: ap.InvoiceOverviewComponent },
+          { path: 'purchaseinvoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
+          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
+          { path: 'salesinvoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
+          { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
       },
       {
         path: 'purchaseinvoice',
         children: [
-          { path: '', component: ap.InvoiceComponent },
-          { path: ':id', component: ap.InvoiceComponent },
-          { path: ':id/item', component: ap.InvoiceItemEditComponent },
-          { path: ':id/item/:itemId', component: ap.InvoiceItemEditComponent },
-        ],
-      },
-
-      // Accounts Receivable
-      {
-        path: 'accountsreceivable', data: moduleData({ title: 'Accounts Receivable', icon: 'payment' }),
-        children: [
-          { path: 'invoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: ar.InvoicesOverviewComponent },
-          { path: 'invoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: ar.InvoiceOverviewComponent },
+          { path: '', component: PurchaseInvoiceEdit.PurchaseInvoiceEditComponent },
+          { path: ':id', component: PurchaseInvoiceEdit.PurchaseInvoiceEditComponent },
+          { path: ':id/item', component: PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditComponent },
+          { path: ':id/item/:itemId', component: PurchaseInvoiceItemEdit.PurchaseInvoiceItemEditComponent },
         ],
       },
       {
         path: 'salesinvoice',
         children: [
-          { path: '', component: ar.InvoiceComponent },
-          { path: ':id', component: ar.InvoiceComponent },
-          { path: ':id/item', component: ar.InvoiceItemEditComponent },
-          { path: ':id/repeat', component: ar.RepeatingInvoiceEditComponent },
-          { path: ':id/repeat/:repeatingInvoiceId', component: ar.RepeatingInvoiceEditComponent },
-          { path: ':id/item/:itemId', component: ar.InvoiceItemEditComponent },
-          { path: ':id/incoterm', component: ar.IncoTermEditComponent },
-          { path: ':id/incoterm/:termId', component: ar.IncoTermEditComponent },
-          { path: ':id/invoiceterm', component: ar.InvoiceTermEditComponent },
-          { path: ':id/invoiceterm/:termId', component: ar.InvoiceTermEditComponent },
-          { path: ':id/orderterm', component: ar.OrderTermEditComponent },
-          { path: ':id/orderterm/:termId', component: ar.OrderTermEditComponent },
+          { path: '', component: SalesInvoiceEdit.SalesInvoiceEditComponent },
+          { path: ':id', component: SalesInvoiceEdit.SalesInvoiceEditComponent },
+          { path: ':id/item', component: SalesInvoiceEdit.SalesInvoiceEditComponent },
+          { path: ':id/repeat', component: RepeatingSalesInvoiceEdit.RepeatingSalesInvoiceEditComponent },
+          { path: ':id/repeat/:repeatingInvoiceId', component: RepeatingSalesInvoiceEdit.RepeatingSalesInvoiceEditComponent },
+          { path: ':id/item/:itemId', component: SalesInvoiceItemEdit.SalesInvoiceItemEditComponent },
+
+          { path: ':id/incoterm', component: IncoTermEdit.IncoTermEditComponent },
+          { path: ':id/incoterm/:termId', component: IncoTermEdit.IncoTermEditComponent },
+          { path: ':id/invoiceterm', component: InvoiceTermEdit.InvoiceTermEditComponent },
+          { path: ':id/invoiceterm/:termId', component: InvoiceTermEdit.InvoiceTermEditComponent },
+          { path: ':id/orderterm', component: OrderTermEdit.OrderTermEditComponent },
+          { path: ':id/orderterm/:termId', component: OrderTermEdit.OrderTermEditComponent },
         ],
       },
 
@@ -252,6 +276,6 @@ export const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule, modules],
 })
 export class AppRoutingModule { }
