@@ -1,0 +1,22 @@
+<mat-card>
+
+  <div class="row">
+    <div class="col">
+      <h2>
+        <mat-icon>business</mat-icon>{{this.title}}
+      </h2>
+    </div>
+  </div>
+
+  <mat-card-content>
+
+    <div class="a-items">
+      <a-mat-table *ngIf="table.data && table.data.length > 0" [table]="table"></a-mat-table>
+    </div>
+
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button>Add new</button>
+  </mat-card-actions>
+</mat-card>

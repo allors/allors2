@@ -77,4 +77,6 @@ export class PersonInlineComponent implements OnInit {
           this.errorService.handle(error);
         });
   }
+
+  // TODO:  change to latest inline implementation
 }

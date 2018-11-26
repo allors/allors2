@@ -15,6 +15,8 @@ import { AllorsMaterialTextAreaModule } from '../../../../../base/components/tex
 import { IGoodIdentificationsModule } from '../../igoodidentification/igoodIdentifications.module';
 import { PriceComponentsModule } from '../../pricecomponent/pricecomponents.module';
 import { SerialisedItemsModule } from '../../serialiseditem/overview/serialiseditems.module';
+import { SerialisedInventoryComponentInventoryModule } from '../../serialisedinventory/serialisedinventory.module';
+import { NonSerialisedInventoryComponentInventoryModule } from '../../nonserialisedinventory/nonserialisedinventory.module';
 
 import { PartOverviewComponent } from './part-overview.component';
 export { PartOverviewComponent } from './part-overview.component';
@@ -30,6 +32,9 @@ export { PartOverviewComponent } from './part-overview.component';
     IGoodIdentificationsModule,
     PriceComponentsModule,
     SerialisedItemsModule,
+    NonSerialisedInventoryComponentInventoryModule,
+    SerialisedInventoryComponentInventoryModule,
+
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
@@ -38,6 +43,7 @@ export { PartOverviewComponent } from './part-overview.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+
     CommonModule,
     FormsModule,
     MatButtonModule,

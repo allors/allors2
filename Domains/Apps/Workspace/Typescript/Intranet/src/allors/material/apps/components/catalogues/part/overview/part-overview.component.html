@@ -156,5 +156,13 @@
         </mat-card>
       </div>
 
+      <div *ngIf="serialised" class="col-md-6">
+        <serialised-inventory [part]='part'></serialised-inventory>
+      </div>
+
+      <div *ngIf="!serialised" class="col-md-6">
+        <nonserialised-inventory [part]='part'></nonserialised-inventory>
+      </div>
+
     </div>
   </div>
