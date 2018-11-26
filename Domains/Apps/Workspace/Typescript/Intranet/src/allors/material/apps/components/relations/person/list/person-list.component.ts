@@ -3,6 +3,7 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
+import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../../angular';
@@ -15,7 +16,7 @@ interface Row extends TableRow {
   name: string;
   email: string;
   phone: string;
-  lastModifiedDate: Date;
+  lastModifiedDate: string;
 }
 
 @Component({
@@ -136,7 +137,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
             name: v.displayName,
             email: v.displayEmail,
             phone: v.displayPhone,
-            lastModifiedDate: v.LastModifiedDate,
+            lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
         });
       }, this.errorService.handler);

@@ -1,8 +1,8 @@
-export * from './catalogue/catalogues-overview.module';
-export * from './catalogue/catalogue.module';
+export * from './catalogue/list/catalogue-list.module';
+export * from './catalogue/edit/catalogue-edit.module';
 
-export * from './category/categories-overview.module';
-export * from './category/category.module';
+export * from './category/list/category-list.module';
+export * from './category/edit/category-edit.module';
 
 export * from './eanidentification/edit/eanidentification.module';
 export * from './isbnidentification/edit/isbnidentification.module';
@@ -23,21 +23,21 @@ export * from './part/list/part-list.module';
 export * from './part/edit/part-edit.module';
 export * from './part/overview/part-overview.module';
 
-export * from './productcharacteristic/productcharacteristics-overview.module';
-export * from './productcharacteristic/productcharacteristic.module';
+export * from './productcharacteristic/list/productcharacteristic-list.module';
+export * from './productcharacteristic/edit/productcharacteristic-edit.module';
 
-export * from './producttype/producttypes-overview.module';
-export * from './producttype/producttype.module';
+export * from './producttype/list/producttype-list.module';
+export * from './producttype/edit/producttype-edit.module';
 
 export * from './serialiseditem/edit/serialiseditem.module';
 
 export * from './supplieroffering/edit/supplieroffering.module';
 
-import { CatalogueModule } from './catalogue/catalogue.module';
-import { CataloguesOverviewModule } from './catalogue/catalogues-overview.module';
+import { CatalogueModule } from './catalogue/edit/catalogue-edit.module';
+import { CataloguesOverviewModule } from './catalogue/list/catalogue-list.module';
 
-import { CategoriesOverviewModule } from './category/categories-overview.module';
-import { CategoryModule } from './category/category.module';
+import { CategoriesOverviewModule } from './category/list/category-list.module';
+import { CategoryModule } from './category/edit/category-edit.module';
 
 import { EanIdentificationModule } from './eanidentification/edit/eanidentification.module';
 import { IsbnIdentificationModule } from './isbnidentification/edit/isbnidentification.module';
@@ -60,11 +60,11 @@ import { PartEditModule } from './part/edit/part-edit.module';
 import { PartListModule } from './part/list/part-list.module';
 import { PartOverviewModule } from './part/overview/part-overview.module';
 
-import { ProductCharacteristicModule } from './productcharacteristic/productcharacteristic.module';
-import { ProductCharacteristicsOverviewModule } from './productcharacteristic/productcharacteristics-overview.module';
+import { ProductCharacteristicModule } from './productcharacteristic/edit/productcharacteristic-edit.module';
+import { ProductCharacteristicsOverviewModule } from './productcharacteristic/list/productcharacteristic-list.module';
 
-import { ProductTypeModule } from './producttype/producttype.module';
-import { ProductTypesOverviewModule } from './producttype/producttypes-overview.module';
+import { ProductTypeModule } from './producttype/edit/producttype-edit.module';
+import { ProductTypesOverviewModule } from './producttype/list/producttype-list.module';
 
 import { SerialisedItemModule } from './serialiseditem/edit/serialiseditem.module';
 import { SerialisedItemsModule } from './serialiseditem/overview/serialiseditems.module';

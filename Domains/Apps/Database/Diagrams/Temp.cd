@@ -1,23 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Interface Name="Allors.Domain.Catalogue">
+    <Position X="4.5" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAABCAAASAAAAAAACAAAIAAAAAAAA=</HashCode>
+      <FileName>Generated\domain.g.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="InternalOrganisation" />
+    </ShowAsAssociation>
+  </Interface>
   <Interface Name="Allors.Domain.InternalOrganisation" Collapsed="true">
-    <Position X="8.5" Y="2.5" Width="2.25" />
+    <Position X="1" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>mAQAEAGESRYAAoCAUAhQppKIBgGOgoICCAESAAAxSAA=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.Party" Collapsed="true">
-    <Position X="8.5" Y="0.75" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AYAIGAABVAAQAoAQIJgmAACooAgUAAAACAIFBANAgEI=</HashCode>
-      <FileName>Generated\domain.g.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="Allors.Domain.Organisation">
-    <Position X="8.5" Y="4" Width="2.25" />
-    <TypeIdentifier>
-      <HashCode>AAACoAgAAAAAAIAAAAAEAAUAAAgAAAhAAAEBAAAAAQA=</HashCode>
       <FileName>Generated\domain.g.cs</FileName>
     </TypeIdentifier>
   </Interface>

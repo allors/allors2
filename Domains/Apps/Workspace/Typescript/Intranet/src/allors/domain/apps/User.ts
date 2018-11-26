@@ -1,5 +1,5 @@
 import { domain } from '../domain';
-import { User } from '../generated/user.g';
+import { User } from '../generated/User.g';
 
 declare module '../generated/User.g' {
     interface User {

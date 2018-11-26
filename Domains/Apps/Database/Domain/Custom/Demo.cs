@@ -4,7 +4,6 @@ namespace Allors
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using System.Security.Cryptography.X509Certificates;
 
     using Allors.Domain;
     using Allors.Meta;
@@ -360,6 +359,34 @@ namespace Allors
                     .WithActualStart(DateTime.UtcNow)
                     .Build();
 
+                var requestForQuote = new RequestForQuoteBuilder(this.Session)
+                    .WithEmailAddress($"customer{i}@acme.com")
+                    .WithTelephoneNumber("+1 234 56789")
+                    .WithRecipient(allors)
+                    .Build();
+
+                var requestItem = new RequestItemBuilder(this.Session)
+                    .WithSerialisedItem(serialisedItem)
+                    .WithComment($"Comment {i}")
+                    .WithQuantity(i)
+                    .Build();
+
+                requestForQuote.AddRequestItem(requestItem);
+
+                var productQuote = new ProductQuoteBuilder(this.Session)
+                    .WithIssuer(allors)
+                    .WithReceiver(acme)
+                    .WithFullfillContactMechanism(acmePostalAddress)
+                    .Build();
+
+                var quoteItem = new QuoteItemBuilder(this.Session)
+                    .WithSerialisedItem(serialisedItem)
+                    .WithComment($"Comment {i}")
+                    .WithQuantity(i)
+                    .Build();
+
+                productQuote.AddQuoteItem(quoteItem);
+                               
                 var salesOrderItem1 = new SalesOrderItemBuilder(this.Session)
                     .WithDescription("first item")
                     .WithProduct(good1)
