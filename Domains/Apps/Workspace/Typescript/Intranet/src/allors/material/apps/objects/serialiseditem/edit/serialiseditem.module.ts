@@ -19,8 +19,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { BrandInlineModule } from '../../brand/brand-inline.module';
-import { ModelInlineModule } from '../../model/model-inline.module';
+import { BrandInlineModule } from '../../brand/inline/brand-inline.module';
+import { ModelInlineModule } from '../../model/inline/model-inline.module';
 
 import { EditSerialisedItemComponent } from './serialiseditem.component';
 export { EditSerialisedItemComponent } from './serialiseditem.component';

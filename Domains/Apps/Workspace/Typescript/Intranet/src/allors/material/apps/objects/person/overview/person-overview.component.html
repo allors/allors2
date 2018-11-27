@@ -64,21 +64,21 @@
       </div>
 
       <div class="col-md-6">
-        <party-communicationevents [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)" (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></party-communicationevents>
+        <communicationevent-embed [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)" (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></communicationevent-embed>
       </div>
 
       <div class="col-md-6">
-        <party-partycontactmechanisms [currentContactMechanisms]='currentContactMechanisms' [inactiveContactMechanisms]='inactiveContactMechanisms' [allContactMechanisms]='allContactMechanisms' (add)="navigation.add($event, person)" (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"
-          (remove)="removeContactMechanism($event)" (activate)="activateContactMechanism($event)"></party-partycontactmechanisms>
+        <partycontactmechanism-embed [currentContactMechanisms]='currentContactMechanisms' [inactiveContactMechanisms]='inactiveContactMechanisms' [allContactMechanisms]='allContactMechanisms' (add)="navigation.add($event, person)" (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"
+          (remove)="removeContactMechanism($event)" (activate)="activateContactMechanism($event)"></partycontactmechanism-embed>
       </div>
 
       <div class="col-md-6">
-        <serialised-items [owner]='person' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
-          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialised-items>
+        <serialiseditem-embed [owner]='person' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
+          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed>
       </div>
 
       <div class="col-md-6">
-        <party-workeffortpartyassignements [workEffortPartyAssignments]="workEffortPartyAssignments" (add)="navigation.add($event, person)" (edit)="navigation.edit($event)" (delete)="deleteWorkEffort($event)"></party-workeffortpartyassignements>
+        <workeffortpartyassignment-embed [workEffortPartyAssignments]="workEffortPartyAssignments" (add)="navigation.add($event, person)" (edit)="navigation.edit($event)" (delete)="deleteWorkEffort($event)"></workeffortpartyassignment-embed>
       </div>
     </div>
   </div>

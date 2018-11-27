@@ -86,19 +86,19 @@
       </div>
 
       <div class="col-md-6">
-        <igood-identifications [igoodidentifications]='part.GoodIdentifications' (add)="navigationService.add($event, part)"
-          (edit)="navigationService.edit($event, part)" (delete)="deleteGoodIdentification($event)"></igood-identifications>
+        <igoodidentification-embed [igoodidentifications]='part.GoodIdentifications' (add)="navigationService.add($event, part)"
+          (edit)="navigationService.edit($event, part)" (delete)="deleteGoodIdentification($event)"></igoodidentification-embed>
       </div>
 
       <div *ngIf="serialised" class="col-md-6">
-        <serialised-items [part]='part' [serialisedItems]='part.SerialisedItems' (add)="navigationService.add($event, part)"
-          (edit)="navigationService.edit($event, part)" (delete)="deleteSerialisedItem($event)"></serialised-items>
+        <serialiseditem-embed [part]='part' [serialisedItems]='part.SerialisedItems' (add)="navigationService.add($event, part)"
+          (edit)="navigationService.edit($event, part)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed>
       </div>
 
       <div class="col-md-6">
-        <price-component [currentPricecomponents]='currentPricecomponents' [inactivePricecomponents]='inactivePricecomponents'
+        <pricecomponent-embed [currentPricecomponents]='currentPricecomponents' [inactivePricecomponents]='inactivePricecomponents'
           [allPricecomponents]='allPricecomponents' (add)="navigationService.add($event, part)" (edit)="navigationService.edit($event)"
-          (delete)="deletePriceComponent($event)"></price-component>
+          (delete)="deletePriceComponent($event)"></pricecomponent-embed>
       </div>
 
       <div class="col-md-6">
@@ -157,11 +157,11 @@
       </div>
 
       <div *ngIf="serialised" class="col-md-6">
-        <serialised-inventory [part]='part'></serialised-inventory>
+        <serialisedinventory-embed [part]='part'></serialisedinventory-embed>
       </div>
 
       <div *ngIf="!serialised" class="col-md-6">
-        <nonserialised-inventory [part]='part'></nonserialised-inventory>
+        <nonserialisedinventory-embed [part]='part'></nonserialisedinventory-embed>
       </div>
 
     </div>

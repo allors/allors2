@@ -58,12 +58,12 @@
       </div>
 
       <div class="col-md-6">
-        <party-communicationevents [communicationEvents]='communicationEvents' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"></party-communicationevents>
+        <communicationevent-embed [communicationEvents]='communicationEvents' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"></communicationevent-embed>
       </div>
 
       <div class="col-md-6">
-        <party-partycontactmechanisms [currentContactMechanisms]='currentContactMechanisms' [inactiveContactMechanisms]='inactiveContactMechanisms' [allContactMechanisms]='allContactMechanisms' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"
-          (remove)="removeContactMechanism($event)" (activate)="activateContactMechanism($event)"></party-partycontactmechanisms>
+        <partycontactmechanism-embed [currentContactMechanisms]='currentContactMechanisms' [inactiveContactMechanisms]='inactiveContactMechanisms' [allContactMechanisms]='allContactMechanisms' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"
+          (remove)="removeContactMechanism($event)" (activate)="activateContactMechanism($event)"></partycontactmechanism-embed>
       </div>
 
       <div class="col-md-6">
@@ -137,8 +137,8 @@
       </div>
 
       <div class="col-md-6">
-        <serialised-items [owner]='organisation' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
-          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialised-items>
+        <serialiseditem-embed [owner]='organisation' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
+          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed>
       </div>
 
     </div>

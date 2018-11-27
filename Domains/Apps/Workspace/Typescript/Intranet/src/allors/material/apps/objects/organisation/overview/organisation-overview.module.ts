@@ -12,10 +12,10 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { PartyCommunicationEventsModule } from '../../party/communicationevents/party-communicationevents.module';
-import { PartyPartyContactMechanismsModule } from '../../party/partycontactmechanisms/party-partycontactmechanisms.module';
-import { PartyWorkEffortPartyAssignmentsModule } from '../../party/workefforts/party-workeffortpartyassignments.module';
-import { SerialisedItemsModule } from '../../serialiseditem/overview/serialiseditems.module';
+import { CommunicationEventEmbedModule } from '../../communicationevent/embed/communicationevent-embed.module';
+import { PartyContactMechanismEmbedModule } from '../../partycontactmechanisms/embed/partycontactmechanism-embed.module';
+import { WorkEffortPartyAssignmentEmbedModule } from '../../workeffortpartyassignment/embed/workeffortpartyassignment-embed.module';
+import { SerialisedItemEmbedModule } from '../../serialiseditem/embed/serialiseditem-embed.module';
 
 import { OrganisationOverviewComponent } from './organisation-overview.component';
 export { OrganisationOverviewComponent } from './organisation-overview.component';
@@ -28,10 +28,10 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     OrganisationOverviewComponent,
   ],
   imports: [
-    PartyCommunicationEventsModule,
-    PartyPartyContactMechanismsModule,
-    PartyWorkEffortPartyAssignmentsModule,
-    SerialisedItemsModule,
+    CommunicationEventEmbedModule,
+    PartyContactMechanismEmbedModule,
+    WorkEffortPartyAssignmentEmbedModule,
+    SerialisedItemEmbedModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,

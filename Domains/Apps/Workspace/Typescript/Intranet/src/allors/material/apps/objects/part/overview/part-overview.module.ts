@@ -12,11 +12,13 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
-import { IGoodIdentificationsModule } from '../../igoodidentification/igoodIdentifications.module';
-import { PriceComponentsModule } from '../../pricecomponent/pricecomponents.module';
-import { SerialisedItemsModule } from '../../serialiseditem/overview/serialiseditems.module';
-import { SerialisedInventoryComponentInventoryModule } from '../../serialisedinventory/serialisedinventory.module';
-import { NonSerialisedInventoryComponentInventoryModule } from '../../nonserialisedinventory/nonserialisedinventory.module';
+
+import { NonSerialisedInventoryEmbedModule } from '../../nonserialisedinventory/embed/nonserialisedinventory-embed.module';
+
+import { SerialisedItemEmbedModule } from '../../serialiseditem/embed/serialiseditem-embed.module';
+import { IGoodIdentificationEmbedModule } from '../../igoodidentification/embed/igoodIdentification-embed.module';
+import { PriceComponentEmbedModule } from '../../pricecomponent/embed/pricecomponent-embed.module';
+import { SerialisedInventoryEmbedModule } from '../../serialisedinventory/embed/serialisedinventory-embed.module';
 
 import { PartOverviewComponent } from './part-overview.component';
 export { PartOverviewComponent } from './part-overview.component';
@@ -29,11 +31,11 @@ export { PartOverviewComponent } from './part-overview.component';
     PartOverviewComponent,
   ],
   imports: [
-    IGoodIdentificationsModule,
-    PriceComponentsModule,
-    SerialisedItemsModule,
-    NonSerialisedInventoryComponentInventoryModule,
-    SerialisedInventoryComponentInventoryModule,
+    SerialisedItemEmbedModule,
+    IGoodIdentificationEmbedModule,
+    PriceComponentEmbedModule,
+    SerialisedInventoryEmbedModule,
+    NonSerialisedInventoryEmbedModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

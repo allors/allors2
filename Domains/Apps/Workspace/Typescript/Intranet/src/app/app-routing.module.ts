@@ -68,11 +68,11 @@ import * as ProductQuoteOverview from 'src/allors/material/apps/objects/productq
 import * as SalesOrdersOverview from 'src/allors/material/apps/objects/salesorder/list/salesorder-list.module';
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
 import * as RequestEdit from 'src/allors/material/apps/objects/request/edit/request-edit.module';
-import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/requestitem.module';
+import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as ProductQuoteEdit from 'src/allors/material/apps/objects/productquote/edit/productquote-edit.module';
-import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/quoteitem.module';
+import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as SalesOrderEdit from 'src/allors/material/apps/objects/salesorder/edit/salesorder-edit.module';
-import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/salesorderitem.module';
+import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import * as GoodList from 'src/allors/material/apps/objects/good/list/good-list.module';
 import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/good-overview.module';
 import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
@@ -85,8 +85,7 @@ import * as Catalogue from 'src/allors/material/apps/objects/catalogue/edit/cata
 import * as Category from 'src/allors/material/apps/objects/category/edit/category-edit.module';
 import * as ProductCharacteristic from 'src/allors/material/apps/objects/productcharacteristic/edit/productcharacteristic-edit.module';
 import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
-import * as WorkEffortsOverview from 'src/allors/material/apps/objects/workeffort/workefforts-overview.module';
-import * as WorkTasksOverview from 'src/allors/material/apps/objects/worktask/list/worktasks-list.module';
+import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktasks-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 import * as WorkTaskEdit from 'src/allors/material/apps/objects/worktask/edit/worktask-edit.module';
 
@@ -175,8 +174,7 @@ const modules = [
   Category.CategoryModule,
   ProductCharacteristic.ProductCharacteristicModule,
   ProductType.ProductTypeModule,
-  WorkEffortsOverview.WorkEffortsOverviewModule,
-  WorkTasksOverview.WorkTasksOverviewModule,
+  WorkTaskList.WorkTasksOverviewModule,
   WorkTaskOverview.WorkTaskOverviewModule,
   WorkTaskEdit.WorkTaskEditModule,
 ];
@@ -398,8 +396,7 @@ export const routes: Routes = [
       {
         path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
         children: [
-          { path: '', component: WorkEffortsOverview.WorkEffortsOverviewComponent },
-          { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTasksOverview.WorkTasksOverviewComponent },
+          { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
           { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },

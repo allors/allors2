@@ -8,7 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MainModule } from './main/main.module';
 
-import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/internalorganisation-select.module';
+import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/state/internalorganisation-select.module';
 
 @NgModule({
   bootstrap: [AppComponent],

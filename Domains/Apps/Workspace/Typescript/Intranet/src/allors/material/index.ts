@@ -33,7 +33,7 @@ export * from './base/actions';
 export * from './base/sorting';
 
 // Apps Components
-export * from './apps/objects/internalorganisation/internalorganisation-select.module';
+export * from './apps/objects/internalorganisation/state/internalorganisation-select.module';
 
 // Apps Services
 export * from './apps/services/state';

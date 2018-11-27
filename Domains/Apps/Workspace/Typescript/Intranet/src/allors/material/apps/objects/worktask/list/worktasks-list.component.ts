@@ -28,7 +28,7 @@ interface Row {
   templateUrl: './worktasks-list.component.html',
   providers: [SessionService, AllorsFilterService]
 })
-export class WorkTasksOverviewComponent implements OnInit, OnDestroy {
+export class WorkTaskListComponent implements OnInit, OnDestroy {
 
   public searchForm: FormGroup; public advancedSearch: boolean;
 

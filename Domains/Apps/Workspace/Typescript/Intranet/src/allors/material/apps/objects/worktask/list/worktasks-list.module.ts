@@ -14,15 +14,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { WorkTasksOverviewComponent } from './worktasks-list.component';
-export { WorkTasksOverviewComponent } from './worktasks-list.component';
+import { WorkTaskListComponent } from './worktasks-list.component';
+export { WorkTaskListComponent } from './worktasks-list.component';
 
 @NgModule({
   declarations: [
-    WorkTasksOverviewComponent,
+    WorkTaskListComponent,
   ],
   exports: [
-    WorkTasksOverviewComponent,
+    WorkTaskListComponent,
   ],
   imports: [
     AllorsMaterialFileModule,

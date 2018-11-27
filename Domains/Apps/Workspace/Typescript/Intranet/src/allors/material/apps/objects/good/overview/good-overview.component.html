@@ -63,8 +63,8 @@
       </div>
 
       <div class="col-md-6">
-        <igood-identifications [igoodidentifications]='good.GoodIdentifications' (add)="navigationService.add($event, good)"
-          (edit)="navigationService.edit($event, good)" (delete)="deleteGoodIdentification($event)"></igood-identifications>
+        <igoodidentification-embed [igoodidentifications]='good.GoodIdentifications' (add)="navigationService.add($event, good)"
+          (edit)="navigationService.edit($event, good)" (delete)="deleteGoodIdentification($event)"></igoodidentification-embed>
       </div>
     </div>
   </div>

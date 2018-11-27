@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
@@ -13,22 +12,18 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { IGoodIdentificationEmbedModule } from '../../igoodidentification/embed/igoodIdentification-embed.module';
-
-import { GoodOverviewComponent } from './good-overview.component';
-export { GoodOverviewComponent } from './good-overview.component';
+import { CommunicationeventEmbedComponent } from './communicationevent-embed.component';
+export { CommunicationeventEmbedComponent } from './communicationevent-embed.component';
 
 @NgModule({
   declarations: [
-    GoodOverviewComponent,
+    CommunicationeventEmbedComponent,
   ],
   exports: [
-    GoodOverviewComponent,
+    CommunicationeventEmbedComponent,
   ],
   imports: [
-    IGoodIdentificationEmbedModule,
     AllorsMaterialFileModule,
-    AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -38,14 +33,9 @@ export { GoodOverviewComponent } from './good-overview.component';
     CommonModule,
     FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
-    MatDialogModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -59,4 +49,4 @@ export { GoodOverviewComponent } from './good-overview.component';
     RouterModule,
   ],
 })
-export class GoodOverviewModule { }
+export class CommunicationEventEmbedModule { }
