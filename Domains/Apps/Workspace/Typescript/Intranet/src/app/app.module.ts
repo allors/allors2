@@ -7,12 +7,8 @@ import { CoreModule } from './core.module';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MainModule } from './main/main.module';
-import { InternalOrganisationSelectModule } from '../allors/material/apps/components/common/internalorganisation/internalorganisation-select.module';
 
-import * as catalogues from '../allors/material/apps/components/catalogues';
-import * as orders from '../allors/material/apps/components/orders';
-import * as relations from '../allors/material/apps/components/relations';
-import * as workefforts from '../allors/material/apps/components/workefforts';
+import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/internalorganisation-select.module';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -27,12 +23,8 @@ import * as workefforts from '../allors/material/apps/components/workefforts';
     AuthModule.forRoot(),
     MainModule,
     DashboardModule,
-    InternalOrganisationSelectModule,
 
-    relations.Modules,
-    orders.Modules,
-    catalogues.Modules,
-    workefforts.Modules,
+    InternalOrganisationSelectModule,
   ],
 })
 export class AppModule { }
