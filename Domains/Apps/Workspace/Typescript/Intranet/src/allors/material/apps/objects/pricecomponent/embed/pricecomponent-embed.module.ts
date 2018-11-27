@@ -33,6 +33,7 @@ export { PriceComponentsComponent } from './pricecomponent-embed.component';
     CommonModule,
     FormsModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatDividerModule,
     MatFormFieldModule,

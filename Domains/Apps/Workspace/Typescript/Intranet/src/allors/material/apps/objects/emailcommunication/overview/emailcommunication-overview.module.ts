@@ -18,15 +18,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { CommunicationEventOverviewComponent } from './communicationevent-overview.component';
-export { CommunicationEventOverviewComponent } from './communicationevent-overview.component';
+import { EmailCommunicationOverviewComponent } from './emailcommunication-overview.component';
+export { EmailCommunicationOverviewComponent } from './emailcommunication-overview.component';
 
 @NgModule({
   declarations: [
-    CommunicationEventOverviewComponent,
+    EmailCommunicationOverviewComponent,
   ],
   exports: [
-    CommunicationEventOverviewComponent,
+    EmailCommunicationOverviewComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -59,4 +59,4 @@ export { CommunicationEventOverviewComponent } from './communicationevent-overvi
     RouterModule,
   ],
 })
-export class CommunicationEventOverviewModule { }
+export class EmailCommunicationOverviewModule { }
