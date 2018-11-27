@@ -20,7 +20,8 @@ namespace Allors.Domain
     public partial class InventoryTransactionReasons
     {
         private static readonly Guid SalesOrderId = new Guid("81D45DC9-03D8-480b-B210-1CC641A9CBD3");
-        private static readonly Guid ShipmentId = new Guid("C768FA78-0257-4e2d-B760-EC022D89BACF");
+        private static readonly Guid OutgoingShipmentId = new Guid("C768FA78-0257-4e2d-B760-EC022D89BACF");
+        private static readonly Guid IncomingShipmentId = new Guid("DBE99FCD-E81C-4AA6-97F2-F0E2E5B44D6B");
         private static readonly Guid TheftId = new Guid("21FA1D1D-F662-4c0e-A4F6-7BD3B5298A47");
         private static readonly Guid ShrinkageId = new Guid("CF6CCC79-7EE8-4755-A9C3-EC9A83649B55");
         private static readonly Guid UnknownId = new Guid("7A438996-B2DC-4b6d-8DDD-47690B06D9B6");
@@ -33,7 +34,9 @@ namespace Allors.Domain
 
         public InventoryTransactionReason SalesOrder => this.Cache[SalesOrderId];
 
-        public InventoryTransactionReason Shipment => this.Cache[ShipmentId];
+        public InventoryTransactionReason OutgoingShipment => this.Cache[OutgoingShipmentId];
+
+        public InventoryTransactionReason IncomingShipment => this.Cache[IncomingShipmentId];
 
         public InventoryTransactionReason Theft => this.Cache[TheftId];
 
@@ -73,9 +76,9 @@ namespace Allors.Domain
                 .Build();
 
             new InventoryTransactionReasonBuilder(this.Session)
-                .WithName("Shipment")
-                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping").WithLocale(dutchLocale).Build())
-                .WithUniqueId(ShipmentId)
+                .WithName("Outbound Shipment")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping uitgaand").WithLocale(dutchLocale).Build())
+                .WithUniqueId(OutgoingShipmentId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
                 .WithIncreasesQuantityCommittedOut(false)  // Decreases Quantity
@@ -84,7 +87,20 @@ namespace Allors.Domain
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
                 .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
                 .Build();
-            
+
+            new InventoryTransactionReasonBuilder(this.Session)
+                .WithName("Inbound Shipment")
+                .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Verscheping inkomend").WithLocale(dutchLocale).Build())
+                .WithUniqueId(IncomingShipmentId)
+                .WithIsActive(true)
+                .WithIsManualEntryAllowed(false)
+                .WithIncreasesQuantityCommittedOut(false)  // Decreases Quantity
+                .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
+                .WithIncreasesQuantityOnHand(true)  // Decreases Quantity
+                .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)
+                .WithDefaultNonSerialisedInventoryItemState(nonSerialisedStates.Good)
+                .Build();
+
             new InventoryTransactionReasonBuilder(this.Session)
                 .WithName("Theft")
                 .WithLocalisedName(new LocalisedTextBuilder(this.Session).WithText("Diefstal").WithLocale(dutchLocale).Build())

@@ -18,8 +18,8 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 
 import { AllorsMaterialTableModule } from '../../../..';
 
-import { SerialisedInventoryComponent } from './serialisedinventory-embed.component';
-export { SerialisedInventoryComponent } from './serialisedinventory-embed.component';
+import { SerialisedInventoryComponent } from './serialisedinventoryitem-embed.component';
+export { SerialisedInventoryComponent } from './serialisedinventoryitem-embed.component';
 
 @NgModule({
   declarations: [

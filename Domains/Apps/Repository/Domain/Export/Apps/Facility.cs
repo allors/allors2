@@ -41,6 +41,7 @@ namespace Allors.Repository
         #endregion
         [Multiplicity(Multiplicity.ManyToOne)]
         [Indexed]
+        [Workspace]
         public Facility ParentFacility { get; set; }
 
         #region Allors
@@ -50,6 +51,7 @@ namespace Allors.Repository
         #endregion
         [Precision(19)]
         [Scale(2)]
+        [Workspace]
         public decimal SquareFootage { get; set; }
 
         #region Allors

@@ -13,12 +13,12 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { NonSerialisedInventoryEmbedModule } from '../../nonserialisedinventory/embed/nonserialisedinventory-embed.module';
+import { NonSerialisedInventoryEmbedModule } from '../../nonserialisedinventoryitem/embed/nonserialisedinventoryitem-embed.module';
 
 import { SerialisedItemEmbedModule } from '../../serialiseditem/embed/serialiseditem-embed.module';
 import { IGoodIdentificationEmbedModule } from '../../igoodidentification/embed/igoodIdentification-embed.module';
 import { PriceComponentEmbedModule } from '../../pricecomponent/embed/pricecomponent-embed.module';
-import { SerialisedInventoryEmbedModule } from '../../serialisedinventory/embed/serialisedinventory-embed.module';
+import { SerialisedInventoryEmbedModule } from '../../serialisedinventoryitem/embed/serialisedinventoryitem-embed.module';
 
 import { PartOverviewComponent } from './part-overview.component';
 export { PartOverviewComponent } from './part-overview.component';

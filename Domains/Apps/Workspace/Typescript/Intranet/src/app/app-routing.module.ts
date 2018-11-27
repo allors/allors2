@@ -46,6 +46,7 @@ import * as PostalAddressEdit from 'src/allors/material/apps/objects/postaladdre
 import * as TelecommunicationsNumberEdit from 'src/allors/material/apps/objects/telecommunicationsnumber/edit/telecommunicationsnumber-edit.module';
 import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 
+import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as EditEmailCommunication from 'src/allors/material/apps/objects/emailcommunication/edit/emailcommunication.module';
 import * as EditFaceToFaceCommunication from 'src/allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication.module';
 import * as EditLetterCorrespondence from 'src/allors/material/apps/objects/lettercorrespondence/edit/lettercorrespondence.module';
@@ -104,6 +105,8 @@ const modules = [
 
   IncoTermEdit.IncoTermEditModule,
 
+  InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
+
   InvoiceTermEdit.InvoiceTermEditModule,
 
   OrderTermEdit.OrderTermEditModule,
@@ -133,7 +136,6 @@ const modules = [
   SalesInvoiceItemEdit.SalesInvoiceItemEditModule,
 
   TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
-
 
   EditEmailCommunication.EmailCommunicationModule,
   EditFaceToFaceCommunication.FaceToFaceCommunicationModule,
@@ -299,6 +301,8 @@ export const routes: Routes = [
       { path: 'upcaidentification/:id', data: editData({ id: ids.UpcaIdentification }), component: EditUpcaIdentification.EditUpcaIdentificationComponent },
       { path: 'upceidentification', data: addData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
       { path: 'upceidentification/:id', data: editData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
+
+      { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
 
       { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
       { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },

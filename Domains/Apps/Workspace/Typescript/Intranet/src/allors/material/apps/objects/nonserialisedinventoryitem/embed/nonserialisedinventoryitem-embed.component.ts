@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action, ActionTarget } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, ObjectType } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,16 +15,18 @@ import { NavigateService } from 'src/allors/material/base/actions';
 interface Row extends TableRow {
   object: InventoryItem;
   name: string;
+  qoh: string;
+  atp: string;
 }
 
 @Component({
-  selector: 'serialisedinventory-embed',
-  templateUrl: './serialisedinventory-embed.component.html',
+  selector: 'nonserialisedinventoryitem-embed',
+  templateUrl: './nonserialisedinventoryitem-embed.component.html',
   providers: [SessionService]
 })
-export class SerialisedInventoryComponent implements OnInit, OnDestroy {
+export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
 
-  @Input() part: Part[];
+  @Input() part: Part;
 
   @Output() edit: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
 
@@ -56,8 +58,22 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
       selection: false,
       columns: [
         { name: 'name', sort: true },
+        'uom',
+        'qoh',
+        'atp',
       ],
       actions: [
+        {
+          name: () => 'Add transaction',
+          description: () => '',
+          disabled: () => false,
+          execute: (target: ActionTarget) => {
+            if (!Array.isArray(target)) {
+              this.navigateService.navigationService.add(this.m.InventoryItemTransaction, target, this.part);
+            }
+          },
+          result: null
+        }
       ],
     });
   }
@@ -80,7 +96,7 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
                 InventoryItemsWherePart: {
                   include: {
                     Facility: x,
-                    UnitOfMeasure: x
+                    UnitOfMeasure: x,
                   }
                 }
               },
@@ -95,13 +111,15 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
 
         this.allors.session.reset();
 
-        const inventoryItems = loaded.collections.InventoryItems as SerialisedInventoryItem[];
-
+        const inventoryItems = loaded.collections.InventoryItems as NonSerialisedInventoryItem[];
 
         this.table.data = inventoryItems.map((v) => {
           return {
             object: v,
             name: v.Facility.Name,
+            uom: v.UnitOfMeasure.Abbreviation,
+            qoh: v.QuantityOnHand.toString(),
+            atp: v.AvailableToPromise.toString(),
           } as Row;
         });
       },

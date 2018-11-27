@@ -150,6 +150,16 @@ namespace Allors.Repository
         [Workspace]
         public decimal QuantityOnHand { get; set; }
 
+        #region Allors
+        [Id("F1986E5F-3A8F-478A-B4C4-C6913C78AFE2")]
+        [AssociationId("EE669F73-E91F-4559-81A9-170265872592")]
+        [RoleId("F4515CDF-FC20-4BD5-8F6E-81583792E20E")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public NonSerialisedInventoryItemState InventoryItemState { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 

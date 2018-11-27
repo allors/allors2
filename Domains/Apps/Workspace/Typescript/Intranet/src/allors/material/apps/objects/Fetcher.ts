@@ -36,6 +36,14 @@ export class Fetcher {
     });
   }
 
+  public get facilities(): Pull {
+
+    return this.pull.Organisation({
+      object: this.stateService.internalOrganisationId,
+      fetch: { FacilitiesWhereOwner: x },
+    });
+  }
+
   public get locales(): Pull {
 
     return this.pull.Singleton({

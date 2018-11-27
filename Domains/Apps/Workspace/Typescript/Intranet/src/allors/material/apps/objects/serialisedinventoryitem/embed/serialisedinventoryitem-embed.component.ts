@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action, ActionTarget } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, ObjectType } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,18 +15,16 @@ import { NavigateService } from 'src/allors/material/base/actions';
 interface Row extends TableRow {
   object: InventoryItem;
   name: string;
-  qoh: string;
-  atp: string;
 }
 
 @Component({
-  selector: 'nonserialisedinventory-embed',
-  templateUrl: './nonserialisedinventory-embed.component.html',
+  selector: 'serialisedinventoryitem-embed',
+  templateUrl: './serialisedinventoryitem-embed.component.html',
   providers: [SessionService]
 })
-export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
+export class SerialisedInventoryComponent implements OnInit, OnDestroy {
 
-  @Input() part: Part[];
+  @Input() part: Part;
 
   @Output() edit: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
 
@@ -58,10 +56,19 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
       selection: false,
       columns: [
         { name: 'name', sort: true },
-        'qoh',
-        'atp',
       ],
       actions: [
+        {
+          name: () => 'ReceiveInventory',
+          description: () => '',
+          disabled: () => false,
+          execute: (target: ActionTarget) => {
+            if (!Array.isArray(target)) {
+              this.navigateService.navigationService.add(this.m.InventoryItemTransaction, target, this.part);
+            }
+          },
+          result: null
+        }
       ],
     });
   }
@@ -99,14 +106,13 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
 
         this.allors.session.reset();
 
-        const inventoryItems = loaded.collections.InventoryItems as NonSerialisedInventoryItem[];
+        const inventoryItems = loaded.collections.InventoryItems as SerialisedInventoryItem[];
+
 
         this.table.data = inventoryItems.map((v) => {
           return {
             object: v,
             name: v.Facility.Name,
-            qoh: v.QuantityOnHand.toString(),
-            atp: v.AvailableToPromise.toString(),
           } as Row;
         });
       },

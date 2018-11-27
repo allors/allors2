@@ -99,6 +99,16 @@ namespace Allors.Repository
         [Workspace]
         public SerialisedItem SerialisedItem { get; set; }
 
+        #region Allors
+        [Id("C3C73F0D-2B82-460E-9C58-272AB7CFE8E4")]
+        [AssociationId("13DC2350-3609-4B34-8327-39B652F790E1")]
+        [RoleId("AE7A4060-D7E7-4EF3-8853-4971354919CB")]
+        [Indexed]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Workspace]
+        public SerialisedInventoryItemState InventoryItemState { get; set; }
+
         #region inherited methods
         public void OnBuild(){}
 

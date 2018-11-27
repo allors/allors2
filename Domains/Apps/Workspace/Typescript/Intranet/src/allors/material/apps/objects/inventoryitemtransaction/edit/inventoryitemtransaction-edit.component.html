@@ -1,0 +1,77 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigationService.overview(part)">Part</a>
+        <span *ngIf="add"> / Add new Inventory Item Transaction </span>
+      </div>
+    </div>
+  </div>
+
+  <form *ngIf="inventoryItemTransaction" class="a-edit" #form="ngForm" (submit)="save()" novalidate>
+    <mat-card>
+      <mat-card-content>
+        <div class="container-fluid">
+
+          <div class="row">
+            <a-mat-static class="col-md-6" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Part" display="Name"></a-mat-static>
+          </div>
+
+          <div *ngIf="!inventoryItem" class="row">
+            <div class="col">
+              <div class="row">
+                <mat-form-field class="col">
+                  <mat-select [(ngModel)]="selectedFacility" name="facilityName" placeholder="facility" multiple="false">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let facility of facilities" [value]="facility">{{ facility.Name }} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button mat-mini-fab color="accent" type="button" (click)="addFacility = !addFacility">
+                  <mat-icon *ngIf="!addFacility">add</mat-icon>
+                  <mat-icon *ngIf="addFacility">close</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="col-md-12 pb-3" *ngIf="addFacility">
+              <mat-card>
+                <mat-card-header>Add new Facility</mat-card-header>
+                <mat-card-content>
+                  <facility-inline (cancelled)="addFacility = false" (saved)="facilityAdded($event); addFacility = false"></facility-inline>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <a-mat-select class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Reason"
+              [options]="inventoryTransactionReasons" display="Name"></a-mat-select>
+          </div>
+
+          <div *ngIf="inventoryItem" class="row">
+            <a-mat-static class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Facility" display="Name"></a-mat-static>
+            <a-mat-select class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Reason"
+              [options]="inventoryTransactionReasons" display="Name"></a-mat-select>
+          </div>
+
+          <div class="row">
+            <a-mat-static class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.UnitOfMeasure" display="Name"></a-mat-static>
+            <a-mat-input class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Quantity"></a-mat-input>
+          </div>
+
+          <div class="row">
+            <a-mat-datetimepicker class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.TransactionDate"></a-mat-datetimepicker>
+            <a-mat-select *ngIf="!serialised"  class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.NonSerialisedInventoryItemState"
+              [options]="nonSerialisedInventoryItemStates" display="Name" label="State"></a-mat-select>
+              <a-mat-select *ngIf="serialised"  class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.SerialisedInventoryItemState"
+              [options]="serialisedInventoryItemStates" display="Name" label="State"></a-mat-select>
+          </div>
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <a-mat-footer>
+      <button mat-raised-button (click)="location.back()" type="button">CANCEL</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.session.hasChanges || activeRoles.length > 0) ">SAVE</button>
+    </a-mat-footer>
+
+  </form>
+</div>

@@ -157,11 +157,11 @@
       </div>
 
       <div *ngIf="serialised" class="col-md-6">
-        <serialisedinventory-embed [part]='part'></serialisedinventory-embed>
+        <serialisedinventoryitem-embed [part]='part'></serialisedinventoryitem-embed>
       </div>
 
       <div *ngIf="!serialised" class="col-md-6">
-        <nonserialisedinventory-embed [part]='part'></nonserialisedinventory-embed>
+        <nonserialisedinventoryitem-embed [part]='part'></nonserialisedinventoryitem-embed>
       </div>
 
     </div>

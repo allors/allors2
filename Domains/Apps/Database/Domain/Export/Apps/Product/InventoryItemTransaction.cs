@@ -105,6 +105,24 @@ namespace Allors.Domain
                 possibleMatches = matchingItems.Length > 0;
             }
 
+            if (possibleMatches && this.ExistSerialisedInventoryItemState)
+            {
+                if (matchingItems is SerialisedInventoryItem[] matchingSerialisedItems)
+                {
+                    matchingItems = matchingSerialisedItems.Where(m => m.InventoryItemState.Equals(this.SerialisedInventoryItemState)).ToArray();
+                    possibleMatches = matchingItems.Length > 0;
+                }
+            }
+
+            if (possibleMatches && this.ExistNonSerialisedInventoryItemState)
+            {
+                if (matchingItems is NonSerialisedInventoryItem[] matchingNonSerialisedItems)
+                {
+                    matchingItems = matchingNonSerialisedItems.Where(m => m.InventoryItemState.Equals(this.NonSerialisedInventoryItemState)).ToArray();
+                    possibleMatches = matchingItems.Length > 0;
+                }
+            }
+
             if (possibleMatches)
             {
                 // Match on Non/SerialisedInventoryItemState
