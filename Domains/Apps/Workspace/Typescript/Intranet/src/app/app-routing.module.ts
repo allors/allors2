@@ -201,6 +201,55 @@ export const routes: Routes = [
         ],
       },
 
+      // Orders
+      {
+        path: 'orders', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
+        children: [
+          { path: 'requests', data: pageListData({ id: ids.Request, icon: 'share' }), component: RequestsOverview.RequestsOverviewComponent },
+          { path: 'request/:id', data: overviewData({ id: ids.Request }), component: RequestOverview.RequestOverviewComponent },
+          { path: 'productQuotes', data: pageListData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
+          { path: 'productQuote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
+          { path: 'salesOrders', data: pageListData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
+          { path: 'salesOrder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
+        ],
+      },
+
+      // Catalogues
+      {
+        path: 'catalogues', data: moduleData({ title: 'Products', icon: 'build' }),
+        children: [
+          { path: 'goods', data: pageListData({ id: ids.Good }), component: GoodList.GoodListComponent },
+          { path: 'good/:id', data: overviewData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
+          { path: 'parts', data: pageListData({ id: ids.Part }), component: PartList.PartListComponent },
+          { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
+          { path: 'catalogues', data: pageListData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
+          { path: 'categories', data: pageListData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
+          { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
+          { path: 'productTypes', data: pageListData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
+        ],
+      },
+
+      // Accounting
+      {
+        path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
+        children: [
+          { path: 'purchaseinvoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
+          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
+          { path: 'salesinvoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
+          { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
+        ],
+      },
+
+      // WorkEfforts
+      {
+        path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
+        children: [
+          { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
+          { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
+        ],
+      },
+
+
       { path: 'good', data: addData({ id: ids.Good }), component: GoodEdit.GoodEditComponent },
       { path: 'good/:id', data: editData({ id: ids.Good }), component: GoodEdit.GoodEditComponent },
 
@@ -265,18 +314,7 @@ export const routes: Routes = [
         ],
       },
 
-      // Orders
-      {
-        path: 'orders', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
-        children: [
-          { path: 'requests', data: pageListData({ id: ids.Request, icon: 'share' }), component: RequestsOverview.RequestsOverviewComponent },
-          { path: 'request/:id', data: overviewData({ id: ids.Request }), component: RequestOverview.RequestOverviewComponent },
-          { path: 'productQuotes', data: pageListData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
-          { path: 'productQuote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
-          { path: 'salesOrders', data: pageListData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
-          { path: 'salesOrder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
-        ],
-      },
+
       {
         path: 'request',
         children: [
@@ -311,20 +349,7 @@ export const routes: Routes = [
         ],
       },
 
-      // Catalogues
-      {
-        path: 'catalogues', data: moduleData({ title: 'Products', icon: 'build' }),
-        children: [
-          { path: 'goods', data: pageListData({ id: ids.Good }), component: GoodList.GoodListComponent },
-          { path: 'good/:id', data: overviewData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
-          { path: 'parts', data: pageListData({ id: ids.Part }), component: PartList.PartListComponent },
-          { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
-          { path: 'catalogues', data: pageListData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
-          { path: 'categories', data: pageListData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
-          { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
-          { path: 'productTypes', data: pageListData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
-        ],
-      },
+
       {
         path: 'catalogue',
         children: [
@@ -354,16 +379,7 @@ export const routes: Routes = [
         ],
       },
 
-      // Accounting
-      {
-        path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
-        children: [
-          { path: 'purchaseinvoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
-          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
-          { path: 'salesinvoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
-          { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
-        ],
-      },
+
       {
         path: 'purchaseinvoice',
         children: [
@@ -392,14 +408,7 @@ export const routes: Routes = [
         ],
       },
 
-      // WorkEfforts
-      {
-        path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
-        children: [
-          { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
-          { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
-        ],
-      },
+
       { path: 'worktask', data: addData({ id: ids.WorkTask }), component: WorkTaskEdit.WorkTaskEditComponent },
       { path: 'worktask/:id', data: editData({ id: ids.WorkTask }), component: WorkTaskEdit.WorkTaskEditComponent },
     ],
