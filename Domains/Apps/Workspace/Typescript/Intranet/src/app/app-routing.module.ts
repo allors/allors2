@@ -31,7 +31,11 @@ import * as OrganisationList from 'src/allors/material/apps/objects/organisation
 import * as OrganisationOverview from 'src/allors/material/apps/objects/organisation/overview/organisation-overview.module';
 
 import * as CommunicationEventList from 'src/allors/material/apps/objects/communicationevent/list/communicationevent-list.module';
-import * as CommunicationEventOverview from 'src/allors/material/apps/objects/communicationevent/overview/communicationevent-overview.module';
+
+import * as EmailCommunicationOverview from 'src/allors/material/apps/objects/emailcommunication/overview/emailcommunication-overview.module';
+import * as FaceToFaceCommunicationOverview from 'src/allors/material/apps/objects/facetofacecommunication/overview/facetofacecommunication-overview.module';
+import * as LetterCorrespondenceOverview from 'src/allors/material/apps/objects/lettercorrespondence/overview/lettercorrespondence-overview.module';
+import * as PhoneCommunicationOverview from 'src/allors/material/apps/objects/phonecommunication/overview/phonecommunication-overview.module';
 
 import * as GoodEdit from 'src/allors/material/apps/objects/good/edit/good-edit.module';
 
@@ -93,7 +97,11 @@ import * as WorkTaskEdit from 'src/allors/material/apps/objects/worktask/edit/wo
 const modules = [
 
   CommunicationEventList.CommunicationEventsOverviewModule,
-  CommunicationEventOverview.CommunicationEventOverviewModule,
+
+  EmailCommunicationOverview.EmailCommunicationOverviewModule,
+  FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewModule,
+  LetterCorrespondenceOverview.LetterCorrespondenceOverviewModule,
+  PhoneCommunicationOverview.PhoneCommunicationOverviewModule,
 
   EditSerialisedItem.SerialisedItemModule,
 
@@ -199,7 +207,10 @@ export const routes: Routes = [
           { path: 'organisations', data: pageListData({ id: ids.Organisation, icon: 'business' }), component: OrganisationList.OrganisationListComponent },
           { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: OrganisationOverview.OrganisationOverviewComponent },
           { path: 'communicationevents', data: pageListData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
-          { path: 'communicationevent/:id', data: overviewData({ id: ids.CommunicationEvent }), component: CommunicationEventOverview.CommunicationEventOverviewComponent },
+          { path: 'emailcommunication/:id', data: overviewData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
+          { path: 'facetofacecommunication/:id', data: overviewData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
+          { path: 'lettercorrespondence/:id', data: overviewData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceComponent },
+          { path: 'phonecommunicationevent/:id', data: overviewData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],
       },
 

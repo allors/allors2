@@ -112,7 +112,7 @@
                   </p>
                 </div>
 
-                <p mat-line> last modified: {{ contactRelationship.Contact.LastModifiedDate | date : shortDate }} </p>
+                <p mat-line> last modified: {{ contactRelationship.Contact.LastModifiedDate | date }} </p>
 
                 <span (click)="$event.stopPropagation()">
                   <button mat-icon-button [mat-menu-trigger-for]="menu">
