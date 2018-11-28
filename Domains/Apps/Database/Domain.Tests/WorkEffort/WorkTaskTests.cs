@@ -275,7 +275,7 @@ namespace Allors.Domain
             //var result = workOrder.PrintDocument;
 
             //var desktopDir = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            //var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "generated.odt"));
+            //var outputFile = System.IO.File.Create(System.IO.Path.Combine(desktopDir, "workTask.odt"));
             //var stream = new System.IO.MemoryStream(result.MediaContent.Data);
 
             //stream.CopyTo(outputFile);

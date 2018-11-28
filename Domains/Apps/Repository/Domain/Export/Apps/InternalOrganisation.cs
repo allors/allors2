@@ -601,6 +601,16 @@ namespace Allors.Repository
         bool RequireExistingWorkEffortPartyAssignment { get; set; }
 
         #region Allors
+        [Id("786a74b0-015a-47db-8d3a-c790b326cc7d")]
+        [AssociationId("6f7363d4-46c5-4bcb-b19c-314733af9e9e")]
+        [RoleId("1c339b5d-6f97-41bd-952a-3706d383c3d8")]
+        #endregion
+        [Multiplicity(Multiplicity.ManyToOne)]
+        [Indexed]
+        [Workspace]
+        Media LogoImage { get; set; }
+
+        #region Allors
         [Id("0C328E5C-E3A8-44B9-BD4D-0DDABBFC9728")]
         #endregion
         void StartNewFiscalYear();

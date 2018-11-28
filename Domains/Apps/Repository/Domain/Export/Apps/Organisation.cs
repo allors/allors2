@@ -235,6 +235,8 @@ namespace Allors.Repository
         public bool UsePartNumberCounter { get; set; }
 
         public bool RequireExistingWorkEffortPartyAssignment { get; set; }
+
+        public Media LogoImage { get; set; }
         #endregion
 
         #region Versioning
@@ -337,16 +339,6 @@ namespace Allors.Repository
         [Derived]
         [Indexed]
         public UserGroup ContactsUserGroup { get; set; }
-
-        #region Allors
-        [Id("786a74b0-015a-47db-8d3a-c790b326cc7d")]
-        [AssociationId("6f7363d4-46c5-4bcb-b19c-314733af9e9e")]
-        [RoleId("1c339b5d-6f97-41bd-952a-3706d383c3d8")]
-        #endregion
-        [Multiplicity(Multiplicity.ManyToOne)]
-        [Indexed]
-        [Workspace]
-        public Media LogoImage { get; set; }
 
         #region Allors
         [Id("813633df-c6cb-44a6-9fdf-579aa8180ebd")]
