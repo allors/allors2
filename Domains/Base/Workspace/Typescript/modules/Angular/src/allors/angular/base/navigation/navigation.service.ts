@@ -20,7 +20,7 @@ export class NavigationService {
   }
 
   list(objectTypeOrMetaObjectType: ObjectType | MetaObjectType) {
-    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType._objectType.id;
+    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType.objectType.id;
     const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'list');
     const url = navigationItem.link;
     this.router.navigate([url]);
@@ -35,7 +35,7 @@ export class NavigationService {
   }
 
   add(objectTypeOrMetaObjectType: ObjectType | MetaObjectType, ...params: ISessionObject[]) {
-    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType._objectType.id;
+    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType.objectType.id;
     const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'add');
     const url = navigationItem.link;
     const queryParams = params.reduce((acc, v) => { acc[v.objectType.name] = v.id; return acc; }, {});

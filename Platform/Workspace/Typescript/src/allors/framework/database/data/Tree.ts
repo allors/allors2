@@ -8,8 +8,8 @@ export class Tree {
   public nodes: TreeNode[] | any;
 
   constructor(fields?: Partial<Tree> | MetaObjectType | ObjectType, literal?) {
-    if (fields instanceof ObjectType || fields && (fields as MetaObjectType)._objectType) {
-      const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+    if (fields instanceof ObjectType || fields && (fields as MetaObjectType).objectType) {
+      const objectType = (fields as MetaObjectType).objectType ? (fields as MetaObjectType).objectType : fields as ObjectType;
       this.objectType = objectType;
 
       if (literal) {
@@ -27,7 +27,7 @@ export class Tree {
 
   public toJSON(): any {
     const metaObjectType = this.objectType as MetaObjectType;
-    const composite = metaObjectType._objectType ? metaObjectType._objectType : this.objectType as ObjectType;
+    const composite = metaObjectType.objectType ? metaObjectType.objectType : this.objectType as ObjectType;
 
     let nodes = this.nodes;
     if (this.nodes && !(this.nodes instanceof Array)) {

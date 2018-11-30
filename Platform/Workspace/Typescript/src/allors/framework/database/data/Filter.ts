@@ -11,7 +11,7 @@ export class Filter {
   public sort: Sort[];
 
   constructor(fields?: Partial<Filter> | MetaObjectType | ObjectType) {
-    if ((fields as MetaObjectType)._objectType) {
+    if ((fields as MetaObjectType).objectType) {
       this.objectType = fields as MetaObjectType;
     } else if (fields instanceof ObjectType) {
       this.objectType = fields;
@@ -22,7 +22,7 @@ export class Filter {
 
   public toJSON(): any {
     const metaObjectType = this.objectType as MetaObjectType;
-    const objectType = metaObjectType._objectType ? metaObjectType._objectType : this.objectType as ObjectType;
+    const objectType = metaObjectType.objectType ? metaObjectType.objectType : this.objectType as ObjectType;
 
     return {
       kind: 'Filter',

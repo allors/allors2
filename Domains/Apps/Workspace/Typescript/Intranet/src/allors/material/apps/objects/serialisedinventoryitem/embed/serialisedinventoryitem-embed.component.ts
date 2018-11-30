@@ -82,7 +82,7 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
 
           const pulls = [
             pull.Part({

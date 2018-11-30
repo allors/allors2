@@ -62,7 +62,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
         switchMap(([, , internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const personId = navRoute.queryParam(m.Person);
           const organisationId = navRoute.queryParam(m.Organisation);
 
@@ -162,7 +162,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
         this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
         this.ownEmailAddresses = internalOrganisation.ActiveEmployees
         .map((v) => v.CurrentPartyContactMechanisms
-          .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress._objectType)
+          .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
           .map((w) => w.ContactMechanism as EmailAddress))
         .reduce((acc, v) => acc.concat(v), []);
 

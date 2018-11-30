@@ -3,82 +3,37 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}}
+        <!-- <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}} -->
       </div>
     </div>
   </div>
 
   <div class="a-overview container-fluid">
 
-    <div *ngIf="person" class="row">
+    <div class="row">
 
-      <div class="col-md-6">
-        <mat-card>
-
-          <div class="row">
-            <div class="col">
-              <h2>
-                <mat-icon>person</mat-icon> Person
-              </h2>
-            </div>
-          </div>
-
-          <mat-card-content>
-            <div class="container">
-              <div class="row">
-                <a-mat-static class="col" *ngIf="person.Salutation" [object]="person" [roleType]="m.Person.Salutation" display="Name"></a-mat-static>
-                <mat-form-field class="col">
-                  <input matInput type="string" [ngModel]="person.displayName" name="name" placeholder="Name" readonly>
-                </mat-form-field>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="organisation" [object]="organisation" [roleType]="m.Organisation.Name" label="Organisation" [routerLink]="['/relations/organisation/' + organisation.id]"></a-mat-static>
-                <mat-form-field class="col">
-                  <input matInput type="string" [ngModel]="contactKindsText" name="contactKind" placeholder="Contact Kind" readonly />
-                </mat-form-field>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="person.Function" [object]="person" [roleType]="m.Person.Function"></a-mat-static>
-                <!--
-              <a-mat-static *ngIf="person.Gender" [object]="person" [roleType]="m.Person.Gender" display="Name"></a-mat-static>
-      -->
-                <a-mat-static class="col" [object]="person" [roleType]="m.Person.Locale" display="Name"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="person.Comment " [object]="person" [roleType]="m.Person.Comment"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <caption class="col"> last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</caption>
-              </div>
-            </div>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <button mat-button [routerLink]="['/person/' + person.id]">Edit</button>
-          </mat-card-actions>
-        </mat-card>
+      <div class="col-md-4">
+        <person-panel></person-panel>
       </div>
 
-      <div class="col-md-6">
-        <communicationevent-embed [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)" (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></communicationevent-embed>
-      </div>
+      <div class="col-md-8">
+        <!-- <communicationevent-maxpanel [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)"
+          (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></communicationevent-maxpanel>
 
-      <div class="col-md-6">
-        <partycontactmechanism-embed [currentContactMechanisms]='currentContactMechanisms' [inactiveContactMechanisms]='inactiveContactMechanisms' [allContactMechanisms]='allContactMechanisms' (add)="navigation.add($event, person)" (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"
-          (remove)="removeContactMechanism($event)" (activate)="activateContactMechanism($event)"></partycontactmechanism-embed>
-      </div>
+        <communicationevent-minpanel [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)"
+          (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></communicationevent-minpanel>
+        -->
 
-      <div class="col-md-6">
-        <serialiseditem-embed [owner]='person' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
-          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed>
-      </div>
+        <partycontactmechanism-maxpanel></partycontactmechanism-maxpanel>
 
-      <div class="col-md-6">
-        <workeffortpartyassignment-embed [workEffortPartyAssignments]="workEffortPartyAssignments" (add)="navigation.add($event, person)" (edit)="navigation.edit($event)" (delete)="deleteWorkEffort($event)"></workeffortpartyassignment-embed>
+        <partycontactmechanism-minpanel></partycontactmechanism-minpanel>
+
+        <!--
+           <serialiseditem-embed [owner]='person' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
+            (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed>
+
+          <workeffortpartyassignment-embed [workEffortPartyAssignments]="workEffortPartyAssignments" (add)="navigation.add($event, person)"
+            (edit)="navigation.edit($event)" (delete)="deleteWorkEffort($event)"></workeffortpartyassignment-embed> -->
       </div>
     </div>
   </div>

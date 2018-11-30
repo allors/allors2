@@ -48,7 +48,7 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
         switchMap((url: any) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const partyId = navRoute.queryParam(m.Party);
 
           let pulls = [

@@ -63,7 +63,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
         switchMap(([urlSegments, date, internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const personId = navRoute.queryParam(m.Person);
           const organisationId = navRoute.queryParam(m.Organisation);
 
@@ -180,7 +180,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
         }
 
         // TODO: phone number from organisation, person or contacts ...
-        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber._objectType).map((v) => v.ContactMechanism);
+        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber.objectType).map((v) => v.ContactMechanism);
 
       },
         (error: any) => {

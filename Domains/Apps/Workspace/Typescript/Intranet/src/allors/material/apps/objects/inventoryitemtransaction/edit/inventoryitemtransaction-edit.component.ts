@@ -67,7 +67,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         switchMap(([, refresh, internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const inventoryItemId = navRoute.queryParam(m.InventoryItem);
           const partId = navRoute.queryParam(m.Part);
 

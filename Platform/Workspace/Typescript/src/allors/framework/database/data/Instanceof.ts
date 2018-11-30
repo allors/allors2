@@ -17,7 +17,7 @@ export class Instanceof implements Predicate {
   public toJSON(): any {
 
     const metaObjectType = this.objectType as MetaObjectType;
-    const objectType = metaObjectType._objectType ? metaObjectType._objectType : this.objectType as ObjectType;
+    const objectType = metaObjectType.objectType ? metaObjectType.objectType : this.objectType as ObjectType;
 
     return {
       kind: 'Instanceof',

@@ -12,15 +12,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { PartyPartyContactMechanismsComponent } from './partycontactmechanism-embed.component';
-export { PartyPartyContactMechanismsComponent } from './partycontactmechanism-embed.component';
+import { PersonPanelComponent } from './person-panel.component';
+export { PersonPanelComponent } from './person-panel.component';
 
 @NgModule({
   declarations: [
-    PartyPartyContactMechanismsComponent,
+    PersonPanelComponent,
   ],
   exports: [
-    PartyPartyContactMechanismsComponent,
+    PersonPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -51,4 +51,4 @@ export { PartyPartyContactMechanismsComponent } from './partycontactmechanism-em
     RouterModule,
   ],
 })
-export class PartyContactMechanismEmbedModule { }
+export class PersonPanelModule { }

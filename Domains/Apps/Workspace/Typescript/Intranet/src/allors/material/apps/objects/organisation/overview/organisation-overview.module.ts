@@ -12,8 +12,8 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { CommunicationEventEmbedModule } from '../../communicationevent/embed/communicationevent-embed.module';
-import { PartyContactMechanismEmbedModule } from '../../partycontactmechanisms/embed/partycontactmechanism-embed.module';
+import { CommunicationEventMaxPanelModule } from '../../communicationevent/maxpanel/communicationevent-maxpanel.module';
+import { PartyContactMechanismMaxPanelModule } from '../../partycontactmechanisms/maxpanel/partycontactmechanism-maxpanel.module';
 import { WorkEffortPartyAssignmentEmbedModule } from '../../workeffortpartyassignment/embed/workeffortpartyassignment-embed.module';
 import { SerialisedItemEmbedModule } from '../../serialiseditem/embed/serialiseditem-embed.module';
 
@@ -28,8 +28,8 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     OrganisationOverviewComponent,
   ],
   imports: [
-    CommunicationEventEmbedModule,
-    PartyContactMechanismEmbedModule,
+    CommunicationEventMaxPanelModule,
+    PartyContactMechanismMaxPanelModule,
     WorkEffortPartyAssignmentEmbedModule,
     SerialisedItemEmbedModule,
 

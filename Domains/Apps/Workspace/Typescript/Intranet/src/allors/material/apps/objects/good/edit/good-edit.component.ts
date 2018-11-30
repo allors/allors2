@@ -69,7 +69,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
         switchMap(([, refresh, internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
 
           const add = !id;
 

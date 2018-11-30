@@ -12,15 +12,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { CommunicationeventEmbedComponent } from './communicationevent-embed.component';
-export { CommunicationeventEmbedComponent } from './communicationevent-embed.component';
+import { CommunicationeventMaxPanelComponent } from './communicationevent-maxpanel.component';
+export { CommunicationeventMaxPanelComponent } from './communicationevent-maxpanel.component';
 
 @NgModule({
   declarations: [
-    CommunicationeventEmbedComponent,
+    CommunicationeventMaxPanelComponent,
   ],
   exports: [
-    CommunicationeventEmbedComponent,
+    CommunicationeventMaxPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -49,4 +49,4 @@ export { CommunicationeventEmbedComponent } from './communicationevent-embed.com
     RouterModule,
   ],
 })
-export class CommunicationEventEmbedModule { }
+export class CommunicationEventMaxPanelModule { }

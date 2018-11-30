@@ -60,7 +60,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
         switchMap(([, , internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const partId = navRoute.queryParam(m.Part);
 
           let pulls = [

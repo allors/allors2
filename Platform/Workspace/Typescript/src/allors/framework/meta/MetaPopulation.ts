@@ -155,7 +155,7 @@ export class MetaPopulation {
       .forEach((objectTypeName) => {
         const objectType: ObjectType = this.objectTypeByName[objectTypeName];
         const metaObjectType: MetaObjectType = {
-          _objectType: objectType,
+          objectType: objectType,
         };
         this.metaDomain[objectTypeName] = metaObjectType;
 

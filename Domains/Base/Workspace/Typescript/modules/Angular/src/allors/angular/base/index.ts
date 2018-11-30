@@ -14,3 +14,4 @@ export * from './menu';
 export * from './navigation';
 export * from './refresh';
 export * from './router';
+export * from './services';

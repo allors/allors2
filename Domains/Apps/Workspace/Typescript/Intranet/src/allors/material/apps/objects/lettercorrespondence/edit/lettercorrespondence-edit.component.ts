@@ -64,7 +64,7 @@ export class EditLetterCorrespondenceComponent
       .pipe(
         switchMap(([urlSegments, date, internalOrganisationId]) => {
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const personId = navRoute.queryParam(m.Person);
           const organisationId = navRoute.queryParam(m.Organisation);
 
@@ -173,7 +173,7 @@ export class EditLetterCorrespondenceComponent
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.postalAddresses = internalOrganisation.ActiveEmployees
           .map((v) => v.CurrentPartyContactMechanisms
-            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress._objectType)
+            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
             .map((w) => w.ContactMechanism as PostalAddress))
           .reduce((acc, v) => acc.concat(v), []);
 

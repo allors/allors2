@@ -52,7 +52,7 @@ export class PhoneCommunicationOverviewComponent implements OnInit, OnDestroy {
         switchMap(([urlSegments, date]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const partyId = navRoute.queryParam(m.Party);
 
           const pulls = [

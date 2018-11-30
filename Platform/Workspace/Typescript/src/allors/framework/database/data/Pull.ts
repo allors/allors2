@@ -24,8 +24,8 @@ export class Pull {
   public results: Result[];
 
   constructor(fields?: Partial<Pull> | ObjectType | MetaObjectType, flat?: FlatPull) {
-    if (fields instanceof ObjectType || (fields as MetaObjectType)._objectType) {
-      this.objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+    if (fields instanceof ObjectType || (fields as MetaObjectType).objectType) {
+      this.objectType = (fields as MetaObjectType).objectType ? (fields as MetaObjectType).objectType : fields as ObjectType;
 
       if (!flat) {
         this.extent = new Filter({ objectType: this.objectType });
@@ -88,7 +88,7 @@ export class Pull {
     return {
       extentRef: this.extentRef,
       extent: this.extent,
-      objectType: this.objectType && ((this.objectType as MetaObjectType)._objectType ? (this.objectType as MetaObjectType)._objectType.id : (this.objectType as ObjectType).id),
+      objectType: this.objectType && ((this.objectType as MetaObjectType).objectType ? (this.objectType as MetaObjectType).objectType.id : (this.objectType as ObjectType).id),
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
       arguments: this.arguments,
       results: this.results,

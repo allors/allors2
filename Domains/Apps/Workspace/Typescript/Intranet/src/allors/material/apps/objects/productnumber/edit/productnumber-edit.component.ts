@@ -54,7 +54,7 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
         switchMap(([, , internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const goodId = navRoute.queryParam(m.Good);
           const partId = navRoute.queryParam(m.Part);
 

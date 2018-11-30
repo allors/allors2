@@ -60,7 +60,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
         switchMap(([, , internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const personId = navRoute.queryParam(m.Person);
           const organisationId = navRoute.queryParam(m.Organisation);
 

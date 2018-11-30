@@ -1,0 +1,15 @@
+  <mat-card *ngIf="panelService.isMinimized" (click)="panelService.toggle(); false">
+    <div class="row">
+      <div class="col">
+        <h2>
+          <mat-icon>people</mat-icon> Communications
+        </h2>
+      </div>
+    </div>
+
+    <mat-card-content>
+
+      {{communicationEvents?.length}} communication events
+      </mat-card-content>
+
+  </mat-card>

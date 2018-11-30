@@ -11,8 +11,8 @@ export class Step {
   public next: Step | Tree;
 
   constructor(fields?: Partial<Step> | ObjectType | MetaObjectType, stepName?: string, literal?) {
-    if (fields instanceof ObjectType || fields && (fields as MetaObjectType)._objectType) {
-      const objectType = (fields as MetaObjectType)._objectType ? (fields as MetaObjectType)._objectType : fields as ObjectType;
+    if (fields instanceof ObjectType || fields && (fields as MetaObjectType).objectType) {
+      const objectType = (fields as MetaObjectType).objectType ? (fields as MetaObjectType).objectType : fields as ObjectType;
 
       this.propertyType = objectType.roleTypeByName[stepName];
       if (!this.propertyType) {

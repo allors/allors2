@@ -52,7 +52,7 @@ export class EditManufacturerIdentificationComponent implements OnInit, OnDestro
         switchMap(([, , internalOrganisationId]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.param();
+          const id = navRoute.id();
           const goodId = navRoute.queryParam(m.Good);
           const partId = navRoute.queryParam(m.Part);
 
