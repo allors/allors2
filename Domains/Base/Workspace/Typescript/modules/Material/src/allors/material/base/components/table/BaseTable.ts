@@ -13,6 +13,7 @@ export abstract class BaseTable {
   dataSource: MatTableDataSource<TableRow>;
   selection: SelectionModel<TableRow>;
   actions: Action[];
+  defaultAction: Action;
 
   sort$: BehaviorSubject<Sort>;
   pager$: BehaviorSubject<PageEvent>;

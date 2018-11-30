@@ -10,5 +10,7 @@ export interface TableConfig {
 
     actions?: Action[];
 
+    defaultAction?: Action;
+
     sort?: Partial<Sort>;
 }

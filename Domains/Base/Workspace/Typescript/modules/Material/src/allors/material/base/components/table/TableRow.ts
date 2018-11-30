@@ -1,3 +1,3 @@
-import { ObjectType, ISessionObject } from '../../../../framework';
+import { ISessionObject } from '../../../../framework';
 
 export interface TableRow { object: ISessionObject; }

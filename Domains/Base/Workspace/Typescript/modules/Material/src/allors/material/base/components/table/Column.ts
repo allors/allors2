@@ -1,10 +1,11 @@
-import { humanize } from '../../../../angular';
+import { humanize, Action } from '../../../../angular';
 
 export class Column {
 
   name: string;
   assignedLabel: string;
   sort: boolean;
+  action: Action;
 
   constructor(fields?: Partial<Column> | string) {
 

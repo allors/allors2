@@ -54,7 +54,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     this.table = new Table({
       selection: true,
       columns: [
-        { name: 'name', sort: true },
+        { name: 'name', sort: true},
         { name: 'email', sort: true },
         { name: 'phone', sort: true },
         'lastModifiedDate'
@@ -63,6 +63,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
         navigateService.overview(),
         this.delete
       ],
+      defaultAction: navigateService.overview(),
     });
   }
 

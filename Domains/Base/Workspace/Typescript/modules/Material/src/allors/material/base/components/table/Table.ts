@@ -6,6 +6,7 @@ import { BaseTable } from './BaseTable';
 import { Column } from './Column';
 import { BehaviorSubject } from 'rxjs';
 import { TableRow } from './TableRow';
+import { Action } from '../../../../angular';
 
 export class Table<Row extends TableRow> extends BaseTable {
 
@@ -19,6 +20,7 @@ export class Table<Row extends TableRow> extends BaseTable {
 
     if (config) {
 
+      this.defaultAction = config.defaultAction;
       this.columns = config.columns.map((v) => new Column(v));
 
       if (config.selection) {
