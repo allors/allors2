@@ -20,6 +20,7 @@ interface Row extends TableRow {
 }
 
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'nonserialisedinventoryitem-embed',
   templateUrl: './nonserialisedinventoryitem-embed.component.html',
   providers: [SessionService]
@@ -27,6 +28,8 @@ interface Row extends TableRow {
 export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
 
   @Input() part: Part;
+
+  @Output() add: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
 
   @Output() edit: EventEmitter<ObjectType> = new EventEmitter<ObjectType>();
 
@@ -44,7 +47,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
   inventoryItems: InventoryItem[];
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() public allors: SessionService,
     public navigateService: NavigateService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -117,7 +120,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Facility.Name,
-            uom: v.UnitOfMeasure.Abbreviation,
+            uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
             qoh: v.QuantityOnHand.toString(),
             atp: v.AvailableToPromise.toString(),
           } as Row;

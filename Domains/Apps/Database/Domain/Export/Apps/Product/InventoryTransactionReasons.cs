@@ -94,7 +94,7 @@ namespace Allors.Domain
                 .WithUniqueId(IncomingShipmentId)
                 .WithIsActive(true)
                 .WithIsManualEntryAllowed(false)
-                .WithIncreasesQuantityCommittedOut(false)  // Decreases Quantity
+                .WithIncreasesQuantityCommittedOut(null)  // Decreases Quantity
                 .WithIncreasesQuantityExpectedIn(null)  // Does not affect Quantity
                 .WithIncreasesQuantityOnHand(true)  // Decreases Quantity
                 .WithDefaultSerialisedInventoryItemState(serialisedStates.Good)

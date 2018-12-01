@@ -51,6 +51,8 @@ import * as TelecommunicationsNumberEdit from 'src/allors/material/apps/objects/
 import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edit/webaddress-edit.module';
 
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
+import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
+
 import * as EditEmailCommunication from 'src/allors/material/apps/objects/emailcommunication/edit/emailcommunication.module';
 import * as EditFaceToFaceCommunication from 'src/allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication.module';
 import * as EditLetterCorrespondence from 'src/allors/material/apps/objects/lettercorrespondence/edit/lettercorrespondence.module';
@@ -93,6 +95,7 @@ import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/
 import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktasks-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 import * as WorkTaskEdit from 'src/allors/material/apps/objects/worktask/edit/worktask-edit.module';
+import { NonSerialisedInventoryComponent } from 'src/allors/material/apps/objects/nonserialisedinventoryitem/embed/nonserialisedinventoryitem-embed.module';
 
 const modules = [
 
@@ -114,6 +117,7 @@ const modules = [
   IncoTermEdit.IncoTermEditModule,
 
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
+  NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditModule,
 
   InvoiceTermEdit.InvoiceTermEditModule,
 
@@ -275,6 +279,9 @@ export const routes: Routes = [
       { path: 'organisation', data: addData({ id: ids.Organisation }), component: OrganisationEdit.OrganisationEditComponent },
       { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: OrganisationEdit.OrganisationEditComponent },
 
+      { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
+      { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },
+
       { path: 'serialiseditem', data: addData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
       { path: 'serialiseditem/:id', data: editData({ id: ids.SerialisedItem }), component: EditSerialisedItem.EditSerialisedItemComponent },
 
@@ -312,8 +319,6 @@ export const routes: Routes = [
       { path: 'upcaidentification/:id', data: editData({ id: ids.UpcaIdentification }), component: EditUpcaIdentification.EditUpcaIdentificationComponent },
       { path: 'upceidentification', data: addData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
       { path: 'upceidentification/:id', data: editData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
-
-      { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
 
       { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
       { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },

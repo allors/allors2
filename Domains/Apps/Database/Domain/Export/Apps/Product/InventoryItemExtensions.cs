@@ -25,7 +25,7 @@ namespace Allors.Domain
             //TODO: Let Sync set Unit of Measure
             if (!@this.ExistUnitOfMeasure)
             {
-                @this.UnitOfMeasure = @this.Part.UnitOfMeasure;
+                @this.UnitOfMeasure = @this.Part?.UnitOfMeasure;
             }
         }
 
@@ -51,6 +51,12 @@ namespace Allors.Domain
             if (!@this.ExistFacility && internalOrganisations.Count() == 1)
             {
                 @this.Facility = internalOrganisations.First().DefaultFacility;
+            }
+
+            //TODO: Let Sync set Unit of Measure
+            if (!@this.ExistUnitOfMeasure)
+            {
+                @this.UnitOfMeasure = @this.Part?.UnitOfMeasure;
             }
         }
     }

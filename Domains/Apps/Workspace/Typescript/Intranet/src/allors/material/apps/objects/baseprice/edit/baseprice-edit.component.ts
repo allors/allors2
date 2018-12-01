@@ -35,7 +35,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
   internalOrganisation: InternalOrganisation;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() public allors: SessionService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
