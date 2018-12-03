@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonToggleModule } from '@angular/material';
 
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
@@ -12,27 +12,17 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { CommunicationEventPanelModule } from '../../communicationevent/panel/communicationevent-panel.module';
-import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/panel/partycontactmechanism-panel.module';
-import { SerialisedItemPanelModule } from '../../serialiseditem/panel/serialiseditem-panel.module';
-import { WorkEffortPartyAssignmentPanelModule } from '../../workeffortpartyassignment/panel/workeffortpartyassignment-panel.module';
-
-import { OrganisationOverviewComponent } from './organisation-overview.component';
-export { OrganisationOverviewComponent } from './organisation-overview.component';
+import { PartyContactMechanismPanelComponent } from './partycontactmechanism-panel.component';
+export { PartyContactMechanismPanelComponent } from './partycontactmechanism-panel.component';
 
 @NgModule({
   declarations: [
-    OrganisationOverviewComponent,
+    PartyContactMechanismPanelComponent,
   ],
   exports: [
-    OrganisationOverviewComponent,
+    PartyContactMechanismPanelComponent,
   ],
   imports: [
-    CommunicationEventPanelModule,
-    PartyContactMechanismPanelModule,
-    SerialisedItemPanelModule,
-    WorkEffortPartyAssignmentPanelModule,
-
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -40,15 +30,13 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-
+    CommonModule,
+    FormsModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
-    MatCheckboxModule,
-    MatChipsModule,
     MatDividerModule,
     MatFormFieldModule,
-    MatGridListModule,
     MatIconModule,
     MatInputModule,
     MatListModule,
@@ -57,12 +45,10 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     MatSelectModule,
     MatToolbarModule,
     MatTooltipModule,
+    MatButtonToggleModule,
     MatOptionModule,
-
-    CommonModule,
-    FormsModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class OrganisationOverviewModule { }
+export class PartyContactMechanismPanelModule { }

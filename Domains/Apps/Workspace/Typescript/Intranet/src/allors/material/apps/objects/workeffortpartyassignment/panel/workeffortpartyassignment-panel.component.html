@@ -1,0 +1,57 @@
+<div *ngIf="panelService.isMaximized" class="mat-elevation-z2" style="background: white">
+
+
+  <div class="container-fluid" style="cursor: pointer;" (click)="panelService.toggle(); false">
+    <div class="row pt-3">
+        <div class="col pl-3"><h4>Work Efforts</h4></div>
+        <div class="pr-3">
+            <mat-icon>expand_less</mat-icon>
+        </div>
+    </div>
+</div>
+
+
+  <div class="container-fluid">
+
+    <ul *ngIf="workEffortPartyAssignments?.length == 0">
+      <li>no work efforts to display</li>
+    </ul>
+
+    <mat-list>
+      <mat-list-item *ngFor="let workEffortAssignment of this.workEffortPartyAssignments; let last=last"
+        [attr.data-allors-id]="workEffortAssignment.id" (click)="navigation.edit(workEffortAssignment.Assignment)">
+        <div mat-line>
+          {{ workEffortAssignment.Assignment.Name }}, {{ workEffortAssignment.Assignment.WorkEffortState.Name }}
+        </div>
+
+        <p mat-line>{{ workEffortAssignment.Assignment.Description }} </p>
+        <p *ngIf="workEffortAssignment.Assignment.Priority" mat-line>Priority {{
+          workEffortAssignment.Assignment.Priority.Name }} </p>
+
+        <span>
+          <div> Sched. Start: {{ workEffortAssignment.Assignment.ScheduledStart | date}} </div>
+          <div> Sched. Compl.: {{ workEffortAssignment.Assignment.ScheduledCompletion | date }} </div>
+          <div> Act. Start: {{ workEffortAssignment.Assignment.ActualStart | date}} </div>
+          <div> Act. Compl.: {{ workEffortAssignment.Assignment.ActualCompletion | date }} </div>
+        </span>
+
+        <div>
+          <button mat-icon-button [mat-menu-trigger-for]="menuEditWork">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menuEditWork="matMenu">
+            <a (click)="navigation.edit(workEffortAssignment.Assignment)" mat-menu-item>Edit</a>
+            <button mat-menu-item (click)="delete.execute(workEffortAssignment.Assignment)" [disabled]="!workEffortAssignment.Assignment.CanExecuteDelete">Delete</button>
+          </mat-menu>
+        </div>
+
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="container">
+    <button mat-button (click)="navigation.add(allors.m.WorkEffort.objectType)">Add new</button>
+  </div>
+</div>

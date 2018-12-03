@@ -1,0 +1,69 @@
+<div *ngIf="panelService.isMaximized" class="mat-elevation-z2" style="background: white">
+
+  <div class="container-fluid" style="cursor: pointer;" (click)="panelService.toggle(); false">
+    <div class="row pt-3">
+      <div class="col pl-3">
+        <h4>Communications</h4>
+      </div>
+      <div class="pr-3">
+        <mat-icon>expand_less</mat-icon>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+
+    <ul *ngIf="communicationEvents?.length == 0">
+      <li>no communications to display</li>
+    </ul>
+
+    <mat-list>
+      <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id"
+        (click)="navigation.edit(communicationEvent)" style="cursor: pointer;">
+        <div *ngIf="communicationEvent.objectType === allors.m.FaceToFaceCommunication" mat-line>Meeting, {{
+          communicationEvent.CommunicationEventState.Name }}</div>
+        <div *ngIf="communicationEvent.objectType === allors.m.PhoneCommunication" mat-line>Phone call, {{
+          communicationEvent.CommunicationEventState.Name }}</div>
+        <div *ngIf="communicationEvent.objectType === allors.m.EmailCommunication" mat-line>Email, {{
+          communicationEvent.CommunicationEventState.Name }}</div>
+        <div *ngIf="communicationEvent.objectType === allors.m.LetterCorrespondence" mat-line>Letter, {{
+          communicationEvent.CommunicationEventState.Name }}</div>
+
+        <p mat-line>{{ communicationEvent.Subject }} </p>
+        <p mat-line>{{ communicationEvent.ActualStart | date}}
+          <span *ngIf="communicationEvent.ActualEnd">/ {{ communicationEvent.ActualEnd | date }}</span>
+        </p>
+        <p mat-line>Involved:
+          <span *ngFor="let party of communicationEvent.InvolvedParties">{{ party.displayName }} </span>
+        </p>
+
+        <div (click)="$event.stopPropagation()">
+          <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menuEditCom="matMenu">
+            <button mat-menu-item (click)="navigation.edit(communicationEvent)">Edit</button>
+            <button [disabled]="!communicationEvent.CanExecuteDelete" mat-menu-item (click)="delete.execute(communicationEvent)">Delete</button>
+            <button [disabled]="!communicationEvent.CanExecuteCancel" mat-menu-item (click)="cancel(communicationEvent)">Cancel</button>
+            <button [disabled]="!communicationEvent.CanExecuteClose" mat-menu-item (click)="close(communicationEvent)">Close</button>
+            <button [disabled]="!communicationEvent.CanExecuteReopen" mat-menu-item (click)="reopen(communicationEvent)">Reopen</button>
+          </mat-menu>
+        </div>
+
+        <mat-divider *ngIf="!last" mat-inset></mat-divider>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="container">
+    <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
+    <mat-menu #menuAddComm="matMenu">
+      <button mat-menu-item (click)="navigation.add(allors.m.FaceToFaceCommunication.objectType)">Meeting</button>
+      <button mat-menu-item (click)="navigation.add(allors.m.PhoneCommunication.objectType)">Phone</button>
+      <button mat-menu-item (click)="navigation.add(allors.m.EmailCommunication.objectType)">Email</button>
+      <button mat-menu-item (click)="navigation.add(allors.m.LetterCorrespondence.objectType)">Letter</button>
+    </mat-menu>
+  </div>
+
+</div>

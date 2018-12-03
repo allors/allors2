@@ -3,12 +3,12 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <!-- <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}} -->
+        <a [routerLink]="['/relations/people']">People</a> / {{person?.displayName}}
       </div>
     </div>
   </div>
 
-  <div class="a-overview container-fluid">
+  <div class="a-overview2 container">
 
     <div class="row">
 
@@ -17,23 +17,18 @@
       </div>
 
       <div class="col-md-8">
-        <!-- <communicationevent-maxpanel [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)"
-          (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></communicationevent-maxpanel>
+        <a-mat-launcher></a-mat-launcher>
 
-        <communicationevent-minpanel [communicationEvents]='communicationEvents' (add)="navigation.add($event, person)"
-          (edit)="navigation.edit($event, person)" (delete)="deleteCommunication($event)"></communicationevent-minpanel>
-        -->
+        <person-edit-panel></person-edit-panel>
 
-        <partycontactmechanism-maxpanel></partycontactmechanism-maxpanel>
+        <communicationevent-panel></communicationevent-panel>
 
-        <partycontactmechanism-minpanel></partycontactmechanism-minpanel>
+        <partycontactmechanism-panel></partycontactmechanism-panel>
 
-        <!--
-           <serialiseditem-embed [owner]='person' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
-            (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed>
+        <serialiseditem-panel></serialiseditem-panel>
 
-          <workeffortpartyassignment-embed [workEffortPartyAssignments]="workEffortPartyAssignments" (add)="navigation.add($event, person)"
-            (edit)="navigation.edit($event)" (delete)="deleteWorkEffort($event)"></workeffortpartyassignment-embed> -->
+        <workeffortpartyassignment-panel></workeffortpartyassignment-panel>
+
       </div>
     </div>
   </div>

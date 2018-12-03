@@ -1,0 +1,40 @@
+<mat-card *ngIf="person">
+
+  <mat-card-header (click)="panelService.panelsService.toggle('edit')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">person</mat-icon>
+    </div>
+    <mat-card-title>{{person.displayName}}</mat-card-title>
+    <mat-card-subtitle>
+      <div> {{person.UserEmail || person.GeneralEmail?.ElectronicAddressString ||
+        person.PersonalEmailAddress?.ElectronicAddressString || 'No email address'}}
+      </div>
+      <div>
+        {{contactKindsText}}
+      </div>
+
+      <div *ngIf="person.Comment">
+        {{person.Comment}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ person.LastModifiedDate | date}} by {{ person.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <div (click)="navigation.overview(organisation)" style="cursor: pointer;">
+      <div style="color: grey">
+        Organisation
+      </div>
+      <div>
+        {{organisation?.displayName}}
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

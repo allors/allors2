@@ -20,6 +20,7 @@ export * from './base/components/textarea/textarea.module';
 export * from './base/components/table/table.module';
 export * from './base/components/datepicker/MomentUtcDateAdapter';
 export * from './base/components/filter/filter.module';
+export * from './base/components/launcher/launcher.module';
 
 // Base Services
 export * from './base/services/dialog';
