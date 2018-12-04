@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable()
-export class AllorsRefreshService {
+export class RefreshService {
 
   refresh$: Observable<Date>;
   private refreshSubject$: BehaviorSubject<Date>;

@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Sort, SessionObject } from '../../../../../framework';
-import { ErrorService, MediaService, SessionService, NavigationService, Invoked } from '../../../../../angular';
+import { ErrorService, MediaService, SessionService, NavigationService, Invoked, MetaService } from '../../../../../angular';
 import { AllorsFilterService } from '../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Sorter } from '../../../../base/sorting';
@@ -50,6 +50,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: SessionService,
     @Self() private filterService: AllorsFilterService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -61,16 +62,16 @@ export class GoodListComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle(this.title);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     this.sort$ = new BehaviorSubject<Sort>(undefined);
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
     this.pager$ = new BehaviorSubject<PageEvent>(Object.assign(new PageEvent(), { pageIndex: 0, pageSize: 50 }));
   }
 
   ngOnInit(): void {
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const predicate = new And([
       new Like({ roleType: m.Good.Name, parameter: 'Name' }),

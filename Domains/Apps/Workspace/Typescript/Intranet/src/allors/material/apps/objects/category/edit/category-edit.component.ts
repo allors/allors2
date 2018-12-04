@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -38,20 +38,21 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

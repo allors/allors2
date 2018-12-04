@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, SearchFactory, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Field, SearchFactory, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
 import { PullRequest, Fetch, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -33,19 +33,20 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(

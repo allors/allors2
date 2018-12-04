@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, SessionService } from '../../../../../angular';
+import { ErrorService, SessionService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -28,14 +28,15 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
 
   constructor(
     private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { pull } = this.allors;
+    const { pull } = this.metaService;
 
     const pulls = [
       pull.ContactMechanismPurpose({

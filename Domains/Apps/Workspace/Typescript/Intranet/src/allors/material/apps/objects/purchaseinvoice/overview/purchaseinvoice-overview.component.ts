@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
 import { Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -28,6 +28,7 @@ export class PurchaseInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
@@ -36,7 +37,7 @@ export class PurchaseInvoiceOverviewComponent implements OnInit, OnDestroy {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public refresh(): void {
@@ -57,7 +58,7 @@ export class PurchaseInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -251,7 +252,7 @@ export class PurchaseInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public gotoInvoice(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.PurchaseInvoice({

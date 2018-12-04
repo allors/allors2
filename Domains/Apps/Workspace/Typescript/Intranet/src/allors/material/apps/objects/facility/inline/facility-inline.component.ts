@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { SessionService, ErrorService } from '../../../../../angular';
+import { SessionService, ErrorService, MetaService } from '../../../../../angular';
 import { Facility, FacilityType } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Sort } from 'src/allors/framework';
@@ -27,15 +27,16 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
 
   constructor(private allors: SessionService,
     private errorService: ErrorService,
+    public metaService: MetaService,
     private stateService: StateService) {
 
-    this.m = this.allors.m;
-    this.fetcher = new Fetcher(this.stateService, allors.pull);
+    this.m = this.metaService.m;
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       this.fetcher.facilities,

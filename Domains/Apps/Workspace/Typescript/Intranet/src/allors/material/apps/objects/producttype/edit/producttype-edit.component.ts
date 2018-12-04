@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -29,16 +29,17 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = this.route.url
       .pipe(

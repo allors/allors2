@@ -10,17 +10,12 @@ import { switchMap, map } from 'rxjs/operators';
 import { Saved } from './responses/Saved';
 import { Invoked } from './responses/Invoked';
 import { Database } from './Database';
+import { MetaService } from './MetaService';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class SessionService {
-
-  x = {};
-
-  m: MetaDomain;
-
-  pull: PullFactory;
-  fetch: FetchFactory;
-  tree: TreeFactory;
 
   database: Database;
   workspace: IWorkspace;
@@ -30,12 +25,6 @@ export class SessionService {
     this.database = workspaceService.databaseService.database;
     this.workspace = workspaceService.workspace;
     this.session = new Session(this.workspace);
-
-    const metaPopulation = workspaceService.metaPopulation;
-    this.m = metaPopulation.metaDomain;
-    this.pull = new PullFactory(metaPopulation);
-    this.fetch = new FetchFactory(metaPopulation);
-    this.tree = new TreeFactory(metaPopulation);
   }
 
   public load(service: string, params?: any): Observable<Loaded> {

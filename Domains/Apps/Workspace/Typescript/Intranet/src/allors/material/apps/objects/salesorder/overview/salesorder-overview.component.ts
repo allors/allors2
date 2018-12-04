@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService, MetaService } from '../../../../../angular';
 import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -34,6 +34,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -42,7 +43,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     public mediaService: MediaService,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -63,7 +64,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -344,7 +345,7 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
   public gotoInvoice(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.SalesOrder({

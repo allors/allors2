@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, MetaService } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -33,18 +33,19 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     titleService: Title) {
 
     titleService.setTitle(this.title);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = this.route.url
       .pipe(

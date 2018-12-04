@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { SessionService, AllorsPanelService, NavigationService } from '../../../../../../angular';
+import { SessionService, AllorsPanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { Person, Organisation, OrganisationContactKind, OrganisationContactRelationship } from '../../../../../../domain';
 import { MetaDomain } from '../../../../../../meta';
 
@@ -20,9 +20,10 @@ export class PersonOverviewPanelComponent {
   constructor(
     public allors: SessionService,
     @Self() public panelService: AllorsPanelService,
+    public metaService: MetaService,
     public navigation: NavigationService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     panelService.name = 'person';
 
@@ -30,7 +31,7 @@ export class PersonOverviewPanelComponent {
     const organisationContactRelationshipsPullName = `${panelService.name}_${this.m.OrganisationContactRelationship.objectType.name}`;
 
     panelService.prePull = (pulls) => {
-      const { m, pull, tree, x } = this.allors;
+      const { m, pull, tree, x } = this.metaService;
 
       const id = this.panelService.panelsService.id;
 

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -42,6 +42,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -49,13 +50,13 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -280,7 +281,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   private refreshInventory(product: Product): void {
 
-    const { pull  } = this.allors;
+    const { pull  } = this.stateService;
 
     const pulls = [
       pull.Good({

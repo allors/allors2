@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Self } from '@angular/core';
 import { Params, Router, ActivatedRoute } from '@angular/router';
 import { Pull } from '../../../framework';
-import { Loaded } from '../framework';
+import { Loaded, SessionService } from '../framework';
 import { AllorsPanelService } from './panel.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class AllorsPanelsService {
+export class PanelsService {
 
     id: string;
 
@@ -15,6 +15,7 @@ export class AllorsPanelsService {
     maximized: string;
 
     constructor(
+        @Self() public sessionService: SessionService,
         public router: Router,
         public route: ActivatedRoute
     ) { }

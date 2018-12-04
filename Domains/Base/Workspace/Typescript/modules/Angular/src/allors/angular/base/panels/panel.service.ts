@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Pull } from '../../../framework';
 import { Loaded } from '../framework';
 
-import { AllorsPanelsService } from './panels.service';
+import { PanelsService } from './panels.service';
 
 @Injectable({
     providedIn: 'root',
@@ -19,7 +19,7 @@ export class AllorsPanelService {
     postPull: (loaded: Loaded) => void;
 
     constructor(
-        public panelsService: AllorsPanelsService
+        public panelsService: PanelsService
     ) {
 
         panelsService.panels.push(this);

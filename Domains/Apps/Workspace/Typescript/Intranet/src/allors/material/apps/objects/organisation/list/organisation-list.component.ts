@@ -4,7 +4,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, AllorsRefreshService, Action } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
 import { TableRow, NavigateService, DeleteService, Table, Sorter } from '../../../../../material';
 
 import { Organisation } from '../../../../../domain';
@@ -38,7 +38,8 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigateService: NavigateService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
@@ -73,7 +74,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),

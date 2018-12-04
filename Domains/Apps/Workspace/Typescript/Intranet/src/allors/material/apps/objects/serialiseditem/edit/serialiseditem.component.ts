@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute, SearchFactory } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute, SearchFactory, MetaService } from '../../../../../angular';
 import { Facility, InternalOrganisation, Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -48,6 +48,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -55,9 +56,9 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
     private stateService: StateService,
   ) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
 
     this.organisationFilter = new SearchFactory({
       objectType: this.m.Organisation,
@@ -67,7 +68,7 @@ export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

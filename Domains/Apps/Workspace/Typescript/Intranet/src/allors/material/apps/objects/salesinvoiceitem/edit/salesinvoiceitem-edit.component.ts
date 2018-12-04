@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SearchFactory, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, SearchFactory, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, PullRequest, TreeNode, Sort, Filter } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -42,6 +42,7 @@ export class SalesInvoiceItemEditComponent
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -50,7 +51,7 @@ export class SalesInvoiceItemEditComponent
     public stateService: StateService,
 
   ) {
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.goodsFacilityFilter = new SearchFactory({
@@ -69,7 +70,7 @@ export class SalesInvoiceItemEditComponent
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -159,7 +160,7 @@ export class SalesInvoiceItemEditComponent
 
     this.invoiceItem.InvoiceItemType = this.productItemType;
 
-    const { pull } = this.allors;
+    const { pull } = this.metaService;
 
     const pulls = [
       pull.Good({

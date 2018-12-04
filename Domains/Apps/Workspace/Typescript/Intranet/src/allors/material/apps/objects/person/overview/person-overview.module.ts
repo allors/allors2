@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule, MatExpansionModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
@@ -15,7 +15,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { PersonOverviewPanelModule } from '../panels/overview/person-overview-panel.module';
-import { PersonEditPanelModule } from '../panels/edit/person-edit-panel.module';
+import { PersonPersonalPanelModule } from '../panels/personal/person-personal-panel.module';
 
 import { CommunicationEventPanelModule } from '../../communicationevent/panel/communicationevent-panel.module';
 import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/panel/partycontactmechanism-panel.module';
@@ -34,7 +34,7 @@ export { PersonOverviewComponent } from './person-overview.component';
   ],
   imports: [
     PersonOverviewPanelModule,
-    PersonEditPanelModule,
+    PersonPersonalPanelModule,
 
     CommunicationEventPanelModule,
     PartyContactMechanismPanelModule,
@@ -59,6 +59,7 @@ export { PersonOverviewComponent } from './person-overview.component';
     MatChipsModule,
     MatDialogModule,
     MatDividerModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,

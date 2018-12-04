@@ -14,15 +14,15 @@ import { AllorsMaterialStaticModule } from '../../../../../base/components/stati
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
-import { PersonEditPanelComponent } from './person-edit-panel.component';
-export { PersonEditPanelComponent } from './person-edit-panel.component';
+import { PersonPersonalPanelComponent } from './person-personal-panel.component';
+export { PersonPersonalPanelComponent } from './person-personal-panel.component';
 
 @NgModule({
   declarations: [
-    PersonEditPanelComponent,
+    PersonPersonalPanelComponent,
   ],
   exports: [
-    PersonEditPanelComponent,
+    PersonPersonalPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -53,4 +53,4 @@ export { PersonEditPanelComponent } from './person-edit-panel.component';
     RouterModule,
   ],
 })
-export class PersonEditPanelModule { }
+export class PersonPersonalPanelModule { }

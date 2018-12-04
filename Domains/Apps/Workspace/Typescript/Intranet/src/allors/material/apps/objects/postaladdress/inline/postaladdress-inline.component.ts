@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, SessionService } from '../../../../../angular';
+import { ErrorService, SessionService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -29,14 +29,15 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
 
   constructor(
     private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.Country({

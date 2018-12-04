@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService, NavigationService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService, NavigationService, MetaService } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber, SerialisedItem } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -53,6 +53,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     public router: Router,
     private errorService: ErrorService,
@@ -64,9 +65,9 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   get contactRelationships(): any {
@@ -97,7 +98,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, tree, x } = this.allors;
+    const { m, pull, tree, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -252,7 +253,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   }
 
   public removeContact(organisationContactRelationship: OrganisationContactRelationship): void {
- 
+
     organisationContactRelationship.ThroughDate = new Date();
     this.allors
       .save()

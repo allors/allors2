@@ -6,10 +6,7 @@
     </div>
     <mat-card-title>{{person.displayName}}</mat-card-title>
     <mat-card-subtitle>
-      <div> {{person.UserEmail || person.GeneralEmail?.ElectronicAddressString ||
-        person.PersonalEmailAddress?.ElectronicAddressString || 'No email address'}}
-      </div>
-      <div>
+       <div>
         {{contactKindsText}}
       </div>
 

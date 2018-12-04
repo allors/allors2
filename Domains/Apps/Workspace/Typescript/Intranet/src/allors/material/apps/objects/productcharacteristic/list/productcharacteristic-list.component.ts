@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
 
 import { SerialisedItemCharacteristicType } from '../../../../../domain';
@@ -35,7 +35,8 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
   constructor(
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigateService: NavigateService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
@@ -66,7 +67,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
 
   ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const predicate = new And([
       new Like({ roleType: m.Person.FirstName, parameter: 'name' }),

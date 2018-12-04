@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -50,19 +50,20 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: SessionService,
     public navigationService: NavigationService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

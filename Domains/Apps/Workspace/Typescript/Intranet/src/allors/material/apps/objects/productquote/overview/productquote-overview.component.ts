@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -29,6 +29,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -36,7 +37,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
     public mediaService: MediaService,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -58,7 +59,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -200,7 +201,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public gotoOrder(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.ProductQuote({

@@ -1,7 +1,7 @@
 import { Injectable, Self } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { SessionService } from '../allors/angular';
+import { SessionService, MetaService } from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
 import { Loaded } from '../allors/angular';
@@ -13,12 +13,13 @@ export class ConfigService {
 
     constructor(
         @Self() private allors: SessionService,
+        public metaService: MetaService,
         private stateService: StateService
     ) { }
 
     public setup(): Observable<any> {
 
-        const { m, pull, x } = this.allors;
+        const { m, pull, x } = this.metaService;
 
         const pulls = [
             pull.Organisation({

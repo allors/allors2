@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -38,6 +38,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -48,12 +49,12 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
     titleService.setTitle(this.title);
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

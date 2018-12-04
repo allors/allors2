@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -28,14 +28,15 @@ export class PersonInlineComponent implements OnInit {
 
   constructor(
     private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Locale({

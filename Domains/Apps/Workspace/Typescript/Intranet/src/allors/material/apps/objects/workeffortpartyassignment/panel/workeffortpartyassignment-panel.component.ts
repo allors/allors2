@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { NavigationService, SessionService, Action, AllorsPanelService, AllorsRefreshService, ErrorService } from '../../../../../angular';
+import { NavigationService, SessionService, Action, AllorsPanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
 import { WorkEffortPartyAssignment, WorkEffort } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { DeleteService } from '../../../../../material';
@@ -21,13 +21,14 @@ export class WorkEffortPartyAssignmentPanelComponent {
   constructor(
     public allors: SessionService,
     @Self() public panelService: AllorsPanelService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
   ) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.delete = deleteService.delete(allors);
 
     panelService.name = 'workeffortpartyassignment';
@@ -38,7 +39,7 @@ export class WorkEffortPartyAssignmentPanelComponent {
     const workEffortPartyAssignmentPullName = `${panelService.name}_${this.m.WorkEffortPartyAssignment.objectType.name}`;
 
     panelService.prePull = (pulls) => {
-      const { m, pull, tree, x } = this.allors;
+      const { m, pull, tree, x } = this.metaService;
 
       const id = this.panelService.panelsService.id;
 

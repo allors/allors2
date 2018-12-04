@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -39,6 +39,7 @@ export class PurchaseInvoiceItemEditComponent
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -46,13 +47,13 @@ export class PurchaseInvoiceItemEditComponent
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService,
   ) {
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -125,7 +126,7 @@ export class PurchaseInvoiceItemEditComponent
   }
 
   public goodSelected(product: Product): void {
-    const { pull } = this.allors;
+    const { pull } = this.metaService;
 
     this.invoiceItem.InvoiceItemType = this.productItemType;
 

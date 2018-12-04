@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, AllorsRefreshService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
 
 import { Quote } from '../../../../../domain';
@@ -38,7 +38,8 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigateService: NavigateService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
@@ -73,7 +74,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const internalOrganisationPredicate = new Equals({ propertyType: m.Quote.Issuer });
     const predicate = new And([

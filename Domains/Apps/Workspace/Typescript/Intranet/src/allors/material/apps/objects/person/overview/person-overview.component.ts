@@ -4,14 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, AllorsPanelsService, AllorsRefreshService } from '../../../../../angular';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelsService, RefreshService, MetaService, SessionService } from '../../../../../angular';
 import { Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './person-overview.component.html',
-  providers: [SessionService, AllorsPanelsService]
+  providers: [PanelsService, SessionService]
 })
 export class PersonOverviewComponent implements OnInit, OnDestroy {
 
@@ -22,9 +22,9 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
-    @Self() public panelsService: AllorsPanelsService,
-    public refreshService: AllorsRefreshService,
+    @Self() public panelsService: PanelsService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -42,35 +42,30 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const { pull } = this.allors;
+          const { pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-          const panel = navRoute.panel();
+          this.panelsService.id = navRoute.id();
+          this.panelsService.maximized = navRoute.panel();
 
-          this.panelsService.id = id;
-          this.panelsService.maximized = panel;
+          const pulls = [
+            pull.Person({
+              object: this.panelsService.id,
+            })
+          ];
 
-          const pulls: Pull[] = [];
           this.panelsService.prePull(pulls);
 
-          pulls.push(
-            pull.Person({
-              object: id,
-            })
-          );
-
-          return this.allors
+          return this.panelsService.sessionService
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
 
+        this.panelsService.sessionService.session.reset();
         this.panelsService.postPull(loaded);
 
         this.person = loaded.objects.Person as Person;
-
       }, this.errorService.handler);
   }
 

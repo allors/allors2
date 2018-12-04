@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -50,6 +50,7 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -58,14 +59,14 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
     titleService: Title) {
 
     titleService.setTitle(this.title);
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

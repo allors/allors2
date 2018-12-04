@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Part, Facility, Lot, NonSerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -40,6 +40,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
     private errorService: ErrorService,
@@ -47,15 +48,15 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
     private titleService: Title,
     private stateService: StateService) {
 
-    this.m = allors.m;
+    this.m = metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, allors.pull);
+    this.fetcher = new Fetcher(this.stateService, metaService.pull);
     this.titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

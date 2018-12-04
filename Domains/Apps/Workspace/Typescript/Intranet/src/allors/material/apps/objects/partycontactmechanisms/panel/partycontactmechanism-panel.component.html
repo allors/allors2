@@ -1,14 +1,30 @@
+<div *ngIf="panelService.isMinimized" (click)="panelService.toggle()">
+    <div class="container mb-3">
+        <div class="row rounded" style="background-color: white;">
+            <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+                <mat-icon style="color: white; zoom: 250%">{{panelService.icon}}</mat-icon>
+            </div>
+            <div class="col-9 col-md-10 p-3">
+                <h4>{{panelService.title}}</h4>
+                <div>{{contactMechanisms?.length}} total contact mechanisms</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div *ngIf="panelService.isMaximized && person" class="mat-elevation-z2" style="background: white">
 
     <div class="container-fluid" style="cursor: pointer;" (click)="panelService.toggle(); false">
         <div class="row pt-3">
-            <div class="col pl-3"><h4>Contact Info</h4></div>
+            <div class="col pl-3">
+                <h4>Contact Info</h4>
+            </div>
             <div class="pr-3">
                 <mat-icon>expand_less</mat-icon>
             </div>
         </div>
     </div>
-   
+
     <div class="container-fluid">
         <div class="row mt-2">
             <div class="col">
@@ -62,7 +78,8 @@
                         <a (click)="edit(partyContactMechanism.ContactMechanism)" mat-menu-item>Edit</a>
                         <button mat-menu-item (click)="remove(partyContactMechanism)" [disabled]="!!partyContactMechanism.ThroughDate">Remove</button>
                         <button mat-menu-item (click)="activate(partyContactMechanism)" [disabled]="!partyContactMechanism.ThroughDate">Activate</button>
-                        <button mat-menu-item (click)="delete.execute(partyContactMechanism.ContactMechanism)" [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
+                        <button mat-menu-item (click)="delete.execute(partyContactMechanism.ContactMechanism)"
+                            [disabled]="!partyContactMechanism.ContactMechanism.CanExecuteDelete">Delete</button>
                     </mat-menu>
                 </div>
 

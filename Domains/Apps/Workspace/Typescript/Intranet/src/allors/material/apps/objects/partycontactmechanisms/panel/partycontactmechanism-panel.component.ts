@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { SessionService, AllorsPanelService, NavigationService, Saved, AllorsRefreshService, ErrorService, Action } from '../../../../../angular';
+import { SessionService, AllorsPanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../angular';
 import { PartyContactMechanism, Person } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { ObjectType, ISessionObject } from '../../../../../framework';
@@ -26,13 +26,14 @@ export class PartyContactMechanismPanelComponent {
   constructor(
     public allors: SessionService,
     @Self() public panelService: AllorsPanelService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
   ) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.delete = deleteService.delete(allors);
 
     panelService.name = 'partycontactmechanism';
@@ -43,7 +44,7 @@ export class PartyContactMechanismPanelComponent {
     const personPullName = `${panelService.name}_${this.m.Person.objectType.name}`;
 
     panelService.prePull = (pulls) => {
-      const { m, pull, tree, x } = this.allors;
+      const { m, pull, tree, x } = this.metaService;
 
       const id = this.panelService.panelsService.id;
 

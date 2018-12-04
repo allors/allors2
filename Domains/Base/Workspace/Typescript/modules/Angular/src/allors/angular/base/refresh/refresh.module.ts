@@ -1,8 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AllorsRefreshService } from './refresh.service';
-export { AllorsRefreshService } from './refresh.service';
+import { RefreshService } from './refresh.service';
+export { RefreshService } from './refresh.service';
 
 @NgModule({
   declarations: [
@@ -12,14 +12,14 @@ export { AllorsRefreshService } from './refresh.service';
   imports: [
   ],
   providers: [
-    AllorsRefreshService
+    RefreshService
   ]
 })
 export class AllorsRefreshModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: AllorsRefreshModule,
-      providers: [ AllorsRefreshService ]
+      providers: [ RefreshService ]
     };
   }
 }

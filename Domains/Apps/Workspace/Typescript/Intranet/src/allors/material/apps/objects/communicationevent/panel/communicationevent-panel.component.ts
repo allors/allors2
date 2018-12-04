@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 
-import { SessionService, AllorsPanelService, Action, AllorsRefreshService, NavigationService, ErrorService, Invoked } from '../../../../../angular';
+import { SessionService, AllorsPanelService, Action, RefreshService, NavigationService, ErrorService, Invoked, MetaService } from '../../../../../angular';
 import { CommunicationEvent } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { DeleteService, AllorsMaterialDialogService } from '../../../../../material';
@@ -23,7 +23,8 @@ export class CommunicationeventPanelComponent {
   constructor(
     public allors: SessionService,
     @Self() public panelService: AllorsPanelService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
@@ -31,7 +32,7 @@ export class CommunicationeventPanelComponent {
     private dialogService: AllorsMaterialDialogService,
   ) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.delete = deleteService.delete(allors);
 
     panelService.name = 'communicationevent';
@@ -42,7 +43,7 @@ export class CommunicationeventPanelComponent {
     const communicationEventsPullName = `${panelService.name}_${this.m.CommunicationEvent.objectType.name}`;
 
     panelService.prePull = (pulls) => {
-      const { m, pull, tree, x } = this.allors;
+      const { m, pull, tree, x } = this.metaService;
 
       const id = this.panelService.panelsService.id;
 

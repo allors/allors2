@@ -7,7 +7,7 @@ import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, SessionService, NavigationService, MediaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, SessionService, NavigationService, MediaService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, SalesInvoice, SalesInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -48,6 +48,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -65,7 +66,7 @@ export class SalesInvoiceListComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const predicate = new And([
       new Like({ roleType: m.SalesInvoice.InvoiceNumber, parameter: 'number' }),

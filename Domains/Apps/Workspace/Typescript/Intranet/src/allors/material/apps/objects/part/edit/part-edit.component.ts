@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../domain';
 import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -53,21 +53,22 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -217,7 +218,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   public brandSelected(brand: Brand): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Brand({

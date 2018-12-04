@@ -6,7 +6,7 @@ import { Title } from '@angular/platform-browser';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../angular';
+import { ErrorService, Invoked, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -30,6 +30,7 @@ export class PhoneCommunicationOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -39,13 +40,13 @@ export class PhoneCommunicationOverviewComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(

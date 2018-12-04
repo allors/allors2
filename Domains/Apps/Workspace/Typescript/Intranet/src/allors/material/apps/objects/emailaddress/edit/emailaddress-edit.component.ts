@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { EmailAddress, Enumeration, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -29,17 +29,18 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = this.route.url
       .pipe(

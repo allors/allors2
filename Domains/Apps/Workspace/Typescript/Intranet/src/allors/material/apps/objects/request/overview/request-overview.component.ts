@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, SessionService, MetaService } from '../../../../../angular';
 import { InventoryItem, NonSerialisedInventoryItem, ProductQuote, RequestForQuote, RequestItem, SerialisedInventoryItem } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -35,6 +35,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private router: Router,
@@ -42,9 +43,9 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public refresh(): void {
@@ -53,7 +54,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -134,7 +135,7 @@ export class RequestOverviewComponent implements OnInit, OnDestroy {
 
   public gotoQuote(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.RequestForQuote(

@@ -4,7 +4,7 @@ import { ActivatedRoute,  Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, SessionService, NavigationService } from '../../../../../angular';
+import { ErrorService, Invoked, SessionService, NavigationService, MetaService } from '../../../../../angular';
 import { StateService } from '../../../../../material';
 import { WorkTask } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
@@ -29,6 +29,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -38,13 +39,13 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(

@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService, MetaService } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -30,6 +30,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -38,7 +39,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService) {
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
   }
 
   public refresh(): void {
@@ -59,7 +60,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(

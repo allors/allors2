@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -41,6 +41,7 @@ export class EditLetterCorrespondenceComponent
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
@@ -48,7 +49,7 @@ export class EditLetterCorrespondenceComponent
     private snackBar: MatSnackBar,
     private stateService: StateService
   ) {
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
@@ -58,7 +59,7 @@ export class EditLetterCorrespondenceComponent
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

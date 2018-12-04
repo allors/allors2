@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, SearchFactory, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SearchFactory, SessionService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -38,6 +38,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -45,14 +46,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService,
   ) {
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
@@ -225,7 +226,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   private update(product: Product) {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.Good(

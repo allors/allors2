@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, SessionService, NavigationService } from '../../../../../angular';
+import { ErrorService, Saved, SessionService, NavigationService, MetaService } from '../../../../../angular';
 import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -47,6 +47,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     public location: Location,
     private errorService: ErrorService,
@@ -54,15 +55,15 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     private titleService: Title,
     public stateService: StateService
   ) {
-    this.m = allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
     this.titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(
       this.route.url,
@@ -212,7 +213,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
   private updateCustomer(party: Party) {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action, ActionTarget } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, ObjectType } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -43,13 +43,14 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public navigateService: NavigateService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private stateService: StateService,
   ) {
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     this.table = new Table({
@@ -75,7 +76,7 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

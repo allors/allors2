@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, Loaded, SessionService } from '../../allors/angular';
+import { MenuService, Loaded, SessionService, MetaService } from '../../allors/angular';
 import { Equals, PullRequest } from '../../allors/framework';
 import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
@@ -32,6 +32,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private stateService: StateService,
     private router: Router,
     private sideNavService: AllorsMaterialSideNavService,
@@ -79,7 +80,7 @@ export class MainComponent implements OnInit, OnDestroy {
       this.sidenav.close();
     });
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = this.stateService.internalOrganisationId$
       .pipe(

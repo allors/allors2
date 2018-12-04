@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AllorsPanelsService } from '../../../../angular';
+import { PanelsService } from '../../../../angular';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -13,7 +13,7 @@ export class AllorsMaterialLauncherComponent implements OnInit, OnDestroy {
     return this.panelsService.panels.filter((v) => v.maximizable);
   }
 
-  constructor(public panelsService: AllorsPanelsService) {
+  constructor(public panelsService: PanelsService) {
   }
 
   public ngOnInit(): void {

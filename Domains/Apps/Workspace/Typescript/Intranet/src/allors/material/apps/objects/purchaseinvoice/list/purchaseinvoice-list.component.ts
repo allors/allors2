@@ -8,7 +8,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, SessionService, NavigationService, MediaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, SessionService, NavigationService, MediaService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, PurchaseInvoice, PurchaseInvoiceState } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -48,6 +48,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: SessionService,
     @Self() private filterService: AllorsFilterService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     public mediaService: MediaService,
     private errorService: ErrorService,
@@ -65,7 +66,7 @@ export class PurchaseInvoiceListComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const predicate = new And([
       new Like({ roleType: m.PurchaseInvoice.InvoiceNumber, parameter: 'number' }),

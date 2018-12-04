@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { CommunicationEventPurpose, FaceToFaceCommunication, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, Person, Singleton } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -40,6 +40,7 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
     private dialogService: AllorsMaterialDialogService,
@@ -47,13 +48,13 @@ export class EditFaceToFaceCommunicationComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private stateService: StateService,
   ) {
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(

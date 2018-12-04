@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, Saved, SessionService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Contains, Equals, Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain, PullFactory } from '../../../../../meta';
@@ -65,6 +65,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() public allors: SessionService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -72,15 +73,15 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
@@ -384,7 +385,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
   private updateBilledFrom(party: Party): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({
@@ -408,7 +409,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
   private updateBillToCustomer(party: Party) {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({
@@ -465,7 +466,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
   private updateShipToEndCustomer(party: Party) {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.Party({

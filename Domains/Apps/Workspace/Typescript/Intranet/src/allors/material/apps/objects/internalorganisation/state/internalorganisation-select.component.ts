@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../services/state';
-import { ErrorService, SessionService } from '../../../../../angular';
+import { ErrorService, SessionService, MetaService } from '../../../../../angular';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
@@ -29,12 +29,13 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: SessionService,
+    public metaService: MetaService,
     private stateService: StateService,
     private errorService: ErrorService) { }
 
   ngOnInit(): void {
 
-    const { m, pull, x } = this.allors;
+    const { m, pull, x } = this.metaService;
 
     const pulls = [
       pull.Organisation(

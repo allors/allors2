@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute } from '../../../../../angular';
+import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Organisation, Good, IGoodIdentification } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -37,6 +37,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: SessionService,
     public navigationService: NavigationService,
+    public metaService: MetaService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -46,14 +47,14 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle(this.title);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
-    this.fetcher = new Fetcher(this.stateService, this.allors.pull);
+    this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
   public ngOnInit(): void {
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
