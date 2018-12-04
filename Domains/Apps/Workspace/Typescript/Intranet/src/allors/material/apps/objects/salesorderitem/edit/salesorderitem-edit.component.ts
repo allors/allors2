@@ -281,7 +281,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   private refreshInventory(product: Product): void {
 
-    const { pull  } = this.stateService;
+    const { pull  } = this.metaService;
 
     const pulls = [
       pull.Good({
