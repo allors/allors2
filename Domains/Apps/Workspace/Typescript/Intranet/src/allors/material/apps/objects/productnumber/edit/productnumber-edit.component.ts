@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { GoodIdentificationType, Good, Part, ProductNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './productnumber-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditProductNumberComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
   item: Good | Part;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -97,7 +97,7 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -106,7 +106,7 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
@@ -117,7 +117,7 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.iGoodIdentification = this.allors.session.create('ProductNumber') as ProductNumber;
+          this.iGoodIdentification = this.allors.context.create('ProductNumber') as ProductNumber;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
 
           if (this.good) {
@@ -149,7 +149,7 @@ export class EditProductNumberComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

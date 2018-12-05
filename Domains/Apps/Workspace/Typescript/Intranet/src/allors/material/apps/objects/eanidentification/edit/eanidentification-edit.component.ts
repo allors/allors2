@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { GoodIdentificationType, Good, Part, EanIdentification } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -12,7 +12,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './eanidentification-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditEanIdentificationComponent implements OnInit, OnDestroy {
 
@@ -33,7 +33,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
   item: Good | Part;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -95,8 +95,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
             );
@@ -104,7 +103,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b2f15a78-0728-4041-86b2-6ac4c0fa9c7d');
@@ -115,7 +114,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.iGoodIdentification = this.allors.session.create('EanIdentification') as EanIdentification;
+          this.iGoodIdentification = this.allors.context.create('EanIdentification') as EanIdentification;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
 
           if (this.good) {
@@ -147,8 +146,7 @@ export class EditEanIdentificationComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
         this.goBack();
       },

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, Loaded, SessionService, MetaService } from '../../allors/angular';
+import { MenuService, Loaded, ContextService, MetaService } from '../../allors/angular';
 import { Equals, PullRequest } from '../../allors/framework';
 import { StateService } from '../../allors/material/apps/services/state/state.service';
 import { Organisation } from '../../allors/domain';
@@ -14,7 +14,7 @@ import { Router, NavigationEnd } from '@angular/router';
 @Component({
   styleUrls: ['main.component.scss'],
   templateUrl: './main.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class MainComponent implements OnInit, OnDestroy {
 
@@ -31,7 +31,7 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('drawer') private sidenav: MatSidenav;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private stateService: StateService,
     private router: Router,
@@ -95,12 +95,12 @@ export class MainComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.internalOriganisations = loaded.collections.internalOrganisations as Organisation[];
         this.selectedInternalOrganisation = loaded.objects.internalOrganisation as Organisation;
       });

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -23,7 +23,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
   ) {
@@ -41,11 +41,11 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
-        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.webAddress = this.allors.session.create('WebAddress') as WebAddress;
+        this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+        this.webAddress = this.allors.context.create('WebAddress') as WebAddress;
         this.partyContactMechanism.ContactMechanism = this.webAddress;
       },
       (error: any) => {
@@ -57,8 +57,8 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
 
     if (!!this.partyContactMechanism) {
-      this.allors.session.delete(this.partyContactMechanism);
-      this.allors.session.delete(this.webAddress);
+      this.allors.context.delete(this.partyContactMechanism);
+      this.allors.context.delete(this.webAddress);
     }
   }
 

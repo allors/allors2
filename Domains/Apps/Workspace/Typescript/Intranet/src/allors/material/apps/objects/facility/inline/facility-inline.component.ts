@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 
-import { SessionService, ErrorService, MetaService } from '../../../../../angular';
+import { ContextService, ErrorService, MetaService } from '../../../../../angular';
 import { Facility, FacilityType } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { PullRequest, Sort } from 'src/allors/framework';
@@ -25,7 +25,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
   private readonly fetcher: Fetcher;
   facilities: Facility[];
 
-  constructor(private allors: SessionService,
+  constructor(private allors: ContextService,
     private errorService: ErrorService,
     public metaService: MetaService,
     private stateService: StateService) {
@@ -45,19 +45,18 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
-      .load('Pull', new PullRequest({ pulls }))
+    this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.facilityTypes = loaded.collections.FacilityTypes as FacilityType[];
         this.facilities = loaded.collections.Facilities as Facility[];
 
-        this.facility = this.allors.session.create('Facility') as Facility;
+        this.facility = this.allors.context.create('Facility') as Facility;
       }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
     if (!!this.facility) {
-      this.allors.session.delete(this.facility);
+      this.allors.context.delete(this.facility);
     }
   }
 

@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, SearchFactory, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SearchFactory, ContextService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
@@ -37,7 +37,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -96,12 +96,12 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.quote = loaded.objects.productQuote as ProductQuote;
         this.quoteItem = loaded.objects.quoteItem as QuoteItem;
         this.requestItem = loaded.objects.requestItem as RequestItem;
@@ -111,7 +111,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.quoteItem) {
           this.title = 'Add Quote Item';
-          this.quoteItem = this.allors.session.create('QuoteItem') as QuoteItem;
+          this.quoteItem = this.allors.context.create('QuoteItem') as QuoteItem;
           this.quoteItem.UnitOfMeasure = piece;
           this.quote.AddQuoteItem(this.quoteItem);
         } else {
@@ -135,7 +135,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   public submit(): void {
 
     const submitFn: () => void = () => {
-      this.allors.invoke(this.quoteItem.Submit)
+      this.allors.context.invoke(this.quoteItem.Submit)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
@@ -145,15 +145,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
-              .save()
+            this.allors.context.save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 submitFn();
               },
                 (error: Error) => {
@@ -171,7 +170,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.quoteItem.Cancel)
+      this.allors.context.invoke(this.quoteItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -181,15 +180,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
-              .save()
+            this.allors.context.save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -206,8 +204,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/productQuote/' + this.quote.id]);
       },
@@ -240,8 +237,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.allors
-      .load('Pull', new PullRequest({ pulls }))
+    this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
         if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {

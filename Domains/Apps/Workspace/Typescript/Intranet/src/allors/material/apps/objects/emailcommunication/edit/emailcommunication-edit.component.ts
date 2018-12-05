@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './emailcommunication-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
 
@@ -41,7 +41,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -147,8 +147,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
             );
@@ -156,7 +155,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -183,8 +182,8 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
             this.contacts.push(this.person);
           }
 
-          this.communicationEvent = this.allors.session.create('EmailCommunication') as EmailCommunication;
-          this.emailTemplate = this.allors.session.create('EmailTemplate') as EmailTemplate;
+          this.communicationEvent = this.allors.context.create('EmailCommunication') as EmailCommunication;
+          this.emailTemplate = this.allors.context.create('EmailTemplate') as EmailTemplate;
           this.communicationEvent.EmailTemplate = this.emailTemplate;
           this.communicationEvent.Originator = this.party.GeneralEmail;
           this.communicationEvent.IncomingMail = false;
@@ -209,7 +208,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Cancel)
+      this.allors.context.invoke(this.communicationEvent.Cancel)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -219,15 +218,14 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
-              .save()
+            this.allors.context.save()
               .subscribe(() => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -245,7 +243,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
   public close(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Close)
+      this.allors.context.invoke(this.communicationEvent.Close)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -255,15 +253,14 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
-              .save()
+            this.allors.context.save()
               .subscribe(() => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -281,7 +278,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
   public reopen(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Reopen)
+      this.allors.context.invoke(this.communicationEvent.Reopen)
         .subscribe(() => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -291,15 +288,14 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
-              .save()
+            this.allors.context.save()
               .subscribe(() => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -316,8 +312,7 @@ export class EditEmailCommunicationComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
         this.goBack();
       },

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Saved, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { Enumeration, PartyContactMechanism, WebAddress, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -12,7 +12,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './webaddress-edit.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditWebAddressComponent implements OnInit, OnDestroy {
 
@@ -28,7 +28,7 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -106,7 +106,7 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -118,8 +118,8 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
         if (add) {
           this.party = loaded.objects.Party as Party;
-          this.contactMechanism = this.allors.session.create('WebAddress') as WebAddress;
-          this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
+          this.contactMechanism = this.allors.context.create('WebAddress') as WebAddress;
+          this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
           this.partyContactMechanism.ContactMechanism = this.contactMechanism;
           this.partyContactMechanism.UseAsDefault = true;
           this.party.AddPartyContactMechanism(this.partyContactMechanism);
@@ -147,7 +147,7 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.navigation.back();

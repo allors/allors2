@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@angular/core';
 
-import { SessionService, WorkspaceService, MetaService } from '../../../../../angular';
+import { ContextService, WorkspaceService, MetaService } from '../../../../../angular';
 import { Brand } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 
@@ -19,7 +19,7 @@ export class InlineBrandComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     metaService: MetaService
     ) {
 
@@ -27,12 +27,12 @@ export class InlineBrandComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.brand = this.allors.session.create('Brand') as Brand;
+    this.brand = this.allors.context.create('Brand') as Brand;
   }
 
   public ngOnDestroy(): void {
     if (!!this.brand) {
-      this.allors.session.delete(this.brand);
+      this.allors.context.delete(this.brand);
     }
   }
 

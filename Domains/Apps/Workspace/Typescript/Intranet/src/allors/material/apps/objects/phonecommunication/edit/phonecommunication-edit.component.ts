@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PhoneCommunication, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './phonecommunication-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -144,7 +144,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -153,7 +153,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -175,7 +175,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
             this.contacts.push(this.person);
           }
 
-          this.communicationEvent = this.allors.session.create('PhoneCommunication') as PhoneCommunication;
+          this.communicationEvent = this.allors.context.create('PhoneCommunication') as PhoneCommunication;
         } else {
           this.communicationEvent = loaded.objects.PhoneCommunication as PhoneCommunication;
         }
@@ -222,8 +222,8 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
     this.addCaller = false;
 
-    const person: Person = this.allors.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const person: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
     relationShip.Organisation = this.organisation;
 
@@ -238,8 +238,8 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
     this.addReceiver = false;
 
-    const person: Person = this.allors.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const person: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = person;
     relationShip.Organisation = this.organisation;
 
@@ -249,7 +249,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Cancel)
+      this.allors.context.invoke(this.communicationEvent.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -259,7 +259,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       // TODO:
       /*  this.dialogService
         .openConfirm({ message: 'Save changes?' })
@@ -286,7 +286,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   public close(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Close)
+      this.allors.context.invoke(this.communicationEvent.Close)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
@@ -296,7 +296,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       // TODO:
       /*  this.dialogService
         .openConfirm({ message: 'Save changes?' })
@@ -323,7 +323,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
   public reopen(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Reopen)
+      this.allors.context.invoke(this.communicationEvent.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -333,7 +333,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       // TODO:
       /*  this.dialogService
          .openConfirm({ message: 'Save changes?' })
@@ -359,7 +359,7 @@ export class EditPhoneCommunicationComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

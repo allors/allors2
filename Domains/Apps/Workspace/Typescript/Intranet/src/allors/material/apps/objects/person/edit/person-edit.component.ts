@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, SessionService, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './person-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class PersonEditComponent implements OnInit, OnDestroy {
 
@@ -52,7 +52,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
   private readonly fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
@@ -152,12 +152,12 @@ export class PersonEditComponent implements OnInit, OnDestroy {
             ]);
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.person = loaded.objects.Person as Person;
         this.organisation = loaded.objects.Organisation as Organisation;
@@ -195,7 +195,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
 
         } else {
           this.add = true;
-          this.person = this.allors.session.create('Person') as Person;
+          this.person = this.allors.context.create('Person') as Person;
         }
 
       }, this.errorService.handler);
@@ -210,7 +210,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
   public save(): void {
 
     if (this.activeRoles.indexOf(this.customerRole) > -1 && !this.isActiveCustomer) {
-      const customerRelationship = this.allors.session.create('CustomerRelationship') as CustomerRelationship;
+      const customerRelationship = this.allors.context.create('CustomerRelationship') as CustomerRelationship;
       customerRelationship.Customer = this.person;
       customerRelationship.InternalOrganisation = this.internalOrganisation;
     }
@@ -224,7 +224,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
     }
 
     if (this.activeRoles.indexOf(this.employeeRole) > -1 && !this.isActiveEmployee) {
-      const employment = this.allors.session.create('Employment') as Employment;
+      const employment = this.allors.context.create('Employment') as Employment;
       employment.Employee = this.person;
       employment.Employer = this.internalOrganisation;
     }
@@ -238,12 +238,12 @@ export class PersonEditComponent implements OnInit, OnDestroy {
     }
 
     if (this.organisationContactRelationship === undefined && this.organisation !== undefined) {
-      const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+      const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
       organisationContactRelationship.Contact = this.person;
       organisationContactRelationship.Organisation = this.organisation;
     }
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.location.back();

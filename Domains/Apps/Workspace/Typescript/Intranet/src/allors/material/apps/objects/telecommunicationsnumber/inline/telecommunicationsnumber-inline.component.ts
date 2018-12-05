@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -27,7 +27,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService) {
 
@@ -49,14 +49,14 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
         this.contactMechanismTypes = loaded.collections.contactMechanismTypes as ContactMechanismType[];
 
-        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.telecommunicationsNumber = this.allors.session.create('TelecommunicationsNumber') as TelecommunicationsNumber;
+        this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+        this.telecommunicationsNumber = this.allors.context.create('TelecommunicationsNumber') as TelecommunicationsNumber;
         this.partyContactMechanism.ContactMechanism = this.telecommunicationsNumber;
       }, this.errorService.handler);
   }
@@ -64,8 +64,8 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
   public ngOnDestroy(): void {
 
     if (!!this.partyContactMechanism) {
-      this.allors.session.delete(this.partyContactMechanism);
-      this.allors.session.delete(this.telecommunicationsNumber);
+      this.allors.context.delete(this.partyContactMechanism);
+      this.allors.context.delete(this.telecommunicationsNumber);
     }
   }
 

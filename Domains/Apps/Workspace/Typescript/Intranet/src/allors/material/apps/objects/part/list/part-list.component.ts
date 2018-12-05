@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 
 import { PullRequest, And, Like, Sort, SessionObject, } from '../../../../../framework';
-import { ErrorService, MediaService, SessionService, NavigationService, Invoked, MetaService } from '../../../../../angular';
+import { ErrorService, MediaService, ContextService, NavigationService, Invoked, MetaService } from '../../../../../angular';
 import { AllorsFilterService } from '../../../../../angular/base/filter';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { Sorter } from '../../../../base/sorting';
@@ -32,7 +32,7 @@ interface Row {
 
 @Component({
   templateUrl: './part-list.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class PartListComponent implements OnInit, OnDestroy {
 
@@ -55,7 +55,7 @@ export class PartListComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public navigationService: NavigationService,
@@ -140,12 +140,12 @@ export class PartListComponent implements OnInit, OnDestroy {
             pull.BasePrice(),
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.total = loaded.values.Goods_total;
 
         const parts = loaded.collections.Parts as Part[];
@@ -231,7 +231,7 @@ export class PartListComponent implements OnInit, OnDestroy {
             { message: 'Are you sure you want to delete these parts?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors.invoke(methods)
+            this.allors.context.invoke(methods)
               .subscribe((invoked: Invoked) => {
                 this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                 this.refresh();

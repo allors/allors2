@@ -1,7 +1,7 @@
 import { Injectable, Self } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { SessionService, MetaService } from '../allors/angular';
+import { ContextService, MetaService } from '../allors/angular';
 import { Organisation, Singleton } from '../allors/domain';
 import { PullRequest, Equals } from '../allors/framework';
 import { Loaded } from '../allors/angular';
@@ -12,7 +12,7 @@ import { tap } from 'rxjs/operators';
 export class ConfigService {
 
     constructor(
-        @Self() private allors: SessionService,
+        @Self() private allors: ContextService,
         public metaService: MetaService,
         private stateService: StateService
     ) { }
@@ -28,7 +28,7 @@ export class ConfigService {
             pull.Singleton()
         ];
 
-        return this.allors
+        return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
                 tap((loaded: Loaded) => {

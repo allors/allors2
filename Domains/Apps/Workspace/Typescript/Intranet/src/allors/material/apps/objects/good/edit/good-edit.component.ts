@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { StateService } from '../../../..';
 
 @Component({
   templateUrl: './good-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class GoodEditComponent implements OnInit, OnDestroy {
 
@@ -48,7 +48,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public navigationService: NavigationService,
     public metaService: MetaService,
     private errorService: ErrorService,
@@ -118,8 +118,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
             );
@@ -127,7 +126,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
@@ -145,15 +144,15 @@ export class GoodEditComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.good = this.allors.session.create('Good') as Good;
+          this.good = this.allors.context.create('Good') as Good;
           this.good.VatRate = vatRateZero;
 
-          this.productNumber = this.allors.session.create('ProductNumber') as ProductNumber;
+          this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
           this.productNumber.GoodIdentificationType = goodNumberType;
 
           this.good.AddGoodIdentification(this.productNumber);
 
-          this.vendorProduct = this.allors.session.create('VendorProduct') as VendorProduct;
+          this.vendorProduct = this.allors.context.create('VendorProduct') as VendorProduct;
           this.vendorProduct.Product = this.good;
           this.vendorProduct.InternalOrganisation = internalOrganisation;
         } else {
@@ -181,8 +180,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
         this.navigationService.back();
       },
@@ -193,8 +191,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
   public update(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.goBack();

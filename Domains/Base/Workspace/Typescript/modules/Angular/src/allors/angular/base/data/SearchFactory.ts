@@ -2,7 +2,7 @@
 import { map } from 'rxjs/operators';
 
 import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
-import { Loaded, SessionService } from '../framework';
+import { Loaded, Context } from '../framework';
 
 export interface SearchOptions {
   objectType: ObjectType | MetaObjectType;
@@ -15,7 +15,7 @@ export interface SearchOptions {
 export class SearchFactory {
   constructor(private options: SearchOptions) { }
 
-  public create(scope: SessionService): ((search: string) => Observable<ISessionObject[]>) {
+  public create(scope: Context): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
       if (!search.trim) {
         return EMPTY;

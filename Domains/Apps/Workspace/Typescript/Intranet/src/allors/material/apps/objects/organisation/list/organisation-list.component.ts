@@ -4,7 +4,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
 import { TableRow, NavigateService, DeleteService, Table, Sorter } from '../../../../../material';
 
 import { Organisation } from '../../../../../domain';
@@ -23,7 +23,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './organisation-list.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class OrganisationListComponent implements OnInit, OnDestroy {
 
@@ -36,7 +36,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -49,7 +49,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
@@ -119,11 +119,11 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         const people = loaded.collections.Organisations as Organisation[];
         this.table.total = loaded.values.Organisations_total;
         this.table.data = people.map((v) => {

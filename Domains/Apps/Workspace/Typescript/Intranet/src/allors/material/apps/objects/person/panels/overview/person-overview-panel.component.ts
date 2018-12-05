@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { SessionService, AllorsPanelService, NavigationService, MetaService } from '../../../../../../angular';
+import { ContextService, PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { Person, Organisation, OrganisationContactKind, OrganisationContactRelationship } from '../../../../../../domain';
 import { MetaDomain } from '../../../../../../meta';
 
@@ -7,7 +7,7 @@ import { MetaDomain } from '../../../../../../meta';
   // tslint:disable-next-line:component-selector
   selector: 'person-panel',
   templateUrl: './person-overview-panel.component.html',
-  providers: [AllorsPanelService]
+  providers: [PanelService]
 })
 export class PersonOverviewPanelComponent {
 
@@ -18,22 +18,21 @@ export class PersonOverviewPanelComponent {
   contactKindsText: string;
 
   constructor(
-    public allors: SessionService,
-    @Self() public panelService: AllorsPanelService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
     public navigation: NavigationService) {
 
     this.m = this.metaService.m;
 
-    panelService.name = 'person';
+    panel.name = 'person';
 
-    const personPullName = `${panelService.name}_${this.m.Person.objectType.name}`;
-    const organisationContactRelationshipsPullName = `${panelService.name}_${this.m.OrganisationContactRelationship.objectType.name}`;
+    const personPullName = `${panel.name}_${this.m.Person.objectType.name}`;
+    const organisationContactRelationshipsPullName = `${panel.name}_${this.m.OrganisationContactRelationship.objectType.name}`;
 
-    panelService.prePull = (pulls) => {
+    panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panelService.panelsService.id;
+      const id = this.panel.container.id;
 
       const partyContactMechanismTree = tree.PartyContactMechanism({
         ContactPurposes: x,
@@ -79,7 +78,7 @@ export class PersonOverviewPanelComponent {
       );
     };
 
-    panelService.postPull = (loaded) => {
+    panel.onPulled = (loaded) => {
       this.person = loaded.objects[personPullName] as Person;
 
       const organisationContactRelationships = loaded.collections[organisationContactRelationshipsPullName] as OrganisationContactRelationship[];

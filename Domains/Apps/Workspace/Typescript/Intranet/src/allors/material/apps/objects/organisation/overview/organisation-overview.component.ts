@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CommunicationEvent, ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, PartyContactMechanism, Person, TelecommunicationsNumber, SerialisedItem } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
@@ -52,7 +52,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     public router: Router,
@@ -194,12 +194,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
             pull.OrganisationRole()
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
         this.organisation = loaded.objects.Organisation as Organisation;
@@ -255,10 +255,10 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public removeContact(organisationContactRelationship: OrganisationContactRelationship): void {
 
     organisationContactRelationship.ThroughDate = new Date();
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -269,10 +269,10 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public activateContact(organisationContactRelationship: OrganisationContactRelationship): void {
 
     organisationContactRelationship.ThroughDate = undefined;
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -286,7 +286,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(person.Delete)
+          this.allors.context.invoke(person.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -301,10 +301,10 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public removeContactMechanism(partyContactMechanism: PartyContactMechanism): void {
 
     partyContactMechanism.ThroughDate = new Date();
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -315,10 +315,10 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
   public activateContactMechanism(partyContactMechanism: PartyContactMechanism): void {
 
     partyContactMechanism.ThroughDate = undefined;
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.refresh();
       },
         (error: Error) => {
@@ -332,7 +332,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(contactMechanism.Delete)
+          this.allors.context.invoke(contactMechanism.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -350,7 +350,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Cancel)
+          this.allors.context.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refresh();
@@ -368,7 +368,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Close)
+          this.allors.context.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refresh();
@@ -386,7 +386,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Reopen)
+          this.allors.context.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refresh();
@@ -404,7 +404,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Delete)
+          this.allors.context.invoke(communicationEvent.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -422,7 +422,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(item.Delete)
+          this.allors.context.invoke(item.Delete)
             .subscribe((invoked: Invoked) => {
 
               this.serialisedItems = this.serialisedItems.filter(v => v !== item);

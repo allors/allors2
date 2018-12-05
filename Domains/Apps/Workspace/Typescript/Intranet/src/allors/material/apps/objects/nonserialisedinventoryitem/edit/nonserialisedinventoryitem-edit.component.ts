@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Part, Facility, Lot, NonSerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './nonserialisedinventoryitem-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
   private readonly fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
@@ -83,7 +83,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
 
           const add = !id;
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -91,7 +91,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
         })
       )
       .subscribe(({ loaded, add }) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.facilities = loaded.collections.Facilities as Facility[];
         this.lots  = loaded.collections.Lots as Lot[];
@@ -101,7 +101,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
         if (add) {
           this.add = !(this.edit = false);
 
-          this.nonSerialisedInventoryItem = this.allors.session.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
+          this.nonSerialisedInventoryItem = this.allors.context.create('NonSerialisedInventoryItem') as NonSerialisedInventoryItem;
 
           if (this.part) {
             this.nonSerialisedInventoryItem.Part = this.part;
@@ -124,7 +124,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
 
     this.nonSerialisedInventoryItem.Facility = this.selectedFacility;
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.location.back();

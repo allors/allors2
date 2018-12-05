@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, ObjectType } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
 @Component({
   selector: 'serialisedinventoryitem-embed',
   templateUrl: './serialisedinventoryitem-embed.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class SerialisedInventoryComponent implements OnInit, OnDestroy {
 
@@ -42,7 +42,7 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
   inventoryItems: InventoryItem[];
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigateService: NavigateService,
     public navigation: NavigationService,
@@ -99,13 +99,13 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         const inventoryItems = loaded.collections.InventoryItems as SerialisedInventoryItem[];
 
@@ -132,7 +132,7 @@ export class SerialisedInventoryComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

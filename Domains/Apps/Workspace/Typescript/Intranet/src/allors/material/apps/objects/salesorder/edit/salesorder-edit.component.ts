@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Field, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -21,7 +21,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
     border-right: 1px solid #CCCCCC;}
   `],
   templateUrl: './salesorder-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
@@ -93,7 +93,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -133,11 +133,11 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
                 this.stores = loaded.collections.stores as Store[];
@@ -167,7 +167,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return this.allors.load('Pull', new PullRequest({ pulls: pulls2 }));
+                return this.allors.context.load('Pull', new PullRequest({ pulls: pulls2 }));
               })
             );
         })
@@ -177,7 +177,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.order) {
-          this.order = this.allors.session.create('SalesOrder') as SalesOrder;
+          this.order = this.allors.context.create('SalesOrder') as SalesOrder;
           this.order.TakenBy = internalOrganisation;
 
           if (this.stores.length === 1) {
@@ -220,9 +220,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.addBillToContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -238,9 +238,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.addBillToEndCustomerContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.BillToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -256,9 +256,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.addShipToContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -274,9 +274,9 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     this.addShipToEndCustomerContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.order.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -335,7 +335,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public approve(): void {
 
     const submitFn: () => void = () => {
-      this.allors.invoke(this.order.Approve)
+      this.allors.context.invoke(this.order.Approve)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
@@ -345,15 +345,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 submitFn();
               },
                 (error: Error) => {
@@ -371,7 +371,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.order.Reject)
+      this.allors.context.invoke(this.order.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -381,15 +381,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -407,7 +407,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public reject(): void {
 
     const rejectFn: () => void = () => {
-      this.allors.invoke(this.order.Reject)
+      this.allors.context.invoke(this.order.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
@@ -417,15 +417,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 rejectFn();
               },
                 (error: Error) => {
@@ -443,7 +443,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public hold(): void {
 
     const holdFn: () => void = () => {
-      this.allors.invoke(this.order.Hold)
+      this.allors.context.invoke(this.order.Hold)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
@@ -453,15 +453,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 holdFn();
               },
                 (error: Error) => {
@@ -479,7 +479,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public continue(): void {
 
     const continueFn: () => void = () => {
-      this.allors.invoke(this.order.Continue)
+      this.allors.context.invoke(this.order.Continue)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
@@ -489,15 +489,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 continueFn();
               },
                 (error: Error) => {
@@ -515,7 +515,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public confirm(): void {
 
     const confirmFn: () => void = () => {
-      this.allors.invoke(this.order.Confirm)
+      this.allors.context.invoke(this.order.Confirm)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
@@ -525,15 +525,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 confirmFn();
               },
                 (error: Error) => {
@@ -551,7 +551,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
   public finish(): void {
 
     const finishFn: () => void = () => {
-      this.allors.invoke(this.order.Continue)
+      this.allors.context.invoke(this.order.Continue)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
@@ -561,15 +561,15 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 finishFn();
               },
                 (error: Error) => {
@@ -592,7 +592,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
@@ -657,7 +657,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       }),
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -709,7 +709,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -761,7 +761,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -811,7 +811,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 

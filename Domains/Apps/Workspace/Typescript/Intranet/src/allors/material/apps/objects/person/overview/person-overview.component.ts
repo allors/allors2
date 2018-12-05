@@ -4,14 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelsService, RefreshService, MetaService, SessionService } from '../../../../../angular';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelContainerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './person-overview.component.html',
-  providers: [PanelsService, SessionService]
+  providers: [PanelContainerService, ContextService]
 })
 export class PersonOverviewComponent implements OnInit, OnDestroy {
 
@@ -22,7 +22,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    @Self() public panelsService: PanelsService,
+    @Self() public panelsService: PanelContainerService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -54,16 +54,16 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          this.panelsService.prePull(pulls);
+          this.panelsService.onPull(pulls);
 
-          return this.panelsService.sessionService
+          return this.panelsService.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.panelsService.sessionService.session.reset();
-        this.panelsService.postPull(loaded);
+        this.panelsService.context.session.reset();
+        this.panelsService.onPulled(loaded);
 
         this.person = loaded.objects.Person as Person;
       }, this.errorService.handler);

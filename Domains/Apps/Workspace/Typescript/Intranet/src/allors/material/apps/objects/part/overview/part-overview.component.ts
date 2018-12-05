@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, SessionService, NavigationService, NavigationActivatedRoute, MediaService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, ContextService, NavigationService, NavigationActivatedRoute, MediaService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './part-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class PartOverviewComponent implements OnInit, OnDestroy {
 
@@ -42,7 +42,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
@@ -111,12 +111,12 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         const now = new Date();
 
@@ -147,7 +147,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(goodIdentification.Delete)
+          this.allors.context.invoke(goodIdentification.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -165,7 +165,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(pricecomponent.Delete)
+          this.allors.context.invoke(pricecomponent.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -193,7 +193,7 @@ export class PartOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(item.Delete)
+          this.allors.context.invoke(item.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

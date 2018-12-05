@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './baseprice-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditBasepriceComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
   internalOrganisation: InternalOrganisation;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
@@ -96,7 +96,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -105,7 +105,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.good = loaded.objects.Good as Good;
@@ -114,7 +114,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.priceComponent = this.allors.session.create('BasePrice') as PriceComponent;
+          this.priceComponent = this.allors.context.create('BasePrice') as PriceComponent;
           this.priceComponent.PricedBy = this.internalOrganisation;
 
           if (this.good) {
@@ -146,7 +146,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

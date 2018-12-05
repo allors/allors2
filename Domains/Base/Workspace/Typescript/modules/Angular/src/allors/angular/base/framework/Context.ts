@@ -1,33 +1,45 @@
-import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
-import { MetaDomain, PullFactory, FetchFactory, TreeFactory } from '../../../meta';
-import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse } from '../../../framework';
+import { ISession, Session, PullResponse, SyncRequest, IWorkspace, SyncResponse, PushRequest, PushResponse, PushRequestObject, Method, InvokeOptions, InvokeResponse, ObjectType, ISessionObject } from '../../../framework';
 
-import { WorkspaceService } from './WorkspaceService';
 import { Loaded } from './responses/Loaded';
 import { switchMap, map } from 'rxjs/operators';
 import { Saved } from './responses/Saved';
 import { Invoked } from './responses/Invoked';
 import { Database } from './Database';
-import { MetaService } from './MetaService';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class SessionService {
 
-  database: Database;
-  workspace: IWorkspace;
+export class Context {
   session: ISession;
 
-  constructor(public workspaceService: WorkspaceService) {
-    this.database = workspaceService.databaseService.database;
-    this.workspace = workspaceService.workspace;
+  constructor(
+    public database: Database,
+    public workspace: IWorkspace
+  ) {
     this.session = new Session(this.workspace);
   }
 
-  public load(service: string, params?: any): Observable<Loaded> {
+  get hasChanges(){
+    return this.session.hasChanges;
+  }
+
+  reset() {
+    this.session.reset();
+  }
+
+  get(id: string): ISessionObject {
+    return this.session.get(id);
+  }
+
+  create(objectType: ObjectType | string): ISessionObject {
+      return this.session.create(objectType);
+  }
+
+  delete(object: ISessionObject) {
+    this.session.delete(object);
+  }
+
+  load(service: string, params?: any): Observable<Loaded> {
 
     return this.database
       .pull(service, params)
@@ -52,7 +64,7 @@ export class SessionService {
       );
   }
 
-  public save(): Observable<Saved> {
+  save(): Observable<Saved> {
 
     const pushRequest: PushRequest = this.session.pushRequest();
     return this.database
@@ -82,10 +94,10 @@ export class SessionService {
       );
   }
 
-  public invoke(method: Method): Observable<Invoked>;
-  public invoke(methods: Method[], options?: InvokeOptions): Observable<Invoked>;
-  public invoke(service: string, args?: any): Observable<Invoked>;
-  public invoke(methodOrService: Method | Method[] | string, args?: any): Observable<Invoked> {
+  invoke(method: Method): Observable<Invoked>;
+  invoke(methods: Method[], options?: InvokeOptions): Observable<Invoked>;
+  invoke(service: string, args?: any): Observable<Invoked>;
+  invoke(methodOrService: Method | Method[] | string, args?: any): Observable<Invoked> {
 
     return this.database
       .invoke(methodOrService as any, args)

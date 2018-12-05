@@ -1,13 +1,13 @@
 import { Subject } from 'rxjs';
 
 import { Deletable } from '../../../../domain';
-import { Action, ActionTarget, SessionService, Invoked, ErrorService } from '../../../../angular';
+import { Action, ActionTarget, Invoked, Context } from '../../../../angular';
 
 import { DeleteService } from './delete.service';
 
 export class DeleteAction implements Action {
 
-  constructor(deleteService: DeleteService, sessionService: SessionService) {
+  constructor(deleteService: DeleteService, context: Context) {
     this.execute = (target: ActionTarget) => {
 
       const deletables = Array.isArray(target) ? target as Deletable[] : [target as Deletable];
@@ -21,7 +21,7 @@ export class DeleteAction implements Action {
               { message: `Are you sure you want to delete these objects?` })
           .subscribe((confirm: boolean) => {
             if (confirm) {
-              sessionService.invoke(methods)
+              context.invoke(methods)
                 .subscribe((invoked: Invoked) => {
                   deleteService.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
                   deleteService.refreshService.refresh();

@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, InventoryItemTransaction, InventoryItem, Part, InventoryTransactionReason, Facility, Lot, NonSerialisedInventoryItemState, SerialisedInventoryItemState } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './inventoryitemtransaction-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy {
 
@@ -44,7 +44,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   serialisedInventoryItemStates: SerialisedInventoryItemState[];
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,
@@ -107,15 +107,14 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
           const add = !id;
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
             );
         })
       )
       .subscribe(({ loaded, add }) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.inventoryTransactionReasons = loaded.collections.InventoryTransactionReasons as InventoryTransactionReason[];
         this.facilities = loaded.collections.Facilities as Facility[];
@@ -130,7 +129,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
         if (add) {
           this.add = !(this.edit = false);
 
-          this.inventoryItemTransaction = this.allors.session.create('InventoryItemTransaction') as InventoryItemTransaction;
+          this.inventoryItemTransaction = this.allors.context.create('InventoryItemTransaction') as InventoryItemTransaction;
 
           if (this.inventoryItem) {
             this.inventoryItemTransaction.Facility = this.inventoryItem.Facility;
@@ -157,8 +156,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   }
 
   public save(): void {
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
         this.location.back();
       },

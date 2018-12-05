@@ -1,6 +1,6 @@
 import { Component, Self } from '@angular/core';
 
-import { SessionService, AllorsPanelService, Action, RefreshService, NavigationService, ErrorService, Invoked, MetaService } from '../../../../../angular';
+import { ContextService, PanelService, Action, RefreshService, NavigationService, ErrorService, Invoked, MetaService } from '../../../../../angular';
 import { CommunicationEvent } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { DeleteService, AllorsMaterialDialogService } from '../../../../../material';
@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material';
   // tslint:disable-next-line:component-selector
   selector: 'communicationevent-panel',
   templateUrl: './communicationevent-panel.component.html',
-  providers: [AllorsPanelService]
+  providers: [PanelService]
 })
 export class CommunicationeventPanelComponent {
 
@@ -21,8 +21,7 @@ export class CommunicationeventPanelComponent {
   communicationEvents: CommunicationEvent[];
 
   constructor(
-    public allors: SessionService,
-    @Self() public panelService: AllorsPanelService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -33,19 +32,19 @@ export class CommunicationeventPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(panel.container.context);
 
-    panelService.name = 'communicationevent';
-    panelService.title = 'Communication Events';
-    panelService.icon = 'chat';
-    panelService.maximizable = true;
+    panel.name = 'communicationevent';
+    panel.title = 'Communication Events';
+    panel.icon = 'chat';
+    panel.maximizable = true;
 
-    const communicationEventsPullName = `${panelService.name}_${this.m.CommunicationEvent.objectType.name}`;
+    const communicationEventsPullName = `${panel.name}_${this.m.CommunicationEvent.objectType.name}`;
 
-    panelService.prePull = (pulls) => {
+    panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panelService.panelsService.id;
+      const id = this.panel.container.id;
 
       pulls.push(
         pull.Party({
@@ -65,7 +64,7 @@ export class CommunicationeventPanelComponent {
       );
     };
 
-    panelService.postPull = (loaded) => {
+    panel.onPulled = (loaded) => {
         this.communicationEvents = loaded.collections[communicationEventsPullName] as CommunicationEvent[];
       };
   }
@@ -76,7 +75,7 @@ export class CommunicationeventPanelComponent {
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Cancel)
+          this.panel.container.context.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refreshService.refresh();
@@ -94,7 +93,7 @@ export class CommunicationeventPanelComponent {
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Close)
+          this.panel.container.context.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refreshService.refresh();
@@ -112,7 +111,7 @@ export class CommunicationeventPanelComponent {
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(communicationEvent.Reopen)
+          this.panel.container.context.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refreshService.refresh();

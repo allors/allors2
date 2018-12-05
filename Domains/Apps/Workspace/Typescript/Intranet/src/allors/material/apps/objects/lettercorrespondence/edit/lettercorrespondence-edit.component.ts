@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './lettercorrespondence-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditLetterCorrespondenceComponent
   implements OnInit, OnDestroy {
@@ -40,7 +40,7 @@ export class EditLetterCorrespondenceComponent
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -160,7 +160,7 @@ export class EditLetterCorrespondenceComponent
             ];
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -168,7 +168,7 @@ export class EditLetterCorrespondenceComponent
         })
       )
       .subscribe(({ loaded, add }) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -194,7 +194,7 @@ export class EditLetterCorrespondenceComponent
             this.contacts.push(this.person);
           }
 
-          this.communicationEvent = this.allors.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent = this.allors.context.create('LetterCorrespondence') as LetterCorrespondence;
           this.communicationEvent.IncomingLetter = true;
 
         } else {
@@ -202,7 +202,7 @@ export class EditLetterCorrespondenceComponent
         }
 
         if (!this.communicationEvent) {
-          this.communicationEvent = this.allors.session.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent = this.allors.context.create('LetterCorrespondence') as LetterCorrespondence;
           this.communicationEvent.IncomingLetter = true;
         }
       },
@@ -235,8 +235,8 @@ export class EditLetterCorrespondenceComponent
 
     this.addSender = false;
 
-    const sender: Person = this.allors.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const sender: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = sender;
     relationShip.Organisation = this.organisation;
 
@@ -247,8 +247,8 @@ export class EditLetterCorrespondenceComponent
 
     this.addReceiver = false;
 
-    const receiver: Person = this.allors.session.get(id) as Person;
-    const relationShip: OrganisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const receiver: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     relationShip.Contact = receiver;
     relationShip.Organisation = this.organisation;
 
@@ -268,7 +268,7 @@ export class EditLetterCorrespondenceComponent
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Cancel).subscribe(
+      this.allors.context.invoke(this.communicationEvent.Cancel).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', {
@@ -281,14 +281,14 @@ export class EditLetterCorrespondenceComponent
       );
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors.save().subscribe(
+            this.allors.context.save().subscribe(
               (saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -307,7 +307,7 @@ export class EditLetterCorrespondenceComponent
   public close(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Close).subscribe(
+      this.allors.context.invoke(this.communicationEvent.Close).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully closed.', 'close', {
@@ -320,14 +320,14 @@ export class EditLetterCorrespondenceComponent
       );
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors.save().subscribe(
+            this.allors.context.save().subscribe(
               (saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -346,7 +346,7 @@ export class EditLetterCorrespondenceComponent
   public reopen(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.communicationEvent.Reopen).subscribe(
+      this.allors.context.invoke(this.communicationEvent.Reopen).subscribe(
         (invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', {
@@ -359,14 +359,14 @@ export class EditLetterCorrespondenceComponent
       );
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors.save().subscribe(
+            this.allors.context.save().subscribe(
               (saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
               (error: Error) => {
@@ -384,7 +384,7 @@ export class EditLetterCorrespondenceComponent
 
   public save(): void {
 
-    this.allors.save().subscribe(
+    this.allors.context.save().subscribe(
       (saved: Saved) => {
         this.goBack();
       },

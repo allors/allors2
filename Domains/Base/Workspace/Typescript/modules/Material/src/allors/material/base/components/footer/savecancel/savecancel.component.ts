@@ -2,7 +2,7 @@ import { Component, Optional } from '@angular/core';
 import { Location } from '@angular/common';
 import { NgForm } from '@angular/forms';
 
-import { SessionService } from '../../../../../angular';
+import { ContextService } from '../../../../../angular';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,7 +11,7 @@ import { SessionService } from '../../../../../angular';
 })
 export class AllorsMaterialFooterSaveCancelComponent {
 
-  constructor(public form: NgForm, public allors: SessionService, public location: Location) {
+  constructor(public form: NgForm, public allors: ContextService, public location: Location) {
   }
 
 }

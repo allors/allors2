@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, SessionService, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './worktask-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class WorkTaskEditComponent implements OnInit, OnDestroy {
   m: MetaDomain;
@@ -46,7 +46,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     public location: Location,
@@ -117,7 +117,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -132,7 +132,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         this.employees = internalOrganisation.ActiveEmployees;
 
         if (add) {
-          this.workTask = this.allors.session.create('WorkTask') as WorkTask;
+          this.workTask = this.allors.context.create('WorkTask') as WorkTask;
           this.workTask.TakenBy = internalOrganisation;
 
         } else {
@@ -156,9 +156,9 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
 
     this.addContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -189,7 +189,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
     if (this.assignees) {
       this.assignees.forEach((assignee: Person) => {
         if (this.existingAssignees.indexOf(assignee) < 0) {
-          const workEffortAssignment: WorkEffortPartyAssignment = this.allors.session.create(
+          const workEffortAssignment: WorkEffortPartyAssignment = this.allors.context.create(
             'WorkEffortAssignment',
           ) as WorkEffortPartyAssignment;
           workEffortAssignment.Assignment = this.workTask;
@@ -197,7 +197,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
         }
       });
     }
-    this.allors.save().subscribe(
+    this.allors.context.save().subscribe(
       (saved: Saved) => {
         this.goBack();
       },
@@ -238,7 +238,7 @@ export class WorkTaskEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         const partyContactMechanisms: PartyContactMechanism[] = loaded
           .collections.partyContactMechanisms as PartyContactMechanism[];

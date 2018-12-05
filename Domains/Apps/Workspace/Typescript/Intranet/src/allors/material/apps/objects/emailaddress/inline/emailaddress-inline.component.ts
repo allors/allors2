@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, EmailAddress, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -17,7 +17,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
 
-  @Input() public scope: SessionService;
+  @Input() public scope: ContextService;
 
   public contactMechanismPurposes: ContactMechanismPurpose[];
 
@@ -27,7 +27,7 @@ export class PartyContactMechanismEmailAddressInlineComponent
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
   ) {
@@ -47,12 +47,12 @@ export class PartyContactMechanismEmailAddressInlineComponent
       )
     ];
 
-    this.allors.load('Pull', new PullRequest({ pulls })).subscribe(
+    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
       (loaded) => {
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 
-        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.emailAddress = this.allors.session.create('EmailAddress') as EmailAddress;
+        this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+        this.emailAddress = this.allors.context.create('EmailAddress') as EmailAddress;
         this.partyContactMechanism.ContactMechanism = this.emailAddress;
       },
       (error: any) => {
@@ -64,8 +64,8 @@ export class PartyContactMechanismEmailAddressInlineComponent
   public ngOnDestroy(): void {
 
     if (!!this.partyContactMechanism) {
-      this.allors.session.delete(this.partyContactMechanism);
-      this.allors.session.delete(this.emailAddress);
+      this.allors.context.delete(this.partyContactMechanism);
+      this.allors.context.delete(this.emailAddress);
     }
   }
 

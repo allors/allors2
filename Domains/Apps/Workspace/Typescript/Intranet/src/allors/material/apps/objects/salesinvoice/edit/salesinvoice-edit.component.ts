@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Field, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './salesinvoice-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
@@ -86,7 +86,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -125,11 +125,11 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
                 this.currencies = loaded.collections.currencies as Currency[];
@@ -164,7 +164,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return this.allors.load('Pull', new PullRequest({ pulls: fetches }));
+                return this.allors.context.load('Pull', new PullRequest({ pulls: fetches }));
               })
             );
         })
@@ -176,7 +176,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.invoice) {
-          this.invoice = this.allors.session.create('SalesInvoice') as SalesInvoice;
+          this.invoice = this.allors.context.create('SalesInvoice') as SalesInvoice;
           this.invoice.BilledFrom = internalOrganisation;
           this.invoice.AdvancePayment = 0;
           this.title = 'Add Sales Invoice';
@@ -215,9 +215,9 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addBillToContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -233,9 +233,9 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addBillToEndCustomerContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -251,9 +251,9 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addShipToContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -269,9 +269,9 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addShipToEndCustomerContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -330,7 +330,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
   public send(): void {
 
     const sendFn: () => void = () => {
-      this.allors.invoke(this.invoice.Send)
+      this.allors.context.invoke(this.invoice.Send)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully send.', 'close', { duration: 5000 });
@@ -340,15 +340,15 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 sendFn();
               },
                 (error: Error) => {
@@ -366,7 +366,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.invoice.CancelInvoice)
+      this.allors.context.invoke(this.invoice.CancelInvoice)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -376,15 +376,15 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -402,7 +402,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
   public writeOff(): void {
 
     const writeOffFn: () => void = () => {
-      this.allors.invoke(this.invoice.WriteOff)
+      this.allors.context.invoke(this.invoice.WriteOff)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
@@ -412,15 +412,15 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 writeOffFn();
               },
                 (error: Error) => {
@@ -438,7 +438,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
   public reopen(): void {
 
     const reopenFn: () => void = () => {
-      this.allors.invoke(this.invoice.Reopen)
+      this.allors.context.invoke(this.invoice.Reopen)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
@@ -448,15 +448,15 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 reopenFn();
               },
                 (error: Error) => {
@@ -479,7 +479,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);
@@ -545,7 +545,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -594,7 +594,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -642,7 +642,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -687,7 +687,7 @@ export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
       }),
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 

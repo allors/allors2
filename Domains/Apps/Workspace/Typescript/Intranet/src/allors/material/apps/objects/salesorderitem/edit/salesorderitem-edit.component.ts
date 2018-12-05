@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
@@ -41,7 +41,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -102,12 +102,12 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             ),
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.order = loaded.objects.salesOrder as SalesOrder;
         this.orderItem = loaded.objects.orderItem as SalesOrderItem;
@@ -121,7 +121,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.orderItem) {
           this.title = 'Add Order Item';
-          this.orderItem = this.allors.session.create('SalesOrderItem') as SalesOrderItem;
+          this.orderItem = this.allors.context.create('SalesOrderItem') as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
         } else {
 
@@ -172,7 +172,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     //   this.orderItem.SurchargeAdjustment = surchargeAdjustment;
     // }
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);
@@ -185,7 +185,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public update(): void {
     const isNew = this.orderItem.isNew;
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
@@ -210,7 +210,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
   public cancel(): void {
      const cancelFn: () => void = () => {
-      this.allors.invoke(this.orderItem.Cancel)
+      this.allors.context.invoke(this.orderItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -220,15 +220,15 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -246,7 +246,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public reject(): void {
 
     const rejectFn: () => void = () => {
-      this.allors.invoke(this.orderItem.Reject)
+      this.allors.context.invoke(this.orderItem.Reject)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully reejcted.', 'close', { duration: 5000 });
@@ -256,15 +256,15 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 rejectFn();
               },
                 (error: Error) => {
@@ -293,7 +293,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];

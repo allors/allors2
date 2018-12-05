@@ -5,7 +5,7 @@ import { ActivatedRoute, UrlSegment, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, MediaService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './salesinvoice-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
@@ -29,7 +29,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -48,7 +48,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
@@ -131,13 +131,13 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
               }),
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
 
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.goods = loaded.collections.goods as Good[];
         this.order = loaded.objects.order as SalesOrder;
         this.invoice = loaded.objects.invoice as SalesInvoice;
@@ -166,7 +166,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public send(): void {
 
-    this.allors.invoke(this.invoice.Send)
+    this.allors.context.invoke(this.invoice.Send)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully sent.', 'close', { duration: 5000 });
@@ -178,7 +178,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public cancel(): void {
 
-    this.allors.invoke(this.invoice.CancelInvoice)
+    this.allors.context.invoke(this.invoice.CancelInvoice)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -190,7 +190,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public writeOff(): void {
 
-    this.allors.invoke(this.invoice.WriteOff)
+    this.allors.context.invoke(this.invoice.WriteOff)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully written off.', 'close', { duration: 5000 });
@@ -202,7 +202,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public reopen(): void {
 
-    this.allors.invoke(this.invoice.Reopen)
+    this.allors.context.invoke(this.invoice.Reopen)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully Reopened.', 'close', { duration: 5000 });
@@ -214,7 +214,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public credit(): void {
 
-    this.allors.invoke(this.invoice.Credit)
+    this.allors.context.invoke(this.invoice.Credit)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully Credited.', 'close', { duration: 5000 });
@@ -226,7 +226,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
   public copy(): void {
 
-    this.allors.invoke(this.invoice.Copy)
+    this.allors.context.invoke(this.invoice.Copy)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully copied.', 'close', { duration: 5000 });
@@ -242,7 +242,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(invoiceItem.Delete)
+          this.allors.context.invoke(invoiceItem.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -260,7 +260,7 @@ export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this order term?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(salesTerm.Delete)
+          this.allors.context.invoke(salesTerm.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

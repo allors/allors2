@@ -115,8 +115,8 @@
 
     <a-mat-footer>
       <button mat-raised-button (click)="navigationService.back()" type="button">CANCEL</button>
-      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">Save</button>
-      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.scope.session.hasChanges">SAVE & CLOSE</button>
+      <button mat-raised-button (click)="update()" type="button" color="accent" [disabled]="!form.form.valid || !allors.context.hasChanges">Save</button>
+      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE & CLOSE</button>
     </a-mat-footer>
 
   </form>

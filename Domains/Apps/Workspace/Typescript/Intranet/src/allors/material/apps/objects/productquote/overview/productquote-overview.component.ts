@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, MediaService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './productquote-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
@@ -28,7 +28,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
   private refresh$: BehaviorSubject<Date>;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -47,7 +47,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('items saved', 'close', { duration: 1000 });
@@ -106,12 +106,12 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
             );
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.goods = loaded.collections.goods as Good[];
         this.quote = loaded.objects.quote as ProductQuote;
         this.salesOrder = loaded.objects.salesOrder as SalesOrder;
@@ -134,7 +134,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public approve(): void {
 
-    this.allors.invoke(this.quote.Approve)
+    this.allors.context.invoke(this.quote.Approve)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
@@ -146,7 +146,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public reject(): void {
 
-    this.allors.invoke(this.quote.Reject)
+    this.allors.context.invoke(this.quote.Reject)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
@@ -158,7 +158,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public Order(): void {
 
-    this.allors.invoke(this.quote.Order)
+    this.allors.context.invoke(this.quote.Order)
       .subscribe((invoked: Invoked) => {
         this.goBack();
         this.snackBar.open('Order successfully created.', 'close', { duration: 5000 });
@@ -171,7 +171,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
   public cancelQuoteItem(quoteItem: QuoteItem): void {
 
-    this.allors.invoke(quoteItem.Cancel)
+    this.allors.context.invoke(quoteItem.Cancel)
       .subscribe((invoked: Invoked) => {
         this.snackBar.open('Quote Item successfully cancelled.', 'close', { duration: 5000 });
         this.refresh();
@@ -187,7 +187,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this item?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(quoteItem.Delete)
+          this.allors.context.invoke(quoteItem.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Quote Item successfully deleted.', 'close', { duration: 5000 });
               this.refresh();
@@ -212,7 +212,7 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors.load('Pull', new PullRequest({ pulls }))
+    this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         const order = loaded.objects.order as SalesOrder;
         this.router.navigate(['/orders/salesOrder/' + order.id]);

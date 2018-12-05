@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, Self } from '@angular/core';
 
-import { NavigationService, SessionService, Action, AllorsPanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
+import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
 import { MetaDomain } from '../../../../../meta';
 import { SerialisedItem, Part, Party } from '../../../../../domain';
 import { DeleteService } from '../../../../../material';
@@ -9,7 +9,7 @@ import { DeleteService } from '../../../../../material';
   // tslint:disable-next-line:component-selector
   selector: 'serialiseditem-panel',
   templateUrl: './serialiseditem-panel.component.html',
-  providers: [AllorsPanelService]
+  providers: [PanelService]
 })
 export class SerialisedItemPanelComponent {
 
@@ -22,8 +22,7 @@ export class SerialisedItemPanelComponent {
   delete: Action;
 
   constructor(
-    public allors: SessionService,
-    @Self() public panelService: AllorsPanelService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -32,21 +31,21 @@ export class SerialisedItemPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(panel.container.context);
 
-    panelService.name = 'serialiseditem';
-    panelService.title = 'Serialized Items';
-    panelService.icon = 'link';
-    panelService.maximizable = true;
+    panel.name = 'serialiseditem';
+    panel.title = 'Serialized Items';
+    panel.icon = 'link';
+    panel.maximizable = true;
 
-    const ownerName = `${panelService.name}_Owner`;
-    const ownedSerialisedItemsName = `${panelService.name}_OwnedSerialisedItemsName`;
-    const rentedSerialisedItemsName = `${panelService.name}_RentedSerialisedItems`;
+    const ownerName = `${panel.name}_Owner`;
+    const ownedSerialisedItemsName = `${panel.name}_OwnedSerialisedItemsName`;
+    const rentedSerialisedItemsName = `${panel.name}_RentedSerialisedItems`;
 
-    panelService.prePull = (pulls) => {
+    panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panelService.panelsService.id;
+      const id = this.panel.container.id;
 
       pulls.push(
         pull.Party({
@@ -77,7 +76,7 @@ export class SerialisedItemPanelComponent {
         }),
       );
 
-      panelService.postPull = (loaded) => {
+      panel.onPulled = (loaded) => {
         this.owner = loaded.objects[ownerName] as Party;
 
         const ownedSerialisedItems = loaded.collections[ownedSerialisedItemsName] as SerialisedItem[];

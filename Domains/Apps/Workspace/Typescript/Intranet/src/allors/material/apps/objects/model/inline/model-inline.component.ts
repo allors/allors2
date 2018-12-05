@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@angular/core';
 
-import { SessionService, WorkspaceService, MetaService } from '../../../../../angular';
+import { ContextService, WorkspaceService, MetaService } from '../../../../../angular';
 import { Model } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 
@@ -19,7 +19,7 @@ export class InlineModelComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     private metaService: MetaService,
     ) {
 
@@ -27,12 +27,12 @@ export class InlineModelComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.model = this.allors.session.create('Model') as Model;
+    this.model = this.allors.context.create('Model') as Model;
   }
 
   public ngOnDestroy(): void {
     if (!!this.model) {
-      this.allors.session.delete(this.model);
+      this.allors.context.delete(this.model);
     }
   }
 

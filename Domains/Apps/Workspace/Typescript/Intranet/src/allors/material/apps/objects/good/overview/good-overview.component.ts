@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Organisation, Good, IGoodIdentification } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './good-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class GoodOverviewComponent implements OnInit, OnDestroy {
 
@@ -35,7 +35,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public navigationService: NavigationService,
     public metaService: MetaService,
     private errorService: ErrorService,
@@ -80,12 +80,11 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.good = loaded.objects.Good as Good;
@@ -105,7 +104,7 @@ export class GoodOverviewComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(goodIdentification.Delete)
+          this.allors.context.invoke(goodIdentification.Delete)
             .subscribe(() => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

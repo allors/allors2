@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { PullRequest } from '../../../../../../allors/framework';
 import { LetterCorrespondence, Party, WorkTask } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './lettercorrespondence-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class LetterCorrespondenceComponent implements OnInit, OnDestroy {
 
@@ -29,7 +29,7 @@ export class LetterCorrespondenceComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
@@ -79,12 +79,12 @@ export class LetterCorrespondenceComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
           .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.party = loaded.objects.Party as Party;
         this.letterCorrespondence = loaded.objects.LetterCorrespondence as LetterCorrespondence;
@@ -98,7 +98,7 @@ export class LetterCorrespondenceComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to delete this work task?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(worktask.Delete)
+          this.allors.context.invoke(worktask.Delete)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
               this.refresh();

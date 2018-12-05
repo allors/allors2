@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, ObjectType } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -23,7 +23,7 @@ interface Row extends TableRow {
   // tslint:disable-next-line:component-selector
   selector: 'nonserialisedinventoryitem-embed',
   templateUrl: './nonserialisedinventoryitem-embed.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
 
@@ -47,7 +47,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
   inventoryItems: InventoryItem[];
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigateService: NavigateService,
     public navigation: NavigationService,
@@ -107,13 +107,13 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         const inventoryItems = loaded.collections.InventoryItems as NonSerialisedInventoryItem[];
 
@@ -142,7 +142,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

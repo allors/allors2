@@ -4,7 +4,7 @@ import { ActivatedRoute,  Router } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, SessionService, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { StateService } from '../../../../../material';
 import { WorkTask } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
@@ -15,7 +15,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './worktask-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
@@ -28,7 +28,7 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -66,19 +66,19 @@ export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.task = loaded.objects.WorkTask as WorkTask;
       }, this.errorService.handler);
   }
 
   public cancel(): void {
 
-    this.allors.invoke(this.task.Cancel)
+    this.allors.context.invoke(this.task.Cancel)
       .subscribe((invoked: Invoked) => {
         this.refresh();
         this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Field, SearchFactory, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Field, SearchFactory, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
 import { PullRequest, Fetch, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './repeatingsalesinvoice-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 
 })
 export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
@@ -32,7 +32,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -73,7 +73,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
             pull.DayOfWeek()
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -86,7 +86,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
         if (!this.repeatinginvoice) {
           this.title = 'Add Repeating Invoice';
-          this.repeatinginvoice = this.allors.session.create('RepeatingSalesInvoice') as RepeatingSalesInvoice;
+          this.repeatinginvoice = this.allors.context.create('RepeatingSalesInvoice') as RepeatingSalesInvoice;
           this.repeatinginvoice.Source = this.invoice;
         }
       }, this.errorService.handler);
@@ -100,7 +100,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountsreceivable/invoice/' + this.invoice.id]);

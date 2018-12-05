@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../../../material';
 
 import { Person } from '../../../../../domain';
@@ -21,7 +21,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './person-list.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class PersonListComponent implements OnInit, OnDestroy {
 
@@ -34,7 +34,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -47,7 +47,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
 
     titleService.setTitle(this.title);
 
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
@@ -126,11 +126,11 @@ export class PersonListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         const people = loaded.collections.People as Person[];
         this.table.total = loaded.values.People_total;
         this.table.data = people.map((v) => {

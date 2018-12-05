@@ -7,7 +7,7 @@ import { MatTableDataSource, PageEvent, MatSnackBar } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { scan, switchMap } from 'rxjs/operators';
 
-import { AllorsFilterService, ErrorService, SessionService, NavigationService, MediaService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, ContextService, NavigationService, MediaService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, WorkTask } from '../../../../../domain';
 import { And, ContainedIn, Equals, Like, Predicate, PullRequest, Sort } from '../../../../../framework';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -26,7 +26,7 @@ interface Row {
 
 @Component({
   templateUrl: './worktasks-list.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class WorkTaskListComponent implements OnInit, OnDestroy {
 
@@ -47,7 +47,7 @@ export class WorkTaskListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public navigation: NavigationService,
@@ -110,11 +110,11 @@ export class WorkTaskListComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         this.total = loaded.values.People_total;
         const workTasks = loaded.collections.WorkTasks as WorkTask[];
 

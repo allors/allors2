@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { InvoiceTermType, SalesOrder, SalesTerm } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './invoiceterm.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
@@ -29,7 +29,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -68,7 +68,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -80,7 +80,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
         if (!this.salesTerm) {
           this.title = 'Add Order Invoice Term';
-          this.salesTerm = this.allors.session.create('InvoiceTerm') as SalesTerm;
+          this.salesTerm = this.allors.context.create('InvoiceTerm') as SalesTerm;
           this.order.AddSalesTerm(this.salesTerm);
         }
       }, this.errorService.handler);
@@ -94,7 +94,7 @@ export class InvoiceTermEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/salesOrder/' + this.order.id]);

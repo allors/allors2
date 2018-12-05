@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -12,7 +12,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './productcharacteristic-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
@@ -32,7 +32,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -83,7 +83,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
@@ -91,7 +91,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
         this.productCharacteristic = loaded.objects.productCharacteristic as SerialisedItemCharacteristicType;
         if (!this.productCharacteristic) {
-          this.productCharacteristic = this.allors.session.create('SerialisedItemCharacteristicType') as SerialisedItemCharacteristicType;
+          this.productCharacteristic = this.allors.context.create('SerialisedItemCharacteristicType') as SerialisedItemCharacteristicType;
         }
 
         this.singleton = loaded.collections.singletons[0] as Singleton;
@@ -110,7 +110,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -82,7 +82,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
             ,
             pull.CatScope()];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -94,7 +94,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
         this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
         if (!this.catalogue) {
-          this.catalogue = this.allors.session.create('Catalogue') as Catalogue;
+          this.catalogue = this.allors.context.create('Catalogue') as Catalogue;
           this.catalogue.InternalOrganisation = this.internalOrganisation;
         }
 
@@ -115,8 +115,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.goBack();
       },
@@ -127,8 +126,7 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
   public update(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
         this.refresh();

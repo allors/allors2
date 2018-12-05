@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { NavigationService, SessionService, Action, AllorsPanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
+import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
 import { WorkEffortPartyAssignment, WorkEffort } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { DeleteService } from '../../../../../material';
@@ -8,7 +8,7 @@ import { DeleteService } from '../../../../../material';
   // tslint:disable-next-line:component-selector
   selector: 'workeffortpartyassignment-panel',
   templateUrl: './workeffortpartyassignment-panel.component.html',
-  providers: [AllorsPanelService]
+  providers: [PanelService]
 })
 export class WorkEffortPartyAssignmentPanelComponent {
 
@@ -19,8 +19,7 @@ export class WorkEffortPartyAssignmentPanelComponent {
   delete: Action;
 
   constructor(
-    public allors: SessionService,
-    @Self() public panelService: AllorsPanelService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -29,19 +28,19 @@ export class WorkEffortPartyAssignmentPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(panel.container.context);
 
-    panelService.name = 'workeffortpartyassignment';
-    panelService.title = 'Work Efforts';
-    panelService.icon = 'work';
-    panelService.maximizable = true;
+    panel.name = 'workeffortpartyassignment';
+    panel.title = 'Work Efforts';
+    panel.icon = 'work';
+    panel.maximizable = true;
 
-    const workEffortPartyAssignmentPullName = `${panelService.name}_${this.m.WorkEffortPartyAssignment.objectType.name}`;
+    const workEffortPartyAssignmentPullName = `${panel.name}_${this.m.WorkEffortPartyAssignment.objectType.name}`;
 
-    panelService.prePull = (pulls) => {
-      const { m, pull, tree, x } = this.metaService;
+    panel.onPull = (pulls) => {
+      const { pull,  x } = this.metaService;
 
-      const id = this.panelService.panelsService.id;
+      const id = this.panel.container.id;
 
       pulls.push(
         pull.Person({
@@ -61,7 +60,7 @@ export class WorkEffortPartyAssignmentPanelComponent {
       );
     };
 
-    panelService.postPull = (loaded) => {
+    panel.onPulled = (loaded) => {
       this.workEffortPartyAssignments = loaded.collections[workEffortPartyAssignmentPullName] as WorkEffortPartyAssignment[];
     };
   }

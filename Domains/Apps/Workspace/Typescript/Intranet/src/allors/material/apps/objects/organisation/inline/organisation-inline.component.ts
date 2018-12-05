@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -23,7 +23,7 @@ export class OrganisationInlineComponent implements OnInit {
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService) {
 
@@ -32,10 +32,10 @@ export class OrganisationInlineComponent implements OnInit {
 
   public ngOnInit(): void {
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({}))
       .subscribe((loaded) => {
-        this.organisation = this.allors.session.create('Organisation') as Organisation;
+        this.organisation = this.allors.context.create('Organisation') as Organisation;
       }, this.errorService.handler);
   }
 
@@ -45,7 +45,7 @@ export class OrganisationInlineComponent implements OnInit {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.saved.emit(this.organisation.id);

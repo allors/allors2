@@ -8,6 +8,8 @@ export { Invoked } from './responses/Invoked';
 export { MetaService } from './MetaService';
 export { DatabaseService } from './DatabaseService';
 export { WorkspaceService } from './WorkspaceService';
-export { SessionService } from './SessionService';
+export { ContextService } from './ContextService';
+
+export { Context } from './Context';
 
 export { AllorsModule } from './allors.module';

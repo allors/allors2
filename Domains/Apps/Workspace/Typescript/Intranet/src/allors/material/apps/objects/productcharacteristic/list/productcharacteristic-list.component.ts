@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals, Like } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
 
 import { SerialisedItemCharacteristicType } from '../../../../../domain';
@@ -20,7 +20,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './productcharacteristic-list.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestroy {
 
@@ -33,7 +33,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -47,7 +47,7 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
   ) {
     titleService.setTitle(this.title);
 
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
@@ -106,11 +106,11 @@ export class ProductCharacteristicsOverviewComponent implements OnInit, OnDestro
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         const requests = loaded.collections.SerialisedItemCharacteristicTypes as SerialisedItemCharacteristicType[];
         this.table.total = loaded.values.SerialisedItemCharacteristicTypes_total;
         this.table.data = requests.map((v) => {

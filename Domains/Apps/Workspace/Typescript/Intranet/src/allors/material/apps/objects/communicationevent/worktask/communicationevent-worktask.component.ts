@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { CommunicationEvent, InternalOrganisation, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -15,7 +15,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './communicationevent-worktask.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
@@ -37,7 +37,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -89,8 +89,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
             pull.WorkEffortPartyAssignment()
           ];
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -100,7 +99,7 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
 
         if (!this.workTask) {
           this.subTitle = 'add a new work task';
-          this.workTask = this.allors.session.create('WorkTask') as WorkTask;
+          this.workTask = this.allors.context.create('WorkTask') as WorkTask;
           communicationEvent.AddWorkEffort(this.workTask);
         }
 
@@ -121,13 +120,12 @@ export class CommunicationEventWorkTaskComponent implements OnInit, OnDestroy {
   public save(): void {
 
     this.assignees.forEach((assignee: Person) => {
-      const workEffortPartyAssignment: WorkEffortPartyAssignment = this.allors.session.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
+      const workEffortPartyAssignment: WorkEffortPartyAssignment = this.allors.context.create('WorkEffortPartyAssignment') as WorkEffortPartyAssignment;
       workEffortPartyAssignment.Assignment = this.workTask;
       workEffortPartyAssignment.Party = assignee;
     });
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.goBack();
       },

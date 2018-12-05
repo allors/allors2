@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { GoodIdentificationType, Good, Part, IsbnIdentification } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 @Component({
   templateUrl: './isbnidentification-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditIsbnIdentificationComponent implements OnInit, OnDestroy {
 
@@ -34,7 +34,7 @@ export class EditIsbnIdentificationComponent implements OnInit, OnDestroy {
   item: Good | Part;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -96,8 +96,7 @@ export class EditIsbnIdentificationComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }))
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
             );
@@ -105,7 +104,7 @@ export class EditIsbnIdentificationComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.goodIdentificationTypes = loaded.collections.GoodIdentificationTypes as GoodIdentificationType[];
         const identificationType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'ba6a724f-7e90-4025-bed6-c10884735bab');
@@ -116,7 +115,7 @@ export class EditIsbnIdentificationComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.iGoodIdentification = this.allors.session.create('IsbnIdentification') as IsbnIdentification;
+          this.iGoodIdentification = this.allors.context.create('IsbnIdentification') as IsbnIdentification;
           this.iGoodIdentification.GoodIdentificationType = identificationType;
 
           if (this.good) {
@@ -148,8 +147,7 @@ export class EditIsbnIdentificationComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
-      .save()
+    this.allors.context.save()
       .subscribe(() => {
         this.goBack();
       },

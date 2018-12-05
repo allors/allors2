@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Contains, Equals, Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
 import { MetaDomain, PullFactory } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './purchaseinvoice-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
@@ -64,7 +64,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -101,11 +101,11 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               switchMap((loaded) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 this.vatRates = loaded.collections.VatRates as VatRate[];
                 this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
                 this.currencies = loaded.collections.currencies as Currency[];
@@ -135,7 +135,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
                   })
                 ];
 
-                return this.allors.load('Pull', new PullRequest({ pulls: fetches }));
+                return this.allors.context.load('Pull', new PullRequest({ pulls: fetches }));
               })
             );
         })
@@ -146,7 +146,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
         if (!this.invoice) {
-          this.invoice = this.allors.session.create('PurchaseInvoice') as PurchaseInvoice;
+          this.invoice = this.allors.context.create('PurchaseInvoice') as PurchaseInvoice;
           this.invoice.BilledTo = internalOrganisation;
           this.title = 'Add Purchase Invoice';
         } else {
@@ -179,9 +179,9 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addBilledFromContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BilledFrom as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -197,9 +197,9 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addBillToContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.BillToCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -215,9 +215,9 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
     this.addShipToEndCustomerContactPerson = false;
 
-    const contact: Person = this.allors.session.get(id) as Person;
+    const contact: Person = this.allors.context.get(id) as Person;
 
-    const organisationContactRelationship = this.allors.session.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
     organisationContactRelationship.Organisation = this.invoice.ShipToEndCustomer as Organisation;
     organisationContactRelationship.Contact = contact;
 
@@ -252,7 +252,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.invoice.CancelInvoice)
+      this.allors.context.invoke(this.invoice.CancelInvoice)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -262,15 +262,15 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -288,7 +288,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
   public approve(): void {
 
     const approveFn: () => void = () => {
-      this.allors.invoke(this.invoice.Approve)
+      this.allors.context.invoke(this.invoice.Approve)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
@@ -298,15 +298,15 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 approveFn();
               },
                 (error: Error) => {
@@ -327,7 +327,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
       .confirm({ message: 'Are you sure you want to finish this invoice?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.allors.invoke(invoice.Finish)
+          this.allors.context.invoke(invoice.Finish)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
               this.refresh();
@@ -347,7 +347,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/accountspayable/invoice/' + this.invoice.id]);
@@ -394,7 +394,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -443,7 +443,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 
@@ -491,7 +491,7 @@ export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
 

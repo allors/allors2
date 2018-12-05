@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, SessionService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { SupplierOffering, Part, RatingType, Ordinal, InternalOrganisation, Organisation, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { Fetcher } from '../../Fetcher';
 
 @Component({
   templateUrl: './supplieroffering-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
 
@@ -39,7 +39,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
   settings: Settings;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     public navigation: NavigationService,
     private errorService: ErrorService,
@@ -100,7 +100,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -109,7 +109,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.ratingTypes = loaded.collections.RatingTypes as RatingType[];
         this.preferences = loaded.collections.Ordinals as Ordinal[];
@@ -126,7 +126,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.supplierOffering = this.allors.session.create('SupplierOffering') as SupplierOffering;
+          this.supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
           this.supplierOffering.Part = this.part;
           this.supplierOffering.Currency = this.settings.PreferredCurrency;
 
@@ -151,7 +151,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

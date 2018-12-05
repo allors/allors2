@@ -9,7 +9,7 @@ export class WorkspaceService {
   public metaPopulation: MetaPopulation;
   public workspace: Workspace;
 
-  constructor(public databaseService: DatabaseService) {
+  constructor() {
     this.metaPopulation = new MetaPopulation(data);
     this.workspace = new Workspace(this.metaPopulation);
     domain.apply(this.workspace);

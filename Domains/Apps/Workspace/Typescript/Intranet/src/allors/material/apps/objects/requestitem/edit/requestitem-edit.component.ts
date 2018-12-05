@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class RequestItemEditComponent implements OnInit, OnDestroy {
 
@@ -34,7 +34,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -68,12 +68,12 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.request = loaded.objects.requestForQuote as RequestForQuote;
         this.requestItem = loaded.objects.requestItem as RequestItem;
@@ -83,7 +83,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
         if (!this.requestItem) {
           this.title = 'Add Request Item';
-          this.requestItem = this.allors.session.create('RequestItem') as RequestItem;
+          this.requestItem = this.allors.context.create('RequestItem') as RequestItem;
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
@@ -114,7 +114,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   public cancel(): void {
 
     const cancelFn: () => void = () => {
-      this.allors.invoke(this.requestItem.Cancel)
+      this.allors.context.invoke(this.requestItem.Cancel)
         .subscribe((invoked: Invoked) => {
           this.refresh();
           this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
@@ -124,15 +124,15 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           });
     };
 
-    if (this.allors.session.hasChanges) {
+    if (this.allors.context.hasChanges) {
       this.dialogService
         .confirm({ message: 'Save changes?' })
         .subscribe((confirm: boolean) => {
           if (confirm) {
-            this.allors
+            this.allors.context
               .save()
               .subscribe((saved: Saved) => {
-                this.allors.session.reset();
+                this.allors.context.reset();
                 cancelFn();
               },
                 (error: Error) => {
@@ -149,7 +149,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.router.navigate(['/orders/request/' + this.request.id]);
@@ -181,7 +181,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];

@@ -4,7 +4,7 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -16,7 +16,7 @@ import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
 
 @Component({
   templateUrl: './category-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
@@ -37,7 +37,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
@@ -82,8 +82,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
             }),
           ];
 
-          return this.allors
-            .load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
@@ -95,7 +94,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
         this.locales = loaded.collections.AdditionalLocales as Locale[];
 
         if (!this.category) {
-          this.category = this.allors.session.create('ProductCategory') as ProductCategory;
+          this.category = this.allors.context.create('ProductCategory') as ProductCategory;
           this.category.InternalOrganisation = this.internalOrganisation;
         }
 
@@ -112,7 +111,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.goBack();

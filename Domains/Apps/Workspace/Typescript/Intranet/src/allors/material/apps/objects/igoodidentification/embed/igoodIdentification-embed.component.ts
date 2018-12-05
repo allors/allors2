@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { SessionService } from '../../../../../angular';
+import { ContextService } from '../../../../../angular';
 import { IGoodIdentification } from '../../../../../domain';
 import { ObjectType, MetaObjectType } from '../../../../../framework';
 
@@ -19,5 +19,5 @@ export class IGoodIdentificationsComponent {
 
   @Output() delete: EventEmitter<IGoodIdentification> = new EventEmitter<IGoodIdentification>();
 
-  constructor(public allors: SessionService) { }
+  constructor(public allors: ContextService) { }
 }

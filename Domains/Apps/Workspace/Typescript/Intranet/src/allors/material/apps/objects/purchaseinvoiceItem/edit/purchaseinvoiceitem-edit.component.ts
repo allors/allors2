@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -14,7 +14,7 @@ import { switchMap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './purchaseinvoiceitem-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class PurchaseInvoiceItemEditComponent
   implements OnInit, OnDestroy {
@@ -38,7 +38,7 @@ export class PurchaseInvoiceItemEditComponent
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -87,11 +87,11 @@ export class PurchaseInvoiceItemEditComponent
             pull.VatRegime()
           ];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.invoice = loaded.objects.PurchaseInvoice as PurchaseInvoice;
         this.invoiceItem = loaded.objects.invoiceItem as PurchaseInvoiceItem;
@@ -106,7 +106,7 @@ export class PurchaseInvoiceItemEditComponent
 
         if (!this.invoiceItem) {
           this.title = 'Add invoice Item';
-          this.invoiceItem = this.allors.session.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
+          this.invoiceItem = this.allors.context.create('PurchaseInvoiceItem') as PurchaseInvoiceItem;
           this.invoice.AddPurchaseInvoiceItem(this.invoiceItem);
         } else {
           if (
@@ -138,7 +138,7 @@ export class PurchaseInvoiceItemEditComponent
       })
     ];
 
-    this.allors.load('Pull', new PullRequest({ pulls }))
+    this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe(
         (loaded) => {
           this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
@@ -160,7 +160,7 @@ export class PurchaseInvoiceItemEditComponent
 
   public save(): void {
 
-    this.allors.save().subscribe(
+    this.allors.context.save().subscribe(
       (saved: Saved) => {
         this.router.navigate(['/accountspayable/invoice/' + this.invoice.id]);
       },
@@ -174,7 +174,7 @@ export class PurchaseInvoiceItemEditComponent
 
     const isNew = this.invoiceItem.isNew;
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });

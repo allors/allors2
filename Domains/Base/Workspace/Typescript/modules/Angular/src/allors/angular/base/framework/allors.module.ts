@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SessionService } from './SessionService';
+import { ContextService } from './ContextService';
 import { DatabaseService } from './DatabaseService';
 import { WorkspaceService } from './WorkspaceService';
 import { DatabaseConfig } from './DatabaseConfig';
@@ -18,7 +18,7 @@ export class AllorsModule {
       providers: [
         DatabaseService,
         WorkspaceService,
-        SessionService,
+        ContextService,
         { provide: DatabaseConfig, useValue: config },
       ]
     };

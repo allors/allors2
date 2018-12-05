@@ -1,5 +1,5 @@
 import { Component, Self } from '@angular/core';
-import { SessionService, AllorsPanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../angular';
+import { ContextService, PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../angular';
 import { PartyContactMechanism, Person } from '../../../../../domain';
 import { MetaDomain } from '../../../../../meta';
 import { ObjectType, ISessionObject } from '../../../../../framework';
@@ -9,7 +9,7 @@ import { DeleteService } from '../../../../../material';
   // tslint:disable-next-line:component-selector
   selector: 'partycontactmechanism-panel',
   templateUrl: './partycontactmechanism-panel.component.html',
-  providers: [AllorsPanelService]
+  providers: [PanelService]
 })
 export class PartyContactMechanismPanelComponent {
   m: MetaDomain;
@@ -24,8 +24,7 @@ export class PartyContactMechanismPanelComponent {
   allContactMechanisms: PartyContactMechanism[];
 
   constructor(
-    public allors: SessionService,
-    @Self() public panelService: AllorsPanelService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -34,19 +33,19 @@ export class PartyContactMechanismPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(panel.container.context);
 
-    panelService.name = 'partycontactmechanism';
-    panelService.title = 'Contact Mechanisms';
-    panelService.icon = 'contacts';
-    panelService.maximizable = true;
+    panel.name = 'partycontactmechanism';
+    panel.title = 'Contact Mechanisms';
+    panel.icon = 'contacts';
+    panel.maximizable = true;
 
-    const personPullName = `${panelService.name}_${this.m.Person.objectType.name}`;
+    const personPullName = `${panel.name}_${this.m.Person.objectType.name}`;
 
-    panelService.prePull = (pulls) => {
+    panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panelService.panelsService.id;
+      const id = this.panel.container.id;
 
       const partyContactMechanismTree = tree.PartyContactMechanism({
         ContactPurposes: x,
@@ -77,7 +76,7 @@ export class PartyContactMechanismPanelComponent {
         }));
     };
 
-    panelService.postPull = (loaded) => {
+    panel.onPulled = (loaded) => {
       this.person = loaded.objects[personPullName] as Person;
 
       this.currentContactMechanisms = this.person.CurrentPartyContactMechanisms as PartyContactMechanism[];
@@ -110,10 +109,10 @@ export class PartyContactMechanismPanelComponent {
   remove(partyContactMechanism: PartyContactMechanism): void {
 
     partyContactMechanism.ThroughDate = new Date();
-    this.allors
+    this.panel.container.context
       .save()
       .subscribe((saved: Saved) => {
-        this.allors.session.reset();
+        this.panel.container.context.reset();
         this.refreshService.refresh();
       },
         this.errorService.handle);
@@ -122,10 +121,10 @@ export class PartyContactMechanismPanelComponent {
   activate(partyContactMechanism: PartyContactMechanism): void {
 
     partyContactMechanism.ThroughDate = undefined;
-    this.allors
+    this.panel.container.context
       .save()
       .subscribe(() => {
-        this.allors.session.reset();
+        this.panel.container.context.reset();
         this.refreshService.refresh();
       },
         this.errorService.handle);

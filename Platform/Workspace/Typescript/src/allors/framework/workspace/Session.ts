@@ -1,3 +1,5 @@
+import { ObjectType } from '../meta';
+
 import { PushRequest } from './../protocol/push/PushRequest';
 import { PushRequestNewObject } from './../protocol/push/PushRequestNewObject';
 import { PushRequestObject } from './../protocol/push/PushRequestObject';
@@ -15,7 +17,7 @@ export interface ISession {
 
   get(id: string): ISessionObject;
 
-  create(objectTypeName: string): ISessionObject;
+  create(objectTypeName: string | ObjectType): ISessionObject;
 
   delete(object: ISessionObject): void;
 
@@ -65,7 +67,9 @@ export class Session implements ISession {
     return sessionObject;
   }
 
-  public create(objectTypeName: string): ISessionObject {
+  public create(objectType: string | ObjectType): ISessionObject {
+
+    const objectTypeName = objectType instanceof ObjectType ? objectType.name : objectType;
     const constructor: any = this.workspace.constructorByName[objectTypeName];
     const newSessionObject: INewSessionObject = new constructor();
     newSessionObject.session = this;

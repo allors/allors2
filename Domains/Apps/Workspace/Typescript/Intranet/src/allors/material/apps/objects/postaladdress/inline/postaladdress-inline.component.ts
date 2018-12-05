@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from '@angular/core';
 
-import { ErrorService, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, Country, PartyContactMechanism, PostalAddress, PostalBoundary } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -28,7 +28,7 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
   public m: MetaDomain;
 
   constructor(
-    private allors: SessionService,
+    private allors: ContextService,
     public metaService: MetaService,
     private errorService: ErrorService) {
 
@@ -49,15 +49,15 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
       })
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.countries = loaded.collections.countries as Country[];
         this.contactMechanismPurposes = loaded.collections.contactMechanismPurposes as ContactMechanismPurpose[];
 
-        this.partyContactMechanism = this.allors.session.create('PartyContactMechanism') as PartyContactMechanism;
-        this.postalAddress = this.allors.session.create('PostalAddress') as PostalAddress;
-        this.postalBoundary = this.allors.session.create('PostalBoundary') as PostalBoundary;
+        this.partyContactMechanism = this.allors.context.create('PartyContactMechanism') as PartyContactMechanism;
+        this.postalAddress = this.allors.context.create('PostalAddress') as PostalAddress;
+        this.postalBoundary = this.allors.context.create('PostalBoundary') as PostalBoundary;
         this.partyContactMechanism.ContactMechanism = this.postalAddress;
         this.postalAddress.PostalBoundary = this.postalBoundary;
       }, this.errorService.handler);
@@ -66,9 +66,9 @@ export class PartyContactMechanismPostalAddressInlineComponent implements OnInit
   public ngOnDestroy(): void {
 
     if (!!this.partyContactMechanism) {
-      this.allors.session.delete(this.partyContactMechanism);
-      this.allors.session.delete(this.postalAddress);
-      this.allors.session.delete(this.postalBoundary);
+      this.allors.context.delete(this.partyContactMechanism);
+      this.allors.context.delete(this.postalAddress);
+      this.allors.context.delete(this.postalBoundary);
     }
   }
 

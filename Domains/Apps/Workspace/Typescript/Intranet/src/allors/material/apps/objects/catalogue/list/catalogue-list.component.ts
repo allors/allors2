@@ -6,7 +6,7 @@ import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
-import { AllorsFilterService, ErrorService, MediaService, SessionService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
+import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
 
 import { Catalogue } from '../../../../../domain';
@@ -19,7 +19,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './catalogue-list.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
@@ -32,7 +32,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -46,7 +46,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
   ) {
     titleService.setTitle(this.title);
 
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
@@ -110,11 +110,11 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         const requests = loaded.collections.Catalogues as Catalogue[];
         this.table.total = loaded.values.Catalogues_total;
         this.table.data = requests.map((v) => {

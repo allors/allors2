@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { SessionService } from '../../../../../angular';
+import { ContextService } from '../../../../../angular';
 import { PartyContactMechanism } from '../../../../../domain';
 
 @Component({
@@ -13,5 +13,5 @@ export class ContactMechanismInlineComponent {
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
 
-  constructor(public allors: SessionService) { }
+  constructor(public allors: ContextService) { }
 }

@@ -1,2 +1,2 @@
 export * from './panel.service';
-export * from './panels.service';
+export * from './panelcontainer.service';

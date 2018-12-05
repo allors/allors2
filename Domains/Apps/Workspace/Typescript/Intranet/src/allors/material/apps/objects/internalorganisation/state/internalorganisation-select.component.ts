@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, Self } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { StateService } from '../../../services/state';
-import { ErrorService, SessionService, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Organisation } from '../../../../../domain';
 
@@ -10,7 +10,7 @@ import { Organisation } from '../../../../../domain';
   // tslint:disable-next-line:component-selector
   selector: 'internalorganisation-select',
   templateUrl: './internalorganisation-select.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
 
@@ -28,7 +28,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
     public metaService: MetaService,
     private stateService: StateService,
     private errorService: ErrorService) { }
@@ -46,8 +46,7 @@ export class SelectInternalOrganisationComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.subscription = this.allors
-      .load('Pull', new PullRequest({ pulls }))
+    this.subscription = this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.internalOrganisations = loaded.collections.Organisations as Organisation[];
       }, this.errorService.handler);

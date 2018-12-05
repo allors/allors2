@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
-import { ErrorService, Saved, SessionService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../domain';
 import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
@@ -13,7 +13,7 @@ import { StateService } from '../../../../';
 
 @Component({
   templateUrl: './part-edit.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class PartEditComponent implements OnInit, OnDestroy {
 
@@ -52,7 +52,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     public metaService: MetaService,
     public navigationService: NavigationService,
     private errorService: ErrorService,
@@ -141,7 +141,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
               map((loaded) => ({ loaded, add }))
@@ -150,7 +150,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ loaded, add }) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
@@ -175,9 +175,9 @@ export class PartEditComponent implements OnInit, OnDestroy {
         if (add) {
           this.add = !(this.edit = false);
 
-          this.part = this.allors.session.create('Part') as Part;
+          this.part = this.allors.context.create('Part') as Part;
 
-          this.partNumber = this.allors.session.create('PartNumber') as PartNumber;
+          this.partNumber = this.allors.context.create('PartNumber') as PartNumber;
           this.partNumber.GoodIdentificationType = partNumberType;
 
           this.part.AddGoodIdentification(this.partNumber);
@@ -230,7 +230,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
       )
     ];
 
-    this.allors
+    this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
         this.models = this.selectedBrand.Models.sort((a, b) => (a.Name > b.Name) ? 1 : ((b.Name > a.Name) ? -1 : 0));
@@ -250,7 +250,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
   public save(): void {
     this.onSave();
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe((saved: Saved) => {
         this.navigationService.back();
@@ -265,7 +265,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
     const isNew = this.part.isNew;
     this.onSave();
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
@@ -327,7 +327,7 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
   private newSupplierOffering(supplier: Organisation): SupplierOffering {
 
-    const supplierOffering = this.allors.session.create('SupplierOffering') as SupplierOffering;
+    const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
     supplierOffering.Supplier = supplier;
     supplierOffering.Part = this.part;
     return supplierOffering;
