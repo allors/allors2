@@ -59,7 +59,7 @@ export class CoreModule {
 
   constructor(@Optional() @SkipSelf() core: CoreModule) {
     if (core) {
-      throw new Error('Only use CoreModule from AppModule');
+      throw new Error('Use CoreModule from AppModule');
     }
   }
 

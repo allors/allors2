@@ -11,7 +11,7 @@ export class NavigationService {
   public navigationItems: NavigationItem[];
 
   constructor(
-    private workspaceService: WorkspaceService,
+    workspaceService: WorkspaceService,
     private router: Router,
     private location: Location
   ) {

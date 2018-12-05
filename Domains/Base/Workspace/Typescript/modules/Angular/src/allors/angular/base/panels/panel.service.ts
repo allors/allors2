@@ -23,7 +23,7 @@ export class PanelService {
         container.panels.push(this);
     }
 
-    get isMinimized(): boolean {
+    get isNormal(): boolean {
         return !this.container.maximized;
     }
 

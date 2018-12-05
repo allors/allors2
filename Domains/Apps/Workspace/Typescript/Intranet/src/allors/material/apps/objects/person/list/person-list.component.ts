@@ -11,6 +11,8 @@ import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../.
 
 import { Person } from '../../../../../domain';
 
+import { FactoryService } from '../../../../../../allors/angular/base/factory/factory.service';
+
 interface Row extends TableRow {
   object: Person;
   name: string;
@@ -37,6 +39,7 @@ export class PersonListComponent implements OnInit, OnDestroy {
     @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
+    public factoryService: FactoryService,
     public refreshService: RefreshService,
     public navigateService: NavigateService,
     public deleteService: DeleteService,

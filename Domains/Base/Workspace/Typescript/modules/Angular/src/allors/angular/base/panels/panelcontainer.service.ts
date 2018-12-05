@@ -43,7 +43,7 @@ export class PanelContainerService {
 
         const queryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
         queryParams['panel'] = panel;
-        this.router.navigate(['.'], { relativeTo: this.route, queryParams });
+        this.router.navigate(['.'], { relativeTo: this.route, queryParams, queryParamsHandling: 'merge' });
     }
 
 }

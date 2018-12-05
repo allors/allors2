@@ -12,9 +12,6 @@ export { NavigationService } from './navigation.service';
   imports: [
     CommonModule,
   ],
-  providers: [
-    NavigationService
-  ]
 })
 export class NavigationModule {
   static forRoot(): ModuleWithProviders {

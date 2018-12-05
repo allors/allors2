@@ -61,7 +61,7 @@ export class PersonPersonalPanelComponent implements OnInit, OnDestroy {
     const personPullName = `${this.panel.name}_${this.m.Person.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isMinimized) {
+      if (this.panel.isNormal) {
         const { pull, x } = this.metaService;
         const id = this.panel.container.id;
 
@@ -79,7 +79,7 @@ export class PersonPersonalPanelComponent implements OnInit, OnDestroy {
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isMinimized) {
+      if (this.panel.isNormal) {
         this.person = loaded.objects[personPullName] as Person;
       }
     };
@@ -92,7 +92,7 @@ export class PersonPersonalPanelComponent implements OnInit, OnDestroy {
       this.route.url,
       this.route.queryParams,
       this.refreshService.refresh$,
-      this.stateService.internalOrganisationId$
+      this.stateService.internalOrganisationId$,
     )
       .pipe(
         filter((v) => {

@@ -9,6 +9,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { MainModule } from './main/main.module';
 
 import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/state/internalorganisation-select.module';
+import { FactoryModule } from './factory.module';
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -18,6 +19,7 @@ import { InternalOrganisationSelectModule } from '../allors/material/apps/object
   imports: [
     CoreModule,
     AppRoutingModule,
+    FactoryModule,
 
     // App Components
     AuthModule.forRoot(),
