@@ -768,11 +768,6 @@ namespace Allors.Adapters
             }
         }
 
-        private void Population_ObjectNotLoaded(object sender, ObjectNotLoadedEventArgs args)
-        {
-            throw new NotImplementedException();
-        }
-
         [Fact]
         public void CantLoadUnitRelation()
         {
@@ -801,7 +796,10 @@ namespace Allors.Adapters
         <rtu i=""b4ee673fbba04e249cda3cf993c79a0a"">
           <r a=""3"">true</r>
         </rtu>
-     </database>
+        <rtu i=""cef13620b7d74bfe8d3bc0f826da5989"">
+          <r a=""1"">537f6823-d22c-4b3b-ab3c-e15a6b61b9d6</r>
+        </rtu>
+      </database>
     </relations>
   </population>
 </allors>";
@@ -829,6 +827,7 @@ namespace Allors.Adapters
 
                     Assert.Equal("A String", this.c1A.C1AllorsString);
                     Assert.Equal(true, this.c1C.C1AllorsBoolean);
+                    Assert.Equal(new Guid("537f6823-d22c-4b3b-ab3c-e15a6b61b9d6"), this.c1A.C1AllorsUnique);
                 }
             }
         }
@@ -861,6 +860,9 @@ namespace Allors.Adapters
         <rtu i=""b4ee673fbba04e249cda3cf993c79a0a"">
             <r a=""1"">true</r>
         </rtu>
+        <rtu i=""cef13620b7d74bfe8d3bc0f826da5989"">
+          <r a=""1"">537f6823-d22c-4b3b-ab3c-e15a6b61b9d6</r>
+        </rtu>
      </database>
     </relations>
   </population>
@@ -888,6 +890,7 @@ namespace Allors.Adapters
 
                     Assert.Equal("A String", this.c1A.C1AllorsString);
                     Assert.Equal(true, this.c1A.C1AllorsBoolean);
+                    Assert.Equal(new Guid("537f6823-d22c-4b3b-ab3c-e15a6b61b9d6"), this.c1A.C1AllorsUnique);
                 }
             }
         }
@@ -918,8 +921,11 @@ namespace Allors.Adapters
         <rtc i=""30000000000000000000000000000000"">
           <r a=""2"">3</r>
         </rtc>
-        <rtc i=""4c776502-77d7-45d9-b101-62dee27c0c2e"">
+        <rtc i=""4c77650277d745d9b10162dee27c0c2e"">
           <r a=""3"">4</r>
+        </rtc>
+        <rtc i=""ab6d11ccec86482888752e9a779ba627"">
+          <r a=""1"">4</r>
         </rtc>
     </database>
     </relations>
@@ -951,7 +957,9 @@ namespace Allors.Adapters
 
                     Assert.Single(this.c1A.C1C1many2manies);
                     Assert.Contains(this.c1B, this.c1A.C1C1many2manies);
-                    Assert.Equal(c1D, this.c1C.C1C1one2one);
+                    Assert.Equal(this.c1D, this.c1C.C1C1one2one);
+                    Assert.Single(this.c1A.C1C1one2manies);
+                    Assert.Contains(this.c1D, this.c1A.C1C1one2manies);
                 }
             }
         }
@@ -985,6 +993,9 @@ namespace Allors.Adapters
         <rtc i=""4c776502-77d7-45d9-b101-62dee27c0c2e"">
           <r a=""3"">4</r>
         </rtc>
+        <rtc i=""ab6d11ccec86482888752e9a779ba627"">
+          <r a=""1"">4</r>
+        </rtc>
     </database>
     </relations>
   </population>
@@ -1015,7 +1026,9 @@ namespace Allors.Adapters
 
                     Assert.Single(this.c1A.C1C1many2manies);
                     Assert.Contains(this.c1B, this.c1A.C1C1many2manies);
-                    Assert.Equal(c1D, this.c1C.C1C1one2one);
+                    Assert.Equal(this.c1D, this.c1C.C1C1one2one);
+                    Assert.Single(this.c1A.C1C1one2manies);
+                    Assert.Contains(this.c1D, this.c1A.C1C1one2manies);
                 }
             }
         }
