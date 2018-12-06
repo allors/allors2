@@ -17,8 +17,10 @@
 namespace Allors.Adapters
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Xml;
 
     using Allors;
@@ -171,7 +173,7 @@ namespace Allors.Adapters
                         exceptionThrown = true;
                     }
 
-                    Assert.True(exceptionThrown);    
+                    Assert.True(exceptionThrown);
                 }
             }
         }
@@ -247,7 +249,7 @@ namespace Allors.Adapters
 
                         Assert.Equal(otherC1.Strategy.ObjectVersion, c1.Strategy.ObjectVersion);
                     }
-                    
+
                     // Change
                     otherC1.C1AllorsString = "Changed";
 
@@ -430,7 +432,7 @@ namespace Allors.Adapters
                         population.Save(writer);
                     }
 
-                   Dump(population);
+                    Dump(population);
 
                     var xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(stringWriter.ToString());
@@ -531,9 +533,9 @@ namespace Allors.Adapters
                         this.Population.Save(writer);
                     }
 
-                    //writer = XmlWriter.Create("population.xml", new UTF8Encoding());
-                    //this.Population.Save(writer);
-                    //writer.Close();
+                    ////writer = XmlWriter.Create("population.xml", new UTF8Encoding());
+                    ////this.Population.Save(writer);
+                    ////writer.Close();
 
                     var xml = stringWriter.ToString();
 
@@ -551,7 +553,7 @@ namespace Allors.Adapters
                 }
             }
         }
-        
+
         [Fact]
         public void SaveVersions()
         {
@@ -694,7 +696,7 @@ namespace Allors.Adapters
                     }
 
                     var xml = stringWriter.ToString();
-                   
+
                     var stringReader = new StringReader(stringWriter.ToString());
                     using (var reader = XmlReader.Create(stringReader))
                     {
@@ -718,6 +720,306 @@ namespace Allors.Adapters
                 }
             }
         }
+
+
+        [Fact]
+        public void CantLoadObjects()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+
+                var xml =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<allors>
+  <population version=""1"">
+    <objects>
+      <database>
+        <ot i=""7041c691d89646288f501c24f5d03414"">1:0</ot>
+        <ot i=""71000000000000000000000000000000"">3:0</ot>
+        <ot i=""72c07e8a03f54da8ab37236333d4f74e"">2:0</ot>
+      </database>
+    </objects>
+  </population>
+</allors>";
+                var notLoadedEventArgs = new List<ObjectNotLoadedEventArgs>();
+                this.Population.ObjectNotLoaded += (o, args) =>
+                    notLoadedEventArgs.Add(args);
+
+                var stringReader = new StringReader(xml);
+                using (var reader = XmlReader.Create(stringReader))
+                {
+                    this.Population.Load(reader);
+                }
+
+                Assert.Single(notLoadedEventArgs);
+                var notLoadedEventArg = notLoadedEventArgs.First();
+                Assert.Equal(3, notLoadedEventArg.ObjectId);
+                Assert.Equal(new Guid("71000000000000000000000000000000"), notLoadedEventArg.ObjectTypeId);
+
+                using (var session = this.Population.CreateSession())
+                {
+                    this.c1A = (C1)session.Instantiate(1);
+                    this.c2A = (C2)session.Instantiate(2);
+
+                    Assert.NotNull(this.c1A);
+                    Assert.NotNull(this.c2A);
+                }
+            }
+        }
+
+        private void Population_ObjectNotLoaded(object sender, ObjectNotLoadedEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
+
+        [Fact]
+        public void CantLoadUnitRelation()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+
+                var xml =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<allors>
+  <population version=""1"">
+    <objects>
+      <database>
+        <ot i=""7041c691d89646288f501c24f5d03414"">1:0,2:0,3:0,4:0</ot>
+        <ot i=""72c07e8a03f54da8ab37236333d4f74e"">5:0,6:0,7:0,8:0</ot>
+      </database>
+    </objects>
+    <relations>
+      <database>
+        <rtu i=""207138608abd4d718ccc2b4d1b88bce3"">
+          <r a=""1"">A String</r>
+        </rtu>
+        <rtu i=""40000000000000000000000000000000"">
+          <r a=""2"">Oops</r>
+        </rtu>
+        <rtu i=""b4ee673fbba04e249cda3cf993c79a0a"">
+          <r a=""3"">true</r>
+        </rtu>
+     </database>
+    </relations>
+  </population>
+</allors>";
+
+                var notLoadedEventArgs = new List<RelationNotLoadedEventArgs>();
+                this.Population.RelationNotLoaded += (o, args) =>
+                    notLoadedEventArgs.Add(args);
+
+                var stringReader = new StringReader(xml);
+                using (var reader = XmlReader.Create(stringReader))
+                {
+                    this.Population.Load(reader);
+                }
+
+                Assert.Single(notLoadedEventArgs);
+                var notLoadedEventArg = notLoadedEventArgs.First();
+                Assert.Equal(2, notLoadedEventArg.AssociationId);
+                Assert.Equal(new Guid("40000000000000000000000000000000"), notLoadedEventArg.RelationTypeId);
+                Assert.Equal("Oops", notLoadedEventArg.RoleContents);
+
+                using (var session = this.Population.CreateSession())
+                {
+                    this.c1A = (C1)session.Instantiate(1);
+                    this.c1C = (C1)session.Instantiate(3);
+
+                    Assert.Equal("A String", this.c1A.C1AllorsString);
+                    Assert.Equal(true, this.c1C.C1AllorsBoolean);
+                }
+            }
+        }
+
+        [Fact]
+        public void CantLoadUnitRole()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+
+                var xml =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<allors>
+  <population version=""1"">
+    <objects>
+      <database>
+        <ot i=""7041c691d89646288f501c24f5d03414"">1:0,2:0,3:0,4:0</ot>
+        <ot i=""72c07e8a03f54da8ab37236333d4f74e"">5:0,6:0,7:0,8:0</ot>
+      </database>
+    </objects>
+    <relations>
+      <database>
+        <rtu i=""207138608abd4d718ccc2b4d1b88bce3"">
+            <r a=""1"">A String</r>
+        </rtu>
+        <rtu i=""87eb0d1973a74aaeaeed66dc9163233c"">
+            <r a=""99"">1.1</r>
+        </rtu>
+        <rtu i=""b4ee673fbba04e249cda3cf993c79a0a"">
+            <r a=""1"">true</r>
+        </rtu>
+     </database>
+    </relations>
+  </population>
+</allors>";
+
+                var notLoadedEventArgs = new List<RelationNotLoadedEventArgs>();
+                this.Population.RelationNotLoaded += (o, args) =>
+                    notLoadedEventArgs.Add(args);
+
+                var stringReader = new StringReader(xml);
+                using (var reader = XmlReader.Create(stringReader))
+                {
+                    this.Population.Load(reader);
+                }
+
+                Assert.Single(notLoadedEventArgs);
+                var notLoadedEventArg = notLoadedEventArgs.First();
+                Assert.Equal(99, notLoadedEventArg.AssociationId);
+                Assert.Equal(new Guid("87eb0d1973a74aaeaeed66dc9163233c"), notLoadedEventArg.RelationTypeId);
+                Assert.Equal("1.1", notLoadedEventArg.RoleContents);
+
+                using (var session = this.Population.CreateSession())
+                {
+                    this.c1A = (C1)session.Instantiate(1);
+
+                    Assert.Equal("A String", this.c1A.C1AllorsString);
+                    Assert.Equal(true, this.c1A.C1AllorsBoolean);
+                }
+            }
+        }
+
+
+        [Fact]
+        public void CantLoadCompositeRelation()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+
+                var xml =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<allors>
+  <population version=""1"">
+    <objects>
+      <database>
+        <ot i=""7041c691d89646288f501c24f5d03414"">1:0,2:0,3:0,4:0</ot>
+        <ot i=""72c07e8a03f54da8ab37236333d4f74e"">5:0,6:0,7:0,8:0</ot>
+      </database>
+    </objects>
+    <relations>
+      <database>
+        <rtc i=""2ff1c9ba0017466e9f11776086e6d0b0"">
+          <r a=""1"">2</r>
+        </rtc>
+        <rtc i=""30000000000000000000000000000000"">
+          <r a=""2"">3</r>
+        </rtc>
+        <rtc i=""4c776502-77d7-45d9-b101-62dee27c0c2e"">
+          <r a=""3"">4</r>
+        </rtc>
+    </database>
+    </relations>
+  </population>
+</allors>";
+
+                var notLoadedEventArgs = new List<RelationNotLoadedEventArgs>();
+                this.Population.RelationNotLoaded += (o, args) =>
+                    notLoadedEventArgs.Add(args);
+
+                var stringReader = new StringReader(xml);
+                using (var reader = XmlReader.Create(stringReader))
+                {
+                    this.Population.Load(reader);
+                }
+
+                Assert.Single(notLoadedEventArgs);
+                var notLoadedEventArg = notLoadedEventArgs.First();
+                Assert.Equal(2, notLoadedEventArg.AssociationId);
+                Assert.Equal(new Guid("30000000000000000000000000000000"), notLoadedEventArg.RelationTypeId);
+                Assert.Equal("3", notLoadedEventArg.RoleContents);
+
+                using (var session = this.Population.CreateSession())
+                {
+                    this.c1A = (C1)session.Instantiate(1);
+                    this.c1B = (C1)session.Instantiate(2);
+                    this.c1C = (C1)session.Instantiate(3);
+                    this.c1D = (C1)session.Instantiate(4);
+
+                    Assert.Single(this.c1A.C1C1many2manies);
+                    Assert.Contains(this.c1B, this.c1A.C1C1many2manies);
+                    Assert.Equal(c1D, this.c1C.C1C1one2one);
+                }
+            }
+        }
+
+
+        [Fact]
+        public void CantLoadCompositeRole()
+        {
+            foreach (var init in this.Inits)
+            {
+                init();
+
+                var xml =
+@"<?xml version=""1.0"" encoding=""utf-16""?>
+<allors>
+  <population version=""1"">
+    <objects>
+      <database>
+        <ot i=""7041c691d89646288f501c24f5d03414"">1:0,2:0,3:0,4:0</ot>
+        <ot i=""72c07e8a03f54da8ab37236333d4f74e"">5:0,6:0,7:0,8:0</ot>
+      </database>
+    </objects>
+    <relations>
+      <database>
+        <rtc i=""2ff1c9ba0017466e9f11776086e6d0b0"">
+          <r a=""1"">2</r>
+        </rtc>
+        <rtc i=""2cd8b843-f1f5-413d-9d6d-0d2b9b3c5cf6"">
+          <r a=""99"">3</r>
+        </rtc>
+        <rtc i=""4c776502-77d7-45d9-b101-62dee27c0c2e"">
+          <r a=""3"">4</r>
+        </rtc>
+    </database>
+    </relations>
+  </population>
+</allors>";
+
+                var notLoadedEventArgs = new List<RelationNotLoadedEventArgs>();
+                this.Population.RelationNotLoaded += (o, args) =>
+                    notLoadedEventArgs.Add(args);
+
+                var stringReader = new StringReader(xml);
+                using (var reader = XmlReader.Create(stringReader))
+                {
+                    this.Population.Load(reader);
+                }
+
+                Assert.Single(notLoadedEventArgs);
+                var notLoadedEventArg = notLoadedEventArgs.First();
+                Assert.Equal(99, notLoadedEventArg.AssociationId);
+                Assert.Equal(new Guid("2cd8b843-f1f5-413d-9d6d-0d2b9b3c5cf6"), notLoadedEventArg.RelationTypeId);
+                Assert.Equal("3", notLoadedEventArg.RoleContents);
+
+                using (var session = this.Population.CreateSession())
+                {
+                    this.c1A = (C1)session.Instantiate(1);
+                    this.c1B = (C1)session.Instantiate(2);
+                    this.c1C = (C1)session.Instantiate(3);
+                    this.c1D = (C1)session.Instantiate(4);
+
+                    Assert.Single(this.c1A.C1C1many2manies);
+                    Assert.Contains(this.c1B, this.c1A.C1C1many2manies);
+                    Assert.Equal(c1D, this.c1C.C1C1one2one);
+                }
+            }
+        }
+
 
         protected abstract IDatabase CreatePopulation();
 
@@ -769,9 +1071,9 @@ namespace Allors.Adapters
             IObject[] everyC2 = { c2ACopy, c2BCopy, c2CCopy, c2DCopy };
             IObject[] everyC3 = { c3ACopy, c3BCopy, c3CCopy, c3DCopy };
             IObject[] everyC4 = { c4ACopy, c4BCopy, c4CCopy, c4DCopy };
-            IObject[] everyObject = 
+            IObject[] everyObject =
                                     {
-                                        c1ACopy, c1BCopy, c1CCopy, c1DCopy, c2ACopy, c2BCopy, c2CCopy, c2DCopy, c3ACopy, 
+                                        c1ACopy, c1BCopy, c1CCopy, c1DCopy, c2ACopy, c2BCopy, c2CCopy, c2DCopy, c3ACopy,
                                         c3BCopy, c3CCopy, c3DCopy, c4ACopy, c4BCopy, c4CCopy, c4DCopy
                                     };
 
@@ -842,7 +1144,7 @@ namespace Allors.Adapters
             this.c4C = C4.Create(session);
             this.c4D = C4.Create(session);
 
-            IObject[] allObjects = 
+            IObject[] allObjects =
                                    {
                                        this.c1A, this.c1B, this.c1C, this.c1D, this.c2A, this.c2B, this.c2C, this.c2D,
                                        this.c3A, this.c3B, this.c3C, this.c3D, this.c4A, this.c4B, this.c4C, this.c4D

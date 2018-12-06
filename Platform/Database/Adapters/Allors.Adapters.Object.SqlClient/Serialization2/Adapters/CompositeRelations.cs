@@ -56,7 +56,7 @@ namespace Allors.Adapters.Object.SqlClient
         {
             var allowedAssociationClasses = new HashSet<IClass>(this.relationType.AssociationType.ObjectType.Classes);
             var allowedRoleClasses = new HashSet<IClass>(((IComposite)this.relationType.RoleType.ObjectType).Classes);
-            
+
             var skip = false;
             while (skip || this.reader.Read())
             {
@@ -70,12 +70,12 @@ namespace Allors.Adapters.Object.SqlClient
                         {
                             var associationIdString = this.reader.GetAttribute(Serialization.Association);
                             var associationId = long.Parse(associationIdString);
-                            
+
                             this.classByObjectId.TryGetValue(associationId, out var associationClass);
 
                             if (associationClass == null || !allowedAssociationClasses.Contains(associationClass))
                             {
-                                this.cantLoadCompositeRole(this.reader, relationType.Id);
+                                this.cantLoadCompositeRole(this.reader.ReadSubtree(), relationType.Id);
                             }
                             else
                             {
@@ -135,7 +135,7 @@ namespace Allors.Adapters.Object.SqlClient
                                 }
                             }
                         }
-                       
+
                         break;
                 }
             }

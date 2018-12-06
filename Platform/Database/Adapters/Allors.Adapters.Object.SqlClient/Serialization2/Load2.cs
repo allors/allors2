@@ -99,7 +99,7 @@ namespace Allors.Adapters.Object.SqlClient
                                 this.LoadRelations(reader.ReadSubtree());
                             }
                         }
- 
+
                         break;
                 }
             }
@@ -221,7 +221,7 @@ where c = '{@class.Id}'";
                                 {
                                     if (relationType == null || relationType.RoleType.ObjectType is IComposite)
                                     {
-                                        this.CantLoadUnitRole(reader, relationTypeId);
+                                        this.CantLoadUnitRole(reader.ReadSubtree(), relationTypeId);
                                     }
                                     else
                                     {
@@ -232,7 +232,7 @@ where c = '{@class.Id}'";
                                 {
                                     if (relationType == null || relationType.RoleType.ObjectType is IUnit)
                                     {
-                                        this.CantLoadCompositeRole(reader, relationTypeId);
+                                        this.CantLoadCompositeRole(reader.ReadSubtree(), relationTypeId);
                                     }
                                     else
                                     {
@@ -270,7 +270,7 @@ where c = '{@class.Id}'";
 
                             if (@class == null || !allowedClasses.Contains(@class))
                             {
-                                this.CantLoadUnitRole(reader, relationType.Id);
+                                this.CantLoadUnitRole(reader.ReadSubtree(), relationType.Id);
                             }
                             else
                             {
@@ -315,9 +315,9 @@ where c = '{@class.Id}'";
                                 {
                                     this.OnRelationNotLoaded(relationType.Id, associationId, value);
                                 }
-                            }
 
-                            skip = reader.IsStartElement();
+                                skip = reader.IsStartElement();
+                            }
                         }
 
                         break;
@@ -366,13 +366,13 @@ where c = '{@class.Id}'";
                 var relations = new CompositeRelations(
                     this.database,
                     relationType,
-                    this.CantLoadUnitRole,
+                    this.CantLoadCompositeRole,
                     this.OnRelationNotLoaded,
                     this.classByObjectId,
                     reader);
 
-                var sql = relationType.RoleType.IsOne ? 
-                              this.database.Mapping.ProcedureNameForSetRoleByRelationType[relationType] : 
+                var sql = relationType.RoleType.IsOne ?
+                              this.database.Mapping.ProcedureNameForSetRoleByRelationType[relationType] :
                               this.database.Mapping.ProcedureNameForAddRoleByRelationType[relationType];
 
                 var command = con.CreateCommand();
@@ -393,25 +393,20 @@ where c = '{@class.Id}'";
         {
             while (reader.Read())
             {
-                switch (reader.NodeType)
+                if (reader.IsStartElement())
                 {
-                    case XmlNodeType.Element:
-                        if (reader.Name.Equals(Serialization.Relation))
+                    if (reader.Name.Equals(Serialization.Relation))
+                    {
+                        var a = reader.GetAttribute(Serialization.Association);
+                        var value = string.Empty;
+
+                        if (!reader.IsEmptyElement)
                         {
-                            var a = reader.GetAttribute(Serialization.Association);
-                            var value = string.Empty;
-
-                            if (!reader.IsEmptyElement)
-                            {
-                                value = reader.ReadElementContentAsString();
-                            }
-
-                            this.OnRelationNotLoaded(relationTypeId, long.Parse(a), value);
+                            value = reader.ReadElementContentAsString();
                         }
 
-                        break;
-                    case XmlNodeType.EndElement:
-                        return;
+                        this.OnRelationNotLoaded(relationTypeId, long.Parse(a), value);
+                    }
                 }
             }
         }
@@ -420,36 +415,31 @@ where c = '{@class.Id}'";
         {
             while (reader.Read())
             {
-                switch (reader.NodeType)
+                if (reader.IsStartElement())
                 {
-                    case XmlNodeType.Element:
-                        if (reader.Name.Equals(Serialization.Relation))
+                    if (reader.Name.Equals(Serialization.Relation))
+                    {
+                        var associationIdString = reader.GetAttribute(Serialization.Association);
+                        var associationId = long.Parse(associationIdString);
+                        if (string.IsNullOrEmpty(associationIdString))
                         {
-                            var associationIdString = reader.GetAttribute(Serialization.Association);
-                            var associationId = long.Parse(associationIdString);
-                            if (string.IsNullOrEmpty(associationIdString))
-                            {
-                                throw new Exception("Association id is missing");
-                            }
-
-                            if (reader.IsEmptyElement)
-                            {
-                                this.OnRelationNotLoaded(relationTypeId, associationId, null);
-                            }
-                            else
-                            {
-                                var value = reader.ReadElementContentAsString();
-                                var rs = value.Split(Serialization.ObjectsSplitterCharArray);
-                                foreach (var r in rs)
-                                {
-                                    this.OnRelationNotLoaded(relationTypeId, associationId, r);
-                                }
-                            }
+                            throw new Exception("Association id is missing");
                         }
 
-                        break;
-                    case XmlNodeType.EndElement:
-                        return;
+                        if (reader.IsEmptyElement)
+                        {
+                            this.OnRelationNotLoaded(relationTypeId, associationId, null);
+                        }
+                        else
+                        {
+                            var value = reader.ReadElementContentAsString();
+                            var rs = value.Split(Serialization.ObjectsSplitterCharArray);
+                            foreach (var r in rs)
+                            {
+                                this.OnRelationNotLoaded(relationTypeId, associationId, r);
+                            }
+                        }
+                    }
                 }
             }
         }
