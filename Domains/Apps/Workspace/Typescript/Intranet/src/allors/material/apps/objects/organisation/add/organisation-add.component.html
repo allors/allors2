@@ -1,0 +1,42 @@
+<form *ngIf="organisation" class="a-edit" #form="ngForm" (submit)="save()">
+
+  <h1 mat-dialog-title>Add a new Organisation</h1>
+  
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
+        <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.TaxNumber" label="VAT number"></a-mat-input>
+      </div>
+
+      <div class="row">
+        <mat-form-field class="col-md">
+          <mat-select name="role" [(ngModel)]="activeRoles" placeholder="Roles" multiple="true">
+            <mat-option *ngFor="let role of selectableRoles" [value]="role">{{ role.Name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications"
+          [options]="classifications" display="Name" label="Classification"></a-mat-select>
+        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications"
+          [options]="industries" display="Name" label="Industry"></a-mat-select>
+      </div>
+
+      <div class="row">
+        <a-mat-slidetoggle class="col-md" [object]="organisation" [roleType]="m.Organisation.IsManufacturer"></a-mat-slidetoggle>
+        <a-mat-select class="col-md" [object]="organisation" [roleType]="m.Organisation.Locale" [options]="locales"
+          display="Name"></a-mat-select>
+        <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
+        <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges || activeRoles.length > 0) ">SAVE</button>
+  </div>
+
+</form>

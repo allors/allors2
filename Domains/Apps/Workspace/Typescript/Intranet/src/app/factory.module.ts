@@ -6,11 +6,13 @@ import { ids } from '../allors/meta/generated';
 
 import { FactoryService, FactoryConfig } from '../allors/angular/base/factory';
 
+import { OrganisationAddModule, OrganisationAddComponent } from '../allors/material/apps/objects/organisation/add/organisation-add.module';
 import { PersonAddModule, PersonAddComponent } from '../allors/material/apps/objects/person/add/person-add.module';
 
 const factoryConfig: FactoryConfig = new FactoryConfig({
   items:
     [
+      { id: ids.Organisation, component: OrganisationAddComponent },
       { id: ids.Person, component: PersonAddComponent }
     ]
 });
@@ -19,9 +21,12 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
   imports: [
     CommonModule,
     MatDialogModule,
+
+    OrganisationAddModule,
     PersonAddModule
   ],
   entryComponents: [
+    OrganisationAddComponent,
     PersonAddComponent
   ],
   providers: [

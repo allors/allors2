@@ -22,7 +22,6 @@ export class PersonAddComponent implements OnInit, OnDestroy {
 
   readonly m: MetaDomain;
 
-  readonly title = 'Person';
   add: boolean;
   edit: boolean;
 
@@ -59,13 +58,11 @@ export class PersonAddComponent implements OnInit, OnDestroy {
     public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private titleService: Title,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
-    this.titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
