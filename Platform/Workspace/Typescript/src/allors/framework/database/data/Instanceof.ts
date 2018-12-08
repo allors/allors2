@@ -1,10 +1,10 @@
-import { ObjectType, PropertyType, MetaObjectType } from '../../meta';
+import { ObjectType, PropertyType, ObjectTypeRef } from '../../meta';
 
 import { Predicate } from './Predicate';
 
 export class Instanceof implements Predicate {
   public propertyType: PropertyType;
-  public objectType: ObjectType | MetaObjectType;
+  public objectType: ObjectType | ObjectTypeRef;
 
   constructor(fields?: Partial<Instanceof> | PropertyType) {
     if ((fields as PropertyType).objectType) {
@@ -16,7 +16,7 @@ export class Instanceof implements Predicate {
 
   public toJSON(): any {
 
-    const metaObjectType = this.objectType as MetaObjectType;
+    const metaObjectType = this.objectType as ObjectTypeRef;
     const objectType = metaObjectType.objectType ? metaObjectType.objectType : this.objectType as ObjectType;
 
     return {

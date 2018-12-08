@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { MAT_DATE_LOCALE, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
@@ -9,12 +9,13 @@ import { MAT_MOMENT_DATE_FORMATS } from '@angular/material-moment-adapter';
 import { environment } from '../environments/environment';
 
 import {
-  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule, MenuModule
+  AllorsModule, AllorsFocusModule, AllorsBarcodeModule, AllorsFilterModule, AllorsRefreshModule, AuthenticationModule, MediaModule, NavigationModule, MenuModule, WorkspaceService
 } from '../allors/angular';
 
 import {
   MomentUtcDateAdapter, DeleteModule, NavigateModule, DialogModule, LoggingModule, ErrorModule, SideNavModule, StateService
 } from '../allors/material';
+
 import { DefaultStateService } from 'src/allors/material/apps/services/state/default.state.service';
 import { ConfigService } from './app.config.service';
 
@@ -50,7 +51,6 @@ import { ConfigService } from './app.config.service';
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     { provide: DateAdapter, useClass: MomentUtcDateAdapter },
-
     { provide: StateService, useClass: DefaultStateService },
     ConfigService,
   ],
@@ -62,5 +62,4 @@ export class CoreModule {
       throw new Error('Use CoreModule from AppModule');
     }
   }
-
 }

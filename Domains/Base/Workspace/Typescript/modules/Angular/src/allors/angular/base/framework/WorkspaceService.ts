@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { domain } from '../../../domain';
 import { MetaPopulation, Workspace } from '../../../framework';
 import { data } from '../../../meta';
-import { DatabaseService } from './DatabaseService';
 
 @Injectable()
 export class WorkspaceService {

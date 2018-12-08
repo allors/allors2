@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { ContextService } from '../../../../../angular';
 import { IGoodIdentification } from '../../../../../domain';
-import { ObjectType, MetaObjectType } from '../../../../../framework';
+import { ObjectType, ObjectTypeRef } from '../../../../../framework';
 
 @Component({
   // tslint:disable-next-line:component-selector

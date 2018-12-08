@@ -1,7 +1,7 @@
 import { Injectable, InjectionToken, Inject, Injector } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { ObjectType, MetaObjectType } from '../../../framework';
+import { ObjectType, ObjectTypeRef } from '../../../framework';
 import { FactoryConfig } from './FactoryConfig';
 
 @Injectable({
@@ -15,9 +15,9 @@ export class FactoryService {
   ) {
   }
 
-  add(objectType: ObjectType | MetaObjectType | string) {
+  add(objectType: ObjectType | ObjectTypeRef | string) {
 
-    const objectTypeId = objectType instanceof ObjectType ? objectType.id : (objectType as MetaObjectType).objectType ? (objectType as MetaObjectType).objectType.id : objectType as string;
+    const objectTypeId = objectType instanceof ObjectType ? objectType.id : (objectType as ObjectTypeRef).objectType ? (objectType as ObjectTypeRef).objectType.id : objectType as string;
 
     const factoryItem = this.factoryConfig.items.find((v) => v.id === objectTypeId);
     if (factoryItem) {

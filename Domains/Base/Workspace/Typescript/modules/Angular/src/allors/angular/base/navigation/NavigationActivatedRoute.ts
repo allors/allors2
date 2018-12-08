@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { ObjectType, MetaObjectType } from 'src/allors/framework';
+import { ObjectType, ObjectTypeRef } from 'src/allors/framework';
 
 export class NavigationActivatedRoute {
 
@@ -15,7 +15,7 @@ export class NavigationActivatedRoute {
     return queryParamMap.get('panel');
   }
 
-  queryParam(objectTypeOrMetaObjectTypes: ObjectType | MetaObjectType): string {
+  queryParam(objectTypeOrMetaObjectTypes: ObjectType | ObjectTypeRef): string {
     const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
 
     const objectType = objectTypeOrMetaObjectTypes instanceof ObjectType ? objectTypeOrMetaObjectTypes : objectTypeOrMetaObjectTypes.objectType;

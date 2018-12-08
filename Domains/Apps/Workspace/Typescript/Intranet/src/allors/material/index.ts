@@ -5,6 +5,7 @@ export * from './base/components/chips/chips.module';
 export * from './base/components/datepicker/datepicker.module';
 export * from './base/components/dialog/dialog.module';
 export * from './base/components/errordialog/errordialog.module';
+export * from './base/components/factoryfab/factoryfab.module';
 export * from './base/components/file/file.module';
 export * from './base/components/files/files.module';
 export * from './base/components/input/input.module';

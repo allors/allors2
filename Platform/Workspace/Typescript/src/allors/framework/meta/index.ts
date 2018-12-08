@@ -3,7 +3,7 @@ export * from './Data';
 
 export { MetaPopulation } from './MetaPopulation';
 export { ObjectType } from './ObjectType';
-export { MetaObjectType } from './MetaObjectType';
+export { ObjectTypeRef } from './ObjectTypeRef';
 
 export { PropertyType } from './PropertyType';
 

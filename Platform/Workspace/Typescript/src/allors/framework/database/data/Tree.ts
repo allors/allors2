@@ -1,15 +1,15 @@
-import { MetaObjectType, ObjectType } from '../../meta';
+import { ObjectTypeRef, ObjectType } from '../../meta';
 import { TreeNode } from './TreeNode';
 
 export class Tree {
 
-  public objectType: ObjectType | MetaObjectType;
+  public objectType: ObjectType | ObjectTypeRef;
 
   public nodes: TreeNode[] | any;
 
-  constructor(fields?: Partial<Tree> | MetaObjectType | ObjectType, literal?) {
-    if (fields instanceof ObjectType || fields && (fields as MetaObjectType).objectType) {
-      const objectType = (fields as MetaObjectType).objectType ? (fields as MetaObjectType).objectType : fields as ObjectType;
+  constructor(fields?: Partial<Tree> | ObjectTypeRef | ObjectType, literal?) {
+    if (fields instanceof ObjectType || fields && (fields as ObjectTypeRef).objectType) {
+      const objectType = (fields as ObjectTypeRef).objectType ? (fields as ObjectTypeRef).objectType : fields as ObjectType;
       this.objectType = objectType;
 
       if (literal) {
@@ -26,7 +26,7 @@ export class Tree {
   }
 
   public toJSON(): any {
-    const metaObjectType = this.objectType as MetaObjectType;
+    const metaObjectType = this.objectType as ObjectTypeRef;
     const composite = metaObjectType.objectType ? metaObjectType.objectType : this.objectType as ObjectType;
 
     let nodes = this.nodes;

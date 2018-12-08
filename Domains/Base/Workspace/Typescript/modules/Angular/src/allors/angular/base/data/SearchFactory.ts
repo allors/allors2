@@ -1,11 +1,11 @@
 ﻿import { Observable, EMPTY } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { And, Exists, ISessionObject, Like, MetaObjectType, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
+import { And, Exists, ISessionObject, Like, ObjectTypeRef, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
 import { Loaded, Context } from '../framework';
 
 export interface SearchOptions {
-  objectType: ObjectType | MetaObjectType;
+  objectType: ObjectType | ObjectTypeRef;
   roleTypes: RoleType[];
   existRoletypes?: RoleType[];
   notExistRoletypes?: RoleType[];

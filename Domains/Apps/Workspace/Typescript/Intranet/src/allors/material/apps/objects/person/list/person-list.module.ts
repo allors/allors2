@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule,  MatIconModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatIconModule, MatToolbarModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFilterModule, AllorsMaterialTableModule} from '../../../../../material';
+import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../../material';
 
 import { PersonListComponent } from './person-list.component';
 export { PersonListComponent } from './person-list.component';
@@ -24,6 +24,7 @@ export { PersonListComponent } from './person-list.component';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFilterModule,
     AllorsMaterialTableModule,
   ],

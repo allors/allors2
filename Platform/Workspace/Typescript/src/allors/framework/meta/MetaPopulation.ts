@@ -5,7 +5,7 @@ import { Class, Data, Interface } from './Data';
 import { ExclusiveMethodType } from './ExclusiveMethodType';
 import { ExclusiveRoleType } from './ExclusiveRoleType';
 import { MetaObject } from './MetaObject';
-import { MetaObjectType } from './MetaObjectType';
+import { ObjectTypeRef } from './ObjectTypeRef';
 import { MethodType } from './MethodType';
 import { Kind, ObjectType } from './ObjectType';
 import { RoleType } from './RoleType';
@@ -154,7 +154,7 @@ export class MetaPopulation {
     Object.keys(this.objectTypeByName)
       .forEach((objectTypeName) => {
         const objectType: ObjectType = this.objectTypeByName[objectTypeName];
-        const metaObjectType: MetaObjectType = {
+        const metaObjectType: ObjectTypeRef = {
           objectType: objectType,
         };
         this.metaDomain[objectTypeName] = metaObjectType;

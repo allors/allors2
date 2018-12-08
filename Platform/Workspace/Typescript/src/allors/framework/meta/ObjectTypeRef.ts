@@ -1,5 +1,5 @@
 import { ObjectType } from './ObjectType';
 
-export interface MetaObjectType {
+export interface ObjectTypeRef {
     objectType: ObjectType;
 }
