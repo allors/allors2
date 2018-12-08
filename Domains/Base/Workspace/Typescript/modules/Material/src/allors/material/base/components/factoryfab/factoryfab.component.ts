@@ -27,5 +27,7 @@ export class FactoryFabComponent implements OnInit {
     } else {
       this.classes = [objectType];
     }
+
+    this.classes = this.classes.filter((v) => this.factoryService.hasFactory(v));
   }
 }

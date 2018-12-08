@@ -1,3 +1,5 @@
+import { Component } from '@angular/core';
+
 export class FactoryConfig {
 
   constructor(fields: Partial<FactoryConfig>) {
