@@ -5,7 +5,7 @@ import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'person-panel',
+  selector: 'person-overview-panel',
   templateUrl: './person-overview-panel.component.html',
   providers: [PanelService]
 })

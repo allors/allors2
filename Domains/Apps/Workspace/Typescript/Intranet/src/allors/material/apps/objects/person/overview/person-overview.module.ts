@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLauncherModule } from '../../../../../material';
+import { AllorsMaterialLauncherModule } from '../../../..';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
@@ -15,7 +15,7 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { PersonOverviewPanelModule } from '../panels/overview/person-overview-panel.module';
-import { PersonPersonalPanelModule } from '../panels/personal/person-personal-panel.module';
+import { PersonDetailPanelModule } from '../panels/detail/person-detail-panel.module';
 
 import { CommunicationEventPanelModule } from '../../communicationevent/panel/communicationevent-panel.module';
 import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/panel/partycontactmechanism-panel.module';
@@ -34,7 +34,7 @@ export { PersonOverviewComponent } from './person-overview.component';
   ],
   imports: [
     PersonOverviewPanelModule,
-    PersonPersonalPanelModule,
+    PersonDetailPanelModule,
 
     CommunicationEventPanelModule,
     PartyContactMechanismPanelModule,
@@ -75,4 +75,4 @@ export { PersonOverviewComponent } from './person-overview.component';
     RouterModule,
   ],
 })
-export class PersonOverviewModule { }
+export class PersonDetailModule { }

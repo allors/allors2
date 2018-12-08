@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
+import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
@@ -14,15 +14,15 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 
-import { PersonAddComponent } from './person-add.component';
-export { PersonAddComponent } from './person-add.component';
+import { OrganisationCreateComponent } from './organisation-create.component';
+export { OrganisationCreateComponent } from './organisation-create.component';
 
 @NgModule({
   declarations: [
-    PersonAddComponent,
+    OrganisationCreateComponent,
   ],
   exports: [
-    PersonAddComponent,
+    OrganisationCreateComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -53,4 +53,4 @@ export { PersonAddComponent } from './person-add.component';
     RouterModule,
   ],
 })
-export class PersonAddModule { }
+export class OrganisationCreateModule { }

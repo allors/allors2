@@ -7,15 +7,15 @@ import { ids } from '../allors/meta/generated';
 import { FactoryService, FactoryConfig } from '../allors/angular/base/factory';
 
 import { EmailCommunicationCreateComponent, EmailCommunicationCreateModule } from '../allors/material/apps/objects/emailcommunication/create/emailcommunication-create.module';
-import { OrganisationAddModule, OrganisationAddComponent } from '../allors/material/apps/objects/organisation/add/organisation-add.module';
-import { PersonAddModule, PersonAddComponent } from '../allors/material/apps/objects/person/add/person-add.module';
+import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
+import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 
 const factoryConfig: FactoryConfig = new FactoryConfig({
   items:
     [
       { id: ids.EmailCommunication, component: EmailCommunicationCreateComponent },
-      { id: ids.Organisation, component: OrganisationAddComponent },
-      { id: ids.Person, component: PersonAddComponent }
+      { id: ids.Organisation, component: OrganisationCreateComponent },
+      { id: ids.Person, component: PersonCreateComponent }
     ]
 });
 
@@ -25,13 +25,13 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     MatDialogModule,
 
     EmailCommunicationCreateModule,
-    OrganisationAddModule,
-    PersonAddModule
+    OrganisationCreateModule,
+    PersonCreateModule
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
-    OrganisationAddComponent,
-    PersonAddComponent
+    OrganisationCreateComponent,
+    PersonCreateComponent
   ],
   providers: [
     FactoryService,

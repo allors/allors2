@@ -15,10 +15,10 @@ import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-  templateUrl: './person-add.component.html',
+  templateUrl: './person-create.component.html',
   providers: [ContextService]
 })
-export class PersonAddComponent implements OnInit, OnDestroy {
+export class PersonCreateComponent implements OnInit, OnDestroy {
 
   readonly m: MetaDomain;
 
@@ -52,7 +52,7 @@ export class PersonAddComponent implements OnInit, OnDestroy {
   constructor(
     @Self() public allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<PersonAddComponent>,
+    public dialogRef: MatDialogRef<PersonCreateComponent>,
     public metaService: MetaService,
     public navigationService: NavigationService,
     public location: Location,

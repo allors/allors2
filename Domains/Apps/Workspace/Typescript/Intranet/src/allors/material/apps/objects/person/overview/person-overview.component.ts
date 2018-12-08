@@ -15,7 +15,7 @@ import { StateService } from '../../../services/state';
 })
 export class PersonOverviewComponent implements OnInit, OnDestroy {
 
-  title = 'Person Overview';
+  title = 'Person';
 
   person: Person;
 

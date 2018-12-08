@@ -7,7 +7,7 @@ import { FactoryService } from '../../../../../angular/base/factory';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
-import { TableRow, NavigateService, DeleteService, Table, Sorter } from '../../../../../material';
+import { TableRow, NavigateService, DeleteService, Table, Sorter } from '../../../..';
 
 import { Organisation } from '../../../../../domain';
 import { combineLatest, Subscription } from 'rxjs';

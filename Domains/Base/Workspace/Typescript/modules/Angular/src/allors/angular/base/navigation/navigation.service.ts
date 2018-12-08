@@ -29,7 +29,7 @@ export class NavigationService {
   overview(sessionObject: ISessionObject) {
     const objectTypeId = sessionObject.objectType.id;
     const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'overview') ||
-                           this.navigationItems.find((v) => v.ids && v.ids.indexOf(objectTypeId) > -1 && v.action === 'overview');
+      this.navigationItems.find((v) => v.ids && v.ids.indexOf(objectTypeId) > -1 && v.action === 'overview');
     const url = navigationItem.link.replace(`:id`, sessionObject.id);
     this.router.navigate([url]);
   }

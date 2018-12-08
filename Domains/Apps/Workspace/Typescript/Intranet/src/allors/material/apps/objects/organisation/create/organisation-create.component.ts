@@ -16,10 +16,10 @@ import { switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 @Component({
-  templateUrl: './organisation-add.component.html',
+  templateUrl: './organisation-create.component.html',
   providers: [ContextService]
 })
-export class OrganisationAddComponent implements OnInit, OnDestroy {
+export class OrganisationCreateComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -49,7 +49,7 @@ export class OrganisationAddComponent implements OnInit, OnDestroy {
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<OrganisationAddComponent>,
+    public dialogRef: MatDialogRef<OrganisationCreateComponent>,
     public metaService: MetaService,
     public location: Location,
     private errorService: ErrorService,

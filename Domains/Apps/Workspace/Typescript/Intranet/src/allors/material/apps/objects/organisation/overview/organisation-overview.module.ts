@@ -17,15 +17,15 @@ import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/p
 import { SerialisedItemPanelModule } from '../../serialiseditem/panel/serialiseditem-panel.module';
 import { WorkEffortPartyAssignmentPanelModule } from '../../workeffortpartyassignment/panel/workeffortpartyassignment-panel.module';
 
-import { OrganisationOverviewComponent } from './organisation-overview.component';
-export { OrganisationOverviewComponent } from './organisation-overview.component';
+import { OrganisationDetailComponent } from './organisation-overview.component';
+export { OrganisationDetailComponent } from './organisation-overview.component';
 
 @NgModule({
   declarations: [
-    OrganisationOverviewComponent,
+    OrganisationDetailComponent,
   ],
   exports: [
-    OrganisationOverviewComponent,
+    OrganisationDetailComponent,
   ],
   imports: [
     CommunicationEventPanelModule,

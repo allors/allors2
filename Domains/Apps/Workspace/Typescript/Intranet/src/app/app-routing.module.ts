@@ -7,7 +7,7 @@ import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ids } from '../allors/meta/generated';
-import { moduleData, pageListData, overviewData, editData, addData } from '../allors/angular';
+import { moduleData, masterData, detailData, editData, addData } from '../allors/angular';
 
 import * as PurchaseInvoiceList from '../allors/material/apps/objects/purchaseinvoice/list/purchaseinvoice-list.module';
 import * as PurchaseInvoiceOverview from '../allors/material/apps/objects/purchaseinvoice/overview/purchaseinvoice-overview.module';
@@ -40,7 +40,6 @@ import * as PhoneCommunicationOverview from 'src/allors/material/apps/objects/ph
 import * as GoodEdit from 'src/allors/material/apps/objects/good/edit/good-edit.module';
 
 import * as PartEdit from 'src/allors/material/apps/objects/part/edit/part-edit.module';
-import * as PersonEdit from 'src/allors/material/apps/objects/person/edit/person-edit.module';
 
 import * as OrganisationEdit from 'src/allors/material/apps/objects/organisation/edit/organisation-edit.module';
 import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
@@ -99,7 +98,7 @@ import { NonSerialisedInventoryComponent } from 'src/allors/material/apps/object
 
 const modules = [
 
-  CommunicationEventList.CommunicationEventsOverviewModule,
+  CommunicationEventList.CommunicationEventListModule,
 
   EmailCommunicationOverview.EmailCommunicationOverviewModule,
   FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewModule,
@@ -123,15 +122,14 @@ const modules = [
 
   OrderTermEdit.OrderTermEditModule,
 
-  OrganisationList.OrganisationsOverviewModule,
+  OrganisationList.OrganisationListModule,
   OrganisationOverview.OrganisationOverviewModule,
   OrganisationEdit.OrganisationModule,
 
   PartEdit.PartEditModule,
 
   PersonList.PersonListModule,
-  PersonOverview.PersonOverviewModule,
-  PersonEdit.PersonModule,
+  PersonOverview.PersonDetailModule,
 
   PostalAddressEdit.PostalAddressModule,
 
@@ -204,17 +202,17 @@ export const routes: Routes = [
       },
       // Relations
       {
-        path: 'relations', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
+        path: '', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
         children: [
-          { path: 'people', data: pageListData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
-          { path: 'person/:id', data: overviewData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
-          { path: 'organisations', data: pageListData({ id: ids.Organisation, icon: 'business' }), component: OrganisationList.OrganisationListComponent },
-          { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: OrganisationOverview.OrganisationOverviewComponent },
-          { path: 'communicationevents', data: pageListData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
-          { path: 'emailcommunication/:id', data: overviewData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
-          { path: 'facetofacecommunication/:id', data: overviewData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
-          { path: 'lettercorrespondence/:id', data: overviewData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceComponent },
-          { path: 'phonecommunicationevent/:id', data: overviewData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
+          { path: 'people', data: masterData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
+          { path: 'person/:id', data: detailData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
+          { path: 'organisations', data: masterData({ id: ids.Organisation, icon: 'business' }), component: OrganisationList.OrganisationListComponent },
+          { path: 'organisation/:id', data: detailData({ id: ids.Organisation }), component: OrganisationOverview.OrganisationDetailComponent },
+          { path: 'communicationevents', data: masterData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
+          { path: 'emailcommunication/:id', data: detailData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
+          { path: 'facetofacecommunication/:id', data: detailData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
+          { path: 'lettercorrespondence/:id', data: detailData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceComponent },
+          { path: 'phonecommunicationevent/:id', data: detailData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],
       },
 
@@ -222,12 +220,12 @@ export const routes: Routes = [
       {
         path: 'orders', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
         children: [
-          { path: 'requests', data: pageListData({ id: ids.Request, icon: 'share' }), component: RequestsOverview.RequestsOverviewComponent },
-          { path: 'request/:id', data: overviewData({ id: ids.Request }), component: RequestOverview.RequestOverviewComponent },
-          { path: 'productQuotes', data: pageListData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
-          { path: 'productQuote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
-          { path: 'salesOrders', data: pageListData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
-          { path: 'salesOrder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
+          { path: 'requests', data: masterData({ id: ids.Request, icon: 'share' }), component: RequestsOverview.RequestsOverviewComponent },
+          { path: 'request/:id', data: detailData({ id: ids.Request }), component: RequestOverview.RequestOverviewComponent },
+          { path: 'productQuotes', data: masterData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
+          { path: 'productQuote/:id', data: detailData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
+          { path: 'salesOrders', data: masterData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
+          { path: 'salesOrder/:id', data: detailData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
         ],
       },
 
@@ -235,14 +233,14 @@ export const routes: Routes = [
       {
         path: 'catalogues', data: moduleData({ title: 'Products', icon: 'build' }),
         children: [
-          { path: 'goods', data: pageListData({ id: ids.Good }), component: GoodList.GoodListComponent },
-          { path: 'good/:id', data: overviewData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
-          { path: 'parts', data: pageListData({ id: ids.Part }), component: PartList.PartListComponent },
-          { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
-          { path: 'catalogues', data: pageListData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
-          { path: 'categories', data: pageListData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
-          { path: 'productCharacteristics', data: pageListData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
-          { path: 'productTypes', data: pageListData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
+          { path: 'goods', data: masterData({ id: ids.Good }), component: GoodList.GoodListComponent },
+          { path: 'good/:id', data: detailData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
+          { path: 'parts', data: masterData({ id: ids.Part }), component: PartList.PartListComponent },
+          { path: 'part/:id', data: detailData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
+          { path: 'catalogues', data: masterData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
+          { path: 'categories', data: masterData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
+          { path: 'productCharacteristics', data: masterData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
+          { path: 'productTypes', data: masterData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
       },
 
@@ -250,10 +248,10 @@ export const routes: Routes = [
       {
         path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
         children: [
-          { path: 'purchaseinvoices', data: pageListData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
-          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
-          { path: 'salesinvoices', data: pageListData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
-          { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
+          { path: 'purchaseinvoices', data: masterData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
+          { path: 'purchaseinvoice/:id', data: detailData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
+          { path: 'salesinvoices', data: masterData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
+          { path: 'salesinvoice/:id', data: detailData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
       },
 
@@ -261,8 +259,8 @@ export const routes: Routes = [
       {
         path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
         children: [
-          { path: 'worktasks', data: pageListData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
-          { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
+          { path: 'worktasks', data: masterData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
+          { path: 'worktask/:id', data: detailData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
 
@@ -272,9 +270,6 @@ export const routes: Routes = [
 
       { path: 'part', data: addData({ id: ids.Part }), component: PartEdit.PartEditComponent },
       { path: 'part/:id', data: editData({ id: ids.Part }), component: PartEdit.PartEditComponent },
-
-      { path: 'person', data: addData({ id: ids.Person }), component: PersonEdit.PersonEditComponent },
-      { path: 'person/:id', data: editData({ id: ids.Person }), component: PersonEdit.PersonEditComponent },
 
       { path: 'organisation', data: addData({ id: ids.Organisation }), component: OrganisationEdit.OrganisationEditComponent },
       { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: OrganisationEdit.OrganisationEditComponent },

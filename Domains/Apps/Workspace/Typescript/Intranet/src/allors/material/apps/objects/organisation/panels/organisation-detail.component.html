@@ -1,0 +1,146 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a [routerLink]="['/relations/organisations']">Organisations</a> / {{organisation?.displayName}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview container-fluid">
+    <div *ngIf="organisation" class="row">
+
+      <div class="col-md-6">
+        <mat-card>
+          <div class="row">
+            <div class="col">
+              <h2>
+                <mat-icon>business</mat-icon> Organisation
+              </h2>
+            </div>
+          </div>
+
+          <mat-card-content>
+            <div class="container">
+
+              <div class="row">
+                <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-static>
+                <mat-form-field class="col">
+                  <input matInput name="role" [(ngModel)]="rolesText" placeholder="Role" readonly />
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+                <!--
+<a-mat-static *ngIf="organisation.OrganisationClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.OrganisationClassifications" display="Name" label="Classification"></a-mat-static>
+<a-mat-static *ngIf="organisation.IndustryClassifications.length > 0" [object]="organisation" [roleType]="m.Organisation.IndustryClassifications" display="Name" label="Industry"></a-mat-static>
+-->
+                <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.Locale" display="Name"></a-mat-static>
+                <a-mat-static class="col" [object]="organisation" [roleType]="m.Organisation.TaxNumber" display="VAT number"></a-mat-static>
+              </div>
+
+              <div class="row">
+                <a-mat-static class="col" *ngIf="organisation.Comment " [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-static>
+              </div>
+              <!--
+<div>
+<caption class="col"> last modified: {{ organisation.LastModifiedDate | date}} by {{ organisation.LastModifiedBy.displayName}}</caption>
+</div>
+-->
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button [routerLink]="[ '/organisation/' + organisation.id]">Edit</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <!-- <div class="col-md-6">
+        <communicationevent-embed [communicationEvents]='communicationEvents' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"></communicationevent-embed>
+      </div>
+
+      <div class="col-md-6">
+        <partycontactmechanism-embed [currentContactMechanisms]='currentContactMechanisms' [inactiveContactMechanisms]='inactiveContactMechanisms' [allContactMechanisms]='allContactMechanisms' (add)="navigation.add($event, organisation)" (edit)="navigation.edit($event, organisation)" (delete)="deleteCommunication($event)"
+          (remove)="removeContactMechanism($event)" (activate)="activateContactMechanism($event)"></partycontactmechanism-embed>
+      </div> -->
+
+      <div class="col-md-6">
+        <mat-card>
+          <div class="row">
+            <div class="col">
+              <h2>
+                <mat-icon>person</mat-icon> Contacts
+              </h2>
+            </div>
+
+            <div class="col">
+              <mat-button-toggle-group [(ngModel)]="contactsCollection">
+                <mat-button-toggle value="Current">Current</mat-button-toggle>
+                <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
+                <mat-button-toggle value="All">All</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+          </div>
+
+          <mat-card-content>
+
+            <ul *ngIf="contactRelationships.length === 0">
+              <li>No info to display.</li>
+            </ul>
+
+            <mat-list>
+              <mat-list-item *ngFor="let contactRelationship of this.contactRelationships; let last=last" [attr.data-allors-id]="contactRelationship.id" (click)="navigation.edit(contactRelationship.Contact)" style="cursor: pointer;">
+                <div mat-line>{{contactRelationship.Contact.Salutation?.Name}} {{contactRelationship.Contact.FirstName}} {{contactRelationship.Contact.MiddleName}}
+                  {{contactRelationship.Contact.LastName}}
+                </div>
+                <div *ngIf="contactRelationship.Contact.Function" mat-line>{{contactRelationship.Contact.Function}}</div>
+                <div mat-line *ngFor="let partyContactMechanism of contactRelationship.Contact.PartyContactMechanisms">
+                  <p *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.EmailAddress  && partyContactMechanism.UseAsDefault" mat-line>
+                    {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
+                  </p>
+                  <p *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.WebAddress  && partyContactMechanism.UseAsDefault" mat-line>
+                    {{ partyContactMechanism.ContactMechanism?.ElectronicAddressString}}
+                  </p>
+                  <p *ngIf="this.isPhone(partyContactMechanism.ContactMechanism)" mat-line>
+                    {{ partyContactMechanism.ContactMechanism?.CountryCode}} {{ partyContactMechanism.ContactMechanism?.AreaCode}} {{ partyContactMechanism.ContactMechanism?.ContactNumber}}
+                  </p>
+                  <p *ngIf="partyContactMechanism.ContactMechanism.objectType === allors.m.PostalAddress  && partyContactMechanism.UseAsDefault" mat-line>
+                    {{ partyContactMechanism.ContactMechanism?.Address1}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.PostalCode}}
+                    {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Locality}} {{ partyContactMechanism.ContactMechanism?.PostalBoundary?.Country?.Name}}
+                  </p>
+                </div>
+
+                <p mat-line> last modified: {{ contactRelationship.Contact.LastModifiedDate | date }} </p>
+
+                <span (click)="$event.stopPropagation()">
+                  <button mat-icon-button [mat-menu-trigger-for]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="activateContact(contactRelationship)" [disabled]="!contactRelationship.ThroughDate">Activate</button>
+                    <button mat-menu-item (click)="removeContact(contactRelationship)" [disabled]="!!contactRelationship.ThroughDate">Deactivate</button>
+                    <button mat-menu-item (click)="deleteContact(contactRelationship.Contact)" [disabled]="!contactRelationship.Contact.CanExecuteDelete">Delete</button>
+                  </mat-menu>
+                </span>
+                <mat-divider *ngIf="!last" mat-inset></mat-divider>
+
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-button (click)="navigation.add(m.Person, organisation)">Add new</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="col-md-6">
+        <!-- <serialiseditem-embed [owner]='organisation' [serialisedItems]='serialisedItems' (add)="navigation.add($event)"
+          (edit)="navigation.edit($event)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed> -->
+      </div>
+
+    </div>
+  </div>
+</div>

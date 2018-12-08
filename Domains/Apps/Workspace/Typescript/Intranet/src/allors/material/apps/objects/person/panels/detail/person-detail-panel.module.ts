@@ -4,25 +4,25 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
-import { OrganisationAddComponent } from './organisation-add.component';
-export { OrganisationAddComponent } from './organisation-add.component';
+import { PersonDetailPanelComponent } from './person-detail-panel.component';
+export { PersonDetailPanelComponent } from './person-detail-panel.component';
 
 @NgModule({
   declarations: [
-    OrganisationAddComponent,
+    PersonDetailPanelComponent,
   ],
   exports: [
-    OrganisationAddComponent,
+    PersonDetailPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -53,4 +53,4 @@ export { OrganisationAddComponent } from './organisation-add.component';
     RouterModule,
   ],
 })
-export class OrganisationAddModule { }
+export class PersonDetailPanelModule { }

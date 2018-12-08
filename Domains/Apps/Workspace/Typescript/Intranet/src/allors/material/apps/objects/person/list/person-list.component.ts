@@ -7,11 +7,11 @@ import * as moment from 'moment';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../../../material';
+import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
 
 import { Person } from '../../../../../domain';
 
-import { FactoryService } from '../../../../../../allors/angular/base/factory/factory.service';
+import { FactoryService } from '../../../../../angular/base/factory/factory.service';
 
 interface Row extends TableRow {
   object: Person;

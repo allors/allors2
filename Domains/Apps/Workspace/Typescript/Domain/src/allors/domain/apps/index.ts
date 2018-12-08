@@ -1,6 +1,7 @@
 import './AutomatedAgent';
 import './EmailAddress';
 import './Organisation';
+import './Party';
 import './Person';
 import './PostalAddress';
 import './SerialisedItem';

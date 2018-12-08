@@ -36,13 +36,13 @@
     <mat-list>
       <mat-list-item *ngFor="let communicationEvent of this.communicationEvents; let last=last" [attr.data-allors-id]="communicationEvent.id"
         (click)="navigation.edit(communicationEvent)" style="cursor: pointer;">
-        <div *ngIf="communicationEvent.objectType === allors.m.FaceToFaceCommunication" mat-line>Meeting, {{
+        <div *ngIf="communicationEvent.objectType === m.FaceToFaceCommunication" mat-line>Meeting, {{
           communicationEvent.CommunicationEventState.Name }}</div>
-        <div *ngIf="communicationEvent.objectType === allors.m.PhoneCommunication" mat-line>Phone call, {{
+        <div *ngIf="communicationEvent.objectType === m.PhoneCommunication" mat-line>Phone call, {{
           communicationEvent.CommunicationEventState.Name }}</div>
-        <div *ngIf="communicationEvent.objectType === allors.m.EmailCommunication" mat-line>Email, {{
+        <div *ngIf="communicationEvent.objectType === m.EmailCommunication" mat-line>Email, {{
           communicationEvent.CommunicationEventState.Name }}</div>
-        <div *ngIf="communicationEvent.objectType === allors.m.LetterCorrespondence" mat-line>Letter, {{
+        <div *ngIf="communicationEvent.objectType === m.LetterCorrespondence" mat-line>Letter, {{
           communicationEvent.CommunicationEventState.Name }}</div>
 
         <p mat-line>{{ communicationEvent.Subject }} </p>
@@ -74,10 +74,10 @@
   <div class="container">
     <button mat-button [matMenuTriggerFor]="menuAddComm">Add new</button>
     <mat-menu #menuAddComm="matMenu">
-      <button mat-menu-item (click)="navigation.add(allors.m.FaceToFaceCommunication.objectType)">Meeting</button>
-      <button mat-menu-item (click)="navigation.add(allors.m.PhoneCommunication.objectType)">Phone</button>
-      <button mat-menu-item (click)="navigation.add(allors.m.EmailCommunication.objectType)">Email</button>
-      <button mat-menu-item (click)="navigation.add(allors.m.LetterCorrespondence.objectType)">Letter</button>
+      <button mat-menu-item (click)="navigation.add(m.FaceToFaceCommunication.objectType)">Meeting</button>
+      <button mat-menu-item (click)="navigation.add(m.PhoneCommunication.objectType)">Phone</button>
+      <button mat-menu-item (click)="navigation.add(m.EmailCommunication.objectType)">Email</button>
+      <button mat-menu-item (click)="navigation.add(m.LetterCorrespondence.objectType)">Letter</button>
     </mat-menu>
   </div>
 

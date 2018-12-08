@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule,  MatIconModule, MatToolbarModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule} from '../../../../../material';
+import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule} from '../../../..';
 
 import { CommunicationEventListComponent } from './communicationevent-list.component';
 export { CommunicationEventListComponent } from './communicationevent-list.component';
@@ -29,4 +29,4 @@ export { CommunicationEventListComponent } from './communicationevent-list.compo
     AllorsMaterialTableModule,
   ],
 })
-export class CommunicationEventsOverviewModule { }
+export class CommunicationEventListModule { }

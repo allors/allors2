@@ -13,11 +13,11 @@ import { Fetcher } from '../../../Fetcher';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'person-personal-panel',
-  templateUrl: './person-personal-panel.component.html',
+  selector: 'person-detail-panel',
+  templateUrl: './person-detail-panel.component.html',
   providers: [PanelService, ContextService]
 })
-export class PersonPersonalPanelComponent implements OnInit, OnDestroy {
+export class PersonDetailPanelComponent implements OnInit, OnDestroy {
 
   readonly m: MetaDomain;
 

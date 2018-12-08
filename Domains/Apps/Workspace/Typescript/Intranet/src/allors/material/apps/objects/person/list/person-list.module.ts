@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule, MatIconModule, MatToolbarModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../../material';
+import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
 import { PersonListComponent } from './person-list.component';
 export { PersonListComponent } from './person-list.component';
