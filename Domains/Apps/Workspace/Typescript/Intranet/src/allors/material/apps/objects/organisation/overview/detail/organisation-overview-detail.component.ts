@@ -102,7 +102,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
           this.organisation = undefined;
 
           const { m, pull, x } = this.metaService;
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const id = this.panel.manager.id;
 
           const pulls = [
             this.fetcher.internalOrganisation,

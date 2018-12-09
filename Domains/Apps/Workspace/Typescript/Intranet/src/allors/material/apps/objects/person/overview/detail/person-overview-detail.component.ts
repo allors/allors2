@@ -58,7 +58,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     panel.maximizable = true;
 
     // Minimized
-    const personPullName = `${this.panel.name}_${this.m.Person.objectType.name}`;
+    const pullName = `${this.panel.name}_${this.m.Person.objectType.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isNormal) {
@@ -67,7 +67,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
 
         pulls.push(
           pull.Person({
-            name: personPullName,
+            name: pullName,
             object: id,
             include: {
               GeneralEmail: x,
@@ -80,7 +80,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
 
     panel.onPulled = (loaded) => {
       if (this.panel.isNormal) {
-        this.person = loaded.objects[personPullName] as Person;
+        this.person = loaded.objects[pullName] as Person;
       }
     };
   }
