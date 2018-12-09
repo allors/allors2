@@ -13,11 +13,11 @@ import { Fetcher } from '../../../Fetcher';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'person-detail-panel',
-  templateUrl: './person-detail-panel.component.html',
+  selector: 'person-overview-detail',
+  templateUrl: './person-overview-detail.component.html',
   providers: [PanelService, ContextService]
 })
-export class PersonDetailPanelComponent implements OnInit, OnDestroy {
+export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
 
   readonly m: MetaDomain;
 
@@ -52,7 +52,7 @@ export class PersonDetailPanelComponent implements OnInit, OnDestroy {
 
     this.m = this.metaService.m;
 
-    panel.name = 'edit';
+    panel.name = 'detail';
     panel.title = 'Personal Data';
     panel.icon = 'person';
     panel.maximizable = true;
@@ -63,7 +63,7 @@ export class PersonDetailPanelComponent implements OnInit, OnDestroy {
     panel.onPull = (pulls) => {
       if (this.panel.isNormal) {
         const { pull, x } = this.metaService;
-        const id = this.panel.container.id;
+        const id = this.panel.manager.id;
 
         pulls.push(
           pull.Person({
@@ -104,7 +104,7 @@ export class PersonDetailPanelComponent implements OnInit, OnDestroy {
 
           const { m, pull, x } = this.metaService;
           const fetcher = new Fetcher(this.stateService, this.metaService.pull);
-          const id = this.panel.container.id;
+          const id = this.panel.manager.id;
 
           const pulls = [
             fetcher.internalOrganisation,

@@ -1,15 +1,15 @@
 import { Component, Self } from '@angular/core';
-import { ContextService, PanelService, NavigationService, MetaService } from '../../../../../../angular';
+import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { Person, Organisation, OrganisationContactKind, OrganisationContactRelationship } from '../../../../../../domain';
 import { MetaDomain } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'person-overview-panel',
-  templateUrl: './person-overview-panel.component.html',
+  selector: 'person-overview-summary',
+  templateUrl: './person-overview-summary.component.html',
   providers: [PanelService]
 })
-export class PersonOverviewPanelComponent {
+export class PersonOverviewSummaryComponent {
 
   m: MetaDomain;
 
@@ -24,7 +24,7 @@ export class PersonOverviewPanelComponent {
 
     this.m = this.metaService.m;
 
-    panel.name = 'person';
+    panel.name = 'summary';
 
     const personPullName = `${panel.name}_${this.m.Person.objectType.name}`;
     const organisationContactRelationshipsPullName = `${panel.name}_${this.m.OrganisationContactRelationship.objectType.name}`;
@@ -32,7 +32,7 @@ export class PersonOverviewPanelComponent {
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panel.container.id;
+      const id = this.panel.manager.id;
 
       const partyContactMechanismTree = tree.PartyContactMechanism({
         ContactPurposes: x,

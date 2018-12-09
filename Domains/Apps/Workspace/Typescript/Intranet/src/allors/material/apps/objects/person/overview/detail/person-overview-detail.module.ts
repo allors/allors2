@@ -2,28 +2,32 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonToggleModule, MatExpansionModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
 import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialHeaderModule } from '../../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../../base/components/input';
 import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
+import { AllorsMaterialFooterModule } from '../../../../../base/components/footer';
 
-import { PersonOverviewPanelComponent } from './person-overview-panel.component';
-export { PersonOverviewPanelComponent } from './person-overview-panel.component';
+import { PersonOverviewDetailComponent } from './person-overview-detail.component';
+export { PersonOverviewDetailComponent } from './person-overview-detail.component';
 
 @NgModule({
   declarations: [
-    PersonOverviewPanelComponent,
+    PersonOverviewDetailComponent,
   ],
   exports: [
-    PersonOverviewPanelComponent,
+    PersonOverviewDetailComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
+    AllorsMaterialHeaderModule,
+    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -33,10 +37,8 @@ export { PersonOverviewPanelComponent } from './person-overview-panel.component'
     CommonModule,
     FormsModule,
     MatButtonModule,
-    MatButtonToggleModule,
     MatCardModule,
     MatDividerModule,
-    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
@@ -46,10 +48,9 @@ export { PersonOverviewPanelComponent } from './person-overview-panel.component'
     MatSelectModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatButtonToggleModule,
     MatOptionModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class PersonOverviewPanelModule { }
+export class PersonOverviewDetailModule { }

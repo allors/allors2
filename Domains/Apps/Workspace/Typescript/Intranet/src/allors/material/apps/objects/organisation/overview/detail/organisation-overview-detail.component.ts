@@ -4,24 +4,22 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
-import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { StateService } from '../../../services/state';
-import { Fetcher } from '../../Fetcher';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { Title } from '@angular/platform-browser';
-import { switchMap } from 'rxjs/operators';
+import { ErrorService, Saved, ContextService, MetaService, PanelService } from '../../../../../../angular';
+import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship } from '../../../../../../domain';
+import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
+import { MetaDomain } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
+import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
+import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './organisation-edit.component.html',
-  providers: [ContextService]
+  // tslint:disable-next-line:component-selector
+  selector: 'organisation-overview-detail',
+  templateUrl: './organisation-overview-detail.component.html',
+  providers: [ContextService, PanelService]
 })
-export class OrganisationEditComponent implements OnInit, OnDestroy {
-
-  public title = 'Organisation';
-  public subTitle: string;
+export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -50,28 +48,60 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
+    @Self() public panel: PanelService,
     public metaService: MetaService,
     public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService,
-    titleService: Title) {
+    private stateService: StateService) {
 
-    titleService.setTitle(this.title);
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
+
+    panel.name = 'detail';
+    panel.title = 'Organisation Details';
+    panel.icon = 'business';
+    panel.maximizable = true;
+
+    // Minimized
+    const pullName = `${this.panel.name}_${this.m.Organisation.objectType.name}`;
+
+    panel.onPull = (pulls) => {
+      if (this.panel.isNormal) {
+        const { pull, x } = this.metaService;
+        const id = this.panel.manager.id;
+
+        pulls.push(
+          pull.Organisation({
+            name: pullName,
+            object: id,
+          })
+        );
+      }
+    };
+
+    panel.onPulled = (loaded) => {
+      if (this.panel.isNormal) {
+        this.organisation = loaded.objects[pullName] as Organisation;
+      }
+    };
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    // Maximized
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        filter((v) => {
+          return this.panel.isMaximized;
+        }),
+        switchMap(([urlSegments, date, , internalOrganisationId]) => {
 
+          this.organisation = undefined;
+
+          const { m, pull, x } = this.metaService;
           const id: string = this.route.snapshot.paramMap.get('id');
 
           const pulls = [
@@ -128,18 +158,11 @@ export class OrganisationEditComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
 
-        this.subTitle = 'edit organisation';
         this.organisation = loaded.objects.Organisation as Organisation;
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
-        if (this.organisation) {
-          this.customerRelationship = loaded.collections.CustomerRelationships[0] as CustomerRelationship;
-          this.supplierRelationship = loaded.collections.SupplierRelationships[0] as SupplierRelationship;
-        } else {
-          this.subTitle = 'add a new organisation';
-          this.organisation = this.allors.context.create('Organisation') as Organisation;
-          this.organisation.IsManufacturer = false;
-        }
+        this.customerRelationship = loaded.collections.CustomerRelationships[0] as CustomerRelationship;
+        this.supplierRelationship = loaded.collections.SupplierRelationships[0] as SupplierRelationship;
 
         this.locales = loaded.collections.AdditionalLocales as Locale[];
         this.classifications = loaded.collections.CustomOrganisationClassifications as CustomOrganisationClassification[];

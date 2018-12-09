@@ -31,7 +31,7 @@ export class SerialisedItemPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.container.context);
+    this.delete = deleteService.delete(panel.manager.context);
 
     panel.name = 'serialiseditem';
     panel.title = 'Serialized Items';
@@ -45,7 +45,7 @@ export class SerialisedItemPanelComponent {
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panel.container.id;
+      const id = this.panel.manager.id;
 
       pulls.push(
         pull.Party({

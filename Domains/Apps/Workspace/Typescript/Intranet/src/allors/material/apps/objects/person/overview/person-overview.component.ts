@@ -4,14 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, NavigationService, NavigationActivatedRoute, PanelContainerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
 import { Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './person-overview.component.html',
-  providers: [PanelContainerService, ContextService]
+  providers: [PanelManagerService, ContextService]
 })
 export class PersonOverviewComponent implements OnInit, OnDestroy {
 
@@ -22,7 +22,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(
-    @Self() public panelsService: PanelContainerService,
+    @Self() public panelManager: PanelManagerService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
@@ -42,28 +42,29 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const { pull } = this.metaService;
+          const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelsService.id = navRoute.id();
-          this.panelsService.maximized = navRoute.panel();
+          this.panelManager.objectType = m.Person.objectType;
+          this.panelManager.id = navRoute.id();
+          this.panelManager.maximized = navRoute.panel();
 
           const pulls = [
             pull.Person({
-              object: this.panelsService.id,
+              object: this.panelManager.id,
             })
           ];
 
-          this.panelsService.onPull(pulls);
+          this.panelManager.onPull(pulls);
 
-          return this.panelsService.context
+          return this.panelManager.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
 
-        this.panelsService.context.session.reset();
-        this.panelsService.onPulled(loaded);
+        this.panelManager.context.session.reset();
+        this.panelManager.onPulled(loaded);
 
         this.person = loaded.objects.Person as Person;
       }, this.errorService.handler);

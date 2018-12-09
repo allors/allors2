@@ -1,18 +1,18 @@
 import { Component, Self } from '@angular/core';
 
-import { ContextService, PanelService, Action, RefreshService, NavigationService, ErrorService, Invoked, MetaService } from '../../../../../angular';
-import { CommunicationEvent } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta';
-import { DeleteService, AllorsMaterialDialogService } from '../../../../../material';
+import { ContextService, PanelService, Action, RefreshService, NavigationService, ErrorService, Invoked, MetaService } from '../../../../../../angular';
+import { CommunicationEvent } from '../../../../../../domain';
+import { MetaDomain } from '../../../../../../meta';
+import { DeleteService, AllorsMaterialDialogService } from '../../../../..';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'communicationevent-panel',
-  templateUrl: './communicationevent-panel.component.html',
+  selector: 'communicationevent-overview-panel',
+  templateUrl: './communicationevent-overview-panel.component.html',
   providers: [PanelService]
 })
-export class CommunicationeventPanelComponent {
+export class CommunicationEventOverviewPanelComponent {
 
   m: MetaDomain;
 
@@ -32,7 +32,7 @@ export class CommunicationeventPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.container.context);
+    this.delete = deleteService.delete(panel.manager.context);
 
     panel.name = 'communicationevent';
     panel.title = 'Communication Events';
@@ -44,7 +44,7 @@ export class CommunicationeventPanelComponent {
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panel.container.id;
+      const id = this.panel.manager.id;
 
       pulls.push(
         pull.Party({
@@ -75,7 +75,7 @@ export class CommunicationeventPanelComponent {
       .confirm({ message: 'Are you sure you want to cancel this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.panel.container.context.invoke(communicationEvent.Cancel)
+          this.panel.manager.context.invoke(communicationEvent.Cancel)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
               this.refreshService.refresh();
@@ -93,7 +93,7 @@ export class CommunicationeventPanelComponent {
       .confirm({ message: 'Are you sure you want to close this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.panel.container.context.invoke(communicationEvent.Close)
+          this.panel.manager.context.invoke(communicationEvent.Close)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
               this.refreshService.refresh();
@@ -111,7 +111,7 @@ export class CommunicationeventPanelComponent {
       .confirm({ message: 'Are you sure you want to reopen this?' })
       .subscribe((confirm: boolean) => {
         if (confirm) {
-          this.panel.container.context.invoke(communicationEvent.Reopen)
+          this.panel.manager.context.invoke(communicationEvent.Reopen)
             .subscribe((invoked: Invoked) => {
               this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
               this.refreshService.refresh();

@@ -14,13 +14,13 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { PersonOverviewPanelModule } from '../panels/overview/person-overview-panel.module';
-import { PersonDetailPanelModule } from '../panels/detail/person-detail-panel.module';
-
-import { CommunicationEventPanelModule } from '../../communicationevent/panel/communicationevent-panel.module';
+import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/panel/partycontactmechanism-panel.module';
 import { SerialisedItemPanelModule } from '../../serialiseditem/panel/serialiseditem-panel.module';
 import { WorkEffortPartyAssignmentPanelModule } from '../../workeffortpartyassignment/panel/workeffortpartyassignment-panel.module';
+
+import { PersonOverviewSummaryModule } from './summary/person-overview-summary.module';
+import { PersonOverviewDetailModule } from './detail/person-overview-detail.module';
 
 import { PersonOverviewComponent } from './person-overview.component';
 export { PersonOverviewComponent } from './person-overview.component';
@@ -33,10 +33,10 @@ export { PersonOverviewComponent } from './person-overview.component';
     PersonOverviewComponent,
   ],
   imports: [
-    PersonOverviewPanelModule,
-    PersonDetailPanelModule,
+    PersonOverviewSummaryModule,
+    PersonOverviewDetailModule,
 
-    CommunicationEventPanelModule,
+    CommunicationEventOverviewPanelModule,
     PartyContactMechanismPanelModule,
     SerialisedItemPanelModule,
     WorkEffortPartyAssignmentPanelModule,

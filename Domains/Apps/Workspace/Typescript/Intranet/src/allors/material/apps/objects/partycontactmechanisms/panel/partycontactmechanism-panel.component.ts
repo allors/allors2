@@ -33,7 +33,7 @@ export class PartyContactMechanismPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.container.context);
+    this.delete = deleteService.delete(panel.manager.context);
 
     panel.name = 'partycontactmechanism';
     panel.title = 'Contact Mechanisms';
@@ -45,7 +45,7 @@ export class PartyContactMechanismPanelComponent {
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;
 
-      const id = this.panel.container.id;
+      const id = this.panel.manager.id;
 
       const partyContactMechanismTree = tree.PartyContactMechanism({
         ContactPurposes: x,
@@ -109,10 +109,10 @@ export class PartyContactMechanismPanelComponent {
   remove(partyContactMechanism: PartyContactMechanism): void {
 
     partyContactMechanism.ThroughDate = new Date();
-    this.panel.container.context
+    this.panel.manager.context
       .save()
       .subscribe((saved: Saved) => {
-        this.panel.container.context.reset();
+        this.panel.manager.context.reset();
         this.refreshService.refresh();
       },
         this.errorService.handle);
@@ -121,10 +121,10 @@ export class PartyContactMechanismPanelComponent {
   activate(partyContactMechanism: PartyContactMechanism): void {
 
     partyContactMechanism.ThroughDate = undefined;
-    this.panel.container.context
+    this.panel.manager.context
       .save()
       .subscribe(() => {
-        this.panel.container.context.reset();
+        this.panel.manager.context.reset();
         this.refreshService.refresh();
       },
         this.errorService.handle);

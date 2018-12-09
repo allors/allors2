@@ -41,7 +41,6 @@ import * as GoodEdit from 'src/allors/material/apps/objects/good/edit/good-edit.
 
 import * as PartEdit from 'src/allors/material/apps/objects/part/edit/part-edit.module';
 
-import * as OrganisationEdit from 'src/allors/material/apps/objects/organisation/edit/organisation-edit.module';
 import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
 
 import * as EmailAddressEdit from 'src/allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
@@ -124,7 +123,6 @@ const modules = [
 
   OrganisationList.OrganisationListModule,
   OrganisationOverview.OrganisationOverviewModule,
-  OrganisationEdit.OrganisationModule,
 
   PartEdit.PartEditModule,
 
@@ -202,7 +200,7 @@ export const routes: Routes = [
       },
       // Relations
       {
-        path: '', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
+        path: 'relations', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
         children: [
           { path: 'people', data: masterData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
           { path: 'person/:id', data: detailData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
@@ -270,9 +268,6 @@ export const routes: Routes = [
 
       { path: 'part', data: addData({ id: ids.Part }), component: PartEdit.PartEditComponent },
       { path: 'part/:id', data: editData({ id: ids.Part }), component: PartEdit.PartEditComponent },
-
-      { path: 'organisation', data: addData({ id: ids.Organisation }), component: OrganisationEdit.OrganisationEditComponent },
-      { path: 'organisation/:id', data: editData({ id: ids.Organisation }), component: OrganisationEdit.OrganisationEditComponent },
 
       { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
       { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },

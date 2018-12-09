@@ -1,17 +1,25 @@
-<div class="a-main">
-
-  <div class="a-breadcrumb container-fluid mat-elevation-z4">
-    <div class="row">
-      <div class="col">
-        <a [routerLink]="['/relations/organisations']">Organisations</a> / <a [routerLink]="['/relations/organisation/' + (organisation && organisation.id)]">{{organisation?.displayName}}</a> / Edit
+<div *ngIf="panel.isNormal && organisation" (click)="panel.toggle()">
+  <div class="container mb-3">
+    <div class="row rounded" style="background-color: white;">
+      <div class="col-3 col-md-2 p-3 rounded-left d-flex justify-content-center align-items-start" style="background-color: lightseagreen">
+        <mat-icon style="color: white; zoom: 250%">{{panel.icon}}</mat-icon>
+      </div>
+      <div class="col-9 col-md-10 p-3">
+        <h4>{{panel.title}}</h4>
+        <div>{{organisation.displayName}}</div>
       </div>
     </div>
   </div>
+</div>
 
-  <form *ngIf="organisation" class="a-edit" #form="ngForm" (submit)="save()">
+<form *ngIf="panel.isMaximized && organisation" #form="ngForm" (submit)="save()" novalidate>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{panel.title}}</mat-card-title>
+    </mat-card-header>
 
-    <mat-card>
-      <mat-card-content class="container-fluid">
+    <mat-card-content>
+      <div class="container-fluid">
 
         <div class="row">
           <a-mat-input class="col-md" [object]="organisation" [roleType]="m.Organisation.Name"></a-mat-input>
@@ -35,13 +43,15 @@
           <a-mat-file class="col-md-12" [object]="organisation" [roleType]="m.Organisation.LogoImage" accept="image/*"></a-mat-file>
           <a-mat-textarea class="col-md-12" [object]="organisation" [roleType]="m.Organisation.Comment"></a-mat-textarea>
         </div>
-      </mat-card-content>
-    </mat-card>
 
-    <a-mat-footer>
-      <button mat-raised-button (click)="location.back()" type="button">CANCEL</button>
-      <button mat-raised-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges || activeRoles.length > 0) ">SAVE</button>
-    </a-mat-footer>
+      </div>
+    </mat-card-content>
 
-  </form>
-</div>
+    <mat-card-actions>
+      <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges || activeRoles.length > 0) ">SAVE</button>
+      <button mat-button (click)="panel.toggle()" type="button">CANCEL</button>
+    </mat-card-actions>
+  </mat-card>
+
+</form>
+

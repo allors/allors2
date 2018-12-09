@@ -12,10 +12,13 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { CommunicationEventPanelModule } from '../../communicationevent/panel/communicationevent-panel.module';
+import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
 import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/panel/partycontactmechanism-panel.module';
 import { SerialisedItemPanelModule } from '../../serialiseditem/panel/serialiseditem-panel.module';
 import { WorkEffortPartyAssignmentPanelModule } from '../../workeffortpartyassignment/panel/workeffortpartyassignment-panel.module';
+
+import { OrganisationOverviewSummaryModule } from './summary/organisation-overview-summary.module';
+import { OrganisationOverviewDetailModule } from './detail/organisation-overview-detail.module';
 
 import { OrganisationDetailComponent } from './organisation-overview.component';
 export { OrganisationDetailComponent } from './organisation-overview.component';
@@ -28,7 +31,10 @@ export { OrganisationDetailComponent } from './organisation-overview.component';
     OrganisationDetailComponent,
   ],
   imports: [
-    CommunicationEventPanelModule,
+    OrganisationOverviewSummaryModule,
+    OrganisationOverviewDetailModule,
+
+    CommunicationEventOverviewPanelModule,
     PartyContactMechanismPanelModule,
     SerialisedItemPanelModule,
     WorkEffortPartyAssignmentPanelModule,

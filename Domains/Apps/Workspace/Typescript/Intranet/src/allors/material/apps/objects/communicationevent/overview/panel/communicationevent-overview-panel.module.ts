@@ -4,30 +4,26 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
-import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { OrganisationEditComponent } from './organisation-edit.component';
-export { OrganisationEditComponent } from './organisation-edit.component';
+import { CommunicationEventOverviewPanelComponent } from './communicationevent-overview-panel.component';
+export { CommunicationEventOverviewPanelComponent } from './communicationevent-overview-panel.component';
 
 @NgModule({
   declarations: [
-    OrganisationEditComponent,
+    CommunicationEventOverviewPanelComponent,
   ],
   exports: [
-    OrganisationEditComponent,
+    CommunicationEventOverviewPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
-    AllorsMaterialHeaderModule,
-    AllorsMaterialFooterModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
@@ -53,4 +49,4 @@ export { OrganisationEditComponent } from './organisation-edit.component';
     RouterModule,
   ],
 })
-export class OrganisationModule { }
+export class CommunicationEventOverviewPanelModule { }

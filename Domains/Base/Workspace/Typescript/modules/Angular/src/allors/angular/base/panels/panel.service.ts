@@ -4,7 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Pull } from '../../../framework';
 import { Loaded } from '../framework';
 
-import { PanelContainerService } from './panelcontainer.service';
+import { PanelManagerService } from './panelmanager.service';
 
 @Injectable({
     providedIn: 'root',
@@ -19,20 +19,20 @@ export class PanelService {
     onPull: (pulls: Pull[]) => void;
     onPulled: (loaded: Loaded) => void;
 
-    constructor(public container: PanelContainerService) {
-        container.panels.push(this);
+    constructor(public manager: PanelManagerService) {
+        manager.panels.push(this);
     }
 
     get isNormal(): boolean {
-        return !this.container.maximized;
+        return !this.manager.maximized;
     }
 
     get isMaximized(): boolean {
-        return this.container.maximized === this.name;
+        return this.manager.maximized === this.name;
     }
 
     toggle() {
-        this.container.toggle(this.name);
+        this.manager.toggle(this.name);
     }
 
 }

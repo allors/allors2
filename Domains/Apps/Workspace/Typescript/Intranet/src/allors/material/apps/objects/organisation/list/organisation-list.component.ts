@@ -72,6 +72,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
         navigateService.overview(),
         this.delete
       ],
+      defaultAction: navigateService.overview(),
     });
   }
 

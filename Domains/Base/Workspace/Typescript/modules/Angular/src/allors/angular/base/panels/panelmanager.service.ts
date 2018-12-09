@@ -1,17 +1,18 @@
-import { Injectable, Self } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Params, Router, ActivatedRoute } from '@angular/router';
-import { Pull } from '../../../framework';
-import { Loaded, ContextService, Context, DatabaseService, WorkspaceService } from '../framework';
+import { Pull, ObjectType } from '../../../framework';
+import { Loaded, Context, DatabaseService, WorkspaceService } from '../framework';
 import { PanelService } from './panel.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class PanelContainerService {
+export class PanelManagerService {
 
     context: Context;
 
     id: string;
+    objectType: ObjectType;
 
     panels: PanelService[] = [];
     maximized: string;

@@ -28,7 +28,7 @@ export class WorkEffortPartyAssignmentPanelComponent {
   ) {
 
     this.m = this.metaService.m;
-    this.delete = deleteService.delete(panel.container.context);
+    this.delete = deleteService.delete(panel.manager.context);
 
     panel.name = 'workeffortpartyassignment';
     panel.title = 'Work Efforts';
@@ -40,7 +40,7 @@ export class WorkEffortPartyAssignmentPanelComponent {
     panel.onPull = (pulls) => {
       const { pull,  x } = this.metaService;
 
-      const id = this.panel.container.id;
+      const id = this.panel.manager.id;
 
       pulls.push(
         pull.Person({
