@@ -386,19 +386,11 @@ export class EditLetterCorrespondenceComponent
 
     this.allors.context.save().subscribe(
       (saved: Saved) => {
-        this.goBack();
+        this.dialogRef.close();
       },
       (error: Error) => {
         this.errorService.handle(error);
       }
     );
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

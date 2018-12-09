@@ -51,7 +51,6 @@ import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edi
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
-import * as EditLetterCorrespondence from 'src/allors/material/apps/objects/lettercorrespondence/edit/lettercorrespondence.module';
 import * as EditPhoneCommunication from 'src/allors/material/apps/objects/phonecommunication/edit/phonecommunication.module';
 import * as EditEanIdentification from 'src/allors/material/apps/objects/eanidentification/edit/eanidentification.module';
 import * as EditIsbnIdentification from 'src/allors/material/apps/objects/isbnidentification/edit/isbnidentification.module';
@@ -143,7 +142,6 @@ const modules = [
 
   TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
 
-  EditLetterCorrespondence.LetterCorrespondenceModule,
   EditPhoneCommunication.PhoneCommunicationModule,
   EditEanIdentification.EanIdentificationModule,
   EditIsbnIdentification.IsbnIdentificationModule,
@@ -205,7 +203,7 @@ export const routes: Routes = [
           { path: 'communicationevents', data: masterData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
           { path: 'emailcommunication/:id', data: detailData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
           { path: 'facetofacecommunication/:id', data: detailData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
-          { path: 'lettercorrespondence/:id', data: detailData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceComponent },
+          { path: 'lettercorrespondence/:id', data: detailData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
           { path: 'phonecommunicationevent/:id', data: detailData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],
       },
@@ -280,8 +278,6 @@ export const routes: Routes = [
       { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
 
-      { path: 'lettercorrespondence', data: addData({ id: ids.LetterCorrespondence }), component: EditLetterCorrespondence.EditLetterCorrespondenceComponent },
-      { path: 'lettercorrespondence/:id', data: editData({ id: ids.LetterCorrespondence }), component: EditLetterCorrespondence.EditLetterCorrespondenceComponent },
       { path: 'phonecommunication', data: addData({ id: ids.PhoneCommunication }), component: EditPhoneCommunication.EditPhoneCommunicationComponent },
       { path: 'phonecommunication/:id', data: editData({ id: ids.PhoneCommunication }), component: EditPhoneCommunication.EditPhoneCommunicationComponent },
 

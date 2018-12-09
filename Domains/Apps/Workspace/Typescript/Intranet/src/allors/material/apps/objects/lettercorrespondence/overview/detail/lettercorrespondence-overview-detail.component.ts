@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, PanelService, RefreshService } from '../../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation } from '../../../../../../domain';
+import { CommunicationEventPurpose, EmailAddress, LetterCorrespondence, EmailTemplate, InternalOrganisation, Party, Person, Organisation, PostalAddress, OrganisationContactRelationship, PartyContactMechanism } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
 import { MetaDomain } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
@@ -14,16 +14,16 @@ import { switchMap, map, filter } from 'rxjs/operators';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'emailcommunication-overview-detail',
-  templateUrl: './emailcommunication-overview-detail.component.html',
+  selector: 'lettercorrespondence-overview-detail',
+  templateUrl: './lettercorrespondence-overview-detail.component.html',
   providers: [ContextService, PanelService]
 })
-export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDestroy {
+export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDestroy {
+  public title = 'Letter Correspondence';
 
-  public title = 'Email Communication';
-
-  public addOriginator = false;
-  public addAddressee = false;
+  public addSender = false;
+  public addReceiver = false;
+  public addAddress = false;
 
   public m: MetaDomain;
 
@@ -33,13 +33,10 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
   public purposes: CommunicationEventPurpose[];
   public contacts: Party[] = [];
 
-  public ownEmailAddresses: EmailAddress[] = [];
-  public allEmailAddresses: EmailAddress[];
-  public emailTemplate: EmailTemplate;
+  public postalAddresses: PostalAddress[] = [];
 
-  public emailCommunication: EmailCommunication;
+  public letterCorrespondence: LetterCorrespondence;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
@@ -55,7 +52,6 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
 
     panel.name = 'detail';
     panel.title = 'Details';
@@ -63,7 +59,7 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
     panel.maximizable = true;
 
     // Minimized
-    const pullName = `${this.panel.name}_${this.m.EmailCommunication.objectType.name}`;
+    const pullName = `${this.panel.name}_${this.m.LetterCorrespondence.objectType.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isNormal) {
@@ -71,19 +67,23 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
         const id = this.panel.manager.id;
 
         pulls.push(
-          pull.EmailCommunication({
+          pull.LetterCorrespondence({
             name: pullName,
             object: id,
             include: {
-              Originator: x,
-              Addressees: x,
-              EmailTemplate: x,
+              Originators: x,
+              Receivers: x,
               EventPurposes: x,
               CommunicationEventState: x,
               ContactMechanisms: x,
               WorkEfforts: {
                 WorkEffortState: x,
                 Priority: x,
+              },
+              PostalAddresses: {
+                PostalBoundary: {
+                  Country: x,
+                }
               }
             }
           })
@@ -93,7 +93,7 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
 
     panel.onPulled = (loaded) => {
       if (this.panel.isNormal) {
-        this.emailCommunication = loaded.objects[pullName] as EmailCommunication;
+        this.letterCorrespondence = loaded.objects[pullName] as LetterCorrespondence;
       }
     };
   }
@@ -102,28 +102,29 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         filter((v) => {
           return this.panel.isMaximized;
         }),
         switchMap(([, , , internalOrganisationId]) => {
-
           const navRoute = new NavigationActivatedRoute(this.route);
-
           const id = this.panel.manager.id;
+
           const personId = navRoute.queryParam(m.Person);
           const organisationId = navRoute.queryParam(m.Organisation);
 
           let pulls = [
-            pull.EmailCommunication({
+            pull.LetterCorrespondence({
               object: id,
               include: {
-                Originator: x,
-                Addressees: x,
-                EmailTemplate: x,
-                EventPurposes: x,
-                CommunicationEventState: x,
+                Originators: x,
+                Receivers: x,
+                PostalAddresses: {
+                  PostalBoundary: {
+                    Country: x,
+                  }
+                }
               }
             }),
             pull.Organisation({
@@ -132,13 +133,14 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }
-            }),
-            pull.EmailAddress({
-              sort: new Sort(m.EmailAddress.ElectronicAddressString)
             }),
             pull.CommunicationEventPurpose({
               predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
@@ -154,7 +156,11 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
                 include: {
                   CurrentContacts: x,
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }
@@ -176,7 +182,11 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
                       include: {
                         CurrentContacts: x,
                         CurrentPartyContactMechanisms: {
-                          ContactMechanism: x,
+                          ContactMechanism: {
+                            PostalAddress_PostalBoundary: {
+                              Country: x,
+                            }
+                          },
                         }
                       }
                     }
@@ -185,7 +195,6 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
               })
             ];
           }
-
 
           return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
@@ -196,18 +205,32 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-        this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
-        this.ownEmailAddresses = internalOrganisation.ActiveEmployees
+        this.postalAddresses = internalOrganisation.ActiveEmployees
           .map((v) => v.CurrentPartyContactMechanisms
             .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
-            .map((w) => w.ContactMechanism as EmailAddress))
+            .map((w) => w.ContactMechanism as PostalAddress))
           .reduce((acc, v) => acc.concat(v), []);
 
-        this.emailCommunication = loaded.objects.EmailCommunication as EmailCommunication;
+        this.person = loaded.objects.Person as Person;
+        this.organisation = loaded.objects.Organisation as Organisation;
+        if (!this.organisation && loaded.collections.Organisations && loaded.collections.Organisations.length > 0) {
+          // TODO: check active
+          this.organisation = loaded.collections.Organisations[0] as Organisation;
+        }
+
+        this.party = this.organisation || this.person;
+
+        this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
+        this.contacts = this.contacts.concat(this.organisation && this.organisation.CurrentContacts);
+        if (!!this.person) {
+          this.contacts.push(this.person);
+        }
+
+        this.letterCorrespondence = loaded.objects.LetterCorrespondence as LetterCorrespondence;
       },
         (error: any) => {
           this.errorService.handle(error);
-          this.goBack();
+          this.panel.toggle();
         },
       );
   }
@@ -218,127 +241,60 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
     }
   }
 
-  public cancel(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.emailCommunication.Cancel)
-        .subscribe(() => {
-          this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context.save()
-              .subscribe(() => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
+  public senderCancelled(): void {
+    this.addSender = false;
   }
 
-  public close(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.emailCommunication.Close)
-        .subscribe(() => {
-          this.refresh();
-          this.snackBar.open('Successfully closed.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context.save()
-              .subscribe(() => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
+  public receiverCancelled(): void {
+    this.addReceiver = false;
   }
 
-  public reopen(): void {
+  public addressCancelled(): void {
+    this.addAddress = false;
+  }
 
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.emailCommunication.Reopen)
-        .subscribe(() => {
-          this.refresh();
-          this.snackBar.open('Successfully reopened.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
+  public senderAdded(id: string): void {
 
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context.save()
-              .subscribe(() => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
+    this.addSender = false;
+
+    const sender: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = sender;
+    relationShip.Organisation = this.organisation;
+
+    this.letterCorrespondence.AddOriginator(sender);
+  }
+
+  public receiverAdded(id: string): void {
+
+    this.addReceiver = false;
+
+    const receiver: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = receiver;
+    relationShip.Organisation = this.organisation;
+
+    this.letterCorrespondence.AddReceiver(receiver);
+  }
+
+  public addressAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addAddress = false;
+
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    const postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.postalAddresses.push(postalAddress);
+    this.letterCorrespondence.AddPostalAddress(postalAddress);
   }
 
   public save(): void {
 
     this.allors.context.save()
       .subscribe(() => {
-        this.goBack();
+        this.panel.toggle();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
-import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation } from '../../../../../domain';
+import { ErrorService, Invoked, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
+import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -13,15 +13,16 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 
 @Component({
-  templateUrl: './emailcommunication-create.component.html',
+  templateUrl: './lettercorrespondence-create.component.html',
   providers: [ContextService]
 })
-export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
+export class LetterCorrespondenceCreateComponent
+  implements OnInit, OnDestroy {
+  public title = 'Letter Correspondence';
 
-  public title = 'Email Communication';
-
-  public addOriginator = false;
-  public addAddressee = false;
+  public addSender = false;
+  public addReceiver = false;
+  public addAddress = false;
 
   public m: MetaDomain;
 
@@ -31,18 +32,16 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
   public purposes: CommunicationEventPurpose[];
   public contacts: Party[] = [];
 
-  public ownEmailAddresses: EmailAddress[] = [];
-  public allEmailAddresses: EmailAddress[];
-  public emailTemplate: EmailTemplate;
+  public postalAddresses: ContactMechanism[] = [];
 
-  public communicationEvent: EmailCommunication;
+  public communicationEvent: LetterCorrespondence;
 
   private subscription: Subscription;
 
   constructor(
     @Self() private allors: ContextService,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<EmailCommunicationCreateComponent>,
+    public dialogRef: MatDialogRef<LetterCorrespondenceCreateComponent>,
     public refreshService: RefreshService,
     public metaService: MetaService,
     public navigation: NavigationService,
@@ -50,9 +49,13 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService,
     private route: ActivatedRoute,
     private snackBar: MatSnackBar,
-    private stateService: StateService) {
-
+    private stateService: StateService
+  ) {
     this.m = this.metaService.m;
+  }
+
+  get PartyIsOrganisation(): boolean {
+    return this.party.objectType.name === 'Organisation';
   }
 
   public ngOnInit(): void {
@@ -61,7 +64,7 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
 
     this.subscription = combineLatest(this.route.url, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, , internalOrganisationId]) => {
+        switchMap(([urlSegments, date, internalOrganisationId]) => {
 
           const organisationId = this.data && this.data.organisationId;
           const personId = this.data && this.data.organisationId;
@@ -73,13 +76,14 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
               include: {
                 ActiveEmployees: {
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }
-            }),
-            pull.EmailAddress({
-              sort: new Sort(m.EmailAddress.ElectronicAddressString)
             }),
             pull.CommunicationEventPurpose({
               predicate: new Equals({ propertyType: m.CommunicationEventPurpose.IsActive, value: true }),
@@ -95,7 +99,11 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
                 include: {
                   CurrentContacts: x,
                   CurrentPartyContactMechanisms: {
-                    ContactMechanism: x,
+                    ContactMechanism: {
+                      PostalAddress_PostalBoundary: {
+                        Country: x,
+                      }
+                    },
                   }
                 }
               }
@@ -117,7 +125,11 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
                       include: {
                         CurrentContacts: x,
                         CurrentPartyContactMechanisms: {
-                          ContactMechanism: x,
+                          ContactMechanism: {
+                            PostalAddress_PostalBoundary: {
+                              Country: x,
+                            }
+                          },
                         }
                       }
                     }
@@ -127,20 +139,20 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
             ];
           }
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-
         this.allors.context.reset();
 
         this.purposes = loaded.collections.CommunicationEventPurposes as CommunicationEventPurpose[];
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
-        this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
-        this.ownEmailAddresses = internalOrganisation.ActiveEmployees
-          .map((v) => v.CurrentPartyContactMechanisms
-            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
-            .map((w) => w.ContactMechanism as EmailAddress))
+        this.postalAddresses = internalOrganisation.ActiveEmployees
+          .map((v) =>
+            v.CurrentPartyContactMechanisms
+              .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
+              .map((w) => w.ContactMechanism as PostalAddress))
           .reduce((acc, v) => acc.concat(v), []);
 
         this.person = loaded.objects.Person as Person;
@@ -153,23 +165,22 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
         this.party = this.organisation || this.person;
 
         this.contacts = this.contacts.concat(internalOrganisation.ActiveEmployees);
-        if (!!this.organisation) {
-          this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
-        }
+        this.contacts = this.contacts.concat(this.organisation.CurrentContacts);
         if (!!this.person) {
           this.contacts.push(this.person);
         }
 
-        this.communicationEvent = this.allors.context.create('EmailCommunication') as EmailCommunication;
-        this.emailTemplate = this.allors.context.create('EmailTemplate') as EmailTemplate;
-        this.communicationEvent.EmailTemplate = this.emailTemplate;
-        this.communicationEvent.Originator = this.party && this.party.GeneralEmail;
-        this.communicationEvent.IncomingMail = false;
+        this.communicationEvent = loaded.objects.LetterCorrespondence as LetterCorrespondence;
+
+        if (!this.communicationEvent) {
+          this.communicationEvent = this.allors.context.create('LetterCorrespondence') as LetterCorrespondence;
+          this.communicationEvent.IncomingLetter = true;
+        }
       },
         (error: any) => {
           this.errorService.handle(error);
           this.dialogRef.close();
-        },
+        }
       );
   }
 
@@ -179,14 +190,61 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
     }
   }
 
+  public senderCancelled(): void {
+    this.addSender = false;
+  }
+
+  public receiverCancelled(): void {
+    this.addReceiver = false;
+  }
+
+  public addressCancelled(): void {
+    this.addAddress = false;
+  }
+
+  public senderAdded(id: string): void {
+
+    this.addSender = false;
+
+    const sender: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = sender;
+    relationShip.Organisation = this.organisation;
+
+    this.communicationEvent.AddOriginator(sender);
+  }
+
+  public receiverAdded(id: string): void {
+
+    this.addReceiver = false;
+
+    const receiver: Person = this.allors.context.get(id) as Person;
+    const relationShip: OrganisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    relationShip.Contact = receiver;
+    relationShip.Organisation = this.organisation;
+
+    this.communicationEvent.AddReceiver(receiver);
+  }
+
+  public addressAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addAddress = false;
+
+    this.party.AddPartyContactMechanism(partyContactMechanism);
+
+    const postalAddress = partyContactMechanism.ContactMechanism as PostalAddress;
+    this.postalAddresses.push(postalAddress);
+    this.communicationEvent.AddPostalAddress(postalAddress);
+  }
+
   public save(): void {
 
-    this.allors.context.save()
-      .subscribe(() => {
+    this.allors.context.save().subscribe(
+      (saved: Saved) => {
         this.dialogRef.close();
       },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+      (error: Error) => {
+        this.errorService.handle(error);
+      }
+    );
   }
 }

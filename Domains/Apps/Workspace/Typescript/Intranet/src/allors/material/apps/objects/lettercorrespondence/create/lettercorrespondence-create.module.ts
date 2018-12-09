@@ -2,16 +2,16 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule, MatDatepickerModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule } from '@angular/material';
 
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
+import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
 import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
@@ -19,17 +19,19 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
 
-import { EditLetterCorrespondenceComponent } from './lettercorrespondence-edit.component';
-export { EditLetterCorrespondenceComponent } from './lettercorrespondence-edit.component';
+import { LetterCorrespondenceCreateComponent } from './lettercorrespondence-create.component';
+export { LetterCorrespondenceCreateComponent } from './lettercorrespondence-create.component';
 
 @NgModule({
   declarations: [
-    EditLetterCorrespondenceComponent,
+    LetterCorrespondenceCreateComponent,
   ],
   exports: [
-    EditLetterCorrespondenceComponent,
+    LetterCorrespondenceCreateComponent,
   ],
   imports: [
+    PersonInlineModule,
+    PostalAddressInlineModule,
 
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
@@ -47,7 +49,6 @@ export { EditLetterCorrespondenceComponent } from './lettercorrespondence-edit.c
     FormsModule,
     MatButtonModule,
     MatCardModule,
-    MatDatepickerModule,
     MatDividerModule,
     MatFormFieldModule,
     MatIconModule,
@@ -60,10 +61,8 @@ export { EditLetterCorrespondenceComponent } from './lettercorrespondence-edit.c
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
-    PostalAddressInlineModule,
-    PersonInlineModule,
     ReactiveFormsModule,
     RouterModule,
   ],
 })
-export class LetterCorrespondenceModule { }
+export class LetterCorrespondenceCreateModule { }

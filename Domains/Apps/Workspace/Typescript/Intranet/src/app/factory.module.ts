@@ -8,6 +8,7 @@ import { FactoryService, FactoryConfig } from '../allors/angular/base/factory';
 
 import { EmailCommunicationCreateComponent, EmailCommunicationCreateModule } from '../allors/material/apps/objects/emailcommunication/create/emailcommunication-create.module';
 import { FaceToFaceCommunicationCreateComponent, FaceToFaceCommunicationCreateModule } from '../allors/material/apps/objects/facetofacecommunication/create/facetofacecommunication-create.module';
+import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule } from '../allors/material/apps/objects/lettercorrespondence/create/lettercorrespondence-create.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 
@@ -16,6 +17,7 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     [
       { id: ids.EmailCommunication, component: EmailCommunicationCreateComponent },
       { id: ids.FaceToFaceCommunication, component: FaceToFaceCommunicationCreateComponent },
+      { id: ids.LetterCorrespondence, component: LetterCorrespondenceCreateComponent },
       { id: ids.Organisation, component: OrganisationCreateComponent },
       { id: ids.Person, component: PersonCreateComponent }
     ]
@@ -28,12 +30,14 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
 
     EmailCommunicationCreateModule,
     FaceToFaceCommunicationCreateModule,
+    LetterCorrespondenceCreateModule,
     OrganisationCreateModule,
     PersonCreateModule
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
     FaceToFaceCommunicationCreateComponent,
+    LetterCorrespondenceCreateComponent,
     OrganisationCreateComponent,
     PersonCreateComponent
   ],
