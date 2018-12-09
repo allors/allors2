@@ -1,0 +1,35 @@
+<mat-card *ngIf="phoneCommunication">
+
+  <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">phone</mat-icon>
+    </div>
+    <mat-card-title>{{phoneCommunication.Subject}}</mat-card-title>
+    <mat-card-subtitle>
+       <div>
+        {{phoneCommunication.CommunicationEventState?.Name}}
+      </div>
+
+      <div *ngIf="phoneCommunication.Originator">
+        From: {{phoneCommunication.Originator.displayName}}
+      </div>
+
+      <div *ngIf="phoneCommunication.Addressees && phoneCommunication.Addressees.length > 0">
+        To: {{phoneCommunication.Addressees?.length}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ phoneCommunication.LastModifiedDate | date}} by {{ phoneCommunication.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-actions>
+    <button *ngIf="phoneCommunication.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
+    <button *ngIf="phoneCommunication.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+    <button *ngIf="phoneCommunication.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>
+  </mat-card-actions>
+   
+</mat-card>

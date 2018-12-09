@@ -11,6 +11,8 @@ import { FaceToFaceCommunicationCreateComponent, FaceToFaceCommunicationCreateMo
 import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule } from '../allors/material/apps/objects/lettercorrespondence/create/lettercorrespondence-create.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
+import { PhoneCommunicationCreateComponent } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.component';
+import { PhoneCommunicationCreateModule } from 'src/allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
 
 const factoryConfig: FactoryConfig = new FactoryConfig({
   items:
@@ -19,7 +21,8 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
       { id: ids.FaceToFaceCommunication, component: FaceToFaceCommunicationCreateComponent },
       { id: ids.LetterCorrespondence, component: LetterCorrespondenceCreateComponent },
       { id: ids.Organisation, component: OrganisationCreateComponent },
-      { id: ids.Person, component: PersonCreateComponent }
+      { id: ids.Person, component: PersonCreateComponent },
+      { id: ids.PhoneCommunication, component: PhoneCommunicationCreateComponent },
     ]
 });
 
@@ -32,14 +35,16 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     FaceToFaceCommunicationCreateModule,
     LetterCorrespondenceCreateModule,
     OrganisationCreateModule,
-    PersonCreateModule
+    PersonCreateModule,
+    PhoneCommunicationCreateModule,
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
     FaceToFaceCommunicationCreateComponent,
     LetterCorrespondenceCreateComponent,
     OrganisationCreateComponent,
-    PersonCreateComponent
+    PersonCreateComponent,
+    PhoneCommunicationCreateComponent
   ],
   providers: [
     FactoryService,

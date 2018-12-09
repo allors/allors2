@@ -51,7 +51,6 @@ import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edi
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
-import * as EditPhoneCommunication from 'src/allors/material/apps/objects/phonecommunication/edit/phonecommunication.module';
 import * as EditEanIdentification from 'src/allors/material/apps/objects/eanidentification/edit/eanidentification.module';
 import * as EditIsbnIdentification from 'src/allors/material/apps/objects/isbnidentification/edit/isbnidentification.module';
 import * as EditManufacturerIdentification from 'src/allors/material/apps/objects/manufactureridentification/edit/manufactureridentification.module';
@@ -142,7 +141,6 @@ const modules = [
 
   TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
 
-  EditPhoneCommunication.PhoneCommunicationModule,
   EditEanIdentification.EanIdentificationModule,
   EditIsbnIdentification.IsbnIdentificationModule,
   EditManufacturerIdentification.ManufacturerIdentificationModule,
@@ -277,9 +275,6 @@ export const routes: Routes = [
       { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
       { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
-
-      { path: 'phonecommunication', data: addData({ id: ids.PhoneCommunication }), component: EditPhoneCommunication.EditPhoneCommunicationComponent },
-      { path: 'phonecommunication/:id', data: editData({ id: ids.PhoneCommunication }), component: EditPhoneCommunication.EditPhoneCommunicationComponent },
 
       { path: 'eanidentification', data: addData({ id: ids.EanIdentification }), component: EditEanIdentification.EditEanIdentificationComponent },
       { path: 'eanidentification/:id', data: editData({ id: ids.EanIdentification }), component: EditEanIdentification.EditEanIdentificationComponent },
