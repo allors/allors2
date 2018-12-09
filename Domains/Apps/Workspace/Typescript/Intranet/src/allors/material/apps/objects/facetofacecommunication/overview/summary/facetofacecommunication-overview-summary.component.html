@@ -1,0 +1,35 @@
+<mat-card *ngIf="faceToFaceCommunication">
+
+  <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">email</mat-icon>
+    </div>
+    <mat-card-title>{{faceToFaceCommunication.Subject}}</mat-card-title>
+    <mat-card-subtitle>
+       <div>
+        {{faceToFaceCommunication.CommunicationEventState?.Name}}
+      </div>
+
+      <div *ngIf="faceToFaceCommunication.Owner">
+        Owner: {{faceToFaceCommunication.Owner.displayName}}
+      </div>
+
+      <div *ngIf="faceToFaceCommunication.InvolvedParties && faceToFaceCommunication.InvolvedParties.length > 0">
+        InvolvedParties: {{faceToFaceCommunication.InvolvedParties?.length}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ faceToFaceCommunication.LastModifiedDate | date}} by {{ faceToFaceCommunication.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-actions>
+    <button *ngIf="faceToFaceCommunication.CanExecuteClose" mat-button type="button" (click)="close()">Close</button>
+    <button *ngIf="faceToFaceCommunication.CanExecuteCancel" mat-button type="button" (click)="cancel()">Cancel</button>
+    <button *ngIf="faceToFaceCommunication.CanExecuteReopen" mat-button type="button" (click)="reopen()">Reopen</button>
+  </mat-card-actions>
+  
+</mat-card>

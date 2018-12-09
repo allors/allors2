@@ -18,15 +18,15 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 
-import { EditEmailCommunicationComponent } from './emailcommunication-edit.component';
-export { EditEmailCommunicationComponent } from './emailcommunication-edit.component';
+import { FaceToFaceCommunicationCreateComponent } from './facetofacecommunication-create.component';
+export { FaceToFaceCommunicationCreateComponent } from './facetofacecommunication-create.component';
 
 @NgModule({
   declarations: [
-    EditEmailCommunicationComponent,
+    FaceToFaceCommunicationCreateComponent,
   ],
   exports: [
-    EditEmailCommunicationComponent,
+    FaceToFaceCommunicationCreateComponent,
   ],
   imports: [
     AllorsMaterialChipsModule,
@@ -62,4 +62,4 @@ export { EditEmailCommunicationComponent } from './emailcommunication-edit.compo
     RouterModule,
   ],
 })
-export class EmailCommunicationModule { }
+export class FaceToFaceCommunicationCreateModule { }

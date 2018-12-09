@@ -1,120 +1,78 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute } from '@angular/router';
-
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-
-import { ErrorService, Invoked, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
-import { PullRequest } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Party, WorkTask, FaceToFaceCommunication } from '../../../../../domain';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { FaceToFaceCommunication } from '../../../../../domain';
+import { PullRequest, Pull } from '../../../../../framework';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './facetofacecommunication-overview.component.html',
-  providers: [ContextService]
+  providers: [PanelManagerService, ContextService]
 })
 export class FaceToFaceCommunicationOverviewComponent implements OnInit, OnDestroy {
 
-  public title = 'Communication Event overview';
-  public m: MetaDomain;
+  title = 'Meeting';
 
-  public faceToFaceCommunication: FaceToFaceCommunication;
-  public party: Party;
+  faceToFaceCommunication: FaceToFaceCommunication;
 
-  private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
+  subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public panelManager: PanelManagerService,
     public metaService: MetaService,
-    public navigationService: NavigationService,
+    public refreshService: RefreshService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
-    titleService: Title) {
+    private stateService: StateService,
+    public injector: Injector,
+    titleService: Title,
+  ) {
 
     titleService.setTitle(this.title);
-
-    this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+
+          const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-          const partyId = navRoute.queryParam(m.Party);
+          this.panelManager.objectType = m.EmailCommunication.objectType;
+          this.panelManager.id = navRoute.id();
+          this.panelManager.maximized = navRoute.panel();
 
           const pulls = [
-            pull.Party({ object: partyId }),
             pull.FaceToFaceCommunication({
-              object: id,
-              include: {
-                FromParties: x,
-                ToParties: x,
-                EventPurposes: x,
-                CommunicationEventState: x,
-                ContactMechanisms: x,
-                WorkEfforts: {
-                  WorkEffortState: x,
-                  Priority: x,
-                }
-              }
+              object: this.panelManager.id,
             })
           ];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          this.panelManager.onPull(pulls);
+
+          return this.panelManager.context
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.context.reset();
 
-        this.party = loaded.objects.Party as Party;
+        this.panelManager.context.session.reset();
+        this.panelManager.onPulled(loaded);
+
         this.faceToFaceCommunication = loaded.objects.FaceToFaceCommunication as FaceToFaceCommunication;
-
       }, this.errorService.handler);
-  }
-
-  public deleteWorkEffort(worktask: WorkTask): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this work task?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(worktask.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
   }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 }

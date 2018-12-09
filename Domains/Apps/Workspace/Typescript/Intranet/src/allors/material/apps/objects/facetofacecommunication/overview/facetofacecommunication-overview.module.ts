@@ -12,6 +12,9 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
+import { FaceToFaceCommunicationOverviewSummaryModule } from './summary/facetofacecommunication-overview-summary.module';
+import { FaceToFaceCommunicationOverviewDetailModule } from './detail/facetofacecommunication-overview-detail.module';
+
 import { FaceToFaceCommunicationOverviewComponent } from './facetofacecommunication-overview.component';
 export { FaceToFaceCommunicationOverviewComponent } from './facetofacecommunication-overview.component';
 
@@ -23,6 +26,9 @@ export { FaceToFaceCommunicationOverviewComponent } from './facetofacecommunicat
     FaceToFaceCommunicationOverviewComponent,
   ],
   imports: [
+    FaceToFaceCommunicationOverviewSummaryModule,
+    FaceToFaceCommunicationOverviewDetailModule,
+
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,

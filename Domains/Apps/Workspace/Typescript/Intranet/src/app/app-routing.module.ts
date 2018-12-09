@@ -51,8 +51,6 @@ import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edi
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
-import * as EditEmailCommunication from 'src/allors/material/apps/objects/emailcommunication/edit/emailcommunication.module';
-import * as EditFaceToFaceCommunication from 'src/allors/material/apps/objects/facetofacecommunication/edit/facetofacecommunication.module';
 import * as EditLetterCorrespondence from 'src/allors/material/apps/objects/lettercorrespondence/edit/lettercorrespondence.module';
 import * as EditPhoneCommunication from 'src/allors/material/apps/objects/phonecommunication/edit/phonecommunication.module';
 import * as EditEanIdentification from 'src/allors/material/apps/objects/eanidentification/edit/eanidentification.module';
@@ -145,8 +143,6 @@ const modules = [
 
   TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
 
-  EditEmailCommunication.EmailCommunicationModule,
-  EditFaceToFaceCommunication.FaceToFaceCommunicationModule,
   EditLetterCorrespondence.LetterCorrespondenceModule,
   EditPhoneCommunication.PhoneCommunicationModule,
   EditEanIdentification.EanIdentificationModule,
@@ -284,10 +280,6 @@ export const routes: Routes = [
       { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
 
-      { path: 'emailcommunication', data: addData({ id: ids.EmailCommunication }), component: EditEmailCommunication.EditEmailCommunicationComponent },
-      { path: 'emailcommunication/:id', data: editData({ id: ids.EmailCommunication }), component: EditEmailCommunication.EditEmailCommunicationComponent },
-      { path: 'facetofacecommunication', data: addData({ id: ids.FaceToFaceCommunication }), component: EditFaceToFaceCommunication.EditFaceToFaceCommunicationComponent },
-      { path: 'facetofacecommunication/:id', data: editData({ id: ids.FaceToFaceCommunication }), component: EditFaceToFaceCommunication.EditFaceToFaceCommunicationComponent },
       { path: 'lettercorrespondence', data: addData({ id: ids.LetterCorrespondence }), component: EditLetterCorrespondence.EditLetterCorrespondenceComponent },
       { path: 'lettercorrespondence/:id', data: editData({ id: ids.LetterCorrespondence }), component: EditLetterCorrespondence.EditLetterCorrespondenceComponent },
       { path: 'phonecommunication', data: addData({ id: ids.PhoneCommunication }), component: EditPhoneCommunication.EditPhoneCommunicationComponent },
