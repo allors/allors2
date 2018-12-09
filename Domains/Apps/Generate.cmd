@@ -20,7 +20,7 @@ dotnet msbuild ..\..\Platform\Repository\Repository.sln
 dotnet restore Repository.sln
 
 cd repository/domain
-dotnet ..\..\..\..\Platform\Repository\Generate\bin\Debug\netcoreapp2.1\Generate.dll repository.csproj ../../../Core/Repository/Templates/meta.cs.stg ../../database/meta/generated
+dotnet ..\..\..\..\Platform\Repository\Generate\bin\Debug\netcoreapp2.2\Generate.dll repository.csproj ../../../Core/Repository/Templates/meta.cs.stg ../../database/meta/generated
 cd ../../
 
 @echo ====================
@@ -33,7 +33,7 @@ dotnet msbuild Database.sln /target:Database\Generate:Rebuild /p:Configuration="
 
 @echo Generating
 
-dotnet Database\Generate\bin\Debug\netcoreapp2.1\Generate.dll
+dotnet Database\Generate\bin\Debug\netcoreapp2.2\Generate.dll
 
 rem dotnet msbuild Database\Resources/Merge.proj /verbosity:minimal
 

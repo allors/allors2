@@ -16,7 +16,7 @@ dotnet msbuild ..\..\Repository\Repository.sln
 dotnet restore Repository.sln
 
 cd repository
-dotnet ..\..\..\Repository\Generate\bin\Debug\netcoreapp2.0\Generate.dll repository.csproj ../../../../domains/core/repository/templates/meta.cs.stg ../meta/generated
+dotnet ..\..\..\Repository\Generate\bin\Debug\netcoreapp2.2\Generate.dll repository.csproj ../../../../domains/core/repository/templates/meta.cs.stg ../meta/generated
 cd ../
 
 @echo ========
