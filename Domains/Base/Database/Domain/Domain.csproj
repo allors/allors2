@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="MaltReport2" Version="3.0.1-beta-37" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
