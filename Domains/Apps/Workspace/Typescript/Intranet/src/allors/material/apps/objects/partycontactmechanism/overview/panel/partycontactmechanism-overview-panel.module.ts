@@ -4,23 +4,23 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonToggleModule } from '@angular/material';
 
-import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialSelectModule } from '../../../../base/components/select';
-import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
-import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
-import { AllorsMaterialStaticModule } from '../../../../base/components/static';
-import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialFileModule } from '../../../../../base/components/file';
+import { AllorsMaterialInputModule } from '../../../../../base/components/input';
+import { AllorsMaterialSelectModule } from '../../../../../base/components/select';
+import { AllorsMaterialSideNavToggleModule } from '../../../../../base/components/sidenavtoggle';
+import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/slidetoggle';
+import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
+import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { PartyContactMechanismPanelComponent } from './partycontactmechanism-panel.component';
-export { PartyContactMechanismPanelComponent } from './partycontactmechanism-panel.component';
+import { PartyContactMechanismOverviewPanelComponent } from './partycontactmechanism-overview-panel.component';
+export { PartyContactMechanismOverviewPanelComponent } from './partycontactmechanism-overview-panel.component';
 
 @NgModule({
   declarations: [
-    PartyContactMechanismPanelComponent,
+    PartyContactMechanismOverviewPanelComponent,
   ],
   exports: [
-    PartyContactMechanismPanelComponent,
+    PartyContactMechanismOverviewPanelComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -51,4 +51,4 @@ export { PartyContactMechanismPanelComponent } from './partycontactmechanism-pan
     RouterModule,
   ],
 })
-export class PartyContactMechanismPanelModule { }
+export class PartyContactMechanismOverviewPanelModule { }

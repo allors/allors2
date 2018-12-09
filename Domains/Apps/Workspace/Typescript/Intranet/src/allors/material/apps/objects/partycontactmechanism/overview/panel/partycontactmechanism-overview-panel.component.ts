@@ -1,17 +1,17 @@
 import { Component, Self } from '@angular/core';
-import { ContextService, PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../angular';
-import { PartyContactMechanism, Person } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta';
-import { ObjectType, ISessionObject } from '../../../../../framework';
-import { DeleteService } from '../../../../../material';
+import { ContextService, PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
+import { PartyContactMechanism, Person } from '../../../../../../domain';
+import { MetaDomain } from '../../../../../../meta';
+import { ObjectType, ISessionObject } from '../../../../../../framework';
+import { DeleteService } from '../../../../..';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'partycontactmechanism-panel',
-  templateUrl: './partycontactmechanism-panel.component.html',
+  selector: 'partycontactmechanism-overview-panel',
+  templateUrl: './partycontactmechanism-overview-panel.component.html',
   providers: [PanelService]
 })
-export class PartyContactMechanismPanelComponent {
+export class PartyContactMechanismOverviewPanelComponent {
   m: MetaDomain;
 
   person: Person;

@@ -1,17 +1,17 @@
 import { Component, Output, EventEmitter, Self } from '@angular/core';
 
-import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
-import { MetaDomain } from '../../../../../meta';
-import { SerialisedItem, Part, Party } from '../../../../../domain';
-import { DeleteService } from '../../../../../material';
+import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { MetaDomain } from '../../../../../../meta';
+import { SerialisedItem, Part, Party } from '../../../../../../domain';
+import { DeleteService } from '../../../../..';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'serialiseditem-panel',
-  templateUrl: './serialiseditem-panel.component.html',
+  selector: 'serialiseditem-overview-panel',
+  templateUrl: './serialiseditem-overview-panel.component.html',
   providers: [PanelService]
 })
-export class SerialisedItemPanelComponent {
+export class SerialisedItemOverviewPanelComponent {
 
   m: MetaDomain;
 

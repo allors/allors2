@@ -15,9 +15,9 @@ import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
 import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
-import { PartyContactMechanismPanelModule } from '../../partycontactmechanisms/panel/partycontactmechanism-panel.module';
-import { SerialisedItemPanelModule } from '../../serialiseditem/panel/serialiseditem-panel.module';
-import { WorkEffortPartyAssignmentPanelModule } from '../../workeffortpartyassignment/panel/workeffortpartyassignment-panel.module';
+import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
+import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
+import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
 import { PersonOverviewSummaryModule } from './summary/person-overview-summary.module';
 import { PersonOverviewDetailModule } from './detail/person-overview-detail.module';
@@ -37,9 +37,9 @@ export { PersonOverviewComponent } from './person-overview.component';
     PersonOverviewDetailModule,
 
     CommunicationEventOverviewPanelModule,
-    PartyContactMechanismPanelModule,
-    SerialisedItemPanelModule,
-    WorkEffortPartyAssignmentPanelModule,
+    PartyContactMechanismOverviewPanelModule,
+    SerialisedItemOverviewPanelModule,
+    WorkEffortPartyAssignmentOverviewPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,

@@ -1,16 +1,16 @@
 import { Component, Self } from '@angular/core';
-import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../angular';
-import { WorkEffortPartyAssignment, WorkEffort } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta';
-import { DeleteService } from '../../../../../material';
+import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
+import { WorkEffortPartyAssignment, WorkEffort } from '../../../../../../domain';
+import { MetaDomain } from '../../../../../../meta';
+import { DeleteService } from '../../../../..';
 
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'workeffortpartyassignment-panel',
-  templateUrl: './workeffortpartyassignment-panel.component.html',
+  selector: 'workeffortpartyassignment-overview-panel',
+  templateUrl: './workeffortpartyassignment-overview-panel.component.html',
   providers: [PanelService]
 })
-export class WorkEffortPartyAssignmentPanelComponent {
+export class WorkEffortPartyAssignmentOverviewPanelComponent {
 
   m: MetaDomain;
 
