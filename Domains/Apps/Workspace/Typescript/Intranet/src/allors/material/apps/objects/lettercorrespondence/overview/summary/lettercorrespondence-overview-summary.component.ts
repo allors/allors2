@@ -30,7 +30,7 @@ export class LetterCorrespondenceOverviewSummaryComponent {
     panel.name = 'summary';
     panel.title = 'Summary';
     panel.icon = 'email';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${panel.name}_${this.m.Person.objectType.name}`;

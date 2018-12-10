@@ -14,11 +14,11 @@ export function moduleData(fields: Partial<RouteData>): Partial<RouteData> {
   return Object.assign({ menuType: 'module' }, fields);
 }
 
-export function masterData(fields: Partial<RouteData>): Partial<RouteData> {
+export function listData(fields: Partial<RouteData>): Partial<RouteData> {
   return Object.assign({ menuType: 'page', action: 'list' }, fields);
 }
 
-export function detailData(fields: Partial<RouteData>): Partial<RouteData> {
+export function overviewData(fields: Partial<RouteData>): Partial<RouteData> {
   return Object.assign({ action: 'overview' }, fields);
 }
 

@@ -56,13 +56,13 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
     panel.name = 'detail';
     panel.title = 'Details';
     panel.icon = 'email';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${this.panel.name}_${this.m.LetterCorrespondence.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
@@ -92,7 +92,7 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         this.letterCorrespondence = loaded.objects[pullName] as LetterCorrespondence;
       }
     };
@@ -105,7 +105,7 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         filter((v) => {
-          return this.panel.isMaximized;
+          return this.panel.isExpanded;
         }),
         switchMap(([, , , internalOrganisationId]) => {
           const navRoute = new NavigationActivatedRoute(this.route);

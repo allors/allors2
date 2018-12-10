@@ -1,0 +1,24 @@
+<mat-card *ngIf="requestForQuote">
+
+  <mat-card-header (click)="panel.manager.toggle('edit')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">business</mat-icon>
+    </div>
+    <mat-card-title>{{requestForQuote.RequestNumber}}</mat-card-title>
+    <mat-card-subtitle>
+       <div>
+        {{requestForQuote.RequestState?.Name}}
+      </div>
+
+      <div *ngIf="requestForQuote.ContactPerson">
+        {{requestForQuote.ContactPerson.displayName}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ requestForQuote.LastModifiedDate | date}} by {{ requestForQuote.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+</mat-card>

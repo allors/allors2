@@ -1,0 +1,27 @@
+<div class="a-main">
+
+  <div class="a-breadcrumb container-fluid mat-elevation-z4">
+    <div class="row">
+      <div class="col">
+        <a (click)="navigation.list(metaService.m.Organisation)">Organisation</a> / {{requestForQuote?.RequestNumber}}
+      </div>
+    </div>
+  </div>
+
+  <div class="a-overview2 container">
+
+    <div class="row">
+
+      <div class="col-md-4 mb-3">
+        <requestforquote-overview-summary></requestforquote-overview-summary>
+      </div>
+
+      <div class="col-md-8">
+        <requestforquote-overview-detail></requestforquote-overview-detail>
+
+        <requestitem-overview-panel></requestitem-overview-panel>
+      </div>
+      
+    </div>
+  </div>
+</div>

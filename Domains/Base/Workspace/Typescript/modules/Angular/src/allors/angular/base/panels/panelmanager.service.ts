@@ -15,7 +15,7 @@ export class PanelManagerService {
     objectType: ObjectType;
 
     panels: PanelService[] = [];
-    maximized: string;
+    expanded: string;
 
     constructor(
         databaseService: DatabaseService,
@@ -38,7 +38,7 @@ export class PanelManagerService {
 
     toggle(name: string) {
         let panel;
-        if (!this.maximized) {
+        if (!this.expanded) {
             panel = name;
         }
 

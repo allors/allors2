@@ -63,13 +63,13 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     panel.name = 'detail';
     panel.title = 'Organisation Details';
     panel.icon = 'business';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${this.panel.name}_${this.m.Organisation.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
@@ -83,7 +83,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         this.organisation = loaded.objects[pullName] as Organisation;
       }
     };
@@ -95,7 +95,7 @@ export class OrganisationOverviewDetailComponent implements OnInit, OnDestroy {
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         filter((v) => {
-          return this.panel.isMaximized;
+          return this.panel.isExpanded;
         }),
         switchMap(([urlSegments, date, , internalOrganisationId]) => {
 

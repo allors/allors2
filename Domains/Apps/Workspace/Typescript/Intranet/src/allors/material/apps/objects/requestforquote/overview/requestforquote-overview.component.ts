@@ -5,19 +5,21 @@ import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
-import { Organisation } from '../../../../../domain';
+import { Organisation, RequestForQuote, ProductQuote, InventoryItem, SerialisedInventoryItem, NonSerialisedInventoryItem, Quote } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
 import { StateService } from '../../../services/state';
 
 @Component({
-  templateUrl: './organisation-overview.component.html',
+  templateUrl: './requestforquote-overview.component.html',
   providers: [PanelManagerService, ContextService]
 })
-export class OrganisationOverviewComponent implements OnInit, OnDestroy {
+export class RequestForQuoteOverviewComponent implements OnInit, OnDestroy {
 
-  title = 'Organisation';
+  title = 'Request For Quote';
 
-  organisation: Organisation;
+  public requestForQuote: RequestForQuote;
+  public quote: Quote;
+
   subscription: Subscription;
 
   constructor(
@@ -41,7 +43,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const { m, pull } = this.metaService;
+          const { m, pull, x } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
@@ -49,9 +51,34 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
           this.panelManager.expanded = navRoute.panel();
 
           const pulls = [
-            pull.Organisation({
-              object: this.panelManager.id,
-            })
+            pull.RequestForQuote(
+              {
+                object: this.panelManager.id,
+                include: {
+                  FullfillContactMechanism: {
+                    PostalAddress_PostalBoundary: {
+                      Country: x,
+                    }
+                  },
+                  RequestItems: {
+                    Product: x,
+                  },
+                  Originator: x,
+                  ContactPerson: x,
+                  RequestState: x,
+                  Currency: x,
+                  CreatedBy: x,
+                  LastModifiedBy: x,
+                }
+              }),
+            pull.RequestForQuote(
+              {
+                object: this.panelManager.id,
+                fetch: {
+                  QuoteWhereRequest: x
+                }
+              }
+            )
           ];
 
           this.panelManager.onPull(pulls);
@@ -63,9 +90,12 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
       .subscribe((loaded) => {
 
         this.panelManager.context.session.reset();
+
         this.panelManager.onPulled(loaded);
 
-        this.organisation = loaded.objects.Organisation as Organisation;
+        this.requestForQuote = loaded.objects.RequestForQuote as RequestForQuote;
+        this.quote = loaded.objects.Quote as Quote;
+
       }, this.errorService.handler);
   }
 

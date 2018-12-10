@@ -60,13 +60,13 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
     panel.name = 'detail';
     panel.title = 'Details';
     panel.icon = 'email';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${this.panel.name}_${this.m.EmailCommunication.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
@@ -92,7 +92,7 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         this.emailCommunication = loaded.objects[pullName] as EmailCommunication;
       }
     };
@@ -105,7 +105,7 @@ export class EmailCommunicationOverviewDetailComponent implements OnInit, OnDest
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         filter((v) => {
-          return this.panel.isMaximized;
+          return this.panel.isExpanded;
         }),
         switchMap(([, , , internalOrganisationId]) => {
 

@@ -47,7 +47,7 @@ export class PhoneCommunicationOverviewComponent implements OnInit, OnDestroy {
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.objectType = m.PhoneCommunication.objectType;
           this.panelManager.id = navRoute.id();
-          this.panelManager.maximized = navRoute.panel();
+          this.panelManager.expanded = navRoute.panel();
 
           const pulls = [
             pull.PhoneCommunication({

@@ -58,13 +58,13 @@ export class FaceToFaceCommunicationOverviewDetailComponent implements OnInit, O
     panel.name = 'detail';
     panel.title = 'Details';
     panel.icon = 'meeting_room';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${this.panel.name}_${this.m.FaceToFaceCommunication.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
@@ -89,7 +89,7 @@ export class FaceToFaceCommunicationOverviewDetailComponent implements OnInit, O
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         this.faceToFaceCommunication = loaded.objects[pullName] as FaceToFaceCommunication;
       }
     };
@@ -102,7 +102,7 @@ export class FaceToFaceCommunicationOverviewDetailComponent implements OnInit, O
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         filter((v) => {
-          return this.panel.isMaximized;
+          return this.panel.isExpanded;
         }),
         switchMap(([, , , internalOrganisationId]) => {
 

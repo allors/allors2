@@ -47,7 +47,7 @@ export class FaceToFaceCommunicationOverviewComponent implements OnInit, OnDestr
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.objectType = m.EmailCommunication.objectType;
           this.panelManager.id = navRoute.id();
-          this.panelManager.maximized = navRoute.panel();
+          this.panelManager.expanded = navRoute.panel();
 
           const pulls = [
             pull.FaceToFaceCommunication({

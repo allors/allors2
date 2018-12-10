@@ -10,7 +10,7 @@ import { PanelManagerService } from '../../../../angular';
 export class AllorsMaterialLauncherComponent implements OnInit, OnDestroy {
 
   get panels() {
-    return this.panelsService.panels.filter((v) => v.maximizable);
+    return this.panelsService.panels.filter((v) => v.expandable);
   }
 
   constructor(public panelsService: PanelManagerService) {

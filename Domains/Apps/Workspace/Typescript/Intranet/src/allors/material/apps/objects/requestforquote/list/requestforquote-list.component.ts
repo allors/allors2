@@ -22,10 +22,10 @@ interface Row extends TableRow {
 }
 
 @Component({
-  templateUrl: './request-list.component.html',
+  templateUrl: './requestforquote-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class RequestsOverviewComponent implements OnInit, OnDestroy {
+export class RequestForQuoteListComponent implements OnInit, OnDestroy {
 
   public title = 'Requests';
 
@@ -69,6 +69,7 @@ export class RequestsOverviewComponent implements OnInit, OnDestroy {
         navigateService.overview(),
         this.delete
       ],
+      defaultAction: navigateService.overview(),
     });
   }
 

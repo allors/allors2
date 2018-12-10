@@ -55,13 +55,13 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     panel.name = 'detail';
     panel.title = 'Personal Data';
     panel.icon = 'person';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${this.panel.name}_${this.m.Person.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
@@ -79,7 +79,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         this.person = loaded.objects[pullName] as Person;
       }
     };
@@ -96,7 +96,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     )
       .pipe(
         filter((v) => {
-          return this.panel.isMaximized;
+          return this.panel.isExpanded;
         }),
         switchMap(([, , , internalOrganisationId]) => {
 

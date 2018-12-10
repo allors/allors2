@@ -57,13 +57,13 @@ export class PhoneCommunicationOverviewDetailComponent implements OnInit, OnDest
     panel.name = 'detail';
     panel.title = 'Details';
     panel.icon = 'phone';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${this.panel.name}_${this.m.PhoneCommunication.objectType.name}`;
 
     panel.onPull = (pulls) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         const { pull, x } = this.metaService;
         const id = this.panel.manager.id;
 
@@ -88,7 +88,7 @@ export class PhoneCommunicationOverviewDetailComponent implements OnInit, OnDest
     };
 
     panel.onPulled = (loaded) => {
-      if (this.panel.isNormal) {
+      if (this.panel.isCollapsed) {
         this.phoneCommunication = loaded.objects[pullName] as PhoneCommunication;
       }
     };
@@ -101,7 +101,7 @@ export class PhoneCommunicationOverviewDetailComponent implements OnInit, OnDest
     this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         filter((v) => {
-          return this.panel.isMaximized;
+          return this.panel.isExpanded;
         }),
         switchMap(([, , , internalOrganisationId]) => {
 

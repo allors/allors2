@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { Pull } from '../../../framework';
 import { Loaded } from '../framework';
@@ -14,7 +13,7 @@ export class PanelService {
     name: string;
     title: string;
     icon: string;
-    maximizable: boolean;
+    expandable: boolean;
 
     onPull: (pulls: Pull[]) => void;
     onPulled: (loaded: Loaded) => void;
@@ -23,12 +22,12 @@ export class PanelService {
         manager.panels.push(this);
     }
 
-    get isNormal(): boolean {
-        return !this.manager.maximized;
+    get isCollapsed(): boolean {
+        return !this.manager.expanded;
     }
 
-    get isMaximized(): boolean {
-        return this.manager.maximized === this.name;
+    get isExpanded(): boolean {
+        return this.manager.expanded === this.name;
     }
 
     toggle() {

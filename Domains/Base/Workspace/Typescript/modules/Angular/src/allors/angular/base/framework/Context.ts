@@ -19,7 +19,7 @@ export class Context {
     this.session = new Session(this.workspace);
   }
 
-  get hasChanges(){
+  get hasChanges() {
     return this.session.hasChanges;
   }
 
@@ -32,7 +32,7 @@ export class Context {
   }
 
   create(objectType: ObjectType | string): ISessionObject {
-      return this.session.create(objectType);
+    return this.session.create(objectType);
   }
 
   delete(object: ISessionObject) {

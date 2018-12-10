@@ -30,7 +30,7 @@ export class PhoneCommunicationOverviewSummaryComponent {
     panel.name = 'summary';
     panel.title = 'Summary';
     panel.icon = 'phone';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${panel.name}_${this.m.Person.objectType.name}`;

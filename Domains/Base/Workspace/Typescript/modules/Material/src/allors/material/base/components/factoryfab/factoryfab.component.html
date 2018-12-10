@@ -1,7 +1,7 @@
 <div style="position: relative">
   <div style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1">
 
-    <button *ngIf="classes.length === 1" mat-fab (click)="factoryService.add(classes[0]); false">
+    <button *ngIf="classes.length === 1" mat-fab (click)="factoryService.create(classes[0]); false">
       <mat-icon>add</mat-icon>
     </button>
 
@@ -11,7 +11,7 @@
 
     <mat-menu #menu="matMenu" class="a-mat-factory-fab" [overlapTrigger]="true">
       <mat-toolbar color="accent"><span class="title">Add new</span></mat-toolbar>
-      <button *ngFor='let class of classes' mat-menu-item (click)="factoryService.add(class); false">
+      <button *ngFor='let class of classes' mat-menu-item (click)="factoryService.create(class); false">
         <mat-icon>{{class.icon}}</mat-icon><span>{{class.displayName}}</span>
       </button>
     </mat-menu>

@@ -33,7 +33,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent {
     panel.name = 'workeffortpartyassignment';
     panel.title = 'Work Efforts';
     panel.icon = 'work';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     const workEffortPartyAssignmentPullName = `${panel.name}_${this.m.WorkEffortPartyAssignment.objectType.name}`;
 

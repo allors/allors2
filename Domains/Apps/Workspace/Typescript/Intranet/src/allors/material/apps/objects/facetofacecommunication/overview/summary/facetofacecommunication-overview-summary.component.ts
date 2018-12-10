@@ -30,7 +30,7 @@ export class FaceToFaceCommunicationOverviewSummaryComponent {
     panel.name = 'summary';
     panel.title = 'Summary';
     panel.icon = 'meeting_room';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     // Minimized
     const pullName = `${panel.name}_${this.m.FaceToFaceCommunication.objectType.name}`;

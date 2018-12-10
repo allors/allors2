@@ -37,7 +37,7 @@ export class CommunicationEventOverviewPanelComponent {
     panel.name = 'communicationevent';
     panel.title = 'Communication Events';
     panel.icon = 'chat';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     const communicationEventsPullName = `${panel.name}_${this.m.CommunicationEvent.objectType.name}`;
 

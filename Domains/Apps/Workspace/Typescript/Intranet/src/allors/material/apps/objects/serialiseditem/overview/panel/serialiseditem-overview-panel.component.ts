@@ -36,7 +36,7 @@ export class SerialisedItemOverviewPanelComponent {
     panel.name = 'serialiseditem';
     panel.title = 'Serialized Items';
     panel.icon = 'link';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     const ownerName = `${panel.name}_Owner`;
     const ownedSerialisedItemsName = `${panel.name}_OwnedSerialisedItemsName`;

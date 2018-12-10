@@ -13,6 +13,7 @@ import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationCreateComponent } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.component';
 import { PhoneCommunicationCreateModule } from 'src/allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
+import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from 'src/allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
 
 const factoryConfig: FactoryConfig = new FactoryConfig({
   items:
@@ -23,6 +24,7 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
       { id: ids.Organisation, component: OrganisationCreateComponent },
       { id: ids.Person, component: PersonCreateComponent },
       { id: ids.PhoneCommunication, component: PhoneCommunicationCreateComponent },
+      { id: ids.RequestForQuote, component: RequestForQuoteCreateComponent },
     ]
 });
 
@@ -37,6 +39,7 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     OrganisationCreateModule,
     PersonCreateModule,
     PhoneCommunicationCreateModule,
+    RequestForQuoteCreateModule,
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
@@ -44,7 +47,8 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     LetterCorrespondenceCreateComponent,
     OrganisationCreateComponent,
     PersonCreateComponent,
-    PhoneCommunicationCreateComponent
+    PhoneCommunicationCreateComponent,
+    RequestForQuoteCreateComponent,
   ],
   providers: [
     FactoryService,

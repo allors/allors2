@@ -38,7 +38,7 @@ export class PartyContactMechanismOverviewPanelComponent {
     panel.name = 'partycontactmechanism';
     panel.title = 'Contact Mechanisms';
     panel.icon = 'contacts';
-    panel.maximizable = true;
+    panel.expandable = true;
 
     const personPullName = `${panel.name}_${this.m.Person.objectType.name}`;
 

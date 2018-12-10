@@ -15,7 +15,7 @@ export class FactoryService {
   ) {
   }
 
-  add(objectType: ObjectType | ObjectTypeRef) {
+  create(objectType: ObjectType | ObjectTypeRef) {
 
     const component = this.component(objectType);
     if (component) {
@@ -32,7 +32,7 @@ export class FactoryService {
     return !!this.component(objectType);
   }
 
-  component(objectType: ObjectType | ObjectTypeRef): any {
+  private component(objectType: ObjectType | ObjectTypeRef): any {
 
     const objectTypeId = objectType instanceof ObjectType ? objectType.id : (objectType as ObjectTypeRef).objectType.id;
     const factoryItem = this.factoryConfig.items.find((v) => v.id === objectTypeId);

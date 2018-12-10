@@ -7,7 +7,7 @@ import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { ids } from '../allors/meta/generated';
-import { moduleData, masterData, detailData, editData, addData } from '../allors/angular';
+import { moduleData, listData, overviewData, editData, addData } from '../allors/angular';
 
 import * as PurchaseInvoiceList from '../allors/material/apps/objects/purchaseinvoice/list/purchaseinvoice-list.module';
 import * as PurchaseInvoiceOverview from '../allors/material/apps/objects/purchaseinvoice/overview/purchaseinvoice-overview.module';
@@ -62,13 +62,12 @@ import * as EditUpceIdentification from 'src/allors/material/apps/objects/upceid
 import * as EditBaseprice from 'src/allors/material/apps/objects/baseprice/edit/baseprice.module';
 import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering.module';
 import * as CommunicationEventWorkTask from 'src/allors/material/apps/objects/communicationevent/worktask/communicationevent-worktask.module';
-import * as RequestsOverview from 'src/allors/material/apps/objects/request/list/request-list.module';
-import * as RequestOverview from 'src/allors/material/apps/objects/request/overview/request-overview.module';
+import * as RequestsForQuoteList from 'src/allors/material/apps/objects/requestforquote/list/requestforquote-list.module';
+import * as RequestForQuoteOverview from 'src/allors/material/apps/objects/requestforquote/overview/requestforquote-overview.module';
 import * as ProductQuotesOverview from 'src/allors/material/apps/objects/productquote/list/productquote-list.module';
 import * as ProductQuoteOverview from 'src/allors/material/apps/objects/productquote/overview/productquote-overview.module';
 import * as SalesOrdersOverview from 'src/allors/material/apps/objects/salesorder/list/salesorder-list.module';
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
-import * as RequestEdit from 'src/allors/material/apps/objects/request/edit/request-edit.module';
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as ProductQuoteEdit from 'src/allors/material/apps/objects/productquote/edit/productquote-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
@@ -152,13 +151,12 @@ const modules = [
   EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
-  RequestsOverview.RequestsOverviewModule,
-  RequestOverview.RequestOverviewModule,
+  RequestsForQuoteList.RequestForQuoteListModule,
+  RequestForQuoteOverview.RequestForQuoteOverviewModule,
   ProductQuotesOverview.ProductQuotesOverviewModule,
   ProductQuoteOverview.ProductQuoteOverviewModule,
   SalesOrdersOverview.SalesOrdersOverviewModule,
   SalesOrderOverview.SalesOrderOverviewModule,
-  RequestEdit.RequestEditModule,
   RequestItemEdit.RequestItemEditModule,
   ProductQuoteEdit.ProductQuoteEditModule,
   QuoteItemEdit.QuoteItemEditModule,
@@ -194,15 +192,15 @@ export const routes: Routes = [
       {
         path: 'relations', data: moduleData({ title: 'Contacts', icon: 'contacts' }),
         children: [
-          { path: 'people', data: masterData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
-          { path: 'person/:id', data: detailData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
-          { path: 'organisations', data: masterData({ id: ids.Organisation, icon: 'business' }), component: OrganisationList.OrganisationListComponent },
-          { path: 'organisation/:id', data: detailData({ id: ids.Organisation }), component: OrganisationOverview.OrganisationDetailComponent },
-          { path: 'communicationevents', data: masterData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
-          { path: 'emailcommunication/:id', data: detailData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
-          { path: 'facetofacecommunication/:id', data: detailData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
-          { path: 'lettercorrespondence/:id', data: detailData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
-          { path: 'phonecommunicationevent/:id', data: detailData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
+          { path: 'people', data: listData({ id: ids.Person, icon: 'people' }), component: PersonList.PersonListComponent, },
+          { path: 'person/:id', data: overviewData({ id: ids.Person }), component: PersonOverview.PersonOverviewComponent },
+          { path: 'organisations', data: listData({ id: ids.Organisation, icon: 'business' }), component: OrganisationList.OrganisationListComponent },
+          { path: 'organisation/:id', data: overviewData({ id: ids.Organisation }), component: OrganisationOverview.OrganisationOverviewComponent },
+          { path: 'communicationevents', data: listData({ id: ids.CommunicationEvent, icon: 'share' }), component: CommunicationEventList.CommunicationEventListComponent },
+          { path: 'emailcommunication/:id', data: overviewData({ id: ids.EmailCommunication }), component: EmailCommunicationOverview.EmailCommunicationOverviewComponent },
+          { path: 'facetofacecommunication/:id', data: overviewData({ id: ids.FaceToFaceCommunication }), component: FaceToFaceCommunicationOverview.FaceToFaceCommunicationOverviewComponent },
+          { path: 'lettercorrespondence/:id', data: overviewData({ id: ids.LetterCorrespondence }), component: LetterCorrespondenceOverview.LetterCorrespondenceOverviewComponent },
+          { path: 'phonecommunicationevent/:id', data: overviewData({ id: ids.PhoneCommunication }), component: PhoneCommunicationOverview.PhoneCommunicationOverviewComponent },
         ],
       },
 
@@ -210,12 +208,12 @@ export const routes: Routes = [
       {
         path: 'orders', data: moduleData({ title: 'Sales', icon: 'shopping_cart' }),
         children: [
-          { path: 'requests', data: masterData({ id: ids.Request, icon: 'share' }), component: RequestsOverview.RequestsOverviewComponent },
-          { path: 'request/:id', data: detailData({ id: ids.Request }), component: RequestOverview.RequestOverviewComponent },
-          { path: 'productQuotes', data: masterData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
-          { path: 'productQuote/:id', data: detailData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
-          { path: 'salesOrders', data: masterData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
-          { path: 'salesOrder/:id', data: detailData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
+          { path: 'requests', data: listData({ id: ids.Request, icon: 'share' }), component: RequestsForQuoteList.RequestForQuoteListComponent },
+          { path: 'request/:id', data: overviewData({ id: ids.Request }), component: RequestForQuoteOverview.RequestForQuoteOverviewComponent },
+          { path: 'productQuotes', data: listData({ id: ids.Quote, icon: 'share' }), component: ProductQuotesOverview.ProductQuotesOverviewComponent },
+          { path: 'productQuote/:id', data: overviewData({ id: ids.Quote }), component: ProductQuoteOverview.ProductQuoteOverviewComponent },
+          { path: 'salesOrders', data: listData({ id: ids.SalesOrder, icon: 'share' }), component: SalesOrdersOverview.SalesOrdersOverviewComponent },
+          { path: 'salesOrder/:id', data: overviewData({ id: ids.SalesOrder }), component: SalesOrderOverview.SalesOrderOverviewComponent },
         ],
       },
 
@@ -223,14 +221,14 @@ export const routes: Routes = [
       {
         path: 'catalogues', data: moduleData({ title: 'Products', icon: 'build' }),
         children: [
-          { path: 'goods', data: masterData({ id: ids.Good }), component: GoodList.GoodListComponent },
-          { path: 'good/:id', data: detailData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
-          { path: 'parts', data: masterData({ id: ids.Part }), component: PartList.PartListComponent },
-          { path: 'part/:id', data: detailData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
-          { path: 'catalogues', data: masterData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
-          { path: 'categories', data: masterData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
-          { path: 'productCharacteristics', data: masterData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
-          { path: 'productTypes', data: masterData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
+          { path: 'goods', data: listData({ id: ids.Good }), component: GoodList.GoodListComponent },
+          { path: 'good/:id', data: overviewData({ id: ids.Good }), component: GoodOverview.GoodOverviewComponent },
+          { path: 'parts', data: listData({ id: ids.Part }), component: PartList.PartListComponent },
+          { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
+          { path: 'catalogues', data: listData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
+          { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
+          { path: 'productCharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
+          { path: 'productTypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
       },
 
@@ -238,10 +236,10 @@ export const routes: Routes = [
       {
         path: 'accounting', data: moduleData({ title: 'Accounting', icon: 'payment' }),
         children: [
-          { path: 'purchaseinvoices', data: masterData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
-          { path: 'purchaseinvoice/:id', data: detailData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
-          { path: 'salesinvoices', data: masterData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
-          { path: 'salesinvoice/:id', data: detailData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
+          { path: 'purchaseinvoices', data: listData({ id: ids.PurchaseInvoice, icon: 'attach_money' }), component: PurchaseInvoiceList.PurchaseInvoiceListComponent },
+          { path: 'purchaseinvoice/:id', data: overviewData({ id: ids.PurchaseInvoice }), component: PurchaseInvoiceOverview.PurchaseInvoiceOverviewComponent },
+          { path: 'salesinvoices', data: listData({ id: ids.SalesInvoice, icon: 'attach_money' }), component: SalesInvoiceList.SalesInvoiceListComponent },
+          { path: 'salesinvoice/:id', data: overviewData({ id: ids.SalesInvoice }), component: SalesInvoiceOverview.SalesInvoiceOverviewComponent },
         ],
       },
 
@@ -249,8 +247,8 @@ export const routes: Routes = [
       {
         path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
         children: [
-          { path: 'worktasks', data: masterData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
-          { path: 'worktask/:id', data: detailData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
+          { path: 'worktasks', data: listData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
+          { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
 
@@ -311,8 +309,6 @@ export const routes: Routes = [
       {
         path: 'request',
         children: [
-          { path: '', component: RequestEdit.RequestEditComponent },
-          { path: ':id', component: RequestEdit.RequestEditComponent },
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
         ],

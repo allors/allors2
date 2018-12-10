@@ -17,22 +17,24 @@ import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmech
 import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
 import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
 
-import { OrganisationOverviewSummaryModule } from './summary/organisation-overview-summary.module';
-import { OrganisationOverviewDetailModule } from './detail/organisation-overview-detail.module';
+import { RequestForQuoteOverviewSummaryModule } from './summary/requestforquote-overview-summary.module';
+import { RequestForQuoteOverviewDetailModule } from './detail/requestforquote-overview-detail.module';
+import { RequestItemOverviewPanelModule } from '../../requestitem/overview/panel/requestitem-overview-panel.module';
 
-import { OrganisationOverviewComponent } from './organisation-overview.component';
-export { OrganisationOverviewComponent } from './organisation-overview.component';
+export { RequestForQuoteOverviewComponent } from './requestforquote-overview.component';
+import { RequestForQuoteOverviewComponent } from './requestforquote-overview.component';
 
 @NgModule({
   declarations: [
-    OrganisationOverviewComponent,
+    RequestForQuoteOverviewComponent,
   ],
   exports: [
-    OrganisationOverviewComponent,
+    RequestForQuoteOverviewComponent,
   ],
   imports: [
-    OrganisationOverviewSummaryModule,
-    OrganisationOverviewDetailModule,
+    RequestForQuoteOverviewSummaryModule,
+    RequestForQuoteOverviewDetailModule,
+    RequestItemOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,
@@ -71,4 +73,4 @@ export { OrganisationOverviewComponent } from './organisation-overview.component
     RouterModule,
   ],
 })
-export class OrganisationOverviewModule { }
+export class RequestForQuoteOverviewModule { }
