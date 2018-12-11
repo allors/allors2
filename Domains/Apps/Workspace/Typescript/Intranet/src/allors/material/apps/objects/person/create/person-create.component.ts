@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -8,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
-import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../framework';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';

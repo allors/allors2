@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonToggleModule } from '@angular/material';
 
-import { AllorsMaterialFileModule, AllorsMaterialTableModule } from '../../../../..';
+import { AllorsMaterialFileModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../../..';
 
 import { RequestItemOverviewPanelComponent } from './requestitem-overview-panel.component';
 export { RequestItemOverviewPanelComponent } from './requestitem-overview-panel.component';
@@ -21,6 +21,7 @@ export { RequestItemOverviewPanelComponent } from './requestitem-overview-panel.
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -36,6 +37,8 @@ export { RequestItemOverviewPanelComponent } from './requestitem-overview-panel.
     MatTooltipModule,
     MatButtonToggleModule,
     MatOptionModule,
+
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFileModule,
     AllorsMaterialTableModule,
   ],

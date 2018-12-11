@@ -1,8 +1,14 @@
 import { Component, Self } from '@angular/core';
-import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget } from '../../../../../../angular';
+import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
 import { RequestItem } from '../../../../../../domain';
 import { MetaDomain } from '../../../../../../meta';
-import { DeleteService, TableRow, Table, StateService } from '../../../../..';
+import { DeleteService, TableRow, Table } from '../../../../..';
+
+import { ISessionObject } from 'src/allors/framework';
+import { MatSnackBar } from '@angular/material';
+
+import { ObjectService } from '../../../../../../../allors/angular/base/object';
+import { CreateData } from '../../../../../../../allors/angular/base/object/object.data';
 
 interface Row extends TableRow {
   object: RequestItem;
@@ -25,15 +31,32 @@ export class RequestItemOverviewPanelComponent {
   requestItem: RequestItem;
 
   delete: Action;
-  edit: Action;
+
+  edit: Action = {
+    name: (target: ActionTarget) => 'Edit',
+    description: (target: ActionTarget) => 'Edit',
+    disabled: (target: ActionTarget) => !this.objectService.hasEditControl(target as ISessionObject),
+    execute: (target: ActionTarget) => this.objectService.edit(target as ISessionObject).subscribe((v) => this.refreshService.refresh()),
+    result: null
+  };
+
+  get createData(): CreateData {
+    return {
+      associationId: this.panel.manager.id,
+      associationObjectType: this.panel.manager.objectType,
+      associationRoleType: this.metaService.m.Request.RequestItems,
+    };
+  }
 
   constructor(
     @Self() public panel: PanelService,
+    public objectService: ObjectService,
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigation: NavigationService,
     public errorService: ErrorService,
     public deleteService: DeleteService,
+    public snackBar: MatSnackBar
   ) {
 
     this.m = this.metaService.m;
@@ -44,13 +67,6 @@ export class RequestItemOverviewPanelComponent {
     panel.expandable = true;
 
     this.delete = deleteService.delete(panel.manager.context);
-    this.edit = {
-      name: (target: ActionTarget) => 'Edit',
-      description: (target: ActionTarget) => 'Edit',
-      disabled: (target: ActionTarget) => false,
-      execute: (target: ActionTarget) => this.requestItem = target as RequestItem,
-      result: null
-    };
 
     this.table = new Table({
       selection: true,
@@ -100,5 +116,17 @@ export class RequestItemOverviewPanelComponent {
       });
     };
 
+  }
+
+  public cancel(): void {
+
+    this.panel.manager.context.invoke(this.requestItem.Cancel)
+      .subscribe((invoked: Invoked) => {
+        this.refreshService.refresh();
+        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
+      },
+        (error: Error) => {
+          this.errorService.handle(error);
+        });
   }
 }

@@ -1,16 +1,15 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-
-import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
-import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
-import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure, Request } from '../../../../../domain';
+import { PullRequest, Sort, Equals, Pull } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+
+import { CreateData, EditData, ObjectData } from '../../../../../../allors/angular/base/object/object.data';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',
@@ -21,8 +20,8 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   public m: MetaDomain;
 
   public title: string;
-  public subTitle: string;
-  public request: RequestForQuote;
+
+  public request: Request;
   public requestItem: RequestItem;
   public goods: Good[];
   public inventoryItems: InventoryItem[];
@@ -30,70 +29,76 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
   public nonSerialisedInventoryItem: NonSerialisedInventoryItem;
   public unitsOfMeasure: UnitOfMeasure[];
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<RequestItemEditComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
     public stateService: StateService,
-    private dialogService: AllorsMaterialDialogService) {
+    public refreshService: RefreshService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const itemId: string = this.route.snapshot.paramMap.get('itemId');
+          const create = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.RequestForQuote({ object: id }),
-            pull.RequestItem({ object: itemId, include: { RequestItemState: x } }),
-            pull.Good({ sort: new Sort(m.Good.Name) }),
+            pull.RequestItem({
+              object: this.data.id,
+              include: { RequestItemState: x }
+            }),
+            pull.Good({
+              sort: new Sort(m.Good.Name)
+            }),
             pull.UnitOfMeasure({
               predicate: new Equals({ propertyType: m.UnitOfMeasure.IsActive, value: true }),
               sort: new Sort(m.UnitOfMeasure.Name)
             })
           ];
 
+          if (create && this.data.associationId) {
+            pulls.push(
+              pull.Request({
+                object: this.data.associationId
+              })
+            );
+          }
+
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, create }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, create }) => {
         this.allors.context.reset();
 
-        this.request = loaded.objects.requestForQuote as RequestForQuote;
-        this.requestItem = loaded.objects.requestItem as RequestItem;
-        this.goods = loaded.collections.goods as Good[];
-        this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
+        this.requestItem = loaded.objects.RequestItem as RequestItem;
+        this.goods = loaded.collections.Goods as Good[];
+        this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
 
-        if (!this.requestItem) {
-          this.title = 'Add Request Item';
+        if (create) {
+          this.request = loaded.objects.Request as Request;
+          this.title = 'Create Request Item';
           this.requestItem = this.allors.context.create('RequestItem') as RequestItem;
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
 
-          if (this.requestItem.CanWriteQuantity) {
-            this.title = 'Edit Request Item';
-          } else {
-            this.title = 'View Request Item';
-          }
-
+          this.title = 'Edit Request Item';
           this.refreshInventory(this.requestItem.Product);
         }
       }, this.errorService.handler);
@@ -111,60 +116,21 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public cancel(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.requestItem.Cancel)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
-  }
-
   public save(): void {
 
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/orders/request/' + this.request.id]);
+        const data: ObjectData = {
+          id: this.requestItem.id,
+          objectType: this.requestItem.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
   }
 
   private refreshInventory(product: Product): void {

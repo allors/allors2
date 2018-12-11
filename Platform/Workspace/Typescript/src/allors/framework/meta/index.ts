@@ -4,6 +4,7 @@ export * from './Data';
 export { MetaPopulation } from './MetaPopulation';
 export { ObjectType } from './ObjectType';
 export { ObjectTypeRef } from './ObjectTypeRef';
+export { objectTypeId } from './ObjectTypeRef';
 
 export { PropertyType } from './PropertyType';
 

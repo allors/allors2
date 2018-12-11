@@ -4,7 +4,7 @@ import { MatDialogModule } from '@angular/material';
 
 import { ids } from '../allors/meta/generated';
 
-import { FactoryService, FactoryConfig } from '../allors/angular/base/factory';
+import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/angular/base/object';
 
 import { EmailCommunicationCreateComponent, EmailCommunicationCreateModule } from '../allors/material/apps/objects/emailcommunication/create/emailcommunication-create.module';
 import { FaceToFaceCommunicationCreateComponent, FaceToFaceCommunicationCreateModule } from '../allors/material/apps/objects/facetofacecommunication/create/facetofacecommunication-create.module';
@@ -13,20 +13,23 @@ import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationCreateComponent } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.component';
 import { PhoneCommunicationCreateModule } from 'src/allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
+import { RequestItemEditComponent, RequestItemEditModule } from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from 'src/allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
 
-const factoryConfig: FactoryConfig = new FactoryConfig({
-  items:
-    [
-      { id: ids.EmailCommunication, component: EmailCommunicationCreateComponent },
-      { id: ids.FaceToFaceCommunication, component: FaceToFaceCommunicationCreateComponent },
-      { id: ids.LetterCorrespondence, component: LetterCorrespondenceCreateComponent },
-      { id: ids.Organisation, component: OrganisationCreateComponent },
-      { id: ids.Person, component: PersonCreateComponent },
-      { id: ids.PhoneCommunication, component: PhoneCommunicationCreateComponent },
-      { id: ids.RequestForQuote, component: RequestForQuoteCreateComponent },
-    ]
-});
+const create = {
+  [ids.EmailCommunication]: EmailCommunicationCreateComponent,
+  [ids.FaceToFaceCommunication]: FaceToFaceCommunicationCreateComponent,
+  [ids.LetterCorrespondence]: LetterCorrespondenceCreateComponent,
+  [ids.Organisation]: OrganisationCreateComponent,
+  [ids.Person]: PersonCreateComponent,
+  [ids.PhoneCommunication]: PhoneCommunicationCreateComponent,
+  [ids.RequestItem]: RequestItemEditComponent,
+  [ids.RequestForQuote]: RequestForQuoteCreateComponent
+};
+
+const edit = {
+  [ids.RequestItem]: RequestItemEditComponent,
+};
 
 @NgModule({
   imports: [
@@ -39,6 +42,7 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     OrganisationCreateModule,
     PersonCreateModule,
     PhoneCommunicationCreateModule,
+    RequestItemEditModule,
     RequestForQuoteCreateModule,
   ],
   entryComponents: [
@@ -48,16 +52,18 @@ const factoryConfig: FactoryConfig = new FactoryConfig({
     OrganisationCreateComponent,
     PersonCreateComponent,
     PhoneCommunicationCreateComponent,
+    RequestItemEditComponent,
     RequestForQuoteCreateComponent,
   ],
   providers: [
-    FactoryService,
-    { provide: FactoryConfig, useValue: factoryConfig },
+    ObjectService,
+    { provide: OBJECT_CREATE_TOKEN, useValue: create },
+    { provide: OBJECT_EDIT_TOKEN, useValue: edit },
   ]
 })
-export class FactoryModule {
+export class ObjectModule {
 
-  constructor(@Optional() @SkipSelf() core: FactoryModule) {
+  constructor(@Optional() @SkipSelf() core: ObjectModule) {
     if (core) {
       throw new Error('Use FactoryModule from AppModule');
     }

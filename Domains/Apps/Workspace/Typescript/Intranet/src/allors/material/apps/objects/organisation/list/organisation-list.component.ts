@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
 
-import { FactoryService } from '../../../../../angular/base/factory';
+import { ObjectService } from '../../../../../angular/base/object';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
@@ -41,7 +41,7 @@ export class OrganisationListComponent implements OnInit, OnDestroy {
     @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
     public metaService: MetaService,
-    public factoryService: FactoryService,
+    public factoryService: ObjectService,
     public refreshService: RefreshService,
     public navigateService: NavigateService,
     public deleteService: DeleteService,

@@ -9,7 +9,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { MainModule } from './main/main.module';
 
 import { InternalOrganisationSelectModule } from '../allors/material/apps/objects/internalorganisation/state/internalorganisation-select.module';
-import { FactoryModule } from './factory.module';
+import { ObjectModule } from './object.module';
 import { WorkspaceService } from 'src/allors/angular';
 import { appInit } from './app.init';
 
@@ -21,7 +21,7 @@ import { appInit } from './app.init';
   imports: [
     CoreModule,
     AppRoutingModule,
-    FactoryModule,
+    ObjectModule,
 
     // App Components
     AuthModule.forRoot(),
