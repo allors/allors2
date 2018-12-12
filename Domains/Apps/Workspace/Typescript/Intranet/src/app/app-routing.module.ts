@@ -69,7 +69,6 @@ import * as ProductQuoteOverview from 'src/allors/material/apps/objects/productq
 import * as SalesOrdersOverview from 'src/allors/material/apps/objects/salesorder/list/salesorder-list.module';
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
-import * as ProductQuoteEdit from 'src/allors/material/apps/objects/productquote/edit/productquote-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import * as SalesOrderEdit from 'src/allors/material/apps/objects/salesorder/edit/salesorder-edit.module';
 import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
@@ -158,7 +157,6 @@ const modules = [
   SalesOrdersOverview.SalesOrdersOverviewModule,
   SalesOrderOverview.SalesOrderOverviewModule,
   RequestItemEdit.RequestItemEditModule,
-  ProductQuoteEdit.ProductQuoteEditModule,
   QuoteItemEdit.QuoteItemEditModule,
   SalesOrderEdit.SalesOrderEditModule,
   SalesOrderItemEdit.SalesOrderItemEditModule,
@@ -311,15 +309,6 @@ export const routes: Routes = [
         children: [
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
-      {
-        path: 'productQuote',
-        children: [
-          { path: '', component: ProductQuoteEdit.ProductQuoteEditComponent },
-          { path: ':id', component: ProductQuoteEdit.ProductQuoteEditComponent },
-          { path: ':id/item', component: QuoteItemEdit.QuoteItemEditComponent },
-          { path: ':id/item/:itemId', component: QuoteItemEdit.QuoteItemEditComponent },
         ],
       },
       {

@@ -1,76 +1,60 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, MediaService, Saved, ContextService, MetaService } from '../../../../../angular';
-import { Good, ProductQuote, QuoteItem, RequestForQuote, SalesOrder } from '../../../../../domain';
-import { PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { ProductQuote, Quote, Good, SalesOrder } from '../../../../../domain';
+import { PullRequest } from '../../../../../framework';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './productquote-overview.component.html',
-  providers: [ContextService]
+  providers: [PanelManagerService, ContextService]
 })
 export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
-  public title = 'Quote Overview';
-  public request: RequestForQuote;
-  public quote: ProductQuote;
+  title = 'Quote';
+
+  public productQuote: ProductQuote;
   public goods: Good[] = [];
   public salesOrder: SalesOrder;
 
-  private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
+  subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public panelManager: PanelManagerService,
     public metaService: MetaService,
+    public refreshService: RefreshService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    public mediaService: MediaService,
-    private dialogService: AllorsMaterialDialogService) {
+    private stateService: StateService,
+    public injector: Injector,
+    titleService: Title,
+  ) {
 
-    this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public save(): void {
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('items saved', 'close', { duration: 1000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+    titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const { m, pull, x } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          this.panelManager.id = navRoute.id();
+          this.panelManager.objectType = m.Organisation.objectType;
+          this.panelManager.expanded = navRoute.panel();
 
           const pulls = [
-            pull.Quote(
+            pull.ProductQuote(
               {
-                object: id,
+                object: this.panelManager.id,
                 include: {
                   QuoteItems: {
                     Product: x,
@@ -88,134 +72,39 @@ export class ProductQuoteOverviewComponent implements OnInit, OnDestroy {
                     }
                   }
                 }
+              }),
+            pull.ProductQuote(
+              {
+                object: this.panelManager.id,
+                fetch: {
+                  SalesOrderWhereQuote: x,
+                }
               }
-            ),
-            pull.Good({ sort: new Sort(m.Good.Name) })
+            )
           ];
 
-          if (id != null) {
-            pulls.push(
-              pull.ProductQuote(
-                {
-                  object: id,
-                  fetch: {
-                    SalesOrderWhereQuote: x,
-                  }
-                }
-              )
-            );
-          }
+          this.panelManager.onPull(pulls);
 
-          return this.allors.context
+          return this.panelManager.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.context.reset();
-        this.goods = loaded.collections.goods as Good[];
-        this.quote = loaded.objects.quote as ProductQuote;
-        this.salesOrder = loaded.objects.salesOrder as SalesOrder;
-      }, this.errorService.handler);
-  }
 
-  public print() {
-    //
+        this.panelManager.context.session.reset();
+
+        this.panelManager.onPulled(loaded);
+
+        this.productQuote = loaded.objects.ProductQuote as ProductQuote;
+        this.goods = loaded.collections.Goods as Good[];
+        this.salesOrder = loaded.objects.SalesOrder as SalesOrder;
+
+      }, this.errorService.handler);
   }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public approve(): void {
-
-    this.allors.context.invoke(this.quote.Approve)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public reject(): void {
-
-    this.allors.context.invoke(this.quote.Reject)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public Order(): void {
-
-    this.allors.context.invoke(this.quote.Order)
-      .subscribe((invoked: Invoked) => {
-        this.goBack();
-        this.snackBar.open('Order successfully created.', 'close', { duration: 5000 });
-        this.gotoOrder();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public cancelQuoteItem(quoteItem: QuoteItem): void {
-
-    this.allors.context.invoke(quoteItem.Cancel)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Quote Item successfully cancelled.', 'close', { duration: 5000 });
-        this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public deleteQuoteItem(quoteItem: QuoteItem): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this item?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(quoteItem.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Quote Item successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public gotoOrder(): void {
-
-    const { m, pull, x } = this.metaService;
-
-    const pulls = [
-      pull.ProductQuote({
-        object: this.quote,
-        fetch: {
-          SalesOrderWhereQuote: x
-        }
-      })
-    ];
-
-    this.allors.context.load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-        const order = loaded.objects.order as SalesOrder;
-        this.router.navigate(['/orders/salesOrder/' + order.id]);
-      }, this.errorService.handler);
   }
 }

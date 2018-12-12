@@ -69,6 +69,7 @@ export class ProductQuotesOverviewComponent implements OnInit, OnDestroy {
         navigateService.overview(),
         this.delete
       ],
+      defaultAction: navigateService.overview(),
     });
   }
 

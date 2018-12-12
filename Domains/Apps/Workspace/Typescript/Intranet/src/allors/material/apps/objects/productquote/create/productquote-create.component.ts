@@ -1,23 +1,24 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject, Optional } from '@angular/core';
+import { MatSnackBar, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
+import { PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { CreateData } from '../../../../../angular/base/object/object.data';
 
 @Component({
-  templateUrl: './productquote-edit.component.html',
+  templateUrl: './productquote-create.component.html',
   providers: [ContextService]
 })
-export class ProductQuoteEditComponent implements OnInit, OnDestroy {
+export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
@@ -45,7 +46,9 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
     private router: Router,
@@ -107,22 +110,12 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
         this.quote = loaded.objects.productQuote as ProductQuote;
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
-        if (!this.quote) {
-          this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
-          this.quote.Issuer = internalOrganisation;
-          this.quote.IssueDate = new Date();
-          this.quote.ValidFromDate = new Date();
-          this.title = 'Add Quote';
-        } else {
-          this.title = 'Quote ' + this.quote.QuoteNumber;
-        }
+        this.quote = this.allors.context.create('ProductQuote') as ProductQuote;
+        this.quote.Issuer = internalOrganisation;
+        this.quote.IssueDate = new Date();
+        this.quote.ValidFromDate = new Date();
+        this.title = 'Add Quote';
 
-        if (this.quote.Receiver) {
-          this.title = this.title + ' from: ' + this.quote.Receiver.PartyName;
-          this.update(this.quote.Receiver);
-        }
-
-        this.previousReceiver = this.quote.Receiver;
       }, this.errorService.handler);
   }
 
@@ -154,114 +147,6 @@ export class ProductQuoteEditComponent implements OnInit, OnDestroy {
     this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
     this.quote.Receiver.AddPartyContactMechanism(partyContactMechanism);
     this.quote.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
-  }
-
-  public approve(): void {
-
-    const submitFn: () => void = () => {
-      this.allors.context.invoke(this.quote.Approve)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                submitFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            submitFn();
-          }
-        });
-    } else {
-      submitFn();
-    }
-  }
-
-  public reject(): void {
-
-    const rejectFn: () => void = () => {
-      this.allors.context.invoke(this.quote.Reject)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                rejectFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            rejectFn();
-          }
-        });
-    } else {
-      rejectFn();
-    }
-  }
-
-  public Order(): void {
-
-    const rejectFn: () => void = () => {
-      this.allors.context.invoke(this.quote.Order)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('SalesOrder successfully created.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context
-              .save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                rejectFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            rejectFn();
-          }
-        });
-    } else {
-      rejectFn();
-    }
   }
 
   public ngOnDestroy(): void {

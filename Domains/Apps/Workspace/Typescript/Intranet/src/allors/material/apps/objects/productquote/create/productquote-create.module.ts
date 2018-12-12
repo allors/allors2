@@ -20,15 +20,15 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
 
-import { ProductQuoteEditComponent } from './productquote-edit.component';
-export { ProductQuoteEditComponent } from './productquote-edit.component';
+import { ProductQuoteCreateComponent } from './productquote-create.component';
+export { ProductQuoteCreateComponent } from './productquote-create.component';
 
 @NgModule({
   declarations: [
-    ProductQuoteEditComponent,
+    ProductQuoteCreateComponent,
   ],
   exports: [
-    ProductQuoteEditComponent,
+    ProductQuoteCreateComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -65,4 +65,4 @@ export { ProductQuoteEditComponent } from './productquote-edit.component';
     RouterModule,
   ],
 })
-export class ProductQuoteEditModule { }
+export class ProductQuoteCreateModule { }

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { ObjectType, ObjectTypeRef } from '../../../../framework';
 import { ObjectService } from '../../../../angular/base/object';
-import { ObjectData } from 'src/allors/angular/base/object/object.data';
+import { ObjectData, CreateData } from 'src/allors/angular/base/object/object.data';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -14,7 +14,7 @@ export class FactoryFabComponent implements OnInit {
 
   @Input() private objectType: ObjectType | ObjectTypeRef;
 
-  @Input() private createData: any;
+  @Input() private createData: CreateData;
 
   @Output() private created: EventEmitter<ObjectData> = new EventEmitter();;
 

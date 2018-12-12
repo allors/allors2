@@ -21,7 +21,7 @@ export class AllorsMaterialTableComponent {
   onCellClick(row: TableRow, column: Column) {
 
     const action = this.action(row, column);
-    if (action) {
+    if (action && !action.disabled(row.object)) {
       action.execute(row.object);
     }
   }

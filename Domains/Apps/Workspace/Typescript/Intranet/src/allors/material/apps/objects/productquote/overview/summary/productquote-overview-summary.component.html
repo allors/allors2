@@ -1,0 +1,30 @@
+<mat-card *ngIf="productQuote">
+
+  <mat-card-header (click)="panel.manager.toggle('edit')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">business</mat-icon>
+    </div>
+    <mat-card-title>{{productQuote.QuoteNumber}}</mat-card-title>
+    <mat-card-subtitle>
+      <div>
+        {{productQuote.QuoteState?.Name}}
+      </div>
+
+      <div *ngIf="productQuote.ContactPerson">
+        {{productQuote.ContactPerson.displayName}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ productQuote.LastModifiedDate | date}} by {{ productQuote.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-actions>
+    <button *ngIf="productQuote.CanExecuteApprove" mat-button type="button" (click)="approve()">Approve</button>
+    <button *ngIf="productQuote.CanExecuteReject" mat-button type="button" (click)="reject()">Reject</button>
+  </mat-card-actions>
+  
+</mat-card>

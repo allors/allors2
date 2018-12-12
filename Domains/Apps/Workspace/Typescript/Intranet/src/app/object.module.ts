@@ -12,9 +12,11 @@ import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule }
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
 import { PersonCreateModule, PersonCreateComponent } from '../allors/material/apps/objects/person/create/person-create.module';
 import { PhoneCommunicationCreateComponent } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.component';
-import { PhoneCommunicationCreateModule } from 'src/allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
-import { RequestItemEditComponent, RequestItemEditModule } from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
-import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from 'src/allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
+import { PhoneCommunicationCreateModule } from '../allors/material/apps/objects/phonecommunication/create/phonecommunication-create.module';
+import { RequestItemEditComponent, RequestItemEditModule } from '../allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
+import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
+import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
+import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 
 const create = {
   [ids.EmailCommunication]: EmailCommunicationCreateComponent,
@@ -23,11 +25,14 @@ const create = {
   [ids.Organisation]: OrganisationCreateComponent,
   [ids.Person]: PersonCreateComponent,
   [ids.PhoneCommunication]: PhoneCommunicationCreateComponent,
+  [ids.ProductQuote]: ProductQuoteCreateComponent,
+  [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.RequestForQuote]: RequestForQuoteCreateComponent
 };
 
 const edit = {
+  [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
 };
 
@@ -42,6 +47,8 @@ const edit = {
     OrganisationCreateModule,
     PersonCreateModule,
     PhoneCommunicationCreateModule,
+    ProductQuoteCreateModule,
+    QuoteItemEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
   ],
@@ -52,6 +59,8 @@ const edit = {
     OrganisationCreateComponent,
     PersonCreateComponent,
     PhoneCommunicationCreateComponent,
+    ProductQuoteCreateComponent,
+    QuoteItemEditComponent,
     RequestItemEditComponent,
     RequestForQuoteCreateComponent,
   ],

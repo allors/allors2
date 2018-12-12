@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, SearchFactory, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { CreateData, EditData, ObjectData } from 'src/allors/angular/base/object/object.data';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
@@ -38,13 +38,14 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<QuoteItemEditComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
-    private router: Router,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
     public stateService: StateService,
     private dialogService: AllorsMaterialDialogService,
+    public refreshService: RefreshService,
+    public snackBar: MatSnackBar
   ) {
     this.m = this.metaService.m;
 
@@ -55,20 +56,16 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.refresh$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const itemId: string = this.route.snapshot.paramMap.get('itemId');
+          const create = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.ProductQuote({
-              object: id
-            }),
             pull.QuoteItem(
               {
-                object: itemId,
+                object: this.data.id,
                 include: {
                   QuoteItemState: x,
                   RequestItem: x,
@@ -77,7 +74,7 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             ),
             pull.QuoteItem(
               {
-                object: itemId,
+                object: this.data.id,
                 fetch: {
                   RequestItem: x
                 }
@@ -96,20 +93,32 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
+          if (create && this.data.associationId) {
+            pulls.push(
+              pull.ProductQuote({
+                object: this.data.associationId
+              }),
+            );
+          }
+
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, create }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, create }) => {
         this.allors.context.reset();
-        this.quote = loaded.objects.productQuote as ProductQuote;
-        this.quoteItem = loaded.objects.quoteItem as QuoteItem;
-        this.requestItem = loaded.objects.requestItem as RequestItem;
-        this.goods = loaded.collections.goods as Good[];
-        this.unitsOfMeasure = loaded.collections.unitsOfMeasure as UnitOfMeasure[];
+
+        this.quote = loaded.objects.ProductQuote as ProductQuote;
+        this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
+        this.requestItem = loaded.objects.RequestItem as RequestItem;
+        this.goods = loaded.collections.Goods as Good[];
+        this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
 
-        if (!this.quoteItem) {
+        if (create) {
           this.title = 'Add Quote Item';
           this.quoteItem = this.allors.context.create('QuoteItem') as QuoteItem;
           this.quoteItem.UnitOfMeasure = piece;
@@ -132,81 +141,16 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
     }
   }
 
-  public submit(): void {
-
-    const submitFn: () => void = () => {
-      this.allors.context.invoke(this.quoteItem.Submit)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully submitted.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context.save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                submitFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            submitFn();
-          }
-        });
-    } else {
-      submitFn();
-    }
-  }
-
-  public cancel(): void {
-
-    const cancelFn: () => void = () => {
-      this.allors.context.invoke(this.quoteItem.Cancel)
-        .subscribe((invoked: Invoked) => {
-          this.refresh();
-          this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-        },
-          (error: Error) => {
-            this.errorService.handle(error);
-          });
-    };
-
-    if (this.allors.context.hasChanges) {
-      this.dialogService
-        .confirm({ message: 'Save changes?' })
-        .subscribe((confirm: boolean) => {
-          if (confirm) {
-            this.allors.context.save()
-              .subscribe((saved: Saved) => {
-                this.allors.context.reset();
-                cancelFn();
-              },
-                (error: Error) => {
-                  this.errorService.handle(error);
-                });
-          } else {
-            cancelFn();
-          }
-        });
-    } else {
-      cancelFn();
-    }
-  }
-
   public save(): void {
 
     this.allors.context.save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/orders/productQuote/' + this.quote.id]);
+        const data: ObjectData = {
+          id: this.quoteItem.id,
+          objectType: this.quoteItem.objectType,
+        };
+
+        this.dialogRef.close(data);
       },
         (error: Error) => {
           this.errorService.handle(error);
@@ -239,13 +183,13 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
     this.allors.context.load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-        if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-          this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-        }
-        if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-          this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-        }
+        // this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+        // if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
+        //   this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+        // }
+        // if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
+        //   this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+        // }
       }, this.errorService.handler);
   }
 }
