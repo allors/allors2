@@ -17,6 +17,8 @@ import { RequestItemEditComponent, RequestItemEditModule } from '../allors/mater
 import { RequestForQuoteCreateComponent, RequestForQuoteCreateModule } from '../allors/material/apps/objects/requestforquote/create/requestforquote-create.module';
 import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors/material/apps/objects/productquote/create/productquote-create.module';
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
+import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
+import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 
 const create = {
   [ids.EmailCommunication]: EmailCommunicationCreateComponent,
@@ -28,12 +30,15 @@ const create = {
   [ids.ProductQuote]: ProductQuoteCreateComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
-  [ids.RequestForQuote]: RequestForQuoteCreateComponent
+  [ids.RequestForQuote]: RequestForQuoteCreateComponent,
+  [ids.SalesOrder]: SalesOrderCreateComponent,
+  [ids.SalesOrderItem]: SalesOrderItemEditComponent,
 };
 
 const edit = {
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
+  [ids.SalesOrderItem]: SalesOrderItemEditComponent,
 };
 
 @NgModule({
@@ -51,6 +56,8 @@ const edit = {
     QuoteItemEditModule,
     RequestItemEditModule,
     RequestForQuoteCreateModule,
+    SalesOrderCreateModule,
+    SalesOrderItemEditModule,
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
@@ -63,6 +70,8 @@ const edit = {
     QuoteItemEditComponent,
     RequestItemEditComponent,
     RequestForQuoteCreateComponent,
+    SalesOrderCreateComponent,
+    SalesOrderItemEditComponent,
   ],
   providers: [
     ObjectService,

@@ -51,7 +51,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
       .pipe(
         switchMap(([]) => {
 
-          const create = (this.data as EditData).id === undefined;
+          const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
             pull.RequestItem({
@@ -67,7 +67,7 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          if (create && this.data.associationId) {
+          if (isCreate && this.data.associationId) {
             pulls.push(
               pull.Request({
                 object: this.data.associationId
@@ -78,11 +78,11 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
           return this.allors.context
             .load('Pull', new PullRequest({ pulls }))
             .pipe(
-              map((loaded) => ({ loaded, create }))
+              map((loaded) => ({ loaded, isCreate }))
             );
         })
       )
-      .subscribe(({ loaded, create }) => {
+      .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
         this.requestItem = loaded.objects.RequestItem as RequestItem;
@@ -90,14 +90,13 @@ export class RequestItemEditComponent implements OnInit, OnDestroy {
         this.unitsOfMeasure = loaded.collections.UnitsOfMeasure as UnitOfMeasure[];
         const piece = this.unitsOfMeasure.find((v: UnitOfMeasure) => v.UniqueId.toUpperCase() === 'F4BBDB52-3441-4768-92D4-729C6C5D6F1B');
 
-        if (create) {
-          this.request = loaded.objects.Request as Request;
+        if (isCreate) {
           this.title = 'Create Request Item';
+          this.request = loaded.objects.Request as Request;
           this.requestItem = this.allors.context.create('RequestItem') as RequestItem;
           this.requestItem.UnitOfMeasure = piece;
           this.request.AddRequestItem(this.requestItem);
         } else {
-
           this.title = 'Edit Request Item';
           this.refreshInventory(this.requestItem.Product);
         }

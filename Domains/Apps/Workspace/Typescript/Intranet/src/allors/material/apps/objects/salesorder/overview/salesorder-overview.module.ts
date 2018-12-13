@@ -1,25 +1,28 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-
-import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
-import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
-import { AllorsMaterialFilesModule } from '../../../../base/components/files';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
-import { AllorsMaterialLocalisedTextModule } from '../../../../base/components/localisedtext';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { SalesOrderOverviewComponent } from './salesorder-overview.component';
+import { CommunicationEventOverviewPanelModule } from '../../communicationevent/overview/panel/communicationevent-overview-panel.module';
+import { PartyContactMechanismOverviewPanelModule } from '../../partycontactmechanism/overview/panel/partycontactmechanism-overview-panel.module';
+import { SerialisedItemOverviewPanelModule } from '../../serialiseditem/overview/panel/serialiseditem-overview-panel.module';
+import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpartyassignment/overview/panel/workeffortpartyassignment-overview-panel.module';
+
+import { SalesOrderOverviewSummaryModule } from './summary/salesorder-overview-summary.module';
+import { SalesOrderOverviewDetailModule } from './detail/salesorder-overview-detail.module';
+import { SalesOrderItemOverviewPanelModule } from '../../salesorderitem/overview/panel/salesorderitem-overview-panel.module';
+
 export { SalesOrderOverviewComponent } from './salesorder-overview.component';
+import { SalesOrderOverviewComponent } from './salesorder-overview.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,15 @@ export { SalesOrderOverviewComponent } from './salesorder-overview.component';
     SalesOrderOverviewComponent,
   ],
   imports: [
+    SalesOrderOverviewSummaryModule,
+    SalesOrderOverviewDetailModule,
+    SalesOrderItemOverviewPanelModule,
+
+    CommunicationEventOverviewPanelModule,
+    PartyContactMechanismOverviewPanelModule,
+    SerialisedItemOverviewPanelModule,
+    WorkEffortPartyAssignmentOverviewPanelModule,
+
     AllorsMaterialFileModule,
     AllorsMaterialInputModule,
     AllorsMaterialSelectModule,
@@ -36,10 +48,9 @@ export { SalesOrderOverviewComponent } from './salesorder-overview.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-    CommonModule,
 
-    FormsModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatCardModule,
     MatCheckboxModule,
     MatChipsModule,
@@ -55,6 +66,9 @@ export { SalesOrderOverviewComponent } from './salesorder-overview.component';
     MatToolbarModule,
     MatTooltipModule,
     MatOptionModule,
+
+    CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     RouterModule,
   ],

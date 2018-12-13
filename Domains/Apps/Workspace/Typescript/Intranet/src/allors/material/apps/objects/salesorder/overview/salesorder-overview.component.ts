@@ -1,24 +1,22 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatDialog, MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
-
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Loaded, MediaService, Saved, ContextService, MetaService } from '../../../../../angular';
-import { BillingProcess, Good, ProductQuote, SalesInvoice, SalesOrder, SalesOrderItem, SalesTerm, SerialisedInventoryItemState } from '../../../../../domain';
-import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { ProductQuote, Quote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../framework';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './salesorder-overview.component.html',
-  providers: [ContextService]
+  providers: [PanelManagerService, ContextService]
 })
 export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
-  public title = 'Sales Order Overview';
+  title = 'Quote';
+
   public quote: ProductQuote;
   public order: SalesOrder;
   public orderItems: SalesOrderItem[] = [];
@@ -28,52 +26,40 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
   public billingForOrderItems: BillingProcess;
   public selectedSerialisedInventoryState: string;
   public inventoryItemStates: SerialisedInventoryItemState[];
-  private subscription: Subscription;
 
-  private refresh$: BehaviorSubject<Date>;
+  subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public panelManager: PanelManagerService,
     public metaService: MetaService,
+    public refreshService: RefreshService,
+    public navigation: NavigationService,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private router: Router,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
-    public mediaService: MediaService,
-    private dialogService: AllorsMaterialDialogService) {
+    private stateService: StateService,
+    public injector: Injector,
+    titleService: Title,
+  ) {
 
-    this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public save(): void {
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.snackBar.open('items saved', 'close', { duration: 1000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
+    titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
-          const id: string = this.route.snapshot.paramMap.get('id');
+        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
+
+          const { m, pull, x } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          this.panelManager.id = navRoute.id();
+          this.panelManager.objectType = m.Organisation.objectType;
+          this.panelManager.expanded = navRoute.panel();
 
           const pulls = [
             pull.SalesOrder({
-              object: id,
+              object: this.panelManager.id,
               include: {
                 SalesOrderItems: {
                   Product: x,
@@ -123,39 +109,38 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
                 }
               }
             }),
+            pull.SalesOrder({
+              object: this.panelManager.id,
+              fetch: { SalesInvoicesWhereSalesOrder: x }
+            }),
             pull.Good({ sort: new Sort(m.Good.Name) }),
             pull.BillingProcess({ sort: new Sort(m.BillingProcess.Name) }),
             pull.SerialisedInventoryItemState({
               predicate: new Equals({ propertyType: m.SerialisedInventoryItemState.IsActive, value: true }),
               sort: new Sort(m.SerialisedInventoryItemState.Name)
-            })
+            }),
           ];
 
-          const salesInvoiceFetch = pull.SalesOrder({
-            object: id,
-            fetch: { SalesInvoicesWhereSalesOrder: x }
-          });
+          this.panelManager.onPull(pulls);
 
-          if (id != null) {
-            pulls.push(salesInvoiceFetch);
-          }
-
-          return this.allors.context
+          return this.panelManager.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.context.reset();
-        this.goods = loaded.collections.goods as Good[];
-        this.order = loaded.objects.order as SalesOrder;
-        this.salesInvoice = loaded.objects.salesInvoice as SalesInvoice;
-        this.inventoryItemStates = loaded.collections.serialisedInventoryItemStates as SerialisedInventoryItemState[];
-        this.billingProcesses = loaded.collections.billingProcesses as BillingProcess[];
-        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === 'AB01CCC2-6480-4FC0-B20E-265AFD41FAE2');
 
-        if (this.order) {
-          this.orderItems = this.order.SalesOrderItems;
-        }
+        this.panelManager.context.session.reset();
+
+        this.panelManager.onPulled(loaded);
+
+        this.order = loaded.objects.SalesOrder as SalesOrder;
+        this.goods = loaded.collections.Goods as Good[];
+        this.salesInvoice = loaded.objects.SalesInvoice as SalesInvoice;
+        this.inventoryItemStates = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
+        this.billingProcesses = loaded.collections.BillingProcesses as BillingProcess[];
+        this.billingForOrderItems = this.billingProcesses.find((v: BillingProcess) => v.UniqueId.toUpperCase() === 'AB01CCC2-6480-4FC0-B20E-265AFD41FAE2');
+        this.orderItems = this.order.SalesOrderItems;
+
       }, this.errorService.handler);
   }
 
@@ -163,203 +148,5 @@ export class SalesOrderOverviewComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public print() {
-    // this.pdfService.display(this.order);
-  }
-
-  public approve(): void {
-
-    this.allors.context.invoke(this.order.Approve)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully approved.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public cancel(): void {
-
-    this.allors.context.invoke(this.order.Reject)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public reject(): void {
-
-    this.allors.context.invoke(this.order.Reject)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully rejected.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public hold(): void {
-
-    this.allors.context.invoke(this.order.Hold)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully put on hold.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public continue(): void {
-
-    this.allors.context.invoke(this.order.Continue)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully removed from hold.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public confirm(): void {
-
-    this.allors.context.invoke(this.order.Confirm)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully confirmed.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public finish(): void {
-
-    this.allors.context.invoke(this.order.Continue)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully finished.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public cancelOrderItem(orderItem: SalesOrderItem): void {
-
-    this.allors.context.invoke(orderItem.Cancel)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Order Item successfully cancelled.', 'close', { duration: 5000 });
-        this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public rejectOrderItem(orderItem: SalesOrderItem): void {
-
-    this.allors.context.invoke(orderItem.Reject)
-      .subscribe((invoked: Invoked) => {
-        this.snackBar.open('Order Item successfully rejected.', 'close', { duration: 5000 });
-        this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public deleteOrderItem(orderItem: SalesOrderItem): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this item?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(orderItem.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public deleteSalesTerm(salesTerm: SalesTerm): void {
-
-    this.dialogService
-      .confirm({ message: 'Are you sure you want to delete this order term?' })
-      .subscribe((confirm: boolean) => {
-        if (confirm) {
-          this.allors.context.invoke(salesTerm.Delete)
-            .subscribe((invoked: Invoked) => {
-              this.snackBar.open('Successfully deleted.', 'close', { duration: 5000 });
-              this.refresh();
-            },
-              (error: Error) => {
-                this.errorService.handle(error);
-              });
-        }
-      });
-  }
-
-  public ship(): void {
-
-    this.allors.context.invoke(this.order.Ship)
-      .subscribe((invoked: Invoked) => {
-        this.goBack();
-        this.snackBar.open('Customer Shipment successfully created.', 'close', { duration: 5000 });
-        this.refresh();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public createInvoice(): void {
-
-    this.allors.context.invoke(this.order.Invoice)
-      .subscribe((invoked: Invoked) => {
-        this.goBack();
-        this.snackBar.open('Invoice successfully created.', 'close', { duration: 5000 });
-        this.gotoInvoice();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public gotoInvoice(): void {
-
-    const { pull, x } = this.metaService;
-
-    const pulls = [
-      pull.SalesOrder({
-        object: this.order,
-        fetch: { SalesInvoicesWhereSalesOrder: x }
-      })
-    ];
-
-    this.allors.context.load('Pull', new PullRequest({ pulls }))
-      .subscribe((loaded) => {
-        const invoices = loaded.collections.invoices as SalesInvoice[];
-        if (invoices.length === 1) {
-          this.router.navigate(['/accountsreceivable/invoice/' + invoices[0].id]);
-        }
-      }, this.errorService.handler);
   }
 }

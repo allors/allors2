@@ -70,7 +70,6 @@ import * as SalesOrdersOverview from 'src/allors/material/apps/objects/salesorde
 import * as SalesOrderOverview from 'src/allors/material/apps/objects/salesorder/overview/salesorder-overview.module';
 import * as RequestItemEdit from 'src/allors/material/apps/objects/requestitem/edit/requestitem-edit.module';
 import * as QuoteItemEdit from 'src/allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
-import * as SalesOrderEdit from 'src/allors/material/apps/objects/salesorder/edit/salesorder-edit.module';
 import * as SalesOrderItemEdit from 'src/allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import * as GoodList from 'src/allors/material/apps/objects/good/list/good-list.module';
 import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/good-overview.module';
@@ -158,7 +157,6 @@ const modules = [
   SalesOrderOverview.SalesOrderOverviewModule,
   RequestItemEdit.RequestItemEditModule,
   QuoteItemEdit.QuoteItemEditModule,
-  SalesOrderEdit.SalesOrderEditModule,
   SalesOrderItemEdit.SalesOrderItemEditModule,
   GoodList.GoodListModule,
   GoodOverview.GoodOverviewModule,
@@ -311,23 +309,6 @@ export const routes: Routes = [
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
         ],
       },
-      {
-        path: 'salesOrder',
-        children: [
-          { path: '', component: SalesOrderEdit.SalesOrderEditComponent },
-          { path: ':id', component: SalesOrderEdit.SalesOrderEditComponent },
-          { path: ':id/item', component: SalesOrderItemEdit.SalesOrderItemEditComponent },
-          { path: ':id/item/:itemId', component: SalesOrderItemEdit.SalesOrderItemEditComponent },
-          { path: ':id/incoterm', component: IncoTermEdit.IncoTermEditComponent },
-          { path: ':id/incoterm/:termId', component: IncoTermEdit.IncoTermEditComponent },
-          { path: ':id/invoiceterm', component: InvoiceTermEdit.InvoiceTermEditComponent },
-          { path: ':id/invoiceterm/:termId', component: InvoiceTermEdit.InvoiceTermEditComponent },
-          { path: ':id/orderterm', component: OrderTermEdit.OrderTermEditComponent },
-          { path: ':id/orderterm/:termId', component: OrderTermEdit.OrderTermEditComponent },
-        ],
-      },
-
-
       {
         path: 'catalogue',
         children: [

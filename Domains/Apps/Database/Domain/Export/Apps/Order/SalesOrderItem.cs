@@ -146,7 +146,7 @@ namespace Allors.Domain
                 this.AssignedShipToAddress = this.AssignedShipToParty.ShippingAddress;
             }
 
-            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature, M.SalesOrderItem.SerialisedInventoryItem);
+            derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.Product, M.SalesOrderItem.ProductFeature, M.SalesOrderItem.SerialisedItem);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ReservedFromSerialisedInventoryItem, M.SalesOrderItem.ReservedFromNonSerialisedInventoryItem);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.ActualUnitPrice, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
             derivation.Validation.AssertExistsAtMostOne(this, M.SalesOrderItem.RequiredMarkupPercentage, M.SalesOrderItem.RequiredProfitMargin, M.SalesOrderItem.DiscountAdjustment, M.SalesOrderItem.SurchargeAdjustment);
@@ -170,9 +170,9 @@ namespace Allors.Domain
                 this.SalesOrderWhereSalesOrderItem.OnDerive(x => x.WithDerivation(derivation));
             }
 
-            if (derivation.IsCreated(this) && this.ExistSerialisedInventoryItem)
+            if (derivation.IsCreated(this) && this.ExistSerialisedItem)
             {
-                this.Details = this.SerialisedInventoryItem.SerialisedItem.Details;
+                this.Details = this.SerialisedItem.Details;
             }
 
             this.AppsOnDeriveCurrentObjectState(derivation);

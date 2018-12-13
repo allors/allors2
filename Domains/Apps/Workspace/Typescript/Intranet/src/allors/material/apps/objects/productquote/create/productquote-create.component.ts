@@ -51,8 +51,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
-    private router: Router,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
@@ -67,11 +65,9 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, , internalOrganisationId]) => {
-
-          const id: string = this.route.snapshot.paramMap.get('id');
+        switchMap(([, internalOrganisationId]) => {
 
           const pulls = [
             pull.Currency(
@@ -90,15 +86,6 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
                 const pulls2 = [
                   this.fetcher.internalOrganisation,
-                  pull.ProductQuote({
-                    object: id,
-                    include: {
-                      Receiver: x,
-                      FullfillContactMechanism: x,
-                      QuoteState: x,
-                      Request: x,
-                    }
-                  })
                 ];
 
                 return this.allors.context.load('Pull', new PullRequest({ pulls: pulls2 }));
@@ -160,7 +147,7 @@ export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/orders/productQuote/' + this.quote.id]);
+        this.dialogRef.close();
       },
         (error: Error) => {
           this.errorService.handle(error);

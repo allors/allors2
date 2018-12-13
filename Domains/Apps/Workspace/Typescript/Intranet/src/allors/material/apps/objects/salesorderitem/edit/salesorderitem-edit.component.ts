@@ -1,16 +1,17 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
-import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, SerialisedInventoryItemState, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
+import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
+import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
+import { CreateData, EditData } from 'src/allors/angular/base/object/object.data';
 
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
@@ -37,12 +38,14 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   public invoiceItemTypes: InvoiceItemType[];
   public productItemType: InvoiceItemType;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
 
   constructor(
     @Self() public allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<SalesOrderItemEditComponent>,
     public metaService: MetaService,
+    public refreshService: RefreshService,
     private errorService: ErrorService,
     private router: Router,
     private route: ActivatedRoute,
@@ -51,24 +54,21 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     private dialogService: AllorsMaterialDialogService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
   }
 
   public ngOnInit(): void {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.refreshService.refresh$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
-          const itemId: string = this.route.snapshot.paramMap.get('itemId');
+          const isCreate = (this.data as EditData).id === undefined;
 
           const pulls = [
-            pull.SalesOrder({ object: id }),
             pull.SalesOrderItem({
-              object: itemId,
+              object: this.data.id,
               include: {
                 SalesOrderItemState: x,
                 SalesOrderItemShipmentState: x,
@@ -102,28 +102,40 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
             ),
           ];
 
+          if (isCreate && this.data.associationId) {
+            pulls.push(
+              pull.SalesOrder({
+                object: this.data.associationId
+              })
+            );
+          }
+
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }));
+            .load('Pull', new PullRequest({ pulls }))
+            .pipe(
+              map((loaded) => ({ loaded, isCreate }))
+            );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({ loaded, isCreate }) => {
         this.allors.context.reset();
 
-        this.order = loaded.objects.salesOrder as SalesOrder;
-        this.orderItem = loaded.objects.orderItem as SalesOrderItem;
-        this.quoteItem = loaded.objects.quoteItem as QuoteItem;
-        this.goods = loaded.collections.goods as Good[];
+        this.order = loaded.objects.SalesOrder as SalesOrder;
+        this.quoteItem = loaded.objects.QuoteItem as QuoteItem;
+        this.goods = loaded.collections.Goods as Good[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
         this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-        this.serialisedItemStates = loaded.collections.serialisedItemStates as SerialisedItemState[];
-        this.invoiceItemTypes = loaded.collections.invoiceItemTypes as InvoiceItemType[];
+        this.serialisedItemStates = loaded.collections.SerialisedItemStates as SerialisedItemState[];
+        this.invoiceItemTypes = loaded.collections.InvoiceItemTypes as InvoiceItemType[];
         this.productItemType = this.invoiceItemTypes.find((v: InvoiceItemType) => v.UniqueId.toUpperCase() === '0D07F778-2735-44CB-8354-FB887ADA42AD');
 
-        if (!this.orderItem) {
+        if (isCreate) {
           this.title = 'Add Order Item';
           this.orderItem = this.allors.context.create('SalesOrderItem') as SalesOrderItem;
           this.order.AddSalesOrderItem(this.orderItem);
+
         } else {
+          this.orderItem = loaded.objects.SalesOrderItem as SalesOrderItem;
 
           if (this.orderItem.CanWriteActualUnitPrice) {
             this.title = 'Edit Sales Order Item';
@@ -201,7 +213,7 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.refresh$.next(new Date());
+    this.refreshService.refresh();
   }
 
   public goBack(): void {

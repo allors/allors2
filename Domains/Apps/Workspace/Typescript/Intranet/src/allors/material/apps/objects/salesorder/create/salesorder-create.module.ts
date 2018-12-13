@@ -21,15 +21,15 @@ import { PersonInlineModule } from '../../person/inline/person-inline.module';
 import { PostalAddressInlineModule } from '../../postaladdress/inline/postaladdress-inline.module';
 import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
 
-import { SalesOrderEditComponent } from './salesorder-edit.component';
-export { SalesOrderEditComponent } from './salesorder-edit.component';
+import { SalesOrderCreateComponent } from './salesorder-create.component';
+export { SalesOrderCreateComponent } from './salesorder-create.component';
 
 @NgModule({
   declarations: [
-    SalesOrderEditComponent,
+    SalesOrderCreateComponent,
   ],
   exports: [
-    SalesOrderEditComponent,
+    SalesOrderCreateComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -67,4 +67,4 @@ export { SalesOrderEditComponent } from './salesorder-edit.component';
     RouterModule,
   ],
 })
-export class SalesOrderEditModule { }
+export class SalesOrderCreateModule { }

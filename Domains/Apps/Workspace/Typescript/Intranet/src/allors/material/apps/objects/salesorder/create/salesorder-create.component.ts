@@ -1,34 +1,29 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
+import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
+import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
+import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { MetaDomain } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
+import { CreateData } from 'src/allors/angular/base/object/object.data';
+import { ProductQuoteCreateComponent } from '../../productquote/create/productquote-create.module';
 
 @Component({
-  styles: [`
-    .tabInlineComponent {
-    border-bottom: 1px solid #CCCCCC;
-    border-left: 1px solid #CCCCCC;
-    border-right: 1px solid #CCCCCC;}
-  `],
-  templateUrl: './salesorder-edit.component.html',
+  templateUrl: './salesorder-create.component.html',
   providers: [ContextService]
 })
-export class SalesOrderEditComponent implements OnInit, OnDestroy {
+export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
   public m: MetaDomain;
 
-  public title: string;
-  public subTitle: string;
+  public title = 'Add Sales Order';
+
   public order: SalesOrder;
   public quote: ProductQuote;
   public internalOrganisations: InternalOrganisation[];
@@ -94,10 +89,10 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
   constructor(
     @Self() private allors: ContextService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
     private errorService: ErrorService,
-    private router: Router,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     public stateService: StateService) {
@@ -112,13 +107,12 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
-
-          const id: string = this.route.snapshot.paramMap.get('id');
+        switchMap(([, internalOrganisationId]) => {
 
           const pulls = [
+            this.fetcher.internalOrganisation,
             pull.VatRate(),
             pull.VatRegime(),
             pull.Currency({ sort: new Sort(m.CommunicationEventPurpose.Name) }),
@@ -134,60 +128,24 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
           ];
 
           return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              switchMap((loaded) => {
-                this.allors.context.reset();
-                this.vatRates = loaded.collections.VatRates as VatRate[];
-                this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
-                this.stores = loaded.collections.stores as Store[];
-                this.currencies = loaded.collections.currencies as Currency[];
-                this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
-
-                const pulls2 = [
-                  this.fetcher.internalOrganisation,
-                  pull.SalesOrder({
-                    object: id,
-                    include: {
-                      ShipToCustomer: x,
-                      ShipToAddress: x,
-                      ShipToContactPerson: x,
-                      SalesOrderState: x,
-                      BillToContactMechanism: x,
-                      BillToContactPerson: x,
-                      BillToEndCustomerContactMechanism: x,
-                      BillToEndCustomerContactPerson: x,
-                      ShipToEndCustomer: x,
-                      ShipToEndCustomerAddress: x,
-                      ShipToEndCustomerContactPerson: x,
-                      VatRegime: {
-                        VatRate: x,
-                      }
-                    }
-                  })
-                ];
-
-                return this.allors.context.load('Pull', new PullRequest({ pulls: pulls2 }));
-              })
-            );
+            .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.order = loaded.objects.salesOrder as SalesOrder;
         const internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
 
-        if (!this.order) {
-          this.order = this.allors.context.create('SalesOrder') as SalesOrder;
-          this.order.TakenBy = internalOrganisation;
+        this.order = this.allors.context.create('SalesOrder') as SalesOrder;
+        this.order.TakenBy = internalOrganisation;
 
-          if (this.stores.length === 1) {
-            this.order.Store = this.stores[0];
-          }
-
-          this.title = 'Add Sales Order';
-        } else {
-          this.title = 'Sales Order ' + this.order.OrderNumber;
+        if (this.stores.length === 1) {
+          this.order.Store = this.stores[0];
         }
+
+        this.vatRates = loaded.collections.VatRates as VatRate[];
+        this.vatRegimes = loaded.collections.VatRegimes as VatRegime[];
+        this.stores = loaded.collections.stores as Store[];
+        this.currencies = loaded.collections.currencies as Currency[];
+        this.internalOrganisations = loaded.collections.internalOrganisations as InternalOrganisation[];
 
         if (this.order.ShipToCustomer) {
           this.updateShipToCustomer(this.order.ShipToCustomer);
@@ -595,7 +553,7 @@ export class SalesOrderEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .save()
       .subscribe((saved: Saved) => {
-        this.router.navigate(['/orders/salesOrder/' + this.order.id]);
+        this.dialogRef.close();
       },
         (error: Error) => {
           this.errorService.handle(error);

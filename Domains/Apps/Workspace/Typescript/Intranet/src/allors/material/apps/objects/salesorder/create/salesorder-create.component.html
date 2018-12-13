@@ -1,0 +1,247 @@
+<form *ngIf="order" class="a-edit" #form="ngForm" (submit)="save()">
+
+  <h3 mat-dialog-title>{{title}}</h3>
+
+  <div>
+
+    <div mat-dialog-content>
+      <div class="container-fluid">
+
+        <div class="row" *ngIf="!order.isNew">
+          <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.SalesOrderState" display="Name" label="Status"></a-mat-static>
+          <a-mat-static class="col" [object]="order" [roleType]="m.SalesOrder.Quote" display="QuoteNumber"></a-mat-static>
+          <a-mat-select class="col" *ngIf="stores.length > 1 && !order.Store" [object]="order" [roleType]="m.SalesOrder.Store"
+            [options]="stores" display="Name" class="col-md"></a-mat-select>
+          <a-mat-select class="col" *ngIf="stores.length > 1 && order.isNew" [object]="order" [roleType]="m.SalesOrder.Store"
+            [options]="stores" display="Name" class="col-md"></a-mat-select>
+        </div>
+
+        <div class="row">
+          <a-mat-autocomplete class="col" *ngIf="showShipToOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToCustomer"
+            [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="shipToCustomerSelected($event)"
+            label="Ship to organisation"></a-mat-autocomplete>
+        </div>
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select [object]="order" [roleType]="m.SalesOrder.ShipToAddress" [options]="shipToAddresses"
+                display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addShipToAddress = !addShipToAddress">
+                <mat-icon *ngIf="!addShipToAddress">add</mat-icon>
+                <mat-icon *ngIf="addShipToAddress">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 pb-3" *ngIf="order.ShipToCustomer && addShipToAddress">
+            <mat-card>
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism-postaladdress (cancelled)="shipToAddressCancelled($event); addShipToAddress = false"
+                  (saved)="shipToAddressAdded($event); addShipToAddress = false">
+                </party-contactmechanism-postaladdress>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.ShipToContactPerson" [options]="shipToContacts"
+                display="displayName" label="Shipping Contact Person"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.ShipToCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addShipToContactPerson = !addShipToContactPerson">
+                <mat-icon *ngIf="!addShipToContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addShipToContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="order.ShipToCustomer && addShipToContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="shipToContactPersonCancelled($event); addShipToContactPerson = false"
+                  (saved)="shipToContactPersonAdded($event); addShipToContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-autocomplete class="col" *ngIf="showBillToOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToCustomer"
+            [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="billToCustomerSelected($event)"
+            label="Bill to"></a-mat-autocomplete>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToContactMechanism" [options]="billToContactMechanisms"
+                display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addBillToContactMechanism = !addBillToContactMechanism">
+                <mat-icon *ngIf="!addBillToContactMechanism">add</mat-icon>
+                <mat-icon *ngIf="addBillToContactMechanism">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="order.BillToCustomer && addBillToContactMechanism">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism (saved)="billToContactMechanismAdded($event)" (cancelled)="billToContactMechanismCancelled()">
+                </party-contactmechanism>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToContactPerson" [options]="billToContacts"
+                display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.BillToCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addBillToContactPerson = !addBillToContactPerson">
+                <mat-icon *ngIf="!addBillToContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addBillToContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="order.BillToCustomer && addBillToContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="billToContactPersonCancelled($event); addBillToContactPerson = false"
+                  (saved)="billToContactPersonAdded($event); addBillToContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-autocomplete class="col" *ngIf="showShipToEndCustomerOrganisations" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomer"
+            [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="shipToEndCustomerSelected($event)"
+            label="Ship to end customer"></a-mat-autocomplete>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerAddress" [options]="shipToEndCustomerAddresses"
+                display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addShipToEndCustomerAddress = !addShipToEndCustomerAddress">
+                <mat-icon *ngIf="!addShipToEndCustomerAddress">add</mat-icon>
+                <mat-icon *ngIf="addShipToEndCustomerAddress">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 pb-3" *ngIf="order.ShipToEndCustomer && addShipToEndCustomerAddress">
+            <mat-card>
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism-postaladdress (saved)="shipToEndCustomerAddressAdded($event)" (cancelled)="shipToEndCustomerAddressCancelled()">
+                </party-contactmechanism-postaladdress>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.ShipToEndCustomerContactPerson"
+                [options]="shipToEndCustomerContacts" display="displayName" label="Shipping Contact Person" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.ShipToEndCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addShipToEndCustomerContactPerson = !addShipToEndCustomerContactPerson">
+                <mat-icon *ngIf="!addShipToEndCustomerContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addShipToEndCustomerContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="order.ShipToEndCustomer && addShipToEndCustomerContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="shipToEndCustomerContactPersonCancelled($event); addShipToEndCustomerContactPerson = false"
+                  (saved)="shipToEndCustomerContactPersonAdded($event); addShipToEndCustomerContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-autocomplete class="col" *ngIf="showBillToEndCustomerOrganisations" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomer"
+            [filter]="stateService.customersFilter.create(scope)" display="Name" (onChange)="billToEndCustomerSelected($event)"
+            label="Bill to end customer"></a-mat-autocomplete>
+        </div>
+
+        <div class="row">
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactMechanism"
+                [options]="billToEndCustomerContactMechanisms" display="displayName" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addBillToEndCustomerContactMechanism = !addBillToEndCustomerContactMechanism">
+                <mat-icon *ngIf="!addBillToEndCustomerContactMechanism">add</mat-icon>
+                <mat-icon *ngIf="addBillToEndCustomerContactMechanism">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12 pb-3" *ngIf="order.BillToEndCustomer && addBillToEndCustomerContactMechanism">
+            <mat-card>
+              <mat-card-header>Add a new contact mechanism</mat-card-header>
+              <mat-card-content>
+                <party-contactmechanism (saved)="billToEndCustomerContactMechanismAdded($event)" (cancelled)="billToEndCustomerContactMechanismCancelled()">
+                </party-contactmechanism>
+              </mat-card-content>
+            </mat-card>
+          </div>
+
+          <div class="col-md">
+            <div class="row">
+              <a-mat-select class="col" [object]="order" [roleType]="m.SalesOrder.BillToEndCustomerContactPerson"
+                [options]="billToEndCustomerContacts" display="displayName" label="Billing Contact Person" class="col-md"></a-mat-select>
+              <button mat-mini-fab color="accent" [disabled]="!order.BillToEndCustomer || !order.CanWriteSalesOrderItems"
+                type="button" (click)="addBillToEndCustomerContactPerson = !addBillToEndCustomerContactPerson">
+                <mat-icon *ngIf="!addBillToEndCustomerContactPerson">add</mat-icon>
+                <mat-icon *ngIf="addBillToEndCustomerContactPerson">close</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-12" *ngIf="order.BillToEndCustomer && addBillToEndCustomerContactPerson">
+            <mat-card>
+              <mat-card-header>Add a new person</mat-card-header>
+              <mat-card-content>
+                <person-inline (cancelled)="billToEndCustomerContactPersonCancelled($event); addBillToEndCustomerContactPerson = false"
+                  (saved)="billToEndCustomerContactPersonAdded($event); addBillToEndCustomerContactPerson = false">
+                </person-inline>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <div class="row">
+          <a-mat-select class="col-md" [object]="order" [roleType]="m.SalesOrder.VatRegime" [options]="vatRegimes"
+            display="Name"></a-mat-select>
+          <a-mat-static class="col-md" [object]="order.VatRegime" [roleType]="m.VatRegime.VatRate" display="Rate"></a-mat-static>
+        </div>
+
+        <div class="row">
+          <a-mat-textarea class="col-md" [object]="order" [roleType]="m.SalesOrder.Description"></a-mat-textarea>
+          <a-mat-input class="col-md" [object]="order" [roleType]="m.SalesOrder.CustomerReference"></a-mat-input>
+          <a-mat-static class="col-md" *ngIf="quote?.Comment" [object]="quote" [roleType]="m.Quote.Comment" label="Quote Comment"></a-mat-static>
+          <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.SalesOrder.Comment" label="Order Comment"></a-mat-textarea>
+          <a-mat-static class="col-md" *ngIf="quote?.InternalComment" [object]="quote" [roleType]="m.Quote.InternalComment"
+            label="Quote Internal Comment"></a-mat-static>
+          <a-mat-textarea class="col-md-12" [object]="order" [roleType]="m.SalesOrder.InternalComment" label="Order Internal Comment"></a-mat-textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close();" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !allors.context.hasChanges">SAVE</button>
+  </div>
+
+</form>
