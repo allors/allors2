@@ -1,4 +1,4 @@
-import { ObjectType, PropertyType, ObjectTypeRef } from '../../meta';
+import { ObjectType } from '../../meta';
 import { Tree } from './Tree';
 import { Step } from './Step';
 
@@ -9,10 +9,10 @@ export class Fetch {
 
   public include: Tree;
 
-  constructor(fields?: Partial<Fetch> | ObjectType | ObjectTypeRef, literal?) {
+  constructor(fields?: Partial<Fetch> | ObjectType, literal?: any) {
 
-    if (fields instanceof ObjectType || fields && (fields as ObjectTypeRef).objectType) {
-      const objectType = (fields as ObjectTypeRef).objectType ? (fields as ObjectTypeRef).objectType : fields as ObjectType;
+    if (fields instanceof ObjectType) {
+      const objectType = fields as ObjectType;
 
       if (literal) {
         const keys = Object.keys(literal);

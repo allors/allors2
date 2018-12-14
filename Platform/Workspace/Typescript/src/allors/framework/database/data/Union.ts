@@ -1,6 +1,6 @@
 import { Sort } from './Sort';
 import { Extent } from './Extent';
-import { ObjectType, ObjectTypeRef } from '../../meta';
+import { ObjectType } from '../../meta';
 
 export class Union {
 
@@ -8,7 +8,7 @@ export class Union {
 
   public sort: Sort[];
 
-  public get objectType(): ObjectType | ObjectTypeRef {
+  public get objectType(): ObjectType {
     return this.operands && this.operands.length > 0 ? this.operands[0].objectType : undefined;
   }
 

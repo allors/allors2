@@ -5,7 +5,6 @@ import { Class, Data, Interface } from './Data';
 import { ExclusiveMethodType } from './ExclusiveMethodType';
 import { ExclusiveRoleType } from './ExclusiveRoleType';
 import { MetaObject } from './MetaObject';
-import { ObjectTypeRef } from './ObjectTypeRef';
 import { MethodType } from './MethodType';
 import { Kind, ObjectType } from './ObjectType';
 import { RoleType } from './RoleType';
@@ -14,8 +13,6 @@ export class MetaPopulation {
   public readonly objectTypeByName: { [name: string]: ObjectType; } = {};
 
   public readonly metaObjectById: { [id: string]: MetaObject; } = {};
-
-  public readonly metaDomain: any;
 
   constructor(data: Data) {
 
@@ -149,27 +146,23 @@ export class MetaPopulation {
       .map((name) => this.objectTypeByName[name])
       .forEach((objectType) => objectType.derive());
 
-    // MetaDomain
-    this.metaDomain = {};
+    // Typed access
     Object.keys(this.objectTypeByName)
       .forEach((objectTypeName) => {
         const objectType: ObjectType = this.objectTypeByName[objectTypeName];
-        const metaObjectType: ObjectTypeRef = {
-          objectType: objectType,
-        };
-        this.metaDomain[objectTypeName] = metaObjectType;
+        this[objectTypeName] = objectType;
 
-        Object.keys(objectType.roleTypeByName).forEach((roleTypeName) => {
-          const roleType = objectType.roleTypeByName[roleTypeName];
-          metaObjectType[roleTypeName] = roleType;
+        Object.keys(objectType.roleTypeByName).forEach((name) => {
+          const roleType = objectType.roleTypeByName[name];
+          objectType[name] = roleType;
         });
 
         Object.keys(objectType.associationTypeByName).forEach((name) => {
-          metaObjectType[name] = objectType.associationTypeByName[name];
+          objectType[name] = objectType.associationTypeByName[name];
         });
 
         Object.keys(objectType.methodTypeByName).forEach((name) => {
-          metaObjectType[name] = objectType.methodTypeByName[name];
+          objectType[name] = objectType.methodTypeByName[name];
         });
       });
   }

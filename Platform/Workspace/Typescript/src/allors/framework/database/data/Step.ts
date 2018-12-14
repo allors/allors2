@@ -1,4 +1,4 @@
-import { AssociationType, RoleType, ObjectType, ObjectTypeRef } from '../../meta';
+import { AssociationType, RoleType, ObjectType } from '../../meta';
 import { Tree } from './Tree';
 
 const includeKey = 'include';
@@ -10,9 +10,9 @@ export class Step {
 
   public next: Step | Tree;
 
-  constructor(fields?: Partial<Step> | ObjectType | ObjectTypeRef, stepName?: string, literal?) {
-    if (fields instanceof ObjectType || fields && (fields as ObjectTypeRef).objectType) {
-      const objectType = (fields as ObjectTypeRef).objectType ? (fields as ObjectTypeRef).objectType : fields as ObjectType;
+  constructor(fields?: Partial<Step> | ObjectType, stepName?: string, literal?) {
+    if (fields instanceof ObjectType) {
+      const objectType = fields as ObjectType;
 
       this.propertyType = objectType.roleTypeByName[stepName];
       if (!this.propertyType) {

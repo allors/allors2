@@ -1,14 +1,14 @@
 import { assert } from 'chai';
 import 'mocha';
 
-import { ObjectTypeRef, MetaPopulation } from '../../src/allors/framework';
+import { MetaPopulation, ObjectType } from '../../src/allors/framework';
 import { data, MetaDomain } from '../../src/allors/meta';
 
 describe('MetaDomain',
     () => {
 
         const metaPopulation = new MetaPopulation(data);
-        const metaDomain: MetaDomain = metaPopulation.metaDomain;
+        const metaDomain: MetaDomain = metaPopulation as MetaDomain;
 
         it('is defined',
             () => {
@@ -32,16 +32,16 @@ describe('MetaDomain',
         it('metaObject.objectType should be defined',
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
-                    const metaObjectType: ObjectTypeRef = metaDomain[v.name];
-                    assert.isDefined(metaObjectType.objectType);
+                    const metaObjectType: ObjectType = metaDomain[v.name];
+                    assert.isDefined(metaObjectType);
                 });
             });
 
         it('metaObject roleTypes should be defined',
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
-                    const metaObjectType: ObjectTypeRef = metaDomain[v.name];
-                    const objectType = metaObjectType.objectType;
+                    const metaObjectType: ObjectType = metaDomain[v.name];
+                    const objectType = metaObjectType;
 
                     const roleTypes = Object.keys(objectType.roleTypeByName).map((w) => objectType.roleTypeByName[w]);
 
@@ -55,8 +55,8 @@ describe('MetaDomain',
         it('metaObject associationTypes should be defined',
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
-                    const metaObjectType: ObjectTypeRef = metaDomain[v.name];
-                    const objectType = metaObjectType.objectType;
+                    const metaObjectType: ObjectType = metaDomain[v.name];
+                    const objectType = metaObjectType;
 
                     const associationTypes = Object.keys(objectType.associationTypeByName).map((w) => objectType.associationTypeByName[w]);
 

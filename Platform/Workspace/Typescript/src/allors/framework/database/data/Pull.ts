@@ -3,7 +3,6 @@ import { ISessionObject } from '../../workspace';
 import { Result } from './Result';
 import { FlatPull } from './FlatPull';
 import { ObjectType } from '../../meta/ObjectType';
-import { ObjectTypeRef } from '../../meta';
 import { Filter } from './Filter';
 import { Fetch } from './Fetch';
 import { Sort } from './Sort';
@@ -15,7 +14,7 @@ export class Pull {
 
   public extent: Extent;
 
-  public objectType: ObjectType | ObjectTypeRef;
+  public objectType: ObjectType;
 
   public object: ISessionObject | string;
 
@@ -23,9 +22,9 @@ export class Pull {
 
   public results: Result[];
 
-  constructor(fields?: Partial<Pull> | ObjectType | ObjectTypeRef, flat?: FlatPull) {
-    if (fields instanceof ObjectType || (fields as ObjectTypeRef).objectType) {
-      this.objectType = (fields as ObjectTypeRef).objectType ? (fields as ObjectTypeRef).objectType : fields as ObjectType;
+  constructor(fields?: Partial<Pull> | ObjectType, flat?: FlatPull) {
+    if (fields instanceof ObjectType) {
+      this.objectType = fields as ObjectType;
 
       if (!flat) {
         this.extent = new Filter({ objectType: this.objectType });
@@ -88,7 +87,7 @@ export class Pull {
     return {
       extentRef: this.extentRef,
       extent: this.extent,
-      objectType: this.objectType && ((this.objectType as ObjectTypeRef).objectType ? (this.objectType as ObjectTypeRef).objectType.id : (this.objectType as ObjectType).id),
+      objectType: this.objectType && this.objectType.id,
       object: sessionObject && sessionObject.id ? sessionObject.id : this.object,
       arguments: this.arguments,
       results: this.results,
