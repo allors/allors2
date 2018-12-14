@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { ObjectType, ObjectTypeRef } from '../../../../framework';
-import { ObjectService } from '../../../../angular/base/object';
-import { ObjectData, CreateData } from 'src/allors/angular/base/object/object.data';
+import { ObjectType } from '../../../../framework';
+import { CreateData, ObjectData } from '../../services/object';
+import { ObjectService } from '../../services/object';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -12,7 +12,7 @@ import { ObjectData, CreateData } from 'src/allors/angular/base/object/object.da
 })
 export class FactoryFabComponent implements OnInit {
 
-  @Input() private objectType: ObjectType | ObjectTypeRef;
+  @Input() private objectType: ObjectType;
 
   @Input() private createData: CreateData;
 
@@ -25,12 +25,10 @@ export class FactoryFabComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const objectType = this.objectType instanceof ObjectType ? this.objectType : this.objectType.objectType;
-
-    if (objectType.isInterface) {
-      this.classes = objectType.classes;
+    if (this.objectType.isInterface) {
+      this.classes = this.objectType.classes;
     } else {
-      this.classes = [objectType];
+      this.classes = [this.objectType];
     }
 
     this.classes = this.classes.filter((v) => this.factoryService.hasCreateControl(v));

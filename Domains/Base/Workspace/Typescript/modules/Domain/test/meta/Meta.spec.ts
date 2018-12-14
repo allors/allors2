@@ -2,13 +2,13 @@ import { assert } from 'chai';
 import 'mocha';
 
 import { MetaPopulation, ObjectType } from '../../src/allors/framework';
-import { data, MetaDomain } from '../../src/allors/meta';
+import { data, Meta } from '../../src/allors/meta';
 
-describe('MetaDomain',
+describe('Meta',
     () => {
 
         const metaPopulation = new MetaPopulation(data);
-        const metaDomain: MetaDomain = metaPopulation as MetaDomain;
+        const metaDomain = metaPopulation as Meta;
 
         it('is defined',
             () => {

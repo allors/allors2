@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 import 'mocha';
 
-import { Organisation, Person, domain } from '../../src/allors/domain';
+import { domain } from '../../src/allors/domain';
 import { MetaPopulation, PullResponse, PushResponse, ResponseType, Session, Workspace } from '../../src/allors/framework';
-import { data, MetaDomain } from '../../src/allors/meta';
+import { data } from '../../src/allors/meta';
 
 import { syncResponse } from './fixture';
 

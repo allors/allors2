@@ -1,9 +1,5 @@
-import { domain, Person, Organisation } from '../../src/allors/domain';
-import { MetaPopulation, PullRequest, Workspace, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
-import { data, MetaDomain } from '../../src/allors/meta';
-
-import { Database, Scope } from '../../src/allors/promise';
-import { AxiosHttp } from '../../src/allors/promise/base/http/AxiosHttp';
+import { Person } from '../../src/allors/domain';
+import { PullRequest, Pull, Filter, TreeNode, Tree, Result, Fetch } from '../../src/allors/framework';
 
 import { assert } from 'chai';
 import 'mocha';

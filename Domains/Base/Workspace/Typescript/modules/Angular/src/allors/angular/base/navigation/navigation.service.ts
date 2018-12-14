@@ -3,7 +3,7 @@ import { Route, Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { NavigationItem } from './NavigationItem';
-import { ISessionObject, ObjectType, MetaObject, ObjectTypeRef } from 'src/allors/framework';
+import { ISessionObject, ObjectType } from 'src/allors/framework';
 import { WorkspaceService } from '../framework';
 
 @Injectable()
@@ -19,9 +19,8 @@ export class NavigationService {
     this.router.config.map((route: Route) => new NavigationItem(workspaceService.metaPopulation, this.navigationItems, route));
   }
 
-  list(objectTypeOrMetaObjectType: ObjectType | ObjectTypeRef) {
-    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType.objectType.id;
-    const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'list');
+  list(objectType: ObjectType) {
+    const navigationItem = this.navigationItems.find((v) => v.id === objectType.id && v.action === 'list');
     const url = navigationItem.link;
     this.router.navigate([url]);
   }
@@ -34,9 +33,8 @@ export class NavigationService {
     this.router.navigate([url]);
   }
 
-  add(objectTypeOrMetaObjectType: ObjectType | ObjectTypeRef, ...params: ISessionObject[]) {
-    const objectTypeId = (objectTypeOrMetaObjectType instanceof ObjectType) ? objectTypeOrMetaObjectType.id : objectTypeOrMetaObjectType.objectType.id;
-    const navigationItem = this.navigationItems.find((v) => v.id === objectTypeId && v.action === 'add');
+  add(objectType: ObjectType, ...params: ISessionObject[]) {
+    const navigationItem = this.navigationItems.find((v) => v.id === objectType.id && v.action === 'add');
     const url = navigationItem.link;
     const queryParams = params.reduce((acc, v) => { acc[v.objectType.name] = v.id; return acc; }, {});
     this.router.navigate([url], { queryParams });

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { MetaDomain, PullFactory, FetchFactory, TreeFactory } from '../../../meta';
+import { Meta, PullFactory, FetchFactory, TreeFactory } from '../../../meta';
 import { WorkspaceService } from './WorkspaceService';
 
 @Injectable({
@@ -10,17 +10,16 @@ export class MetaService {
 
   x = {};
 
-  m: MetaDomain;
+  m: Meta;
 
   pull: PullFactory;
   fetch: FetchFactory;
   tree: TreeFactory;
 
   constructor(public workspaceService: WorkspaceService) {
-    const metaPopulation = workspaceService.metaPopulation;
-    this.m = metaPopulation.metaDomain;
-    this.pull = new PullFactory(metaPopulation);
-    this.fetch = new FetchFactory(metaPopulation);
-    this.tree = new TreeFactory(metaPopulation);
+    this.m = workspaceService.metaPopulation as Meta;
+    this.pull = new PullFactory(this.m);
+    this.fetch = new FetchFactory(this.m);
+    this.tree = new TreeFactory(this.m);
   }
 }

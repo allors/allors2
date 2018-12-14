@@ -17,7 +17,7 @@ export interface ISession {
 
   get(id: string): ISessionObject;
 
-  create(objectTypeName: string | ObjectType): ISessionObject;
+  create(objectType: ObjectType | string): ISessionObject;
 
   delete(object: ISessionObject): void;
 
@@ -67,7 +67,7 @@ export class Session implements ISession {
     return sessionObject;
   }
 
-  public create(objectType: string | ObjectType): ISessionObject {
+  public create(objectType: ObjectType | string): ISessionObject {
 
     const objectTypeName = objectType instanceof ObjectType ? objectType.name : objectType;
     const constructor: any = this.workspace.constructorByName[objectTypeName];

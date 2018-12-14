@@ -5,7 +5,7 @@ import { scan, switchMap } from 'rxjs/operators';
 
 import { Organisation } from '../../../../domain';
 import { PullRequest, And, Like } from '../../../../framework';
-import { SessionService, NavigationService, AllorsFilterService, ErrorService, AllorsRefreshService, Action } from '../../../../angular';
+import { ContextService, NavigationService, AllorsFilterService, ErrorService, RefreshService, Action, MetaService } from '../../../../angular';
 import { Table, TableRow, Sorter } from '../../../../material';
 
 import { NavigateService, DeleteService } from '../../../../material';
@@ -18,7 +18,7 @@ interface Row extends TableRow {
 
 @Component({
   templateUrl: './organisations.component.html',
-  providers: [SessionService, AllorsFilterService]
+  providers: [ContextService, AllorsFilterService]
 })
 export class OrganisationsComponent implements OnInit, OnDestroy {
 
@@ -31,9 +31,10 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
     @Self() private filterService: AllorsFilterService,
-    public refreshService: AllorsRefreshService,
+    public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigateService: NavigateService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
@@ -42,7 +43,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle(this.title);
 
-    this.delete = deleteService.delete(allors);
+    this.delete = deleteService.delete(allors.context);
     this.delete.result.subscribe((v) => {
       this.table.selection.clear();
     });
@@ -62,7 +63,7 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
 
-    const { x, m, pull } = this.allors;
+    const { x, m, pull } = this.metaService;
 
     const predicate = new And([
       new Like({ roleType: m.Organisation.Name, parameter: 'name' }),
@@ -101,11 +102,11 @@ export class OrganisationsComponent implements OnInit, OnDestroy {
               take: pageEvent.pageSize,
             })];
 
-          return this.allors.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.session.reset();
+        this.allors.context.reset();
         const organisations = loaded.collections.Organisations as Organisation[];
         this.table.total = loaded.values.Organisations_total;
         this.table.data = organisations.map((v) => {

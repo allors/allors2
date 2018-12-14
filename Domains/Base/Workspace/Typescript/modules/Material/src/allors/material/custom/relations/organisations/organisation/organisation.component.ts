@@ -5,14 +5,14 @@ import { ActivatedRoute, UrlSegment } from '@angular/router';
 import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Field, SearchFactory, Loaded, Saved, WorkspaceService, SessionService } from '../../../../../angular';
+import { ErrorService, Field, SearchFactory, Loaded, Saved, WorkspaceService, ContextService, MetaService } from '../../../../../angular';
 import { Organisation, Person } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { MetaDomain, PullFactory } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
 @Component({
   templateUrl: './organisation.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -20,7 +20,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   field: Field;
 
-  m: MetaDomain;
+  m: Meta;
   people: Person[];
 
   organisation: Organisation;
@@ -31,7 +31,8 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private sessionService: SessionService,
+    @Self() private allors: ContextService,
+    private metaService: MetaService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute,
@@ -40,7 +41,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     this.title = 'Organisation';
     this.titleService.setTitle(this.title);
 
-    this.m = this.sessionService.m;
+    this.m = this.metaService.m;
 
     this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.UserName] });
 
@@ -51,7 +52,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
     const route$: Observable<UrlSegment[]> = this.route.url;
     const combined$: Observable<[UrlSegment[], Date]> = combineLatest(route$, this.refresh$);
 
-    const { pull } = this.sessionService;
+    const { pull } = this.metaService;
 
     this.subscription = combined$
       .pipe(
@@ -66,15 +67,15 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
             pull.Person()
           ];
 
-          return this.sessionService
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
 
-        this.sessionService.session.reset();
+        this.allors.context.reset();
 
-        this.organisation = loaded.objects.Organisation as Organisation || this.sessionService.session.create('Organisation') as Organisation;
+        this.organisation = loaded.objects.Organisation as Organisation || this.allors.context.create('Organisation') as Organisation;
         this.people = loaded.collections.People as Person[];
       },
         (error: any) => {
@@ -98,7 +99,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public toggleCanWrite() {
-    this.sessionService
+    this.allors.context
       .invoke(this.organisation.ToggleCanWrite)
       .subscribe(() => {
         this.refresh();
@@ -110,7 +111,7 @@ export class OrganisationComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public save(): void {
 
-    this.sessionService
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

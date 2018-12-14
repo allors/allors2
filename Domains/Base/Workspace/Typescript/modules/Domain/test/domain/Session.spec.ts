@@ -1,7 +1,7 @@
 import { assert } from 'chai';
-import { domain, Media, Organisation, Person } from '../../src/allors/domain';
+import { domain, Organisation, Person } from '../../src/allors/domain';
 import { MetaPopulation, PushResponse, ResponseType, Session, Workspace, SessionObject } from '../../src/allors/framework';
-import { data, MetaDomain } from '../../src/allors/meta';
+import { data } from '../../src/allors/meta';
 import { syncResponse } from './fixture';
 
 describe('Session',

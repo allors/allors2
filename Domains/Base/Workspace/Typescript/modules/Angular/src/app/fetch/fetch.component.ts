@@ -3,13 +3,13 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { Loaded, SessionService } from '../../allors/angular';
+import { Loaded, ContextService, MetaService } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
 import { PullRequest } from '../../allors/framework';
 
 @Component({
   templateUrl: './fetch.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class FetchComponent implements OnInit, OnDestroy {
 
@@ -19,7 +19,8 @@ export class FetchComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
+    private metaService: MetaService,
     private title: Title,
     private route: ActivatedRoute,
   ) { }
@@ -34,7 +35,7 @@ export class FetchComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
 
-    const { pull, x } = this.allors;
+    const { pull, x } = this.metaService;
 
     const id = this.route.snapshot.paramMap.get('id');
 
@@ -53,9 +54,9 @@ export class FetchComponent implements OnInit, OnDestroy {
       })
     ];
 
-    this.allors.session.reset();
+    this.allors.context.reset();
 
-    this.subscription = this.allors
+    this.subscription = this.allors.context
       .load('Pull', new PullRequest({
         pulls,
       }))

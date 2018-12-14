@@ -4,14 +4,14 @@ import { MatSidenav } from '@angular/material';
 import { filter } from 'rxjs/operators';
 
 import { SideMenuItem, AllorsMaterialSideNavService } from '../../allors/material';
-import { MenuService, SessionService } from '../../allors/angular';
+import { MenuService, ContextService, MetaService } from '../../allors/angular';
 import { Organisation } from '../../allors/domain';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   styleUrls: ['main.component.scss'],
   templateUrl: './main.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class MainComponent implements OnInit, OnDestroy {
 
@@ -27,7 +27,8 @@ export class MainComponent implements OnInit, OnDestroy {
   @ViewChild('drawer') private sidenav: MatSidenav;
 
   constructor(
-    @Self() private allors: SessionService,
+    @Self() private allors: ContextService,
+    public metaService: MetaService,
     private router: Router,
     private sideNavService: AllorsMaterialSideNavService,
     private menuService: MenuService,

@@ -6,25 +6,26 @@ import { switchMap } from 'rxjs/operators';
 
 import { Locale, Person } from '../../../../../domain';
 import { PullRequest, Pull } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
-import { ErrorService, Loaded, SessionService } from '../../../../../angular';
+import { Meta } from '../../../../../meta';
+import { ErrorService, Loaded, ContextService, MetaService } from '../../../../../angular';
 
 @Component({
   templateUrl: './person.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
 
-  public m: MetaDomain;
+  public m: Meta;
   public locales: Locale[];
   public person: Person;
 
   private subscription: Subscription;
 
   constructor(
-    @Self() private sessionService: SessionService,
+    @Self() private allors: ContextService,
+    private metaService: MetaService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute) {
@@ -32,11 +33,11 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
     this.title = 'Person';
     this.titleService.setTitle(this.title);
 
-    this.m = this.sessionService.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
-    const { pull } = this.sessionService;
+    const { pull } = this.metaService;
 
     this.subscription = this.route.url
       .pipe(
@@ -53,14 +54,14 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
             }),
             pull.Locale()
           ];
-          this.sessionService.session.reset();
-          return this.sessionService
+          this.allors.context.reset();
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded: Loaded) => {
 
-        this.person = loaded.objects.Person as Person || this.sessionService.session.create('Person') as Person;
+        this.person = loaded.objects.Person as Person || this.allors.context.create('Person') as Person;
         this.locales = loaded.collections.Locales as Locale[];
       },
         (error: any) => {
@@ -81,7 +82,7 @@ export class PersonComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public save(): void {
 
-    this.sessionService
+    this.allors.context
       .save()
       .subscribe(() => {
         this.goBack();

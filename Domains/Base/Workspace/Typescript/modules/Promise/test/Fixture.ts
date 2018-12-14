@@ -1,6 +1,6 @@
 import { domain} from '../src/allors/domain';
 import { MetaPopulation, Workspace } from '../src/allors/framework';
-import { data, MetaDomain, TreeFactory, FetchFactory } from '../src/allors/meta';
+import { data, Meta, TreeFactory, FetchFactory } from '../src/allors/meta';
 import { Database, Scope } from '../src/allors/promise';
 
 import { AxiosHttp } from '../src/allors/promise/base/http/AxiosHttp';
@@ -8,14 +8,14 @@ import { AxiosHttp } from '../src/allors/promise/base/http/AxiosHttp';
 export class Fixture {
 
     metaPopulation: MetaPopulation;
-    m: MetaDomain;
+    m: Meta;
     scope: Scope;
     tree: TreeFactory;
     fetch: FetchFactory;
 
     async init() {
         this.metaPopulation = new MetaPopulation(data);
-        this.m = this.metaPopulation.metaDomain;
+        this.m = this.metaPopulation as Meta;
         const workspace = new Workspace(this.metaPopulation);
         domain.apply(workspace);
 

@@ -1,4 +1,4 @@
-import { ObjectType, ISessionObject, RoleType } from '../../../framework';
+import { ObjectType, RoleType, ISessionObject } from '../../../../framework';
 
 export interface CreateData {
   objectType?: ObjectType;

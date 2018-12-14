@@ -1,9 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { Observable, EMPTY, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 
-import { ObjectType, ObjectTypeRef, ISessionObject } from '../../../framework';
-import { asObjectType, asObjectTypeId } from '../../../../allors/framework';
+import { ObjectType, ISessionObject } from '../../../../framework';
 
 import { OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from './object.tokens';
 import { CreateData, EditData, ObjectData } from './object.data';
@@ -20,9 +19,9 @@ export class ObjectService {
   ) {
   }
 
-  create(objectType: ObjectType | ObjectTypeRef, createData?: CreateData): Observable<ObjectData> {
+  create(objectType: ObjectType, createData?: CreateData): Observable<ObjectData> {
 
-    const data: CreateData = Object.assign({ objectType: asObjectType(objectType) }, createData);
+    const data: CreateData = Object.assign({ objectType }, createData);
 
     const component = this.createControlByObjectTypeId[data.objectType.id];
     if (component) {
@@ -35,8 +34,8 @@ export class ObjectService {
     return throwError('Missing component');
   }
 
-  hasCreateControl(objectType: ObjectType | ObjectTypeRef) {
-    return !!this.createControlByObjectTypeId[asObjectTypeId(objectType)];
+  hasCreateControl(objectType: ObjectType) {
+    return !!this.createControlByObjectTypeId[objectType.id];
   }
 
   edit(object: ISessionObject): Observable<ObjectData> {

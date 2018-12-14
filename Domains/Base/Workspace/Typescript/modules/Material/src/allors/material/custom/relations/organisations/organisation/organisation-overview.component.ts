@@ -6,19 +6,19 @@ import { switchMap } from 'rxjs/operators';
 
 import { Locale, Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { MetaDomain, PullFactory } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
-import { Loaded, SessionService, WorkspaceService, ErrorService } from '../../../../../angular';
+import { Loaded, ContextService, WorkspaceService, ErrorService, MetaService } from '../../../../../angular';
 
 @Component({
   templateUrl: './organisation-overview.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public organisation: Organisation;
   public locales: Locale[];
@@ -26,7 +26,8 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
   private subscription: Subscription;
 
   constructor(
-    @Self() private sessionService: SessionService,
+    @Self() private allors: ContextService,
+    private metaService: MetaService,
     private errorService: ErrorService,
     private titleService: Title,
     private route: ActivatedRoute) {
@@ -34,20 +35,20 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
     this.title = 'Organisation Overview';
     this.titleService.setTitle(this.title);
 
-    this.m = this.sessionService.m;
+    this.m = this.metaService.m;
   }
 
   public ngOnInit(): void {
 
 
-    const { x, pull } = this.sessionService;
+    const { x, pull } = this.metaService;
 
     this.subscription = this.route.url
       .pipe(
         switchMap((url) => {
 
           const id: string = this.route.snapshot.paramMap.get('id');
-          const m: MetaDomain = this.m;
+          const m: Meta = this.m;
 
           const pulls = [
             pull.Organisation({
@@ -59,9 +60,9 @@ export class OrganisationOverviewComponent implements OnInit, AfterViewInit, OnD
             })
           ];
 
-          this.sessionService.session.reset();
+          this.allors.context.reset();
 
-          return this.sessionService
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )

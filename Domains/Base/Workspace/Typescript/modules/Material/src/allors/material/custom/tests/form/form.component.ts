@@ -5,22 +5,22 @@ import { ActivatedRoute, Router, UrlSegment } from '@angular/router';
 import { BehaviorSubject, combineLatest, Observable, Subscription } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { MetaDomain } from '../../../../meta';
+import { Meta } from '../../../../meta';
 import { Person, Data } from '../../../../domain';
 import { PullRequest } from '../../../../framework';
-import { ErrorService, SearchFactory, Loaded, WorkspaceService, SessionService } from '../../../../angular';
+import { ErrorService, SearchFactory, Loaded, WorkspaceService, ContextService, MetaService } from '../../../../angular';
 import { RadioGroupOption } from '../../../base/components/radiogroup/radiogroup.component';
 import { PullFactory } from '../../../../meta/generated/pull.g';
 
 @Component({
   templateUrl: './form.component.html',
-  providers: [SessionService]
+  providers: [ContextService]
 })
 export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public title: string;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public data: Data;
 
@@ -38,7 +38,8 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() public allors: SessionService,
+    @Self() public allors: ContextService,
+    public metaService: MetaService,
     private workspaceService: WorkspaceService,
     private errorService: ErrorService,
     private titleService: Title,
@@ -48,7 +49,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.title = 'Form';
     this.titleService.setTitle(this.title);
 
-    this.m = this.allors.m;
+    this.m = this.metaService.m;
 
     this.peopleFilter = new SearchFactory({ objectType: this.m.Person, roleTypes: [this.m.Person.FirstName, this.m.Person.LastName] });
 
@@ -81,12 +82,12 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
             pull.Person(),
           ];
 
-          return this.allors
+          return this.allors.context
             .load('Pull', new PullRequest({ pulls }));
         }))
       .subscribe((loaded: Loaded) => {
 
-        this.allors.session.reset();
+        this.allors.context.reset();
 
         this.people = loaded.collections.People as Person[];
         const datas = loaded.collections.Datas as Data[];
@@ -94,7 +95,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
         if (datas && datas.length > 0) {
           this.data = datas[0];
         } else {
-          this.data = this.allors.session.create('Data') as Data;
+          this.data = this.allors.context.create(this.m.Data) as Data;
         }
       },
         (error: any) => {
@@ -119,7 +120,7 @@ export class FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public save(): void {
 
-    this.allors
+    this.allors.context
       .save()
       .subscribe(() => {
         this.data = undefined;
