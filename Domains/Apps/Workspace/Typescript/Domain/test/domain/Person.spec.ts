@@ -3,7 +3,7 @@ import "mocha";
 
 import { domain, Person } from "../../src/allors/domain";
 import { MetaPopulation, Session, Workspace } from "../../src/allors/framework";
-import { data, MetaDomain } from "../../src/allors/meta";
+import { data } from "../../src/allors/meta";
 
 describe("Person",
     () => {
