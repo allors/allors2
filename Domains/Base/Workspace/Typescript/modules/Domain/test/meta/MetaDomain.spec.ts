@@ -1,8 +1,7 @@
-import * as chai from 'chai';
 import { assert } from 'chai';
 import 'mocha';
 
-import { MetaObject, MetaObjectType, MetaPopulation } from '../../src/allors/framework';
+import { ObjectTypeRef, MetaPopulation } from '../../src/allors/framework';
 import { data, MetaDomain } from '../../src/allors/meta';
 
 describe('MetaDomain',
@@ -33,16 +32,16 @@ describe('MetaDomain',
         it('metaObject.objectType should be defined',
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
-                    const metaObjectType: MetaObjectType = metaDomain[v.name];
-                    assert.isDefined(metaObjectType._objectType);
+                    const metaObjectType: ObjectTypeRef = metaDomain[v.name];
+                    assert.isDefined(metaObjectType.objectType);
                 });
             });
 
         it('metaObject roleTypes should be defined',
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
-                    const metaObjectType: MetaObjectType = metaDomain[v.name];
-                    const objectType = metaObjectType._objectType;
+                    const metaObjectType: ObjectTypeRef = metaDomain[v.name];
+                    const objectType = metaObjectType.objectType;
 
                     const roleTypes = Object.keys(objectType.roleTypeByName).map((w) => objectType.roleTypeByName[w]);
 
@@ -56,8 +55,8 @@ describe('MetaDomain',
         it('metaObject associationTypes should be defined',
             () => {
                 data.interfaces.concat(data.classes).forEach((v) => {
-                    const metaObjectType: MetaObjectType = metaDomain[v.name];
-                    const objectType = metaObjectType._objectType;
+                    const metaObjectType: ObjectTypeRef = metaDomain[v.name];
+                    const objectType = metaObjectType.objectType;
 
                     const associationTypes = Object.keys(objectType.associationTypeByName).map((w) => objectType.associationTypeByName[w]);
 
