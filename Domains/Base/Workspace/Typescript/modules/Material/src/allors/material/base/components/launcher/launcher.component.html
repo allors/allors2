@@ -1,4 +1,4 @@
-<div *ngIf="!panelsService.maximized">
+<div *ngIf="!panelsService.expanded">
   <mat-grid-list [cols]="3" rowHeight="150px" gutterSize="10px">
     <mat-grid-tile *ngFor="let panel of panels" matRipple (click)="panelsService.toggle(panel.name)">
       <mat-icon>{{panel.icon}}</mat-icon>

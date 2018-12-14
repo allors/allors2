@@ -2,7 +2,7 @@
 import { map } from 'rxjs/operators';
 
 import { And, Exists, ISessionObject, Like, Not, ObjectType, Or, PullRequest, Pull, RoleType, Sort } from '../../../framework';
-import { Loaded, Context } from '../framework';
+import { Loaded, Context, ContextService } from '../framework';
 
 export interface SearchOptions {
   objectType: ObjectType;
@@ -15,7 +15,7 @@ export interface SearchOptions {
 export class SearchFactory {
   constructor(private options: SearchOptions) { }
 
-  public create(scope: Context): ((search: string) => Observable<ISessionObject[]>) {
+  public create(contextOrService: Context | ContextService): ((search: string) => Observable<ISessionObject[]>) {
     return (search: string) => {
       if (!search.trim) {
         return EMPTY;
@@ -59,7 +59,9 @@ export class SearchFactory {
         }),
       ];
 
-      return scope
+      const context = contextOrService instanceof Context ? contextOrService : contextOrService.context;
+
+      return context
         .load('Pull', new PullRequest({ pulls }))
         .pipe(map((loaded: Loaded) => {
           return loaded.collections.results;
