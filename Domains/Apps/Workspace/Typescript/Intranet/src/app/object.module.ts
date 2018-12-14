@@ -19,9 +19,13 @@ import { ProductQuoteCreateComponent, ProductQuoteCreateModule } from '../allors
 import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/apps/objects/quoteitem/edit/quoteitem-edit.module';
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
+import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
 
 const create = {
   [ids.EmailCommunication]: EmailCommunicationCreateComponent,
+  [ids.IncoTerm]: SalesTermEditComponent,
+  [ids.InvoiceTerm]: SalesTermEditComponent,
+  [ids.OrderTerm]: SalesTermEditComponent,
   [ids.FaceToFaceCommunication]: FaceToFaceCommunicationCreateComponent,
   [ids.LetterCorrespondence]: LetterCorrespondenceCreateComponent,
   [ids.Organisation]: OrganisationCreateComponent,
@@ -36,6 +40,9 @@ const create = {
 };
 
 const edit = {
+  [ids.IncoTerm]: SalesTermEditComponent,
+  [ids.InvoiceTerm]: SalesTermEditComponent,
+  [ids.OrderTerm]: SalesTermEditComponent,
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
@@ -58,6 +65,7 @@ const edit = {
     RequestForQuoteCreateModule,
     SalesOrderCreateModule,
     SalesOrderItemEditModule,
+    SalesTermEditModule,
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
@@ -72,6 +80,7 @@ const edit = {
     RequestForQuoteCreateComponent,
     SalesOrderCreateComponent,
     SalesOrderItemEditComponent,
+    SalesTermEditComponent,
   ],
   providers: [
     ObjectService,

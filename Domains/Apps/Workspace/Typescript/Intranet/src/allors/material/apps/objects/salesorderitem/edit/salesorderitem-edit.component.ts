@@ -308,14 +308,14 @@ export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
     this.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .subscribe((loaded) => {
-        this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
-        if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
-          this.orderItem.QuantityOrdered = 1;
-          this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
-        }
-        if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
-          this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
-        }
+        // this.inventoryItems = loaded.collections.inventoryItem as InventoryItem[];
+        // if (this.inventoryItems[0].objectType.name === 'SerialisedInventoryItem') {
+        //   this.orderItem.QuantityOrdered = 1;
+        //   this.serialisedInventoryItem = this.inventoryItems[0] as SerialisedInventoryItem;
+        // }
+        // if (this.inventoryItems[0].objectType.name === 'NonSerialisedInventoryItem') {
+        //   this.nonSerialisedInventoryItem = this.inventoryItems[0] as NonSerialisedInventoryItem;
+        // }
       }, this.errorService.handler);
   }
 }

@@ -11,10 +11,11 @@ export interface CreateData {
 }
 
 export interface EditData {
+  objectType?: ObjectType;
   id: string;
 }
 
 export interface ObjectData {
-  id: string;
   objectType?: ObjectType;
+  id: string;
 }

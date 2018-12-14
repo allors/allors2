@@ -47,7 +47,7 @@ export class IncoTermEditComponent implements OnInit, OnDestroy {
 
     this.subscription = combineLatest(this.route.url, this.refresh$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([]) => {
 
           const id: string = this.route.snapshot.paramMap.get('id');
           const termId: string = this.route.snapshot.paramMap.get('termId');

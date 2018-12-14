@@ -20,6 +20,7 @@ import { WorkEffortPartyAssignmentOverviewPanelModule } from '../../workeffortpa
 import { SalesOrderOverviewSummaryModule } from './summary/salesorder-overview-summary.module';
 import { SalesOrderOverviewDetailModule } from './detail/salesorder-overview-detail.module';
 import { SalesOrderItemOverviewPanelModule } from '../../salesorderitem/overview/panel/salesorderitem-overview-panel.module';
+import { SalesTermOverviewPanelModule } from '../../salesterm/overview/panel/salesterm-overview-panel.module';
 
 export { SalesOrderOverviewComponent } from './salesorder-overview.component';
 import { SalesOrderOverviewComponent } from './salesorder-overview.component';
@@ -35,6 +36,7 @@ import { SalesOrderOverviewComponent } from './salesorder-overview.component';
     SalesOrderOverviewSummaryModule,
     SalesOrderOverviewDetailModule,
     SalesOrderItemOverviewPanelModule,
+    SalesTermOverviewPanelModule,
 
     CommunicationEventOverviewPanelModule,
     PartyContactMechanismOverviewPanelModule,

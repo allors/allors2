@@ -157,14 +157,6 @@ export class QuoteItemEditComponent implements OnInit, OnDestroy {
         });
   }
 
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
   private update(product: Product) {
 
     const { m, pull, x } = this.metaService;
