@@ -21,13 +21,13 @@ describe('Extent', () => {
   describe('People',
     () => {
       it('people should return all people', async () => {
-        const { pull } = fixture.allors;
+        const { pull } = fixture.meta;
 
         const pulls = [
           pull.Person()
         ];
 
-        const loaded: Loaded = await fixture.allors.load('Pull', new PullRequest({ pulls })).toPromise();
+        const loaded: Loaded = await fixture.allors.context.load('Pull', new PullRequest({ pulls })).toPromise();
         const people = loaded.collections.People as Person[];
 
         expect(people).toBeArrayOfSize(7);
@@ -38,7 +38,7 @@ describe('Extent', () => {
     () => {
       it('should return all people', async () => {
 
-        const { m } = fixture.allors;
+        const { m } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -62,9 +62,9 @@ describe('Extent', () => {
           }),
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls })).toPromise();
 
         const people = loaded.collections['People'] as Person[];
@@ -80,7 +80,7 @@ describe('Extent', () => {
     () => {
       it('should return all organisations', async () => {
 
-        const { m, tree } = fixture.allors;
+        const { m, tree } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -99,9 +99,9 @@ describe('Extent', () => {
           }),
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors.load('Pull', new PullRequest({ pulls })).toPromise();
+        const loaded = await fixture.allors.context.load('Pull', new PullRequest({ pulls })).toPromise();
 
         const organisations = loaded.collections['Organisations'] as Organisation[];
 
@@ -119,7 +119,7 @@ describe('Extent', () => {
     () => {
       it('should return all owners', async () => {
 
-        const { m, fetch } = fixture.allors;
+        const { m, fetch } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -136,9 +136,9 @@ describe('Extent', () => {
           })
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 
@@ -149,7 +149,7 @@ describe('Extent', () => {
 
       it('should return all employees', async () => {
 
-        const { m, fetch } = fixture.allors;
+        const { m, fetch } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -166,9 +166,9 @@ describe('Extent', () => {
           })
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 
@@ -182,7 +182,7 @@ describe('Extent', () => {
     () => {
       it('should return all employees', async () => {
 
-        const { m, fetch } = fixture.allors;
+        const { m, fetch } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -197,9 +197,9 @@ describe('Extent', () => {
           })
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 
@@ -213,7 +213,7 @@ describe('Extent', () => {
     () => {
       it('should return all people', async () => {
 
-        const { m, fetch } = fixture.allors;
+        const { m, fetch } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -232,9 +232,9 @@ describe('Extent', () => {
           })
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 

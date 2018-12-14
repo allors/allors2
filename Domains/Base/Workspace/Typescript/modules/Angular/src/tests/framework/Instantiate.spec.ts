@@ -18,13 +18,13 @@ describe('Instantiate', () => {
   beforeEach(async () => {
     await fixture.init();
 
-    const { pull } = fixture.allors;
+    const { pull } = fixture.meta;
 
     const pulls = [
       pull.Person()
     ];
 
-    const loaded = await fixture.allors
+    const loaded = await fixture.allors.context
       .load('Pull', new PullRequest({ pulls }))
       .toPromise();
 
@@ -43,9 +43,9 @@ describe('Instantiate', () => {
           }),
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 
@@ -60,7 +60,7 @@ describe('Instantiate', () => {
     () => {
       it('should return all people', async () => {
 
-        const { m } = fixture.allors;
+        const { m } = fixture.meta;
 
         const pulls = [
           new Pull({
@@ -84,9 +84,9 @@ describe('Instantiate', () => {
           }),
         ];
 
-        fixture.allors.session.reset();
+        fixture.allors.context.reset();
 
-        const loaded = await fixture.allors
+        const loaded = await fixture.allors.context
           .load('Pull', new PullRequest({ pulls }))
           .toPromise();
 
