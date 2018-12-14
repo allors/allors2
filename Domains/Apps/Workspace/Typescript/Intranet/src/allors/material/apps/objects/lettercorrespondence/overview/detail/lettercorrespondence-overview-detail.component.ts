@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { CommunicationEventPurpose, EmailAddress, LetterCorrespondence, EmailTemplate, InternalOrganisation, Party, Person, Organisation, PostalAddress, OrganisationContactRelationship, PartyContactMechanism } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, map, filter } from 'rxjs/operators';
@@ -25,7 +25,7 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
   public addReceiver = false;
   public addAddress = false;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public person: Person;
@@ -59,7 +59,7 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${this.panel.name}_${this.m.LetterCorrespondence.objectType.name}`;
+    const pullName = `${this.panel.name}_${this.m.LetterCorrespondence.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {
@@ -207,7 +207,7 @@ export class LetterCorrespondenceOverviewDetailComponent implements OnInit, OnDe
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.postalAddresses = internalOrganisation.ActiveEmployees
           .map((v) => v.CurrentPartyContactMechanisms
-            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
+            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress)
             .map((w) => w.ContactMechanism as PostalAddress))
           .reduce((acc, v) => acc.concat(v), []);
 

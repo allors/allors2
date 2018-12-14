@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Organisation, Good, IGoodIdentification } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -20,7 +20,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class GoodOverviewComponent implements OnInit, OnDestroy {
 
-  m: MetaDomain;
+  m: Meta;
 
   title = 'Product Overview';
   good: Good;

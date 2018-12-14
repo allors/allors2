@@ -11,7 +11,8 @@ import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../.
 
 import { Person } from '../../../../../domain';
 
-import { ObjectService } from '../../../../../angular/base/object/object.service';
+import { ObjectService } from '../../../../../material/base/services/object';
+
 
 interface Row extends TableRow {
   object: Person;

@@ -7,7 +7,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { Country, Enumeration, PartyContactMechanism, PostalAddress, Party, PostalBoundary } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
@@ -18,7 +18,7 @@ export class PostalAddressEditComponent implements OnInit, OnDestroy {
 
   public title = 'Postal Address';
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public partyContactMechanism: PartyContactMechanism;

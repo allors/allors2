@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { SupplierOffering, Part, RatingType, Ordinal, InternalOrganisation, Organisation, UnitOfMeasure, Currency, Settings } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
@@ -23,7 +23,7 @@ export class EditSupplierOfferingComponent implements OnInit, OnDestroy {
   add: boolean;
   edit: boolean;
 
-  m: MetaDomain;
+  m: Meta;
 
   supplierOffering: SupplierOffering;
   part: Part;

@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material';
 import { ErrorService, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../domain';
 import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../../';
 
@@ -17,7 +17,7 @@ import { StateService } from '../../../../';
 })
 export class PartEditComponent implements OnInit, OnDestroy {
 
-  m: MetaDomain;
+  m: Meta;
 
   add: boolean;
   edit: boolean;

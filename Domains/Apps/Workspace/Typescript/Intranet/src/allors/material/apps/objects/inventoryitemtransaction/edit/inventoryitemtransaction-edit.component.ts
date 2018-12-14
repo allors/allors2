@@ -9,7 +9,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { InternalOrganisation, InventoryItemTransaction, InventoryItem, Part, InventoryTransactionReason, Facility, Lot, NonSerialisedInventoryItemState, SerialisedInventoryItemState } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 
@@ -19,7 +19,7 @@ import { Fetcher } from '../../Fetcher';
 })
 export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy {
 
-  readonly m: MetaDomain;
+  readonly m: Meta;
 
   readonly title = 'InventoryItem Transaction';
 

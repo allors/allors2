@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, ViewChild, Self } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { combineLatest, Subscription } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
 import * as moment from 'moment';
-
-import { ObjectService } from '../../../../../angular/base/object';
 
 import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, RefreshService, Action, MetaService } from '../../../../../angular';
 import { TableRow, NavigateService, DeleteService, Table, Sorter } from '../../../..';
 
 import { Organisation } from '../../../../../domain';
-import { combineLatest, Subscription } from 'rxjs';
+
+import { ObjectService } from '../../../../../material/base/services/object';
 
 interface Row extends TableRow {
   object: Organisation;

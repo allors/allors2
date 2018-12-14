@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, PurchaseInvoice, PurchaseInvoiceItem, PurchaseOrder, SalesInvoice } from '../../../../../domain';
 import { Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
@@ -17,7 +17,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class PurchaseInvoiceOverviewComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
   public title = 'Purchase Invoice Overview';
   public order: PurchaseOrder;
   public invoice: PurchaseInvoice;

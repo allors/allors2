@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { ErrorService, Saved, NavigationService, ContextService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Enumeration, PartyContactMechanism, TelecommunicationsNumber, Party, ContactMechanismType } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ export class TelecommunicationsNumberEditComponent implements OnInit, OnDestroy 
 
   public title = 'Telecommunications Number';
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public partyContactMechanism: PartyContactMechanism;

@@ -2,7 +2,7 @@ import { Component, Self } from '@angular/core';
 
 import { ContextService, PanelService, Action, RefreshService, NavigationService, ErrorService, Invoked, MetaService } from '../../../../../../angular';
 import { CommunicationEvent } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { DeleteService, AllorsMaterialDialogService } from '../../../../..';
 import { MatSnackBar } from '@angular/material';
 
@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class CommunicationEventOverviewPanelComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   delete: Action;
 
@@ -39,7 +39,7 @@ export class CommunicationEventOverviewPanelComponent {
     panel.icon = 'chat';
     panel.expandable = true;
 
-    const communicationEventsPullName = `${panel.name}_${this.m.CommunicationEvent.objectType.name}`;
+    const communicationEventsPullName = `${panel.name}_${this.m.CommunicationEvent.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;

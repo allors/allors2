@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, SearchFactory, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Facility, Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, SalesInvoice, SalesInvoiceItem, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime } from '../../../../../domain';
 import { And, ContainedIn, Equals, Fetch, PullRequest, TreeNode, Sort, Filter } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class SalesInvoiceItemEditComponent
   implements OnInit, OnDestroy {
-  public m: MetaDomain;
+  public m: Meta;
 
   public title = 'Edit Sales Invoice Item';
   public subTitle: string;

@@ -8,7 +8,7 @@ import { ErrorService, Invoked, ContextService, NavigationService, MetaService }
 import { StateService } from '../../../../../material';
 import { WorkTask } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
@@ -19,7 +19,7 @@ import { Title } from '@angular/platform-browser';
 })
 export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title = 'Task Overview';
   public task: WorkTask;

@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, Action, ActionTarget, MetaService } from '../../../../../angular';
 import { Part, InventoryItem, InventoryItemKind, NonSerialisedInventoryItem, SerialisedInventoryItem } from '../../../../../domain';
 import { PullRequest, ObjectType } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { TableRow, Table } from 'src/allors/material/base/components/table';
@@ -40,7 +40,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
   table: Table<Row>;
   receiveInventory: Action;
 
-  m: MetaDomain;
+  m: Meta;
 
   private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;

@@ -7,19 +7,18 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, InventoryItem, InvoiceItemType, NonSerialisedInventoryItem, Product, QuoteItem, SalesOrder, SalesOrderItem, SerialisedInventoryItem, VatRate, VatRegime, SerialisedItemState } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData } from 'src/allors/angular/base/object/object.data';
-
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
 @Component({
   templateUrl: './salesorderitem-edit.component.html',
   providers: [ContextService]
 })
 export class SalesOrderItemEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title: string;
   public subTitle: string;

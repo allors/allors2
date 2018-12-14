@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 
 import { ContextService, ErrorService, MetaService } from '../../../../../angular';
 import { Facility, FacilityType } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { PullRequest, Sort } from 'src/allors/framework';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../services/state';
@@ -17,7 +17,7 @@ export class FacilityInlineComponent implements OnInit, OnDestroy {
 
   @Output() public cancelled: EventEmitter<any> = new EventEmitter();
 
-  public m: MetaDomain;
+  public m: Meta;
 
   facilityTypes: FacilityType[];
   public facility: Facility;

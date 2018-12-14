@@ -1,15 +1,13 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
 import { RequestItem as SalesOrderItem } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table } from '../../../../..';
 
 import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { ObjectService } from '../../../../../../angular/base/object';
-import { CreateData } from '../../../../../../angular/base/object/object.data';
-
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../../material/base/services/object';
 interface Row extends TableRow {
   object: SalesOrderItem;
   item: string;
@@ -24,7 +22,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class SalesOrderItemOverviewPanelComponent {
-  m: MetaDomain;
+  m: Meta;
 
   salesOrderItems: SalesOrderItem[];
   table: Table<Row>;
@@ -80,7 +78,7 @@ export class SalesOrderItemOverviewPanelComponent {
       defaultAction: this.edit,
     });
 
-    const pullName = `${panel.name}_${this.m.SalesOrderItem.objectType.name}`;
+    const pullName = `${panel.name}_${this.m.SalesOrderItem.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;

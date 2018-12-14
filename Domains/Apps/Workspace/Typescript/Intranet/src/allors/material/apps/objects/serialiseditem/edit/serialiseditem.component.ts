@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Saved, ContextService, NavigationService, NavigationActivatedRoute, SearchFactory, MetaService } from '../../../../../angular';
 import { Facility, InternalOrganisation, Locale, Organisation, Ownership, SerialisedItem, Part, SerialisedItemState, Party } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { switchMap, map } from 'rxjs/operators';
 })
 export class EditSerialisedItemComponent implements OnInit, OnDestroy {
 
-  m: MetaDomain;
+  m: Meta;
   item: SerialisedItem;
 
   add: boolean;

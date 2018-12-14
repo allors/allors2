@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService } from '../../../../../../angular';
 import { ProductQuote, Quote, Good, SalesOrder, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 import { Sort, Equals } from 'src/allors/framework';
 
@@ -13,7 +13,7 @@ import { Sort, Equals } from 'src/allors/framework';
 })
 export class SalesOrderOverviewSummaryComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   public order: SalesOrder;
   public quote: ProductQuote;
@@ -37,11 +37,11 @@ export class SalesOrderOverviewSummaryComponent {
 
     panel.name = 'summary';
 
-    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.objectType.name}`;
-    const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.objectType.name}`;
-    const goodPullName = `${panel.name}_${this.m.Good.objectType.name}`;
-    const billingProcessPullName = `${panel.name}_${this.m.BillingProcess.objectType.name}`;
-    const serialisedInventoryItemStatePullName = `${panel.name}_${this.m.SerialisedInventoryItemState.objectType.name}`;
+    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
+    const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
+    const goodPullName = `${panel.name}_${this.m.Good.name}`;
+    const billingProcessPullName = `${panel.name}_${this.m.BillingProcess.name}`;
+    const serialisedInventoryItemStatePullName = `${panel.name}_${this.m.SerialisedInventoryItemState.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, x } = this.metaService;

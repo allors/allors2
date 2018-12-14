@@ -16,7 +16,7 @@ export class FactoryFabComponent implements OnInit {
 
   @Input() private createData: CreateData;
 
-  @Output() private created: EventEmitter<ObjectData> = new EventEmitter();;
+  @Output() private created: EventEmitter<ObjectData> = new EventEmitter();
 
   classes: ObjectType[];
 

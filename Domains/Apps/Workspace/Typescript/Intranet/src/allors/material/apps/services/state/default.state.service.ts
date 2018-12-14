@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { SearchFactory, WorkspaceService } from '../../../../angular';
 import { And, ContainedIn, Equals, Filter } from '../../../../framework';
-import { MetaDomain } from '../../../../meta';
+import { Meta } from '../../../../meta';
 import { StateService } from './state.service';
 
 @Injectable()
@@ -20,8 +20,7 @@ export class DefaultStateService extends StateService {
         this.internalOrganisationIdSubject = new BehaviorSubject(sessionInternalOrganisationId);
         this.internalOrganisationId$ = this.internalOrganisationIdSubject;
 
-        const m: MetaDomain = this.workspaceService.metaPopulation.metaDomain;
-
+        const m = this.workspaceService.metaPopulation as Meta;
         this.goodsFilter = new SearchFactory({
             objectType: m.Good,
             roleTypes: [m.Good.Name],

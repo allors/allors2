@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, RequestForQuote, SalesOrderItem, SalesInvoice, BillingProcess, SerialisedInventoryItemState, VatRate, VatRegime, Store, PostalAddress } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
@@ -21,7 +21,7 @@ import { switchMap, filter } from 'rxjs/operators';
 })
 export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public order: SalesOrder;
   public quote: ProductQuote;
@@ -114,11 +114,11 @@ export class SalesOrderOverviewDetailComponent implements OnInit, OnDestroy {
     panel.expandable = true;
 
     // Normal
-    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.objectType.name}`;
-    const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.objectType.name}`;
-    const goodPullName = `${panel.name}_${this.m.Good.objectType.name}`;
-    const billingProcessPullName = `${panel.name}_${this.m.BillingProcess.objectType.name}`;
-    const serialisedInventoryItemStatePullName = `${panel.name}_${this.m.SerialisedInventoryItemState.objectType.name}`;
+    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
+    const salesInvoicePullName = `${panel.name}_${this.m.SalesInvoice.name}`;
+    const goodPullName = `${panel.name}_${this.m.Good.name}`;
+    const billingProcessPullName = `${panel.name}_${this.m.BillingProcess.name}`;
+    const serialisedInventoryItemStatePullName = `${panel.name}_${this.m.SerialisedInventoryItemState.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {

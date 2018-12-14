@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { ContextService, PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { Organisation, OrganisationContactKind, OrganisationContactRelationship } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,7 +11,7 @@ import { MetaDomain } from '../../../../../../meta';
 })
 export class OrganisationOverviewSummaryComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   organisation: Organisation;
   contactKindsText: string;
@@ -25,7 +25,7 @@ export class OrganisationOverviewSummaryComponent {
 
     panel.name = 'summary';
 
-    const organisationPullName = `${panel.name}_${this.m.Organisation.objectType.name}`;
+    const organisationPullName = `${panel.name}_${this.m.Organisation.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;

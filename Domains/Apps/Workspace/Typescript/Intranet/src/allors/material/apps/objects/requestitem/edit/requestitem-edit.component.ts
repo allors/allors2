@@ -6,10 +6,10 @@ import { switchMap, map } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, RequestForQuote, RequestItem, SerialisedInventoryItem, UnitOfMeasure, Request } from '../../../../../domain';
 import { PullRequest, Sort, Equals, Pull } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 
-import { CreateData, EditData, ObjectData } from '../../../../../../allors/angular/base/object/object.data';
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './requestitem-edit.component.html',
@@ -17,7 +17,7 @@ import { CreateData, EditData, ObjectData } from '../../../../../../allors/angul
 })
 export class RequestItemEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title: string;
 

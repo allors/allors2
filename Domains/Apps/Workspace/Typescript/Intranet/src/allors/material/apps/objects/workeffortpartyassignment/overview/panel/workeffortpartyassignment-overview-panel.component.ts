@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
 import { WorkEffortPartyAssignment, WorkEffort } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { DeleteService } from '../../../../..';
 
 @Component({
@@ -12,7 +12,7 @@ import { DeleteService } from '../../../../..';
 })
 export class WorkEffortPartyAssignmentOverviewPanelComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   workEffortPartyAssignments: WorkEffortPartyAssignment[];
 
@@ -35,7 +35,7 @@ export class WorkEffortPartyAssignmentOverviewPanelComponent {
     panel.icon = 'work';
     panel.expandable = true;
 
-    const workEffortPartyAssignmentPullName = `${panel.name}_${this.m.WorkEffortPartyAssignment.objectType.name}`;
+    const workEffortPartyAssignmentPullName = `${panel.name}_${this.m.WorkEffortPartyAssignment.name}`;
 
     panel.onPull = (pulls) => {
       const { pull,  x } = this.metaService;

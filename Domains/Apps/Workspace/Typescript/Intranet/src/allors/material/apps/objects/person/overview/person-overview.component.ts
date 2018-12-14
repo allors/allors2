@@ -45,7 +45,7 @@ export class PersonOverviewComponent implements OnInit, OnDestroy {
           const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.Person.objectType;
+          this.panelManager.objectType = m.Person;
           this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
 

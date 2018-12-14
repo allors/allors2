@@ -5,17 +5,17 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { SalesTerm, TermType } from '../../../../../domain';
 import { PullRequest, Sort, Equals, ISessionObject } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { switchMap, map } from 'rxjs/operators';
-import { CreateData, EditData, ObjectData } from 'src/allors/angular/base/object/object.data';
 
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
 @Component({
   templateUrl: './salesterm-edit.component.html',
   providers: [ContextService]
 })
 export class SalesTermEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title = 'Edit Term Type';
 

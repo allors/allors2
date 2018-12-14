@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from 
 import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, PartyContactMechanism, WebAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,7 +20,7 @@ export class InlineWebAddressComponent implements OnInit, OnDestroy {
   public partyContactMechanism: PartyContactMechanism;
   public webAddress: WebAddress;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   constructor(
     private allors: ContextService,

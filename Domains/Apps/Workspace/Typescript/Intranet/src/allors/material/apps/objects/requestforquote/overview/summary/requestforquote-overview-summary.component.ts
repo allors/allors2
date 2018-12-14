@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService } from '../../../../../../angular';
 import { RequestForQuote, ProductQuote, Quote } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -11,7 +11,7 @@ import { MetaDomain } from '../../../../../../meta';
 })
 export class RequestForQuoteOverviewSummaryComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   requestForQuote: RequestForQuote;
   quote: Quote;
@@ -25,8 +25,8 @@ export class RequestForQuoteOverviewSummaryComponent {
 
     panel.name = 'summary';
 
-    const requestForQuotePullName = `${panel.name}_${this.m.RequestForQuote.objectType.name}`;
-    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.objectType.name}`;
+    const requestForQuotePullName = `${panel.name}_${this.m.RequestForQuote.name}`;
+    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;

@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ProductType, SerialisedItemCharacteristicType } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
@@ -19,7 +19,7 @@ export class ProductTypeComponent implements OnInit, OnDestroy {
   public title = 'Edit Product Type';
   public subTitle: string;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public productType: ProductType;
 

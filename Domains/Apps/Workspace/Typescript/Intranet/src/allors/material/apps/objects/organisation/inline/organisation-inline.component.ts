@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Organisation } from '../../../../../domain';
 import { PullRequest } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,7 +20,7 @@ export class OrganisationInlineComponent implements OnInit {
 
   public organisation: Organisation;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   constructor(
     private allors: ContextService,

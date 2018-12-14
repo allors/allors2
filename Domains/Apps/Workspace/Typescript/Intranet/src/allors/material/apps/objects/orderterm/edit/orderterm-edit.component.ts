@@ -8,7 +8,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Field, SearchFactory, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { OrderTermType, SalesInvoice, SalesTerm } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class OrderTermEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title = 'Edit Sales Invoice Incoterm';
   public subTitle: string;

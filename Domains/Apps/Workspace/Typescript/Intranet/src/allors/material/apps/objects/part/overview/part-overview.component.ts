@@ -8,7 +8,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, ContextService, NavigationService, NavigationActivatedRoute, MediaService, MetaService } from '../../../../../angular';
 import { InternalOrganisation, Part, IGoodIdentification, SerialisedItem, BasePrice, PriceComponent, SupplierOffering } from '../../../../../domain';
 import { PullRequest, Equals, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -20,7 +20,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class PartOverviewComponent implements OnInit, OnDestroy {
 
-  m: MetaDomain;
+  m: Meta;
 
   title = 'Part Overview';
   part: Part;

@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output, Self } from '@angular/core';
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Enumeration, Locale, Person } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,7 +20,7 @@ export class PersonInlineComponent implements OnInit {
 
   public person: Person;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public locales: Locale[];
   public genders: Enumeration[];

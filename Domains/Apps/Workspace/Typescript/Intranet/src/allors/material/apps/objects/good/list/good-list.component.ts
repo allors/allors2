@@ -16,7 +16,7 @@ import { StateService } from '../../../services/state';
 
 import { Good } from '../../../../../domain';
 import { Fetcher } from '../../Fetcher';
-import { MetaDomain } from 'src/allors/meta';
+import { Meta } from 'src/allors/meta';
 
 interface Row {
   good: Good;
@@ -45,7 +45,7 @@ export class GoodListComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
   private readonly fetcher: Fetcher;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   constructor(
     @Self() private allors: ContextService,

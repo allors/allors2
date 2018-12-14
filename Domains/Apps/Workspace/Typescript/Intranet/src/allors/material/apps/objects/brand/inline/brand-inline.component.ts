@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy , OnInit, Output } from '@ang
 
 import { ContextService, WorkspaceService, MetaService } from '../../../../../angular';
 import { Brand } from '../../../../../domain';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -16,7 +16,7 @@ export class InlineBrandComponent implements OnInit, OnDestroy {
 
   public brand: Brand;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   constructor(
     private allors: ContextService,

@@ -8,11 +8,12 @@ import { switchMap } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, ProductQuote, RequestForQuote } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { CreateData } from '../../../../../angular/base/object/object.data';
+
+import { CreateData, ObjectService } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './productquote-create.component.html',
@@ -20,7 +21,7 @@ import { CreateData } from '../../../../../angular/base/object/object.data';
 })
 export class ProductQuoteCreateComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title: string;
   public subTitle: string;

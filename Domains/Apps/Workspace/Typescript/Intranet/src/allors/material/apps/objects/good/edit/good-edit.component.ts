@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
 
@@ -17,7 +17,7 @@ import { StateService } from '../../../..';
 })
 export class GoodEditComponent implements OnInit, OnDestroy {
 
-  m: MetaDomain;
+  m: Meta;
   good: Good;
 
   add: boolean;

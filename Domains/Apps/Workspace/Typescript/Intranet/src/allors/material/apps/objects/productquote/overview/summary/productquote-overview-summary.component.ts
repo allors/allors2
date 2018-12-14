@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, Invoked, RefreshService, ErrorService } from '../../../../../../angular';
 import { ProductQuote, Quote, Good, SalesOrder } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { MatSnackBar } from '@angular/material';
 
 @Component({
@@ -12,7 +12,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class ProductQuoteOverviewSummaryComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   public productQuote: ProductQuote;
   public salesOrder: SalesOrder;
@@ -29,8 +29,8 @@ export class ProductQuoteOverviewSummaryComponent {
 
     panel.name = 'summary';
 
-    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.objectType.name}`;
-    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.objectType.name}`;
+    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
+    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;

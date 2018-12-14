@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, Sort, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -20,7 +20,7 @@ import { LocalisedText } from '../../../../../domain/generated/LocalisedText.g';
 })
 export class CategoryComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public category: ProductCategory;
   public title: string;

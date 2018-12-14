@@ -7,7 +7,7 @@ import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -19,7 +19,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class CatalogueComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public catalogue: Catalogue;
   public title: string;

@@ -7,7 +7,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
 import { EmailAddress, Enumeration, Party, PartyContactMechanism } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
@@ -18,7 +18,7 @@ export class EmailAddressEditComponent implements OnInit, OnDestroy {
 
   public title = 'Email Address';
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public partyContactMechanism: PartyContactMechanism;

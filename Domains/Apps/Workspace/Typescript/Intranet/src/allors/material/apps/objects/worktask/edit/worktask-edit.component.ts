@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { ContactMechanism, InternalOrganisation, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, Priority, Singleton, WorkEffortPartyAssignment, WorkEffortPurpose, WorkEffortState, WorkTask } from '../../../../../domain';
 import { Fetch, PullRequest, TreeNode, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { switchMap, map } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { Title } from '@angular/platform-browser';
   providers: [ContextService]
 })
 export class WorkTaskEditComponent implements OnInit, OnDestroy {
-  m: MetaDomain;
+  m: Meta;
 
   title = 'Work Task';
   add: boolean;

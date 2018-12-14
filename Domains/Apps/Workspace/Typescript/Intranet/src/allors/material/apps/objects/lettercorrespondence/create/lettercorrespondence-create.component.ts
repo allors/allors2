@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Invoked, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, InternalOrganisation, LetterCorrespondence, Organisation, OrganisationContactRelationship, Party, PartyContactMechanism, Person, PostalAddress } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class LetterCorrespondenceCreateComponent
   public addReceiver = false;
   public addAddress = false;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public person: Person;
@@ -151,7 +151,7 @@ export class LetterCorrespondenceCreateComponent
         this.postalAddresses = internalOrganisation.ActiveEmployees
           .map((v) =>
             v.CurrentPartyContactMechanisms
-              .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
+              .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress)
               .map((w) => w.ContactMechanism as PostalAddress))
           .reduce((acc, v) => acc.concat(v), []);
 

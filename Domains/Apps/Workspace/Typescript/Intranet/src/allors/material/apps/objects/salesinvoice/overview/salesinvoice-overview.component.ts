@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import { ErrorService, Invoked, Loaded, MediaService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { Good, RepeatingSalesInvoice, SalesInvoice, SalesInvoiceItem, SalesOrder, SalesTerm } from '../../../../../domain';
 import { And, Equals, Fetch, Like, Predicate, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
@@ -17,7 +17,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 })
 export class SalesInvoiceOverviewComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
   public title = 'Sales Invoice Overview';
   public order: SalesOrder;
   public invoice: SalesInvoice;

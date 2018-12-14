@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { CommunicationEventPurpose, InternalOrganisation, Party, Person, Organisation, FaceToFaceCommunication, OrganisationContactRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, filter } from 'rxjs/operators';
@@ -25,7 +25,7 @@ export class FaceToFaceCommunicationOverviewDetailComponent implements OnInit, O
   public addOriginator = false;
   public addAddressee = false;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   addParticipant = false;
 
@@ -61,7 +61,7 @@ export class FaceToFaceCommunicationOverviewDetailComponent implements OnInit, O
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${this.panel.name}_${this.m.FaceToFaceCommunication.objectType.name}`;
+    const pullName = `${this.panel.name}_${this.m.FaceToFaceCommunication.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {

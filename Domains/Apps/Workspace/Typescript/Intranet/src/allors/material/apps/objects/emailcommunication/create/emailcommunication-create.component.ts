@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, EmailAddress, EmailCommunication, EmailTemplate, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
@@ -23,7 +23,7 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
   public addOriginator = false;
   public addAddressee = false;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public person: Person;
@@ -139,7 +139,7 @@ export class EmailCommunicationCreateComponent implements OnInit, OnDestroy {
         this.allEmailAddresses = loaded.collections.EmailAddresses as EmailAddress[];
         this.ownEmailAddresses = internalOrganisation.ActiveEmployees
           .map((v) => v.CurrentPartyContactMechanisms
-            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress.objectType)
+            .filter((w) => w && w.ContactMechanism.objectType === m.EmailAddress)
             .map((w) => w.ContactMechanism as EmailAddress))
           .reduce((acc, v) => acc.concat(v), []);
 

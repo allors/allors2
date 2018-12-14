@@ -3,7 +3,7 @@ import { RefreshService } from '../../../../../../angular/base/refresh/refresh.s
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, ErrorService } from '../../../../../../angular';
 import { FaceToFaceCommunication } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -13,7 +13,7 @@ import { MetaDomain } from '../../../../../../meta';
 })
 export class FaceToFaceCommunicationOverviewSummaryComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   faceToFaceCommunication: FaceToFaceCommunication;
 
@@ -33,7 +33,7 @@ export class FaceToFaceCommunicationOverviewSummaryComponent {
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${panel.name}_${this.m.FaceToFaceCommunication.objectType.name}`;
+    const pullName = `${panel.name}_${this.m.FaceToFaceCommunication.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;

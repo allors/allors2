@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { CustomerRelationship, CustomOrganisationClassification, IndustryClassification, InternalOrganisation, Locale, Organisation, OrganisationRole, SupplierRelationship, RequestForQuote, Currency, ContactMechanism, Person, Party, Quote, PartyContactMechanism, OrganisationContactRelationship } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
@@ -22,7 +22,7 @@ import { load } from '@angular/core/src/render3';
 })
 export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public requestForQuote: RequestForQuote;
   public quote: Quote;
@@ -57,8 +57,8 @@ export class RequestForQuoteOverviewDetailComponent implements OnInit, OnDestroy
     panel.expandable = true;
 
     // Normal
-    const requestForQuotePullName = `${panel.name}_${this.m.RequestForQuote.objectType.name}`;
-    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.objectType.name}`;
+    const requestForQuotePullName = `${panel.name}_${this.m.RequestForQuote.name}`;
+    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {

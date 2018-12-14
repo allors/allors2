@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap, map } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class PhoneCommunicationCreateComponent implements OnInit, OnDestroy {
   public addReceiver = false;
   public addPhoneNumber = false;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public person: Person;
@@ -112,7 +112,7 @@ export class PhoneCommunicationCreateComponent implements OnInit, OnDestroy {
         this.communicationEvent = this.allors.context.create('PhoneCommunication') as PhoneCommunication;
 
         // TODO: phone number from organisation, person or contacts ...
-        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber.objectType).map((v) => v.ContactMechanism);
+        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
 
       },
         (error: any) => {

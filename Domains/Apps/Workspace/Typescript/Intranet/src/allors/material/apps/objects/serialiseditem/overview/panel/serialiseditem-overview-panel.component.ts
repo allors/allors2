@@ -1,7 +1,7 @@
 import { Component, Output, EventEmitter, Self } from '@angular/core';
 
 import { NavigationService, ContextService, Action, PanelService, RefreshService, ErrorService, MetaService } from '../../../../../../angular';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { SerialisedItem, Part, Party } from '../../../../../../domain';
 import { DeleteService } from '../../../../..';
 
@@ -13,7 +13,7 @@ import { DeleteService } from '../../../../..';
 })
 export class SerialisedItemOverviewPanelComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   part: Part;
   owner: Party;

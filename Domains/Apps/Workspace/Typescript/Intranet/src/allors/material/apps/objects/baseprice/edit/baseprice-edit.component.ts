@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { Good, Part, PriceComponent, InternalOrganisation } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { switchMap, map } from 'rxjs/operators';
 import { Fetcher } from '../../Fetcher';
@@ -22,7 +22,7 @@ export class EditBasepriceComponent implements OnInit, OnDestroy {
   add: boolean;
   edit: boolean;
 
-  m: MetaDomain;
+  m: Meta;
 
   good: Good;
   part: Part;

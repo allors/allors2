@@ -7,7 +7,7 @@ import { switchMap, filter } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, NavigationService, PanelService, RefreshService, MetaService, Context } from '../../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../../domain';
 import { And, Equals, Exists, Not, PullRequest, Sort } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 
@@ -19,7 +19,7 @@ import { Fetcher } from '../../../Fetcher';
 })
 export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
 
-  readonly m: MetaDomain;
+  readonly m: Meta;
 
   person: Person;
 
@@ -58,7 +58,7 @@ export class PersonOverviewDetailComponent implements OnInit, OnDestroy {
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${this.panel.name}_${this.m.Person.objectType.name}`;
+    const pullName = `${this.panel.name}_${this.m.Person.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {

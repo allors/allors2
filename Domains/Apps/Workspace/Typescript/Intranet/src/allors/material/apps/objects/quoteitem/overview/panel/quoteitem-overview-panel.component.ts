@@ -1,14 +1,13 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
 import { QuoteItem } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table } from '../../../../..';
 
 import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { ObjectService } from '../../../../../../angular/base/object';
-import { CreateData } from '../../../../../../angular/base/object/object.data';
+import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
 
 interface Row extends TableRow {
   object: QuoteItem;
@@ -24,7 +23,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class QuoteItemOverviewPanelComponent {
-  m: MetaDomain;
+  m: Meta;
 
   quoteItems: QuoteItem[];
   table: Table<Row>;
@@ -81,7 +80,7 @@ export class QuoteItemOverviewPanelComponent {
       defaultAction: this.edit,
     });
 
-    const pullName = `${panel.name}_${this.m.QuoteItem.objectType.name}`;
+    const pullName = `${panel.name}_${this.m.QuoteItem.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;

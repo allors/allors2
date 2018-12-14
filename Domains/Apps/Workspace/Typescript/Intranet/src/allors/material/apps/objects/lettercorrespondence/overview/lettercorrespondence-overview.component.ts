@@ -45,7 +45,7 @@ export class LetterCorrespondenceOverviewComponent implements OnInit, OnDestroy 
           const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.LetterCorrespondence.objectType;
+          this.panelManager.objectType = m.LetterCorrespondence;
           this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
 

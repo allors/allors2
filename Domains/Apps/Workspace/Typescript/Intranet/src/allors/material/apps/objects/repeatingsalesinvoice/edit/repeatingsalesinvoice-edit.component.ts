@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Field, SearchFactory, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { DayOfWeek, IncoTermType, RepeatingSalesInvoice, SalesInvoice, SalesTerm, TimeFrequency } from '../../../../../domain';
 import { PullRequest, Fetch, Sort, TreeNode, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 import { switchMap } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import { switchMap } from 'rxjs/operators';
 })
 export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title = 'Edit Repeating Invoice';
   public subTitle: string;
@@ -54,7 +54,7 @@ export class RepeatingSalesInvoiceEditComponent implements OnInit, OnDestroy {
 
           const id: string = this.route.snapshot.paramMap.get('id');
           const repeatingInvoiceId: string = this.route.snapshot.paramMap.get('repeatingInvoiceId');
-          const m: MetaDomain = this.m;
+          const m: Meta = this.m;
 
           const pulls = [
 

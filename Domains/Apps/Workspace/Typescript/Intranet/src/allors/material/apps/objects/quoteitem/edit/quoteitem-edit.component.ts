@@ -7,10 +7,11 @@ import { switchMap, map } from 'rxjs/operators';
 import { ErrorService, Invoked, Saved, SearchFactory, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Good, InventoryItem, NonSerialisedInventoryItem, Product, ProductQuote, QuoteItem, RequestItem, SerialisedInventoryItem, UnitOfMeasure } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { CreateData, EditData, ObjectData } from 'src/allors/angular/base/object/object.data';
+
+import { CreateData, ObjectService, EditData, ObjectData } from '../../../../../material/base/services/object';
 
 @Component({
   templateUrl: './quoteitem-edit.component.html',
@@ -18,7 +19,7 @@ import { CreateData, EditData, ObjectData } from 'src/allors/angular/base/object
 })
 export class QuoteItemEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title = 'Edit Quote Item';
   public subTitle: string;

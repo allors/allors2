@@ -45,7 +45,7 @@ export class PhoneCommunicationOverviewComponent implements OnInit, OnDestroy {
           const { m, pull } = this.metaService;
 
           const navRoute = new NavigationActivatedRoute(this.route);
-          this.panelManager.objectType = m.PhoneCommunication.objectType;
+          this.panelManager.objectType = m.PhoneCommunication;
           this.panelManager.id = navRoute.id();
           this.panelManager.expanded = navRoute.panel();
 

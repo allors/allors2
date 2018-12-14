@@ -45,7 +45,7 @@ export class OrganisationOverviewComponent implements OnInit, OnDestroy {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.Organisation.objectType;
+          this.panelManager.objectType = m.Organisation;
           this.panelManager.expanded = navRoute.panel();
 
           const pulls = [

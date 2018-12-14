@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, NavigationService, MetaService } from '../../../../../angular';
 import { CustomerRelationship, Employment, Enumeration, InternalOrganisation, Locale, Organisation, OrganisationContactKind, OrganisationContactRelationship, Person, PersonRole } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -19,7 +19,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class PersonCreateComponent implements OnInit, OnDestroy {
 
-  readonly m: MetaDomain;
+  readonly m: Meta;
 
   add: boolean;
   edit: boolean;

@@ -47,7 +47,7 @@ export class RequestForQuoteOverviewComponent implements OnInit, OnDestroy {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           this.panelManager.id = navRoute.id();
-          this.panelManager.objectType = m.RequestForQuote.objectType;
+          this.panelManager.objectType = m.RequestForQuote;
           this.panelManager.expanded = navRoute.panel();
 
           const pulls = [

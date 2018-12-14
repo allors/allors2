@@ -8,7 +8,7 @@ import { switchMap } from 'rxjs/operators';
 import { ErrorService, Field, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, SalesInvoice, SalesOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, Fetch, PullRequest, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -19,7 +19,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 })
 export class SalesInvoiceEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title: string;
   public subTitle: string;

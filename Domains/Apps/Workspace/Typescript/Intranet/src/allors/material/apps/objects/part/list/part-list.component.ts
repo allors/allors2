@@ -17,7 +17,7 @@ import { StateService } from '../../../services/state';
 import { Part, GoodIdentificationType } from '../../../../../domain';
 import { Fetcher } from '../../Fetcher';
 import { stringify } from '@angular/core/src/render3/util';
-import { MetaDomain } from 'src/allors/meta';
+import { Meta } from 'src/allors/meta';
 
 interface Row {
   part: Part;
@@ -52,7 +52,7 @@ export class PartListComponent implements OnInit, OnDestroy {
   private readonly fetcher: Fetcher;
   goodIdentificationTypes: GoodIdentificationType[];
 
-  public m: MetaDomain;
+  public m: Meta;
 
   constructor(
     @Self() public allors: ContextService,

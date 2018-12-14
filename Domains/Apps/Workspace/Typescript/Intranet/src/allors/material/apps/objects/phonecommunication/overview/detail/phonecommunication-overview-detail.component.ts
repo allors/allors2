@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { CommunicationEventPurpose, ContactMechanism, PhoneCommunication, InternalOrganisation, Party, PartyContactMechanism, Person, Organisation, TelecommunicationsNumber, OrganisationContactRelationship } from '../../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
 import { switchMap, map, filter } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export class PhoneCommunicationOverviewDetailComponent implements OnInit, OnDest
   public addReceiver = false;
   public addPhoneNumber = false;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public person: Person;
@@ -60,7 +60,7 @@ export class PhoneCommunicationOverviewDetailComponent implements OnInit, OnDest
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${this.panel.name}_${this.m.PhoneCommunication.objectType.name}`;
+    const pullName = `${this.panel.name}_${this.m.PhoneCommunication.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {
@@ -207,7 +207,7 @@ export class PhoneCommunicationOverviewDetailComponent implements OnInit, OnDest
         this.phoneCommunication = loaded.objects.PhoneCommunication as PhoneCommunication;
 
         // TODO: phone number from organisation, person or contacts ...
-        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber.objectType).map((v) => v.ContactMechanism);
+        this.phonenumbers = this.party.CurrentPartyContactMechanisms.filter((v) => v.ContactMechanism.objectType === m.TelecommunicationsNumber).map((v) => v.ContactMechanism);
 
       },
         (error: any) => {

@@ -7,7 +7,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, NavigationActivatedRoute, NavigationService, MetaService } from '../../../../../angular';
 import { Enumeration, PartyContactMechanism, WebAddress, Party } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 
 @Component({
@@ -18,7 +18,7 @@ export class EditWebAddressComponent implements OnInit, OnDestroy {
 
   public title = 'Web Address';
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public party: Party;
   public partyContactMechanism: PartyContactMechanism;

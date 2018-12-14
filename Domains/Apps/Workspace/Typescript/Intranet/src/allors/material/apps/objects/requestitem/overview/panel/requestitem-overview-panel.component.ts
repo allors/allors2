@@ -1,14 +1,13 @@
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, RefreshService, ErrorService, Action, MetaService, ActionTarget, Invoked } from '../../../../../../angular';
 import { RequestItem } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { DeleteService, TableRow, Table } from '../../../../..';
 
 import { ISessionObject } from 'src/allors/framework';
 import { MatSnackBar } from '@angular/material';
 
-import { ObjectService } from '../../../../../../../allors/angular/base/object';
-import { CreateData } from '../../../../../../../allors/angular/base/object/object.data';
+import { CreateData, ObjectService } from '../../../../../../material/base/services/object';
 
 interface Row extends TableRow {
   object: RequestItem;
@@ -24,7 +23,7 @@ interface Row extends TableRow {
   providers: [PanelService]
 })
 export class RequestItemOverviewPanelComponent {
-  m: MetaDomain;
+  m: Meta;
 
   requestItems: RequestItem[];
   table: Table<Row>;
@@ -81,7 +80,7 @@ export class RequestItemOverviewPanelComponent {
       defaultAction: this.edit,
     });
 
-    const pullName = `${panel.name}_${this.m.RequestItem.objectType.name}`;
+    const pullName = `${panel.name}_${this.m.RequestItem.name}`;
 
     panel.onPull = (pulls) => {
       const { pull, x } = this.metaService;

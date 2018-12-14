@@ -1,7 +1,7 @@
 import { Component, Self } from '@angular/core';
 import { ContextService, PanelService, NavigationService, Saved, RefreshService, ErrorService, Action, MetaService } from '../../../../../../angular';
 import { PartyContactMechanism, Person } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { ObjectType, ISessionObject } from '../../../../../../framework';
 import { DeleteService } from '../../../../..';
 
@@ -12,7 +12,7 @@ import { DeleteService } from '../../../../..';
   providers: [PanelService]
 })
 export class PartyContactMechanismOverviewPanelComponent {
-  m: MetaDomain;
+  m: Meta;
 
   person: Person;
 
@@ -40,7 +40,7 @@ export class PartyContactMechanismOverviewPanelComponent {
     panel.icon = 'contacts';
     panel.expandable = true;
 
-    const personPullName = `${panel.name}_${this.m.Person.objectType.name}`;
+    const personPullName = `${panel.name}_${this.m.Person.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;

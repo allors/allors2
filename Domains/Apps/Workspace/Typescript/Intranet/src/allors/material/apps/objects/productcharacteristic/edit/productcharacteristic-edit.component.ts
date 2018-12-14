@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import { ErrorService, Saved, ContextService, MetaService } from '../../../../../angular';
 import { IUnitOfMeasure, Locale, SerialisedItemCharacteristicType, Singleton, TimeFrequency, UnitOfMeasure } from '../../../../../domain';
 import { Fetch, PullRequest, Sort, TreeNode, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -19,7 +19,7 @@ export class ProductCharacteristicComponent implements OnInit, OnDestroy {
   public title = 'Product Characteristic';
   public subTitle: string;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public productCharacteristic: SerialisedItemCharacteristicType;
 

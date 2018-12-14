@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, Self } from 
 import { ErrorService, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanismPurpose, ContactMechanismType, Enumeration, PartyContactMechanism, TelecommunicationsNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
-import { MetaDomain } from '../../../../../meta';
+import { Meta } from '../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -24,7 +24,7 @@ export class PartyContactMechanismTelecommunicationsNumberInlineComponent implem
   public partyContactMechanism: PartyContactMechanism;
   public telecommunicationsNumber: TelecommunicationsNumber;
 
-  public m: MetaDomain;
+  public m: Meta;
 
   constructor(
     private allors: ContextService,

@@ -3,7 +3,7 @@ import { RefreshService } from './../../../../../../angular/base/refresh/refresh
 import { Component, Self } from '@angular/core';
 import { PanelService, NavigationService, MetaService, ErrorService } from '../../../../../../angular';
 import { PhoneCommunication } from '../../../../../../domain';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -13,7 +13,7 @@ import { MetaDomain } from '../../../../../../meta';
 })
 export class PhoneCommunicationOverviewSummaryComponent {
 
-  m: MetaDomain;
+  m: Meta;
 
   phoneCommunication: PhoneCommunication;
 
@@ -33,7 +33,7 @@ export class PhoneCommunicationOverviewSummaryComponent {
     panel.expandable = true;
 
     // Minimized
-    const pullName = `${panel.name}_${this.m.Person.objectType.name}`;
+    const pullName = `${panel.name}_${this.m.Person.name}`;
 
     panel.onPull = (pulls) => {
       const { m, pull, tree, x } = this.metaService;

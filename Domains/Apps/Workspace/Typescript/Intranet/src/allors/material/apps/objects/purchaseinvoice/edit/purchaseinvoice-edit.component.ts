@@ -7,7 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import { ErrorService, Invoked, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, PurchaseInvoice, PurchaseInvoiceType, PurchaseOrder, VatRate, VatRegime } from '../../../../../domain';
 import { Contains, Equals, Fetch, PullRequest, Pull, TreeNode, Sort } from '../../../../../framework';
-import { MetaDomain, PullFactory } from '../../../../../meta';
+import { Meta, PullFactory } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
@@ -18,7 +18,7 @@ import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
 })
 export class PurchaseInvoiceEditComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public title: string;
   public subTitle: string;

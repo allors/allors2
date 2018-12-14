@@ -7,7 +7,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { ErrorService, Saved, ContextService, MetaService, PanelService, RefreshService } from '../../../../../../angular';
 import { Organisation, ProductQuote, Currency, ContactMechanism, Person, Quote, PartyContactMechanism, OrganisationContactRelationship, Good, SalesOrder, InternalOrganisation, Party, RequestForQuote } from '../../../../../../domain';
 import { PullRequest, Sort } from '../../../../../../framework';
-import { MetaDomain } from '../../../../../../meta';
+import { Meta } from '../../../../../../meta';
 import { StateService } from '../../../../services/state';
 import { Fetcher } from '../../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../../base/services/dialog';
@@ -21,7 +21,7 @@ import { switchMap, filter } from 'rxjs/operators';
 })
 export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
 
-  public m: MetaDomain;
+  public m: Meta;
 
   public productQuote: ProductQuote;
   public salesOrder: SalesOrder;
@@ -57,8 +57,8 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     panel.expandable = true;
 
     // Normal
-    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.objectType.name}`;
-    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.objectType.name}`;
+    const productQuotePullName = `${panel.name}_${this.m.ProductQuote.name}`;
+    const salesOrderPullName = `${panel.name}_${this.m.SalesOrder.name}`;
 
     panel.onPull = (pulls) => {
       if (this.panel.isCollapsed) {
