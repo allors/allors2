@@ -5,6 +5,7 @@ import { MatDialogModule } from '@angular/material';
 import { ids } from '../allors/meta/generated';
 
 import { EmailCommunicationCreateComponent, EmailCommunicationCreateModule } from '../allors/material/apps/objects/emailcommunication/create/emailcommunication-create.module';
+import { IGoodIdentificationEditComponent, IGoodIdentificationEditModule } from '../allors/material/apps/objects/igoodidentification/edit/igoodIdentification.module';
 import { FaceToFaceCommunicationCreateComponent, FaceToFaceCommunicationCreateModule } from '../allors/material/apps/objects/facetofacecommunication/create/facetofacecommunication-create.module';
 import { LetterCorrespondenceCreateComponent, LetterCorrespondenceCreateModule } from '../allors/material/apps/objects/lettercorrespondence/create/lettercorrespondence-create.module';
 import { OrganisationCreateModule, OrganisationCreateComponent } from '../allors/material/apps/objects/organisation/create/organisation-create.module';
@@ -39,6 +40,14 @@ const create = {
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
   [ids.WorkTask]: WorkTaskCreateComponent,
+  [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
+  [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
+  [ids.PartNumber]: IGoodIdentificationEditComponent,
+  [ids.EanIdentification]: IGoodIdentificationEditComponent,
+  [ids.ProductNumber]: IGoodIdentificationEditComponent,
+  [ids.SkuIdentification]: IGoodIdentificationEditComponent,
+  [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
+  [ids.UpceIdentification]: IGoodIdentificationEditComponent,
 };
 
 const edit = {
@@ -48,6 +57,14 @@ const edit = {
   [ids.QuoteItem]: QuoteItemEditComponent,
   [ids.RequestItem]: RequestItemEditComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
+  [ids.IsbnIdentification]: IGoodIdentificationEditComponent,
+  [ids.ManufacturerIdentification]: IGoodIdentificationEditComponent,
+  [ids.PartNumber]: IGoodIdentificationEditComponent,
+  [ids.EanIdentification]: IGoodIdentificationEditComponent,
+  [ids.ProductNumber]: IGoodIdentificationEditComponent,
+  [ids.SkuIdentification]: IGoodIdentificationEditComponent,
+  [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
+  [ids.UpceIdentification]: IGoodIdentificationEditComponent,
 };
 
 @NgModule({
@@ -57,6 +74,7 @@ const edit = {
 
     EmailCommunicationCreateModule,
     FaceToFaceCommunicationCreateModule,
+    IGoodIdentificationEditModule,
     LetterCorrespondenceCreateModule,
     OrganisationCreateModule,
     PersonCreateModule,
@@ -73,6 +91,7 @@ const edit = {
   entryComponents: [
     EmailCommunicationCreateComponent,
     FaceToFaceCommunicationCreateComponent,
+    IGoodIdentificationEditComponent,
     LetterCorrespondenceCreateComponent,
     OrganisationCreateComponent,
     PersonCreateComponent,

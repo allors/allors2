@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatTabsModule } from '@angular/material';
 
-
+import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
 import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
@@ -17,17 +17,18 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { EditProductNumberComponent } from './productnumber-edit.component';
-export { EditProductNumberComponent } from './productnumber-edit.component';
+import { IGoodIdentificationEditComponent } from './igoodIdentification-edit.component';
+export { IGoodIdentificationEditComponent } from './igoodIdentification-edit.component';
 
 @NgModule({
   declarations: [
-    EditProductNumberComponent,
+    IGoodIdentificationEditComponent,
   ],
   exports: [
-    EditProductNumberComponent,
+    IGoodIdentificationEditComponent,
   ],
   imports: [
+    AllorsMaterialAutoCompleteModule,
     AllorsMaterialChipsModule,
     AllorsMaterialDatepickerModule,
     AllorsMaterialDatetimepickerModule,
@@ -60,4 +61,4 @@ export { EditProductNumberComponent } from './productnumber-edit.component';
     RouterModule,
   ],
 })
-export class ProductNumberModule { }
+export class IGoodIdentificationEditModule { }

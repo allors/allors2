@@ -75,4 +75,4 @@ export { PersonOverviewComponent } from './person-overview.component';
     RouterModule,
   ],
 })
-export class PersonDetailModule { }
+export class PersonOverviewModule { }

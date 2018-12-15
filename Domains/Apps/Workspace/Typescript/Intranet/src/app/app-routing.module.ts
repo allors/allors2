@@ -51,14 +51,6 @@ import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edi
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
-import * as EditEanIdentification from 'src/allors/material/apps/objects/eanidentification/edit/eanidentification.module';
-import * as EditIsbnIdentification from 'src/allors/material/apps/objects/isbnidentification/edit/isbnidentification.module';
-import * as EditManufacturerIdentification from 'src/allors/material/apps/objects/manufactureridentification/edit/manufactureridentification.module';
-import * as EditPartNumber from 'src/allors/material/apps/objects/partnumber/edit/partnumber.module';
-import * as EditProductNumber from 'src/allors/material/apps/objects/productnumber/edit/productnumber.module';
-import * as EditSkuIdentification from 'src/allors/material/apps/objects/skuidentification/edit/skuidentification.module';
-import * as EditUpcaIdentification from 'src/allors/material/apps/objects/upcaidentification/edit/upcaidentification.module';
-import * as EditUpceIdentification from 'src/allors/material/apps/objects/upceidentification/edit/upceidentification.module';
 import * as EditBaseprice from 'src/allors/material/apps/objects/baseprice/edit/baseprice.module';
 import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering.module';
 import * as CommunicationEventWorkTask from 'src/allors/material/apps/objects/communicationevent/worktask/communicationevent-worktask.module';
@@ -119,7 +111,7 @@ const modules = [
   PartEdit.PartEditModule,
 
   PersonList.PersonListModule,
-  PersonOverview.PersonDetailModule,
+  PersonOverview.PersonOverviewModule,
 
   PostalAddressEdit.PostalAddressModule,
 
@@ -137,14 +129,6 @@ const modules = [
 
   TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
 
-  EditEanIdentification.EanIdentificationModule,
-  EditIsbnIdentification.IsbnIdentificationModule,
-  EditManufacturerIdentification.ManufacturerIdentificationModule,
-  EditPartNumber.PartNumberModule,
-  EditProductNumber.ProductNumberModule,
-  EditSkuIdentification.SkuIdentificationModule,
-  EditUpcaIdentification.UpcaIdentificationModule,
-  EditUpceIdentification.UpceIdentificationModule,
   EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
@@ -268,23 +252,6 @@ export const routes: Routes = [
       { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
       { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
-
-      { path: 'eanidentification', data: addData({ id: ids.EanIdentification }), component: EditEanIdentification.EditEanIdentificationComponent },
-      { path: 'eanidentification/:id', data: editData({ id: ids.EanIdentification }), component: EditEanIdentification.EditEanIdentificationComponent },
-      { path: 'isbnidentification', data: addData({ id: ids.IsbnIdentification }), component: EditIsbnIdentification.EditIsbnIdentificationComponent },
-      { path: 'isbnidentification/:id', data: editData({ id: ids.IsbnIdentification }), component: EditIsbnIdentification.EditIsbnIdentificationComponent },
-      { path: 'manufactureridentification', data: addData({ id: ids.ManufacturerIdentification }), component: EditManufacturerIdentification.EditManufacturerIdentificationComponent },
-      { path: 'manufactureridentification/:id', data: editData({ id: ids.ManufacturerIdentification }), component: EditManufacturerIdentification.EditManufacturerIdentificationComponent },
-      { path: 'partnumber', data: addData({ id: ids.PartNumber }), component: EditPartNumber.EditPartNumberComponent },
-      { path: 'partnumber/:id', data: editData({ id: ids.PartNumber }), component: EditPartNumber.EditPartNumberComponent },
-      { path: 'productnumber', data: addData({ id: ids.ProductNumber }), component: EditProductNumber.EditProductNumberComponent },
-      { path: 'productnumber/:id', data: editData({ id: ids.ProductNumber }), component: EditProductNumber.EditProductNumberComponent },
-      { path: 'skuidentification', data: addData({ id: ids.SkuIdentification }), component: EditSkuIdentification.EditSkuIdentificationComponent },
-      { path: 'skuidentification/:id', data: editData({ id: ids.SkuIdentification }), component: EditSkuIdentification.EditSkuIdentificationComponent },
-      { path: 'upcaidentification', data: addData({ id: ids.UpcaIdentification }), component: EditUpcaIdentification.EditUpcaIdentificationComponent },
-      { path: 'upcaidentification/:id', data: editData({ id: ids.UpcaIdentification }), component: EditUpcaIdentification.EditUpcaIdentificationComponent },
-      { path: 'upceidentification', data: addData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
-      { path: 'upceidentification/:id', data: editData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
 
       { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
       { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },

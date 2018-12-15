@@ -15,7 +15,7 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 
 import { NonSerialisedInventoryEmbedModule } from '../../nonserialisedinventoryitem/embed/nonserialisedinventoryitem-embed.module';
 
-import { IGoodIdentificationEmbedModule } from '../../igoodidentification/embed/igoodIdentification-embed.module';
+import { IGoodIdentificationPanelModule } from '../../igoodidentification/overview/panel/igoodIdentification-panel.module';
 import { PriceComponentEmbedModule } from '../../pricecomponent/embed/pricecomponent-embed.module';
 import { SerialisedInventoryEmbedModule } from '../../serialisedinventoryitem/embed/serialisedinventoryitem-embed.module';
 
@@ -30,7 +30,7 @@ export { PartOverviewComponent } from './part-overview.component';
     PartOverviewComponent,
   ],
   imports: [
-    IGoodIdentificationEmbedModule,
+    IGoodIdentificationPanelModule,
     PriceComponentEmbedModule,
     SerialisedInventoryEmbedModule,
     NonSerialisedInventoryEmbedModule,
