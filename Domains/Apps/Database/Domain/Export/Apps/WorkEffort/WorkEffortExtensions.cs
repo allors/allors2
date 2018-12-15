@@ -58,6 +58,11 @@ namespace Allors.Domain
                 @this.Owner = owner;
             }
 
+            if (!@this.ExistWorkEffortNumber)
+            {
+                @this.WorkEffortNumber = @this.TakenBy.NextWorkEffortNumber();
+            }
+
             @this.DeriveOwnerSecurity();
             @this.VerifyWorkEffortPartyAssignments(derivation);
             @this.DeriveActualHoursAndDates();

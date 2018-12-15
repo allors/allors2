@@ -1,0 +1,21 @@
+<form *ngIf="workTask" #form="ngForm" (submit)="save()" novalidate>
+
+  <h3 mat-dialog-title>Add a new Work Task</h3>
+
+  <div mat-dialog-content>
+    <div class="container-fluid">
+
+      <div class="row">
+        <a-mat-input class="col-md" [object]="workTask" [roleType]="m.WorkTask.Name"></a-mat-input>
+        <!-- <a-mat-select class="col-md" [object]="workTask" [roleType]="m.WorkTask.Salutation" [options]="salutations" display="Name"></a-mat-select> -->
+      </div>
+
+    </div>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()" type="button">CANCEL</button>
+    <button mat-button class="ml-2" color="primary" type="submit" [disabled]="!form.form.valid || !(allors.context.hasChanges || activeRoles.length > 0) ">SAVE</button>
+  </div>
+
+</form>

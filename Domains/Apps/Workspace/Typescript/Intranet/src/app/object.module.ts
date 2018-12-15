@@ -18,6 +18,7 @@ import { QuoteItemEditComponent, QuoteItemEditModule } from '../allors/material/
 import { SalesOrderCreateComponent, SalesOrderCreateModule } from '../allors/material/apps/objects/salesorder/create/salesorder-create.module';
 import { SalesOrderItemEditComponent, SalesOrderItemEditModule } from '../allors/material/apps/objects/salesorderitem/edit/salesorderitem-edit.module';
 import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/apps/objects/salesterm/edit/salesterm-edit.module';
+import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
 
@@ -37,6 +38,7 @@ const create = {
   [ids.RequestForQuote]: RequestForQuoteCreateComponent,
   [ids.SalesOrder]: SalesOrderCreateComponent,
   [ids.SalesOrderItem]: SalesOrderItemEditComponent,
+  [ids.WorkTask]: WorkTaskCreateComponent,
 };
 
 const edit = {
@@ -66,6 +68,7 @@ const edit = {
     SalesOrderCreateModule,
     SalesOrderItemEditModule,
     SalesTermEditModule,
+    WorkTaskCreateModule,
   ],
   entryComponents: [
     EmailCommunicationCreateComponent,
@@ -81,6 +84,7 @@ const edit = {
     SalesOrderCreateComponent,
     SalesOrderItemEditComponent,
     SalesTermEditComponent,
+    WorkTaskCreateComponent,
   ],
   providers: [
     ObjectService,

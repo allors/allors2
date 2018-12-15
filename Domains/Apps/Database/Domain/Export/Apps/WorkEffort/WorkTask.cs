@@ -48,11 +48,6 @@ namespace Allors.Domain
 
         public void AppsOnDerive(ObjectOnDerive method)
         {
-            if (!this.ExistWorkEffortNumber && this.ExistTakenBy)
-            {
-                this.WorkEffortNumber = this.TakenBy.NextWorkEffortNumber();
-            }
-
             this.RenderPrintDocument(this.TakenBy?.WorkTaskTemplate, new WorkTaskSandwychPrintModel(this).Model);
         }
 

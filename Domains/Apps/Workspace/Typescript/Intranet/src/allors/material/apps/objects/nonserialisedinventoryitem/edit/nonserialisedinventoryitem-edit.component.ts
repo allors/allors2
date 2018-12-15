@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
-import { InternalOrganisation, Part, Facility, Lot, NonSerialisedInventoryItem } from '../../../../../domain';
+import { InternalOrganisation, Part, Facility, Lot, NonSerialisedInventoryItem, NonSerialisedInventoryItemState } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -37,6 +37,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
   private readonly fetcher: Fetcher;
+  nonSerialisedInventoryItemStates: NonSerialisedInventoryItemState[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -69,6 +70,8 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
           let pulls = [
             this.fetcher.internalOrganisation,
             this.fetcher.facilities,
+            pull.NonSerialisedInventoryItemState({ sort: new Sort(m.NonSerialisedInventoryItemState.Name) }),
+            pull.SerialisedInventoryItemState({ sort: new Sort(m.SerialisedInventoryItemState.Name) }),
             pull.Lot({ sort: new Sort(m.Lot.LotNumber) })
           ];
 
@@ -95,6 +98,7 @@ export class NonSerialisedInventoryItemEditComponent implements OnInit, OnDestro
 
         this.facilities = loaded.collections.Facilities as Facility[];
         this.lots  = loaded.collections.Lots as Lot[];
+        this.nonSerialisedInventoryItemStates  = loaded.collections.NonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
 
         this.part = loaded.objects.Part as Part;
 

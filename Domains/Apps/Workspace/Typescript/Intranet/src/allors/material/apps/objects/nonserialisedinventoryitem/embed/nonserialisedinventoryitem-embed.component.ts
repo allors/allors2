@@ -15,6 +15,7 @@ import { NavigateService } from 'src/allors/material/base/actions';
 interface Row extends TableRow {
   object: InventoryItem;
   name: string;
+  state: string;
   qoh: string;
   atp: string;
 }
@@ -62,6 +63,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
       selection: false,
       columns: [
         { name: 'name', sort: true },
+        { name: 'state', sort: true },
         'uom',
         'qoh',
         'atp',
@@ -101,6 +103,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
                   include: {
                     Facility: x,
                     UnitOfMeasure: x,
+                    NonSerialisedInventoryItem_NonSerialisedInventoryItemState: x
                   }
                 }
               },
@@ -121,6 +124,7 @@ export class NonSerialisedInventoryComponent implements OnInit, OnDestroy {
           return {
             object: v,
             name: v.Facility.Name,
+            state: v.NonSerialisedInventoryItemState.Name,
             uom: v.UnitOfMeasure.Abbreviation || v.UnitOfMeasure.Name,
             qoh: v.QuantityOnHand.toString(),
             atp: v.AvailableToPromise.toString(),

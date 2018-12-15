@@ -83,10 +83,9 @@ import * as Catalogue from 'src/allors/material/apps/objects/catalogue/edit/cata
 import * as Category from 'src/allors/material/apps/objects/category/edit/category-edit.module';
 import * as ProductCharacteristic from 'src/allors/material/apps/objects/productcharacteristic/edit/productcharacteristic-edit.module';
 import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
-import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktasks-list.module';
+import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktask-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
 import * as WorkTaskEdit from 'src/allors/material/apps/objects/worktask/edit/worktask-edit.module';
-import { NonSerialisedInventoryComponent } from 'src/allors/material/apps/objects/nonserialisedinventoryitem/embed/nonserialisedinventoryitem-embed.module';
 
 const modules = [
 
@@ -170,7 +169,7 @@ const modules = [
   Category.CategoryModule,
   ProductCharacteristic.ProductCharacteristicModule,
   ProductType.ProductTypeModule,
-  WorkTaskList.WorkTasksOverviewModule,
+  WorkTaskList.WorkTaskListModule,
   WorkTaskOverview.WorkTaskOverviewModule,
   WorkTaskEdit.WorkTaskEditModule,
 ];

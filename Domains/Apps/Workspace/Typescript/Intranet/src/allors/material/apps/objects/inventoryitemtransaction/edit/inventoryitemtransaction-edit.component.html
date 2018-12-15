@@ -56,14 +56,6 @@
             <a-mat-input class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.Quantity"></a-mat-input>
           </div>
 
-          <div class="row">
-            <a-mat-datetimepicker class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.TransactionDate"></a-mat-datetimepicker>
-            <a-mat-select *ngIf="!serialised"  class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.NonSerialisedInventoryItemState"
-              [options]="nonSerialisedInventoryItemStates" display="Name" label="State"></a-mat-select>
-              <a-mat-select *ngIf="serialised"  class="col-md" [object]="inventoryItemTransaction" [roleType]="m.InventoryItemTransaction.SerialisedInventoryItemState"
-              [options]="serialisedInventoryItemStates" display="Name" label="State"></a-mat-select>
-          </div>
-
         </div>
       </mat-card-content>
     </mat-card>

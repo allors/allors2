@@ -7,7 +7,7 @@ export class RefreshService {
   refresh$: Observable<Date>;
   private refreshSubject$: BehaviorSubject<Date>;
 
-  constructor(){
+  constructor() {
     this.refresh$ = this.refreshSubject$ = new BehaviorSubject(new Date());
   }
 

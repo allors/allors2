@@ -7,7 +7,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
-import { InternalOrganisation, InventoryItemTransaction, InventoryItem, Part, InventoryTransactionReason, Facility, Lot, NonSerialisedInventoryItemState, SerialisedInventoryItemState } from '../../../../../domain';
+import { InternalOrganisation, InventoryItemTransaction, InventoryItem, Part, InventoryTransactionReason, Facility, Lot } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -32,7 +32,6 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   addFacility = false;
   facilities: Facility[];
   lots: Lot[];
-  nonSerialisedInventoryItemStates: NonSerialisedInventoryItemState[];
   serialised: boolean;
 
   add: boolean;
@@ -41,7 +40,6 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
   private readonly fetcher: Fetcher;
-  serialisedInventoryItemStates: SerialisedInventoryItemState[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -65,7 +63,7 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
     this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, refresh, internalOrganisationId]) => {
+        switchMap(([]) => {
 
           const navRoute = new NavigationActivatedRoute(this.route);
           const id = navRoute.id();
@@ -76,8 +74,6 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
             this.fetcher.internalOrganisation,
             this.fetcher.facilities,
             pull.InventoryTransactionReason(),
-            pull.NonSerialisedInventoryItemState({ sort: new Sort(m.NonSerialisedInventoryItemState.Name) }),
-            pull.SerialisedInventoryItemState({ sort: new Sort(m.SerialisedInventoryItemState.Name) }),
             pull.Lot({ sort: new Sort(m.Lot.LotNumber) })
           ];
 
@@ -118,8 +114,6 @@ export class InventoryItemTransactionEditComponent implements OnInit, OnDestroy 
 
         this.inventoryTransactionReasons = loaded.collections.InventoryTransactionReasons as InventoryTransactionReason[];
         this.facilities = loaded.collections.Facilities as Facility[];
-        this.nonSerialisedInventoryItemStates  = loaded.collections.NonSerialisedInventoryItemStates as NonSerialisedInventoryItemState[];
-        this.serialisedInventoryItemStates  = loaded.collections.SerialisedInventoryItemStates as SerialisedInventoryItemState[];
         this.lots  = loaded.collections.Lots as Lot[];
 
         this.inventoryItem = loaded.objects.InventoryItem as InventoryItem;
