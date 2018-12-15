@@ -1,29 +1,28 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self, SkipSelf } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { Location } from '@angular/common';
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
 
-import { ErrorService, Saved, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
-import { Facility, Locale, ProductType, Organisation, SupplierOffering, Brand, Model, InventoryItemKind, VendorProduct, InternalOrganisation, GoodIdentificationType, PartNumber, Part, SerialisedItemState, UnitOfMeasure, PriceComponent } from '../../../../../domain';
-import { PullRequest, Sort, Equals, Not, GreaterThan } from '../../../../../framework';
-import { Meta } from '../../../../../meta';
-import { Fetcher } from '../../Fetcher';
-import { StateService } from '../../../../';
+import { ErrorService, ContextService, NavigationService, PanelService, RefreshService, MetaService } from '../../../../../../angular';
+import { InternalOrganisation, Locale, Organisation, Good, Facility, ProductCategory, ProductType, Brand, Model, VendorProduct, Ownership, VatRate, Part, GoodIdentificationType, ProductNumber, PartNumber, UnitOfMeasure, PriceComponent, InventoryItemKind, SupplierOffering } from '../../../../../../domain';
+import { PullRequest, Sort, Equals } from '../../../../../../framework';
+import { Meta } from '../../../../../../meta';
+import { StateService } from '../../../../services/state';
+import { Fetcher } from '../../../Fetcher';
 
 @Component({
-  templateUrl: './part-edit.component.html',
-  providers: [ContextService]
+  // tslint:disable-next-line:component-selector
+  selector: 'part-overview-detail',
+  templateUrl: './part-overview-detail.component.html',
+  providers: [PanelService, ContextService]
 })
-export class PartEditComponent implements OnInit, OnDestroy {
+export class PartOverviewDetailComponent implements OnInit, OnDestroy {
 
-  m: Meta;
-
-  add: boolean;
-  edit: boolean;
+  readonly m: Meta;
 
   part: Part;
-  subTitle: string;
+
   facility: Facility;
   locales: Locale[];
   inventoryItemKinds: InventoryItemKind[];
@@ -48,36 +47,67 @@ export class PartEditComponent implements OnInit, OnDestroy {
   currentSellingPrice: PriceComponent;
 
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
     @Self() public allors: ContextService,
-    public metaService: MetaService,
+    @Self() public panel: PanelService,
+    private metaService: MetaService,
+    public refreshService: RefreshService,
     public navigationService: NavigationService,
+    public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
+
+    panel.name = 'detail';
+    panel.title = 'Part Details';
+    panel.icon = 'person';
+    panel.expandable = true;
+
+    // Minimized
+    const pullName = `${this.panel.name}_${this.m.Part.name}`;
+
+    panel.onPull = (pulls) => {
+      const { pull, x } = this.metaService;
+
+      const id = this.panel.manager.id;
+
+      pulls.push(
+        pull.Part({
+          name: pullName,
+          object: id,
+        }),
+      );
+    };
+
+    panel.onPulled = (loaded) => {
+      this.part = loaded.objects[pullName] as Part;
+    };
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    // Maximized
+    this.subscription = combineLatest(
+      this.route.url,
+      this.route.queryParams,
+      this.refreshService.refresh$,
+      this.stateService.internalOrganisationId$,
+    )
       .pipe(
-        switchMap(([, refresh, internalOrganisationId]) => {
+        filter((v) => {
+          return this.panel.isExpanded;
+        }),
+        switchMap(([, , , internalOrganisationId]) => {
 
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
+          this.part = undefined;
 
-          const add = !id;
+          const { m, pull, x } = this.metaService;
+          const id = this.panel.manager.id;
 
           const pulls = [
             this.fetcher.locales,
@@ -141,15 +171,10 @@ export class PartEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          return this.allors.context
-            .load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, add }))
-            );
+          return this.allors.context.load('Pull', new PullRequest({ pulls }));
         })
       )
-      .subscribe(({ loaded, add }) => {
-
+      .subscribe((loaded) => {
         this.allors.context.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
@@ -172,35 +197,36 @@ export class PartEditComponent implements OnInit, OnDestroy {
 
         this.manufacturers = loaded.collections.Organisations as Organisation[];
 
-        if (add) {
-          this.add = !(this.edit = false);
+        this.partNumber = this.part.GoodIdentifications.find(v => v.GoodIdentificationType === partNumberType);
 
-          this.part = this.allors.context.create('Part') as Part;
+        this.suppliers = this.part.SuppliedBy as Organisation[];
+        this.selectedSuppliers = this.suppliers;
 
-          this.partNumber = this.allors.context.create('PartNumber') as PartNumber;
-          this.partNumber.GoodIdentificationType = partNumberType;
+        this.selectedBrand = this.part.Brand;
+        this.selectedModel = this.part.Model;
+        this.brandSelected(this.selectedBrand);
 
-          this.part.AddGoodIdentification(this.partNumber);
+        this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
 
-        } else {
-          this.edit = !(this.add = false);
-          this.partNumber = this.part.GoodIdentifications.find(v => v.GoodIdentificationType === partNumberType);
+      }, this.errorService.handler);
 
-          this.suppliers = this.part.SuppliedBy as Organisation[];
-          this.selectedSuppliers = this.suppliers;
+  }
 
-          this.selectedBrand = this.part.Brand;
-          this.selectedModel = this.part.Model;
-          this.brandSelected(this.selectedBrand);
+  public ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
 
-          this.supplierOfferings = loaded.collections.SupplierOfferings as SupplierOffering[];
-        }
+  public save(): void {
+
+    this.allors.context.save()
+      .subscribe(() => {
+        this.navigationService.back();
       },
-        (error: any) => {
+        (error: Error) => {
           this.errorService.handle(error);
-          this.navigationService.back();
-        },
-      );
+        });
   }
 
   public brandAdded(brand: Brand): void {
@@ -237,99 +263,5 @@ export class PartEditComponent implements OnInit, OnDestroy {
       }, this.errorService.handler);
   }
 
-  public ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
-  }
 
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public save(): void {
-    this.onSave();
-
-    this.allors.context
-      .save()
-      .subscribe((saved: Saved) => {
-        this.navigationService.back();
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public update(): void {
-
-    const isNew = this.part.isNew;
-    this.onSave();
-
-    this.allors.context
-      .save()
-      .subscribe(() => {
-        this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        if (isNew) {
-          this.navigationService.overview(this.part);
-        } else {
-          this.refresh();
-        }
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  private onSave() {
-
-    this.part.Brand = this.selectedBrand;
-    this.part.Model = this.selectedModel;
-
-    if (this.suppliers !== undefined) {
-      const suppliersToDelete = this.suppliers.filter(v => v);
-
-      if (this.selectedSuppliers !== undefined) {
-        this.selectedSuppliers.forEach((supplier: Organisation) => {
-          const index = suppliersToDelete.indexOf(supplier);
-          if (index > -1) {
-            suppliersToDelete.splice(index, 1);
-          }
-
-          const now = new Date();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
-
-          if (supplierOffering === undefined) {
-            this.supplierOfferings.push(this.newSupplierOffering(supplier));
-          } else {
-            supplierOffering.ThroughDate = null;
-          }
-        });
-      }
-
-      if (suppliersToDelete !== undefined) {
-        suppliersToDelete.forEach((supplier: Organisation) => {
-          const now = new Date();
-          const supplierOffering = this.supplierOfferings.find((v) =>
-            v.Supplier === supplier &&
-            v.FromDate <= now &&
-            (v.ThroughDate === null || v.ThroughDate >= now));
-
-          if (supplierOffering !== undefined) {
-            supplierOffering.ThroughDate = new Date();
-          }
-        });
-      }
-    }
-  }
-
-  private newSupplierOffering(supplier: Organisation): SupplierOffering {
-
-    const supplierOffering = this.allors.context.create('SupplierOffering') as SupplierOffering;
-    supplierOffering.Supplier = supplier;
-    supplierOffering.Part = this.part;
-    return supplierOffering;
-  }
 }

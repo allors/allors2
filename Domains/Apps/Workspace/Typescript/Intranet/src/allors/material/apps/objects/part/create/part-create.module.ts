@@ -6,7 +6,6 @@ import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, M
 
 
 import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
-import { AllorsMaterialChipsModule } from '../../../../base/components/chips';
 import { AllorsMaterialDatepickerModule } from '../../../../base/components/datepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialFilesModule } from '../../../../base/components/files';
@@ -22,15 +21,15 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 import { BrandInlineModule } from '../../brand/inline/brand-inline.module';
 import { ModelInlineModule } from '../../model/inline/model-inline.module';
 
-import { PartEditComponent } from './part-edit.component';
-export { PartEditComponent } from './part-edit.component';
+import { PartCreateComponent } from './part-create.component';
+export { PartCreateComponent } from './part-create.component';
 
 @NgModule({
   declarations: [
-    PartEditComponent,
+    PartCreateComponent,
   ],
   exports: [
-    PartEditComponent,
+    PartCreateComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -69,4 +68,4 @@ export { PartEditComponent } from './part-edit.component';
     RouterModule,
   ],
 })
-export class PartEditModule { }
+export class PartCreateModule { }

@@ -30,11 +30,7 @@
         </mat-toolbar>
       </div>
 
-      <div style="position: relative">
-        <a style="position: absolute; left: -1.6rem; top: -1.6rem; z-index: 1" mat-fab (click)="navigationService.add(allors.m.Part)">
-          <mat-icon>add</mat-icon>
-        </a>
-      </div>
+      <a-mat-factory-fab [objectType]="metaService.m.Part"></a-mat-factory-fab>
 
       <div class="a-search container-fluid">
         <a-mat-filter></a-mat-filter>

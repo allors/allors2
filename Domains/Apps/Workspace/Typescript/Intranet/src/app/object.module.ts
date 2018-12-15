@@ -22,9 +22,12 @@ import { SalesTermEditComponent, SalesTermEditModule } from '../allors/material/
 import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/material/apps/objects/worktask/create/worktask-create.module';
 
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
+import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
+import { GoodCreateComponent, GoodCreateModule } from 'src/allors/material/apps/objects/good/create/good-create.module';
 
 const create = {
   [ids.EmailCommunication]: EmailCommunicationCreateComponent,
+  [ids.Good]: GoodCreateComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
@@ -48,6 +51,7 @@ const create = {
   [ids.SkuIdentification]: IGoodIdentificationEditComponent,
   [ids.UpcaIdentification]: IGoodIdentificationEditComponent,
   [ids.UpceIdentification]: IGoodIdentificationEditComponent,
+  [ids.Part]: PartCreateComponent,
 };
 
 const edit = {
@@ -74,9 +78,11 @@ const edit = {
 
     EmailCommunicationCreateModule,
     FaceToFaceCommunicationCreateModule,
+    GoodCreateModule,
     IGoodIdentificationEditModule,
     LetterCorrespondenceCreateModule,
     OrganisationCreateModule,
+    PartCreateModule,
     PersonCreateModule,
     PhoneCommunicationCreateModule,
     ProductQuoteCreateModule,
@@ -91,10 +97,12 @@ const edit = {
   entryComponents: [
     EmailCommunicationCreateComponent,
     FaceToFaceCommunicationCreateComponent,
+    GoodCreateComponent,
     IGoodIdentificationEditComponent,
     LetterCorrespondenceCreateComponent,
     OrganisationCreateComponent,
     PersonCreateComponent,
+    PartCreateComponent,
     PhoneCommunicationCreateComponent,
     ProductQuoteCreateComponent,
     QuoteItemEditComponent,

@@ -1,21 +1,22 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
+import { Component, OnDestroy, OnInit, Self, Optional, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService } from '../../../../../angular';
+import { ErrorService, ContextService, NavigationService, NavigationActivatedRoute, MetaService, RefreshService } from '../../../../../angular';
 import { Good, Facility, Locale, ProductCategory, ProductType, Organisation, Brand, Model, VendorProduct, VatRate, Ownership, InternalOrganisation, Part, GoodIdentificationType, ProductNumber } from '../../../../../domain';
 import { PullRequest, Sort, Equals } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { Fetcher } from '../../Fetcher';
 import { StateService } from '../../../..';
+import { CreateData } from 'src/allors/material/base/services/object';
 
 @Component({
-  templateUrl: './good-edit.component.html',
+  templateUrl: './good-create.component.html',
   providers: [ContextService]
 })
-export class GoodEditComponent implements OnInit, OnDestroy {
+export class GoodCreateComponent implements OnInit, OnDestroy {
 
   m: Meta;
   good: Good;
@@ -44,20 +45,20 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   productNumber: ProductNumber;
 
   private subscription: Subscription;
-  private refresh$: BehaviorSubject<Date>;
   private fetcher: Fetcher;
 
   constructor(
-    @Self() public allors: ContextService,
-    public navigationService: NavigationService,
+    @Self() private allors: ContextService,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
+    public dialogRef: MatDialogRef<GoodCreateComponent>,
     public metaService: MetaService,
+    private refreshService: RefreshService,
+    public navigationService: NavigationService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -65,14 +66,9 @@ export class GoodEditComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([, refresh, internalOrganisationId]) => {
-
-          const navRoute = new NavigationActivatedRoute(this.route);
-          const id = navRoute.id();
-
-          const add = !id;
+        switchMap(([, internalOrganisationId]) => {
 
           let pulls = [
             this.fetcher.locales,
@@ -89,49 +85,16 @@ export class GoodEditComponent implements OnInit, OnDestroy {
             })
           ];
 
-          if (!add) {
-            pulls = [
-              ...pulls,
-              pull.Good({
-                object: id,
-                include: {
-                  Part: {
-                    Brand: x,
-                    Model: x
-                  },
-                  PrimaryPhoto: x,
-                  ProductCategories: x,
-                  GoodIdentifications: x,
-                  Photos: x,
-                  ElectronicDocuments: x,
-                  LocalisedNames: {
-                    Locale: x,
-                  },
-                  LocalisedDescriptions: {
-                    Locale: x,
-                  },
-                  LocalisedComments: {
-                    Locale: x,
-                  },
-                },
-              }),
-            ];
-          }
-
           return this.allors.context.load('Pull', new PullRequest({ pulls }))
-            .pipe(
-              map((loaded) => ({ loaded, add }))
-            );
         })
       )
-      .subscribe(({ loaded, add }) => {
+      .subscribe((loaded) => {
 
         this.allors.context.reset();
 
         const internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.facility = internalOrganisation.DefaultFacility;
 
-        this.good = loaded.objects.Good as Good;
         this.categories = loaded.collections.ProductCategories as ProductCategory[];
         this.parts = loaded.collections.Parts as Part[];
         this.vatRates = loaded.collections.VatRates as VatRate[];
@@ -141,25 +104,17 @@ export class GoodEditComponent implements OnInit, OnDestroy {
         const vatRateZero = this.vatRates.find((v: VatRate) => v.Rate === 0);
         const goodNumberType = this.goodIdentificationTypes.find((v) => v.UniqueId === 'b640630d-a556-4526-a2e5-60a84ab0db3f');
 
-        if (add) {
-          this.add = !(this.edit = false);
+        this.good = this.allors.context.create('Good') as Good;
+        this.good.VatRate = vatRateZero;
 
-          this.good = this.allors.context.create('Good') as Good;
-          this.good.VatRate = vatRateZero;
+        this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
+        this.productNumber.GoodIdentificationType = goodNumberType;
 
-          this.productNumber = this.allors.context.create('ProductNumber') as ProductNumber;
-          this.productNumber.GoodIdentificationType = goodNumberType;
+        this.good.AddGoodIdentification(this.productNumber);
 
-          this.good.AddGoodIdentification(this.productNumber);
-
-          this.vendorProduct = this.allors.context.create('VendorProduct') as VendorProduct;
-          this.vendorProduct.Product = this.good;
-          this.vendorProduct.InternalOrganisation = internalOrganisation;
-        } else {
-
-          this.edit = !(this.add = false);
-          this.productNumber = this.good.GoodIdentifications.find(v => v.GoodIdentificationType === goodNumberType);
-        }
+        this.vendorProduct = this.allors.context.create('VendorProduct') as VendorProduct;
+        this.vendorProduct.Product = this.good;
+        this.vendorProduct.InternalOrganisation = internalOrganisation;
       },
         (error: any) => {
           this.errorService.handle(error);
@@ -175,7 +130,7 @@ export class GoodEditComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.refresh$.next(new Date());
+    this.refreshService.refresh();
   }
 
   public save(): void {

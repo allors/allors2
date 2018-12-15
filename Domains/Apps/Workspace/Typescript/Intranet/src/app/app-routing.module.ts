@@ -37,10 +37,6 @@ import * as FaceToFaceCommunicationOverview from 'src/allors/material/apps/objec
 import * as LetterCorrespondenceOverview from 'src/allors/material/apps/objects/lettercorrespondence/overview/lettercorrespondence-overview.module';
 import * as PhoneCommunicationOverview from 'src/allors/material/apps/objects/phonecommunication/overview/phonecommunication-overview.module';
 
-import * as GoodEdit from 'src/allors/material/apps/objects/good/edit/good-edit.module';
-
-import * as PartEdit from 'src/allors/material/apps/objects/part/edit/part-edit.module';
-
 import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
 
 import * as EmailAddressEdit from 'src/allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
@@ -94,8 +90,6 @@ const modules = [
 
   EmailAddressEdit.EmailAddressdModule,
 
-  GoodEdit.GoodEditModule,
-
   IncoTermEdit.IncoTermEditModule,
 
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
@@ -107,8 +101,6 @@ const modules = [
 
   OrganisationList.OrganisationListModule,
   OrganisationOverview.OrganisationOverviewModule,
-
-  PartEdit.PartEditModule,
 
   PersonList.PersonListModule,
   PersonOverview.PersonOverviewModule,
@@ -230,13 +222,6 @@ export const routes: Routes = [
           { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
-
-
-      { path: 'good', data: addData({ id: ids.Good }), component: GoodEdit.GoodEditComponent },
-      { path: 'good/:id', data: editData({ id: ids.Good }), component: GoodEdit.GoodEditComponent },
-
-      { path: 'part', data: addData({ id: ids.Part }), component: PartEdit.PartEditComponent },
-      { path: 'part/:id', data: editData({ id: ids.Part }), component: PartEdit.PartEditComponent },
 
       { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
       { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },

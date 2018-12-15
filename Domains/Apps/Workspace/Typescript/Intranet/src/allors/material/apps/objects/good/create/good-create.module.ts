@@ -22,15 +22,15 @@ import { AllorsMaterialTextAreaModule } from '../../../../base/components/textar
 import { BrandInlineModule } from '../../brand/inline/brand-inline.module';
 import { ModelInlineModule } from '../../model/inline/model-inline.module';
 
-import { GoodEditComponent } from './good-edit.component';
-export { GoodEditComponent } from './good-edit.component';
+import { GoodCreateComponent } from './good-create.component';
+export { GoodCreateComponent } from './good-create.component';
 
 @NgModule({
   declarations: [
-    GoodEditComponent,
+    GoodCreateComponent,
   ],
   exports: [
-    GoodEditComponent,
+    GoodCreateComponent,
   ],
   imports: [
     AllorsMaterialAutoCompleteModule,
@@ -69,4 +69,4 @@ export { GoodEditComponent } from './good-edit.component';
     RouterModule,
   ],
 })
-export class GoodEditModule { }
+export class GoodCreateModule { }

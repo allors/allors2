@@ -12,15 +12,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../../base/components/
 import { AllorsMaterialStaticModule } from '../../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../../base/components/textarea';
 
-import { GoodOverviewSummaryComponent } from './good-overview-summary.component';
-export { GoodOverviewSummaryComponent } from './good-overview-summary.component';
+import { PartOverviewSummaryComponent } from './part-overview-summary.component';
+export { PartOverviewSummaryComponent as PersonOverviewSummaryComponent } from './part-overview-summary.component';
 
 @NgModule({
   declarations: [
-    GoodOverviewSummaryComponent,
+    PartOverviewSummaryComponent,
   ],
   exports: [
-    GoodOverviewSummaryComponent,
+    PartOverviewSummaryComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -52,4 +52,4 @@ export { GoodOverviewSummaryComponent } from './good-overview-summary.component'
     RouterModule,
   ],
 })
-export class GoodOverviewSummaryModule { }
+export class PartOverviewSummaryModule { }
