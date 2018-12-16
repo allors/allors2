@@ -3,11 +3,10 @@ import { Title } from '@angular/platform-browser';
 
 import { Subscription, combineLatest } from 'rxjs';
 import { switchMap, scan } from 'rxjs/operators';
-import * as moment from 'moment';
 
 import { PullRequest, And, Equals } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
-import { Sorter, TableRow, Table, NavigateService, DeleteService, StateService } from '../../../..';
+import { Sorter, TableRow, Table, NavigateService, EditService, DeleteService, StateService } from '../../../..';
 
 import { Catalogue } from '../../../../../domain';
 
@@ -27,6 +26,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
 
   table: Table<Row>;
 
+  edit: Action;
   delete: Action;
 
   private subscription: Subscription;
@@ -37,6 +37,7 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
     public metaService: MetaService,
     public refreshService: RefreshService,
     public navigateService: NavigateService,
+    public editService: EditService,
     public deleteService: DeleteService,
     public navigation: NavigationService,
     public mediaService: MediaService,
@@ -46,8 +47,13 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
   ) {
     titleService.setTitle(this.title);
 
+    this.edit = editService.edit();
+    this.edit.result.subscribe(() => {
+      this.table.selection.clear();
+    });
+
     this.delete = deleteService.delete(allors.context);
-    this.delete.result.subscribe((v) => {
+    this.delete.result.subscribe(() => {
       this.table.selection.clear();
     });
 
@@ -58,9 +64,10 @@ export class CataloguesOverviewComponent implements OnInit, OnDestroy {
         { name: 'description' }
       ],
       actions: [
-        navigateService.edit(),
+        this.edit,
         this.delete
       ],
+      defaultAction: this.edit
     });
   }
 

@@ -24,8 +24,10 @@ import { WorkTaskCreateModule, WorkTaskCreateComponent } from '../allors/materia
 import { ObjectService, OBJECT_CREATE_TOKEN, OBJECT_EDIT_TOKEN } from '../allors/material/base/services/object';
 import { PartCreateComponent, PartCreateModule } from '../allors/material/apps/objects/part/create/part-create.module';
 import { GoodCreateComponent, GoodCreateModule } from 'src/allors/material/apps/objects/good/create/good-create.module';
+import { CatalogueEditComponent, CatalogueEditModule } from 'src/allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
 
 const create = {
+  [ids.Catalogue]: CatalogueEditComponent,
   [ids.EmailCommunication]: EmailCommunicationCreateComponent,
   [ids.Good]: GoodCreateComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
@@ -55,6 +57,7 @@ const create = {
 };
 
 const edit = {
+  [ids.Catalogue]: CatalogueEditComponent,
   [ids.IncoTerm]: SalesTermEditComponent,
   [ids.InvoiceTerm]: SalesTermEditComponent,
   [ids.OrderTerm]: SalesTermEditComponent,
@@ -76,6 +79,7 @@ const edit = {
     CommonModule,
     MatDialogModule,
 
+    CatalogueEditModule,
     EmailCommunicationCreateModule,
     FaceToFaceCommunicationCreateModule,
     GoodCreateModule,
@@ -95,6 +99,7 @@ const edit = {
     WorkTaskCreateModule,
   ],
   entryComponents: [
+    CatalogueEditComponent,
     EmailCommunicationCreateComponent,
     FaceToFaceCommunicationCreateComponent,
     GoodCreateComponent,

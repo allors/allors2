@@ -141,7 +141,6 @@ const modules = [
   CategoriesOverview.CategoriesOverviewModule,
   ProductCharacteristicsOverview.ProductCharacteristicsOverviewModule,
   ProductTypesOverview.ProductTypesOverviewModule,
-  Catalogue.CatalogueModule,
   Category.CategoryModule,
   ProductCharacteristic.ProductCharacteristicModule,
   ProductType.ProductTypeModule,
@@ -258,13 +257,6 @@ export const routes: Routes = [
         children: [
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
-      {
-        path: 'catalogue',
-        children: [
-          { path: '', data: addData({ id: ids.Catalogue }), component: Catalogue.CatalogueComponent },
-          { path: ':id', data: editData({ id: ids.Catalogue }), component: Catalogue.CatalogueComponent },
         ],
       },
       {

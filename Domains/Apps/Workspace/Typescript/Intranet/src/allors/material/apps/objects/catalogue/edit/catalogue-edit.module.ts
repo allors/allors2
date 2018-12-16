@@ -16,15 +16,15 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { CatalogueComponent } from './catalogue-edit.component';
-export { CatalogueComponent } from './catalogue-edit.component';
+import { CatalogueEditComponent } from './catalogue-edit.component';
+export { CatalogueEditComponent } from './catalogue-edit.component';
 
 @NgModule({
   declarations: [
-    CatalogueComponent,
+    CatalogueEditComponent,
   ],
   exports: [
-    CatalogueComponent,
+    CatalogueEditComponent,
   ],
   imports: [
     AllorsMaterialFileModule,
@@ -56,4 +56,4 @@ export { CatalogueComponent } from './catalogue-edit.component';
     RouterModule,
   ],
 })
-export class CatalogueModule { }
+export class CatalogueEditModule { }

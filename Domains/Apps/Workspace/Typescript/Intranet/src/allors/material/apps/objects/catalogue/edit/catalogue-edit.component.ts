@@ -1,23 +1,24 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { Component, OnDestroy, OnInit, Self, Inject } from '@angular/core';
+import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ActivatedRoute, UrlSegment } from '@angular/router';
 
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
 
-import { ErrorService, Loaded, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { Catalogue, CatScope, InternalOrganisation, Locale, ProductCategory, Singleton } from '../../../../../domain';
-import { Equals, Fetch, PullRequest, TreeNode } from '../../../../../framework';
+import { PullRequest } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
 import { Fetcher } from '../../Fetcher';
 import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
+import { CreateData, EditData } from 'src/allors/material/base/services/object';
 
 @Component({
   templateUrl: './catalogue-edit.component.html',
   providers: [ContextService]
 })
-export class CatalogueComponent implements OnInit, OnDestroy {
+export class CatalogueEditComponent implements OnInit, OnDestroy {
 
   public m: Meta;
 
@@ -33,23 +34,21 @@ export class CatalogueComponent implements OnInit, OnDestroy {
   public internalOrganisation: InternalOrganisation;
 
   private subscription: Subscription;
-
-  private refresh$: BehaviorSubject<Date>;
-
   private fetcher: Fetcher;
 
   constructor(
     @Self() private allors: ContextService,
+    @Inject(MAT_DIALOG_DATA) public data: CreateData & EditData,
+    public dialogRef: MatDialogRef<CatalogueEditComponent>,
     public metaService: MetaService,
+    private refreshService: RefreshService,
     private errorService: ErrorService,
-    private route: ActivatedRoute,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
     private stateService: StateService) {
 
     this.m = this.metaService.m;
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -57,11 +56,12 @@ export class CatalogueComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.route.url, this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date, internalOrganisationId]) => {
+        switchMap(([]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const create = (this.data as EditData).id === undefined;
+          const { id, objectType, associationRoleType } = this.data;
 
           const pulls = [
             this.fetcher.categories,
@@ -82,23 +82,30 @@ export class CatalogueComponent implements OnInit, OnDestroy {
             ,
             pull.CatScope()];
 
-          return this.allors.context.load('Pull', new PullRequest({ pulls }));
+          return this.allors.context.load('Pull', new PullRequest({ pulls }))
+          .pipe(
+            map((loaded) => ({ loaded, create }))
+          );
         })
       )
-      .subscribe((loaded) => {
+      .subscribe(({loaded, create}) => {
 
-        this.catalogue = loaded.objects.catalogue as Catalogue;
+        this.allors.context.reset();
+
+        this.catalogue = loaded.objects.Catalogue as Catalogue;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
-        this.categories = loaded.collections.categories as ProductCategory[];
+        this.categories = loaded.collections.Categories as ProductCategory[];
         this.catScopes = loaded.collections.CatScopes as CatScope[];
-        this.internalOrganisation = loaded.objects.internalOrganisation as InternalOrganisation;
+        this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
 
-        if (!this.catalogue) {
+        if (create) {
+          this.title = 'Add Catalogue';
           this.catalogue = this.allors.context.create('Catalogue') as Catalogue;
           this.catalogue.InternalOrganisation = this.internalOrganisation;
+        } else{
+          this.title= 'Edit Catalogue';
         }
 
-        this.title = this.catalogue.Name;
       }, this.errorService.handler);
   }
 
