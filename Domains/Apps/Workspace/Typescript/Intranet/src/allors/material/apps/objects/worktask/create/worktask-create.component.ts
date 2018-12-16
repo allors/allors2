@@ -6,7 +6,7 @@ import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import { ErrorService, ContextService, NavigationService, MetaService } from '../../../../../angular';
-import { InternalOrganisation, Locale, WorkTask, Organisation } from '../../../../../domain';
+import { InternalOrganisation, Locale, WorkTask, Organisation, Party, PartyContactMechanism, Person, ContactMechanism, OrganisationContactRelationship } from '../../../../../domain';
 import { PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
 import { StateService } from '../../../services/state';
@@ -26,12 +26,17 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
   internalOrganisation: InternalOrganisation;
   workTask: WorkTask;
+  contactMechanisms: ContactMechanism[];
+  contacts: Person[];
+  addContactPerson = false;
+  addContactMechanism: boolean;
 
   locales: Locale[];
 
   private subscription: Subscription;
   private readonly refresh$: BehaviorSubject<Date>;
   private readonly fetcher: Fetcher;
+  organisations: Organisation[];
 
   constructor(
     @Self() public allors: ContextService,
@@ -42,7 +47,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
     public location: Location,
     private errorService: ErrorService,
     private route: ActivatedRoute,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.refresh$ = new BehaviorSubject<Date>(undefined);
@@ -66,6 +71,9 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
             pull.Locale({
               sort: new Sort(m.Locale.Name)
             }),
+            pull.Organisation({
+              sort: new Sort(m.Organisation.PartyName)
+            })
           ];
 
           return this.allors.context
@@ -77,6 +85,7 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
 
         this.internalOrganisation = loaded.objects.InternalOrganisation as InternalOrganisation;
         this.locales = loaded.collections.AdditionalLocales as Locale[];
+        this.organisations = loaded.collections.Organisations as Organisation[];
 
         this.workTask = this.allors.context.create('WorkTask') as WorkTask;
         this.workTask.TakenBy = this.internalOrganisation as Organisation;
@@ -84,6 +93,77 @@ export class WorkTaskCreateComponent implements OnInit, OnDestroy {
       }, this.errorService.handler);
   }
 
+  public customerSelected(customer: Party) {
+    this.updateCustomer(customer);
+  }
+
+  private updateCustomer(party: Party) {
+
+    const { m, pull, x } = this.metaService;
+
+    const pulls = [
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentPartyContactMechanisms: {
+            include: {
+              ContactMechanism: {
+                PostalAddress_PostalBoundary: {
+                  Country: x,
+                }
+              }
+            }
+          }
+        }
+      }),
+      pull.Party({
+        object: party,
+        fetch: {
+          CurrentContacts: x,
+        }
+      })
+    ];
+
+    this.allors.context.load('Pull', new PullRequest({ pulls })).subscribe(
+      (loaded) => {
+        const partyContactMechanisms: PartyContactMechanism[] = loaded
+          .collections.partyContactMechanisms as PartyContactMechanism[];
+        this.contactMechanisms = partyContactMechanisms.map(
+          (v: PartyContactMechanism) => v.ContactMechanism,
+        );
+        this.contacts = loaded.collections.currentContacts as Person[];
+      },
+      (error: Error) => {
+        this.errorService.handle(error);
+      },
+    );
+  }
+
+  public contactPersonAdded(id: string): void {
+
+    this.addContactPerson = false;
+
+    const contact: Person = this.allors.context.get(id) as Person;
+
+    const organisationContactRelationship = this.allors.context.create('OrganisationContactRelationship') as OrganisationContactRelationship;
+    organisationContactRelationship.Organisation = this.workTask.Customer as Organisation;
+    organisationContactRelationship.Contact = contact;
+
+    this.contacts.push(contact);
+    this.workTask.ContactPerson = contact;
+  }
+
+  public contactMechanismAdded(partyContactMechanism: PartyContactMechanism): void {
+    this.addContactMechanism = false;
+
+    this.contactMechanisms.push(partyContactMechanism.ContactMechanism);
+    this.workTask.Customer.AddPartyContactMechanism(partyContactMechanism);
+    this.workTask.FullfillContactMechanism = partyContactMechanism.ContactMechanism;
+  }
+
+  public contactMechanismCancelled() {
+    this.addContactMechanism = false;
+  }
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();

@@ -1,112 +1,78 @@
-import { Component, OnDestroy, OnInit, Self } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
-import { ActivatedRoute,  Router } from '@angular/router';
-
-import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
-
-import { ErrorService, Invoked, ContextService, NavigationService, MetaService } from '../../../../../angular';
-import { StateService } from '../../../../../material';
-import { WorkTask } from '../../../../../domain';
-import { PullRequest } from '../../../../../framework';
-import { Meta } from '../../../../../meta';
-import { AllorsMaterialDialogService } from '../../../../base/services/dialog';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit, Self, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { ErrorService, NavigationService, NavigationActivatedRoute, PanelManagerService, RefreshService, MetaService, ContextService } from '../../../../../angular';
+import { WorkTask } from '../../../../../domain';
+import { PullRequest, Pull } from '../../../../../framework';
+import { StateService } from '../../../services/state';
 
 @Component({
   templateUrl: './worktask-overview.component.html',
-  providers: [ContextService]
+  providers: [PanelManagerService, ContextService]
 })
 export class WorkTaskOverviewComponent implements OnInit, OnDestroy {
 
-  public m: Meta;
+  title = 'WorkTask';
 
-  public title = 'Task Overview';
-  public task: WorkTask;
+  workTask: WorkTask;
 
-  private refresh$: BehaviorSubject<Date>;
-  private subscription: Subscription;
+  subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public panelManager: PanelManagerService,
     public metaService: MetaService,
+    public refreshService: RefreshService,
     public navigation: NavigationService,
     private errorService: ErrorService,
-    private titleService: Title,
     private route: ActivatedRoute,
-    private router: Router,
-    private snackBar: MatSnackBar,
-    private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService) {
+    private stateService: StateService,
+    public injector: Injector,
+    titleService: Title,
+  ) {
 
-    this.m = this.metaService.m;
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
+    titleService.setTitle(this.title);
   }
 
   public ngOnInit(): void {
 
-    const { m, pull, x } = this.metaService;
-
-    this.subscription = combineLatest(this.route.url, this.refresh$)
+    this.subscription = combineLatest(this.route.url, this.route.queryParams, this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
-        switchMap(([urlSegments, date]) => {
+        switchMap(([urlSegments, queryParams, date, internalOrganisationId]) => {
 
-          const id: string = this.route.snapshot.paramMap.get('id');
+          const { m, pull } = this.metaService;
+
+          const navRoute = new NavigationActivatedRoute(this.route);
+          this.panelManager.objectType = m.WorkTask;
+          this.panelManager.id = navRoute.id();
+          this.panelManager.expanded = navRoute.panel();
 
           const pulls = [
             pull.WorkTask({
-              object: id,
-              include: {
-                WorkEffortState: x,
-                Customer: x,
-                FullfillContactMechanism: x,
-                ContactPerson: x,
-                CreatedBy: x,
-              }
+              object: this.panelManager.id,
             })
           ];
 
-          return this.allors.context
+          this.panelManager.onPull(pulls);
+
+          return this.panelManager.context
             .load('Pull', new PullRequest({ pulls }));
         })
       )
       .subscribe((loaded) => {
-        this.allors.context.reset();
-        this.task = loaded.objects.WorkTask as WorkTask;
+
+        this.panelManager.context.session.reset();
+        this.panelManager.onPulled(loaded);
+
+        this.workTask = loaded.objects.WorkTask as WorkTask;
       }, this.errorService.handler);
-  }
-
-  public cancel(): void {
-
-    this.allors.context.invoke(this.task.Cancel)
-      .subscribe((invoked: Invoked) => {
-        this.refresh();
-        this.snackBar.open('Successfully cancelled.', 'close', { duration: 5000 });
-      },
-        (error: Error) => {
-          this.errorService.handle(error);
-        });
-  }
-
-  public print() {
-    // this.pdfService.display(this.task);
   }
 
   public ngOnDestroy(): void {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
-  }
-
-  public goBack(): void {
-    window.history.back();
-  }
-
-  public checkType(obj: any): string {
-    return obj.objectType.name;
   }
 }

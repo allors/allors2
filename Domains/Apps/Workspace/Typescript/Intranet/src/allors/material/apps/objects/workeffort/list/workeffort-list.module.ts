@@ -6,15 +6,15 @@ import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
-import { WorkTaskListComponent } from './worktask-list.component';
-export { WorkTaskListComponent } from './worktask-list.component';
+import { WorkEffortListComponent } from './workeffort-list.component';
+export { WorkEffortListComponent } from './workeffort-list.component';
 
 @NgModule({
   declarations: [
-    WorkTaskListComponent,
+    WorkEffortListComponent,
   ],
   exports: [
-    WorkTaskListComponent,
+    WorkEffortListComponent,
   ],
   imports: [
     CommonModule,
@@ -29,4 +29,4 @@ export { WorkTaskListComponent } from './worktask-list.component';
     AllorsMaterialTableModule,
   ],
 })
-export class WorkTaskListModule { }
+export class WorkEffortListModule { }

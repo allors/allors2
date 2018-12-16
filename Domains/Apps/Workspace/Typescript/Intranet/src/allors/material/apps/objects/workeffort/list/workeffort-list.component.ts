@@ -9,27 +9,28 @@ import { PullRequest, And, Like } from '../../../../../framework';
 import { AllorsFilterService, ErrorService, MediaService, ContextService, NavigationService, Action, RefreshService, MetaService } from '../../../../../angular';
 import { Sorter, TableRow, Table, NavigateService, DeleteService } from '../../../..';
 
-import { Person, WorkTask } from '../../../../../domain';
+import { WorkEffort } from '../../../../../domain';
 
 import { ObjectService } from '../../../../base/services/object';
 
 
 interface Row extends TableRow {
-  object: WorkTask;
+  object: WorkEffort;
   number: string;
   name: string;
+  type: string;
   state: string;
   description: string;
   lastModifiedDate: string;
 }
 
 @Component({
-  templateUrl: './worktask-list.component.html',
+  templateUrl: './workeffort-list.component.html',
   providers: [ContextService, AllorsFilterService]
 })
-export class WorkTaskListComponent implements OnInit, OnDestroy {
+export class WorkEffortListComponent implements OnInit, OnDestroy {
 
-  public title = 'Work Task';
+  public title = 'Work Efforts';
 
   table: Table<Row>;
 
@@ -62,6 +63,7 @@ export class WorkTaskListComponent implements OnInit, OnDestroy {
       columns: [
         { name: 'number', sort: true},
         { name: 'name', sort: true},
+        { name: 'type', sort: false},
         { name: 'state', sort: true },
         { name: 'description', sort: true },
         'lastModifiedDate'
@@ -109,13 +111,12 @@ export class WorkTaskListComponent implements OnInit, OnDestroy {
         switchMap(([, filterFields, sort, pageEvent]) => {
 
           const pulls = [
-            pull.WorkTask({
+            pull.WorkEffort({
               predicate,
               sort: sorter.create(sort),
               include: {
                 WorkEffortState: x,
                 WorkEffortPurposes: x,
-                WorkEffortType: x,
               },
               arguments: this.filterService.arguments(filterFields),
               skip: pageEvent.pageIndex * pageEvent.pageSize,
@@ -127,13 +128,14 @@ export class WorkTaskListComponent implements OnInit, OnDestroy {
       )
       .subscribe((loaded) => {
         this.allors.context.reset();
-        const workTasks = loaded.collections.WorkTasks as WorkTask[];
+        const workEfforts = loaded.collections.WorkEfforts as WorkEffort[];
         this.table.total = loaded.values.WorkTasks_total;
-        this.table.data = workTasks.map((v) => {
+        this.table.data = workEfforts.map((v) => {
           return {
             object: v,
             number: v.WorkEffortNumber,
             name: v.Name,
+            type: v.objectType.name,
             description: v.Description,
             lastModifiedDate: moment(v.LastModifiedDate).fromNow()
           } as Row;
