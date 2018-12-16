@@ -136,15 +136,11 @@ export class CatalogueEditComponent implements OnInit, OnDestroy {
     this.allors.context.save()
       .subscribe((saved: Saved) => {
         this.snackBar.open('Successfully saved.', 'close', { duration: 5000 });
-        this.refresh();
+        this.refreshService.refresh();
       },
         (error: Error) => {
           this.errorService.handle(error);
         });
-  }
-
-  public refresh(): void {
-    this.refresh$.next(new Date());
   }
 
   public goBack(): void {
