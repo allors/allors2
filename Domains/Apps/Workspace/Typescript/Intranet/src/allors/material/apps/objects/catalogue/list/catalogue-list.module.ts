@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule,  MatIconModule, MatToolbarModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
-import { AllorsMaterialFilterModule, AllorsMaterialTableModule} from '../../../..';
+import { AllorsMaterialFilterModule, AllorsMaterialTableModule, AllorsMaterialFactoryFabModule } from '../../../..';
 
 import { CataloguesOverviewComponent } from './catalogue-list.component';
 export { CataloguesOverviewComponent } from './catalogue-list.component';
@@ -24,6 +24,7 @@ export { CataloguesOverviewComponent } from './catalogue-list.component';
     MatButtonModule,
     MatIconModule,
     MatToolbarModule,
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFilterModule,
     AllorsMaterialTableModule,
   ],

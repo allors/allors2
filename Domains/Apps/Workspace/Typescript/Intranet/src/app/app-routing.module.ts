@@ -37,10 +37,6 @@ import * as FaceToFaceCommunicationOverview from 'src/allors/material/apps/objec
 import * as LetterCorrespondenceOverview from 'src/allors/material/apps/objects/lettercorrespondence/overview/lettercorrespondence-overview.module';
 import * as PhoneCommunicationOverview from 'src/allors/material/apps/objects/phonecommunication/overview/phonecommunication-overview.module';
 
-import * as GoodEdit from 'src/allors/material/apps/objects/good/edit/good-edit.module';
-
-import * as PartEdit from 'src/allors/material/apps/objects/part/edit/part-edit.module';
-
 import * as EditSerialisedItem from 'src/allors/material/apps/objects/serialiseditem/edit/serialiseditem.module';
 
 import * as EmailAddressEdit from 'src/allors/material/apps/objects/emailaddress/edit/emailaddress-edit.module';
@@ -51,14 +47,6 @@ import * as EditWebAddress from 'src/allors/material/apps/objects/webaddress/edi
 import * as InventoryItemTransactionEdit from 'src/allors/material/apps/objects/inventoryitemtransaction/edit/inventoryitemtransaction-edit.module';
 import * as NonSerialisedInventoryItemEdit from 'src/allors/material/apps/objects/nonserialisedinventoryitem/edit/nonserialisedinventoryitem-edit.module';
 
-import * as EditEanIdentification from 'src/allors/material/apps/objects/eanidentification/edit/eanidentification.module';
-import * as EditIsbnIdentification from 'src/allors/material/apps/objects/isbnidentification/edit/isbnidentification.module';
-import * as EditManufacturerIdentification from 'src/allors/material/apps/objects/manufactureridentification/edit/manufactureridentification.module';
-import * as EditPartNumber from 'src/allors/material/apps/objects/partnumber/edit/partnumber.module';
-import * as EditProductNumber from 'src/allors/material/apps/objects/productnumber/edit/productnumber.module';
-import * as EditSkuIdentification from 'src/allors/material/apps/objects/skuidentification/edit/skuidentification.module';
-import * as EditUpcaIdentification from 'src/allors/material/apps/objects/upcaidentification/edit/upcaidentification.module';
-import * as EditUpceIdentification from 'src/allors/material/apps/objects/upceidentification/edit/upceidentification.module';
 import * as EditBaseprice from 'src/allors/material/apps/objects/baseprice/edit/baseprice.module';
 import * as EditSupplierOffering from 'src/allors/material/apps/objects/supplieroffering/edit/supplieroffering.module';
 import * as CommunicationEventWorkTask from 'src/allors/material/apps/objects/communicationevent/worktask/communicationevent-worktask.module';
@@ -76,11 +64,9 @@ import * as GoodOverview from 'src/allors/material/apps/objects/good/overview/go
 import * as PartList from 'src/allors/material/apps/objects/part/list/part-list.module';
 import * as PartOverview from 'src/allors/material/apps/objects/part/overview/part-overview.module';
 import * as CataloguesOverview from 'src/allors/material/apps/objects/catalogue/list/catalogue-list.module';
-import * as CategoriesOverview from 'src/allors/material/apps/objects/category/list/category-list.module';
+import * as CategoriesOverview from 'src/allors/material/apps/objects/productcategory/list/productcategory-list.module';
 import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/productcharacteristic/list/productcharacteristic-list.module';
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
-import * as Catalogue from 'src/allors/material/apps/objects/catalogue/edit/catalogue-edit.module';
-import * as Category from 'src/allors/material/apps/objects/category/edit/category-edit.module';
 import * as ProductCharacteristic from 'src/allors/material/apps/objects/productcharacteristic/edit/productcharacteristic-edit.module';
 import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
 import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
@@ -101,8 +87,6 @@ const modules = [
 
   EmailAddressEdit.EmailAddressdModule,
 
-  GoodEdit.GoodEditModule,
-
   IncoTermEdit.IncoTermEditModule,
 
   InventoryItemTransactionEdit.InventoryItemTransactionEditModule,
@@ -115,10 +99,8 @@ const modules = [
   OrganisationList.OrganisationListModule,
   OrganisationOverview.OrganisationOverviewModule,
 
-  PartEdit.PartEditModule,
-
   PersonList.PersonListModule,
-  PersonOverview.PersonDetailModule,
+  PersonOverview.PersonOverviewModule,
 
   PostalAddressEdit.PostalAddressModule,
 
@@ -136,14 +118,6 @@ const modules = [
 
   TelecommunicationsNumberEdit.TelecommunicationsNumberModule,
 
-  EditEanIdentification.EanIdentificationModule,
-  EditIsbnIdentification.IsbnIdentificationModule,
-  EditManufacturerIdentification.ManufacturerIdentificationModule,
-  EditPartNumber.PartNumberModule,
-  EditProductNumber.ProductNumberModule,
-  EditSkuIdentification.SkuIdentificationModule,
-  EditUpcaIdentification.UpcaIdentificationModule,
-  EditUpceIdentification.UpceIdentificationModule,
   EditBaseprice.BasepriceModule,
   EditSupplierOffering.SupplierOfferingModule,
   CommunicationEventWorkTask.CommunicationEventWorkTaskModule,
@@ -161,11 +135,9 @@ const modules = [
   PartList.PartListModule,
   PartOverview.PartOverviewModule,
   CataloguesOverview.CataloguesOverviewModule,
-  CategoriesOverview.CategoriesOverviewModule,
+  CategoriesOverview.ProductCategoriesOverviewModule,
   ProductCharacteristicsOverview.ProductCharacteristicsOverviewModule,
   ProductTypesOverview.ProductTypesOverviewModule,
-  Catalogue.CatalogueModule,
-  Category.CategoryModule,
   ProductCharacteristic.ProductCharacteristicModule,
   ProductType.ProductTypeModule,
   WorkEffortList.WorkEffortListModule,
@@ -219,7 +191,7 @@ export const routes: Routes = [
           { path: 'parts', data: listData({ id: ids.Part }), component: PartList.PartListComponent },
           { path: 'part/:id', data: overviewData({ id: ids.Part }), component: PartOverview.PartOverviewComponent },
           { path: 'catalogues', data: listData({ id: ids.Catalogue }), component: CataloguesOverview.CataloguesOverviewComponent },
-          { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.CategoriesOverviewComponent },
+          { path: 'categories', data: listData({ id: ids.ProductCategory }), component: CategoriesOverview.ProductCategoriesOverviewComponent },
           { path: 'productCharacteristics', data: listData({ id: ids.SerialisedItemCharacteristicType }), component: ProductCharacteristicsOverview.ProductCharacteristicsOverviewComponent },
           { path: 'productTypes', data: listData({ id: ids.ProductType }), component: ProductTypesOverview.ProductTypesOverviewComponent },
         ],
@@ -245,13 +217,6 @@ export const routes: Routes = [
         ],
       },
 
-
-      { path: 'good', data: addData({ id: ids.Good }), component: GoodEdit.GoodEditComponent },
-      { path: 'good/:id', data: editData({ id: ids.Good }), component: GoodEdit.GoodEditComponent },
-
-      { path: 'part', data: addData({ id: ids.Part }), component: PartEdit.PartEditComponent },
-      { path: 'part/:id', data: editData({ id: ids.Part }), component: PartEdit.PartEditComponent },
-
       { path: 'inventoryitemtransaction', data: addData({ id: ids.InventoryItemTransaction }), component: InventoryItemTransactionEdit.InventoryItemTransactionEditComponent },
       { path: 'nonserialisedinventoryitem', data: addData({ id: ids.NonSerialisedInventoryItem }), component: NonSerialisedInventoryItemEdit.NonSerialisedInventoryItemEditComponent },
 
@@ -266,23 +231,6 @@ export const routes: Routes = [
       { path: 'telecommunicationsnumber/:id', data: editData({ id: ids.TelecommunicationsNumber }), component: TelecommunicationsNumberEdit.TelecommunicationsNumberEditComponent },
       { path: 'webaddress', data: addData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
       { path: 'webaddress/:id', data: editData({ id: ids.WebAddress }), component: EditWebAddress.EditWebAddressComponent },
-
-      { path: 'eanidentification', data: addData({ id: ids.EanIdentification }), component: EditEanIdentification.EditEanIdentificationComponent },
-      { path: 'eanidentification/:id', data: editData({ id: ids.EanIdentification }), component: EditEanIdentification.EditEanIdentificationComponent },
-      { path: 'isbnidentification', data: addData({ id: ids.IsbnIdentification }), component: EditIsbnIdentification.EditIsbnIdentificationComponent },
-      { path: 'isbnidentification/:id', data: editData({ id: ids.IsbnIdentification }), component: EditIsbnIdentification.EditIsbnIdentificationComponent },
-      { path: 'manufactureridentification', data: addData({ id: ids.ManufacturerIdentification }), component: EditManufacturerIdentification.EditManufacturerIdentificationComponent },
-      { path: 'manufactureridentification/:id', data: editData({ id: ids.ManufacturerIdentification }), component: EditManufacturerIdentification.EditManufacturerIdentificationComponent },
-      { path: 'partnumber', data: addData({ id: ids.PartNumber }), component: EditPartNumber.EditPartNumberComponent },
-      { path: 'partnumber/:id', data: editData({ id: ids.PartNumber }), component: EditPartNumber.EditPartNumberComponent },
-      { path: 'productnumber', data: addData({ id: ids.ProductNumber }), component: EditProductNumber.EditProductNumberComponent },
-      { path: 'productnumber/:id', data: editData({ id: ids.ProductNumber }), component: EditProductNumber.EditProductNumberComponent },
-      { path: 'skuidentification', data: addData({ id: ids.SkuIdentification }), component: EditSkuIdentification.EditSkuIdentificationComponent },
-      { path: 'skuidentification/:id', data: editData({ id: ids.SkuIdentification }), component: EditSkuIdentification.EditSkuIdentificationComponent },
-      { path: 'upcaidentification', data: addData({ id: ids.UpcaIdentification }), component: EditUpcaIdentification.EditUpcaIdentificationComponent },
-      { path: 'upcaidentification/:id', data: editData({ id: ids.UpcaIdentification }), component: EditUpcaIdentification.EditUpcaIdentificationComponent },
-      { path: 'upceidentification', data: addData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
-      { path: 'upceidentification/:id', data: editData({ id: ids.UpceIdentification }), component: EditUpceIdentification.EditUpceIdentificationComponent },
 
       { path: 'baseprice', data: addData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
       { path: 'baseprice/:id', data: editData({ id: ids.BasePrice }), component: EditBaseprice.EditBasepriceComponent },
@@ -304,20 +252,6 @@ export const routes: Routes = [
         children: [
           { path: ':id/item', component: RequestItemEdit.RequestItemEditComponent },
           { path: ':id/item/:itemId', component: RequestItemEdit.RequestItemEditComponent },
-        ],
-      },
-      {
-        path: 'catalogue',
-        children: [
-          { path: '', data: addData({ id: ids.Catalogue }), component: Catalogue.CatalogueComponent },
-          { path: ':id', data: editData({ id: ids.Catalogue }), component: Catalogue.CatalogueComponent },
-        ],
-      },
-      {
-        path: 'category',
-        children: [
-          { path: '', data: addData({ id: ids.ProductCategory }), component: Category.CategoryComponent },
-          { path: ':id', data: editData({ id: ids.ProductCategory }), component: Category.CategoryComponent },
         ],
       },
       {

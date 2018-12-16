@@ -95,7 +95,8 @@ export class SalesTermOverviewPanelComponent {
               }
             }
           }
-        }));
+        })
+      );
     };
 
     panel.onPulled = (loaded) => {

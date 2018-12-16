@@ -3,166 +3,26 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigationService.list(m.Part)">Parts</a> / {{part?.Name}}
+        <a [routerLink]="['/relations/people']">People</a> / {{part?.Name}}
       </div>
     </div>
   </div>
 
-  <div class="a-overview container-fluid">
+  <div class="a-overview2 container">
 
-    <div *ngIf="part" class="row">
+    <div class="row">
 
-      <div class="col-md-6">
-        <mat-card>
-
-          <div class="row">
-            <div class="col">
-              <h2>
-                <mat-icon>share</mat-icon> part
-              </h2>
-            </div>
-          </div>
-
-          <mat-card-content>
-            <div class="container">
-              <div class="row">
-                <mat-form-field class="col">
-                  <input matInput type="string" [ngModel]="part.Name" name="name" placeholder="Name" readonly>
-                </mat-form-field>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="part.InventoryItemKind" [object]="part.InventoryItemKind" [roleType]="m.InventoryItemKind.Name"
-                  label="Inventory kind"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="part.ProductType" [object]="part.ProductType" [roleType]="m.ProductType.Name"
-                  label="product Type"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="part.Brand" [object]="part.Brand" [roleType]="m.Brand.Name" label="Brand"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="part.Model" [object]="part.Model" [roleType]="m.Model.Name" label="model"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="part.ManufacturedBy" [object]="part.ManufacturedBy" [roleType]="m.Organisation.Name"
-                  label="Manufacturer"></a-mat-static>
-              </div>
-
-              <div class="row" *ngIf="suppliers">
-                <mat-form-field class="col">
-                  <input matInput type="string" [ngModel]="suppliers" name="Name" placeholder="Suppliers" readonly />
-                </mat-form-field>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" [object]="part" [roleType]="m.Part.QuantityOnHand"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" [object]="part" [roleType]="m.Part.AvailableToPromise"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" [object]="part" [roleType]="m.Part.QuantityCommittedOut"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" [object]="part" [roleType]="m.Part.QuantityExpectedIn"></a-mat-static>
-              </div>
-
-            </div>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <button mat-button (click)="navigationService.edit(part)">Edit</button>
-          </mat-card-actions>
-        </mat-card>
+      <div class="col-md-4 mb-3">
+        <part-overview-summary></part-overview-summary>
       </div>
 
-      <div class="col-md-6">
-        <igoodidentification-embed [igoodidentifications]='part.GoodIdentifications' (add)="navigationService.add($event, part)"
-          (edit)="navigationService.edit($event, part)" (delete)="deleteGoodIdentification($event)"></igoodidentification-embed>
+      <div class="col-md-8">
+
+        <part-overview-detail></part-overview-detail>
+
+        <igoodidentification-panel [roleType]="metaService.m.Part.GoodIdentifications"></igoodidentification-panel>
+
       </div>
-
-      <div *ngIf="serialised" class="col-md-6">
-        <!-- <serialiseditem-embed [part]='part' [serialisedItems]='part.SerialisedItems' (add)="navigationService.add($event, part)"
-          (edit)="navigationService.edit($event, part)" (delete)="deleteSerialisedItem($event)"></serialiseditem-embed> -->
-      </div>
-
-      <div class="col-md-6">
-        <pricecomponent-embed [currentPricecomponents]='currentPricecomponents' [inactivePricecomponents]='inactivePricecomponents'
-          [allPricecomponents]='allPricecomponents' (add)="navigationService.add($event, part)" (edit)="navigationService.edit($event)"
-          (delete)="deletePriceComponent($event)"></pricecomponent-embed>
-      </div>
-
-      <div class="col-md-6">
-        <mat-card>
-
-          <div class="row">
-            <div class="col">
-              <h2>
-                <mat-icon>money</mat-icon>Supplier Offerings
-              </h2>
-            </div>
-
-            <div class="col">
-              <mat-button-toggle-group [(ngModel)]="supplierOfferingsCollection">
-                <mat-button-toggle value="Current">Current</mat-button-toggle>
-                <mat-button-toggle value="Inactive">Inactive</mat-button-toggle>
-                <mat-button-toggle value="All">All</mat-button-toggle>
-              </mat-button-toggle-group>
-            </div>
-          </div>
-
-          <mat-card-content>
-
-            <ul *ngIf="offerings?.length == 0">
-              <li>no info to display</li>
-            </ul>
-
-            <mat-list>
-              <mat-list-item *ngFor="let supplierOffering of offerings; let last=last" [attr.data-allors-id]="supplierOffering.id"
-                (edit)="navigationService.edit($event, supplierOffering)" style="cursor: pointer;">
-
-                <div mat-line>{{supplierOffering.Supplier.displayName }}</div>
-                <h3 mat-line (click)="navigationService.edit(supplierOffering)">{{
-                  supplierOffering.Currency.IsoCode }} {{ supplierOffering.Price }} valid from:
-                  {{supplierOffering.FromDate | date}}
-                  through: {{supplierOffering.ThroughDate | date}}</h3>
-
-                <div (click)="$event.stopPropagation()">
-                  <button mat-icon-button [mat-menu-trigger-for]="menuEditCom">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menuEditCom="matMenu">
-                    <button mat-menu-item (edit)="navigationService.edit($event, supplierOffering)">Edit</button>
-                  </mat-menu>
-                </div>
-
-                <mat-divider *ngIf="!last" mat-inset></mat-divider>
-              </mat-list-item>
-            </mat-list>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <button mat-button (click)="navigationService.add(m.SupplierOffering, part)">Add new</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-
-      <div *ngIf="serialised" class="col-md-6">
-        <serialisedinventoryitem-embed [part]='part'></serialisedinventoryitem-embed>
-      </div>
-
-      <div *ngIf="!serialised" class="col-md-6">
-        <nonserialisedinventoryitem-embed [part]='part'></nonserialisedinventoryitem-embed>
-      </div>
-
     </div>
   </div>
+</div>

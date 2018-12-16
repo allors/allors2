@@ -38,7 +38,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    @Self() private allors: ContextService,
+    @Self() public allors: ContextService,
     @Self() public panel: PanelService,
     public metaService: MetaService,
     public refreshService: RefreshService,
@@ -46,7 +46,7 @@ export class ProductQuoteOverviewDetailComponent implements OnInit, OnDestroy {
     private errorService: ErrorService,
     private route: ActivatedRoute,
     private dialogService: AllorsMaterialDialogService,
-    private stateService: StateService) {
+    public stateService: StateService) {
 
     this.m = this.metaService.m;
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);

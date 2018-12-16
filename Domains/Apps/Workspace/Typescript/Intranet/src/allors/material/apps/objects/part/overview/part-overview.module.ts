@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule, MatGridListModule, MatCheckboxModule, MatChipsModule, MatButtonToggleModule, MatDialogModule, MatExpansionModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
+import { AllorsMaterialLauncherModule } from '../../../..';
 import { AllorsMaterialSelectModule } from '../../../../base/components/select';
 import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/sidenavtoggle';
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 
-import { NonSerialisedInventoryEmbedModule } from '../../nonserialisedinventoryitem/embed/nonserialisedinventoryitem-embed.module';
+import { IGoodIdentificationPanelModule } from '../../igoodidentification/overview/panel/igoodIdentification-panel.module';
 
-import { IGoodIdentificationEmbedModule } from '../../igoodidentification/embed/igoodIdentification-embed.module';
-import { PriceComponentEmbedModule } from '../../pricecomponent/embed/pricecomponent-embed.module';
-import { SerialisedInventoryEmbedModule } from '../../serialisedinventoryitem/embed/serialisedinventoryitem-embed.module';
+import { PartOverviewSummaryModule } from './summary/part-overview-summary.module';
+import { PartOverviewDetailModule } from './detail/part-overview-detail.module';
 
 import { PartOverviewComponent } from './part-overview.component';
 export { PartOverviewComponent } from './part-overview.component';
@@ -30,20 +30,20 @@ export { PartOverviewComponent } from './part-overview.component';
     PartOverviewComponent,
   ],
   imports: [
-    IGoodIdentificationEmbedModule,
-    PriceComponentEmbedModule,
-    SerialisedInventoryEmbedModule,
-    NonSerialisedInventoryEmbedModule,
+    PartOverviewSummaryModule,
+    PartOverviewDetailModule,
+
+    IGoodIdentificationPanelModule,
 
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialInputModule,
+    AllorsMaterialLauncherModule,
     AllorsMaterialSelectModule,
     AllorsMaterialSideNavToggleModule,
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
-
     CommonModule,
     FormsModule,
     MatButtonModule,
@@ -53,6 +53,7 @@ export { PartOverviewComponent } from './part-overview.component';
     MatChipsModule,
     MatDialogModule,
     MatDividerModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,

@@ -3,68 +3,26 @@
   <div class="a-breadcrumb container-fluid mat-elevation-z4">
     <div class="row">
       <div class="col">
-        <a (click)="navigationService.list(m.Good)">Products</a> / {{good?.Name}}
+        <a [routerLink]="['/relations/people']">People</a> / {{good?.Name}}
       </div>
     </div>
   </div>
 
-  <div class="a-overview container-fluid">
+  <div class="a-overview2 container">
 
-    <div *ngIf="good" class="row">
+    <div class="row">
 
-      <div class="col-md-6">
-        <mat-card>
-
-          <div class="row">
-            <div class="col">
-              <h2>
-                <mat-icon>business</mat-icon> good
-              </h2>
-            </div>
-          </div>
-
-          <mat-card-content>
-            <div class="container">
-              <div class="row">
-                <mat-form-field class="col">
-                  <input matInput type="string" [ngModel]="good.Name" name="name" placeholder="Name" readonly>
-                </mat-form-field>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="good.Description" [object]="good" [roleType]="m.Good.Description"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="good.Comment" [object]="good" [roleType]="m.Good.Comment"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="good.Part.Brand" [object]="good.Part.Brand" [roleType]="m.Brand.Name"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <a-mat-static class="col" *ngIf="good.Part.Model" [object]="good.Part.Model" [roleType]="m.Model.Name"></a-mat-static>
-              </div>
-
-              <div class="row">
-                <mat-form-field class="col">
-                  <input matInput type="string" [ngModel]="categories" name="Name" placeholder="Categories" readonly />
-                </mat-form-field>
-              </div>
-
-            </div>
-          </mat-card-content>
-
-          <mat-card-actions>
-            <button mat-button (click)="navigationService.edit(good)">Edit</button>
-          </mat-card-actions>
-        </mat-card>
+      <div class="col-md-4 mb-3">
+        <good-overview-summary></good-overview-summary>
       </div>
 
-      <div class="col-md-6">
-        <igoodidentification-embed [igoodidentifications]='good.GoodIdentifications' (add)="navigationService.add($event, good)"
-          (edit)="navigationService.edit($event, good)" (delete)="deleteGoodIdentification($event)"></igoodidentification-embed>
+      <div class="col-md-8">
+
+        <good-overview-detail></good-overview-detail>
+
+        <igoodidentification-panel [roleType]="metaService.m.Good.GoodIdentifications"></igoodidentification-panel>
+
       </div>
     </div>
   </div>
+</div>

@@ -13,6 +13,7 @@ import { AllorsMaterialSideNavToggleModule } from '../../../../base/components/s
 import { AllorsMaterialSlideToggleModule } from '../../../../base/components/slidetoggle';
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
+import { AllorsMaterialFactoryFabModule } from '../../../../base/components/factoryfab/factoryfab.module';
 
 import { GoodListComponent } from './good-list.component';
 export { GoodListComponent } from './good-list.component';
@@ -25,6 +26,7 @@ export { GoodListComponent } from './good-list.component';
     GoodListComponent,
   ],
   imports: [
+    AllorsMaterialFactoryFabModule,
     AllorsMaterialFileModule,
     AllorsMaterialFilterModule,
     AllorsMaterialHeaderModule,

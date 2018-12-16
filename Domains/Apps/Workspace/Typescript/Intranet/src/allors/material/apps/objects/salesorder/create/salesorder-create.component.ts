@@ -4,7 +4,7 @@ import { MatSnackBar, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ErrorService, Invoked, Saved, ContextService, MetaService } from '../../../../../angular';
+import { ErrorService, Invoked, Saved, ContextService, MetaService, RefreshService } from '../../../../../angular';
 import { ContactMechanism, Currency, InternalOrganisation, Organisation, OrganisationContactRelationship, OrganisationRole, Party, PartyContactMechanism, Person, PostalAddress, ProductQuote, SalesOrder, Store, VatRate, VatRegime } from '../../../../../domain';
 import { Equals, PullRequest, Sort } from '../../../../../framework';
 import { Meta } from '../../../../../meta';
@@ -51,7 +51,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   public addBillToEndCustomerContactMechanism: boolean;
   public addShipToEndCustomerAddress: boolean;
 
-  private refresh$: BehaviorSubject<Date>;
   private subscription: Subscription;
   private previousShipToCustomer: Party;
   private previousShipToEndCustomer: Party;
@@ -92,6 +91,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
     @Optional() @Inject(MAT_DIALOG_DATA) public data: CreateData,
     public dialogRef: MatDialogRef<ProductQuoteCreateComponent>,
     public metaService: MetaService,
+    private refreshService: RefreshService,
     private errorService: ErrorService,
     private snackBar: MatSnackBar,
     private dialogService: AllorsMaterialDialogService,
@@ -99,7 +99,6 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
     this.m = this.metaService.m;
 
-    this.refresh$ = new BehaviorSubject<Date>(undefined);
     this.fetcher = new Fetcher(this.stateService, this.metaService.pull);
   }
 
@@ -107,7 +106,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
 
     const { m, pull, x } = this.metaService;
 
-    this.subscription = combineLatest(this.refresh$, this.stateService.internalOrganisationId$)
+    this.subscription = combineLatest(this.refreshService.refresh$, this.stateService.internalOrganisationId$)
       .pipe(
         switchMap(([, internalOrganisationId]) => {
 
@@ -579,7 +578,7 @@ export class SalesOrderCreateComponent implements OnInit, OnDestroy {
   }
 
   public refresh(): void {
-    this.refresh$.next(new Date());
+    this.refreshService.refresh();
   }
 
   public goBack(): void {
