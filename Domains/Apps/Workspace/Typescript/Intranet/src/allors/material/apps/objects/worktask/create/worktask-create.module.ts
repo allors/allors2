@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule, MatCardModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatListModule, MatMenuModule, MatRadioModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatInputModule } from '@angular/material';
 
+import { AllorsMaterialAutoCompleteModule } from '../../../../base/components/autocomplete';
+import { AllorsMaterialDatetimepickerModule } from '../../../../base/components/datetimepicker';
 import { AllorsMaterialFileModule } from '../../../../base/components/file';
 import { AllorsMaterialHeaderModule } from '../../../../base/components/header';
 import { AllorsMaterialInputModule } from '../../../../base/components/input';
@@ -13,6 +15,9 @@ import { AllorsMaterialSlideToggleModule } from '../../../../base/components/sli
 import { AllorsMaterialStaticModule } from '../../../../base/components/static';
 import { AllorsMaterialTextAreaModule } from '../../../../base/components/textarea';
 import { AllorsMaterialFooterModule } from '../../../../base/components/footer';
+
+import { ContactMechanismInlineModule } from '../../contactmechanism/inline/contactmechanism-inline.module';
+import { PersonInlineModule } from '../../person/inline/person-inline.module';
 
 import { WorkTaskCreateComponent } from './worktask-create.component';
 export { WorkTaskCreateComponent } from './worktask-create.component';
@@ -25,6 +30,8 @@ export { WorkTaskCreateComponent } from './worktask-create.component';
     WorkTaskCreateComponent,
   ],
   imports: [
+    AllorsMaterialAutoCompleteModule,
+    AllorsMaterialDatetimepickerModule,
     AllorsMaterialFileModule,
     AllorsMaterialHeaderModule,
     AllorsMaterialFooterModule,
@@ -34,6 +41,10 @@ export { WorkTaskCreateComponent } from './worktask-create.component';
     AllorsMaterialSlideToggleModule,
     AllorsMaterialStaticModule,
     AllorsMaterialTextAreaModule,
+
+    ContactMechanismInlineModule,
+    PersonInlineModule,
+
     CommonModule,
     FormsModule,
     MatButtonModule,

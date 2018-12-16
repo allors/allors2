@@ -29,7 +29,7 @@ export class DefaultStateService extends StateService {
                     propertyType: m.Product.VendorProductsWhereProduct,
                     extent: new Filter({
                         objectType: m.VendorProduct,
-                        predicate: new Equals({ propertyType: m.VendorProduct.InternalOrganisation, value: this.internalOrganisationId }),
+                        predicate: new Equals({ propertyType: m.VendorProduct.InternalOrganisation, object: this.internalOrganisationId }),
                     })
                 }));
             },
@@ -43,7 +43,7 @@ export class DefaultStateService extends StateService {
                     propertyType: m.Party.CustomerRelationshipsWhereCustomer,
                     extent: new Filter({
                         objectType: m.CustomerRelationship,
-                        predicate: new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, value: this.internalOrganisationId }),
+                        predicate: new Equals({ propertyType: m.CustomerRelationship.InternalOrganisation, object: this.internalOrganisationId }),
                     })
                 }));
             },

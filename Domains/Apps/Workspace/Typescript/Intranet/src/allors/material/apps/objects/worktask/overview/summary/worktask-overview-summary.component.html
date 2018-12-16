@@ -1,0 +1,33 @@
+<mat-card *ngIf="workTask">
+
+  <mat-card-header (click)="panel.manager.toggle('detail')" style="cursor: pointer;">
+    <div mat-card-avatar>
+      <mat-icon style="font-size: 36px">business</mat-icon>
+    </div>
+    <mat-card-title>{{workTask.Name}}</mat-card-title>
+    <mat-card-subtitle>
+       <div>
+        {{workTask.WorkEffortState.Name}}
+      </div>
+
+    </mat-card-subtitle>
+
+    <mat-card-subtitle>
+      <div>last modified: {{ workTask.LastModifiedDate | date}} by {{ workTask.LastModifiedBy?.displayName}}</div>
+    </mat-card-subtitle>
+
+  </mat-card-header>
+
+  <mat-card-content>
+
+    <div (click)="navigation.overview(workTask.Customer)" style="cursor: pointer;">
+      <div style="color: grey">
+        Customer
+      </div>
+      <div>
+        {{workTask.Customer?.displayName}}
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

@@ -68,9 +68,8 @@ import * as CategoriesOverview from 'src/allors/material/apps/objects/productcat
 import * as ProductCharacteristicsOverview from 'src/allors/material/apps/objects/serialiseditemcharacteristictype/list/serialiseditemcharacteristic-list.module';
 import * as ProductTypesOverview from 'src/allors/material/apps/objects/producttype/list/producttype-list.module';
 import * as ProductType from 'src/allors/material/apps/objects/producttype/edit/producttype-edit.module';
-import * as WorkTaskList from 'src/allors/material/apps/objects/worktask/list/worktask-list.module';
+import * as WorkEffortList from 'src/allors/material/apps/objects/workeffort/list/workeffort-list.module';
 import * as WorkTaskOverview from 'src/allors/material/apps/objects/worktask/overview/worktask-overview.module';
-import * as WorkTaskEdit from 'src/allors/material/apps/objects/worktask/edit/worktask-edit.module';
 
 const modules = [
 
@@ -139,9 +138,8 @@ const modules = [
   ProductCharacteristicsOverview.SerialisedItemCharacteristicListModule,
   ProductTypesOverview.ProductTypesOverviewModule,
   ProductType.ProductTypeModule,
-  WorkTaskList.WorkTaskListModule,
-  WorkTaskOverview.WorkTaskOverviewModule,
-  WorkTaskEdit.WorkTaskEditModule,
+  WorkEffortList.WorkEffortListModule,
+  WorkTaskOverview.WorkTaskDetailModule,
 ];
 
 export const routes: Routes = [
@@ -212,7 +210,7 @@ export const routes: Routes = [
       {
         path: 'workefforts', data: moduleData({ title: 'Work Efforts', icon: 'work' }),
         children: [
-          { path: 'worktasks', data: listData({ id: ids.WorkTask, icon: 'timer' }), component: WorkTaskList.WorkTaskListComponent },
+          { path: 'workefforts', data: listData({ id: ids.WorkEffort, icon: 'timer' }), component: WorkEffortList.WorkEffortListComponent },
           { path: 'worktask/:id', data: overviewData({ id: ids.WorkTask }), component: WorkTaskOverview.WorkTaskOverviewComponent },
         ],
       },
@@ -290,10 +288,6 @@ export const routes: Routes = [
           { path: ':id/orderterm/:termId', component: OrderTermEdit.OrderTermEditComponent },
         ],
       },
-
-
-      { path: 'worktask', data: addData({ id: ids.WorkTask }), component: WorkTaskEdit.WorkTaskEditComponent },
-      { path: 'worktask/:id', data: editData({ id: ids.WorkTask }), component: WorkTaskEdit.WorkTaskEditComponent },
     ],
   },
 ];
